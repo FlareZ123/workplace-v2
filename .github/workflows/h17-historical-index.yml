@@ -1,0 +1,25 @@
+name: H17 public archival index availability
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-archive-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Fetch public historical correspondence index
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          url = 'https://noyes-energy-group.pages.dev/'
+          try:
+              with urllib.request.urlopen(url, timeout=20) as response:
+                  print('HTTP STATUS', response.status)
+                  print('FINAL URL', response.url)
+                  print(response.read(150000).decode('utf-8', 'replace'))
+          except Exception as exc:
+              print(type(exc).__name__, str(exc))
+              raise
+          PY
