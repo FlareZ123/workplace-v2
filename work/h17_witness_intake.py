@@ -66,7 +66,7 @@ def assess(
     evidence = resources / "evidence"
     routing = json.loads((evidence / "recovery-routing.json").read_text(encoding="utf-8"))
     targets = json.loads((resources / "acceptance.json").read_text(encoding="utf-8"))
-    candidate = json.loads((resources / "candidate.json").read_text(encoding="utf-8"))
+    candidate = json.loads((resources / "candidate.json").read_text(encoding="utf-8"), object_pairs_hook=no_duplicates)
     if coupon is not None and coupon_original is None:
         raise ValueError("--coupon-original is required with --coupon")
     if caption is not None and caption_original is None:
