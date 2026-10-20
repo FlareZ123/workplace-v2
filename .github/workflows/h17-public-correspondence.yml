@@ -6,21 +6,41 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
-      - name: Fetch public correspondence index
+      - name: Inspect public pages and scripts
         shell: python
         run: |
+          import html
+          import re
           import urllib.request
-          url = "https://noyes-energy-group.pages.dev/"
-          request = urllib.request.Request(url, headers={"User-Agent": "H17RecordsArchive/1.0"})
-          try:
-              with urllib.request.urlopen(request, timeout=25) as response:
-                  payload = response.read(200000)
-                  print("URL:", response.url)
-                  print("STATUS:", response.status)
-                  print("CONTENT-TYPE:", response.headers.get("Content-Type"))
-                  print("BODY-BEGIN")
-                  print(payload.decode("utf-8", errors="replace"))
-                  print("BODY-END")
-          except Exception as error:
-              print(type(error).__name__ + ": " + str(error))
-              raise
+          from html.parser import HTMLParser
+
+          BASE = "https://noyes-energy-group.pages.dev"
+          class Scrape(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.words = []
+                  self.links = []
+              def handle_starttag(self, tag, attrs):
+                  data = dict(attrs)
+                  if tag in ("a", "script", "form", "link"):
+                      self.links.append((tag, data))
+              def handle_data(self, data):
+                  if data.strip():
+                      self.words.append(data.strip())
+
+          for path in ["/admin", "/assets/site.js", "/robots.txt", "/sitemap.xml", "/projects/", "/company/"]:
+              print("\\n=== RESOURCE", path, "===")
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(BASE+path, headers={"User-Agent":"H17RecordsArchive/1.0"}), timeout=15) as resp:
+                      body = resp.read(100000).decode("utf-8","replace")
+                      print("status",resp.status,"url",resp.url,"chars",len(body))
+                      if "javascript" in resp.headers.get("Content-Type","") or path.endswith(".js") or path.endswith(".txt") or path.endswith(".xml"):
+                          print(body[:16000])
+                      else:
+                          p = Scrape()
+                          p.feed(body)
+                          print("TEXT:", " ".join(p.words)[:12000])
+                          print("LINKS:", p.links[:70])
+                          print("EMBEDDED SCRIPTS:", re.findall(r"<script[^>]*>(.*?)</script>",body,re.S|re.I)[:5])
+              except Exception as e:
+                  print("ERROR",repr(e))
