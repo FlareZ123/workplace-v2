@@ -8,7 +8,7 @@ The predecessor's [all-file original-member audit](https://github.com/FlareZ123/
 
 ## Read-only method and exact scope
 
-Source is the attached **50,526-byte** export, ZIP SHA-256 `e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94e1d64342bf7`, which [exactly matches current repository original evidence](h17-attached-zip-integrity.md). Script: [`work/h17_supplement_carrier_audit.py`](../work/h17_supplement_carrier_audit.py), Git blob `b58edb632237bfb2bc0c06811fbb4972003a94a3`. Local Python 3, `pypdf 5.9.0`, original `acceptance.json` and `recovery-routing.json` read-only. PDF original is encrypted and is opened solely with the previously established authorized numeric release code `8131`.
+Source is the attached **50,526-byte** export, ZIP SHA-256 `e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94e1d64342bf7`, which [exactly matches current repository original evidence](h17-attached-zip-integrity.md). Script: [`work/h17_supplement_carrier_audit.py`](../work/h17_supplement_carrier_audit.py), Git blob `1f29315f2773695522418b1aac140e74db81578b`. Local Python 3, `pypdf 5.9.0`, original `acceptance.json` and `recovery-routing.json` read-only. PDF original is encrypted and is opened solely with the previously established authorized numeric release code `8131`.
 
 For each original supplement member and two **separately counted derived PDF views** (decrypted page content stream and extracted page text), check:
 
@@ -18,7 +18,7 @@ For each original supplement member and two **separately counted derived PDF vie
 
 These are **candidate assignments**, with duplicates across windows and PDF views. An encrypted raw PDF produces many arbitrary decoding/normalization spans, but the test still covers that defined representation. Derived PDF content is not an independently sourced historical record.
 
-Positive controls **PASS**: an embedded source-known retained ACK payload was found by the byte/mask checker against a synthetic *in-memory* target, and Emily's exact N06 known draft is rediscovered from source-normalized HMAC under a synthetic in-memory target. Neither test changes original commitments. All original bytes remained unchanged.
+Positive controls **PASS** for all four important recognition paths: retained ACK bytes as a raw 16-byte coupon, the same coupon rendered as 32 ASCII hex digits, a direct embedded 16-byte component without mask, and Emily's exact N06 draft under source-normalized HMAC. Each uses only a synthetic *in-memory* commitment; original targets and evidence remain unchanged. All original bytes remained unchanged.
 
 | Source/view | SHA-256 of byte stream | Raw windows | Hex windows | K08 spans | Original commitment hits |
 |---|---|---:|---:|---:|---:|
