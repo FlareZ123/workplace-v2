@@ -40,13 +40,14 @@ def last_escrow_ack(evidence: Path) -> tuple[str, int, datetime]:
     route = label["printer_routes_2026-09-01_to_2026-10-03"]["ESC-N"]
     entries = []
     for line in (evidence / "print/spool-reconstruction.log").read_text(encoding="utf-8").splitlines():
-        matched = re.fullmatch(
-            r"(\S+) JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+) "
-            r"PAYLOAD=([0-9A-F]{32}) DEST=\S+", line
+        # Dispatch ACK selectors remain usable when recovered spool payload bytes are damaged.
+        matched = re.match(
+            r"(\S+) JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+)(?=\s|$)",
+            line,
         )
         if matched is None:
             continue
-        timestamp, job, attempt, state, job_class, _, = matched.groups()
+        timestamp, job, attempt, state, job_class = matched.groups()
         if job == route and state == "ACK" and job_class == "RECOVER":
             entries.append((int(attempt), datetime.fromisoformat(timestamp.replace("Z", "+00:00"))))
     if not entries:
