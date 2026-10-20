@@ -6,41 +6,51 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
-      - name: Inspect public pages and scripts
+      - name: Search publicly linked pages for historical archive references
         shell: python
         run: |
-          import html
           import re
           import urllib.request
+          from collections import deque
           from html.parser import HTMLParser
+          from urllib.parse import urljoin, urlsplit
 
           BASE = "https://noyes-energy-group.pages.dev"
-          class Scrape(HTMLParser):
+          class Parse(HTMLParser):
               def __init__(self):
                   super().__init__()
-                  self.words = []
-                  self.links = []
+                  self.words=[]
+                  self.links=[]
               def handle_starttag(self, tag, attrs):
-                  data = dict(attrs)
-                  if tag in ("a", "script", "form", "link"):
-                      self.links.append((tag, data))
-              def handle_data(self, data):
-                  if data.strip():
-                      self.words.append(data.strip())
+                  if tag=="a":
+                      href=dict(attrs).get("href")
+                      if href: self.links.append(href)
+              def handle_data(self, value):
+                  self.words.append(value)
 
-          for path in ["/admin", "/assets/site.js", "/robots.txt", "/sitemap.xml", "/projects/", "/company/"]:
-              print("\\n=== RESOURCE", path, "===")
+          queue=deque(["/"])
+          seen=set()
+          patterns=re.compile(r"(?i)h.?17|offshore|archive|print spool|records custodian|keeper|late watch|cabinet|incident")
+          while queue and len(seen)<40:
+              path=queue.popleft()
+              if path in seen or path.startswith("/admin") or path.startswith("/api"):
+                  continue
+              seen.add(path)
               try:
-                  with urllib.request.urlopen(urllib.request.Request(BASE+path, headers={"User-Agent":"H17RecordsArchive/1.0"}), timeout=15) as resp:
-                      body = resp.read(100000).decode("utf-8","replace")
-                      print("status",resp.status,"url",resp.url,"chars",len(body))
-                      if "javascript" in resp.headers.get("Content-Type","") or path.endswith(".js") or path.endswith(".txt") or path.endswith(".xml"):
-                          print(body[:16000])
-                      else:
-                          p = Scrape()
-                          p.feed(body)
-                          print("TEXT:", " ".join(p.words)[:12000])
-                          print("LINKS:", p.links[:70])
-                          print("EMBEDDED SCRIPTS:", re.findall(r"<script[^>]*>(.*?)</script>",body,re.S|re.I)[:5])
-              except Exception as e:
-                  print("ERROR",repr(e))
+                  with urllib.request.urlopen(urllib.request.Request(BASE+path,headers={"User-Agent":"H17RecordsArchive/1.0"}),timeout=8) as res:
+                      text=res.read(100000).decode("utf-8",errors="replace")
+                  parsed=Parse()
+                  parsed.feed(text)
+                  plain=" ".join(" ".join(parsed.words).split())
+                  matches=[m.group(0) for m in patterns.finditer(plain)]
+                  print(path,"chars",len(text),"matches",matches[:30])
+                  if matches:
+                      print("CONTEXT",plain[:6000])
+                  for link in parsed.links:
+                      absolute=urljoin(BASE+path,link)
+                      part=urlsplit(absolute)
+                      if part.netloc=="noyes-energy-group.pages.dev" and (part.path.endswith("/") or part.path=="/"):
+                          if part.path not in seen:queue.append(part.path)
+              except Exception as error:
+                  print("error",path,str(error))
+          print("VISITED",sorted(seen))
