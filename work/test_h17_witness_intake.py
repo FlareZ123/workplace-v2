@@ -141,6 +141,18 @@ def main() -> None:
         else:
             raise AssertionError("Tampered baseline must be rejected")
 
+        print("TEST 5d: reject duplicate candidate baseline fields, matching the official CLI")
+        duplicate_baseline = (fake_resources / "candidate.json").read_text(encoding="utf-8")
+        duplicate_baseline = duplicate_baseline.replace('"K01":', '"K01": "00000000000000000000000000000000", "K01":')
+        (fake_resources / "candidate.json").write_text(duplicate_baseline, encoding="utf-8")
+        try:
+            assess(None, None, caption, original, resources=fake_resources)
+        except ValueError as error:
+            assert "Duplicate JSON key: K01" in str(error)
+            print("PASS: duplicate starting component rejected before source intake")
+        else:
+            raise AssertionError("Duplicate baseline candidate must be rejected")
+
     print("TEST 6: original evidence, candidate and acceptance bytes unchanged")
     for path in source_files:
         assert originals[str(path)] == hashlib.sha256(path.read_bytes()).hexdigest(), path
