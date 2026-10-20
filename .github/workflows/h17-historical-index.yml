@@ -33,7 +33,7 @@ jobs:
               def handle_data(self, data):
                   if not self.hidden and data.strip(): self.visible.append(data.strip())
           base='https://noyes-energy-group.pages.dev'
-          paths=['/','/company/','/expertise/','/projects/','/insights/','/contact/','/sitemap.xml']
+          paths=['/','/company/','/expertise/','/projects/','/insights/','/contact/','/sitemap.xml','/admin']
           for path in paths:
               req=Request(base+path,headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36','Accept':'text/html,*/*'})
               try:
