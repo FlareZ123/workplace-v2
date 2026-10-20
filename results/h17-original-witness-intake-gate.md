@@ -9,7 +9,7 @@ Both workplaces preserve an identical original archive export and considerable n
 ## Deliverables and original-source constraints
 
 - [`work/h17_witness_intake.py`](../work/h17_witness_intake.py) is **read-only**: it accepts an external original-source file and separately prepared transcription for either or both missing slots. It computes SHA-256 of both sets of **original bytes** and their **transcriptions**. Those hashes are chain-of-custody anchors, not independent authenticity certificates.
-- K04 transcription is one JSON object with `job`, `attempt`, `state`, `class`, `timestamp_utc`, `payload_hex`. Its logical job is loaded from the 1 September route in the original appliance labels; the selected attempt and timestamp are independently read from the original surviving `print/spool-reconstruction.log` as the greatest acknowledged RECOVER attempt for that job. Unexpected selector fields and any payload other than 16 bytes are rejected *before* deriving the XOR component. The record's content still must be authenticated by a real original coupon or journal.
+- K04 transcription is one JSON object with `job`, `attempt`, `state`, `class`, `timestamp_utc`, `payload_hex`. Its logical job is loaded from the 1 September route in the original appliance labels; the selected attempt and timestamp are independently read from the original surviving `print/spool-reconstruction.log` as the greatest acknowledged RECOVER attempt for that job. Incorrect selector values, duplicate JSON keys and any payload other than 16 bytes are rejected *before* deriving the XOR component. The record's content still must be authenticated by a real original coupon or journal.
 - K08 transcription is a UTF-8 exact caption; the code performs precisely the route-defined lowercase, non-alphanumeric replacement and whitespace collapse, then HMAC-SHA256 with the original nonce to derive its first 16 bytes. The source must actually prove that these were the **final incident envelope** words. The tool cannot authenticate this from a thematic description.
 - The unchanged repository's six verified components are used as baseline. The code calls the original `resources/verify.py` evaluator with its original `resources/acceptance.json` for each new candidate. It emits a **complete eight-slot candidate only after eight individual PASS results and combined PASS**. It never writes to `resources/`, `candidate.json`, the newly supplied source, or any target commitment.
 
@@ -19,7 +19,7 @@ Both workplaces preserve an identical original archive export and considerable n
 
 1. The preserved ACK attempt-2 spool value (`A9A9DC5731A5E2AE879C47215C2559D5`) and a preserved Emily draft both return `NO_MATCH`; the original six still PASS.
 2. Source-original and transcription SHA-256 are computed separately.
-3. A falsely selected attempt 3 is rejected before comparison.
+3. A falsely selected attempt 3 and ambiguous duplicate coupon JSON keys are rejected before comparison.
 4. Case, punctuation and whitespace are normalized consistently.
 5. **Positive control with wholly synthetic commitments isolated in a temporary directory:** modified test-only K04/K08 digests and combined digest yield eight PASS, combined PASS and a printed complete candidate. **This control never touched the actual targets and is explicitly not historical recovery.**
 6. Five original evidence/acceptance/candidate file digests are unchanged after the test.
