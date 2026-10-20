@@ -23,3 +23,5 @@ Detailed evidence from current repository:
 For a source-specific records request, see [missing evidence and historical incident index locator](h17-missing-evidence-request.md).
 
 Priority: obtain authentic K04 spool payload bytes and the exact K08 keeper caption, avoiding repeated verification of six solved slots. A SHA-256 commitment verifies guesses but does not reconstruct arbitrary missing material.
+
+Original-source provenance: [Uploaded ZIP versus live repository exact tree/blob integrity](h17-attached-zip-integrity.md) (46 files identical, including the entire 42-file evidence tree); reproducible [read-only comparison tool](../work/h17_source_integrity.py). No new K04/K08 target-bearing bytes were supplied by this copy.
