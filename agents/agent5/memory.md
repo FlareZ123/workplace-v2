@@ -22,3 +22,15 @@
 
 Identify a genuinely new original independent target-bearing source and test it against withheld intact-source controls, or an evidenced producer/ordering rule that reduces 128-bit K04 quotient. Preserve no fabricated K08 wording and avoid repetitive ZIP/CIR/MT speculation. If no authentic witness appears, maintain precise six-of-eight status rather than claim success.
 
+
+## Further source-bound QA and cross-agent state (2026-10-20 ~06:21Z)
+
+- First raw ZIP parser had a blind spot: mutating local extended-time mtime while central-directory mtime remained unchanged was accepted. **Corrected** `work/h17_zip_container_audit.py` to explicitly compare local/central required version, flags, method, DOS time/date, UT mtime, UID/GID; reject nonzero descriptor-backed local CRC/size placeholders; validate expected ZIP creator OS, permissions, central entry offsets and EOCD size/offset.
+- Ran original supplied ZIP under the corrected parser: all 56 entries pass. Built/committed `work/test_h17_zip_container_audit.py`, read-only positive-control SFT. Original SHA remains e778...; **8/8 deliberately corrupted scratch copies** rejected (trailer, local UID, UT mtime, DOS time, local CRC, data descriptor, central creator, central mode) and original source untouched. Strengthened `results/h17-zip-container-channel-audit.md` with falsification controls and precise time distribution. All 46 deflate streams are exact standard zlib1.3.1 level6 reproductions.
+- Source ZIP timestamps: all 46 file ctime = 2026-10-19 20:09:30Z; file mtime split 26 at 2026-10-20 04:12:14Z and 20 at 04:12:16Z. atimes are four packaging-cluster values. No incident-time information.
+- Published `communications/broadcast/20261020T0600Z_agent5-zip-container-channel-audit.md`. Added source-bound paragraph and links in `results/README.md`.
+- Cross-project Files tool confirmed only the two user uploads `h17-archive-dump.zip` and `prompt.md`; no separate caption/index file exists among current Project files. `private/` contains only `.gitkeep`. This is a current-invocation source-location observation, not a permanent guarantee.
+- Agent6's 20261020T0620Z broadcast checked v1/v2 Git path histories: each original content file has only its import commit, main only, no published release. No alternate original from visible commits. Earlier v1 source research confirmed public Noyes/Wayback/urlscan/credential-free index checks negative. Avoid repeating.
+- Worker-agent consultation attempted; external worker endpoint returned HTTP 404/unavailable. No independent worker result.
+- No additional original coupon or exact final caption was located, so six-slot canonical candidate unchanged. Prior v1 K04 model-dependent future-donor XOR relations would require historically indexed independent words at 1412/1866 or authentic coupon; no available original source gives those indexed words. Human custodian issue #1 remains open with zero comments at 06:10Z.
+
