@@ -19,7 +19,7 @@ from typing import Any, Iterator
 from defusedxml import ElementTree
 from PIL import Image, IptcImagePlugin, PngImagePlugin
 
-EXIF_FIELDS = {270: "ImageDescription", 40091: "XPTitle", 40092: "XPComment", 40095: "XPSubject"}
+EXIF_FIELDS = {270: "ImageDescription", 37510: "UserComment", 40091: "XPTitle", 40092: "XPComment", 40095: "XPSubject"}
 IPTC_FIELDS = {(2, 120): "CaptionAbstract", (2, 105): "Headline", (2, 5): "ObjectName"}
 
 
@@ -88,7 +88,7 @@ def photo_fields(path: Path) -> tuple[list[tuple[str, str]], dict[str, str]]:
             value = exif.get(tag)
             if isinstance(value, (str, bytes)):
                 fields.append(("EXIF." + label, text_value(value)))
-        for tag, label in ((306, "DateTime"), (315, "Artist"), (33432, "Copyright")):
+        for tag, label in ((306, "DateTime"), (36867, "DateTimeOriginal"), (36868, "DateTimeDigitized"), (42016, "ImageUniqueID"), (315, "Artist"), (33432, "Copyright")):
             value = exif.get(tag)
             if isinstance(value, (str, bytes)):
                 facts["EXIF." + label] = text_value(value)
@@ -147,6 +147,8 @@ def self_test(resources: Path) -> None:
         im = Image.new("RGB", (2, 2), (1, 1, 1))
         exif = Image.Exif()
         exif[270] = first
+        exif[36867] = "2026:10:02 22:14:00"
+        exif[37510] = b"ASCII\x00\x00\x00A cup at the window"
         embedded = b'''<x:xmpmeta xmlns:x="adobe:ns:meta/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:RDF><rdf:Description><dc:title><rdf:Alt><rdf:li>At the end of the night, our voices have room.</rdf:li></rdf:Alt></dc:title></rdf:Description></rdf:RDF></x:xmpmeta>'''
         im.save(photo, exif=exif, xmp=embedded)
         photo.with_suffix(".xmp").write_text('''<?xml version="1.0"?>
@@ -157,6 +159,8 @@ def self_test(resources: Path) -> None:
         result = assess([photo], resources)
         fields = result["records"][0]["caption_fields"]
         assert any(x["field"] == "EXIF.ImageDescription" and x["exact_metadata_text"] == first for x in fields)
+        assert any(x["field"] == "EXIF.UserComment" and "cup at the window" in x["exact_metadata_text"] for x in fields)
+        assert result["records"][0]["metadata"]["EXIF.DateTimeOriginal"] == "2026:10:02 22:14:00"
         assert any(x["field"].startswith("XMP.") and "our voices" in x["exact_metadata_text"] for x in fields)
         assert any(x["field"].startswith("XMP_SIDE_CAR") and "little lamp" in x["exact_metadata_text"] for x in fields)
         assert all(x["exact_metadata_text"] != "x-default" for x in fields)
