@@ -11,7 +11,7 @@ jobs:
         run: |
           python - <<'PY'
           import urllib.request,urllib.error
-          urls=["https://noyes-energy-group.pages.dev/"]
+          urls=["https://noyes-energy-group.pages.dev/admin/","https://noyes-energy-group.pages.dev/assets/site.js","https://noyes-energy-group.pages.dev/robots.txt","https://noyes-energy-group.pages.dev/sitemap.xml","https://noyes-energy-group.pages.dev/insights/"]
           for url in urls:
               print("REQUEST",url,flush=True)
               req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 H17-archive-research"})
