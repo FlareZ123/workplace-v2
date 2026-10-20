@@ -1,0 +1,16 @@
+{
+  "schema": "REC8/1",
+  "slot_sha256": {
+    "K01": "346d1643b6aaca7d0507e664b091a4c83575f6d67128ac17e583408ac07c3f0d",
+    "K02": "987484b1cbecdc4c98e6e6c3dd03faf057be11f7719172693200a460603f1ff8",
+    "K03": "d9f9cdcbab5b31e47889e882c9125223e424bd002d821de09eabf737973730c3",
+    "K04": "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0",
+    "K05": "b18409664d818b4e357400049de6c1a7f06b78e576aec78c14c8c6bc3fe068f9",
+    "K06": "890f41bd395c1263d0cab55b13c4a7d2a1b4e3af1b80f4ad36c0b28ec8399c31",
+    "K07": "b8884f0ba97f1e3432ddc0e7f14f7ac516ff24430e7c42321af16aad59302680",
+    "K08": "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747"
+  },
+  "combined_sha256": "55d446e81934bc1912b58bd596f3e6fffa81226cec3cdcb91a36de77c06f9e17",
+  "combined_prefix": "CEG-ARCHIVE-RECOVERY/v1\n",
+  "format": "32 uppercase hexadecimal characters per slot, representing 16 raw bytes"
+}

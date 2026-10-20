@@ -1,0 +1,130 @@
+DOCUMENT RC-17 / REV B / SECTION PURGE
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Purge stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: 759E0027
+End of scan
+
+
+DOCUMENT RC-17 / REV B / SECTION VERIFY
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Verify stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: C130C9BB
+End of scan
+
+
+DOCUMENT RC-17 / REV D-draft / SECTION DRAIN
+[censored] Energy Group | H-17 | controlled copy extract
+Status: FOR REVIEW
+Records service page; this copy is not a plant operating instruction.
+Drain stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: 063380BE
+End of scan
+
+
+DOCUMENT RC-17 / REV B / SECTION ISOLATE
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Isolate stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: E1DB4379
+End of scan
+
+
+DOCUMENT RC-17 / REV C / SECTION PURGE
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Purge stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: A536D332
+End of scan
+
+
+DOCUMENT RC-17 / REV D-draft / SECTION PURGE
+[censored] Energy Group | H-17 | controlled copy extract
+Status: FOR REVIEW
+Records service page; this copy is not a plant operating instruction.
+Purge stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: DC789386
+End of scan
+
+
+DOCUMENT RC-17 / REV C / SECTION ISOLATE
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Isolate stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: 52FAAED9
+End of scan
+
+
+DOCUMENT RC-17 / REV C / SECTION DRAIN
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Drain stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: 5DBF40EE
+End of scan
+
+
+DOCUMENT RC-17 / REV C / SECTION VERIFY
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Verify stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: 6CF0D95A
+End of scan
+
+
+DOCUMENT RC-17 / REV D-draft / SECTION ISOLATE
+[censored] Energy Group | H-17 | controlled copy extract
+Status: FOR REVIEW
+Records service page; this copy is not a plant operating instruction.
+Isolate stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: 9402F11A
+End of scan
+
+
+DOCUMENT RC-17 / REV D-draft / SECTION VERIFY
+[censored] Energy Group | H-17 | controlled copy extract
+Status: FOR REVIEW
+Records service page; this copy is not a plant operating instruction.
+Verify stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: ED607B30
+End of scan
+
+
+DOCUMENT RC-17 / REV B / SECTION DRAIN
+[censored] Energy Group | H-17 | controlled copy extract
+Status: ISSUED
+Records service page; this copy is not a plant operating instruction.
+Drain stage: confirm preservation references and record the
+witness entry before progressing to the next archive service page.
+Supporting process instructions and signatures omitted from this extract.
+Footer control strip: D82A73E9
+End of scan

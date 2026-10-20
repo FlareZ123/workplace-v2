@@ -1,0 +1,27 @@
+From: Gabriel [censored] <gabriel.[censored]@[censored]>
+To: Emily [censored] <emily.[censored]@[censored]>, David [censored] <david.[censored]@[censored]>
+Date: Fri, 02 Oct 2026 09:56:00 +0000
+Subject: Archive transfer receipt to keep with the folder
+Message-ID: <13.IR261003@[censored]>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Records-Reference: MAIL-13
+X-Redaction: surnames, mailbox suffixes, domains, personal contacts
+
+Emily,
+
+The final custodian handoff is AX-7782 for IR-261003-H17. That is the actual
+retained copy. AX-7778 was the drill and AX-7781 was the dry run. The last
+job, AX-7783, stopped before handoff and should not displace the receipt
+just because its number is higher.
+
+Each chunk was retried once. The second attempt has the checkpoint used
+in the committed chain. Order by chunk sequence, not the order in the log.
+There are eight chunks, numbered from zero. Keep the short checkpoint
+fields as bytes, including leading zeros.
+
+I have left the handoff print with the ordinary records folder. It does
+not contain the whole archive, just the reference and receipt chain.
+
+Gabriel

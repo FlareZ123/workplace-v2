@@ -1,0 +1,28 @@
+H-17 print-fleet return register / 26-1004-B
+Cabinet-office copy reconciled 04 Oct 2026, 09:18 UTC
+
+The retiring cassettes were entered against the property cards carried forward
+from the September equipment count. Courier dates and receipt dates differ for
+a few sleeves owing to the weekend pickup.
+
+Job              Cabinet lane    Return set    Account     Filing reference
+PS-261003-0417   ESC-N           L-29/N        FA-17       H17-POL-17/A3
+PS-261003-0448   ESC-S           L-29/S        LV-42       CS-18/5
+PS-261003-0420   WATCH-SPARE     L-29/W        ST-09       STORES/FLT
+
+Binder index retained by Stores:
+Set       Tab    Repair ticket    Part / return
+L-29/N    01     ST-094           lid plate, return
+L-29/N    02     ST-081           edge guide, exchange
+L-29/N    03     ST-106           separator, refit
+L-29/N    04     ST-099           hinge, retain
+L-29/N    05     ST-112           catch, clean
+L-29/S    01     ST-130           lid plate, return
+L-29/S    02     ST-151           edge guide, exchange
+L-29/S    03     ST-121           separator, refit
+L-29/S    04     ST-135           hinge, replace
+L-29/S    05     ST-142           catch, retain
+
+The binder sheets were closed out with service ticket receipts. The property
+references were taken from the office asset cards. Rollers and feed brackets
+were handled on the separate monthly consumables return.

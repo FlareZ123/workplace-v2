@@ -1,0 +1,25 @@
+# Stores/AP service docket extract | L-29 | issued 04 Oct 2026
+# Run values refer to the vendor's settlement batch. Credit entries retain earlier versions.
+# Box/folio marks were taken from the 2025 property-renewal transfer index.
+line_ref,source,run,posting,account,folio_or_jacket,amount_eur,description
+ST-151,L29,R3,POSTED,LV-42,CS-18/5,0.00,guide shim credit
+ST-094,L29,R3,POSTED,FA-17,H17-POL-17/A3,18.40,lid-plate labour
+ST-164,L29,R3,POSTED,ST-09,STORES/FLT,0.00,spare inspection
+ST-121,L29,R3,POSTED,LV-42,CS-18/5,7.60,separator replacement
+ST-099,L29,R2,VOID,FA-17,H17-POL-17/A2,0.00,prior docket card
+ST-157,L29,R3,POSTED,ST-09,STORES/FLT,0.00,spare inspection
+ST-130,L29,R3,POSTED,LV-42,CS-18/5,3.10,fastener kit
+ST-106,L29,R3,POSTED,FA-17,H17-POL-17/A3,12.50,separator fitting
+ST-142,L29,R3,POSTED,LV-42,CS-18/5,6.00,catch pin
+ST-112,L29,R3,POSTED,FA-17,H17-POL-17/A3,0.00,catch cleaning
+ST-081,L29,R3,POSTED,FA-17,H17-POL-17/A3,4.20,guide rail
+ST-099,L29,R3,POSTED,FA-17,H17-POL-17/A3,0.00,hinge realignment
+ST-135,L29,R3,POSTED,LV-42,CS-18/5,9.80,hinge change
+ST-121,L29,R2,VOID,LV-42,CS-18/4,0.00,supplier adjustment
+ST-112,L29,R4,HELD,FA-17,H17-POL-17/A4,0.00,duplicate settlement
+RN-052,RISK,R1,FILED,FA-17,BX25/08,0.00,property annex scan inward transfer
+RN-053,RISK,R1,FILED,LV-42,BX25/12,0.00,hired-plant certificate inward transfer
+RN-047,RISK,R1,FILED,ST-09,BX25/03,0.00,stores float exception slip
+ST-098,L28,R3,POSTED,FA-17,H17-POL-17/A2,3.60,old month seal
+ST-087,L28,R3,POSTED,FA-17,H17-POL-17/A2,0.00,old month cleaning
+ST-176,L30,R1,PENDING,LV-42,CS-18/5,4.80,following period

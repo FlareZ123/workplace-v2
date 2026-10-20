@@ -1,0 +1,44 @@
+{"permit": "PTW-416", "bay": "D", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-0C814A5E"}
+{"permit": "PTW-417", "bay": "B", "asset": "seal-rack/B", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-AD1D814B", "inspector": "Simon [censored]"}
+{"permit": "PTW-417", "bay": "C", "asset": "seal-rack/C", "revision": 2, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-BE8E87FD", "inspector": "Simon [censored]"}
+{"permit": "PTW-417", "bay": "A", "asset": "seal-rack/A", "revision": 3, "state": "OPEN", "fitment": "AS_LEFT", "signed": false, "serial": "SG-3495110E", "inspector": "Simon [censored]"}
+{"permit": "PTW-417", "bay": "A", "revision": 4, "state": "CLOSED", "fitment": "REMOVED", "signed": true, "serial": "SG-885464E5"}
+{"permit": "PTW-411", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-FAC4AF57"}
+{"permit": "PTW-417", "bay": "C", "asset": "seal-rack/C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-5CB72EE5", "inspector": "Simon [censored]"}
+{"permit": "PTW-406", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-9C4C4C9D"}
+{"permit": "PTW-402", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-7B199803"}
+{"permit": "PTW-417", "bay": "C", "revision": 4, "state": "CLOSED", "fitment": "REMOVED", "signed": true, "serial": "SG-9BB5A10C"}
+{"permit": "PTW-399", "bay": "D", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-F6C83ADF"}
+{"permit": "PTW-417", "bay": "B", "asset": "seal-rack/B", "revision": 2, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-D7DAD6BC", "inspector": "Simon [censored]"}
+{"permit": "PTW-417", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-574A9232"}
+{"permit": "PTW-415", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-F8DD126A"}
+{"permit": "PTW-403", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-CCCCF4B8"}
+{"permit": "PTW-401", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-10496A83"}
+{"permit": "PTW-396", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-9929E382"}
+{"permit": "PTW-395", "bay": "D", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-F1737056"}
+{"permit": "PTW-408", "bay": "B", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-820DC40C"}
+{"permit": "PTW-397", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-FD1D6ADD"}
+{"permit": "PTW-391", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-C3C2673A"}
+{"permit": "PTW-405", "bay": "D", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-F6E935B9"}
+{"permit": "PTW-412", "bay": "B", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-5AD7D397"}
+{"permit": "PTW-394", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-5C2B5116"}
+{"permit": "PTW-414", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-645EB28C"}
+{"permit": "PTW-417", "bay": "B", "revision": 4, "state": "CLOSED", "fitment": "REMOVED", "signed": true, "serial": "SG-531FFABE"}
+{"permit": "PTW-417", "bay": "A", "asset": "seal-rack/A", "revision": 2, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-7DAD0AD4", "inspector": "Simon [censored]"}
+{"permit": "PTW-392", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-D1AFC713"}
+{"permit": "PTW-417", "bay": "D", "asset": "seal-rack/D", "revision": 2, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-9714519B", "inspector": "Simon [censored]"}
+{"permit": "PTW-417", "bay": "B", "asset": "seal-rack/B", "revision": 3, "state": "OPEN", "fitment": "AS_LEFT", "signed": false, "serial": "SG-B4D614DB", "inspector": "Simon [censored]"}
+{"permit": "PTW-393", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-30CAB1A9"}
+{"permit": "PTW-398", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-0AEF4A08"}
+{"permit": "PTW-404", "bay": "D", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-65A08AEE"}
+{"permit": "PTW-417", "bay": "D", "asset": "seal-rack/D", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-64B2EE4A", "inspector": "Simon [censored]"}
+{"permit": "PTW-407", "bay": "D", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-723AC777"}
+{"permit": "PTW-417", "bay": "D", "asset": "seal-rack/D", "revision": 3, "state": "OPEN", "fitment": "AS_LEFT", "signed": false, "serial": "SG-B0D85F55", "inspector": "Simon [censored]"}
+{"permit": "PTW-417", "bay": "A", "asset": "seal-rack/A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-7E73B4CC", "inspector": "Simon [censored]"}
+{"permit": "PTW-400", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-6C2643B6"}
+{"permit": "PTW-417", "bay": "D", "revision": 4, "state": "CLOSED", "fitment": "REMOVED", "signed": true, "serial": "SG-99AE58D8"}
+{"permit": "PTW-413", "bay": "C", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-A60B42C5"}
+{"permit": "PTW-390", "bay": "B", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-A9706E2D"}
+{"permit": "PTW-410", "bay": "B", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-F8C5E995"}
+{"permit": "PTW-409", "bay": "A", "revision": 1, "state": "CLOSED", "fitment": "AS_LEFT", "signed": true, "serial": "SG-CCD6155F"}
+{"permit": "PTW-417", "bay": "C", "asset": "seal-rack/C", "revision": 3, "state": "OPEN", "fitment": "AS_LEFT", "signed": false, "serial": "SG-3E43B81B", "inspector": "Simon [censored]"}

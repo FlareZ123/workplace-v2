@@ -1,0 +1,29 @@
+From: Simon [censored] <simon.[censored]@[censored]>
+To: Emily [censored] <emily.[censored]@[censored]>, Gabriel [censored] <gabriel.[censored]@[censored]>
+Date: Sat, 03 Oct 2026 07:49:00 +0000
+Subject: Escrow print jobs / recovered buffer
+Message-ID: <16.IR261003@[censored]>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Records-Reference: MAIL-16
+X-Redaction: surnames, mailbox suffixes, domains, personal contacts
+
+The logical printer routes in the label transcription are current from
+September. Please don't use the August service mapping just because it
+has a cleaner photocopy.
+
+ESC-N is the north coupon used for the masked component. Use the last
+acknowledged attempt for its exact job. The later REQUESTED entry was a
+button press that never returned an acknowledgement. WATCH-SPARE is an
+unrelated spare; its payload happens to be the same length.
+
+The buffer reconstruction is a retained-fragment export. It includes
+ordinary labels and older requests. We do not have an independent payload
+checksum for every line recovered from this printer. The ACK field came
+from the dispatch log, so it should not be read as a media-integrity flag.
+
+ESC-S is on the old supplier drawing too, but it is not an input to the
+keeper's desk phrase. That route was left on the label for service history.
+
+Simon

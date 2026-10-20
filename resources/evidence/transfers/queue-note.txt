@@ -1,0 +1,4 @@
+AX-7778 is the pre-incident drill export. AX-7781 is a dry run of the new chain.
+The receipt ledger may contain COMMIT entries for dry runs: COMMIT alone is
+not evidence of a preserved copy. AX-7783 stopped before handoff.
+Checkpoint values are 2-byte opaque fields, not chunk sizes or frame counters.

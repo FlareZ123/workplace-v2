@@ -1,0 +1,26 @@
+[censored] Energy Group | Records office | IR-261003-H17
+Custodian note / Emily [censored] / 4 October 2026
+
+This is the working preservation export, not the full incident record. Original
+mail ordering has been retained by UTC date. Quoted reply material is omitted
+where it repeats another message in this export. Addresses are redacted at the
+mailbox suffix and domain. A source reference identifies a record, not a hint
+that every byte in that record belongs in the recovery envelope.
+
+The archive supplier's commissioning note calls the items K01 through K08.
+K01-K07 are machine/administrative components. K08 is the keeper's desk phrase:
+the personal caption used to distinguish this recovery envelope from the
+similarly named commissioning and standby envelopes. It was intentionally
+rememberable rather than a number printed on a cabinet.
+
+The copied acceptance commitments are the final authority on candidate bytes.
+The route sheet is a transcription of the commissioning reduction rules.
+Raw acquisition records and spool payloads have not all been independently
+validated after extraction; an ACK proves receipt of a job, not the correctness
+of every recovered payload byte. Drafts and requested-but-unacknowledged print
+jobs also survive. Textual export gaps are marked where the export tool could
+identify them. The absence of a gap marker is not a completeness certificate.
+
+The local assignment is records reconstruction. Engineering decisions about
+the facility remain with the incident team. Nobody should infer operating
+permission from a line in an old email.

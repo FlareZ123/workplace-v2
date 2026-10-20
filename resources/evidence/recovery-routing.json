@@ -1,0 +1,49 @@
+{
+  "envelope_id": "H17-IR-261003",
+  "format": "REC8/1",
+  "slot_bytes": 16,
+  "K01": {
+    "source": "WN-14 watch register, signed 2 October",
+    "rule": "Join ink control groups A,B,C,D in that order. Pencil and standby values are not the signed register."
+  },
+  "K02": {
+    "source": "freeze telemetry / LT-204 / DIAG_WORD",
+    "start_utc": "2026-10-03T21:13:40+00:00",
+    "end_utc_exclusive": "2026-10-03T21:13:48+00:00",
+    "rule": "Keep GOOD samples in HOLD within the UTC window. For each seq 0..7 retain the greatest revision. Order by seq, pack values as unsigned 16-bit big endian, SHA256 the 16 bytes, retain the first 16 digest bytes."
+  },
+  "K03": {
+    "source": "PTW-417 as-left seal receipts",
+    "rule": "Take the highest signed revision of CLOSED AS_LEFT records, bay order in closeout email. Join serials exactly as printed with | and no surrounding whitespace or newline. SHA256 ASCII; retain first 16 bytes."
+  },
+  "K04": {
+    "source": "escrow coupon / logical printer route ESC-N",
+    "masked_component": "8556C8CB6140A7F9A5123AC7571BEE1C",
+    "rule": "Resolve logical route at the incident date. Use the last ACK attempt for that exact job. XOR its 16-byte RECOVER payload with masked_component; payload bytes are opaque, not a digest or text."
+  },
+  "K05": {
+    "source": "trip-recorder.raw",
+    "node": 49,
+    "event": 82,
+    "start_utc": "2026-10-03T21:14:00+00:00",
+    "end_utc_exclusive": "2026-10-03T21:14:08+00:00",
+    "rule": "Reject bad CRC. For each latch 0..3 choose the greatest sequence among matching node/event and UTC window. Concatenate four opaque 4-byte words in latch order. Do not reverse bytes inside a word."
+  },
+  "K06": {
+    "source": "approved four-page recovery procedure",
+    "rule": "Use the revision authorized in the email trail. Concatenate page control strips in SERVICE_ORDER; export/scanner page order is not service order."
+  },
+  "K07": {
+    "source": "committed transfer checkpoint chain",
+    "rule": "Select the transfer confirmed by Gabriel's final custodian receipt. Require COMMIT with dry_run=false. Take the checkpoint for each seq 0..7 from that transfer's CHUNK records, greatest attempt per seq. Concatenate checkpoint hex as raw bytes; SHA256, first 16 bytes."
+  },
+  "K08": {
+    "source": "keeper's desk phrase, crew notes and noticeboard drafts",
+    "desk_nonce": "5F933DA6A1BD03C32DA5CBC25344F497",
+    "rule": "Recover the keeper's caption for the spirit of the late watch, rather than the technical incident title. Lowercase it; replace characters other than ASCII a-z, digits, and whitespace with spaces; collapse whitespace and trim. HMAC-SHA256 with desk_nonce decoded as hex as the key and normalized UTF-8 phrase as the message; retain first 16 bytes. The commitment is the acceptance check, including for remembered or reconstructed wording."
+  },
+  "combined": {
+    "prefix": "CEG-ARCHIVE-RECOVERY/v1\n",
+    "rule": "ASCII prefix, then K01..K08 as uppercase 32-character hex strings, each followed by one LF. SHA256 the complete ASCII bytes."
+  }
+}

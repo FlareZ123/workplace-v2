@@ -1,0 +1,17 @@
+TRP2 read-only bench export, schema 2
+Header: 8 ASCII bytes TRP2DUMP, uint16 version, uint16 record_size, uint32 count.
+Header numeric fields are little endian. Header length is 16 bytes.
+Record length is 24 bytes. All numeric fields little endian:
+ offset 0:  uint32 UTC Unix seconds
+ offset 4:  uint16 node
+ offset 6:  uint8 event
+ offset 7:  uint8 latch
+ offset 8:  uint32 sequence
+ offset 12: 4 opaque bytes (control word; preserve byte order)
+ offset 16: uint32 auxiliary process reading (raw scale)
+ offset 20: uint32 CRC32 of the preceding 20 record bytes, zlib/IEEE variant
+
+Duplicate latches are normal; the greatest sequence is the last write. A record
+with a failed CRC is not a valid later write. Device 0x31 is the archive latch;
+event 0x52 is the preserved control-word event. Unrelated device/pressure samples
+are included for timing context. The header count covers them too.

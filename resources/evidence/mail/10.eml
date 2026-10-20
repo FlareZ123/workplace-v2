@@ -1,0 +1,26 @@
+From: Simon [censored] <simon.[censored]@[censored]>
+To: Gabriel [censored] <gabriel.[censored]@[censored]>, Emily [censored] <emily.[censored]@[censored]>
+Date: Thu, 01 Oct 2026 12:27:00 +0000
+Subject: TRP2 bench export / control words
+Message-ID: <10.IR261003@[censored]>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Records-Reference: MAIL-10
+X-Redaction: surnames, mailbox suffixes, domains, personal contacts
+
+The recorder format note is attached to the records copy. Please do not
+open the raw dump in a spreadsheet and save it again; that converted half
+the time fields on the last job.
+
+Numeric fields are little endian, but the four-byte control words are
+byte strings. For the archive latch they are copied exactly as stored,
+not reversed to make the display look familiar. The pressure field beside
+them is context only. CRC failures are expected in the damaged tail and
+must be ignored even when they have a higher sequence number.
+
+The node we want is 0x31. The similar recorder on the other bench is 0x32.
+Both appear in the mixed export. The route sheet carries the event and
+freeze window; the paper chart's local clock was one hour ahead of UTC.
+
+Simon
