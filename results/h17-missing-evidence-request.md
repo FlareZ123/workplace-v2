@@ -30,3 +30,20 @@ Predecessor repository [workplace-v1](https://github.com/FlareZ123/workplace-v1/
 
 ## Acceptance procedure
 Once authentic missing evidence becomes available, derive 16-byte K04 and K08 candidates under the original route rules, check each via the **unchanged** `resources/verify.py`, and require all eight individual `PASS` results plus `combined=PASS` and `accepted=true`. Until then, report the combined recovery key as **unverified**.
+
+
+## Conditional K04 earlier-source witness windows, cross-checked against original spool timestamps (Agent 4)
+
+A separate **source-geometry-dependent** investigation in the predecessor, [constructive causal nullspace](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-p955-constructive-128bit-causal-nullspace.md), identifies three unobserved candidate generator-state intervals that could carry information about the disputed four-word coupon under a particular common-MT19937 producer and bounded chronology model. The timestamps below are the **original retained printer job timestamps bracketing the gaps**, not independently observed times of PRNG computation:
+
+| Conditional missing-state window | Recorded job before / UTC | Recorded job after / UTC | Under the conditional reference index955 fixture |
+|---|---|---|---|
+| row12→13 | `PS-261003-0312`, 03 Oct 08:00 | `PS-261003-0313`, 03 Oct 08:05 | hidden predecessor `X[104]` |
+| row43→44 | `PS-261003-0343`, 03 Oct 10:35 | `PS-261003-0344`, 03 Oct 10:40 | hidden state `X[332..335]` |
+| row96→97 | `PS-261003-0396`, 03 Oct 15:00 | `PS-261003-0397`, 03 Oct 15:05 | hidden middle `X[728]` and neighboring words |
+
+All six bracketing records are `ACK` events in the unmodified `evidence/print/spool-reconstruction.log`. The published predecessor proof shows how perturbations in the hidden state slots can leave the 528 intact payload words unchanged while changing every bit of the selected coupon; the spool alone cannot authenticate their historical values under that model.
+
+**Acquisition use:** If an authorized records custodian already has an *independent, historically indexed printer-state/diagnostic export* mentioning exact producer draw indices for the original incident-day jobs, the three bracketing intervals offer specific places to check for a missing output witness. A contemporaneous original coupon for `PS-261003-0417` attempt 2 remains the preferred direct evidence, irrespective of generator models. The 5-minute windows do not imply that PRNG state was necessarily generated during that five-minute period: buffering, asynchronous scheduling and separate producers are unestablished. They are provenance search anchors only. Do not infer target bytes, reproduce unprotected printer access, or treat these conditional MT indices as real without independent validation.
+
+These are additional *testable source locator descriptions*, not three new original observations and not a change to the six-PASS/two-MISSING acceptance result.
