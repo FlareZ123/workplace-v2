@@ -20,7 +20,7 @@ The standalone [SFT](../work/test_h17_ack_selector_integrity.py) copies the orig
 | Selected ACK `PAYLOAD=CORRUPT` | Same selector |
 | Selected ACK without payload/destination fields | Same selector |
 
-A local method-equivalent smoke exercise against the unmodified extracted spool and labels passed all three cases using the new selector expression; the old complete-line expression did not match the two damaged-payload controls. The committed SFT is a portable standard-library regression test for execution in a checkout. An unchanged-source acceptance re-run is independent of this patch and still reports six PASS, K04 and K08 missing.
+A local method-equivalent smoke exercise against the unmodified extracted spool and labels passed all three cases using the new selector expression; the old complete-line expression did not match the two damaged-payload controls. **Intact-source compatibility check:** the original file has 134 lines (133 job records, one comment); both old and new matchers recognize the same 133 records, with zero newly matched rows. A separate differential control confirmed the fixed matcher retains the ACK in both damaged-payload cases while the old matcher misses it. The committed SFT is a portable standard-library regression test for execution in a checkout. An unchanged-source acceptance re-run is independent of this patch and still reports six PASS, K04 and K08 missing.
 
 ## Limits and interpretation
 
