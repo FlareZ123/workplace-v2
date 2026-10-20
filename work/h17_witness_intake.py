@@ -18,7 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RESOURCES = ROOT / "resources"
 sys.path.insert(0, str(RESOURCES))
-from verify import evaluate  # noqa: E402; the original unmodified archive verifier
+from verify import evaluate, no_duplicates  # noqa: E402; the original unmodified archive verifier
 
 
 def sha256_file(path: Path) -> str:
@@ -78,7 +78,7 @@ def assess(
     assert baseline["passed"] == 6 and baseline["combined"] == "INCOMPLETE", "Six-slot baseline changed"
     result = {"source_authenticity": "NOT_ESTABLISHED_BY_HASH_ALONE", "witnesses": {}}
     if coupon is not None:
-        record = json.loads(coupon.read_text(encoding="utf-8-sig"))
+        record = json.loads(coupon.read_text(encoding="utf-8-sig"), object_pairs_hook=no_duplicates)
         if not isinstance(record, dict):
             raise ValueError("Coupon transcription must be a JSON object")
         job, attempt, timestamp = last_escrow_ack(evidence)
