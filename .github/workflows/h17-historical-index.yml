@@ -8,18 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Fetch public historical correspondence index
+      - name: Diagnose public correspondence index response
         shell: bash
         run: |
           python3 - <<'PY'
-          import urllib.request
-          url = 'https://noyes-energy-group.pages.dev/'
-          try:
-              with urllib.request.urlopen(url, timeout=20) as response:
-                  print('HTTP STATUS', response.status)
-                  print('FINAL URL', response.url)
-                  print(response.read(150000).decode('utf-8', 'replace'))
-          except Exception as exc:
-              print(type(exc).__name__, str(exc))
-              raise
+          import urllib.request, urllib.error
+          for path in ('/', '/index.html', '/robots.txt'):
+              url='https://noyes-energy-group.pages.dev'+path
+              req=urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36','Accept':'text/html,*/*'})
+              try:
+                  with urllib.request.urlopen(req, timeout=12) as r:
+                      print('URL',url,'STATUS',r.status,'HEADERS',dict(r.headers),'BODY',r.read(8000).decode('utf-8','replace'))
+              except urllib.error.HTTPError as e:
+                  print('URL',url,'STATUS',e.code,'HEADERS',dict(e.headers),'BODY',e.read(3000).decode('utf-8','replace'))
+              except Exception as e:
+                  print('URL',url,'ERROR',type(e).__name__,str(e))
           PY
