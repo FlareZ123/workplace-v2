@@ -74,6 +74,9 @@ def assess(
     if coupon is None and caption is None:
         raise ValueError("Provide at least one new original-source witness")
     baseline = evaluate(candidate, targets)
+    previously_verified = {
+        key: candidate[key] for key in ("K04", "K08") if baseline["slots"][key] == "PASS"
+    }
     for key in ("K01", "K02", "K03", "K05", "K06", "K07"):
         if baseline["slots"][key] != "PASS":
             raise ValueError("Six-slot baseline changed: " + key)
@@ -127,9 +130,15 @@ def assess(
             "normalized_caption": normalized,
             "derived_component": candidate["K08"],
         }
-    acceptance = evaluate(candidate, targets)
+    trial = evaluate(candidate, targets)
+    conflicts = []
     for key in result["witnesses"]:
-        result["witnesses"][key]["slot_status"] = acceptance["slots"][key]
+        result["witnesses"][key]["slot_status"] = trial["slots"][key]
+        if trial["slots"][key] != "PASS" and key in previously_verified:
+            candidate[key] = previously_verified[key]
+            conflicts.append(key)
+    acceptance = evaluate(candidate, targets)
+    result["conflicting_witnesses"] = conflicts
     result["acceptance"] = acceptance
     result["partial_candidate"] = {key: candidate[key] if acceptance["slots"][key] == "PASS" else None for key in candidate}
     if acceptance["accepted"]:
