@@ -42,6 +42,8 @@ def main() -> None:
         assert rejected["witnesses"]["K04"]["slot_status"] == "NO_MATCH"
         assert rejected["witnesses"]["K08"]["slot_status"] == "NO_MATCH"
         assert rejected["acceptance"]["accepted"] is False
+        assert rejected["partial_candidate"]["K04"] is None
+        assert rejected["partial_candidate"]["K08"] is None
         print("PASS: six accepted; K04/K08 NO_MATCH; combined NO_MATCH")
 
         print("TEST 2: show source-original digest independently of transcription")
@@ -105,6 +107,27 @@ def main() -> None:
         assert positive["acceptance"]["accepted"] is True
         assert positive["candidate"] == fake_candidate
         print("PASS: 8/8 and combined PASS, synthetic commitments only")
+
+        print("TEST 5b: accept source witnesses supplied at different times, only if independently PASS")
+        partial = fake_candidate.copy()
+        partial["K08"] = None
+        write_json(fake_resources / "candidate.json", partial)
+        staggered = assess(None, None, caption, original, resources=fake_resources)
+        assert staggered["acceptance"]["accepted"] is True
+        assert staggered["candidate"] == fake_candidate
+        assert staggered["partial_candidate"] == fake_candidate
+        print("PASS: cached verified K04 retained when only K08 original supplied later")
+
+        print("TEST 5c: reject a corrupted six-slot baseline even with synthetic witnesses")
+        partial["K01"] = "0" * 32
+        write_json(fake_resources / "candidate.json", partial)
+        try:
+            assess(None, None, caption, original, resources=fake_resources)
+        except ValueError as error:
+            assert "Six-slot baseline changed: K01" in str(error)
+            print("PASS: tampered K01 caught before source-intake acceptance")
+        else:
+            raise AssertionError("Tampered baseline must be rejected")
 
     print("TEST 6: original evidence, candidate and acceptance bytes unchanged")
     for path in source_files:
