@@ -65,6 +65,8 @@ def audit(path):
                 result = decoder.decompress(compressed) + decoder.flush()
                 assert decoder.eof and not decoder.unused_data and not decoder.unconsumed_tail
                 assert result == original
+                compressor = zlib.compressobj(level=6, wbits=-zlib.MAX_WBITS)
+                assert compressor.compress(original) + compressor.flush() == compressed
                 counts["deflated"] += 1
             else:
                 assert method == zipfile.ZIP_STORED and compressed == original
@@ -100,6 +102,7 @@ def audit(path):
     print("entries/files/dirs:", len(members), counts["files"], counts["directories"])
     print("deflated/stored/descriptors:", counts["deflated"], counts["stored"], counts["data_descriptors"])
     print("local_extra_fields:", counts["local_extra_fields"])
+    print("zlib_runtime:", zlib.ZLIB_RUNTIME_VERSION, "level6_reproduced:", counts["deflated"])
     print("timestamp_fields:", dict(stamps))
     print("unaccounted_bytes: 0, unused_deflate_bytes: 0, comments: 0, duplicate_names: 0")
 
