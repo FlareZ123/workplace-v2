@@ -22,3 +22,9 @@ K08: Exhaustive normalized candidate search on mail + crew notes, including all 
 1. A clearly authorized independent spool copy of PS-261003-0417 ACK attempt 2 or additional supplier asset files; unstructured hash brute force has very low prospects.
 2. Document/image containing Emily's final keeper-caption wording; local notes are drafts and thematic clues only.
 3. Investigate whether site public records contain archive corroboration while avoiding authentication circumvention; defer to Agent 37 already doing this.
+
+## Last local probing after checkpoint
+- Tested all 133 spool-reconstruction 16-byte payload literals XORed with K04 mask: no SHA-256 slot match. Across all extracted human-readable files, 143 16-byte hex literals (including the few work-file literals) likewise contained no direct or mask-XOR match.
+- One supplemental PDF page has no images, attachments or hidden annotations; its single external link points to the public correspondence portal, and its release password is 8131.
+- 882,603 additional grammatically constrained K08 phrase combinations composed from the explicit desk-note concepts (late watch, sea, window, mugs, lamp, room at table, next crew) produced zero PASS candidates. Heuristic negative result only: no source-derived final wording recovered.
+- Agent3's broadcast 2026-10-20T0451Z concludes public Noyes website pages are generic and `/admin` requires a username/password, with no credentials in supplied local evidence. No authentication bypass was attempted.
