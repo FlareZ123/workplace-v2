@@ -1,0 +1,21 @@
+# Agent 41: H-17 unresolved-source research
+
+Claimed 2026-10-20 14:18:25 UTC; ordinary mode. Existing v2/v1 reports document six accepted K01/K02/K03/K05/K06/K07 and no K04 / K08. Honor \`results/h17-v1-prior-art-gate.md\` and Critic 13:22 UTC target-information gate. No repeated six-slot verifier runs, K04 correction radius, MT chronology expansions, or K08 phrase sweeps.
+
+## Distinct original-field test: TRP2 auxiliary process readings as direct K04 MT donors
+
+The original \`evidence/recorder/format-note.txt\` identifies an **offset-16 uint32 auxiliary process reading** in every 24-byte TRP2 record, alongside the known offset-12 four-byte control word. Published v1 original-source donor work largely matched the 88 four-byte **control** words (and RC-17 strips), not the separately specified auxiliary field. A new source-only falsifier asked whether either direct 32-bit orientation of these 88 additional raw numeric readings had a predecessor low31 MT fingerprint among the 132 unselected intact printer payload rows, before asking anything about the selected K04 ACK or commitments. A positive could possibly furnish an independent indexed donor into a K04 ancestor gap **only with further authentic draw-order evidence**; the stop condition was no matches. No provenance establishes a shared printer/recorder process-reading generator, so no broad transformed-value or substring search is justified.
+
+Read-only reproducible \`agents/agent41/k04_aux_mt_donor_sft.py\`; local extracted-ZIP execution at 14:30 UTC:
+- Input exact original printer SHA-256 \`7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083\`.
+- 132 intact printer rows, 528 little-endian 32-bit outputs, 138,336 interrow pairs; the disputed \`PS-261003-0417\` 18:02Z ATTEMPT=2 excluded completely.
+- Positive control: the established seven source recorder-control records indexed 12, 17, 26, 28, 40, 45, 72 all retain MT predecessor matches, under little-endian control byte serialization. In paired original printer records they associate with groups 9↔40, 10↔41 or 7↔38.
+- **Auxiliary uint32 direct numeric interpretation: zero matches out of 88. Reversed-byte interpretation: zero matches out of 88.**
+- The test is limited to *literal full 32-bit* MT donor outputs; it says nothing about process-related, scaled, truncated, nonlinear or separately seeded readings. Target quotient gain: **zero**; new authentic K04 selected bits: **zero**. This independent original-field branch is killed and needs no enlarged sweep.
+
+Additional checks: current v2 issue #1 comments from agents only, no independent custodian original delivered. Public web exact-identifier search returned unrelated results; no target-bearing source. Original N02/N06/N10/N13/N20/N23 plus mail11/20 still contain thematic caption context but no attested final normalized words. The K04 selected ACK payload begins with adjacent duplicate \`A9A9\` uniquely at byte positions 0–1 among 133 printer records, but adjacent duplicate bytes exist in 12 other rows and a one-byte repair was previously excluded; cannot justify a correction search from this anecdote. Do not promote anomaly to a novel solution.
+
+## Prior art and next true target
+- \`results/README.md\`, \`results/h17-v1-prior-art-gate.md\` document v1 >180 reports, 128-dimensional coupon ambiguity under bounded common MT, zero K08 exact final words, extensive correction/hash search negatives.
+- High-impact unresolved lead must reach original 2026 ESC-N attempt-2 RECOVER payload / independent integrity witness, or independent original keeper's **final** caption (native photo metadata / envelope margin / originals) through authorized historical source custody.
+- Candidate \`resources/candidate.json\` remains six verified slots; K04/K08 and combined acceptance not solved.
