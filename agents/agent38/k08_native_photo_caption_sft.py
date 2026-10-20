@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any, Iterator
 
 from defusedxml import ElementTree
-from PIL import Image, IptcImagePlugin
+from PIL import Image, IptcImagePlugin, PngImagePlugin
 
 EXIF_FIELDS = {270: "ImageDescription", 40091: "XPTitle", 40092: "XPComment", 40095: "XPSubject"}
 IPTC_FIELDS = {(2, 120): "CaptionAbstract", (2, 105): "Headline", (2, 5): "ObjectName"}
@@ -63,8 +63,7 @@ def flatten(value: Any, trail: str = "XMP") -> Iterator[tuple[str, str]]:
             yield trail, content
 
 
-def xmp_sidecar(path: Path) -> Iterator[tuple[str, str]]:
-    root = ElementTree.parse(path).getroot()
+def xmp_entries(root: Any, prefix: str) -> Iterator[tuple[str, str]]:
     def visit(element: Any, trail: str) -> Iterator[tuple[str, str]]:
         tag = element.tag.rsplit("}", 1)[-1]
         new_path = trail + "." + tag
@@ -72,7 +71,11 @@ def xmp_sidecar(path: Path) -> Iterator[tuple[str, str]]:
             yield new_path, element.text.strip()
         for child in element:
             yield from visit(child, new_path)
-    yield from visit(root, "XMP_SIDE_CAR")
+    yield from visit(root, prefix)
+
+
+def xmp_sidecar(path: Path) -> Iterator[tuple[str, str]]:
+    yield from xmp_entries(ElementTree.parse(path).getroot(), "XMP_SIDE_CAR")
 
 
 def photo_fields(path: Path) -> tuple[list[tuple[str, str]], dict[str, str]]:
@@ -97,6 +100,12 @@ def photo_fields(path: Path) -> tuple[list[tuple[str, str]], dict[str, str]]:
             elif isinstance(value, bytes):
                 fields.append(("IPTC." + label, text_value(value)))
         fields.extend(flatten(im.getxmp()))
+        for label, value in im.info.items():
+            if label.lower() in {"description", "title", "comment", "caption", "subject"} and isinstance(value, (str, bytes)):
+                fields.append(("IMAGE_TEXT." + label, text_value(value)))
+        png_xmp = im.info.get("XML:com.adobe.xmp")
+        if isinstance(png_xmp, (str, bytes)):
+            fields.extend(xmp_entries(ElementTree.fromstring(png_xmp), "XMP_PNG"))
     sidecar = path.with_suffix(".xmp")
     if sidecar.is_file():
         fields.extend(xmp_sidecar(sidecar))
@@ -154,7 +163,17 @@ def self_test(resources: Path) -> None:
         assert all(not x["commitment_match"] for x in fields)
         assert source_hash(photo) == original_sha
         assert result["records"][0]["metadata"]["sidecar_sha256"]
-    print("PASS: literal EXIF and XMP sidecar captions, HMAC normalization, unchanged source hash")
+        png = Path(folder) / "crew-contact-sheet.png"
+        info = PngImagePlugin.PngInfo()
+        info.add_text("Description", "After the watch the sea still moves beyond the window.")
+        info.add_text("XML:com.adobe.xmp", '''<x:xmpmeta xmlns:x="adobe:ns:meta/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:RDF><rdf:Description><dc:title>We made room for one another.</dc:title></rdf:Description></rdf:RDF></x:xmpmeta>''')
+        im.save(png, pnginfo=info)
+        png_sha = source_hash(png)
+        png_fields = assess([png], resources)["records"][0]["caption_fields"]
+        assert any(x["field"] == "IMAGE_TEXT.Description" and "sea still moves" in x["exact_metadata_text"] for x in png_fields)
+        assert any(x["field"].startswith("XMP_PNG") and "room for one another" in x["exact_metadata_text"] for x in png_fields)
+        assert source_hash(png) == png_sha
+    print("PASS: JPEG EXIF/XMP, XMP sidecars, PNG captions/XMP, HMAC normalization, unchanged source hashes")
 
 
 def main() -> None:
