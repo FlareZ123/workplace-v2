@@ -89,7 +89,7 @@ def fullword_tokens():
         b = bytes.fromhex(serial[3:])
         for endian in ("little", "big"):
             seals.append((serial, endian,
-                          untemper(int.from_bytes(b, endian)) & 0x7FFFFFFF))
+                          untemper(int.from_bytes(b, endian))))
     assert len(rows) == 44 and len(set(x[0] for x in seals)) == 44
     return seals
 
@@ -118,7 +118,7 @@ def main():
     )
     seals = fullword_tokens()
     matches = [(serial, endian, fingerprints[low31])
-               for serial, endian, low31 in seals if low31 in fingerprints]
+               for serial, endian, whole in seals if (whole & 0x7FFFFFFF) in fingerprints]
     print(f"source: 132 original intact spool rows, 44 independently recorded seal serials")
     print(f"index: {sum(map(len, fingerprints.values()))} distinct ordered printer-pair / word comparisons")
     print("control: synthetic MT and original independent TRP2 record28 PASS")
@@ -127,6 +127,18 @@ def main():
     for row in matches:
         print(row)
     assert matches == [], "a new candidate independent donor must be investigated"
+    # An exact full-word XOR is implied by the 528 intact original printer
+    # payloads under the separately published p955 index fixture.
+    # It is a strict source-only discriminator, not a historical placement.
+    target_xor = 0xBD2761F8
+    paired = [(a, b) for i, a in enumerate(seals) for b in seals[i + 1:]
+              if a[0] != b[0] and (a[2] ^ b[2]) == target_xor]
+    print("source-only original-printer prediction: X1412 XOR X1866 = BD2761F8")
+    print(f"oriented distinct-serial pair assignments: {len(seals) * (len(seals) - 2)}")
+    print(f"seal-pair future donor matches: {len(paired)}")
+    for pair in paired:
+        print(pair)
+    assert paired == [], "a new independent fullword-pair witness must be investigated"
 
 
 if __name__ == "__main__":
