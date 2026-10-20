@@ -69,6 +69,21 @@ def main(root: Path) -> None:
     except AssertionError as error:
         if 'accepted coupon payload present' not in str(error):
             raise
+    try:
+        scan_carrier('synthetic-coupon-hex', b'ACK=' + ack.hex().upper().encode() + b' END',
+                     mask, nonce, hashlib.sha256(synthetic_coupon).digest(), t8)
+        raise AssertionError('hex coupon positive control missed')
+    except AssertionError as error:
+        if 'accepted coupon payload present' not in str(error):
+            raise
+    component = bytes.fromhex('049AAB2E1CDE7A82CD7C60234303C91A')
+    try:
+        scan_carrier('synthetic-direct', b'before' + component + b'after', mask, nonce,
+                     hashlib.sha256(component).digest(), t8)
+        raise AssertionError('direct component positive control missed')
+    except AssertionError as error:
+        if 'direct accepted component present' not in str(error):
+            raise
     example = 'The little lamp stays on until the corridor has gone quiet.'
     candidate = hmac.new(nonce, ' '.join(normalized_words(example)).encode(), hashlib.sha256).digest()[:16]
     assert candidate.hex().upper() == '0C3B326D0324BF93F55D4A3EEAB26CDE'
@@ -79,7 +94,7 @@ def main(root: Path) -> None:
     except AssertionError as error:
         if 'accepted final caption present' not in str(error):
             raise
-    print('POSITIVE_CONTROLS coupon_raw=PASS caption_normalization_hmac=PASS')
+    print('POSITIVE_CONTROLS coupon_raw=PASS coupon_hex=PASS direct_component=PASS caption_normalization_hmac=PASS')
     totals = {'byte_windows': 0, 'hex_windows': 0, 'caption_spans': 0}
     for path in sorted(office.iterdir()):
         if not path.is_file():
