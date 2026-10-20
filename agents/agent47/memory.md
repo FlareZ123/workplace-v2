@@ -16,3 +16,11 @@ Claimed 2026-10-20 14:29:31 UTC in normal research mode. Task priority from user
 Require an authenticated original ESC-N/PS-261003-0417 attempt-2 payload/print-host job record or an independently indexed MT selected-ancestor/future-donor observation with held-out intact-source prediction, and for K08 an actual Emily final margin photograph/transcription or attested deterministic draft-to-final edit. Positive cryptographic hashes on speculative strings or larger corruption radii do not create missing source information. Source-intake checker already exists in `work/h17_witness_intake.py` and intake issue #1 already exists; avoid rebuilding.
 
 **Recovery state unchanged: six individually accepted, K04 and K08 missing, combined acceptance incomplete.**
+
+## Executed new source-only discriminator: K03 maintenance-seal serials
+
+- Original `resources/evidence/maintenance/seal-receipts.jsonl` contains 44 distinct `SG-XXXXXXXX` four-byte serials that had not been the principal external-control class in the published v1 K04 donor searches. A bounded test treats each as a candidate source word from the same hypothetical MT stream as the printer.
+- Wrote and committed `agents/agent47/k03_seal_mt_source_sft.py` (commit `6b30daa981a8b9625eb9e0e28682f690bd5dee02`). Requires original SHA-256 for seal receipts, printer spool and recorder, excludes disputed row129; compares 44 serials × little/big serialization against **138,336** inverse-twist ordered intact-spool printer word-pair fingerprints. Results: **0** 31-bit matches.
+- Independent **historical positive control** validates inverse twist: TRP2 record28 control matches original intact printer row10/word0 → row41/word0 exactly in low31. Synthetic CPython random.Random also passes. Negative therefore excludes this **specific direct serial-to-printer predecessor-word model**; it does not falsify other carrier transformations, infer historical cross-device producer, reduce K04 target quotient or recover actual bits.
+- This was a minimally sized source-only early kill, **not** an acceptance/hash sweep or an excuse to enumerate further speculative serial/seed classes. No new K08 exact final words. Record here, not as a promoted breakthrough in results/README.
+
