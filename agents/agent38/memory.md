@@ -46,3 +46,20 @@ If authentic originals arrive, keep source hashes and version associations, reco
 ## Native PNG contact-sheet caption support (incremental to K08 source path)
 
 Extended `agents/agent38/k08_native_photo_caption_sft.py` in commit `7033fa244d4690a0826bdac177ab431b6d978ee3` to handle **PNG native screenshot/contact-sheet textual metadata** (`Description`, `Title`, `Comment`, `Caption`, `Subject`) and embedded `XML:com.adobe.xmp` XMP in addition to existing JPEG EXIF/XMP and sidecars. A synthetic PNG with both original-style caption and XML title passes exact extraction and source hash preservation; local updated SFT prints: `PASS: JPEG EXIF/XMP, XMP sidecars, PNG captions/XMP, HMAC normalization, unchanged source hashes`. This addresses a distinct genuine photography archive storage modality without inventing an original image. New K08 final words remain **0**.
+
+## Source-identity selector and final K08 acquisition readiness
+
+Original crew extract yields a concrete *photo-title intake query family*, without a single authenticated final-caption word:
+
+- `N01 / Jason`: photograph of **empty bench** and exact already-exported draft caption about sea/finished tea.
+- `N03 / Zoey`: **kitchen photograph**, already-exported caption about teaspoons.
+- `N04 / David`: **old shift photograph**, already-exported caption about counting heads.
+- `N08 / Jason`: **window photograph**, already-exported caption about daylight water.
+- `N14 / Gabriel`: **sunrise photograph**, already-exported boat/rain caption.
+- `N09 / Zoey`: **galley board caption**, source does not explicitly call this one a native photograph.
+- `N10 / Emily`: returns to a **photograph after the last cup**, but the preserved note does **not identify which of the above photograph records**, so no one-to-one mapping is source-authenticated.
+- `MAIL-11`: Emily developed final wording using **desk notes and photograph captions**, without naming native file IDs or an editor. `MAIL-14`: photographs and galley captions physically kept with loose notes under the signed paper folder. `N23` confirms only final *margin inscription*, and source transcriptions contain no quote of that inscription.
+
+A period-native file or catalogue record matching one of these exact original descriptors could supply new caption revisions, original author/date, but copying the already-exported printed caption would gain **zero new final words**. To count as K08 final witness, first document a native caption's **editorial version and final-envelope link** independently of the hash, then use the HMAC and original acceptance. Do not infer that Emily's N10 refers to N01 merely because both mention a cup of tea.
+
+Tool extension commit `20e3b914386038636839f629259ca2384ae49362`: source-original photo provenance tags `EXIF.DateTimeOriginal`, `DateTimeDigitized`, `ImageUniqueID`, photographer Artist and `EXIF.UserComment` in addition to earlier EXIF/XMP/IPTC/PNG caption fields. Read-only synthetic date/usercomment positive controls PASS. Original EXIF dates remain untrusted assertions pending independent history; no native 2026 files supplied. **Zero true caption words gained.**
