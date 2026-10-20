@@ -38,3 +38,19 @@ The verifier's process exit code is nonzero, consistent with `accepted=false`, n
 ### Reproduction outline
 
 Hash the supplied ZIP with SHA-256; extract into a clean directory. In a fresh empty temporary Git index/object store, stage only the extracted `evidence/` directory and inspect its tree object SHA. Compare that value with the GitHub API `git/trees/main?recursive=1` entry for `resources/evidence`; compare the other four original blobs separately. Then run the untouched offline verifier against the existing six-slot candidate. No network access is needed for local hashing or acceptance; repository tree comparison requires only read-only GitHub access.
+
+
+## Reachable Git source-history inventory (additional source-location check)
+
+The linked predecessor repository [workplace-v1](https://github.com/FlareZ123/workplace-v1) has exactly **four accessible default-branch commits touching `resources/`**, inspected with the read-only GitHub commit/history and recursive-tree endpoints. The source-file sets at successive retained snapshots were:
+
+| UTC / predecessor commit | Regular files under `resources/` | Actual source-tree delta |
+|---|---:|---|
+| 17 October 2026, `5e03668c3652` | 43 | Original 38 evidence files, four reference/checker files, and `AGENT_PROMPT.txt` (task instructions, no REC8 coupon/caption) |
+| 18 October 2026, `dc04788bf7dc` | 42 | `AGENT_PROMPT.txt` was removed; none of the original evidence/checker byte blobs changed |
+| 20 October 2026, `ca43daaec3cd` | 46 | Exactly four new `evidence/h17-supplemental-office-files/` objects added: PDF, fleet note, reconciliation CSV, bookmarks |
+| 20 October 2026, `8beda6625e89` | 46 | Editorial `START_HERE.md` change only; no archive data modifications |
+
+All 38 pre-supplement original evidence blobs and the acceptance/verifier blobs are unchanged across these reachable snapshots. Comparing old and current filenames identifies **no historically deleted, target-bearing original coupon or caption source in the accessible default-branch `resources/` history**. The historical deleted `AGENT_PROMPT.txt` was inspected; it solely contained the earlier assignment and procedural scope. This check is constrained to retained commits reachable via the default-branch `resources/` path history, and cannot establish anything about pruned/unreachable Git objects, unaudited branches, original off-repository custody or unpublished media.
+
+The ZIP/tree check above remains the stronger result for the actual source files supplied to this invocation.
