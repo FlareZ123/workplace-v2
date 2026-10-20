@@ -1,0 +1,21 @@
+# Agent 32: K04/K08 novel-mechanism search, 20 Oct 2026
+
+- Uniform cryptographic mode-selection draw **4**, normal mode; identity claimed via successful GitHub push at **2026-10-20T15:39:43Z**, run `h17-novel32-44faafea9958fa76`. Do not refresh the original lease. After every checkpoint, compare real UTC clock to lease timestamp; release only at >=70 minutes.
+- Primary target status remains six original PASS (K01, K02, K03, K05, K06, K07); original K04 and K08 missing. Do not run another six-slot replay, ZIP integrity census, 3/4-byte corruption brute force, arbitrary K08 phrases, or generic printer-MT alignments. Both public repositories and source ZIP were reviewed; v1 has ~164 K04/K08 detailed reports with substantial prior-art coverage.
+- Original-custody issue `FlareZ123/workplace-v2#1` open, updated through 12:35 UTC; all visible comments were researchers' requests, no delivered printer attempt-2 bytes or final caption. Private v1 and v2 trees contain only `.gitkeep`. The user's attachment contains same historic 46 original evidence files as existing source audits established.
+
+## PRE-RUN target-information gate: original PV decimal readings as a distinct cross-source PRNG witness
+
+**Exact original fact:** `resources/evidence/telemetry/freeze-export.jsonl` has **112** `field=PV` physical-process readings (LT-204=31, FT-13=26, PT-118=18, TT-92=37) each displayed to up to three fractional decimal digits; their common observed numeric span is **12.904..87.969** despite different units (degC, kPa, percent). This makes a synthetic common `round(uniform(12,88),3)` producer plausible as an explicit *hypothesis*, not documentary fact.
+
+**Prior-work distinction:** [v1 original 32 `LT-204/DIAG_WORD` upper16 MT probe](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-telemetry-high16-bridge-gate.md) and [v1 admin-telemetry donor correction](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-new-original-admin-telemetry-donors.md) operate on *integer diagnostic words*, **not the 112 `PV` decimals**. A search for PV-specific predecessor work must precede any claimed novelty. No source says a physical telemetry producer shared the printer's MT state.
+
+**Proposed minimal discriminator:** if decimal PV values are rounded transforms of CPython `random()` double samples, each uses high27 and high26 bits of *two consecutive* tempered MT words. Independently inferred intact printer predecessor pairs from previously attested 227-step recurrence can predict finite three-decimal values under fixed hypothesized scale 12..88. Require **at least two** consecutive source-ordered PV observations to match the *same contiguous predeclared MT index pair sequence*, with one additional withheld PV prediction, **before** evaluating K04 target/mask/hash. A single coincidence or tuned scale doesn't count. Calibration on synthetic MT `random.uniform(12,88)` streams is mandatory.
+
+**Potential K04 gain only if successful:** an authenticated cross-carrier producer/ordering law might supply previously missing near-K04 source state constraints, to be quantified by the known original GF(2) target quotient projector. Without actual intersection reducing 128 unknown coupon bits, this branch is model study only. **Kill point:** the fixed-scale first two-ordered-PV prediction fails, or no source-supported alignment emerges. No broad scaling/grid search, no acceptance hashes, no CI before this check. K08 currently has no attested final words.
+
+## Investigation notes
+
+Original spare office documents reinforce the existing printer *job identity* and 2025 property association; no new attempt-2 checksum, physical coupon or exact keeper margin supplied. Source N23 says final wording was written in Emily's margin but supplies no literal word. The existing K08 editorial-dependency report establishes no source-forced normalized final words.
+
+To resume: check v1 memories/results for PV-decimal producer prior art (not merely generic telemetry), then implement a small source-only calibrator/diagnostic if genuinely new, record exact source hashes and heldout result. Keep conclusions distinct from original REC8 acceptance.
