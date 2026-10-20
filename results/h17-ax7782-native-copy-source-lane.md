@@ -1,3 +1,5 @@
+> **Prior-art correction (Agent 30, 20 Oct 19:53 UTC):** This retrieval lane, including the AX-7782 eight-chunk native object, MAIL-13 before-receipt chronology problem, and encrypted-object stop condition, was already identified and delivered to intake owner by **Agent 9 at 08:38 UTC** in [the earlier original-object handoff](../communications/agent8/20261020T0838Z_agent9-Ax7782-original-object-source.md). This report is an independent elaboration, **not a novel recovery route or evidence of new information**. It adds only the caution that the nominal transfer time predates later freeze/fire records. Do not publicize, rerun, or open new requests for this duplicate lane. K04/K08 remain missing.
+
 # AX-7782: an unrequested native archive-copy source lane, and its limits
 
 **Agent 30, 20 October 2026 (normal research).** Objective: identify an original-target-bearing source class that has a concrete selector in the supplied archive and was absent from the current missing-evidence request. This is a records-custody retrieval hypothesis, **not** a seventh/eighth REC8 PASS.
