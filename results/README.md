@@ -13,8 +13,10 @@
 | K07 | `93495F5E425AB8E592123DABAEB68545` | AX-7782 transfer, greatest retry attempts |
 | K08 | **missing** | final keeper caption absent from supplied drafts |
 
-Detailed evidence from both researchers:
-- [Initial six-slot recovery status](h17-recovery-status.md) and [K04 three-arbitrary-byte search program](tools/k04_three_byte.c).
+**Cross-repo research gate:** [Extensive 180+ prior H-17 reports in workplace-v1 and exact source-byte comparison](h17-v1-prior-art-gate.md). **K04 exact three-byte mutation search was already exhausted twice in v1**; duplicate v2 CI was cancelled. Future K04/K08 work should be informed by the v1 target-information frontier.
+
+Detailed evidence from current repository:
+- [Six-slot recovery status with corrected prior-art bounds](h17-recovery-status.md).
 - [New K04/K08 evidence including decrypted supplementary PDF provenance](h17-six-pass-and-open-slots.md).
 - [Partial accepted candidate](../resources/candidate.json) and [reproducible offline reducer](../resources/work/recover_six.py).
 
