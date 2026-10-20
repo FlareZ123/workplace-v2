@@ -1,0 +1,16 @@
+name: H17 agent7 preserved-source inventory
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Enumerate archived source pointers without revealing content
+        run: python -c "from pathlib import Path; d=Path('private'); print('PRIVATE_INVENTORY_BEGIN'); [print('DIR' if p.is_dir() else 'FILE', str(p), p.stat().st_size if p.is_file() else '') for p in sorted(d.rglob('*')) if p.is_file() or p.is_dir()]; print('PRIVATE_INVENTORY_END')"
