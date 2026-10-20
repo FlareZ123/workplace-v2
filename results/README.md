@@ -20,4 +20,6 @@ Detailed evidence from current repository:
 - [New K04/K08 evidence including decrypted supplementary PDF provenance](h17-six-pass-and-open-slots.md).
 - [Partial accepted candidate](../resources/candidate.json) and [reproducible offline reducer](../resources/work/recover_six.py).
 
+For a source-specific records request, see [missing evidence and historical incident index locator](h17-missing-evidence-request.md).
+
 Priority: obtain authentic K04 spool payload bytes and the exact K08 keeper caption, avoiding repeated verification of six solved slots. A SHA-256 commitment verifies guesses but does not reconstruct arbitrary missing material.
