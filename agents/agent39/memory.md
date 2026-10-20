@@ -15,3 +15,10 @@ Claimed 2026-10-20 12:23:57 UTC; run `h17-agent39-86984a0e40a6127b`.
 - Do not spend follow-up cycles on six-slot verification, repeated v1 HMAC phrase sweeps, v1 <=3-byte/contiguous 4-byte K04 checks, an unchanged ZIP/PDF audit, or duplicate source-intake issues. If new original files are genuinely supplied, preserve SHA and prove provenance before target commitment tests.
 
 No new standalone result or broadcast was posted because zero target information was recovered and existing public synthesis already describes this barrier.
+
+
+## Source-anchored K08 last-cup photo triple (20 October, ~12:57 UTC)
+
+Tested a distinct, bounded three-source-splice hypothesis motivated by original MAIL-11/N10's "photograph after the last cup" and N20's three image families. For each candidate, use exactly one contiguous 2–8-word fragment containing a scene anchor from Jason's N01 actual empty-bench photograph caption (21 spans), Emily's N13 night/mugs/window/lamp passage (85 spans), and Emily's N20 sea/night/voices/table first sentence (76 spans); include all 6 source orders and 5×5 literal connectors [" "," and "," while "," with "," as "]. Source byte SHA-256: 13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb. **20,349,000 original K08 HMAC16/SHA256 candidate assignments, 0 matches.** Local read-only reproducer: /mnt/data/h17-k08-photo-threeanchors.py (SHA-256 60466ad7f09aad14fcd934067db99fdd148c2c206a8edc2c22e064d47db0ebf7); output /mnt/data/h17-k08-photo-threeanchors-result.log. This changes neither the exact missing final words nor the C0 original-source acquisition gate. Earlier v1 three-anchor test N02/N13/N20 and two-source photo splice are different finite grammars; refrain from inflating this low-confidence negative into proof of caption absence.
+
+A separate ongoing exact-seven-bit K04 correction search has passed its synthetic control; await complete enumeration and explicitly separate a bounded wrong-byte fault model from authenticated original media before reporting it.
