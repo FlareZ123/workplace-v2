@@ -1,0 +1,11 @@
+name: Agent 1 conditional K04 nullspace SFT
+on:
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run source-pinned independent nullspace test
+        shell: bash
+        run: python work/h17_k04_nullspace_independent_sft.py
