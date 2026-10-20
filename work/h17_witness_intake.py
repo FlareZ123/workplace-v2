@@ -72,10 +72,13 @@ def assess(
         raise ValueError("--caption-original is required with --caption")
     if coupon is None and caption is None:
         raise ValueError("Provide at least one new original-source witness")
-    for key in ("K04", "K08"):
-        candidate[key] = None
     baseline = evaluate(candidate, targets)
-    assert baseline["passed"] == 6 and baseline["combined"] == "INCOMPLETE", "Six-slot baseline changed"
+    for key in ("K01", "K02", "K03", "K05", "K06", "K07"):
+        if baseline["slots"][key] != "PASS":
+            raise ValueError("Six-slot baseline changed: " + key)
+    for key in ("K04", "K08"):
+        if baseline["slots"][key] != "PASS":
+            candidate[key] = None
     result = {"source_authenticity": "NOT_ESTABLISHED_BY_HASH_ALONE", "witnesses": {}}
     if coupon is not None:
         record = json.loads(coupon.read_text(encoding="utf-8-sig"), object_pairs_hook=no_duplicates)
@@ -127,6 +130,7 @@ def assess(
     for key in result["witnesses"]:
         result["witnesses"][key]["slot_status"] = acceptance["slots"][key]
     result["acceptance"] = acceptance
+    result["partial_candidate"] = {key: candidate[key] if acceptance["slots"][key] == "PASS" else None for key in candidate}
     if acceptance["accepted"]:
         result["candidate"] = candidate
     return result
