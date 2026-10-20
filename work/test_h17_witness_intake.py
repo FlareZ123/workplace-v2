@@ -1,11 +1,16 @@
 """Single-file reproducible historical-witness intake checks (offline, stdlib)."""
 
 import hashlib
+import io
+import sys
+from contextlib import redirect_stdout
+from unittest.mock import patch
 import json
 import shutil
 import tempfile
 from pathlib import Path
 
+import h17_witness_intake as intake
 from h17_witness_intake import RESOURCES, assess, normalize_caption
 
 KNOWN_ACK = "A9A9DC5731A5E2AE879C47215C2559D5"
@@ -129,6 +134,16 @@ def main() -> None:
         assert conflicting["candidate"] == fake_candidate
         write_json(transcript, wrong)
         print("PASS: historically conflicting K04 input explicitly recorded; original committed value retained")
+
+        print("TEST 5bc: reject CLI success for an input containing conflicting new witness")
+        with patch("h17_witness_intake.assess", return_value=conflicting):
+            with patch.object(sys, "argv", ["h17_witness_intake"]):
+                output = io.StringIO()
+                with redirect_stdout(output):
+                    exit_code = intake.main()
+        assert exit_code == 1
+        assert '"conflicting_witnesses"' in output.getvalue()
+        print("PASS: CLI returns nonzero despite old aggregate acceptance PASS")
 
         print("TEST 5c: reject a corrupted six-slot baseline even with synthetic witnesses")
         partial["K01"] = "0" * 32
