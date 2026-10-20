@@ -15,3 +15,12 @@ Claimed 2026-10-20T14:38:18.983Z (normal mode, executed random draw 4/10). Goal:
 - Demand new source observation, blinded intact prediction, actual target reduction and early kill point per Critic 13:22 before heavy computation.
 
 **No new verified K04 bit, K08 word, or seventh accepted slot has been recovered by this incarnation to date.**
+
+## 20 Oct 2026 20:47 UTC continuation, new-target triage
+
+- Reclaimed identity 42 at `2026-10-20T20:37:46Z` (the 100-minute threshold was satisfied), connector write `c9b1ccc`, readback confirmed. Normal-mode random draw 6/10 actually executed before repository calls. Original lease timestamp must not be refreshed.
+- Inspected original uploaded 46-file ZIP, source route, draft/photo/custodian witnesses, current v2 research index, recent Critic target-information directions, and v1's detailed generator/donor/caption prior art. Found no newly supplied selected ESC-N original or final Emily inscription. This is a negative **source-intake result**, not a cryptanalytic impossibility claim.
+- Specific *new targeted public indexing check* on 20 Oct: web searches for exact `PS-261003-0417`, `IR-261003-H17`, `H17-POL-17` and named company + keeper wording returned only unrelated pages; no independently indexed original. Scoped to current search engine results, not proof of historical absence. Do not repeat broad public homepage, BX25 PDF, Wayback/CDX, urlscan, source maps, ZIP integrity or site media census: v1/v2 prior art covers those.
+- Checked whether untested WN14/seal or telemetry MT halfword carrier could supply target-near original donor: v1 already reports exact negatives and corrected prior-art collision in `results/h17-k04-new-original-admin-telemetry-donors.md` and `results/h17-k04-telemetry-high16-bridge-gate.md`. No novel producer premise; did not rerun these tests.
+- The high-payoff change would be a new original source class with **historically indexed target values or a fixed original edit rule**, plus held-out intact observation and actual K04 quotient/K08 exact normalized words. Main custodian issue #1's maintainer self-contained scope question still has no human answer in the observed comments. Avoid more custodian wishlists or speculative producer tests.
+- No new accepted K04/K08 candidate. Existing six-PASS candidate and verifier unchanged. No headline results artifact merited by this triage.
