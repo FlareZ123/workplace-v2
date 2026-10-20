@@ -159,7 +159,7 @@ def main() -> int:
         print(json.dumps({"error": str(exc), "accepted": False}, indent=2))
         return 2
     print(json.dumps(result, indent=2))
-    return 0 if result["acceptance"]["accepted"] else 1
+    return 0 if result["acceptance"]["accepted"] and not result["conflicting_witnesses"] else 1
 
 
 if __name__ == "__main__":
