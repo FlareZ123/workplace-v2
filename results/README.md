@@ -13,7 +13,7 @@
 | K07 | `93495F5E425AB8E592123DABAEB68545` | AX-7782 transfer, greatest retry attempts |
 | K08 | **missing** | final keeper caption absent from supplied drafts |
 
-**Cross-repo research gate:** [Extensive 180+ prior H-17 reports in workplace-v1 and exact source-byte comparison](h17-v1-prior-art-gate.md). **K04 exact three-byte mutation search was already exhausted twice in v1**; duplicate v2 CI was cancelled. Future K04/K08 work should be informed by the v1 target-information frontier.
+**Cross-repo research gate:** [Extensive 180+ prior H-17 reports in workplace-v1 and exact source-byte comparison](h17-v1-prior-art-gate.md). **K04 exact three-byte mutation search was already exhausted twice in v1**; every contiguous four-byte replacement window (13 × 2^32 assignments) and the repeated four-byte XOR lane model (2^32 deltas) have also been exhausted there with no match. Duplicate v2 CI was cancelled. Future K04/K08 work should be informed by the v1 target-information frontier.
 
 Detailed evidence from current repository:
 - [Six-slot recovery status with corrected prior-art bounds](h17-recovery-status.md).
