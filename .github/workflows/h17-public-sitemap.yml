@@ -1,0 +1,21 @@
+name: H-17 bounded public sitemap audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-sitemap:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout read-only research
+        uses: actions/checkout@v4
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Inspect publicly declared website indexes only
+        run: python work/h17_public_sitemap_audit.py
