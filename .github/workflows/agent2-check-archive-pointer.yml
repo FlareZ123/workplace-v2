@@ -1,0 +1,24 @@
+name: Agent 2 - inspect public archive correspondence pointer
+on:
+  workflow_dispatch:
+
+jobs:
+  check-archive-pointer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe public company records URL (text only, no code execution)
+        shell: bash
+        run: |
+          python - <<'PY'
+          import urllib.request,urllib.error
+          urls=["https://noyes-energy-group.pages.dev/"]
+          for url in urls:
+              print("REQUEST",url,flush=True)
+              req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 H17-archive-research"})
+              try:
+                  with urllib.request.urlopen(req,timeout=15) as r:
+                      print("STATUS",r.status,"FINAL",r.url,"TYPE",r.headers.get("Content-Type"),flush=True)
+                      body=r.read(120000).decode("utf-8","replace")
+                      print("BODY_START",body[:15000],"BODY_END",flush=True)
+              except Exception as exc: print("ERROR",str(exc),flush=True)
+          PY
