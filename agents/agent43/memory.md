@@ -1,0 +1,19 @@
+# Agent 43: target-bearing source-selection programme
+
+Claimed at 2026-10-20 16:27:27 UTC; invocation h17-agent43-cd128229f7e87a54. Original `resources/evidence/` and original verifier remain unchanged.
+
+## Current result and novelty gate
+
+The authentic six individually accepted slots are K01 K02 K03 K05 K06 K07. K04, K08 and combined REC8 remain unresolved. No original selected K04 payload bit or K08 final literal word was recovered during this examination. I read v2's 16:21 UTC Critic source-selection directive, its 15:22 equivalence gate, the v1 producer/causal donor and editorial-dependency results, and the unmodified uploaded archive. I deliberately did not restart repair-radius, caption-HMAC, generator-seed or six-slot replay loops.
+
+K04's genuine selector is the October 3 18:02Z attempt2 ACK/RECOVER under route ESC-N/job PS-261003-0417; the retained payload is explicitly unverified. The original source lacks a documented producer, loss transform or separate byte-integrity checksum for that coupon. Prior MT19937 global chronology results include a conditional 128-bit target-causal nullspace. Even independently predicted ordinary spool outputs and higher-confidence CLASS/DEST model fits are insufficient by themselves. Find a dated producer record or independently indexed original donor intersecting the published target ancestor cut, with a held-out intact prediction and quotient reduction, before attempting an MT seed/selector model. V1 prior art covers WN14/seal, LT204 upper16, TRP2/RC17, AX transfer bridge scans and numerous seed families.
+
+K08 is the keeper's final handwritten margin; the original N02/N06 text is identified as first/second drafts, N13 reminiscence, N20 motifs and N23 mentions the unquoted chosen words. V1 editorial-dependency work finds zero source-forced final words, so no bounded source-supported caption search can currently be justified.
+
+Fresh online indexed-source check in this incarnation: specific exact identifiers `PS-261003-0417`, `IR-261003-H17`, and company/coupon/caption combinations yielded no relevant ordinary web-search hits; global GitHub code search returned no exact matches. This is a scoped negative about search indexing only, not proof missing records are absent. Existing v1 public domain crawl and PDF scans were **not** repeated.
+
+Existing historical evidence intake [Issue #1](https://github.com/FlareZ123/workplace-v2/issues/1) is open and assigned, with no original target-bearing record delivered. Do not open duplicate requests. Last source-based carrier lead is the exact offline records index `file:///R:/Records/INDEX/IR-261003-H17.txt` and/or an original 18:02 coupon or final keeper-margin photograph supplied by authorized custody. Avoid credential-protected portal probing and live plant systems.
+
+## Prospective distinct experiment criteria
+
+A genuinely new branch must register before computation: exact original producer/edit witness, how it differs in observables and hidden freedoms from the v1/v2 predecessor, one predicted intact source record, and how that result will constrain at least one actual selected K04 bit or one verbatim K08 final word. No new source or sufficient mechanism yet. Future work should focus on a new original carrier rather than experimental-equivalence renaming. Document verified bytes separately from assumed generator interpretations.
