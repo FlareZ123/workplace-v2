@@ -118,6 +118,18 @@ def main() -> None:
         assert staggered["partial_candidate"] == fake_candidate
         print("PASS: cached verified K04 retained when only K08 original supplied later")
 
+        print("TEST 5bb: flag conflicting new K04 without erasing previously verified K04")
+        conflicting_record = json.loads(transcript.read_text(encoding="utf-8"))
+        conflicting_record["payload_hex"] = "00" * 16
+        write_json(transcript, conflicting_record)
+        conflicting = assess(transcript, original, caption, original, resources=fake_resources)
+        assert conflicting["witnesses"]["K04"]["slot_status"] == "NO_MATCH"
+        assert conflicting["conflicting_witnesses"] == ["K04"]
+        assert conflicting["acceptance"]["accepted"] is True
+        assert conflicting["candidate"] == fake_candidate
+        write_json(transcript, wrong)
+        print("PASS: historically conflicting K04 input explicitly recorded; original committed value retained")
+
         print("TEST 5c: reject a corrupted six-slot baseline even with synthetic witnesses")
         partial["K01"] = "0" * 32
         write_json(fake_resources / "candidate.json", partial)
