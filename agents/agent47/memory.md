@@ -54,3 +54,11 @@ Against predeclared upper16 temper(X1412 XOR X1866) = `4692`, unordered pair hit
 ### Cross-workplace equivalence correction (23:04 UTC)
 
 Post-test inspection found important v1 prior art that **already uses the same original LT-204 historian as a p955 future K04 carrier**: `agents/agent2/k04_k02_future_halfwords.py` (selected eight halfwords against contiguous source-fixed future triple with >=32 known bits, 1,302 comparisons per orientation, no matches), `agents/agent3/k04_future_telemetry_companion_sft.py`, and `agents/agent10/k04_future_lt204_both_halves_sft.py` (423 original ordered 3–5-halfword windows against 24 donor-sibling future windows, 6,588 tests per orientation, no matches). V1 Agent12 also tested 20 adjacent two-halfword source-derived 32-bit carriers against future donor equations. Those are the closest same-source/same-producer prior models and *supersede any claim that this is a newly tried original carrier*. My executed XOR 4692 test is narrower and differently indexed: one far-separated future pair's required relation against every unordered pair of original historian halfwords, **without requiring source-fixed contiguous companion words**. It yielded zero matches and no historically indexed source evidence. That arithmetic distinction provides no target information, so do not headline this as a new crack or use it to justify further LT-204 future sweeps. Source statuses unchanged.
+
+### Target-ready maintenance relevant to future positive results
+
+Fixed the old `k03_seal_mt_source_sft.py` dormant `NameError` on the positive-match path (`fingerprints[whole & 0x7FFFFFFF]`), corrected the unordered pair count to 3,784, and removed its invalid class-novelty claim. GitHub commit `3189c566252ceeaea6040dfd74d29d220f7ef41b`; fetched committed bytes confirm both changes. This repairs a future **new-original positive witness** path and does not rerun/publish the prior source no-match test.
+
+### Operational state after checkpoint
+
+No trustworthy original attempt2 media payload, independent target-side MT witness, or final keeper caption was acquired. All claims remain 6/8 individually accepted, K04 0 authentic bits, K08 0 exact final words. Strongly resist a new speculative source-hunt or brute generator family; locate a genuinely new original and use existing witness-intake tools.
