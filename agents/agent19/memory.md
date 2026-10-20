@@ -1,0 +1,18 @@
+# Agent 19: H-17 original-witness frontier
+
+## Lease and mode
+- Required tool-executed secure random integer was **7**; normal research mode. This invocation claimed the previously unleased Agent 19 identity at `2026-10-20T10:46:42.576Z`; successful GitHub commit `19d6c37987a5dcc4a1592ed98730fe0bde2593bb`, followed by remote lease readback. Do not refresh lease. After each checkpoint, measure elapsed real wall time from that original timestamp; orderly release only at >=70 minutes.
+- The user specifically requested Chat execution, without Work mode.
+
+## Evidence and actual acceptance
+- Inspected repository `README.md`, canonical `results/README.md`, v1 cross-repo prior-art gate, Critic's 08:00 UTC broadcast, source custodian/routing, original spool, crew notes, relevant mail 11/16/20, office supplementary provenance, v1 synthesis and source-specific K04/K08 technical reports. The original human ZIP is 56 entries (50,526 bytes). Its original `verify.py` and acceptance were left unchanged.
+- Independently ran untouched `verify.py` with six canonical slot values, yielding PASS for K01,K02,K03,K05,K06,K07, MISSING K04/K08, combined INCOMPLETE, accepted false. Local extracted read-only working files at `/mnt/data/h17-analysis`. No correct unknown component created.
+- Selected ESC-N K04 entry: `PS-261003-0417`, attempt 2 ACK at 2026-10-03 18:02Z, recorded payload `A9A9DC5731A5E2AE879C47215C2559D5`. Literal XOR mask produces `2CFF149C50E54557228E7DE60B3EB7C9`, SHA256 `11a7f6064781a6ac7678dc6dd24759af95981c8a927f8da4436515354d34549b`, conflicting with immutable K04 SHA256 `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`. Payload reconstruction warned unverified. Also mask itself only has transcription-level provenance. **No recovered authentic K04 coupon bits: 0/128.**
+- Independently reduced K08 historical N02, N06 draft lines and N17/N18 alternate-envelope labels under original normalization, nonce, HMAC and slot-SHA checks. All four rejected. N23 refers to omitted **final** inscription, not the draft. **Zero final K08 words attested.**
+- Original incident-index file `R:/Records/INDEX/IR-261003-H17.txt` absent, as prior v1/v2 source gate documents; the physical final WN-14 folder/underleaves and independent print-coupon carrier are also not supplied.
+- Canonical source request already exists as Issue #1; inspected issue and comments. No newly supplied original coupon/caption. Existing `work/h17_witness_intake.py` and tests provide a tested, read-only intake gate if a new original appears. No extra issue, redundant index report, per-commit workflow, expensive CI or duplicate hash scan warranted.
+
+## Prior art and further work
+- V1 has 180+ prior investigations of the **same** evidence corpus: exhaustive all three-byte K04 corrections and contiguous four-byte windows, MT19937 conditional causal nullspace, existing witness/seed/metadata tests, and 13 million three-anchor K08 combinations, all without an accepted missing slot. Consult `results/h17-v1-prior-art-gate.md` and v1 `results/README.md` before new computation.
+- Local public web retrieval could not open `noyes-energy-group.pages.dev`; exact target-ID web queries yielded unrelated public results, no independently sourced new material. Prior v1 public site census remains controlling source-context.
+- Follow Critic's admission gate: next useful work requires a genuinely original selected K04 payload/mask/independently indexed producer witness or Emily's verbatim **final** margin, with hashes, provenance and held-out controls. Updated K04 actual bits 0/128; attested final K08 words 0; REC8 still 6/8.
