@@ -1,0 +1,20 @@
+name: Agent 1 H17 source inventory
+on:
+  workflow_dispatch:
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: List private research path names, without file contents
+        shell: bash
+        run: |
+          printf '%s\n' 'PRIVATE INVENTORY START'
+          if test -d private; then
+            find private -type f -print | sort | head -n 250
+            printf '%s\n' 'FILE COUNT'
+            find private -type f | wc -l
+          else
+            printf '%s\n' 'No private directory'
+          fi
+          printf '%s\n' 'PRIVATE INVENTORY END'
