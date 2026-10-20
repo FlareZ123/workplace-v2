@@ -1,7 +1,7 @@
 """Source-only K03 seal serial → MT19937 printer ancestor discriminator.
 
 Holds out selected RECOVER attempt 2. No hashes, mask, or target consulted.
-Designed as an early kill test for a previously untested original control class.
+Replication of v1's original seal-serial predecessor gate, with a distinct narrow future XOR control.
 Run from the checked-out repository with standard Python 3.
 """
 import hashlib
@@ -117,7 +117,7 @@ def main():
         "historical withheld cross-carrier positive control failed"
     )
     seals = fullword_tokens()
-    matches = [(serial, endian, fingerprints[low31])
+    matches = [(serial, endian, fingerprints[whole & 0x7FFFFFFF])
                for serial, endian, whole in seals if (whole & 0x7FFFFFFF) in fingerprints]
     print(f"source: 132 original intact spool rows, 44 independently recorded seal serials")
     print(f"index: {sum(map(len, fingerprints.values()))} distinct ordered printer-pair / word comparisons")
@@ -134,7 +134,7 @@ def main():
     paired = [(a, b) for i, a in enumerate(seals) for b in seals[i + 1:]
               if a[0] != b[0] and (a[2] ^ b[2]) == target_xor]
     print("source-only original-printer prediction: X1412 XOR X1866 = BD2761F8")
-    print(f"oriented distinct-serial pair assignments: {len(seals) * (len(seals) - 2)}")
+    print(f"oriented distinct-serial unordered pairs: {len(seals) * (len(seals) - 2) // 2}")
     print(f"seal-pair future donor matches: {len(paired)}")
     for pair in paired:
         print(pair)
