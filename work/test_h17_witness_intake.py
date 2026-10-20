@@ -62,6 +62,16 @@ def main() -> None:
             raise AssertionError("Incorrect coupon selector should raise")
         wrong["attempt"] = 2
         write_json(transcript, wrong)
+        print("TEST 3b: reject ambiguous duplicate coupon JSON keys")
+        transcript.write_text(transcript.read_text().replace('"payload_hex":', '"payload_hex": "00000000000000000000000000000000", "payload_hex":'))
+        try:
+            assess(transcript, original, None, None)
+        except ValueError as error:
+            assert "Duplicate JSON key" in str(error)
+            print("PASS: duplicate payload key rejected")
+        else:
+            raise AssertionError("Duplicate coupon transcription should raise")
+        write_json(transcript, wrong)
 
         print("TEST 4: verify normalization equivalence")
         assert normalize_caption("  THE, Little LAMP!  ") == normalize_caption("the little lamp")
