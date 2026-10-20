@@ -1,0 +1,31 @@
+# Agent 31: H-17 missing-slot cracking program
+
+**Identity claimed:** 2026-10-20 13:59:12 UTC, run `088ad00f-0bfc-4b60-8b64-b8e21b7b2df8` (original lease remains at `.lease.json`; do not refresh). This incarnation selected **normal mode** with an executed cryptographic RNG draw of 7.
+
+## Research this incarnation (20 Oct UTC)
+
+User specifically requests **new cracking, no retreading**. Repository already has six authentic PASS values; K04 and K08 missing. Read the repository and v1 prior-art frontier (>180 reports), Critic 13:22 UTC target-information gate, canonical issue #1 (no custodian witness), and uploaded original ZIP (source tree was already established identical). Did **not** repeat six-slot verification, 3-/4-byte correction, PDF decryption, textual K08 combinatorics, ZIP provenance or printer MT solves.
+
+**New, bounded, source-only PRNG avenue:** Independently test whether K04's selected 16-byte printer coupon can be *predicted* by identifying a small-state output generator from original **intact** `evidence/print/spool-reconstruction.log` rows. Any positive intact-row predictor would be tested on held-out originals before predicting the selected job, then subjected to unchanged K04 acceptance. Do not read the selected `PS-261003-0417 ATTEMPT=2` payload, XOR mask, target SHA256 or candidate in any family test. Sample has exactly 133 payload rows; 132 remain after target exclusion. Important caveat: generic high-entropy hex output alone does **not** authenticate any producer family, so these are bounded falsifications, not historical provenance.
+
+- **SplitMix64**: invert first 64-bit output, predict second 64-bit output of *each* intact row using standard Weyl increment `0x9E3779B97F4A7C15`, multipliers `0xBF58476D1CE4E5B9` and `0x94D049BB133111EB`. **0/132 matches** in both byte endiannesses. Exact synthetic next-output control passed after correction of inversion implementation.
+- **LCG modulo 2^32** with per-row unknown affine constants: infer `a,c` from first three contiguous 32-bit words when first difference invertible mod `2^32`; predict the fourth. **Zero matches** both endian interpretations. The premise is direct 32-bit output without downstream permutation.
+- **Xorshift32**: all three shift positions 1..31 in left-right-left and right-left-right Marsaglia update families, two byte orders; even the first 32-bit intact source transition has **zero compatible parameter tuples**, synthetic positive passed. This kills the direct single-word generator, not higher-dimensional xorshift.
+- **Xorshift64 and xorshift64***: standard 13/7/17 plain and 12/25/27 `*2685821657736338717` output rules, both endiannesses and reversed 64-bit halves. **0/132 matching within-row consecutive predictions** for each of eight representations. Independent synthetic `xorshift64*` state fixture passed.
+- **Marsaglia xorshift128 (4xuint32)**: first 127 consecutive 5-minute retained JOB pairs (0300..0427) were independently tested, allowing 0..16 hidden uint32 outputs between the two 4-word payloads; two endiannesses. **Zero exact pair predictions**, synthetic five-hidden-draw fixture passed.
+- **Java `java.util.Random` 48-bit LCG `nextInt()`**: enumerate 65536 unobserved low bits behind first 32-bit word, use multiplier `0x5DEECE66D` and increment `0xB` to predict the other 3 words. All 132 intact rows, two endian and forward/reverse word-order interpretations: **zero four-output matches**. Synthetic 4-output seeded positive passed.
+- **xoshiro256** reversible `**` output** (novel stronger state-solver): invert the `rotl(s1*5,7)*9` emission modulo `2^64`, linearize the four-word XOR/rotate state transition as a 256-variable GF(2) system, and solve against the first **three intact** source rows (jobs 0300,0301,0302). Enumerated 0..16 hidden uint64 calls in **both** inter-row gaps (289 pairs) and four byte-order/64-bit-half-order interpretations (total **1156 exact source-only model fits tested**). **No consistent six-output / three-row state**. Synthetic nonzero 256-bit initial state with gaps 3 and 2 reconstructs exactly (GF2 rank 256). Explicitly tried rank-deficient first-two-row cases by including the third row in the solve rather than dismissing them. No target/acceptance hash was read.
+
+**Novel missing target gain:** K04 **0 authenticated bits**; K08 **0 exact final words**; six accepted slots unchanged. These negatives do not prove printer never used these algorithms with other framing/skips. More arbitrary generator families or wider hidden-call bounds are not justified absent a real producer observation; stop this lane rather than letting it become the next speculative MT-size marathon.
+
+## Source-witness frontier and cooperation
+
+Canonical records request is [v2 Issue #1](https://github.com/FlareZ123/workplace-v2/issues/1), with historical ESC-N attempt-2 coupon and Emily's verbatim final margin; comments already cover native photos, historical print host and offline R: desktop mapping. No custodian response containing source bytes was visible. An independent current Project-file search returned only `prompt.md`, not a new original; public broad search yielded no matching record. Avoid another repeated request.
+
+Potential future priority: an *actual historical printer producer/seed/ordering witness* which can make a held-out intact-output prediction and constrain all or part of the selected coupon, or an *attested exact* editing rule/photo caption tying pre-1-Oct crew photos to the final margin. For K08 the source never specifies even one mandatory word; existing caption brute-force and hidden-media audits are prior art. The official `resources/verify.py` and commitment SHA-256 are verifiers only.
+
+Research note: the very unusual `A9A9` prefix of selected attempt2 was already noticed in v1 `h17-k04-two-ended-fragment-32bit-bound.md`, and internal splice/bit-slip classes were already exhausted. **Do not repeat** this apparent anomaly as a novel fault hypothesis.
+
+## Checkpoint discipline
+
+After each Git checkpoint, compare actual UTC runtime against the original lease timestamp. At 70+ elapsed minutes, finish memory, push any useful work, then delete the lease as the final operation, check remote, exit.
