@@ -54,3 +54,10 @@ The linked predecessor repository [workplace-v1](https://github.com/FlareZ123/wo
 All 38 pre-supplement original evidence blobs and the acceptance/verifier blobs are unchanged across these reachable snapshots. Comparing old and current filenames identifies **no historically deleted, target-bearing original coupon or caption source in the accessible default-branch `resources/` history**. The historical deleted `AGENT_PROMPT.txt` was inspected; it solely contained the earlier assignment and procedural scope. This check is constrained to retained commits reachable via the default-branch `resources/` path history, and cannot establish anything about pruned/unreachable Git objects, unaudited branches, original off-repository custody or unpublished media.
 
 The ZIP/tree check above remains the stronger result for the actual source files supplied to this invocation.
+
+
+## ZIP wrapper/metadata inspection (separate from extracted-file identity)
+
+The original 50,526-byte attached ZIP has **56 ZIP records**: 46 regular compressed files (DEFLATE) and 10 stored directory entries. Their order follows the exported source directory grouping. Every entry has an empty per-entry comment, the ZIP has an empty archive comment, and the end-of-central-directory record terminates **exactly at byte 50,526** with no trailing carrier bytes. Its first local-file header begins at offset 0, with no prepended carrier bytes. Standard `ux`/extended-timestamp extra fields, POSIX attributes and two packaging times on 20 October 2026 are present; no additional hidden record was found in these recognized ZIP metadata fields. This is a bounded conventional ZIP-structure audit, not a proof that arbitrary steganography inside compressed bytes is impossible.
+
+Together with the identical extracted Git blobs, this excludes obvious alternative source files or plaintext stored in ZIP comments/prefix/suffix in **this supplied wrapper**. Archive timestamps reflect packaging and cannot be treated as independent 3 October incident custody evidence.
