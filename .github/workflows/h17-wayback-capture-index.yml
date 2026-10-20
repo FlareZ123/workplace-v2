@@ -1,0 +1,21 @@
+name: H-17 original public Wayback capture inventory
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  historic-index:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source-only research
+        uses: actions/checkout@v4
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Query existing public historical captures
+        run: python agents/agent40/h17_wayback_capture_probe.py
