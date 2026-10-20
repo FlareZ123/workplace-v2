@@ -85,7 +85,8 @@ def assess(
             candidate[key] = None
     result = {"source_authenticity": "NOT_ESTABLISHED_BY_HASH_ALONE", "witnesses": {}}
     if coupon is not None:
-        record = json.loads(coupon.read_text(encoding="utf-8-sig"), object_pairs_hook=no_duplicates)
+        coupon_bytes = coupon.read_bytes()
+        record = json.loads(coupon_bytes.decode("utf-8-sig"), object_pairs_hook=no_duplicates)
         if not isinstance(record, dict):
             raise ValueError("Coupon transcription must be a JSON object")
         job, attempt, timestamp = last_escrow_ack(evidence)
@@ -112,21 +113,22 @@ def assess(
         candidate["K04"] = bytes(a ^ b for a, b in zip(payload, mask)).hex().upper()
         result["witnesses"]["K04"] = {
             "original_sha256": sha256_file(coupon_original),
-            "transcription_sha256": sha256_file(coupon),
+            "transcription_sha256": hashlib.sha256(coupon_bytes).hexdigest(),
             "job": job,
             "attempt": attempt,
             "timestamp_utc": timestamp.isoformat(),
             "derived_component": candidate["K04"],
         }
     if caption is not None:
-        normalized = normalize_caption(caption.read_text(encoding="utf-8-sig"))
+        caption_bytes = caption.read_bytes()
+        normalized = normalize_caption(caption_bytes.decode("utf-8-sig"))
         if not normalized:
             raise ValueError("Caption transcript normalizes to an empty string")
         nonce = bytes.fromhex(routing["K08"]["desk_nonce"])
         candidate["K08"] = hmac.new(nonce, normalized.encode("utf-8"), hashlib.sha256).digest()[:16].hex().upper()
         result["witnesses"]["K08"] = {
             "original_sha256": sha256_file(caption_original),
-            "transcription_sha256": sha256_file(caption),
+            "transcription_sha256": hashlib.sha256(caption_bytes).hexdigest(),
             "normalized_caption": normalized,
             "derived_component": candidate["K08"],
         }
