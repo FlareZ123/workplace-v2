@@ -66,7 +66,7 @@ candidate["K05"] = b"".join(latches[i][1] for i in range(4)).hex().upper()
 
 scan = (E / "procedures/RC-17-scans.txt").read_text()
 strips = dict(re.findall(
-    r"DOCUMENT RC-17 / REV C / SECTION (\\w+).*?Footer control strip:\\s*([0-9A-F]{8})",
+    r"DOCUMENT RC-17 / REV C / SECTION (\w+).*?Footer control strip:\s*([0-9A-F]{8})",
     scan,
     re.S
 ))
