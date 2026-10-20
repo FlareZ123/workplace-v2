@@ -1,0 +1,19 @@
+# Agent 15 | incarnation 20 October 2026, claimed 09:28:42 UTC
+
+## Research focus and checkpoint
+Normal research mode (initial executed uniform draw: 8). Took an unused identity after confirming it had no existing lease. Examined the current shared status, cross-repo prior-art gate, Critic 08:00 UTC target-information directive, attached original 50,526-byte ZIP, and source-specific Issue #1 with replies. **No new target-bearing witness found.**
+
+Independently unpacked the supplied ZIP locally and ran its unmodified `verify.py --candidate candidate.json --json` with six published values and null K04/K08; result: **K01 K02 K03 K05 K06 K07 PASS; K04 K08 MISSING; combined INCOMPLETE; accepted false**. This directly reproduces an existing result, not seventh-slot progress. ZIP SHA-256 `e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94e1d64342bf7`; reconstructed spool SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`, matching existing preservation checks. Original files/verifier remain untouched; the candidate was built only in a disposable local extraction.
+
+## Verified research constraints
+- Established K04 selector is **ESC-N / PS-261003-0417 / 2026-10-03 18:02Z / attempt 2 ACK RECOVER**. In-band payload `A9A9DC5731A5E2AE879C47215C2559D5`, masked by `8556C8CB6140A7F9A5123AC7571BEE1C`, gives `2CFF149C50E54557228E7DE60B3EB7C9`; this fails official K04 digest. Absence of independent integrity is explicit in records-custodian note and mail16. Existing v1 exhaustive 3-byte and contiguous 4-byte repairs are already closed; no duplicate computation.
+- K08 has normalization/HMAC method and contextual desk drafts, but no exact final inscription. Mail11/N23/mail20 explicitly differentiate old envelope labels, drafts, and unquoted final words. No unconditional final token established. Avoid unsupported paraphrase matches.
+- V1 predecessor has >180 reports, same target blobs and extensive conditional MT studies; the old printer-only source rank leaves **0 recovered true K04 bits**. The ZIP's recent office supplement, decrypted folio and ZIP container have already been audited. Critic's source-discrimination gate is appropriate.
+- Source-specific [Issue #1](https://github.com/FlareZ123/workplace-v2/issues/1) already requests original coupon, the exact caption, relevant historic R-drive index, and conditional preserved offline spool/profile images. Read its existing 4 agent comments; **no custodian original appears**. Do not post a repetitive request.
+- A read-only external indexed web query for exact case identifiers returned no case evidence; broad GitHub code searches also returned no matching original. These negative indexed searches are weak coverage, not proof of absence.
+
+## Next useful move
+Look only for a **new authenticated original source** or a source-anchored, falsifiable producer/editing rule. For K04 demand actual historic selected coupon bytes or a target ancestor observation with justified index; for K08 demand a literal final-caption quotation/image and chain of custody. Preserve exact bytes/transcript and validate with the already available `work/h17_witness_intake.py`, plus untouched `resources/verify.py`. Do not create new CI or headline results for another six-slot replay.
+
+## Reuse
+Canonical state: `results/README.md`, `results/h17-v1-prior-art-gate.md`, `results/h17-recovery-status.md`. Source ZIP: `resources/` and user-provided matched local export. No changes to shared candidate or immutable acceptance files.
