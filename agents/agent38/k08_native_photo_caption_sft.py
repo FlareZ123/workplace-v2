@@ -19,7 +19,6 @@ from typing import Any, Iterator
 from defusedxml import ElementTree
 from PIL import Image, IptcImagePlugin
 
-CAPTION_FIELDS = {"ImageDescription", "XPTitle", "XPComment", "XPSubject"}
 EXIF_FIELDS = {270: "ImageDescription", 40091: "XPTitle", 40092: "XPComment", 40095: "XPSubject"}
 IPTC_FIELDS = {(2, 120): "CaptionAbstract", (2, 105): "Headline", (2, 5): "ObjectName"}
 
@@ -42,6 +41,14 @@ def text_value(value: str | bytes) -> str:
         return value.decode("utf-16le", errors="replace").strip("\x00 ")
     return value.decode("utf-8", errors="replace").strip("\x00 ")
 
+def caption_origin(trail: str) -> bool:
+    parts = trail.lower().replace("[", ".").split(".")
+    if parts[-1] in {"lang", "language"}:
+        return False
+    relevant = {"description", "imagedescription", "title", "caption", "headline", "subject", "label", "comment", "objectname"}
+    return any(part in relevant and not (part == "description" and i and parts[i - 1] == "rdf")
+               for i, part in enumerate(parts))
+
 
 def flatten(value: Any, trail: str = "XMP") -> Iterator[tuple[str, str]]:
     if isinstance(value, dict):
@@ -52,7 +59,7 @@ def flatten(value: Any, trail: str = "XMP") -> Iterator[tuple[str, str]]:
             yield from flatten(child, trail + f"[{index}]")
     elif isinstance(value, (str, bytes)):
         content = text_value(value)
-        if content:
+        if content and caption_origin(trail):
             yield trail, content
 
 
@@ -61,7 +68,7 @@ def xmp_sidecar(path: Path) -> Iterator[tuple[str, str]]:
     def visit(element: Any, trail: str) -> Iterator[tuple[str, str]]:
         tag = element.tag.rsplit("}", 1)[-1]
         new_path = trail + "." + tag
-        if element.text and element.text.strip():
+        if element.text and element.text.strip() and caption_origin(new_path):
             yield new_path, element.text.strip()
         for child in element:
             yield from visit(child, new_path)
@@ -131,7 +138,8 @@ def self_test(resources: Path) -> None:
         im = Image.new("RGB", (2, 2), (1, 1, 1))
         exif = Image.Exif()
         exif[270] = first
-        im.save(photo, exif=exif)
+        embedded = b'''<x:xmpmeta xmlns:x="adobe:ns:meta/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:RDF><rdf:Description><dc:title><rdf:Alt><rdf:li>At the end of the night, our voices have room.</rdf:li></rdf:Alt></dc:title></rdf:Description></rdf:RDF></x:xmpmeta>'''
+        im.save(photo, exif=exif, xmp=embedded)
         photo.with_suffix(".xmp").write_text('''<?xml version="1.0"?>
 <x:xmpmeta xmlns:x="adobe:ns:meta/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <rdf:RDF><rdf:Description><dc:description><rdf:Alt><rdf:li>The little lamp stays on until the corridor has gone quiet.</rdf:li></rdf:Alt></dc:description></rdf:Description></rdf:RDF>
@@ -140,7 +148,9 @@ def self_test(resources: Path) -> None:
         result = assess([photo], resources)
         fields = result["records"][0]["caption_fields"]
         assert any(x["field"] == "EXIF.ImageDescription" and x["exact_metadata_text"] == first for x in fields)
+        assert any(x["field"].startswith("XMP.") and "our voices" in x["exact_metadata_text"] for x in fields)
         assert any(x["field"].startswith("XMP_SIDE_CAR") and "little lamp" in x["exact_metadata_text"] for x in fields)
+        assert all(x["exact_metadata_text"] != "x-default" for x in fields)
         assert all(not x["commitment_match"] for x in fields)
         assert source_hash(photo) == original_sha
         assert result["records"][0]["metadata"]["sidecar_sha256"]
