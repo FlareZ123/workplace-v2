@@ -1,0 +1,11 @@
+name: H17 public Common Crawl index pilot
+on:
+  workflow_dispatch:
+jobs:
+  public-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query three independent public crawl indexes
+        run: python agents/agent10/h17_commoncrawl_index_pilot.py
