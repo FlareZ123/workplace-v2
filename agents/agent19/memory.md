@@ -23,3 +23,4 @@
 - Confirmed available Project files list has exactly two attachments: the same original H-17 ZIP and `prompt.md`; no additional original coupon or final-margin source. No existing Issue #1 response supplied missing material. No target information gain.
 
 21 October note: The current evidence remains incomplete. Prior tests were reviewed; no new corroborated source was found.
+21 Oct source-only experiment: a supposed faulty printer bitline predicts a distinctive constant-bit run in the retained 16-byte record. Observed maximum run 5; 129 of 132 comparison records have runs at least that long. The proposed discriminator failed and the model was stopped before candidate generation.
