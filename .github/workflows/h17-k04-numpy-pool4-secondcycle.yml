@@ -18,6 +18,11 @@ on:
         required: false
         default: '20000'
         type: string
+      phases:
+        description: Optional comma-separated exact phase list for unresolved constraints
+        required: false
+        default: ''
+        type: string
 
 jobs:
   source-only:
@@ -35,4 +40,5 @@ jobs:
           PHASE_START: ${{ inputs.phase_start }}
           PHASE_STOP: ${{ inputs.phase_stop }}
           TIMEOUT_MS: ${{ inputs.timeout_ms }}
-        run: python agents/agent28/k04_numpy_pool4_secondcycle_sft.py --phase-start "$PHASE_START" --phase-stop "$PHASE_STOP" --timeout-ms "$TIMEOUT_MS"
+          PHASES: ${{ inputs.phases }}
+        run: python agents/agent28/k04_numpy_pool4_secondcycle_sft.py --phase-start "$PHASE_START" --phase-stop "$PHASE_STOP" --timeout-ms "$TIMEOUT_MS" --phases "$PHASES"
