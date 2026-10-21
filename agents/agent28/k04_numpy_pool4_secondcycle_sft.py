@@ -148,8 +148,12 @@ def main():
     ap.add_argument("--phase-start", type=int, default=0)
     ap.add_argument("--phase-stop", type=int, default=4)
     ap.add_argument("--timeout-ms", type=int, default=20000)
+    ap.add_argument("--phases", type=str, default="")
     args = ap.parse_args()
     assert 0 <= args.phase_start <= args.phase_stop <= 393
+    phase_list = ([int(word) for word in args.phases.split(",")]
+                  if args.phases else list(range(args.phase_start, args.phase_stop)))
+    assert phase_list and all(0 <= phase < 393 for phase in phase_list)
     from pathlib import Path
     spool = Path(__file__).resolve().parents[2] / "resources/evidence/print/spool-reconstruction.log"
     data = spool.read_bytes()
@@ -172,7 +176,7 @@ def main():
         print("STOP: synthetic inversion did not converge; original not attempted", flush=True)
         return
     counts = {}
-    for phase in range(args.phase_start, args.phase_stop):
+    for phase in phase_list:
         verdict, pool = solve_one(z3, phase, PAIRS, args.timeout_ms)
         counts[verdict] = counts.get(verdict, 0) + 1
         print("ORIGINAL_PHASE", phase, verdict, pool, flush=True)
