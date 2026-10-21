@@ -1,4 +1,4 @@
-name: H17 public Common Crawl index pilot
+name: H17 public historical archive indices
 on:
   workflow_dispatch:
 jobs:
@@ -7,5 +7,5 @@ jobs:
     timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
-      - name: Query three independent public crawl indexes
-        run: python agents/agent10/h17_commoncrawl_index_pilot.py
+      - name: Query independent public Arquivo.pt indices
+        run: python agents/agent10/h17_arquivo_index_pilot.py
