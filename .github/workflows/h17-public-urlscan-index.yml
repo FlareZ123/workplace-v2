@@ -1,0 +1,52 @@
+name: H17 independently archived public scan index
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-index:
+    runs-on: windows-latest
+    timeout-minutes: 4
+    steps:
+      - name: One date-bounded anonymous historical Public scan metadata lookup
+        shell: python
+        run: |
+          import json
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          HOST = "noyes-energy-group.pages.dev"
+          query = f"task.domain:{HOST} AND date:[2025-01-01 TO 2026-10-21] AND task.visibility:public"
+          endpoint = "https://urlscan.io/api/v1/search/?" + urllib.parse.urlencode({"q": query, "size": "100"})
+          request = urllib.request.Request(endpoint, headers={"User-Agent": "H17-public-historical-index-source-pilot/1.0"})
+          try:
+              with urllib.request.urlopen(request, timeout=20) as response:
+                  payload = response.read(300000)
+                  print("HTTP_STATUS", response.status, "RESPONSE_BYTES", len(payload))
+                  data = json.loads(payload)
+          except urllib.error.HTTPError as error:
+              print("HTTP_STATUS", error.code, "SOURCE_PILOT_STOP")
+              raise SystemExit(0)
+          except (urllib.error.URLError, TimeoutError, ValueError) as error:
+              print("SOURCE_UNAVAILABLE", type(error).__name__, str(error)[:200])
+              raise SystemExit(0)
+
+          items = data.get("results", [])
+          print("PUBLIC_SCANS_REPORTED", data.get("total"), "RETURNED", len(items), "HAS_MORE", data.get("has_more"))
+          public = 0
+          excluded = 0
+          for item in items:
+              task = item.get("task") or {}
+              url = task.get("url", "")
+              parsed = urllib.parse.urlparse(url)
+              if task.get("visibility") != "public" or parsed.hostname != HOST or parsed.path.startswith(("/admin", "/api")):
+                  excluded += 1
+                  continue
+              public += 1
+              print("PUBLIC_SOURCE_SCAN", task.get("time"), parsed.scheme + "://" + HOST + parsed.path[:180])
+          print("PUBLIC_SCANS_SAFE_HOST", public, "EXCLUDED_OTHER_OR_PROTECTED", excluded)
+          print("NO_SCAN_SUBMISSIONS_OR_PRIVATE_REQUESTS")
