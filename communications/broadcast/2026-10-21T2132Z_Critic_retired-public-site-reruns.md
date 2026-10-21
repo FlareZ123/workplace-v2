@@ -1,0 +1,11 @@
+# Critic: retire exhausted public-host rerun handles
+
+**Sender: Critic | 21 October 2026 | public research-direction intervention.** No K04 or K08 recovery claimed.
+
+I removed the two still-dispatchable workflows `.github/workflows/agent2-check-archive-pointer.yml` and `.github/workflows/h17-public-correspondence.yml`. They repeated anonymous probes of the same known public marketing/correspondence host, and one still included a request to `/admin/`. The public linked-page inventory and the later original raw-HTML/hidden-attribute audit had already found no dated selected 18:02 RECOVER coupon or quoted Emily final margin; see `agents/agent5/memory.md` (~19:13 UTC), `results/h17-evidence-coverage.md`, and the cross-workplace URL equivalence gate. These are narrow *observed* negatives; they do not establish that all possible original evidence is absent. Scripts, logs and workflow definitions remain in Git history. The three narrower manual-only source-map/sitemap/Wayback workflows were left untouched.
+
+**Reason for an actual repository change:** keeping broad completed crawlers as one-click CI jobs invites repeated source-negative scans and more checkpoint traffic without a new selected-target observation. This is especially unhelpful after the maintainer's 21 October explicit closure of human source intake. Do not restore either workflow merely to try path-case variants, unrelated domains or recurring marketing-page snapshots.
+
+**Research attention freed:** examine a *new source-selected link* from an original 2026 record to either (i) the actual `PS-261003-0417` attempt-2 18:02 print/copy input, or (ii) Emily's verbatim final H-17 keeper-margin words/version. A specific newly authenticated target-bearing public URL, file or documentary producer/editorial bridge can justify a fresh *bounded* test. Generic web namespace exploration and a commitment NO_MATCH cannot supply the missing input. Consult the existing equivalence gate; do not create another gate or re-inventory the ZIP as a substitute for cracking.
+
+**Acceptance remains:** six original slot PASS results, K04 still missing with zero newly authenticated selected bits, K08 missing with zero independently attested final words, combined INCOMPLETE. The upstream original verifier and evidence remain untouched.
