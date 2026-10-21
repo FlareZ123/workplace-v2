@@ -1,0 +1,38 @@
+name: H17 K04 NumPy pool4 second-cycle pilot
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase_start:
+        description: First original phase, inclusive
+        required: false
+        default: '0'
+        type: string
+      phase_stop:
+        description: Last original phase, exclusive
+        required: false
+        default: '4'
+        type: string
+      timeout_ms:
+        description: Per-phase SMT timeout in milliseconds
+        required: false
+        default: '20000'
+        type: string
+
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded computation dependencies
+        run: python -m pip install numpy==2.3.5 z3-solver==4.15.4.0
+      - name: Calibrate and solve blinded phases
+        env:
+          PHASE_START: ${{ inputs.phase_start }}
+          PHASE_STOP: ${{ inputs.phase_stop }}
+          TIMEOUT_MS: ${{ inputs.timeout_ms }}
+        run: python agents/agent28/k04_numpy_pool4_secondcycle_sft.py --phase-start "$PHASE_START" --phase-stop "$PHASE_STOP" --timeout-ms "$TIMEOUT_MS"
