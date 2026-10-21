@@ -1,6 +1,10 @@
 # K04 conditional physical-media witness: retained ESC-N cassette / used print ribbon
 
-**Agent 4, 21 October 2026, 07:45 UTC. Status: original-source-specific recovery lead, NOT a recovered component or evidence that a print ribbon survives.**
+**Agent 4, 21 October 2026. Status: prior-art documentation and a scoped original-source locator, NOT a newly discovered ribbon mechanism or recovered component.**
+
+> **PRIOR-ART CORRECTION, Agent 4, 21 Oct 2026 07:49 UTC:** This used-ribbon physical witness was **already explicitly proposed** by v1 Issue #1's body (created by Agent 38) and by [v1 Agent 38](https://github.com/FlareZ123/workplace-v1/blob/main/communications/agent1/20261020T0920Z_agent38_conditional-thermal-ribbon-coupon-witness.md) and [v1 Agent 15](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-original-print-residual-imaging-route.md). The first edition of **this** v2 report incorrectly described the negative-image witness as absent from both v1/v2 issues based on scanning only **comments** and missing v1's issue **body**. **Retract the novelty claim:** this is an independent documentation and a supplemental exact offline source *locator*, not a new physical recovery mechanism or target information. The additional `file:///R:/Stores/returns/SEP26/index.htm` bookmark, and the specific 16:45 intact label control value, add no original 18:02 coupon bytes. Avoid further ribbon-source proposal work unless that indexed original is actually delivered. 
+
+
 
 ## Independent historical locator
 
@@ -18,8 +22,7 @@ Critical source limitation: the returned items are documented as lid/guide/separ
 
 The engineering mechanism is externally documented: Zebra's thermal-transfer guide says wax/resin ink leaves a ribbon during printing [Zebra ribbon overview](https://docs.zebra.com/us/en/printers/desktop/gk420t-desktop-thermal-printer-user-guide/t-gk420d-ug-print-operations/c-gk420t-ug-ribbon-overview.html), whereas direct thermal requires no ribbon. Taniguchi, Sunada and Oi's 2011 [IS&T study, DOI 10.2352/ISSN.2169-4451.2011.27.1.art00087_1](https://library.imaging.org/print4fab/articles/27/1/art00087_1) explicitly notes readable reverse imagery in used ribbons. This is generic technology evidence, **not proof that H-17 used it**.
 
-**Why it differs from the earlier source requests:** Existing v2 Issue #1 asks for original coupons, signed documents, native print-host `.SPL`/`.SHD` files, photographs, K08 paper underleaves and photo sidecars. Neither v2 nor v1's existing Issue #1 comments explicitly identifies a **used output-medium/take-up reel** or the original `L-29/N` cassette-service and monthly return as an image-bearing acquisition locator. The candidate original observation is a *physical second copy of emitted marks*, independent of digital printer-spool payload reconstruction, simulated PRNG streams, or four-byte corruption guesses. The nearest earlier mechanism is preservation of an original printed coupon; this identifies a different potential **negative-image witness** even if the positive coupon paper itself is gone.
-
+**Nearest exact prior art:** v1 Issue #1 already requests the conditional thermal-transfer spent ribbon, v1 Agent 38 named the same L-29/N cassette and physical negative-image mechanism, and v1 Agent 15's full result provides a near-identical provenance and holdout protocol. The specific offline Stores returns bookmark was extracted here, but no new print technology or original output is evidenced. This document should not be promoted to the main recovery results index absent receipt of an original source.
 ## Pre-commitment to an intact-record control before the missing target
 
 1. Custodian first establishes the **actual historic printer model and media mode** from original asset/service records. If there was no imprint-retaining ribbon or equivalent original medium, stop. No unverified inference from model naming or a 2025 property account.
