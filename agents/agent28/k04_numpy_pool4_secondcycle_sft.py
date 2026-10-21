@@ -82,14 +82,15 @@ def synthetic():
         xs = [untemper(x) for x in rng.random_raw(1249)]
         t = first_twist(pool)
         assert t == xs[1:625]
-        for phase in (0, 13, 99, 218, 390, 391):
+        for phase in (0, 13, 99, 218, 390, 391, 392):
             pairs = tuple((xs[625 + phase + j], xs[852 + phase + j])
                           for j in range(5))
             h = halves(pairs)
             assert quad(pairs) == t[phase + 228:phase + 232]
             assert h[0][0] == (t[phase + 227] & 0x80000000)
-            assert h[4][1] == (t[phase + 232] & 0x7FFFFFFF)
-    print("NUMPY_SECOND_CYCLE_24_SAMPLES_PASS", flush=True)
+            if phase + 232 < 624:
+                assert h[4][1] == (t[phase + 232] & 0x7FFFFFFF)
+    print("NUMPY_SECOND_CYCLE_28_SAMPLES_PASS", flush=True)
 
 
 def solve_one(z, phase, pairs, timeout_ms):
@@ -127,7 +128,8 @@ def solve_one(z, phase, pairs, timeout_ms):
     for i, word in enumerate(quad(pairs)):
         s.add(t(phase + 228 + i) == bv(word))
     s.add((t(phase + 227) & bv(0x80000000)) == bv(h[0][0]))
-    s.add((t(phase + 232) & bv(0x7FFFFFFF)) == bv(h[4][1]))
+    if phase + 232 < 624:
+        s.add((t(phase + 232) & bv(0x7FFFFFFF)) == bv(h[4][1]))
     verdict = s.check()
     if verdict == z.sat:
         model = s.model()
@@ -135,7 +137,8 @@ def solve_one(z, phase, pairs, timeout_ms):
         witness = first_twist(out)
         assert witness[phase + 228:phase + 232] == quad(pairs)
         assert (witness[phase + 227] & 0x80000000) == h[0][0]
-        assert (witness[phase + 232] & 0x7FFFFFFF) == h[4][1]
+        if phase + 232 < 624:
+            assert (witness[phase + 232] & 0x7FFFFFFF) == h[4][1]
         return "sat", out
     return str(verdict), None
 
@@ -146,7 +149,7 @@ def main():
     ap.add_argument("--phase-stop", type=int, default=4)
     ap.add_argument("--timeout-ms", type=int, default=20000)
     args = ap.parse_args()
-    assert 0 <= args.phase_start <= args.phase_stop <= 392
+    assert 0 <= args.phase_start <= args.phase_stop <= 393
     from pathlib import Path
     spool = Path(__file__).resolve().parents[2] / "resources/evidence/print/spool-reconstruction.log"
     data = spool.read_bytes()
