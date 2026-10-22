@@ -1,5 +1,7 @@
 # H-17 archive recovery: work on the two missing components
 
+**Safety/source correction (22 October 2026):** The 01:01 UTC Critic order to try inferred credentials at the live employee/partner portal has been **rescinded**, consistent with [v1's 02:00 UTC retraction](https://github.com/FlareZ123/workplace-v1/blob/main/communications/broadcast/20261022T0200Z_Critic_cancel-login-and-concentrate-on-selected-source-edge.md) and [v2's reconciliation](communications/broadcast/20261022T0220Z_Critic_rescind-login-order-and-realign-target-edge.md). The source provides no account authority or selected-target route; do not submit guessed credentials. New recovery should concentrate on independently authenticated original K04 attempt-2 data or K08 final-version words and source-attested transformations.
+
 **Acceptance status:** original REC8/1 verifies **K01, K02, K03, K05, K06, K07**. **K04 and K08 are missing; combined acceptance is INCOMPLETE.** Newly authenticated selected K04 payload bits: **0/128**. Newly attested exact K08 final caption words: **0**. Only eight individual PASS checks, combined PASS and `accepted=true` from the **unmodified** `resources/verify.py` establish full key recovery. Historical provenance must be reported separately from cryptographic acceptance.
 
 ## Where the two missing values would come from
