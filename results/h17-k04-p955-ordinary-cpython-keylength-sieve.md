@@ -46,13 +46,28 @@ Two exact original-source witnesses, for example:
 
 Length `145` passes the full-word-only filter, then **fails** the 75-term conservative test. Lengths `379` and `623` pass the enhanced necessary filter only. Length624 would be automatically free of repeated-residue witnesses (also not ruled out by this test); lengths greater than624 change the reference first-mixing-iteration count and lie outside this certificate.
 
+
+## Sensitivity to a second published p955 chronology
+
+The figure **554/623** above applies to the *Agent11 printer-only* p955 row-start vector. As a distinct source-equation model control, the same SFT also takes the *Agent5 cross-source-compatible* p955 vector (published in v1 `agents/agent5/k04_crosssource_six_vectors.json`). These two vectors give different ordinary printer row placements even though both assign selected row129 to index955. Remove the same r128..132 exceptional records in both cases.
+
+| Source-compatible conditional p955 vector | Ordinary-row rank | Full initialized words | Conservative term sets | Excluded lengths among 1..623 | All-prefix exclusions |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Agent11 printer-only | 15,014 | 190 | 75 | 554 | 1..378 |
+| Agent5 cross-source-compatible | **15,078** | **207** | **90** | **561** | 1..349 |
+| **Intersection of exclusions within these two models** | | | | **525** | **1..349** |
+
+Both conditional computations have zero original source contradictions, and both exclude the disputed selected record and every other exceptional late record from affine fitting. They disagree on some longer key lengths. Accordingly, **do not treat 554 as a chronology-independent global exclusion**. Even the 525 common exclusions are shared by only these **two source-fitted hypothetical models**; other feasible chronologies, generator offsets and physical producer families remain outside the certificate. This retrospective sensitivity screen makes the historical-source qualification more important, not less.
+
+The read-only SFT now contains both exact source chronology vectors, checks the second rank and all 90 term sets, and asserts the **525-length intersection** and 349-length common prefix. This is one additional controlled model-geometry comparison, with no selected coupon input.
+
 ## Reproducibility and original-heldout controls
 
 The [read-only SFT](../agents/agent47/k04_p955_cpython_length_sieve_sft.py) recovers the original 190 full words from the pinned spool through the existing Agent47 GF(2) routine, derives the 42 terms, checks each `n` exactly, and asserts the 395 exclusions and 144-length prefix. It tests actual Python `random.Random` initialized states made from 12 independent known input lengths `1,2,3,4,5,13,20,31,80,145,256,623`: **all 12 pass** all 620 valid full-state term equations. The additional partially-observed method applies the *original source's actual fixed-bit mask positions* to nine separately generated CPython initialized states; in all nine, each true term remains among its source-compatible candidates and its repeated-residue sets have nonempty intersections. Because unknown bits are enumerated independently, cross-word correlations are **discarded**, making this a safe overapproximation for a negative certificate. The SFT makes no attempt to derive a selected original K04 coupon candidate.
 
 ## Critical provenance and target-reachability limits
 
-The entire claim is **conditional on the pre-existing p955 chronology and common MT19937 producer**, both of which are supported as payload-compatible mathematical models rather than authenticated historic printer code. The p955 vector was originally selected using original *late* recurrence relations, despite those late payloads being omitted from this experiment's affine equations. Accordingly, calling the 42-term test an independent blinded late-event observation would be incorrect.
+The entire claim is **conditional on the pre-existing p955 chronology and common MT19937 producer**, both of which are supported as payload-compatible mathematical models rather than authenticated historic printer code. The p955 vector was originally selected using original *late* recurrence relations, despite those late payloads being omitted from this experiment's affine equations. Accordingly, calling either the 75-term or 90-term test an independent blinded late-event observation would be incorrect.
 
 A failure of `init_by_array` word lengths 1..378 in **this** model is a precise producer-family exclusion. It does **not** establish what the H-17 printer truly used, eliminate alternative stream origins/restarts/copy stages, or determine any original selected row129 payload bit. A physically authenticated selected-event producer bridge, independent media/mask integrity, or newly preserved original coupon remains necessary for K04. Emily's absent final keeper-envelope words independently block K08.
 
