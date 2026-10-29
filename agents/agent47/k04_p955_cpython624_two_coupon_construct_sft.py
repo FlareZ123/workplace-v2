@@ -70,22 +70,27 @@ def construct_624_word_seed(state):
     for i in range(3,624):
         firstpass[i] = ((state[i]+i)&MASK) ^ mulmix(state[i-1],1566083941)
 
-    # First pass i=1..623 and a second i=1; choose arbitrary seed word0.
+    # First pass i=1..623 and a second i=1. Choose the free seed word0
+    # so the highest seed word is nonzero for EVERY possible state.
     key = [0]*624
-    first_i1 = (base[1] ^ mulmix(base[0],1664525)) & MASK
-    for i in range(2,624):
-        preceding = first_i1 if i == 2 else firstpass[i-1]
-        key[i-1] = (firstpass[i] -
-                    (base[i] ^ mulmix(preceding,1664525)) -
-                    (i-1)) & MASK
-    key[623] = (firstpass[1] -
-                (first_i1 ^ mulmix(firstpass[623],1664525)) -
-                623) & MASK
-
+    for first_seed_word in (0,1):
+        key[0] = first_seed_word
+        first_i1 = ((base[1] ^ mulmix(base[0],1664525)) +
+                    first_seed_word) & MASK
+        for i in range(2,624):
+            preceding = first_i1 if i == 2 else firstpass[i-1]
+            key[i-1] = (firstpass[i] -
+                        (base[i] ^ mulmix(preceding,1664525)) -
+                        (i-1)) & MASK
+        key[623] = (firstpass[1] -
+                    (first_i1 ^ mulmix(firstpass[623],1664525)) -
+                    623) & MASK
+        if key[623] != 0:
+            break
+    assert key[623] != 0
     seed = sum(word << (32*i) for i,word in enumerate(key))
     actual = list(random.Random(seed).getstate()[1][:624])
     assert actual == state
-    assert key[-1] != 0
     return key
 
 
