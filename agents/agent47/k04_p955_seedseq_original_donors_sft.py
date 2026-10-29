@@ -3,6 +3,8 @@
 Run as a single test file at agents/agent47/ in workplace-v2. Uses exact
 original spool and source-consistent p955 alignment. A matching donor value
 is conditional source algebra, not an authenticated printer producer or K04 key.
+The r132 exclusion is retrospective because the original p955 geometry was itself
+chosen using r132 among recurrence witnesses; this is NOT a blind source control.
 """
 import hashlib
 import re
@@ -122,7 +124,7 @@ def required_indexes(s):
         a[j] = r1 | a[(j + P) % N] | a[(j - 1) % N]
     return [i for i in range(N) if (deps >> i) & 1]
 
-for name, exclude in [('all_intact', {129}), ('blind_late_r132', {129, 132})]:
+for name, exclude in [('all_intact', {129}), ('r132_excluded_geometry_preselected', {129, 132})]:
     t = perf_counter()
     piv, bad = basis_from(exclude)
     print(name, 'rank', len(piv), 'contradictions', bad,
@@ -137,7 +139,7 @@ for name, exclude in [('all_intact', {129}), ('blind_late_r132', {129, 132})]:
             part_count += sum(v is not None for v in bits)
             fixed_mask = sum(1 << b for b, v in enumerate(bits) if v is not None)
             fixed_value = sum(v << b for b, v in enumerate(bits) if v is not None)
-            if name == 'blind_late_r132' and s == 1 and fixed_mask:
+            if name == 'r132_excluded_geometry_preselected' and s == 1 and fixed_mask:
                 partials.append((i, fixed_mask, fixed_value))
             if fixed_mask == 0xFFFFFFFF:
                 full[i] = fixed_value
