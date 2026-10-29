@@ -1,7 +1,7 @@
 """Bounded H-17 printer RS(16,8) source-format falsifier.
 
 Runs locally in workplace-v2 with the unchanged resources/ tree.
-No target ACK at 18:02, route mask, acceptance hash or K08 text is read.
+The 18:02 target row is never selected as a control; mask, acceptance and K08 data are not read.
 The two tested intact controls have different event/physical stage relations.
 This code tests a hypothetical encoder, not a historically attested printer law.
 """
@@ -112,7 +112,7 @@ def main() -> None:
             print("  " + convention + " syndrome=" + syndrome)
 
     print("STOP: neither physical-route control matches the frozen fleet/ESC-N RS(16,8) family")
-    print("No selected 18:02 ACK, mask, K04 commitment or K08 material consulted")
+    print("Disputed 18:02 row excluded from selection; mask and acceptance data unused")
 
 
 if __name__ == "__main__":
