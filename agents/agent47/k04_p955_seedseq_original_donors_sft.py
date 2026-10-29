@@ -124,13 +124,13 @@ def required_indexes(s):
         a[j] = r1 | a[(j + P) % N] | a[(j - 1) % N]
     return [i for i in range(N) if (deps >> i) & 1]
 
-for name, exclude in [('all_intact', {129}), ('r132_excluded_geometry_preselected', {129, 132})]:
+for name, exclude in [('all_intact', {129}), ('r132_excluded_geometry_preselected', {129, 132}), ('regular_only_no_z_tail', {128, 129, 130, 131, 132})]:
     t = perf_counter()
     piv, bad = basis_from(exclude)
     print(name, 'rank', len(piv), 'contradictions', bad,
           'seconds', round(perf_counter() - t, 3), flush=True)
     assert bad == 0
-    assert len(piv) == (15305 if name == 'all_intact' else 15240)
+    assert len(piv) == {'all_intact': 15305, 'r132_excluded_geometry_preselected': 15240, 'regular_only_no_z_tail': 15014}[name]
     for s in range(1, 5):
         requested = required_indexes(s)
         full, part_count, partials = {}, 0, []
@@ -139,7 +139,7 @@ for name, exclude in [('all_intact', {129}), ('r132_excluded_geometry_preselecte
             part_count += sum(v is not None for v in bits)
             fixed_mask = sum(1 << b for b, v in enumerate(bits) if v is not None)
             fixed_value = sum(v << b for b, v in enumerate(bits) if v is not None)
-            if name == 'r132_excluded_geometry_preselected' and s == 1 and fixed_mask:
+            if name == 'regular_only_no_z_tail' and s == 1 and fixed_mask:
                 partials.append((i, fixed_mask, fixed_value))
             if fixed_mask == 0xFFFFFFFF:
                 full[i] = fixed_value
