@@ -91,4 +91,98 @@ for n in (1,5,13,32,64,128,144,145,166,226,256,623):
     pair = conflict(witnesses,n)
     print('length',n,'CONTRADICTION' if pair else 'NOT_EXCLUDED',
           (f'{pair[0][0]}:{pair[0][1]:08X} != {pair[1][0]}:{pair[1][1]:08X}' if pair else ''))
+
+# Extend to initialized-state words with at most one unresolved bit.
+# Each missing bit is enumerated independently. This overapproximates
+# possible original states, making the resulting contradictions sound.
+parts = {}
+for index in range(N):
+    bits = [SOURCE['source_value'](piv, index, b) for b in range(32)]
+    fixed_mask = sum(1 << b for b, v in enumerate(bits) if v is not None)
+    fixed_value = sum(v << b for b, v in enumerate(bits) if v is not None)
+    parts[index] = (fixed_mask, fixed_value)
+
+
+def word_options(mask, value):
+    if mask.bit_count() < 31:
+        return ()
+    if mask == MASK:
+        return (value,)
+    missing = MASK ^ mask
+    assert missing.bit_count() == 1
+    return (value, value | missing)
+
+
+def triple_term(index, a, b, c):
+    def undo_second(j, later, earlier):
+        delta = ((earlier ^ (earlier >> 30)) * 1566083941) & MASK
+        return ((later + j) & MASK) ^ delta
+
+    prior = undo_second(index-1, b, a)
+    latest = undo_second(index, c, b)
+    delta = ((prior ^ (prior >> 30)) * 1664525) & MASK
+    return (latest - (initial[index] ^ delta)) & MASK
+
+
+partial_terms = []
+for index in range(4, N):
+    values = [word_options(*parts[j]) for j in (index-2, index-1, index)]
+    if not all(values):
+        continue
+    possibilities = {triple_term(index, a, b, c) for a in values[0]
+                     for b in values[1] for c in values[2]}
+    partial_terms.append((index-1, possibilities))
+assert len(partial_terms) == 75
+assert sum(len(x) == 1 for _, x in partial_terms) == 42
+
+
+def partial_conflict(key_length, candidates=partial_terms):
+    seen = {}
+    for j, choices in candidates:
+        residue = j % key_length
+        if residue in seen:
+            previous_j, previous_values = seen[residue]
+            surviving = previous_values & choices
+            if not surviving:
+                return (previous_j, previous_values), (j, choices)
+            seen[residue] = (previous_j, surviving)
+        else:
+            seen[residue] = (j, choices)
+    return None
+
+
+# Positive controls use independent real CPython states with the original
+# partial-source mask positions applied to each synthetic state.
+for size in (1,2,4,13,20,80,145,256,623):
+    numeric_seed = sum((j+1) << (32*j) for j in range(size))
+    state = random.Random(numeric_seed).getstate()[1][:N]
+    candidate_terms = []
+    for j, original_set in partial_terms:
+        index = j+1
+        values = [word_options(parts[k][0], state[k] & parts[k][0])
+                  for k in (index-2, index-1, index)]
+        actual = triple_term(index, *state[index-2:index+1])
+        possibilities = {triple_term(index,a,b,c) for a in values[0]
+                         for b in values[1] for c in values[2]}
+        assert actual in possibilities
+        assert ((actual - (j % size)) & MASK) == (j % size)+1
+        candidate_terms.append((j, possibilities))
+    assert len(candidate_terms) == 75
+    assert partial_conflict(size, candidate_terms) is None
+print('SYNTHETIC_PARTIAL_MASK_CPYTHON_CONTROLS_PASS', 9)
+
+excluded_partial = [n for n in range(1,624) if partial_conflict(n)]
+remaining_partial = [n for n in range(1,624) if not partial_conflict(n)]
+assert len(excluded_partial) == 554 and len(remaining_partial) == 69
+assert excluded_partial[:378] == list(range(1,379))
+assert remaining_partial[0] == 379
+assert set(rejected).issubset(excluded_partial)
+print('ORIGINAL_ORDINARY_ONLY_PARTIAL_31BIT_KEY_TERMS', len(partial_terms))
+print('PARTIAL_TERM_CHOICE_COUNTS', {size:sum(len(v)==size for _,v in partial_terms)
+                                    for size in (1,2,4)})
+print('CONDITIONAL_PARTIAL_SIEVE_EXCLUDED', len(excluded_partial), 'of', 623)
+print('EVERY_CPYTHON_KEY_ARRAY_LENGTH_1_THROUGH_378_CONTRADICTED')
+for n in (145,256,378,379,400,623):
+    print('PARTIAL_LENGTH', n,
+          'CONTRADICTION' if partial_conflict(n) else 'NOT_EXCLUDED')
 print('K04_SELECTED_COUPON_AUTHENTICATED_BITS 0/128')
