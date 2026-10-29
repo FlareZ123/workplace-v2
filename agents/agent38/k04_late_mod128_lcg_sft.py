@@ -5,6 +5,12 @@ per chronological late Z-format spool event, across three different printer
 accounts. The disputed 18:02 coupon is never parsed or hashed. All original
 checks use intact 18:01, 18:03, 18:24, and 18:25 printer records.
 
+Earlier v1 Agent6 separately rejected a shared modular-affine retry rule
+using 0417 and 0420 cross-cohort job transitions. This narrower experiment
+assumes a potential state reset at the late Z-epoch boundary and tests the
+late five-event continuity alone, across three different asset accounts.
+It is an adjacent model with distinct training and intact holdout events.
+
 The actual hypothesis has no contemporaneous producer testimony, no proof
 of shared state across accounts, and no independently verified K04 coupon.
 A source holdout failure is a scoped falsification, not key recovery.
