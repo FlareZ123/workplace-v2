@@ -131,16 +131,24 @@ for name, exclude in [('all_intact', {129}), ('blind_late_r132', {129, 132})]:
     assert len(piv) == (15305 if name == 'all_intact' else 15240)
     for s in range(1, 5):
         requested = required_indexes(s)
-        full, part_count = {}, 0
+        full, part_count, partials = {}, 0, []
         for i in requested:
             bits = [source_value(piv, i, b) for b in range(32)]
             part_count += sum(v is not None for v in bits)
-            if all(v is not None for v in bits):
-                full[i] = sum(v << b for b, v in enumerate(bits))
+            fixed_mask = sum(1 << b for b, v in enumerate(bits) if v is not None)
+            fixed_value = sum(v << b for b, v in enumerate(bits) if v is not None)
+            if name == 'blind_late_r132' and s == 1 and fixed_mask:
+                partials.append((i, fixed_mask, fixed_value))
+            if fixed_mask == 0xFFFFFFFF:
+                full[i] = fixed_value
         print(' seedwords', s, 'required', len(requested),
               'fully_known', len(full), 'fixed_bits', part_count,
               'donors', ','.join(f'{i}:{v:08X}' for i, v in full.items()),
               flush=True)
+        if partials:
+            print(' HELDOUT_ONEWORD_PARTIAL_FIXED_MASKS',
+                  ','.join(f'{i}:{mask:08X}:{value:08X}'
+                           for i, mask, value in partials), flush=True)
 
 def run_synthetic(seed):
     """Independent seeded MT replay checks every fixed inferred bit."""
