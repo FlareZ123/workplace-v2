@@ -185,4 +185,53 @@ print('EVERY_CPYTHON_KEY_ARRAY_LENGTH_1_THROUGH_378_CONTRADICTED')
 for n in (145,256,378,379,400,623):
     print('PARTIAL_LENGTH', n,
           'CONTRADICTION' if partial_conflict(n) else 'NOT_EXCLUDED')
+# CHRONOLOGY SENSITIVITY: a second v1 Agent5 source-compatible p955
+# vector, distinct from Agent11's printer-only p955 vector. Both models were
+# preselected using late records, so this is not an independent event witness.
+alt_starts = [
+    0,7,14,22,30,46,52,58,68,76,84,92,99,112,120,126,132,138,
+    144,150,156,162,168,174,180,189,199,205,211,218,224,230,237,243,
+    250,256,262,272,288,298,305,311,318,328,339,346,352,358,364,370,
+    376,382,388,394,401,407,416,423,430,437,451,458,464,474,481,489,
+    495,507,515,522,530,542,548,554,560,566,572,579,585,591,604,610,
+    617,624,632,638,644,650,658,664,673,682,690,697,705,714,721,733,
+    740,747,753,759,765,771,777,786,793,802,808,816,822,833,839,846,
+    853,861,870,881,891,897,903,909,916,922,928,934,940,946,951,955,
+    959,963,967
+]
+assert len(alt_starts) == 133 and alt_starts[129] == 955
+# runpy returns a namespace snapshot. Update the function-global namespace.
+internal = SOURCE['basis_from'].__globals__
+internal['starts'] = alt_starts
+internal['expr'] = {
+    i: SOURCE['temper'](SOURCE['state'][N+i])
+    for i in {alt_starts[r]+w for r in range(133) if r!=129 for w in range(4)}
+}
+alt_piv, alt_bad = SOURCE['basis_from']({128,129,130,131,132})
+assert alt_bad == 0 and len(alt_piv) == 15078
+alt_parts = {}
+for index in range(N):
+    bits = [SOURCE['source_value'](alt_piv, index, b) for b in range(32)]
+    m = sum(1<<b for b,v in enumerate(bits) if v is not None)
+    v = sum(bit<<b for b,bit in enumerate(bits) if bit is not None)
+    alt_parts[index] = (m,v)
+assert sum(m == MASK for m,v in alt_parts.values()) == 207
+alt_terms = []
+for index in range(4,N):
+    vals = [word_options(*alt_parts[j]) for j in (index-2,index-1,index)]
+    if not all(vals):
+        continue
+    possibilities = {triple_term(index,a,b,c) for a in vals[0]
+                     for b in vals[1] for c in vals[2]}
+    alt_terms.append((index-1,possibilities))
+assert len(alt_terms) == 90
+alt_excluded = {n for n in range(1,624) if partial_conflict(n,alt_terms)}
+shared_excluded = alt_excluded & set(excluded_partial)
+assert len(alt_excluded) == 561 and len(shared_excluded) == 525
+assert all(n in shared_excluded for n in range(1,350))
+assert 350 not in shared_excluded
+print('ALTERNATE_V1_AGENT5_P955_ORDINARY_FULL_REGISTERS',207,'partial_terms',90)
+print('ALTERNATE_P955_EXCLUDED',len(alt_excluded),'of',623)
+print('TWO_PRESELECTED_GEOMETRIES_SHARED_EXCLUSIONS',len(shared_excluded),'of',623)
+print('TWO_PRESELECTED_GEOMETRIES_SHARED_EXCLUDED_PREFIX_1_THROUGH_349')
 print('K04_SELECTED_COUPON_AUTHENTICATED_BITS 0/128')
