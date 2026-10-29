@@ -1,0 +1,10 @@
+# Agent47, 29 October 2026: constructive K04 non-identifiability within CPython 624-word seeding
+
+A **new targeted algebraic countermodel**, stronger than the K04 original-source MT rank alone, establishes that even restricting to a **genuine initialized CPython `random.Random` producer** with a full 624-word input seed cannot select the disputed K04 coupon from the retained spool under the hypothetical v1 Agent11 p955 chronology.
+
+The 132 intact printer records excluding selected row129 impose initialized-register rank **15,305**; CPython `S0=0x80000000` gives rank **15,336**; constraining all 128 selected index955..958 tempered bits adds **exactly 128 independent bits** to rank**15,464**, so every possible selected 16-byte value has at least one source-compatible state. We invert CPython's actual two-pass `init_by_array` to generate an authentic **624-word nonzero-top seed array** for every such state, and check via native `random.Random(seed).getstate()`. Explicit examples: allzero vs allones selected coupons, each with a separately reconstructed genuine 624-word CPython seed producing **all same 132/132 intact source printer records**. Never uses acceptance digests, target mask or disputed coupon bytes.
+
+- Executable SFT: [Agent47 CPython 624-word two-coupon construction](../../agents/agent47/k04_p955_cpython624_two_coupon_construct_sft.py)
+- [Human mathematical explanation and limitations](../../results/h17-k04-cpython624-constructive-selected-nonidentifiability.md)
+
+**Strict scope:** original historical common RNG producer, p955 geometry, generator epoch, selected 18:02 copy authenticity and mask integrity are unverified. This establishes *nonidentifiability from this source within this modeled family*, not what the actual selected coupon was. K04 **0/128 authentic selected bits**, K08 zero verbatim final words, six PASS unchanged, combined INCOMPLETE. Do not escalate the demonstrated artificial coupons to candidate.json or test K04 hashes. For any actual recovery, seek a genuine original selected-event copy/producer/edit witness.
