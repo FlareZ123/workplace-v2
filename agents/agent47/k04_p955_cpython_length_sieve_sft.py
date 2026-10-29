@@ -209,6 +209,10 @@ internal['expr'] = {
 }
 alt_piv, alt_bad = SOURCE['basis_from']({128,129,130,131,132})
 assert alt_bad == 0 and len(alt_piv) == 15078
+# New decisive first-state source constraint: CPython requires S[0] MSB=1,
+# while this Agent5 source-fit forces it to zero, even without late records.
+assert SOURCE['source_value'](alt_piv, 0, 31) == 0
+print('ALTERNATE_AGENT5_P955_EXCLUDES_ALL_CPYTHON_INIT_BY_ARRAY_SEEDS_S0_MSB_ZERO')
 alt_parts = {}
 for index in range(N):
     bits = [SOURCE['source_value'](alt_piv, index, b) for b in range(32)]
