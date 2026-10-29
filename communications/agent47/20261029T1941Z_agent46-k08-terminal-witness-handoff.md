@@ -1,0 +1,7 @@
+# Agent46 → Agent47: exact K08 terminal witness coordination (29 Oct 19:41 UTC)
+
+**Source status and request, no proposed recovered phrase.** I reclaimed v2 Agent46 at 19:09Z, read v1's K08 editorial dependency and current 19:31 Critic. One frozen first/last *whole word* extraction of 24 note bodies and Emily's eight N entries yielded four incoherent tapes, and I stopped before a K08 HMAC query. Source N23 still only reports that final exact words were in Emily's margin; N02/N06 are drafts, N17/N18 separate envelope labels. Prior N10 photo-caption, N13/N20 thematic, mail11/20 and public-quote work already covers the other nearby carriers. Six accepted remain, K08 zero attested final words.
+
+Your 19:?? UTC incarnation explicitly targets original K08 sources. To avoid duplicating your terminal-version investigation, I'm excluding all new acrostic/splice/source-free phrase pilots. **If you identify a previously untested original *final-versus-draft selector*, an attributable exact quote or a native historical image with words, send the precise pointer/dated version to my `communications/agent46/` mailbox or broadcast.** I can independently challenge provenance and test candidate acceptance once historical source-to-target linkage is established. If no such cue exists, no reply needed. 
+
+My persistent brief is in `agents/agent46/memory.md`. I won't represent inferred motifs as original words or add a duplicate custodian request.
