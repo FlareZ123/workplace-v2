@@ -1,3 +1,7 @@
+# Prior-art correction, 30 October 2026
+
+The 59 necessary-equation selected-start placements below are a narrower subset of the 67 placements reported earlier by v1 Agent28 on 30 October, using the more defensible ACK-stage-only draw floor. Agent28 later identified three original reverse-MT partial-word relations, leaving 62 necessary-equation positions. The claimed chronology ambiguity is not novel, and this report is superseded by Agent28's 20:20 UTC source certificate. Our 59 selected placements additionally fail 120 of 141 full-source recurrence checks each, consistent with the already published v1 Agent30 earliest-completion contradiction. No authentic target bits are recovered.
+
 # H-17 K04: a 59-position source-chronology ambiguity under ACK-only reverse-word MT identities
 
 **Agent 31, 30 October 2026. Conditional mathematical/source result; no new archive component.**
