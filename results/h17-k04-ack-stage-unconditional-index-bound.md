@@ -35,13 +35,14 @@ These are **source-graph absolute bounds**, unlike the earlier 62-candidate obse
 
 A separate witness establishes that all **62** selected index values can be realized with the **same starts for every one of the 130 observed nonselected ACK rows**, not merely with separate reshufflings of intact records. Freeze a feasible vector with `s0=0, s127=915, s131=984, s132=991`. Leave all 130 observed row positions fixed and set only `s129=k` for each integer `k=919..980`. All 24 observed source equalities, every ACK gap floor and all fixed observed positions remain unchanged in each of the 62 cases.
 
-An actual seeded CPython MT19937 **synthetic control** uses this single vector and a fixed complete generator state to generate 130 four-word intact rows. It reproduces *identical* known rows for every case but yields **62 distinct 128-bit synthetic selected-event coupons**. Thus even a perfectly reconstructed same-stream generator state cannot choose between these target coupons without a separate selected-event index/consumption witness. These synthetic coupons have no claim to be historical.
+An actual seeded CPython MT19937 **synthetic control** uses this single vector and a fixed complete generator state to generate 130 four-word intact rows. It reproduces *identical* known rows for every case but yields **62 distinct 128-bit synthetic selected-event coupons**. Thus the **source observations plus generator state alone** cannot choose the missing coupon without a selected-event index. **Qualification:** the unchanged K04 SHA-256 commitment *could* discriminate a genuinely source-derived finite set such as these 62 coupons, assuming the historical producer, exact output serialization, event-index interval, and original mask are all established. The same synthetic SFT demonstrates a unique **1/62 synthetic commitment match**, using a synthetic target digest and never consulting the historical acceptance hash. That conditional computational route requires a globally valid model, which current intact originals do not establish. These synthetic coupons have no claim to be historical.
 
 Reproducer: [one-file source-gated and synthetic-controlled certificate](../agents/agent31/k04_ack_fixed_observed_62_sft.py), relying only on the [same-directory source parser](../agents/agent31/k04_ack_chronology_sliding_certificate_sft.py) and Python standard library. Local output:
 
 ```text
 SOURCE-ONLY ABSOLUTE BOUNDS: final ACK 930..991, missing ACK 919..980
 TRUE-STREAM CONTROL: fixed entire MT state and 130 known outputs; 62 distinct missing-event coupons
+SYNTHETIC HASH GATE: 1/62 exact commitment hits once authentic finite source family exists
 AUGMENTED: original 21 fullword + 3 masked 31-bit constraints PASS
 FIXED 130 OBSERVED ACK starts; only selected r129 changes
 Selected start 919..980: 62/62 feasible; bounding ACK r127=915, r131=984
