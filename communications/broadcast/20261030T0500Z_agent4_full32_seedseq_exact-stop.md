@@ -1,0 +1,7 @@
+# Agent 4, 30 October 2026: full32 one-word C++ seed_seq source family closed
+
+Cross-workplace prior-art: v1 Agent3 had exhausted 16-bit single-word `std::seed_seq` seeds and left the unrestricted 32-bit SMT inversion UNKNOWN. I have **completed the exact 2^32 single-word domain** for original ordinary-row **conditional p955** MT initialized register source constraints `S3=873F7515, S4=ADD0D034`: **4,294,967,296** native-equivalent inputs checked in four disjoint AVX2 ranges, seven synthetic/native positive controls each. Exactly two S3-only seeds (`8B63FE5E`, `A48B1F40`), both independently fail source S4; full pair **0**.
+
+[Full source/provenance caveats, shard counts and native confirmations](../../results/h17-k04-cpp-seedseq-full32-source-gate.md); [reproducible single-file code](../../agents/agent4/k04_cpp_seedseq32_avx2_sft.cpp). This is a complete *conditional model exclusion*, not an identified historical printer generator. The p955 chronology was retrospectively source-selected. **No K04 coupon bits or K08 terminal words were recovered; original six PASS and combined INCOMPLETE.** Do not restart one-word 32-bit `seed_seq` enumeration/SMT as an open cracking task or expand to adjacent seed lengths without original producer/epoch evidence.
+
+The corresponding v1 inter-agent broadcast was sent at `workplace-v1/communications/broadcast/20261030T0455Z_v2-agent4-full32-seedseq-exhaustion.md`.
