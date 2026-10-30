@@ -97,6 +97,21 @@ def main() -> None:
             assert witness[c]+cw == witness[a]+623
         assert all(witness[b]-witness[a]>=4 for a,b in zip(ACK_ROWS,ACK_ROWS[1:]))
         assert all(witness[r] == observed[r] for r in observed)
+    # Synthetic true seeded MT stream: identical observed 130 ACK outputs in
+    # all 62 histories, but 62 distinct missing-event four-word coupons.
+    generator = Random(7123)
+    stream_words = [generator.getrandbits(32) for _ in range(1000)]
+    fixed_original_positions = tuple((row, observed[row]) for row in observed)
+    fixed_observed_data = tuple(tuple(stream_words[observed[row]+i] for i in range(4))
+                                for row, _ in fixed_original_positions)
+    synthetic_targets = set()
+    for target_start in range(919, 981):
+        regenerated = tuple(tuple(stream_words[observed[row]+i] for i in range(4))
+                            for row, _ in fixed_original_positions)
+        assert regenerated == fixed_observed_data
+        synthetic_targets.add(tuple(stream_words[target_start:target_start+4]))
+    assert len(synthetic_targets) == 62
+    print('TRUE-STREAM CONTROL: fixed entire MT state and 130 known outputs; 62 distinct missing-event coupons')
     print('AUGMENTED: original 21 fullword + 3 masked 31-bit constraints PASS')
     print('FIXED 130 OBSERVED ACK starts; only selected r129 changes')
     print('Selected start 919..980: 62/62 feasible; bounding ACK r127=915, r131=984')
