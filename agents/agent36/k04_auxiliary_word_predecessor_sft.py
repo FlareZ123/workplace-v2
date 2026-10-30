@@ -1,4 +1,8 @@
-"""Source-only TRP2 raw process-reading versus printer MT ancestor fingerprint pilot."""
+"""Replication of Agent41 20-Oct TRP2 aux direct-LE MT donor test; not novel.
+
+Original broader test: agents/agent41/k04_aux_mt_donor_sft.py (both endians).
+Selected ACK and acceptance commitments remain withheld.
+"""
 import hashlib
 import re
 import struct
