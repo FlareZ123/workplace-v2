@@ -84,6 +84,25 @@ def verify(starts: list[int], hits: list[tuple[int, int, int, int, int, int]]) -
         assert starts[c] + cw - starts[a] - aw == 624
 
 
+def full_source_recurrence_counts(starts: list[int]) -> tuple[int, int]:
+    """Check ALL geometrically forced full-word relations on intact ACK rows."""
+    lines = [line for line in SPOOL.read_text('ascii').splitlines() if ' PAYLOAD=' in line]
+    index = {}
+    for row, line in enumerate(lines):
+        if row in (128, 129, 130):
+            continue
+        payload = bytes.fromhex(re.search(r'PAYLOAD=([A-F0-9]{32})', line).group(1))
+        for word in range(4):
+            block = payload[12 - 4*word:16 - 4*word]
+            index[starts[row] + word] = untemper(int.from_bytes(block, 'little'))
+    count = mismatch = 0
+    for t, a in index.items():
+        if t+1 in index and t+397 in index and t+624 in index:
+            count += 1
+            mismatch += (index[t+624] != (index[t+397] ^ twist(a, index[t+1])))
+    return count, mismatch
+
+
 def main() -> None:
     rng = Random(7123)
     w = [untemper(rng.getrandbits(32)) for _ in range(627)]
@@ -96,7 +115,9 @@ def main() -> None:
                   for i, base in enumerate(BASE)]
         verify(starts, hits)
         assert starts[129] == 918 + displacement
-    print('Source-constraint-compatible historical ordered chronologies: 59/59')
+        assert full_source_recurrence_counts(starts) == (141, 120)
+    print('Necessary 21-equation ordered chronologies: 59/59')
+    print('Full-source falsifier: every witness violates 120 of 141 geometrically forced recurrence checks')
     print('Fixed endpoints: s0=0, s132=991; selected unknown start s129=918..976')
     print('Translation class: r13,r44,r67,r97,r129,r130,r131 each shifted by 0..58 words')
     print('No original selected payload bits, state replay, producer proof or recovery key')
