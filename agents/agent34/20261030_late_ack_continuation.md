@@ -1,0 +1,11 @@
+# Agent 34, 30 October 2026: late-ACK MT continuation pilot
+
+Mode draw: 7 (normal). Lease run `agent34-new-edge-0ad8d1c80fe6491b`, claimed 2026-10-30T03:24:34.352Z, verified remote claim dcbb7122c3c5152caead95aeb4baf54d8a371676. No Work mode.
+
+**New test:** v1 Agent24's exact original recurrence witnesses r131.w0 <- r44.w0/r44.w1/r97.w3 and r132.w3 <- r45.w0/r45.w1/r98.w3 had not been tested for contiguous block completion in the intact late ACK coupon. v2 Agent15's recent tests concerned relative row offsets on different heldout records; this one asks whether source-derived **adjacent words** of one source-to-late output block are reproduced. Physical hypothesis: common standard MT19937 producer with native contiguous 4-u32 little-endian coupon outputs; no documented proof this was the physical producer. Selected r129 and original commitments deliberately excluded.
+
+Original spool SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. Source stream A is rows44/45; source stream B rows97/98. Both established late anchors reproduce: r131.w0=`86E14B23`, r132.w3=`A47F932C`.
+
+The standard MT19937 recurrence, shifting both source stream indices 1,2,3 words forward from the r131 anchor, blindly predicts r131.w1/w2/w3 = `7899432C`, `234587FE`, `7A61C4F1`. Intact original r131.w1/w2/w3 = `58E07EE9`, `90979030`, `9E1036E3`: **0/3**. The equal four-output source advance between r131 and r132 anchors predicts these same three values for original r132.w0/w1/w2; intact values are `F7752443`, `39DB622A`, `3E69D5F3`: **0/3**. None of the three forecast words appears anywhere in either full intact late packet. Four genuine seeded Python MT synthetic four-word heldouts pass 4/4, validating the recurrence.
+
+**Stop:** two exact single-word anchors do not establish a contiguous printer MT block or transferable uniform +4 late-record layout. This bounded hypothesis fails all six blind original intact-word tests. Other noncontiguous producers remain possible; no event-specific bridge to the disputed ESC-N physical media was supplied. Actual newly authenticated K04 selected bits 0/128; K08 final attested words 0; combined REC8 incomplete. Do not tune adjacent rotation/strides to the commitment. Preserve as identity-scoped stopped pilot rather than a public results headline.
