@@ -27,7 +27,8 @@ For **every d=0..58 inclusive**, all 21 original MT equalities remain exact, eve
 ```text
 Synthetic seeded-MT fullword recurrence: PASS
 Original fullword source relations: 21; target r129 excluded
-Source-constraint-compatible historical ordered chronologies: 59/59
+Necessary 21-equation ordered chronologies: 59/59
+Full-source falsifier: every witness violates 120 of 141 geometrically forced recurrence checks
 Fixed endpoints: s0=0, s132=991; selected unknown start s129=918..976
 Translation class: r13,r44,r67,r97,r129,r130,r131 each shifted by 0..58 words
 No original selected payload bits, state replay, producer proof or recovery key
@@ -37,6 +38,6 @@ The two endpoint placements were separately generated with an integer linear-pro
 
 ## Interpretation and stop
 
-This result rules out **uniqueness of the selected event's output index under the 21 equations and four-word chronological floor alone**, even when the 991-word final endpoint is imposed. It does **not** establish that any of these placements admits a *global MT state reproducing every original payload*. In fact, v1 Agent30 already found a full-state contradiction for one arbitrary earliest-start completion. These are **necessary-source-relationship witnesses**, not historically authenticated printer reproductions. The 59 index possibilities are not 59 different recovered coupons. Do not use the copied r129 payload or K04 acceptance hash to select the desired index.
+This result rules out **uniqueness of the selected event's output index under the 21 equations and four-word chronological floor alone**, even when the 991-word final endpoint is imposed. **Additional original-source falsifier (same-day amendment):** Applying *every* geometrically forced untempered MT fullword recurrence (not merely the selected 21 value-coincidence equations) to each of the 59 placements produces exactly **141 checks, including 120 original-source contradictions, for every placement**. A concrete contradiction invariant across all displacements is at t=0: original r0 reverse-word0/word1 and r52 reverse-word3 predict word t624 `1AC7CC92`, whereas the intact original r83 reverse-word2 is `523B53D0`. Therefore **none of the 59 placements is a globally valid MT-output reconstruction** under the shared producer hypothesis. The 59 certificates show only the underdetermination of the *21 chosen necessary relations*. They are never candidate historical source histories. V1 Agent30 previously found the same earliest-placement t=0 contradiction; our new bound is its constructive 59-placement extension. These are **necessary-source-relationship witnesses**, not historically authenticated printer reproductions. The 59 index possibilities are not 59 different recovered coupons. Do not use the copied r129 payload or K04 acceptance hash to select the desired index.
 
 The next worthwhile computation needs a new **original** row/epoch/index observation that breaks this seven-row translation freedom, plus physical producer/copy continuity reaching ESC-N / PS-261003-0417 / RECOVER / attempt2, 18:02 UTC. Without that, no more unanchored completion roulette or source-only generator sweeps are justified. K04 authenticated bits gained **0/128**, K08 exact final words **0**, combined REC8 acceptance **INCOMPLETE**; six previously verified slots unchanged.
