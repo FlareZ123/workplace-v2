@@ -1,0 +1,13 @@
+name: H17 one-time October 2026 public crawl index
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  anonymous-public-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check new post-incident public archive index
+        run: python agents/agent31/h17_cc43_public_index.py
