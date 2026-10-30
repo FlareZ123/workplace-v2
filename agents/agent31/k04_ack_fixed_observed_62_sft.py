@@ -55,9 +55,9 @@ def add_eq(a,b,d):
     return [(a,b,d),(b,a,-d)]
 
 
-def solve(edges: list[tuple[int,int,int]]) -> dict[int,int]:
+def solve(edges: list[tuple[int,int,int]], origin: int = 0) -> dict[int,int]:
     starts = {r:None for r in ACK_ROWS}
-    starts[0] = 0
+    starts[origin] = 0
     for _ in ACK_ROWS:
         changed = False
         for a,b,gap in edges:
@@ -80,7 +80,15 @@ def main() -> None:
     assert (stream[624] ^ stream[397]) & BOUNDARY_MASK == source.twist(0,stream[1]) & BOUNDARY_MASK
     hits = source.original_hits()  # verifies source SHA without ever reading r129 payload
     boundaries = boundary_hits()
-    edges = (make_edges(hits,boundaries) + add_eq(0,132,991) +
+    bare_edges = make_edges(hits, boundaries)
+    from_first = solve(bare_edges, origin=0)
+    from_target = solve(bare_edges, origin=129)
+    from_last = solve(bare_edges, origin=132)
+    unconditional = (from_first[132], -from_last[0],
+                     from_first[129], -from_target[0])
+    assert unconditional == (930, 991, 919, 980)
+    print('SOURCE-ONLY ABSOLUTE BOUNDS: final ACK 930..991, missing ACK 919..980')
+    edges = (bare_edges + add_eq(0,132,991) +
              add_eq(0,127,915) + add_eq(0,131,984))
     baseline = solve(edges + add_eq(0,129,919))
     assert (baseline[0],baseline[127],baseline[129],baseline[131],baseline[132]) == (0,915,919,984,991)
