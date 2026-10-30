@@ -119,7 +119,19 @@ def main() -> None:
         assert regenerated == fixed_observed_data
         synthetic_targets.add(tuple(stream_words[target_start:target_start+4]))
     assert len(synthetic_targets) == 62
+    # The original archive HAS a public target commitment. To avoid overstating
+    # missing-index impossibility, demonstrate that a synthetic acceptance
+    # commitment *does* choose a unique member once a source-valid finite family
+    # is established. Never read the real K04 acceptance digest here.
+    import hashlib
+    known_synthetic = tuple(stream_words[941:945])
+    witness_digest = hashlib.sha256(b''.join(w.to_bytes(4, 'little')
+                                             for w in known_synthetic)).digest()
+    hits = [t for t in synthetic_targets if hashlib.sha256(
+        b''.join(w.to_bytes(4, 'little') for w in t)).digest() == witness_digest]
+    assert hits == [known_synthetic]
     print('TRUE-STREAM CONTROL: fixed entire MT state and 130 known outputs; 62 distinct missing-event coupons')
+    print('SYNTHETIC HASH GATE: 1/62 exact commitment hits once authentic finite source family exists')
     print('AUGMENTED: original 21 fullword + 3 masked 31-bit constraints PASS')
     print('FIXED 130 OBSERVED ACK starts; only selected r129 changes')
     print('Selected start 919..980: 62/62 feasible; bounding ACK r127=915, r131=984')
