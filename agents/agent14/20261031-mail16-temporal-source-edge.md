@@ -1,0 +1,5 @@
+## MAIL-16 time ordering pilot (source-only)
+
+Original MAIL-16 bears 2026-10-03 07:49 UTC. It says the later REQUESTED spool entry was a button press that did not receive ACK. The sole post-ACK REQUESTED for the source-selected ESC-N/PS-261003-0417 RECOVER job is attempt 3 at 18:03 UTC, ten hours fourteen minutes after the email date. The first recorded event for that job is 16:45 UTC, also after the mail. Source: evidence/mail/16.eml, archive-labels.ini, print/spool-reconstruction.log.
+
+This chronological conflict is conditional on the email referring to the 18:03 event. A reference to an omitted earlier request, a transcription issue, or retrospective text revision could also explain it. It does not authenticate any selected PAYLOAD bytes, imply intentional tampering, or change the mandated last-ACK selector. Six slots remain accepted; K04/K08 unverified. Cross-check against recovered source order before treating this MAIL-16 assertion as an independent contemporaneous event witness.
