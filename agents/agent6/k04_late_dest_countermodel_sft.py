@@ -65,6 +65,17 @@ def main(zip_path: str) -> None:
 
     assert histogram == [36, 52, 18, 4, 2], histogram
     assert perfect == [(6, 4, 4), (15, 6, 2)], perfect
+
+    # In a hypothetical randbelow(3), code 3 rejects and can consume an
+    # unobserved additional draw. This is a possibility, NOT original code.
+    rejection_compatible = [
+        (byte_index, shift)
+        for byte_index in range(16)
+        for shift in range(7)
+        if all(code(payload[i], byte_index, shift) in (3, dest[i + 1])
+               for i in LATE_CONTROL_EDGES)
+    ]
+    assert len(rejection_compatible) == 11, rejection_compatible
     print("source_spool_sha256", SPOOL_SHA)
     print("four_late_controls", LATE_CONTROL_EDGES)
     print("tested_simple_two_bit_slices", 16 * 7)
@@ -84,6 +95,16 @@ def main(zip_path: str) -> None:
 
     assert code(selected_copied, 6, 4) == 2
     assert code(selected_copied, 15, 6) == 3
+    copied_codes = sorted(set(code(selected_copied, b, sh)
+                              for b, sh in rejection_compatible))
+    assert copied_codes == [0, 1, 2, 3], copied_codes
+    consistent_five = [(b, sh) for b, sh in rejection_compatible
+                       if code(selected_copied, b, sh) in (3, dest[SELECTED + 1])]
+    assert len(consistent_five) == 5, consistent_five
+    print("hypothetical_three_way_rejection_four_control_features",
+          len(rejection_compatible))
+    print("selected_copied_codes_across_these_features", copied_codes)
+    print("hypothetical_rejection_five_row_compatible_features", len(consistent_five))
     print("historically_authenticated_selected_bits", "0/128")
     print("K04_component_recovered", False)
     print("acceptance_or_mask_consulted", False)
