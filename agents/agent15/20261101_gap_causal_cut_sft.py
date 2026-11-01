@@ -84,6 +84,7 @@ def verify_source(archive: Path) -> None:
     original43 = re.search(r"\bPAYLOAD=([0-9A-F]{32})\b", rows[43]).group(1)
     last_word = struct.unpack("<4I", bytes.fromhex(original43))[3]
     assert temper(untemper(last_word)) == last_word
+    assert untemper(last_word) == 0x59E4D0B9
     print("INTACT_SOURCE_WORD", "row43.word3", f"{last_word:08X}")
 
 
@@ -110,6 +111,10 @@ def test_mt() -> None:
                 for i in range(4)
             ]
             assert predicted == states[p:p + 4], (seed, p)
+            printed = temper(states[p])
+            parity = ((printed >> 30) ^ (printed >> 15)) & 1
+            donor = ((states[p - 227] >> 30) ^ (states[p - 624] >> 31)) & 1
+            assert parity == donor, (seed, p, parity, donor)
             total += 1
         print("SYNTHETIC_MT_PASS", seed, "six complete four-word predictions")
     print("TOTAL_FULL_COUPON_SYNTHETIC_CONTROLS", total)
