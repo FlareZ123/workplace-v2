@@ -73,3 +73,16 @@ Thirty independent source-free synthetic controls (five true Python MT seeds, al
 ```
 
 exactly, using the same corrected untemper/twist implementation as the full-word checks. This is a more discriminating potential *one-bit future witness* than an eight-fullword trace, but its historical source availability is still unproved. A metadata `CLASS` or `DEST` label without a source-certified mapping to **precisely `s96+7` and bit30** does not furnish it.
+
+### Four-word parity extension: seven donor bits for four coupon parity equations
+
+The single-bit identity extends directly across **all four** selected original output words `Y[j]=temper(X[p+j])`:
+
+```
+Y[j].bit30 XOR Y[j].bit15
+    = X[p-227+j].bit30 XOR X[p-624+j].bit31,  j=0,1,2,3.
+```
+
+The `j=0` last term is the **known zero MSB of original row43.word3**. The other three MSBs reside in the unprinted first ordinary-job gap. Thus the *exact seven original witness bits* needed to fix these four selected-coupon two-bit parities in the six conditional models are: **four bit30 values of X[p-227..p-224]** from the second gap and **three MSBs of X[p-623..p-621]** from the first. No partial/categorical metadata source in the provided archive authenticates these seven exact full-draw bit positions. A successful independently indexed observation would give a four-equation parity constraint, with **124 other independent coupon dimensions potentially free even before other historical uncertainties**; it would not produce an accepted K04.
+
+All **120** synthetic comparisons across five actual CPython MT streams, six p-index models and four selected words pass the original bitplane equation. This extends the earlier 30 first-word checks, using no selected H-17 original coupon bytes or acceptance hashes. The seven-bit count is a **sufficient partial-witness set** under the stated MT chronology and does not claim minimality under all possible auxiliary observations.
