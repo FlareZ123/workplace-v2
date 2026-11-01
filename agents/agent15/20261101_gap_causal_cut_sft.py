@@ -111,10 +111,11 @@ def test_mt() -> None:
                 for i in range(4)
             ]
             assert predicted == states[p:p + 4], (seed, p)
-            printed = temper(states[p])
-            parity = ((printed >> 30) ^ (printed >> 15)) & 1
-            donor = ((states[p - 227] >> 30) ^ (states[p - 624] >> 31)) & 1
-            assert parity == donor, (seed, p, parity, donor)
+            for j in range(4):
+                printed = temper(states[p + j])
+                parity = ((printed >> 30) ^ (printed >> 15)) & 1
+                donor = ((states[p - 227 + j] >> 30) ^ (states[p - 624 + j] >> 31)) & 1
+                assert parity == donor, (seed, p, j, parity, donor)
             total += 1
         print("SYNTHETIC_MT_PASS", seed, "six complete four-word predictions")
     print("TOTAL_FULL_COUPON_SYNTHETIC_CONTROLS", total)
