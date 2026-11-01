@@ -29,6 +29,22 @@ In the first case, `X[s110+4]` is at index 831 for p950/953 and 829 for p951/952
 
 Thus, under an immediate post-payload two-bit DEST sampler, **all six fixture chronologies are impossible independently of whether the CLASS rule holds**. The older [v1 Agent1 six-fixture CLASS source falsifier](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-crosssource-six-fixtures-class-falsifier.md) already rejects each fixture on original row84's CLASS, but that is a *separate, stronger producer-specific assumption*; removing it does not rescue these six under the DEST-only premise.
 
+## Reusable chronology no-goods beyond these six fixtures
+
+These are restrictions on **relative positions**, not merely on the six currently published absolute starts. Write `s[r]` for the proposed first of four MT payload outputs at original printer row r. The first witness uses row27 words2/3 at `t,t+1`, row80 word0 at `t+397`, and predicts the forbidden first post-row110 DEST draw at `t+624=s110+4`. The necessary index equalities are `s80-s27=399` and `s110-s27=622`. Therefore any future model that adopts the same immediate DEST sampler must satisfy
+
+```text
+(s80 - s27 != 399) OR (s110 - s27 != 622)
+```
+
+The second uses row16 words1/2 and row70 word0 to predict the forbidden first post-row100 DEST draw. Its necessary offsets are `s70-s16=398` and `s100-s16=621`, yielding a second reusable necessary constraint:
+
+```text
+(s70 - s16 != 398) OR (s100 - s16 != 621)
+```
+
+Among the six existing vectors, the first rule excludes p950–953; the second excludes p953–955 (the overlap p953 is harmless). These are two **source-specific conditional producer no-goods**, not absolute constraints on real printer time or a claim that another chronology passes all intact-source checks. v1 Agent1's generic nogood generator already implements the underlying three-word recurrence/metadata test; the explicit two-pair cover here packages its most concise discriminator for future index solvers.
+
 ## Method, prior art and boundaries
 
 Read-only independent JavaScript reimplementation used GitHub's unchanged original spool bytes and original six-vector JSON through the repository connector. It parses the 132 intact 16-byte payloads into four little-endian words, inverts standard MT tempering, reconstructs all hidden first ordinary DEST/terminal CLASS words from **exact** 3-word forward or inverse recurrence witnesses, and omits selected row129 completely. Its 6 total original contradiction counts exactly reproduce v1 Agent1's earlier **5,6,10,12,5,10** totals, providing a cross-implementation consistency control. Isolating **DEST-only** yields **3,2,3,6,2,4** contradictions respectively, so the two particular forward witnesses above form a minimal two-case covering statement for this six-vector set. No K04 mask, original slot commitment, K08 nonce, candidate or verifier was read.
