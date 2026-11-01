@@ -48,3 +48,28 @@ The invariant is proved **across the six published source-compatible example geo
 ## Portable single-file source and synthetic controls
 
 The [read-only six-model causal-cut SFT](../agents/agent15/20261101_gap_causal_cut_sft.py) freezes all six source-index anchor tuples, verifies original spool SHA-256 and four incident-date job/time anchor identities, withholds selected row129 payload, checks both four-word hidden-gap inclusions per chronology, and independently evaluates thirty complete four-word predictions from five seeded CPython MT streams. The equivalent local script was run on the original uploaded ZIP and passed all thirty synthetic checks after an initial untemper inversion implementation error was corrected; the committed repository version has been reviewed but has not been independently run from a fresh checkout. This is a reproducibility aid for the *conditional donor location*, with no recovered original coupon.
+
+## Stronger donor economy: one raw bit at the second gap controls one selected-coupon parity
+
+The eight complete 32-bit missing draws above form a sufficient *full-coupon* donor set. There is a smaller and more exact **partial target-information requirement**. This observation holds in all six frozen model placements and uses a real intact original word.
+
+Let `Y0` be the first 32-bit *tempered* printer payload word of the **authentic selected physical coupon**, read little-endian. Let `X` be the original hypothetical untempered MT state. In all six placements, source row43's final intact word is `X[p-624]`; actual source bytes `row43.word3=228BF401` untemper to **`59E4D0B9`**, with **bit31 = 0**. MT19937's twist constant `9908B0DF` has bit30 = 0, and a direct bitplane identity gives
+
+```
+X[p].bit30 = X[p-227].bit30 XOR X[p-624].bit31
+           = X[p-227].bit30
+Y0.bit30 XOR Y0.bit15 = X[p].bit30
+```
+
+The second equality uses the **actual source row43** (MSB zero), while the last comes from exact standard temper/untemper inversion: the mask of printed bits contributing to the untempered bit30 is `40008000` (printed bits 30 and 15). Consequently an **independently authenticated single bit30 of the one native draw `X[p-227]`**, located at **the fourth unprinted output after row96**, would determine one previously unknown **linear parity** of two bits of the authentic selected coupon. It does *not* determine either printed bit individually or the full coupon.
+
+For the already-recorded incident route mask `8556C8CB...`, its little-endian first word is `CBC85685` and bit30 XOR bit15 = **1**. If this mask and selected physical print have separate integrity provenance, the corresponding *reduced* K04 first-word parity would equal `X[p-227].bit30 XOR 1`. These are strictly **conditional** original-bit relationships. The retained export does not supply or authenticate **that one generator bit** or the purported MT producer/state index, and the historical selected coupon remains unverified. **Actual K04 constrained original bits remain 0.**
+
+Thirty independent source-free synthetic controls (five true Python MT seeds, all six p=950..955 positions) reproduced
+
+```
+((temper(X[p]) >> 30) XOR (temper(X[p]) >> 15)) & 1
+ == ((X[p-227] >> 30) XOR (X[p-624] >> 31)) & 1
+```
+
+exactly, using the same corrected untemper/twist implementation as the full-word checks. This is a more discriminating potential *one-bit future witness* than an eight-fullword trace, but its historical source availability is still unproved. A metadata `CLASS` or `DEST` label without a source-certified mapping to **precisely `s96+7` and bit30** does not furnish it.
