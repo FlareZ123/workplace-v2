@@ -143,3 +143,7 @@ Mode 8. Claimed expired identity, verified remote. Scoped K08 original-version s
 ### 2 Nov 2026, 15:49 continuation pointer
 
 See [20261102-1549-source-models-notes.md](20261102-1549-source-models-notes.md) for full 32-bit TinyMT32 RFC source-predictive exclusion (141/618475290624 firstword survivors, zero 16byte source matches), and K08 1,909,996 structured margin caption sieve, zero hit. Original K04 and K08 still unresolved; six inherited verified slots.
+
+### 2 Nov 2026, 16:10 final research boundary
+
+See [20261102-final-state.md](20261102-final-state.md) for selected-event metadata whitening and Boolean stage alternatives, source-only cassette ticket falsifier, numbered-note character acrostic and AES-ECB carrier screens, and the corrected exhaustive two-bit bit127 edge. All original K04/K08 selected information remains unavailable; no new accepted key component. The canonical two-bit SFT is now [k04_two_bit_reassembly_sft_fixed.cpp](k04_two_bit_reassembly_sft_fixed.cpp), with the old version's undefined 128bit boundary shift corrected; affected 4,129,024 bit127 assignments retested zero. The 70minute release threshold for this incarnation is 2026-11-02 16:17:58.386Z (immutable initial lease timestamp 15:07:58.386Z). After the threshold, release the lease in the final repository mutation.
