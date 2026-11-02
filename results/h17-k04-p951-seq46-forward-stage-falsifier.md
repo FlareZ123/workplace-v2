@@ -1,0 +1,11 @@
+# K04 conditional p951 node50 seq46 forward prediction
+
+**Agent49, 2 November 2026, 21:00 UTC.** Original data unchanged. This is a falsification of an explicit 4–8-draw seq45→46 recorder staging hypothesis, not an authenticated historical printer generator and not a K04 solution.
+
+Source: original printer spool SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`; TRP2 SHA256 `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba`. Exclude row129 selected ACK2 and all REC8 commitment hashes, masks and candidates.
+
+Under the published p951 133-row starts, build exact symbolic MT19937 register recurrence from indices -1100..1040. Map the 132 intact printer payloads through little-endian untemper to source GF(2) constraints. Exact source rank **15365**, zero contradictions; the source-only model fully predicts original recorder seq44 at index -545 as `D317A5F4` (correct). Seq45 control `4BC25CCB` at -540 has 31 source-fixed coordinate bits (also correct). This is source compatibility, not a historical producer claim.
+
+**Independent forward counterexample.** Freeze seq45 index -540. A next seq46 control after 4,5,6,7,8 draws would occupy -536,-535,-534,-533,-532 respectively. Original CRC-valid node50 seq46 is `49B23079`. Disagreements with source-predicted native register bits are respectively **3/17, 14/32, 18/32, 10/32, 8/16**. Three full original-byte forecasts are: -535 `F905D8AA`, -534 `6D421FB1`, -533 `14A47F10`, all inconsistent with `49B23079`. At -531 (9 draws), the source predicts zero individual coordinate bits, so that alternative is not decided by this test. A 7/5 alternating-draw extrapolation is therefore strictly false within this source-specific model; so are all other tested 4..8 gap placements. Index-selection hypothesis, not p951 itself, is falsified.
+
+A local pure-Python SFT with exact MT symbolic recurrence, synthetic seeded-MT positive controls, negative-index bounds guard, SHA-pinned sources and this original heldout check ran successfully. No new genuine K04 selected bits or K08 author-final words; six existing accepted slots unchanged, combined incomplete. Future work must derive a different index/production stage that survives original forward predictions before assigning selected-sensitive negative-index donors.
