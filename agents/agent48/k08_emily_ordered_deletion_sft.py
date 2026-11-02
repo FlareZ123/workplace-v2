@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("resources")
 p = ROOT / "evidence/crew/noticeboard-and-desk-notes.txt"
 source = p.read_bytes()
-assert hashlib.sha256(source).hexdigest() == "e58708a70ef5fd5739a5469d49a381ebfbd867c6cb67948f8083f556c06c6861" or True # content checked by exact quoted text below
+assert hashlib.sha256(source).hexdigest() == "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
 notes = source.decode("utf-8")
 route = json.loads((ROOT / "evidence/recovery-routing.json").read_text())
 accept = json.loads((ROOT / "acceptance.json").read_text())
@@ -31,7 +31,7 @@ clauses = {
     "N23": "The envelope only remembers the words I finally put on it",
 }
 def normalize(s):
-    return " ".join(re.sub(r"[^a-z0-9\\s]", " ", s.lower()).split())
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", s.lower()).split())
 def slot_digest(words):
     component = hmac.digest(key, words.encode("utf-8"), "sha256")[:16]
     return hashlib.sha256(component).hexdigest(), component.hex().upper()
@@ -43,7 +43,7 @@ def ordered_deletions(words):
 def main():
     for note, clause in clauses.items():
         # Check the actual original note's normalized phrase as a single span.
-        line = re.search(rf"(?m)^{note} / Emily \\[censored\\]\\n([^\\n]+)", notes).group(1)
+        line = re.search(rf"(?m)^{note} / Emily \[censored\]\n([^\n]+)", notes).group(1)
         assert normalize(clause) in normalize(line), note
     # Genuine positive: the enumerator must find an independently planted
     # HMAC/SHA commitment for a known proper subsequence of original N13.
