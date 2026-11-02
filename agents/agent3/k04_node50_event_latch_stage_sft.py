@@ -60,6 +60,19 @@ def main(root):
             assert observed_event >= 39
             print("SEQ 70 original EVENT sampler rejects", event_code,
                   "at", pos-2, "then original latch predicted", latch)
+    # Independent LATCH held out from AUX-based tentative seq63 placement.
+    # The p=-397 control location was identified using AUX+1 source bit;
+    # its original latch was not used in that placement selection.
+    assert lookup[63][1] == 0
+    predecessor = offset - 398
+    assert known[predecessor] == 0x7fffffff
+    low = source.temper(word[predecessor] & 0x7fffffff) >> 29
+    high = source.temper((word[predecessor] & 0x7fffffff) |
+                         0x80000000) >> 29
+    assert (low, high) == (0, 4)
+    print("tentative seq63 at -397: source predecessor LATCH", low,
+          "matches original 0; alternate code4 would reject,",
+          "conditional missing MSB=0")
     assert [known[offset+source.STARTS[129]+j] for j in range(4)] == [0]*4
     print("CONDITIONAL source event/latch stage consistent, K04 still absent")
 
