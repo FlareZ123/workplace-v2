@@ -177,6 +177,33 @@ def recover(root):
     assert not connects_late(50,anchor63=True)
     print("PASS latent-stage boundary: late seq45->70 needs >=23 omitted draws")
     print("PASS seq63=-397 optional anchor incompatible with seq70=-339 under same law and 50-draw latent allowance")
+    @functools.lru_cache(maxsize=None)
+    def shifted_successors(seq,start):
+        """The exact proposed five-field stage with epoch 21:09:02 UTC."""
+        curr,nxt=rows[seq],rows[seq+1]
+        out=set()
+        for a in range(1,11):
+            if not accepts(start+1,a,13,6000,curr['aux']):continue
+            t=start+1+a
+            for tim in range(1,11):
+                if not accepts(t,tim,9,400,nxt['ts']-2):continue
+                e=t+tim
+                for evt in range(1,11):
+                    if not accepts(e,evt,6,39,nxt['event']):continue
+                    l=e+evt
+                    for lat in range(1,11):
+                        if not accepts(l,lat,3,4,nxt['latch']):continue
+                        q=l+lat
+                        if matches_ctrl(seq+1,q):out.add(q)
+        return tuple(sorted(out))
+
+    # Candidate seq55 was selected by its own AUX; this is not a blind anchor.
+    assert -452 in shifted_successors(54,-459)
+    assert shifted_successors(55,-452)==(-446,)
+    assert shifted_successors(56,-446)==()
+    assert codes(-444,13)==(2624,) and rows[56]['aux']==4362
+    assert codes(-444,9)==(164,) and rows[57]['ts']-2==81
+    print("PASS new heldout seq57 contradiction: model predicts time code164, original requires81")
     # Retrospectively AUX-selected 54/55 control candidates; new original fields.
     assert matches_ctrl(54,-459) and matches_ctrl(55,-452)
     assert codes(-458,13)==(876,) and rows[54]['aux']==876
