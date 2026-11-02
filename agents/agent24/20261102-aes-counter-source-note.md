@@ -1,0 +1,9 @@
+# K04 source-blind AES counter producer probe (2 Nov 2026)
+
+Investigated whether ordinary printer payloads are deterministic 128-bit AES-ECB encryptions of an incrementing counter under one of eight already visible 16-byte archival anchors (six accepted slot values, source route mask, and desk nonce). This explicitly probes a counter-encrypted architecture with *unknown* initial counter: decrypting two intact rows under a correct known key must reveal consecutive or otherwise low-change counter blocks. The missing selected 18:02 ACK, masked key and target commitments were excluded.
+
+For 128 ordinary 07:00–17:35 source rows (spool SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`), eight key sources x four byte/word key orientations x four packet orientations gave 128 fully specified models. No decrypted adjacent pair had a Hamming distance below 42; none had an integer difference among 1, 4, 5, 16, 256, 2^32 or 2^64; no integer increment repeated even twice within a model. A synthetic AES-ECB counter sequence with unknown initial state was reconstructed exactly as a positive control.
+
+This is a *negative original intact-source predictor* only for these keys and orientations with direct AES-ECB output and simple counters; it does not rule out independently keyed streams, AES-CTR combined with unknown plaintext, secret personalization, distinct exceptional-job production, or physical copy corruption. No selected K04 bits have been recovered, and K08 was untouched. Local reproducible SFT is `/mnt/data/h17-work/k04_aes_counter_source_sft.py` in this invocation (outside the shared repository). The code-upload operation was blocked, so source is not yet archived in Git; this note retains exact method and reproducible counts.
+
+Next emphasis: different producer-stage or K08 final-edit reconstruction, not another key-orientation multiplier under this failed known-key counter architecture.
