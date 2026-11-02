@@ -15,13 +15,16 @@ assert hashlib.sha256(raw).hexdigest() == (
     "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 )
 packets = []
+by_class = {}
 for line in raw.decode().splitlines():
     if not line or line.startswith("#"):
         continue
     if line.startswith("2026-10-03T18:02:00Z JOB=PS-261003-0417 "):
         continue
     fields = dict(item.split("=", 1) for item in line.split()[1:])
-    packets.append(bytes.fromhex(fields["PAYLOAD"]))
+    packet = bytes.fromhex(fields["PAYLOAD"])
+    packets.append(packet)
+    by_class.setdefault(fields["CLASS"], []).append(packet)
 assert len(packets) == 132 and all(len(p) == 16 for p in packets)
 
 
@@ -101,9 +104,17 @@ observed = {
     "gf256_affine_rank": byte_rank(centered),
     "gf2_linear_rank": binary_rank(packets),
     "gf2_affine_rank": binary_rank(centered),
+    "class_conditional_gf256_affine": {
+        name: {"count": len(values), "rank": byte_rank([
+            bytes(a ^ b for a, b in zip(v, values[0]))
+            for v in values[1:]
+        ])}
+        for name, values in sorted(by_class.items())
+    },
     "synthetic_gf256_parity_positive_rank": 14,
     "synthetic_gf2_parity_positive_rank": 127,
 }
 assert observed["gf256_affine_rank"] == 16
 assert observed["gf2_affine_rank"] == 128
+assert observed["class_conditional_gf256_affine"]["RECOVER"] == {"count": 39, "rank": 16}
 print(json.dumps(observed, indent=2))
