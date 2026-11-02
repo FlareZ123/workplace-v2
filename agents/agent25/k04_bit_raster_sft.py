@@ -102,3 +102,47 @@ maskhits = [block.hex().upper() for block in maskextended if maskdigest(block) =
 assert maskhits == [],maskhits
 print("Distinct independently permuted original masks:",len(maskextended))
 print("Synthetic mask positive PASS; original K04 matches 0")
+
+
+# Third stage: identical scan reserialization of both operands before XOR.
+# Because the transform is a pure permutation of bits, this equals a single
+# transform of the already XOR-reduced 16-byte component. Separately test
+# reversed image polarity in all three stages.
+def candidates_for(block):
+    start = set()
+    for height in (1,2,4,8,16,32,64,128):
+        for input_mode,output_mode in itertools.product(range(4),repeat=2):
+            for mirror,flip,transposed,bitorder in itertools.product((False,True),repeat=4):
+                start.add(raster(block,height,128//height,input_mode,output_mode,
+                                 mirror,flip,transposed,bitorder))
+    result = set(start)
+    for height in (2,4,8,16,32,64):
+        for sample in start:
+            for dr in range(height):
+                for dc in range(128//height):
+                    result.add(rollbits(sample,height,dr,dc))
+    return result
+
+component = bytes(x^y for x,y in zip(source,mask))
+combined = candidates_for(component)
+assert len(combined)==123072
+for title,candidates in (("payload",extended),("mask",maskextended),
+                         ("combined",combined)):
+    for inverted in (False,True):
+        def reduced(c):
+            if title == "payload": return bytes(a^b for a,b in zip(c,mask))
+            if title == "mask": return bytes(a^b for a,b in zip(c,source))
+            return c
+        matches=0
+        for c in candidates:
+            value=reduced(c)
+            if inverted:value=bytes(x^255 for x in value)
+            matches+=hashlib.sha256(value).digest()==target
+        assert matches==0
+        print(title, "inverted" if inverted else "normal",
+              "distinct candidates",len(candidates),"original matches",matches)
+# A transformed-component positive is independent of the earlier two.
+plant=next(x for x in combined if x!=component)
+assert sum(hashlib.sha256(x).digest()==hashlib.sha256(plant).digest()
+           for x in combined)==1
+print("Shared-transform positive control PASS")
