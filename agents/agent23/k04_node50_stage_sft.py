@@ -144,6 +144,39 @@ def recover(root):
         found=bool(path) and (end not in ANCHORS or ANCHORS[end] in path)
         print(f"seq{start}->{end}: {'FEASIBLE' if found else 'NO PATH'}, control states {traces}")
         assert found is expected
+    @functools.lru_cache(maxsize=None)
+    def latent_successors(seq,start,maxskip):
+        """AUX, latent omitted stage, EVENT, LATCH, CONTROL."""
+        curr,nxt=rows[seq],rows[seq+1]
+        found=set()
+        for a in range(1,9):
+            if not accepts(start+1,a,13,6000,curr['aux']):continue
+            end_aux=start+1+a
+            for skip in range(maxskip+1):
+                e=end_aux+skip
+                for event in range(1,9):
+                    if not accepts(e,event,6,39,nxt['event']):continue
+                    l=e+event
+                    for latch in range(1,9):
+                        if not accepts(l,latch,3,4,nxt['latch']):continue
+                        q=l+latch
+                        if matches_ctrl(seq+1,q):found.add(q)
+        return tuple(sorted(found))
+
+    def connects_late(maxskip, anchor63=False):
+        active={ANCHORS[45]}
+        for seq in range(45,70):
+            newer={q for p in active for q in latent_successors(seq,p,maxskip)}
+            if seq==62 and anchor63:newer &= {-397}
+            active=newer
+            if not active:break
+        return ANCHORS[70] in active
+
+    assert not connects_late(22)
+    assert connects_late(23)
+    assert not connects_late(50,anchor63=True)
+    print("PASS latent-stage boundary: late seq45->70 needs >=23 omitted draws")
+    print("PASS seq63=-397 optional anchor incompatible with seq70=-339 under same law and 50-draw latent allowance")
     print("PASS source-only bounded-order falsifier; selected coupon remains unconstrained")
 
 
