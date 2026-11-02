@@ -100,7 +100,38 @@ def main() -> None:
                     heldout_matches.append((table, algorithm, index))
             try_coupon(coupon, "group-summary", (table, algorithm))
 
-    assert synthetic_bit and synthetic_aggregate
+    # Historical, source-only pseudo-targets. Every ordinary RECOVER row is
+    # reconstructed from strictly earlier ordinary rows, never its own bytes.
+    source_predictions = 0
+    source_matches = []
+    source_holdouts = 0
+    for index, (cell, authentic) in enumerate(rows):
+        if index == 0 or cell // 3 != CLASSES.index("RECOVER"):
+            continue
+        source_holdouts += 1
+        earlier = rows[:index]
+        for selector in range(1, 512):
+            members = [value for prior_cell, value in earlier
+                       if selector & (1 << prior_cell)]
+            if not members:
+                continue
+            combined = b"".join(members)
+            total = bytes(sum(value[j] for value in members) & 255
+                          for j in range(16))
+            h = hashlib.sha256(combined).digest()
+            predictions = (
+                xor(*members), total, hashlib.md5(combined).digest(),
+                h[:16], h[16:], hashlib.blake2s(combined, digest_size=16).digest(),
+            )
+            for method, predicted in enumerate(predictions):
+                source_predictions += 1
+                if predicted == authentic:
+                    source_matches.append((index, selector, method))
+
+    assert source_holdouts == 35
+    assert source_predictions == 106512
+    assert not source_matches
+\n    assert synthetic_bit and synthetic_aggregate
     assert checks == 6144 + 9198
     print(json.dumps({
         "original_spool_sha256": SOURCE_SHA,
@@ -112,6 +143,9 @@ def main() -> None:
         "all_checked": checks,
         "synthetic_positive_controls": 2,
         "late_RECOVER_group_summary_hits": heldout_matches,
+        "blind_ordinary_RECOVER_holdouts": source_holdouts,
+        "blind_ordinary_fullbyte_predictions": source_predictions,
+        "blind_ordinary_matches": source_matches,
         "original_K04_commitment_hits": matches,
     }, indent=2))
 
