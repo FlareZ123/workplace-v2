@@ -75,3 +75,30 @@ print("Synthetic planted candidate PASS, unique base transforms 230")
 print("Distinct 128-bit raster, mirror, serpentine, scan-order and origin shifts:",len(extended))
 print("Original K04 commitment matches:",len(hits))
 print("Original selected physical coupon remains unauthenticated; K04 unresolved")
+
+
+# Independent stage: retained ACK stays fixed and the original route mask
+# underwent the same hypothetical raster reserialization.
+maskbase = set()
+for height in (1,2,4,8,16,32,64,128):
+    for input_mode,output_mode in itertools.product(range(4),repeat=2):
+        for mirror,flip,transposed,bitorder in itertools.product((False,True),repeat=4):
+            maskbase.add(raster(mask,height,128//height,input_mode,output_mode,
+                                mirror,flip,transposed,bitorder))
+assert len(maskbase) == 230 and mask in maskbase
+maskextended = set(maskbase)
+for height in (2,4,8,16,32,64):
+    for block in maskbase:
+        for dr in range(height):
+            for dc in range(128//height):
+                maskextended.add(rollbits(block,height,dr,dc))
+assert len(maskextended) == 123204, len(maskextended)
+def maskdigest(candidate_mask):
+    return hashlib.sha256(bytes(x^y for x,y in zip(source,candidate_mask))).digest()
+maskplant = next(block for block in maskbase if block != mask)
+assert sum(maskdigest(block)==maskdigest(maskplant) for block in maskbase)==1
+assert sum(maskdigest(block)==maskdigest(maskplant) for block in maskextended)==1
+maskhits = [block.hex().upper() for block in maskextended if maskdigest(block) == target]
+assert maskhits == [],maskhits
+print("Distinct independently permuted original masks:",len(maskextended))
+print("Synthetic mask positive PASS; original K04 matches 0")
