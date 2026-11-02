@@ -17,7 +17,7 @@ words, known, offset = MODEL["source_closure"](ROOT / "resources")
 rows = (ROOT / "resources/evidence/print/spool-reconstruction.log").read_text().splitlines()[1:]
 assert len(rows) == len(STARTS) == 133
 names = ["LABEL", "STORES", "RECOVER"]
-labels = [names.index(re.search(r"CLASS=(\\w+)", row).group(1)) for row in rows]
+labels = [names.index(re.search(r"CLASS=([A-Z]+)", row).group(1)) for row in rows]
 assert [code % 3 for code in range(8)] == [0, 1, 2, 0, 1, 2, 0, 1]
 predicted = {}
 for i, start in enumerate(STARTS):
