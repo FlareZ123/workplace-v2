@@ -52,3 +52,7 @@ A productive next experiment is to freeze ascending-permit and within-PTW417 rev
 The specific six published global p950..955 chronologies have existing contradictions under a separately hypothesized immediate printer CLASS/DEST sampler. That counterevidence must continue to accompany any recommendation built on p951. None of this authorizes promotion of a real full K04 payload, and K08 remains without author-final exact words.
 
 **Official state: K01/K02/K03/K05/K06/K07 PASS; K04 and K08 MISSING; REC8 combined INCOMPLETE.** No original evidence, original acceptance, or canonical key candidate changed.
+
+## Six-fixture extension, 2 November 19:15 UTC
+
+The same original source-only carrier matching and reverse-trajectory check was repeated on every published p950..955 chronology. With row129 excluded, the full/partial 32-bit recurrence and the original 148 external fields reproduce existing match totals 12,20,10,13,10,11 respectively. Across all six, **zero of 76** conditional external-field matches land on the corresponding 33 negative target-sensitive state positions. This is a six-model source reachability result; historical producer/index assumptions remain unresolved. PTW-412 matches at -945 in p950, three PTW singleton fields match at -964/-944/-937 in p951, and one PTW-417 revision matches at -1008 in p955, none within the target-sensitive windows.
