@@ -177,6 +177,46 @@ def recover(root):
     assert not connects_late(50,anchor63=True)
     print("PASS latent-stage boundary: late seq45->70 needs >=23 omitted draws")
     print("PASS seq63=-397 optional anchor incompatible with seq70=-339 under same law and 50-draw latent allowance")
+    # Retrospectively AUX-selected 54/55 control candidates; new original fields.
+    assert matches_ctrl(54,-459) and matches_ctrl(55,-452)
+    assert codes(-458,13)==(876,) and rows[54]['aux']==876
+    assert codes(-457,9)==(169,) and rows[55]['ts']-2==169
+    assert codes(-456,6)==(35,1) and rows[55]['event']==35
+    assert codes(-451,13)==(4663,) and rows[55]['aux']==4663
+    assert codes(-450,9)==(444,)  # First timestamp56 draw rejects 444>=400
+    assert codes(-449,9)==(117,357) and rows[56]['ts']-2==357
+    print("PASS conditional AUX54->TS55(+2 epoch)->EVENT55 / AUX55->reject444->TS56(+2 epoch)")
+    word,mask=val[:],known[:]
+    for pos,high in ((-456,0),(-449,0x80000000)):
+        at=offset+pos
+        assert mask[at]==0x7fffffff
+        mask[at]|=0x80000000
+        word[at]|=high
+    original_bits=sum(k.bit_count() for k in known)
+    for _ in range(30):
+        before=sum(k.bit_count() for k in mask)
+        for i in range(len(word)-624):
+            left=(mask[i]&0x80000000)|(mask[i+1]&0x7fffffff)
+            value=(word[i]&0x80000000)|(word[i+1]&0x7fffffff)
+            def add(j,v,m):
+                assert ((word[j]^v)&mask[j]&m)==0
+                fresh=m&~mask[j]
+                word[j]=(word[j]&~fresh)|(v&fresh)
+                mask[j]|=fresh
+            if mask[i+397]==0xffffffff and mask[i+624]==0xffffffff:
+                inv=source_module.inverse_twist(word[i+397]^word[i+624])
+                add(i,inv,0x80000000)
+                add(i+1,inv,0x7fffffff)
+            if left==0xffffffff:
+                if mask[i+397]==0xffffffff:
+                    add(i+624,word[i+397]^source_module.twist(value),0xffffffff)
+                if mask[i+624]==0xffffffff:
+                    add(i+397,word[i+624]^source_module.twist(value),0xffffffff)
+        if sum(k.bit_count() for k in mask)==before:break
+    gained=sum(k.bit_count() for k in mask)-original_bits
+    assert gained==34 and sum(k==0xffffffff for k in mask)==971
+    assert all(mask[offset+951+j]==0 for j in range(4))
+    print("PASS conditional two original source MSB completions: +34 fixed state bits, +3 full state words, selected four masks zero")
     print("PASS source-only bounded-order falsifier; selected coupon remains unconstrained")
 
 
