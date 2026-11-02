@@ -177,6 +177,67 @@ def infer(n, observed_values, observed_masks):
     raise AssertionError('propagation did not converge')
 
 
+
+def near_complete_domain(value, mask):
+    """Enumerate an original neighbor with at most one unknown bit."""
+    missing = MASK ^ mask
+    if missing.bit_count() > 1:
+        return ()
+    return (value, value | missing) if missing else (value,)
+
+
+def infer_near(n, observed_values, observed_masks):
+    """Extend the inverse to one-bit-uncertain neighboring source words."""
+    values, masks = observed_values.copy(), observed_masks.copy()
+    for iteration in range(30):
+        residue_domains = {}
+        for j, candidates in source_terms(values, masks).items():
+            residue = j % n
+            residue_domains[residue] = (
+                residue_domains[residue] & candidates if residue in residue_domains
+                else candidates
+            )
+            if not residue_domains[residue]:
+                return False, values, masks, f'key residue at {j} iteration {iteration}'
+        fresh = 0
+        for i in range(4, 624):
+            keys = residue_domains.get((i-1) % n)
+            if not keys:
+                continue
+            locations = (i-2, i-1, i)
+            for unknown_offset in (0, 2):
+                index = locations[unknown_offset]
+                if masks[index] == MASK:
+                    continue
+                neighbors = [locations[k] for k in range(3) if k != unknown_offset]
+                first = near_complete_domain(values[neighbors[0]], masks[neighbors[0]])
+                second = near_complete_domain(values[neighbors[1]], masks[neighbors[1]])
+                if not first or not second:
+                    continue
+                possible = (
+                    {recover_first(i, key, b, c)
+                     for key in keys for b in first for c in second}
+                    if unknown_offset == 0 else
+                    {recover_third(i, key, a, b)
+                     for key in keys for a in first for b in second}
+                )
+                possible = {x for x in possible if not ((x ^ values[index]) & masks[index])}
+                if not possible:
+                    return False, values, masks, f'inverted state at {index} iteration {iteration}'
+                pivot = next(iter(possible))
+                consensus = MASK
+                for x in possible:
+                    consensus &= (~(x ^ pivot)) & MASK
+                new = consensus & ~masks[index]
+                if new:
+                    values[index] = (values[index] & ~new) | (pivot & new)
+                    masks[index] |= new
+                    fresh += new.bit_count()
+        if not fresh:
+            return True, values, masks, 'stable'
+    raise AssertionError('near-full propagation did not converge')
+
+
 def screen(payloads):
     source, known, offset = close(payloads)
     original, masks = source[offset-624:offset], known[offset-624:offset]
@@ -236,6 +297,31 @@ def main(root):
     print('New inversion contradictions',len(first_bad),'new MT recurrence contradictions',len(second_bad))
     print('Survivors',len(surviving),'first allowed length',min(surviving))
     print('Conditional selected K04 source bits recovered',0,'of 128')
+    source, known, offset = close(payloads)
+    original, original_masks = source[offset-624:offset], known[offset-624:offset]
+    near_survivors = []
+    near_direct = {}
+    near_recurrence = {}
+    for n in surviving:
+        valid, values, masks, reason = infer_near(n, original, original_masks)
+        if not valid:
+            near_direct[n] = reason
+            continue
+        extras = [(i, values[i], masks[i] & ~original_masks[i]) for i in range(624)
+                  if masks[i] & ~original_masks[i]]
+        try:
+            updated, updated_masks, off = close(payloads, extras)
+        except ValueError as error:
+            near_recurrence[n] = str(error)
+            continue
+        near_survivors.append(n)
+        assert all(updated_masks[off+951+j] == 0 for j in range(4))
+    assert len(near_direct) == 6 and len(near_recurrence) == 8
+    assert len(near_survivors) == 71 and min(near_survivors) == 364
+    assert 406 in near_direct and 511 in near_recurrence
+    print('One-bit-neighbor extension: 85 to',len(near_survivors),
+          '(6 new inverse contradictions, 8 further native MT contradictions)')
+    print('Cumulative from Agent19: 144 to 71 conditional seed lengths')
     for n in (249,307,364,392,509,623):
         for variant in (0,1):
             seed = sum((((0x621902dd + variant*0x30303 + j*0x12537) & MASK) << (j*32)) for j in range(n))
@@ -255,7 +341,25 @@ def main(root):
             selected=[untemper(draws[951+j]) for j in range(4)]
             assert all(not ((selected[j]^again[off+951+j]) & known[off+951+j]) for j in range(4))
             print('Synthetic seeded source',n,variant,'PASS',flush=True)
-    print('12/12 genuine-seeded controls PASS, no historical K04 recovery')
+    print('12/12 genuine-seeded baseline controls PASS')
+    for n in (364,406,479,499,511,539,623):
+        for variant in (0,1):
+            seed = sum((((0x621902dd + variant*0x4646 + j*0x12417) & MASK) << (j*32)) for j in range(n))
+            rng = random.Random(seed)
+            initialized = list(rng.getstate()[1][:624])
+            draws = [rng.getrandbits(32) for _ in range(967)]
+            generated = [b''.join(x.to_bytes(4,'little') for x in draws[at:at+4]) for at in STARTS]
+            stream, masks, offset = close(generated)
+            original, initial_masks = stream[offset-624:offset], masks[offset-624:offset]
+            ok, inferred, inferred_masks, reason = infer_near(n,original,initial_masks)
+            assert ok, (n,variant,reason)
+            assert all(not ((a^b)&mask) for a,b,mask in zip(initialized,inferred,inferred_masks))
+            extras = [(j,inferred[j],inferred_masks[j] & ~initial_masks[j]) for j in range(624)
+                      if inferred_masks[j] & ~initial_masks[j]]
+            again,known,off=close(generated,extras)
+            selected=[untemper(draws[951+j]) for j in range(4)]
+            assert all(not ((selected[j]^again[off+951+j]) & known[off+951+j]) for j in range(4))
+    print('14/14 near-full genuine-seeded controls PASS, no historical K04 recovery')
 
 if __name__ == '__main__':
     main(Path(sys.argv[1]) if len(sys.argv)>1 else Path('resources'))
