@@ -56,7 +56,7 @@ for deleted in range(5):
                 for s in sea:
                     prefix = " ".join((a, s, mid)) + " "
                     for v in voices:
-                        phrase = " ".join((prefix, v, tail)).strip()
+                        phrase = " ".join(x for x in (a, s, mid, v, tail) if x)
                         digest = hashlib.sha256(key_for(phrase)).digest()
                         count += 1
                         if digest == probe_hash:
