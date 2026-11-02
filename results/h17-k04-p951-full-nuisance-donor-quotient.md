@@ -35,6 +35,12 @@ The three separated five-word windows have a joint target residual rank of **one
 
 This demonstrates a genuine *joint-observation synergy* that the single-window 128-direction rank cannot establish. The earlier rank-127 on chosen perturbations remains mathematically correct within its subspace; interpreting that rank as a 127-bit usable K04 recovery from one preserved PTW window would overstate the full model.
 
+### Residual-bit shape and individual donor necessity
+
+Under the hypothetical exact observation of the three rank-127 windows (-919..-915, -465..-461, -296..-292), the only remaining selected-output variation is one GF(2) direction with a **six-bit** coupon XOR delta, represented in selected packet byte order as `00000000042210880000000000000000` (little-endian word lanes `00000000, 88102204, 00000000, 00000000`). This is the **difference between two conditional candidates**, not a source-derived K04 component and not evidence that six physical copy bits are actually wrong. The exact same residual direction survives after granting all 33 negative-window words.
+
+The three-window observation set contains 15 original-output words. Removing **any one** of those 15 reduces the calculated information gain below 127 bits (the range is 95–125, depending on the position). A tested 100-order greedy-removal pilot found the same irreducible 15-word set. Thus the rank-127 synergy has no redundant donor word in that specific combination; a single additional PTW receipt from one window cannot replace the other entire groups.
+
 ## Chronological PTW producer falsifier, limited scope
 
 Under the same speculative p951 state, original serial anchors PTW-405 at -964, PTW-412 at -944 and PTW-414 at -937 match; the observed original bay C at PTW-414 matches a proposed immediately preceding `getrandbits(3)` code at -938. To test whether that is part of a *uniform producer*, a frozen source-only model emits **bay = CPython randrange(4), allowing 1..12 rejection draws, then serial = getrandbits(32)** in ascending permit order. The withheld PTW-415 bay A and serial can fit at serial indices -934 or -933. For **both**, the next PTW-416 bay D plus exact original serial has **no consistent 1..12-draw placement** in the full printer equation system. A reverse within-record serial/bay variant likewise has no such consistent PTW-416 placement.
