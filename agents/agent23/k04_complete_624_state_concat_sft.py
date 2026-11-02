@@ -36,6 +36,17 @@ def untemper(y):
     return z & MASK32
 
 
+def predict_next_internal_state(raw624):
+    """Alternative producer: corpus words encode raw state rather than tempered outputs."""
+    assert len(raw624) == 624
+    result = []
+    for i in range(4):
+        merged = (raw624[i] & 0x80000000) | (raw624[i + 1] & 0x7FFFFFFF)
+        new = raw624[i + 397] ^ (merged >> 1) ^ (0x9908B0DF if merged & 1 else 0)
+        result.append(temper(new))
+    return tuple(result)
+
+
 def inverse_twist(z):
     odd = (z >> 31) & 1
     return (((z ^ (0x9908B0DF if odd else 0)) << 1) & MASK32) | odd
@@ -74,6 +85,9 @@ for seed in (0, 20261003, 314159):
     original = [gen.getrandbits(32) for _ in range(628)]
     assert predict_next_four(original[:624]) == tuple(original[624:])
     assert predict_previous_four(original[4:]) == (True, tuple(original[:4]))
+    rng = Random(seed)
+    raw_state = rng.getstate()[1][:624]
+    assert predict_next_internal_state(raw_state) == tuple(rng.getrandbits(32) for _ in range(4))
 
 SPOOL = (ROOT / "evidence/print/spool-reconstruction.log").read_bytes()
 assert hashlib.sha256(SPOOL).hexdigest() == "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
@@ -122,12 +136,15 @@ matches = []
 total = 0
 unique = set()
 backward_valid = 0
+raw_matches = []
+raw_unique = set()
 for order in itertools.permutations(groups):
     options = [tuple(v for key, v in views.items() if key[0] == name) for name in order]
     for chosen in itertools.product(*options):
         state = chosen[0] + chosen[1] + chosen[2] + chosen[3]
         after = predict_next_four(state)
         valid, before = predict_previous_four(state)
+        from_raw = predict_next_internal_state(state)
         backward_valid += bool(valid)
         for output_endian in ("little", "big"):
             payload = b"".join(w.to_bytes(4, output_endian) for w in after)
@@ -136,6 +153,11 @@ for order in itertools.permutations(groups):
             total += 1
             if hashlib.sha256(candidate).hexdigest() == target:
                 matches.append(("after", order, output_endian, candidate.hex().upper()))
+            raw_payload = b"".join(w.to_bytes(4, output_endian) for w in from_raw)
+            raw_candidate = bytes(a ^ b for a, b in zip(mask, raw_payload))
+            raw_unique.add(raw_candidate)
+            if hashlib.sha256(raw_candidate).hexdigest() == target:
+                raw_matches.append((order, output_endian, raw_candidate.hex().upper()))
             if valid:
                 prior_payload = b"".join(w.to_bytes(4, output_endian) for w in before)
                 previous_candidate = bytes(a ^ b for a, b in zip(mask, prior_payload))
@@ -149,4 +171,6 @@ print(json.dumps({
     "distinct_forward_components": len(unique),
     "backward_31bit_valid_layouts": backward_valid,
     "authentic_K04_commitment_matches": matches,
+    "raw_internal_state_distinct_components": len(raw_unique),
+    "raw_internal_state_K04_matches": raw_matches,
 }, indent=2))
