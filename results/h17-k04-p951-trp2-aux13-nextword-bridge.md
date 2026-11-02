@@ -1,0 +1,42 @@
+# Conditional p951 recorder AUX 13-bit next-draw side channel
+
+**Agent 3 | 2 November 2026 ~17:57 UTC | Original-source cross-carrier positive, zero authenticated K04 bits.**
+
+## Specific new source relationship
+
+Agent2's recently published [p951 printer-only closure](h17-k04-p951-new-multicarrier-mt-witnesses.md) derives 968 complete and 306 partial MT19937 state words from **528 preserved ordinary/exceptional unselected printer payload words**, without reading the disputed row129 ACK2, source route mask, K04/K08 acceptance, or verifier. Original 4-byte node50 TRP2 control fields independently match eight of those 31/32-bit source state words.
+
+This experiment tests an additional, **separately preserved original field** in those same TRP2 records: the auxiliary process reading, uint32 at offset16. The source format note calls it a raw process reading and supplies no actual RNG algorithm. An explicit, falsifiable *hypothesis* is that it was generated as `2000 + random.randrange(6000)` from the **next MT output after the control**, using CPython's genuine `getrandbits(13)` rejection sampling (codes 6000..8191 discarded). This is a historically **unauthenticated** computational model; the observed value range alone is no proof that recorder AUX was generated this way.
+
+Each candidate is selected by a prior original **control-word match**, before looking at AUX. For each known-31-bit immediately successive state, tempering both possible missing-MSB completions reveals two candidate 13-bit codes.
+
+| CRC-valid node50 seq | Control state index | Original AUX | Next known 13-bit possible draws | Conditional inference |
+|---|---:|---:|---|---|
+| 7 | -810 | 5899 | 6635 / 2281 | 6635 must reject, fixes next MSB=0; later draw unobserved |
+| 12 | -775 | 7494 | 3869 / 7711 | 7711 must reject, fixes next MSB=1; later draw unobserved |
+| 13 | -769 | 3201 | 5555 / **1201** | AUX=2000+1201, next MSB=1 |
+| 24 | -683 | 6573 | **4573** / 223 | AUX=2000+4573, next MSB=0 |
+| 25 | -677 | 6040 | 7882 / **4040** | AUX=2000+4040, next MSB=1 |
+| 41 | -568 | 4823 | next fully known **6630**, rejected; following draw 6661 / **2823** | AUX=2000+2823 at second attempt, fixes second-next MSB=1 |
+
+Two additional source-matched node50 records, seq45 and seq70, have no immediately following state word with at least 31 independently fixed bits. They are **undetermined**, not counted as passes or failures. Node49/event82 AUX values represent a different explicit recorder context and were deliberately not used to fit the node50 sampler.
+
+The strongest exact accepted-value observations are seq13,24,25 (first candidate) and seq41 (second candidate after the original model's observed rejection). The seq7 and seq12 inferences are **partial**: the rejection is consistent, but the accepted later value is not independently predicted. Even the four exact readings were examined retrospectively; they are not truly preregistered blinded predictions. The match pattern is nevertheless a useful and unexpected second-field source discriminator.
+
+## Consequence for conditional K04 state
+
+The six above 31-to-32-bit completions occur at conceptual MT indices **-809, -774, -768, -682, -676, -566**. Independent exact recurrence closure after inserting only those six source-conditioned bits increases individually fixed state bits from **35,782 to 35,852**, complete 32-bit state words from **968 to 975**, and partial 32-bit state words from **306 to 302**. All original intact printer words remain consistent; there are no new source contradictions.
+
+**Every selected K04 row129 state mask remains `00000000`** at p951 positions 951..954. Thus there is no original selected coupon bit, no recovered K04 component, no K08 exact final caption, and no new official verifier pass. The additional 70 closure-fixed bits are conditional, not 70 independent original observations.
+
+## Important existing contradiction and limits
+
+**This precise p951 printer index fixture already fails an original printer CLASS witness under a separately proposed ordinary-row terminal sampler**: v1 [all-six p950..955 class falsifier](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-crosssource-six-fixtures-class-falsifier.md) identifies row84's reconstructed last CLASS code3 while its recorded CLASS is LABEL code0. The new AUX agreement cannot silently remove that conflict. At least one assumed source index or one hypothesized producer/metadata rule would need revision. Preserve both as competing conditional constraints.
+
+Prior v1 [Agent3 AUX13 investigation](https://github.com/FlareZ123/workplace-v1/blob/main/agents/agent3/k04_trp2_aux13_donor_note.md) rejected three **consecutive same-node/event** AUX runs as independent printer hidden-state donors. The within-record, control-first then rejection-sampled AUX pairing tested here is a different, tighter mechanism and does not contradict the earlier scoped negative.
+
+### Reproduction and next discrimination
+
+[Source-only executable](../agents/agent3/k04_aux_sampler_p951_sft.py) imports [Agent2's spool/recorder-pinned p951 closure](../agents/agent2/20261102_k04_multicarrier_p951_sft.py). It verifies native CPython `randrange(6000)` rejection behavior across 500 synthetic draws, original spool and recorder hashes and recorder CRCs, then asserts the exact source codes, six bit assignments, +70 closure bits, and zero selected-word masks. Neither source file nor official acceptance inputs are written.
+
+The most informative future test would **independently index a currently unanchored node50 control value** (or a second AUX stage) using a heldout source emission sequence, then predict its complete original AUX field before inspecting it. A new indexed donor reaching row43→44 and row96→97 or a defensible seeded-state producer remains necessary for K04.
