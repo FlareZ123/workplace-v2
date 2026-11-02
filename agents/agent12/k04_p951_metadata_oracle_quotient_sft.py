@@ -43,7 +43,7 @@ a = overlap(class_oracle, target, source)
 b = overlap(dest_oracle, target, source)
 c = overlap(class_oracle + dest_oracle, target, source)
 assert len(class_oracle) == 127*3
-assert len(dest_oracle) == 127*2
+assert len(dest_oracle) == 128*2
 assert a == (128, 252, 0), a
 assert b == (128, 169, 0), b
 assert c == (128, 417, 0), c
@@ -52,12 +52,12 @@ assert c == (128, 417, 0), c
 # native output donors would fully determine the same target quotient.
 future = [bit for t in (1179,1180,1181,1347,1348,1574,1575)
           for bit in states[t-origin]]
-assert overlap(future, target, source) == (128, 224, 128)
+assert overlap(future, target, source) == (128, 193, 128)
 
 print("K04 source-only quotient: 128 unknown bits")
 print("127 hypothetical CLASS 3-bit observations: 0 target bits recovered")
-print("127 hypothetical first-DEST 2-bit observations: 0 target bits recovered")
-print("All 254 metadata oracle draws jointly: 0 target bits recovered")
+print("128 hypothetical first-DEST 2-bit observations: 0 target bits recovered")
+print("All 255 metadata oracle draws jointly: 0 target bits recovered")
 print("Row43 first-DEST 2-bit oracle: 0 target bits recovered")
 print("Positive seven future-native donor control: 128 target bits recovered")
 print("No authenticated selected coupon or new REC8 PASS.")
