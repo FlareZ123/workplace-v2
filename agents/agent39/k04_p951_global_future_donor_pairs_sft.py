@@ -154,7 +154,6 @@ def main():
     ]
     assert len(complete)==46,len(complete)
     assert all(gain<33 for choice,gain in unique.items() if len(choice)==3)
-    assert complete[0] or True
     first=min(complete,key=lambda x:(max(x),sum(x)))
     assert first==(1347,1348,1574,1575),first
     for extra in ((1347,1348,1574,2029),
