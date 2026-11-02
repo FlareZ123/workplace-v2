@@ -30,3 +30,16 @@ An apparently matching seven-draw span also exists from **seq7 at -810** to **se
 The proposed fixed-rate schedule is inconsistent with the original source geometry; a surviving **variable-draw** or sequence-dependent rejection model would require a separately justified consumption rule and new heldout predictions. The recently proposed [Agent3 13-bit AUX rejection model](h17-k04-p951-trp2-aux13-nextword-bridge.md) suggests one possible variable-consumption mechanism, but it is itself historically unverified and cannot erase the seq44 contradiction by arbitrary skips. At -548 and -542/-541 (nearby well-constrained state positions), the original seq44 control also disagrees with 17, 19 and 16 bits respectively; this is a local discriminator, not an exhaustive variable-schedule rejection.
 
 The original spool, recorder, route mask, selected K04 ACK, acceptance hashes and verifier remain unmodified. The source chronology is retrospectively selected and not proven historical firmware. Even after this test, selected p951 K04 words 951..954 have **zero individually fixed bits**. The six accepted REC8 slots remain verified, K04/K08 absent, combined recovery **INCOMPLETE**.
+
+## Conditional six-base-plus-AUX-rejections corollary (18:16 UTC)
+
+Agent 3's explicit CPython AUX13 hypothesis requires **exactly one rejected draw** immediately after the original seq41 control (first 13-bit code 6630 rejected, next 2823 accepted). Suppose, as a new sharply specified *unverified* generator architecture, every node50 sequence consumes **six base draws plus a nonnegative number of AUX rejection draws**. Let `r42`, `r43`, `r44` be the rejected-draw counts for sequences 42..44, with seq41 count fixed at one. Source-matched anchors at -568 (seq41) and -540 (seq45) require `r42+r43+r44 = 3`. Therefore seq44's predicted control index is `-549 + r42 + r43`, with `0 <= r42+r43 <= 3`.
+
+| `r42+r43` | seq44 proposed index | Printer-fixed bits there | Original seq44 control disagreements | Consequence |
+|---:|---:|---:|---:|---|
+| 0 | -549 | 1 | 1 | excluded |
+| 1 | -548 | 32 | 17 | excluded |
+| 2 | -547 | 31 | 13 | excluded |
+| **3** | **-546** | **0** | **0 testable** | remains possible |
+
+Under this specific model, the original source **forces `r42+r43=3` and `r44=0`**. This means at least one of seq42/43 would need multiple rejections. The only surviving seq44 placement, -546, has **no independently fixed printer state bits**. Adding that *speculatively indexed* original 32-bit control to the forward recurrence closes only the inserted word, adds no other state bits, and leaves all four selected p951 K04 word masks zero. Thus the model produces a falsifiable conditional rejection budget but **still no target-reaching independent constraint**. This is a model-conditioned inference, never proof of actual recorder firmware or unobserved rejection counts.
