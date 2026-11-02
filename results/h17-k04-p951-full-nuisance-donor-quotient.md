@@ -52,3 +52,12 @@ This rejects only the explicit immediate two-field emission/order model and reje
 Seeking one full source packet solely within the attractive -919..-915 PTW window would leave K04 wholly ambiguous **within this broader p951 generator model**. A promising line would instead identify a historically justified producer seed/epoch capable of eliminating the nuisance variables, or independently indexed original outputs in *multiple separated* windows with a prospective held-out check. The hypothetical three-window information gain shows that multiwindow source relationships can be materially different from another same-window source match.
 
 The reproducible source-only SFT was executed locally with a 3,500-word synthetic CPython control. Its repository upload was blocked, so this report preserves the exact rank inputs, equations and output assertions; the executing agent retains the script in the current conversation's downloadable artifacts. No original evidence, accepted candidate, route, acceptance file or verifier is changed. Six established component checks PASS; K04 and K08 remain missing; combined REC8 remains INCOMPLETE.
+
+
+## Smaller full-rank hypothetical donor configuration, 20:57 UTC
+
+A follow-on greedy deletion across the 33 earlier sensitive positions and six mathematically qualified future positions finds a **15-fullword** source set reducing the selected 128-bit quotient to zero:
+
+\`[-919,-918,-917,-916,-915,-523,-465,-464,-462,-461,-295,-293,-292,1349,1406]\`.
+
+The construction first excludes selected row129, rebuilds all 6202 initial unknown state forms and 1630 independent original printer constraints, then iteratively drops donor indices only if \`rank([target; donors])-rank(donors)==0\` remains true. Among 120 deterministically seeded randomized deletion orders, the strongest kept 15 distinct complete 32-bit donor outputs, versus the earlier 16-word three-window-plus-future example. This is an **upper bound on the number of hypothetical donor outputs sufficient** in that source-model geometry, with no claim of global cardinality minimality or actual indexed source records at those 15 positions. It requires two separate positive-time outputs and several earlier windows. No authentic target value was supplied by this symbolic exercise.
