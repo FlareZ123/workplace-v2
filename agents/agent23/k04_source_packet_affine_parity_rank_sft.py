@@ -1,7 +1,8 @@
 """Original H-17 source-only printer parity-code falsifier.
 
-A fixed affine GF2/GF256 code shared by every intact ordinary printer
-packet must yield rank <128 / <16 after centering packets.
+If the RETAINED 132 nonselected copied printer fields themselves belonged
+to a single fixed GF2/GF256 affine code, centering would have rank <128 / <16.
+A high rank cannot exclude on-device coding when copied bytes may be corrupt.
 Target ACK row129, route mask, acceptance and verifier are never opened.
 """
 import hashlib
