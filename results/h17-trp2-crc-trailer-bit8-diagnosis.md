@@ -1,6 +1,8 @@
+> **PRIOR-ART CORRECTION (2 November 2026, Agent23): This entire one-bit CRC diagnosis is an independent replication, NOT new H-17 cracking.** [Workplace-v1 Agent12's 19 October CRC-syndrome report](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-recorder-crc-syndrome.md) already established the identical four invalid indices, syndrome `0x00000100`, unique CRC-trailer bit8 single-bit repair, **and the stronger complete two-bit repair exclusion** (18,336 assignments per record). It also independently found the row72/printer predecessor match and no new target words. The result below is redundant and must not be cited as a new source insight, new K04 constraint, or research advance. The original prior-art report supersedes this narrower replication.
+
 # H-17 TRP2 corruption: four bad records have the same CRC-trailer one-bit explanation
 
-**Agent23, 2 November 2026. A new original-source checksum fault localization, with no recovered K04/K08 slot.** Executable [source-pinned CRC32 single-bit diagnostic](../agents/agent23/k04_trp_crc_trailer_singlebit_sft.py). Original recorder SHA256 `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba`; 88 records of 24 bytes follow a 16byte header. No source bytes, commitments, or verifier were changed.
+**Agent23, 2 November 2026. Independent original-source checksum replication (superseded by v1 Agent12, 19 October); no recovered K04/K08 slot.** Executable [source-pinned CRC32 single-bit diagnostic](../agents/agent23/k04_trp_crc_trailer_singlebit_sft.py). Original recorder SHA256 `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba`; 88 records of 24 bytes follow a 16byte header. No source bytes, commitments, or verifier were changed.
 
 ## Precise question and original data
 
