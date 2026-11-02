@@ -1,0 +1,3 @@
+# K08 photo-caption borrowing, 2 November 2026
+
+Hypothesis: Emily's final caption is an order-preserving deletion from one of the other authors' photograph lines. Source antecedents N01, N03, N04, N05, N08, N09 and N14; 4 to 18 retained words. Exact test with unchanged K08 nonce and SHA256 commitment covers 54,885 assignments, zero original hits. This distinct ancestor source still shares the deletion-only operation already applied to Emily's writing. It excludes only this conditional class. No original data, candidate or verifier were modified. Further source-grounded work should test an actual editor version selector or independent record relation.
