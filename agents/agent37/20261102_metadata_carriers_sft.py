@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from functools import reduce
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2] / "resources"
@@ -20,10 +21,8 @@ DESTS = ("store", "desk", "bench")
 
 
 def xor(*values: bytes) -> bytes:
-    return bytes([sum(((v[i] >> k) & 1) for v in values) % 2
-                  for i in range(16) for k in []]) if False else bytes(
-        __import__("functools").reduce(int.__xor__, (v[i] for v in values), 0)
-        for i in range(16))
+    return bytes(reduce(int.__xor__, (v[i] for v in values), 0)
+                 for i in range(16))
 
 
 def main() -> None:
