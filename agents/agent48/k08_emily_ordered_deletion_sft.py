@@ -29,6 +29,7 @@ clauses = {
     "N13": "At the end of the night the mugs stood beside the window and somebody had remembered to leave the little lamp on",
     "N20": "I wanted the line to hold the sea the end of the night and the voices at the table",
     "N23": "The envelope only remembers the words I finally put on it",
+    "MAIL11": "people making room for each other after a long watch with the water outside and the night almost finished",
 }
 def normalize(s):
     return " ".join(re.sub(r"[^a-z0-9\s]", " ", s.lower()).split())
@@ -43,7 +44,10 @@ def ordered_deletions(words):
 def main():
     for note, clause in clauses.items():
         # Check the actual original note's normalized phrase as a single span.
-        line = re.search(rf"(?m)^{note} / Emily \[censored\]\n([^\n]+)", notes).group(1)
+        if note == "MAIL11":
+            line = (ROOT / "evidence/mail/11.eml").read_text()
+        else:
+            line = re.search(rf"(?m)^{note} / Emily \[censored\]\n([^\n]+)", notes).group(1)
         assert normalize(clause) in normalize(line), note
     # Genuine positive: the enumerator must find an independently planted
     # HMAC/SHA commitment for a known proper subsequence of original N13.
