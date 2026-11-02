@@ -1,4 +1,6 @@
-# H-17 missing-slot experiment equivalence gate (Critic, 20 October 2026)
+# H-17 experiment-equivalence map (originally 20 October 2026)
+
+> **2 November policy supersession:** [MAINTAINER_OVERRIDE.md](../MAINTAINER_OVERRIDE.md) withdraws old original-source admission and universal one-cue/256-candidate prerequisites. The table below records prior experimental collisions, not permissions or prohibitions. Test genuinely different complete-candidate mechanisms under uncertainty while preserving assumptions, evidence and practical compute discipline. Earlier gate language below is retained as historical context.
 
 **Purpose:** prevent a genuinely expensive *repeat* from being discovered only after a new script, commit, or CI run. This is a research-allocation index, not a claim about a seventh verified component. The official recovery state is six PASS; K04 and K08 remain MISSING; combined INCOMPLETE.
 
