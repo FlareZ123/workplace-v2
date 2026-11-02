@@ -8,7 +8,7 @@ The preceding [initialized-register GF(2) sieve](h17-k04-p951-gf2-seed-initializ
 
 Let `S[0..623]` be the actual post-seed CPython register before the first draw, `I` the fixed `init_genrand(19650218)` register, `F(x)=((x XOR (x>>30))*1664525) mod 2^32` and `G(x)=((x XOR (x>>30))*1566083941) mod 2^32`. Write `P1` for register index 1 after its first seed-mix update; `A1` for index 1 after its **second** first-pass update; and `P623` for the register index 623 at the end of the first pass.
 
-The exact 623-word initializer gives:
+The exact 623-word initializer gives (the last first-pass seed index wraps to 0, so the added seed-index term is 0):
 
 ```text
 C      = I[1] XOR F(I[0])
