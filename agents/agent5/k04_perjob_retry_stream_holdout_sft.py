@@ -177,8 +177,7 @@ def inverse_xoshiro_state(s):
     old_b = q
     old_b ^= (old_b << 9) & MASK
     old_b ^= (old_b << 18) & MASK
-    return (old_a, b ^ old_b ^ old_a, d_b ^ old_b ^ 0 ^ 0
-            if False else b ^ old_b ^ old_a, d_b ^ old_b)
+    return (old_a, old_b, b ^ old_b ^ old_a, d_b ^ old_b)
 
 
 def inverse_xorshift_state(s):
