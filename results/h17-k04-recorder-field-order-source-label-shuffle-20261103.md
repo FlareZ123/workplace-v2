@@ -48,3 +48,24 @@ The producer's code and true number of hidden draws are **unknown**, as is wheth
 Next useful discrimination: freeze a *finite actual draw-consumption mechanism*, e.g. a constant number of internally discarded draws between LATCH and CONTROL and CPython `randrange` rejection inequalities, calibrated against the 13 source-indexed anchors before checking seq47. Accept only a model that predicts its heldout stage or supplies the actual 128-bit selected coupon. An arbitrary positive accepted code placement is weaker evidence than a full rejection-history witness.
 
 The original resources, source ZIP, acceptance and verifier are unchanged.
+
+
+## Exact rejection follow-up: the loose accepted-position signal narrows to a zero-hidden-draw writer
+
+A newly executed and substantially stricter [fixed-hidden-gap SFT](../agents/agent2/k04_recorder_hidden_gap_reject_sft.py) tests one global hidden native-draw count `h=0..8` between accepted LATCH and CONTROL. Every row is allowed **0..3 actual CPython `randrange` rejected draws per EVENT, LATCH and AUX**, with exact conditional high6/high3/high13 *range* constraints enforced jointly over the same GF(2) source state. Fitted source **13 pre-indexed anchor** scores (and total exactly feasible histories) are:
+
+| h | Anchors with a full exact rejection history | Total histories across 13 anchors |
+| ---: | ---: | ---: |
+| 0 | **11/13** | 142 |
+| 1 | 4/13 | 74 |
+| 2 | 3/13 | 57 |
+| 3 | 6/13 | 78 |
+| 4 | 4/13 | 43 |
+| 5 | 1/13 | 6 |
+| 6 | 1/13 | 12 |
+| 7 | 2/13 | 7 |
+| 8 | 0/13 | 0 |
+
+The winning finite model is **h=0**; other hidden-gap lengths explain many fewer source-indexed records. This source-selected h=0 model gives original seq47 -523 and -522 **zero** exact rejection histories, while -521 gives three and -520 six. Thus the earlier tentative target-parity rescue by allowing an arbitrary four-word post-latch gap loses support under this finite mechanism. The h0 anchor misses are original seq12 and seq61; the model remains unable to explain every source anchor, and 0..3 per-field rejection limit leaves longer nonzero rejection chains outside tested scope. Source-selected h0 alone does not authenticate physical writer behavior or the selected K04 coupon.
+
+[Execution: GitHub Actions run 41723556202](https://github.com/FlareZ123/workplace-v2/actions/runs/41723556202), job completed successfully, 13 anchor source rows, all 9 hidden-gap families, four seq47 stages. **No original key component or target byte recovered.** The source-only label-shuffle signal in the earlier section remains valid as a retrospective necessary-condition observation, while this follow-up exposes the absence of a universal constant hidden gap greater than zero.
