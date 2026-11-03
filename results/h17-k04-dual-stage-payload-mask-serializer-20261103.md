@@ -34,7 +34,23 @@ For **each** of \`P0\` and \`M0\`, independently choose a 4×4 byte-matrix row-m
 | Authentic original K04 commitment matches | **0** |
 | Planted genuine dual-stage full-hash positive | **1 exact match** |
 
-The planted positive selected two non-identity layouts, generated their true reduced component, then searched the complete same two-stage product against its independently constructed SHA256 commitment. It appeared **exactly once**. Source selection, route mask and real target hash are asserted by [the standalone standard-library SFT](../agents/agent12/k04_dual_stage_serializers_sft.py). An independent local equivalent enumeration of the original source completed in about 1.2 seconds and yielded the counts above. The committed script has not separately been run in CI.
+The planted positive selected two non-identity layouts, generated their true reduced component, then searched the complete same two-stage product against its independently constructed SHA256 commitment. It appeared **exactly once**.
+
+### Stronger prior-art normal-form comparison
+
+The 1,535 one-sided count above uses the same narrow 768-layout class on either side. A second test compares **every one of the 589,824 reduced components** against two *larger predecessor families*: Agent5's **7,962,624 payload-side** cases (all 4! word and all 24^4 byte-inside-word permutations in native row grouping), and Agent30's **15,925,248 mask-side** cases (both row- and column-grouped word/byte permutations). These two sets have cheap exact membership tests: XOR the candidate back with the unchanged opposite operand, then compare the multiset of four individually byte-sorted 4-byte blocks with the permitted source grouping. This is a mathematical equivalence test over complete candidate values and therefore requires neither rehashing nor materializing the original 24 million precedent strings.
+
+| Previously tested larger one-sided family | Dual-stage candidates contained in it |
+| --- | ---: |
+| Agent5 payload-side word/byte reordering | **384** |
+| Agent30 mask-side word/byte reordering | **768** |
+| Overlap between these two predecessor families | **1** |
+| Their union inside our 589,824 unique joint candidates | **1,151** |
+| **Dual-stage candidates outside both of these full predecessor families** | **588,673** |
+
+The 384-person difference between the narrow 1,535 union above and this larger union is because Agent5's source-lane family has **no whole-matrix transpose option**; our narrow payload set does. An independent Agent31 interleaver may cover some of those cases. These numbers prove incremental final-byte coverage relative to precisely the two named predecessor families. They do **not** assert global disjointness from every other copier, word-source or arbitrary-byte-replacement search ever run. The [extended same SFT](../agents/agent12/k04_dual_stage_serializers_sft.py) checks the exact membership counts in the original search loop.
+
+ Source selection, route mask and real target hash are asserted by [the standalone standard-library SFT](../agents/agent12/k04_dual_stage_serializers_sft.py). An independent local equivalent enumeration of the original source completed in about 1.2 seconds and yielded the counts above. The committed script has not separately been run in CI.
 
 **Coverage distinction:** This does not repeat the old hash checks under a different name: **588,289** fully specified final 16-byte values are new relative to the corresponding one-sided 768+768−1 set. Those candidates still arise from an unattested two-fault causal explanation. Other independent masks, nonpermutation byte changes, lost physical media fragments, and different upstream source objects remain open. A future two-stage fault model should be supported by a real cross-channel serializer or source-original comparator before larger expansions.
 
