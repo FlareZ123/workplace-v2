@@ -124,3 +124,42 @@ for name,with_ax,with_recorder,valid_only,rank in (
           "six_donor_residuals",short)
 print("PASS: +257 independent source equations do not shorten the"
       " frozen seven-future-word portfolio; historical K04 remains unknown")
+
+
+# Target-bearing 1-bit witness after six *complete* future native words.
+# All observations at index1179 below remain hypothetical and unavailable.
+def onebit_quotient(base,expr):
+    matrix={p:row for p,(row,value) in base.rows.items()}
+    for index in (1180,1181,1347,1348,1574,1575):
+        for vector in m.get(states,index):
+            rem=reduce(vector,matrix)
+            if rem:matrix[rem.bit_length()-1]=rem
+    rem=reduce(expr,matrix)
+    if rem:matrix[rem.bit_length()-1]=rem
+    residual=0
+    for index in range(951,955):
+        for vector in m.get(states,index):
+            rem=reduce(vector,matrix)
+            if rem:
+                matrix[rem.bit_length()-1]=rem
+                residual+=1
+    return residual
+
+
+native=m.get(states,1179)
+tempered=m.temper(native)
+useful_tempered=(2,9,13,20,27,31)
+for name,with_ax,with_recorder,valid_only in (
+    ("printer",False,False,False),
+    ("ax+valid8",True,True,True),
+    ("ax+raw12",True,True,False)
+):
+    b=extend(with_recorder,valid_only,with_ax)
+    assert onebit_quotient(b,native[31])==0
+    observed=tuple(i for i,v in enumerate(tempered)
+                   if onebit_quotient(b,v)==0)
+    assert observed==useful_tempered,(name,observed)
+    print("ONE BIT SUFFICIENT",name,
+          "native bit31; independently tempered bits",observed)
+print("PASS 6 full future native words + 1 authenticated output bit"
+      " would conditionally determine all 128 selected bits")
