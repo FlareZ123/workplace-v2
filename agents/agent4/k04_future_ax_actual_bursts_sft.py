@@ -76,7 +76,7 @@ def test_burst(name, native_start, swap):
         n = int(row["checkpoint"], 16)
         if swap:
             n = ((n & 255) << 8) | (n >> 8)
-        output_bits = m.temper(m.get(states, native_start + row_num))[16:]
+        output_bits = m.temper(states[native_start + row_num - m.ORIGIN])[16:]
         if not insert16(output_bits, n, eqs):
             return False, row_num
     return True, len(eqs) - basis.rank
