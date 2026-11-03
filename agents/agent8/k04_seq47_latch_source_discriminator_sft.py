@@ -118,6 +118,34 @@ def main():
         pp = [predicted(selected, vectors, pos + delta) for _, pos in PATH]
         fixed, correct = counts(pp, [latches[seq] for seq, _ in PATH])
         print(delta, fixed, correct)
+    # Robustness: unfreeze both neighboring CONTROL stages. The 4..11-word
+    # chronology between seq45=-540 and seq49=-504 allows 161 triples.
+    # All three source-original controls must fit the same original GF(2) state.
+    other = tuple((seq, pos) for seq, pos in PATH if seq not in (46, 47, 48))
+    combinations = 0
+    compatible = []
+    for p46 in range(-536, -528):
+        for p47 in range(p46 + 4, p46 + 12):
+            for p48 in range(p47 + 4, p47 + 12):
+                if not 4 <= -504 - p48 <= 11:
+                    continue
+                combinations += 1
+                try:
+                    b = joint_basis(printer, vectors, controls,
+                                    other + ((46, p46), (47, p47), (48, p48)))
+                except AssertionError:
+                    continue
+                compatible.append(((p46, p47, p48), b.rank,
+                                   len(target_relations(b, vectors)[0])))
+    assert combinations == 161
+    assert compatible == [
+        ((-531, -523, -512), 16663, 127),
+        ((-531, -522, -512), 16664, 128),
+        ((-531, -521, -512), 16664, 128),
+        ((-531, -520, -512), 16664, 128),
+    ], compatible
+    print("neighbor-unfrozen 161 exact original-control triples ->",
+          compatible)
     print("Conditional latch-1 model rejects stage -523; no verified K04 bit gained.")
 
 
