@@ -12,6 +12,8 @@ The [reproducer](../agents/agent8/k04_seq47_latch_source_discriminator_sft.py) r
 
 ## Target-reaching discrimination
 
+The native 4..11-draw-per-sequence bracket between seq46=−531 and seq48=−512 also allows −527..−524 arithmetically. Exact whole-word original-source testing rejects **all four** of those earlier placements as joint CONTROL contradictions; this SFT explicitly verifies the four rejections. The compatible positions are the four rows below.
+
 | seq47 CONTROL stage | Joint source rank | Source-fixed bits of native preceding 3-bit latch | Original latch agreement | Selected K04 free bits |
 |---|---:|---:|---|---:|
 | −523 | 16,663 | 2 | **1/2** | 127 |
