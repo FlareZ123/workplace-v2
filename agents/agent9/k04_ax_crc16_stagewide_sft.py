@@ -40,15 +40,18 @@ def laws():
 
 def reduce_against_source(basis, value: int):
     known = 0
+    free = 0
     while value:
         leading = value.bit_length() - 1
         row = basis.rows.get(leading)
         if row is None:
-            break
-        vector, bit = row
-        value ^= vector
-        known ^= bit
-    return value, known
+            free |= 1 << leading
+            value ^= 1 << leading
+        else:
+            vector, bit = row
+            value ^= vector
+            known ^= bit
+    return free, known
 
 
 def checksum_forms(word_forms, weights, bias):
@@ -183,7 +186,7 @@ def run():
                   informative, "exact", exact, flush=True)
 
     assert tested == 6401 * 16 * 8
-    assert informative == 6882
+    assert informative == 8674
     assert minima == {16: 1, 32: 7, 64: 19}, minima
     assert exact == 0
     print("PASS ORIGINAL NEGATIVE:", tested, "assignments,", informative,
