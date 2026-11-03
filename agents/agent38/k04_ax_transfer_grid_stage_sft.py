@@ -5,7 +5,7 @@ two attempts each. A specified shared-output hypothesis is:
     native_mt_index = base + seq * stride + (attempt - 1) * retry_offset
 The first-attempt eight checkpoints train (without consulting attempts 2).
 The second-attempt eight are held out. We search stride -64..64 excluding
-0, base -1100..1300, global byte orientation both choices, and a
+0, base -1300..2150, global byte orientation both choices, and a
 retry_offset -256..256 excluding 0. Require >=24 printer-fixed upper
 bits with zero contradictions separately in training and holdout.
 
@@ -74,7 +74,7 @@ def main():
             for w, m in zip(words, known)]
     fixed = np.array([v[0] for v in bits], dtype=np.uint16)
     observed = np.array([v[1] for v in bits], dtype=np.uint16)
-    bases = np.arange(-1100, 1301, dtype=np.int32)
+    bases = np.arange(-1300, 2151, dtype=np.int32)
     results = {}
 
     for name, pair in checkpoints(
