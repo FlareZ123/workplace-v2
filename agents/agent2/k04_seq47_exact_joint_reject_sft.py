@@ -164,6 +164,39 @@ def all_accepted_positions(model, vectors, stage, observed):
     return options
 
 
+def calibration_all_positions(printer, vectors, controls, metadata):
+    """Source-only necessary field-code feasibility for 54 interior rows."""
+    model = joint_basis(printer, vectors, controls, PATH)
+    positions = []
+    by_stratum = {"anchor": [], "other": []}
+    for i in range(1, len(PATH) - 1):
+        seq, pos = PATH[i]
+        prev_pos = PATH[i - 1][1]
+        next_pos = PATH[i + 1][1]
+        event, latch, aux = metadata[seq]
+        count = 0
+        first = []
+        for e_stage in range(prev_pos + 1, pos - 1):
+            for a_stage in range(pos + 1, next_pos):
+                rows = [(e_stage, 6, accepted(6, event - 1)),
+                        (pos - 1, 3, accepted(3, latch)),
+                        (a_stage, 13, accepted(13, aux - 2000))]
+                witness, _ = solvable(model, vectors, rows)
+                if witness is not None:
+                    count += 1
+                    if len(first) < 2:
+                        first.append((e_stage, a_stage))
+        cat = "anchor" if seq in ANCHORS else "other"
+        by_stratum[cat].append((seq, count))
+        positions.append((seq, pos, count, first))
+    for cat, values in by_stratum.items():
+        print("ALL_PLACEMENTS",cat,
+              "rows",len(values),"any_joint_accepted",
+              sum(n>0 for _,n in values),"none",[seq for seq,n in values if not n],
+              "total_exact_accepted_pairs",sum(n for _,n in values),flush=True)
+    print("ALL_PLACEMENTS_DETAIL",positions,flush=True)
+
+
 def main():
     printer, vectors = source(ROOT / "resources")
     controls = recorder_controls()
@@ -224,6 +257,7 @@ def main():
               "prefix_expansions",expansions,
               "sample",tuple((s,n,len(c)) for s,n,c in witness) if witness else None,
               flush=True)
+    calibration_all_positions(printer, vectors, controls, metadata)
     calibration(printer, vectors, controls, metadata)
     print("Original selected K04 coupon and K08 phrase remain unknown.", flush=True)
 
