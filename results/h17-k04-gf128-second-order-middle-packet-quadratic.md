@@ -81,3 +81,23 @@ For each combination of two verified irreducible degree-32 polynomials (low redu
 **Original result:** all **32/32** models solve their limited training equations and reconstruct a complete candidate, but **0/32** have any correct future holdout output word, **0/32** reproduce the intact 18:01 packet when reversed, and all **32 distinct complete K04 candidates fail** the original untouched commitment. Hence this specific four-word finite-field producer class is source-inconsistent under its assumed continuity across the late printer packets, before any recovery claim. Four genuine planted field generators (both polynomials × both bias options) satisfy heldout forward equations and backward exact missing+prior-packet recovery. [Reversible after-target source SFT](../agents/agent48/k04_gf32_reverse_late_packet_sft.py).
 
 This follows a stronger selection policy than the four-endpoint interpolation above: **learn from independent later source, reserve actual heldout later outputs, and test a separately retained earlier packet**. The original 18:03 to18:24 clock gap and differing job classes still prevent generalizing this rejection to all physical RECOVER producers or variable-step generators. It contributes no accepted slot or authenticated target bit.
+
+
+## Addendum, 3 November ~16:15 UTC: event-matched **shared affine attempt** quadratic
+
+An event-selection improvement replaces arbitrary across-job late chronological adjacency with actual preserved *retry job identities*. The intact `PS-261003-0420` has **17:00 STORES ACK attempt1** (`X`) and **18:25 RECOVER ACK attempt2** (`Y`). The selected `PS-261003-0417` has intact **18:01 RECOVER REQUESTED attempt1** (`A`), missing **18:02 RECOVER ACK attempt2** (`B`), and intact **18:03 RECOVER REQUESTED attempt3** (`C`). No copied row129 payload is consumed.
+
+Suppose a fixed **per-attempt affine finite-field law** `next = g*current XOR h` is common to these two exceptional jobs. The 0420 original pair yields `h=Y XOR g*X`. Propagating the 0417 source twice yields the exact quadratic:
+
+```
+(A XOR X)*g^2 XOR (Y XOR X)*g XOR (Y XOR C) = 0
+B = g*A XOR (Y XOR g*X)
+```
+
+This is mathematically different from the predecessor workplace-v1 two-job `mod 2^128` integer affine test, and is source-conditioned on actual **attempt number** rather than arbitrary adjacent printer rows. Under the GHASH binary field polynomial and eight explicitly reversible endian/bit packet views, this produces **12 distinct complete 16-byte K04 values**, all tested against the original unchanged K04 SHA256 commitment, **zero hits**. Canonical candidates `A6EEFA024E6415CF76978B768C8E1CB7`, `D403FEB8B76B7C91FEFBE22ED0B4BCEE` both fail.
+
+More stringently, interpret the 16-byte source packets as four parallel 32-bit finite-field lanes, allowing independently chosen affine coefficients in each lane under either `x^32+x^7+x^3+x^2+1` or the common degree32 polynomial with low bits `0x04C11DB7`. Across **16** polynomial/serialization models, at least one lane's original-source quadratic has **no solution** in every model, so **zero complete four-lane retry candidates** exist. This is a source inconsistency independent of the original K04 commitment or of corrupted row129. Three genuinely generated 128-bit shared-affine two-job positive controls recover the withheld middle and reject a one-bit changed flanking attempt.
+
+This is the best historically aligned of the finite-field variants because it uses a real intact second-attempt comparator and the selected job's two genuine flanks. It still assumes the **same** transition law across 0420's STORES→RECOVER change and 0417's REQUESTED→ACK→REQUESTED progression, with no evidence that printer emissions follow field multiplication. The 0420 source is later than the target and no third same-transition job exists as an independent holdout. Interpolation alone is insufficient historical producer confirmation, and all original K04 candidates are rejected.
+
+Reproducer: [source-pinned 128-bit shared retry / 32-bit lane SFT](../agents/agent48/k04_retry_gf128_quadratic_source_sft.py). It reuses the two earlier standalone finite-field SFTs as sibling modules, runs directly from the repository with standard Python, and does not alter evidence, mask, candidate or commitments.
