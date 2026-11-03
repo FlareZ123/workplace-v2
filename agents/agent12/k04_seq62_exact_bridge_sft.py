@@ -123,6 +123,12 @@ def main():
     assert known_tempered(basis,symbolic,-409)[0]==0
     assert known_tempered(basis,symbolic,-405)[0]==0
     assert add(basis,symbolic,-409,observed) is None
+    # A null calibration is essential: -405 has a 32/32 free quotient,
+    # so completely unrelated random CONTROLs always fit it.
+    unrelated=random.Random(20261103)
+    null_unique=sum(exact_candidates(basis,symbolic,unrelated.getrandbits(32))==[-405]
+                    for _ in range(1000))
+    assert null_unique==742
     # Two consecutive independently printer-fixed outputs are rejection codes
     # for every listed standard CPython randbelow bound.
     rejection=[]
@@ -143,6 +149,7 @@ def main():
                       'seq62_conditional_stage':-405,
                       'joint_rank_after_seq62':selection.rank,
                       'source_fixed_bits_at_both_candidate_stages':0,
+                      'null_unrelated_unique_stage_trials':null_unique,
                       'two_universal_rejection_words':rejection,
                       'seq62_prior_latch_model':'CONTRADICTED',
                       'missing_selected_coupon_rank':128,
