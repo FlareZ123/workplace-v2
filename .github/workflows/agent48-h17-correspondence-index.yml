@@ -26,7 +26,7 @@ jobs:
               def handle_data(self,data):
                   if not self.skip: self.t.append(data)
           base='https://noyes-energy-group.pages.dev'
-          paths=['/','/robots.txt','/sitemap.xml','/company/','/projects/','/insights/','/contact/']
+          paths=['/assets/site.js','/insights/a-long-term-view/','/insights/the-connected-energy-system/','/insights/beyond-the-solar-panel/','/expertise/']
           for path in paths:
               print('=== PUBLIC PATH',path,'===')
               try:
