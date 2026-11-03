@@ -160,7 +160,7 @@ def run():
                     tested += 1
                     incompatible = any(
                         ((observation >> index) & 1) != bit for index, bit in fixed)
-                    if not incompatible:
+                    if not incompatible or len(fixed) < 16:
                         candidates.append((transfer_endian, observation))
                 if not candidates:
                     continue
