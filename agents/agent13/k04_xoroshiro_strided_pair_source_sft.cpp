@@ -90,10 +90,54 @@ static void pin_route(const std::string &file,const char *expected){
         std::fprintf(stderr,"original routing SHA mismatch\n");std::exit(2);
     }
 }
+
+// Optional direct K04 source-gap/target-gap search. Native words of the source
+// request may have gap 1..64 and the predicted coupon gap 1..32.
+static std::array<unsigned char,32> digest16(const std::array<unsigned char,16>& input){
+    std::array<unsigned char,32> d{};SHA256(input.data(),16,d.data());return d;
+}
+static std::array<unsigned char,32> fromhex32(const char *s){
+    std::array<unsigned char,32> d{};
+    for(unsigned j=0;j<32;j++){unsigned x=0;if(std::sscanf(s+2*j,"%2x",&x)!=1)std::abort();d[j]=(unsigned char)x;}
+    return d;
+}
+static unsigned long long target_scan(State state,unsigned source_gap,
+                     const std::array<unsigned char,16>& route_mask,
+                     const std::array<unsigned char,32>& expected,unsigned window){
+    unsigned char digest[32];
+    unsigned long long matches=0;
+    for(unsigned index=0;index<window;index++){
+        U y0=next(state);
+        if(index<=source_gap)continue;
+        State lookahead=state;
+        for(unsigned target_gap=1;target_gap<=32;target_gap++){
+            U y1=next(lookahead);
+            for(bool le:{false,true})for(bool rev:{false,true}){
+                auto candidate=pack(y0,y1,le,rev);
+                for(unsigned j=0;j<16;j++)candidate[j]^=route_mask[j];
+                SHA256(candidate.data(),16,digest);
+                if(std::equal(digest,digest+32,expected.begin())){
+                    matches++;
+                    std::printf("COMPLETE_K04_MATCH source_gap=%u offset=%u target_gap=%u le=%u reverse=%u component=",
+                           source_gap,index,target_gap,unsigned(le),unsigned(rev));
+                    for(unsigned char c:candidate)std::printf("%02X",c);
+                    std::printf("\n");
+                }
+            }
+        }
+    }
+    return matches;
+}
+
 int main(int argc,char**argv){
     std::string root=argc>3 ? argv[3] : "resources/";
     if(root.back()!='/')root.push_back('/');
-    const bool retry=argc>4&&std::strcmp(argv[4],"retry")==0;
+    const bool target_mode=argc>4&&std::strcmp(argv[4],"retry-target")==0;
+    const bool retry=target_mode||(argc>4&&std::strcmp(argv[4],"retry")==0);
+    if(target_mode){
+        pin_route(root+"evidence/recovery-routing.json","f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5");
+        pin_route(root+"acceptance.json","681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f");
+    }
     pin_route(root+(retry?"evidence/print/spool-reconstruction.log":"evidence/recovery-routing.json"),
        retry?"7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083":
        "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5");
@@ -116,6 +160,53 @@ int main(int argc,char**argv){
     }
     if(maxgap>=5&&npos!=1)std::abort();
     std::printf("SYNTHETIC gap5 and gap11 with source offset700: %s\n",maxgap>=5?"PASS":"skipped");
+
+    if(target_mode){
+        if(maxgap<5||count<1000||count>65536)std::abort();
+        const int chosen_view=argc>5?std::atoi(argv[5]):-1;
+        if(chosen_view>3)std::abort();
+        const auto route_mask=fromhex("8556C8CB6140A7F9A5123AC7571BEE1C");
+        const auto goal=fromhex32("930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0");
+        auto planted_coupon=pack(d0,d11,false,false);
+        for(unsigned j=0;j<16;j++)planted_coupon[j]^=route_mask[j];
+        const auto planted_goal=digest16(planted_coupon);
+        Inv control=invert_gap(p0,p5,5);
+        unsigned planted_hits=0;
+        for(U b:control.states)if(b==planted.b)
+            planted_hits+=(unsigned)target_scan({unmix(p0),b},5,route_mask,planted_goal,1000);
+        if(planted_hits!=1){std::fputs("planted source+coupon gaps fail\n",stderr);return 3;}
+        std::puts("PLANTED SOURCE GAP5 + TARGET GAP11 COMPLETE COUPON PASS");
+        unsigned views=0,gaps=0,states=0,unfit=0;
+        unsigned long long sha_checks=0,matches=0;
+        const auto started=std::chrono::steady_clock::now();
+        int view=0;
+        for(bool le:{false,true})for(bool rev:{false,true}){
+            int index=view++;
+            if(chosen_view>=0&&index!=chosen_view)continue;
+            views++;
+            U y0=load64(mask.data()+(rev?8:0),le);
+            U y1=load64(mask.data()+(rev?0:8),le);
+            unsigned view_gaps=0,view_states=0;
+            unsigned long long view_hashes=0,view_hits=0;
+            for(unsigned g=1;g<=maxgap;g++){
+                Inv inv=invert_gap(y0,y1,g);
+                if(!inv.consistent){unfit++;continue;}
+                gaps++;view_gaps++;
+                for(U b:inv.states){
+                    states++;view_states++;
+                    view_hits+=target_scan({unmix(y0),b},g,route_mask,goal,(unsigned)count);
+                    view_hashes+=128ull*(count-g-1);
+                }
+            }
+            sha_checks+=view_hashes;matches+=view_hits;
+            std::printf("VIEW %d source_consistent_gaps=%u states=%u full_SHA=%llu original_hits=%llu\n",
+                        index,view_gaps,view_states,view_hashes,view_hits);
+        }
+        double wall=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
+        std::printf("ORIGINAL mode=retry-target source_views=%u consistent_gaps=%u inconsistent=%u states=%u complete_SHA_checks=%llu original_K04_hits=%llu elapsed=%.3fs\n",
+                    views,gaps,unfit,states,sha_checks,matches,wall);
+        return 0;
+    }
 
     auto begin=std::chrono::steady_clock::now();
     unsigned long long states=0,recovered=0,cross=0,unfit=0;unsigned minrank=64;
