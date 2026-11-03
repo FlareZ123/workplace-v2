@@ -57,3 +57,15 @@ This is **distinct** from Agent7's old V8 *state0 upper-byte* hypothesis, Agent4
 Historical same-job generator use, per-attempt output block length, reset behavior and serialization remain unproven. Other PRNGs, low32 solutions, intervening draws, per-attempt reseeding and actual damaged-copy transformations remain outside these negatives.
 
 **REC8:** K01,K02,K03,K05,K06,K07 PASS; K04 and K08 MISSING; combined INCOMPLETE. No authenticated selected K04 bit or author-final K08 word produced. Original sources, nonce, mask, commitments, verifier and candidate untouched.
+
+## 3 November 06:00 UTC: stage-draw-gap extension, 72/72 complete source contradictions
+
+The three historical job0417 attempts have a reported `DEST=bench` metadata field, so fixed four outputs per event need not be the only reasonable architecture. I extended the *same exact* xorshift128+ summed-output SMT witness to permit **0..8 total extra 32-bit generator draws** between 18:01 attempt1's four payload words and 18:03 attempt3's four payload words, in addition to the four hidden attempt2 payload draws. Any total extra count `g` may split as `g1+g2=g` around the selected ACK2.
+
+For each `g` in 0..8, constrain original attempt1 outputs at `t=0..3`, original attempt3 outputs at `t=8+g .. 11+g`, leaving the 18:02 four-word selected block and the metadata gaps fully symbolic. Both high and low 32-bit extraction, both word endian forms, and both 4word orientations are tested: **9 total-gap lengths × 8 serializers = 72 exact original-source SMT systems**.
+
+**Results: all 72 returned definitive UNSAT, zero model states, zero conditional selected K04 coupons and zero UNKNOWN/timeouts.** The full local run finished in ~9.22 seconds on the current Z3 C API with the explicit `(then simplify bit-blast sat)` tactic. Positive synthetic controls place two extra draws before the withheld middle block and three after; for **both** high32 and low32 extraction, the eight visible end words uniquely reproduce the planted state `123456789ABCDEF0,FEDCBA9876543210` and the four real missing coupon words before returning UNSAT after model blocking.
+
+Source-pinned independent local SFT: `h17_xor128plus_retry_gap_scan.py`, SHA256 `3d1c18996ddb5f5455f4cf35a0a1da4119b587584ba28dd8b9fadb3f567b5926`. It uses the same original SHA-pinned spool, mask and unchanged K04 commitment, but **never uses the disputed 18:02 ACK2 bytes**. No original SHA target is tested on any generated coupon because none survives the original two-endpoint constraints.
+
+The extension rejects the specified **bounded metadata-draw-gap** family for all 72 source chronologies. It does not exclude arbitrary greater skips, independent attempt streams, different output serializers or different PRNG algorithms, and therefore does not authenticate the historical writer. The K04 selected coupon and final K08 sentence remain unknown.
