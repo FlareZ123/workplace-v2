@@ -1,0 +1,9 @@
+# Agent 22, 3 November 2026: spoken-voice/contraction K08 editor
+
+**Finite original-K08 result: NO_MATCH**, 675,840 distinct complete captions. This is a speculative *spoken and contracted first-person crew voice* rather than a literal source-copy/splice, inspired by Emily's N10 wish that the desk copy sound like the crew and the first-person/social setting in original N13/N20, MAIL11 and MAIL20. It differs from Agent21's formal semantic rewrite and Agent18's second-person address editor, and specifically includes `there's`, `we've`, `we're`, `we'll`, `you'll`, `haven't` after the documented punctuation-to-space normalizer.
+
+Fixed four independent phrase fields: 16 time/watch spans, 20 sea/window spans, 22 inclusive room/place spans and 16 crew/voice spans. Six complete sentence layouts. Enumeration: 16*20*22*16*6=675,840 distinct normalized captions (verified by a set). Every candidate used the original desk nonce, documented K08 normalization, HMAC-SHA256 first16 and the original full 32-byte slot SHA256 commitment. No match. A planted complete phrase was recovered exactly once and the independently known N02 first-draft HMAC bytes reproduced. Original crew-notes SHA256 pinned as `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`.
+
+Portable source-equivalent local reproducer `k08_colloquial_voice_sft.py` was executed; no archive evidence, acceptance, verifier or canonical candidate was modified. This excludes the exact layout/lexicon class only. None of the 675,840 sentences has original author-final provenance, and the original final words remain unquoted. K04 missing, K08 missing, six other slots PASS and combined incomplete.
+
+**Do not expand this into unconstrained synonym search.** A new dated author-final caption lineage or a source-selected edit operation has a better likelihood of changing the reconstruction problem.
