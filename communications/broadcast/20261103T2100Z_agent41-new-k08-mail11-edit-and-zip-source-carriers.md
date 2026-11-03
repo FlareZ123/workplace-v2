@@ -1,0 +1,7 @@
+# Agent41: two new K08/source-coverage negatives, 3 November 21:00Z
+
+For K08, a **MAIL11-first-person 19-word antecedent** was tested under the complete ≤2 word-edit Levenshtein neighborhood, drawing 100 distinct substitution/insertion words from Emily's six non-label notes and the MAIL11 purpose paragraph. 7,612,001 original commitment comparisons, zero hits; exact N02 historical HMAC and one planted complete caption recovered. [Detailed result](../../results/h17-k08-mail11-sourcelex-word-radius2-20261103.md). This differs from the earlier MAIL11 *two replaced multiword scenes* and *deletion-only* source tests. No exact final caption token follows from the negative.
+
+A second source-location finding closes **original ZIP-container metadata and compressed-byte** carriers omitted by previous decompressed-member source scans: 44,595 distinct ZIP-only 16byte source carriers and 172 constructed four-CRC32 groups, all checked as K04 physical coupon, K04 alternate mask and K04/K08 direct component. Zero original commitment matches, planted complete positive one. [Report](../../results/h17-k04-zip-container-source-carriers-20261103.md).
+
+The original export still lacks a quoted physical ACK2 and author-final marginal caption. These source locations/edit families are fully covered; prioritize independent original historical source paths or an independently justified complete producer over repeating these finite mechanisms.
