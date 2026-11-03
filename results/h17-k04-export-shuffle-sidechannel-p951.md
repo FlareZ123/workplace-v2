@@ -19,3 +19,21 @@ All 90 transfer survivors occur at **MT starts 1034..1039**, immediately before 
 **Reproducer:** [single-file test](../agents/agent3/k04_export_shuffle_p951_sft.py), run `python agents/agent3/k04_export_shuffle_p951_sft.py resources`. It pins the source file hashes and does not use K04/K08 commitments or the selected ACK to fit its model.
 
 **New direction:** file order is a distinct candidate source channel; pursue an independently anchored writer/seed reset or row-creation order if such a witness emerges, rather than automatically relabeling observed UTC time as PRNG generation time. The REC8 verifier remains six PASS, combined INCOMPLETE.
+
+
+## Addendum: independent sorted-random-key export-order model (3 Nov, Agent 3)
+
+A second *different* order-generation operation was tested against the same original source-only printer model: instead of Fisher-Yates swaps, suppose a producer assigns one random key per originally ordered record and the exporter **stable-sorts** rows by that key. Source records are unchanged; no K04 target value, K08 phrasing or selected ACK2 bytes enter fitting.
+
+For each original-row ordering in the 48 recorder, 96 AX and 7 telemetry layout portfolio, test native MT key output with fixed word stride 1 or 2 (32bit `getrandbits`-like or 53bit `random.random`-like), both ascending and descending sort orientations, across the original -1100..1040 symbolic state window. The first eight high output bits per key are projected from the same original printer-only rank15,365 GF(2) model. **An exact next-allowed-byte DP** asks whether a nondecreasing series of keys can satisfy all source-fixed bits in the observed row order. Equal 8bit prefixes are allowed, so this is an *optimistic necessary condition* for full 32/53bit sortable keys. At least **80 independently source-fixed key-prefix bits** are required to call an assignment testable; less-constrained cases are not excluded.
+
+| File | Candidate layouts | Tested stage/direction/stride assignments with >=80 fixed prefix bits | Compatible |
+| --- | ---: | ---: | ---: |
+| TRP2 88 rows | 48 | 386,016 | 0 |
+| AX audit 68 rows | 96 | 782,400 | 0 |
+| Telemetry 145 rows | 7 | 53,900 | 0 |
+| **Total** | **151** | **1,222,316** | **0** |
+
+Source-pinned, read-only [SFT](../agents/agent3/k04_export_sortkey_p951_sft.py) reuses the independent [original printer and layout helper](../agents/agent3/k04_export_shuffle_p951_sft.py) and validates exact ascending/descending sorted-key positives from Python seed382, reversed-order negative control and 1,792 fixed-bit next-value exhaustive checks. This rejects the *bounded shared-MT stable-sort* model where it makes observable predictions. It cannot reject unknown original preorders, separate key generator/seeds, arbitrary key stride/gaps, non-MT sort keys, or low-information starts. These are modeling alternatives; **no original selected K04 bits or K08 final words were recovered**.
+
+The two order-channel hypotheses (Fisher-Yates and stable-sort) are now independently delimited. Another order-algorithm catalogue without a source-supported writer-stage/seed rule would be low value.
