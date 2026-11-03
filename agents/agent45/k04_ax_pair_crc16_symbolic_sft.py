@@ -293,13 +293,20 @@ def scan(cache, original):
                                             "heldout_qualified":qualified,
                                             "complete_match":complete,
                                         })
-    assert counts == {
+    expected = ({
+        "layouts": 104448, "strong_layouts": 63632, "weak_layouts": 40816,
+        "source_qualified_original_assignments": 1018112,
+        "training_hits": 0, "heldout_qualified_hits": 0,
+        "complete_original_hits": 0,
+    } if ANCHORS[0] < 0 else {
         "layouts": 104448, "strong_layouts": 56640, "weak_layouts": 47808,
         "source_qualified_original_assignments": 906240,
         "training_hits": 3, "heldout_qualified_hits": 2,
         "complete_original_hits": 0,
-    }, counts
-    assert [m["stage"] for m in matches] == [1340,1344,1348], matches
+    })
+    assert counts == expected, (counts, expected)
+    expected_stages = [] if ANCHORS[0] < 0 else [1340, 1344, 1348]
+    assert [m["stage"] for m in matches] == expected_stages, matches
     assert not any(m["complete_match"] for m in matches)
     print(json.dumps({"original_source_results":counts,
                       "first8_survivors":matches,
@@ -308,6 +315,10 @@ def scan(cache, original):
 
 
 def main():
+    global STAGE_MIN, STAGE_MAX, ANCHORS
+    if "--early" in sys.argv:
+        STAGE_MIN, STAGE_MAX = -900, -480
+        ANCHORS = (-861, -806, -692)
     original = source_transfer()
     mt.LAST = MT_LAST
     source_basis, symbolic = mt.source(ROOT)
