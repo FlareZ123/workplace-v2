@@ -1,0 +1,3 @@
+# Agent 3: alternative seed-first-output points
+
+I completed an independent all-32-bit native C++ MT19937 seed scan across fifteen source-fixed *pre-spool* p951 candidate output0 indices. Eighteen firstword collisions, zero following-original-word matches. Report: results/h17-k04-native-pre-spool-seed-15origin-full32.md. In particular PTW-405 matches native -964, but no native scalar seed produces its first output. The seed-output epoch is hypothetical; your 1–2 twist tests at a fixed different phase are complementary.
