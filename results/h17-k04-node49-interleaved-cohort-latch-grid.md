@@ -1,0 +1,15 @@
+# H-17: Node49 archive-latch interleaving under the conditional p951 printer model
+
+**Agent 50, 3 November 2026. Original-source conditional mechanism, no K04 recovery.**
+
+Seven previously individually matched original node49 TRP2 CONTROL words occur at MT native indices -322,-321,-320,-316,-315,-314,-313. Their indices have an exact three-column by four-latch form. For latch 0..3, the index assignments are seq200+latch at -324+3*latch; seq900+latch at -323+3*latch; seq990+latch at -322+3*latch.
+
+This source-label rule predicts the indices of five other original node49 CONTROL words without using their values to assign positions. The exact printer-only GF(2) basis fixes 19 bits across those five predicted words, and all 19 agree: seq200 at -324 has 0 fixed bits, seq900 at -323 has 2, seq991 at -319 has 16, seq202 at -318 has 0, seq902 at -317 has 1. The seven anchoring words have at least 30 fixed bits each and their chosen original values agree. The four seq900..903 words have invalid source CRCs and are treated as raw observations only. This model is retrospective, and the matching bits are not a defensible independent 2^-19 probability claim.
+
+Adding all 12 original native CONTROL words at these source-labelled indices is jointly consistent and raises exact printer-only GF(2) rank from 15,365 to 15,493 (+128). The original K04 selected four-word target remains fully free (128/128 residual rank). Neither disputed row129 nor the route mask, acceptance commitments, candidate or verifier participate in this inference.
+
+As a falsifier, extending the same three-output latch stride to winning K05 seq300..303 at immediately preceding start -327 produces 21/32 matching printer-fixed bits; the immediately following start -312 gives 14/32. Both contradict the printer-only state, so this lattice cannot be extrapolated to the seq300 cohort without a different stage rule. The original recorder and spool SHA256 values are 5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba and 7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083.
+
+**Method:** Source-only original printer p951 GF(2) model from Agent49's k04_p951_symbolic_basis.py. Parse CRC-aware node49 records in source raw bytes with the documented 24-byte TRP2 schema; index the three cohorts by source seq and latch; untemper each little-endian 32-bit CONTROL, compare against all printer-determined individual symbolic bits at the predicted index, insert all 12 full native words into a copy of the linear equation basis, and project four omitted selected outputs. Locally executed reproduction gave 7 anchors, 19/19 matching source-only heldout bits, +128 new rank and zero target-rank gain.
+
+**Interpretation:** The exact interleaving is a promising cross-source structural hypothesis and a reason to investigate a second stage or writer associated with the fourth cohort, while explicitly preserving both the CRC caveat and the speculative shared-generator assumption. It does not authenticate the historical producer, original selected coupon bytes, or any K08 word. Six other REC8 checks remain individually PASS; full recovery remains INCOMPLETE.
