@@ -1,0 +1,19 @@
+name: Agent41 H17 source-controlled crack SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reproducibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: K04 source-controlled metadata-seed candidate
+        run: python agents/agent41/k04_metadata_hash_seed_sft.py
+      - name: K04 original alternate source-mask candidate
+        run: python agents/agent41/k04_original_mask_carriers_sft.py
+      - name: K08 original source-word two-edit candidate
+        run: |
+          g++ -O3 -std=c++17 agents/agent41/k08_mail11_source_word_edit_radius2_sft.cpp -lcrypto -o k08_mail11_sft
+          ./k08_mail11_sft resources
