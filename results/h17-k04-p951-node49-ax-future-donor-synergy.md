@@ -46,3 +46,18 @@ The combined rank increases by 257 above printer-only, whereas independent indiv
 This closes a **new cross-carrier interaction** arising only after Agent50's 3 November source-indexed node49 grid. It does not reproduce prior printer-only or AX-only seven-donor calculations. Target projection remains 128 residual selected bits without future source values; seven full future MT words remain unobserved in the actual original archive. Continue pursuing independent original target-bearing donor/coupon evidence or another producer model that uniquely reaches the selected event. Do not promote recorder raw invalid-CRC bytes or arbitrary source-compatible MT seeds as genuine K04 recovery.
 
 REC8: original individual K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE. No source, candidate, verifier, commitment or facility equipment was modified.
+
+
+## New sharper six-word-plus-one-bit witness (3 November ~01:16 UTC)
+
+A genuinely **smaller total bit-budget** follows from the same exact target-space projection. Freeze only **six** complete hypothetical future native words:
+
+`1180,1181,1347,1348,1574,1575`.
+
+This leaves exactly **one** of 128 target bits unknown, independent of whether the source basis contains only printer packets, AX halfwords, CRC-valid node49, or all twelve conditional node49 raw controls. A **single bit** from future native MT output word **1179**, namely its highest native bit **bit31**, eliminates that last target ambiguity. Full 32-bit word1179 is unnecessary in this specific set.
+
+More useful for an original partial-output record: applying the standard MT19937 tempering map to native output1179, **any one** of tempered bit positions **2, 9, 13, 20, 27 or 31** alone is equally sufficient when those six complete future native words are independently known. In particular the upper16 positions **20, 27, 31** are compatible with *one bit* carried in a standard high16 observable, if a genuine indexed original source can be found. Explicit GF(2) one-bit rank tests independently passed with printer-only, printer+AX+8 valid CRC node49, and printer+AX+all12 raw recorder bases. See the expanded [source-pinned test](../agents/agent19/k04_node49_ax_future_donor_synergy_sft.py).
+
+**Witness budget:** 6 × 32 + 1 = **193 independent recorded bits** instead of 7 × 32 = 224 bits, with all 128 K04 target output bits mathematically determined under this model. It is a conditional minimal *reduction of the known seven-word portfolio*, **not a claim of globally minimal donor size or a currently observed historical bit**. Six native future words plus an actual independently indexed single-bit output at 1179 are absent from the retained archive. No selected original K04 bit has yet been authenticated.
+
+This identifies a concrete, reduced original-evidence acquisition target: six full indexed future MT word values plus one specific indexed binary checkpoint/flag at native position1179, or a validated equivalent. A physical ACK coupon original would supersede this conditional generator-based path.
