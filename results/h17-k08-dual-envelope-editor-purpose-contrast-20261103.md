@@ -38,6 +38,19 @@ Assisted top-1,000 intersections fall to 88 (standby/commissioning), 248 (standb
 
 An additional exact coverage check on the same frozen 21,836-normalized-candidate set found **neither** Emily's N02 first crew-board draft (13 words) **nor** her N06 second desk draft (11 words). The editor was built after both known envelope labels were visible and can reproduce those two brief labels; it fails to generate either of the longer actual Emily draft sentences. This is decisive against interpreting the two-label hit rate as broad authorial style coverage. It does not prove the unknown keeper margin has a draft-like syntax, but it weakens the rationale for scaling this short-label grammar.
 
+## Stronger placebo: random context assignments discredit apparent rank selectivity
+
+The two real labels were seen before this grammar was constructed, and the initial purpose swap tested only two alternate arrangements. To measure whether the genuine scores are unusually predictive, hold the **entire 21,836-candidate grammar and scoring function completely fixed** and draw **1,024 random subsets of surviving N01..N24 notes excluding N17/N18**, for each purpose. Each random source context has exactly the original purpose-context cardinality (standby five notes; commissioning four). No original K08 target check and no target-aware tuning occur in the placebo test. Seed \`20261103\`; deterministic reproducible test: [1024-context permutation SFT](../agents/agent10/k08_editor_purpose_placebo_sft.py), which imports the frozen original editor and uses SciPy sparse vocabulary projection.
+
+| Correct label | Actual rank of 21,836 | Random-context rank median | Random contexts with rank at least as good | Empirical one-sided p* |
+| --- | ---: | ---: | ---: | ---: |
+| N17 standby | 3,193 | 8,045 | **108 / 1,024** | **0.10634** |
+| N18 commissioning | 762 | 5,884 | **124 / 1,024** | **0.12195** |
+
+*Pseudocount p=(1+number of placebo contexts producing an equally good or better rank)/1025. These are descriptive retrospective randomization proportions, **not** confirmatory p-values for an independent blind predictor: the grammar, purpose assignments and real labels were visible during design.
+
+Despite better ranks than the medians, **around one in nine random note-context assignments equals or exceeds each label's actual rank**. The earlier two-purpose swap alone overstated meaningful purpose selectivity. Combined with failure to render either Emily N02 or N06 draft, the calibrated generator does **not** demonstrate a reliable historical inscription-selection rule. Retire extrapolation or scaling of **this specific editor** in the absence of a new independent source-conditioned discriminator. The 21,836 genuine original K08 commitment negatives remain valid for precisely those candidates.
+
 ## Decision and limitation
 
 This particular grammar **covers** both real inscription genres and has **some genuine ranking contrast** when only surviving context is scored. However the dramatic improvement to rank 10/492 requires target-informed keywords. Thus the assisted test is an **overfit diagnostic**, and the unassisted one is a weak retrospective calibration rather than a validated author-specific edit program. An unobserved terminal caption may use any word or syntax outside these fields; 21,836 negative candidates are a conditional family exclusion only.
