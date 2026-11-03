@@ -54,3 +54,16 @@ An earlier direct route-mask/desk-nonce pilot at their two exact assigned donor 
 This negative is meaningful only for the *specific inverse-twist two-fourword-donor stage mapping, 531 original-source carrier choices and listed interpretations*. The unusually compact inverse recovers 127 of 128 selected bits from **any two genuine producer-indexed fourword donors at the specified indices** and thus is a potentially reusable reconstruction technique if an original index-to-carrier witness emerges. The remaining one bit is handled exactly by two commitment checks.
 
 No surviving source establishes that any of the 531 observed grouped fields came from the assumed future relative positions. No selected K04 bits have been independently authenticated, and K08 final words remain unobserved. The currently documented original state remains six PASS, K04/K08 missing, combined INCOMPLETE. The next advance needs a source-labelled temporal/buffer/stage mapping or an alternative target-bearing inverse relation, rather than blind enlargement of the donor corpus.
+
+## Source-authoritative selected-input extension (03:32 UTC)
+
+The original 531-carrier extractor did not yet include two **noncontiguous, historically prescribed** 16-byte source-input assemblies. Added (i) the eight LT-204 UTC-normalized GOOD/HOLD greatest-revision DIAG_WORD values in seq order, original prehash bytes `E1A5E474BAD7E853A2E8C71D3317D507`, independently hashed to known accepted K02 `0D7E3AB56FB75DA3EB0E2E06786D239E`, and (ii) four signed PTW-417 CLOSED AS_LEFT highest revision raw seal suffixes in required bay **B,D,A,C** order, `D7DAD6BC9714519B7DAD0AD4BE8E87FD`, with original joined-serial SHA256(first16) independently matching accepted K03 `1384AF96E25D6ADA666209CB55E062FA`. The exact K01 signed ABCD control assembly was already the same bytes as derived K01; K05 latest-valid fourword CONTROL assembly was already present as a TRP2 source grouping. This exposes **two new distinct historically selected raw donor candidates**, rather than arbitrary permutation expansion.
+
+The upgraded [corpus builder](../agents/agent11/build_donor_corpus.py) now asserts 533 unique values and TSV SHA256 `e67fd3e2867f335a692c7280d03560530866a63b0f37c7ee2db61dde21d45f37`. Reexecuting the same C++ original-target search on all ordered 533² pairs and every original four-view/two-bit interpretation gave
+
+```
+SYNTHETIC_CPP_MT_REVERSE_TWO_DONOR PASS
+COMPLETE first-range=0:533 donors=533 candidates=9090848 original_hits=0
+```
+
+Therefore **9,090,848 complete source-pair candidate assignments** across this stronger input corpus produce **zero** original K04 commitment matches. This entire result remains conditional on the unauthenticated pair indexing and MT source assumption; no K04 bit is authenticated.
