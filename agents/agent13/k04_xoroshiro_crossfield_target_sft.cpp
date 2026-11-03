@@ -114,8 +114,12 @@ int main(int argc,char **argv){
              "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5");
   source_pin(dir+"acceptance.json",
              "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f");
+  source_pin(dir+"evidence/print/spool-reconstruction.log",
+             "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083");
   const Byte16 mask=fromhex16("8556C8CB6140A7F9A5123AC7571BEE1C");
   const Byte16 nonce=fromhex16("5F933DA6A1BD03C32DA5CBC25344F497");
+  const Byte16 retry1=fromhex16("CD3E4F216ADB2FB180DA2AA90B33F7A4");
+  const Byte16 retry3=fromhex16("44D53DFC29D7943A95D89371DA58EC64");
   const Byte32 target=fromhex32("930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0");
 
   // Independent seeded synthetic control: recover full 128-bit initial state,
@@ -139,22 +143,27 @@ int main(int argc,char **argv){
   }
   std::puts("PLANTED FULL-SOURCE AND FULL-K04 POSITIVE PASS");
 
-  unsigned long long total=0,cross=0;
-  for(unsigned field=0;field<2;field++){
-    const Byte16 &seedbytes=field?nonce:mask;
-    const Byte16 &other=field?mask:nonce;
+  const bool retry_mode=argc>3 && std::strcmp(argv[3],"retry")==0;
+  const int requested_view=argc>4?std::atoi(argv[4]):-1;
+  unsigned view_index=0;
+  unsigned long long total=0,cross=0,checks=0;
+  for(unsigned field=0;field<(retry_mode?1u:2u);field++){
+    const Byte16 &seedbytes=retry_mode?retry1:(field?nonce:mask);
+    const Byte16 &other=retry_mode?retry3:(field?mask:nonce);
     for(bool le:{false,true})for(bool rev:{false,true}){
+      const unsigned current_view=view_index++;
+      if(requested_view>=0 && current_view!=(unsigned)requested_view)continue;
       uint64_t f=load64(seedbytes.data()+(rev?8:0),le);
       uint64_t g=load64(seedbytes.data()+(rev?0:8),le);
       State init=inverse(f,g),v=init;
       if(next(v)!=f||next(v)!=g)std::abort();
       char name[70];std::sprintf(name,"%s_%s_%s",
-                 field?"NONCE":"MASK",le?"LE":"BE",rev?"REV":"FWD");
+                 retry_mode?"ATTEMPT1":(field?"NONCE":"MASK"),le?"LE":"BE",rev?"REV":"FWD");
       Counts c=search(name,init,mask,other,target,limit);
-      total+=c.hits;cross+=c.cross;
+      total+=c.hits;cross+=c.cross;checks+=4*limit;
     }
   }
-  std::printf("ORIGINAL: 8 source views, %llu complete SHA checks, %llu crossfield hits, %llu authentic K04 hits\n",
-              32*limit,cross,total);
+  std::printf("ORIGINAL mode=%s: %u source views, %llu complete SHA checks, %llu crossfield hits, %llu authentic K04 hits\n",
+              retry_mode?"retry":"configuration",requested_view>=0?1u:view_index,checks,cross,total);
   return 0;
 }
