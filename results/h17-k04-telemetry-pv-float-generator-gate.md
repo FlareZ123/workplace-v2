@@ -6,7 +6,7 @@
 
 The surviving historian includes 112 floating-point `PV` readings, with units degC, kPa or percent and numerical values within 10..90, rounded to 0.001. These readings are explicitly called engineering context in the original telemetry README, rather than raw unsigned diagnostic words. Test a *hypothetical* source-generation mechanism: `round(10 + 80 * rng.random(), 3)` with the standard CPython MT19937 **two-consecutive-output** 53-bit `random.random` construction. Such a number could reveal about sixteen bits of a stream at a known phase and, under a different source-selected index, might be a high-width donor for the p951 target quotient. There is no historical producer evidence for this assumption.
 
-A distinct discrete hypothesis uses `10 + rng.randrange(80000) / 1000`, whose accepted code comes from `getrandbits(17)`. That would be potentially informative at p951 +724 **if independently source-indexed**, because the original [target width threshold](h17-k04-p951-fourcarrier-donor-frontier.md) requires at least seventeen upper tempered bits there.
+A distinct discrete hypothesis uses `10 + rng.randrange(80000) / 1000`, whose accepted code comes from `getrandbits(17)`. That would be potentially informative at p951 +724 **if independently source-indexed**, because the original [target width threshold](../communications/broadcast/20261103T0252Z_agent5-K04-donor-observation-width.md) requires at least seventeen upper tempered bits there.
 
 ## Source-only test
 
