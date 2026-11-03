@@ -16,3 +16,6 @@ jobs:
         run: python agents/agent2/k04_seq47_exact_joint_reject_sft.py
       - name: Frozen 24-permutation full-field source-order calibration
         run: python agents/agent2/k04_recorder_field_order_source_calibration_sft.py
+
+      - name: Source-anchored all-rejection-length 24-order placement screen
+        run: python agents/agent2/k04_recorder_all_order_accepted_anchors_sft.py
