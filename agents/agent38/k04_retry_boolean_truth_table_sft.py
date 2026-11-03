@@ -54,6 +54,23 @@ mask = bytes.fromhex(route["K04"]["masked_component"])
 target = bytes.fromhex(accept["slot_sha256"]["K04"])
 assert hashlib.sha256(bytes(x ^ y for x,y in zip(coupons[2],mask))).digest() != target
 
+# A source-to-source discriminator: could any of the 16 possible Boolean
+# functions even reproduce each copied ACK2 32-bit word? The copied 18:02
+# fragment is untrusted, so a NO_MATCH does not rule out a different true
+# physical coupon; it does challenge this rule's observable original footprint.
+copied_source_word_matches = {}
+for label, earlier in (("request1",coupons[1]),("earlier_label",coupons[0])):
+    per_lane = []
+    for lane in range(4):
+        x = int.from_bytes(earlier[4*lane:4*lane+4],"little")
+        y = int.from_bytes(coupons[3][4*lane:4*lane+4],"little")
+        observed = int.from_bytes(coupons[2][4*lane:4*lane+4],"little")
+        per_lane.append([f for f in range(16) if truth(x,y,f)==observed])
+    copied_source_word_matches[label] = per_lane
+assert all(all(not lane for lane in lanes)
+           for lanes in copied_source_word_matches.values())
+
+
 # Verify all 16 truth tables on all four binary input patterns.
 for code in range(16):
     for aa, bb in itertools.product((0,MASK32),repeat=2):
@@ -82,5 +99,6 @@ assert checks == 262144
 assert plant_hits == [("request1",planted_ops,"coupon_xor_mask")]
 print(json.dumps({"spool_sha256":PIN,"source_lines":4,"selected_copy_withheld":True,
                   "complete_K04_assignments":checks,
+                  "copied_source_word_matches":copied_source_word_matches,
                   "planted_positive":plant_hits,
                   "original_K04_matches":original_hits},indent=2))
