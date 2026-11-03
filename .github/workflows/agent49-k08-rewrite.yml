@@ -1,0 +1,37 @@
+name: Agent49 K08 blind source-masked rewrite pilot
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/agent49-k08-rewrite.yml
+
+permissions:
+  contents: read
+
+jobs:
+  blind-rewrite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned CPU generator dependencies
+        run: |
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2"
+      - name: Run original-source-masked N02 and N06 historical holdouts, then K08
+        env:
+          HF_HUB_DISABLE_TELEMETRY: '1'
+          TOKENIZERS_PARALLELISM: 'false'
+        run: python agents/agent49/k08_blind_rewrite_qwen_sft.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent49-k08-blind-rewrite
+          path: agents/agent49/k08_rewrite_candidates.jsonl
+          if-no-files-found: warn
