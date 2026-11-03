@@ -120,6 +120,47 @@ def natural_orders():
                            else tail + ordered_common)
 
 
+
+def chronological_orders():
+    """Additional source-defined acquisition timestamp pre-export orders.
+
+    The original TRP2 timestamps are independent of the file's physical row
+    sequence. Duplicate timestamps are resolved with six deterministic,
+    source-field tie policies; ascending and descending time are both tested.
+    """
+    raw = REC.read_bytes()
+    rows = []
+    for i in range(88):
+        at = 16 + 24 * i
+        ts, node, event, latch, seq, _, _, _ = struct.unpack_from(
+            "<IHBBI4sII", raw, at)
+        rows.append((ts, node, event, latch, seq, i))
+    assert len({(node, seq) for _, node, _, _, seq, _ in rows}) == 88
+    def tie(row, mode):
+        ts, node, event, latch, seq, index = row
+        if mode == "seq":
+            return (seq, node)
+        if mode == "node-seq":
+            return (node, seq)
+        if mode == "seq-node":
+            return (seq, node)
+        if mode == "latch-seq":
+            return (latch, seq, node)
+        if mode == "event-seq":
+            return (event, seq, node)
+        return (index,)
+    distinct = {}
+    for direction in (1, -1):
+        for mode in ("seq", "node-seq", "seq-node", "latch-seq",
+                     "event-seq", "original"):
+            ordering = sorted(rows, key=lambda row: (direction * row[0],
+                                                    *tie(row, mode)))
+            source_ids = tuple((row[1], row[4]) for row in ordering)
+            distinct[source_ids] = (direction, mode)
+    assert len(distinct) == 10
+    return [list(source_ids) for source_ids in distinct]
+
+
 def positive_control():
     class LoggingRNG(random.Random):
         def __init__(self, seed):
@@ -152,6 +193,10 @@ def run():
     hi7_16 = hi7[600-168:]
     orders = list(natural_orders())
     assert len(orders) == 192 and len({tuple(x) for x in orders}) == 192
+    time_orders = chronological_orders()
+    assert len(time_orders) == 10 and len({tuple(x) for x in time_orders}) == 10
+    assert all(set(order) == set(actual) for order in time_orders)
+    orders.extend(time_orders)
     import sys
     extended = "--extended" in sys.argv[1:]
     assert all(x == "--extended" for x in sys.argv[1:])
@@ -168,7 +213,7 @@ def run():
             starts = fisher_yates_survivors(hi7, 168, trace, 8)
             count += sum(168 <= s <= SELECTED_LAST for s in starts)
     assert count == 0
-    print("original: 192 plausible pre-shuffle orders; no surviving target-range start")
+    print("original: 192 cohort and 10 timestamp pre-shuffle orders; no surviving target-range start")
     print("mode:", "extended R16, starts 600..954" if extended
           else "default R8, starts 168..954")
     print("No recovered K04 coupon; shared-p951 shuffle model not source-supported.")
