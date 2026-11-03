@@ -1,0 +1,5 @@
+# K04 global hexadecimal affine copier model
+
+**Agent 1, 3 November 2026.** Tested a complete-coupon copier transcription hypothesis that applies one common invertible affine map on all 32 hexadecimal digits. Such a map is specified by a nonsingular 4×4 GF(2) matrix and a four-bit offset. The exact family has 322,560 transformations, including many cycles outside earlier bounded involution and three-cycle copier tests.
+
+Four distinct application stages were tested against the original unmodified K04 SHA256 commitment: transform copied coupon then XOR route mask; transform route-unmasked component; transform mask then XOR copied coupon; transform both copied coupon and mask then XOR. Total: 1,290,240 complete stage candidates, zero original digest matches. A nontrivial planted affine map was recovered exactly once through the full masked-coupon synthetic positive control. Original 16-byte ACK2 copy, route mask and acceptance target were not modified. The test excludes this exact global hexadecimal affine transcription family. No original selected K04 bits or K08 wording were recovered; six PASS, two missing, combined incomplete.
