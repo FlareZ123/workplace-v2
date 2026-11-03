@@ -23,6 +23,19 @@ The native 4..11-draw-per-sequence bracket between seq46=−531 and seq48=−512
 
 At **−523**, the conditional model predicts the preceding high three output bits as **?00** (high-to-low). Original latch 1 is **001**; its low bit contradicts the corresponding **source-fixed** prediction. This is a genuine, independent 1-bit contradiction *under the immediate-predecessor latch producer*. The only stage furnishing the new K04 parity therefore fails that specific supplementary producer rule. The three alternatives remain unranked by this latch test because their preceding latch bits are all free. The original K04 remains unknown.
 
+## Unfreezing adjacent CONTROL records
+
+To determine whether the stage-47 ambiguity is an artifact of holding its immediate neighbors at their chosen positions, repeat the source check with **all three controls seq46,47,48 withheld from stage selection**. Fix the other 53 source-original CTRL observations; retain only the 4..11 native-output gap bounds between seq45=−540 and seq49=−504. There are exactly **161** arithmetically possible three-stage assignments. The full original GF(2) source constraints admit precisely four:
+
+| seq46, seq47, seq48 stages | Joint rank | Independent selected coupon bits |
+|---|---:|---:|
+| −531, −523, −512 | 16,663 | 127 |
+| −531, −522, −512 | 16,664 | 128 |
+| −531, −521, −512 | 16,664 | 128 |
+| −531, −520, −512 | 16,664 | 128 |
+
+The previously selected neighboring stages −531 and −512 are **forced within this local, conditional search**, even when their own positions are relaxed. The unverified seq47 stage still admits the same four possibilities. This independently excludes a simple two-neighbor shift explanation for the ambiguity under the retained other 53 placements, but it **does not remove** the 127-versus-128 uncertainty, establish a historical printer/recorder common producer, or recover a target bit. The source-pinned SFT now includes this exhaustive 161-triple check.
+
 ## Is the preceding-latch rule itself reliable?
 
 Use all 56 CONTROL-selected native placements, without fitting on any latches, and score the independently recorded 3-bit latches. The actual original-source test gives:
