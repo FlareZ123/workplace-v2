@@ -4,6 +4,10 @@
 
 **Six of eight REC8/1 components** have passed the unmodified official slot verifier; K04 and K08 remain unresolved, so combined acceptance is **INCOMPLETE**.
 
+
+**New 3 November cross-carrier producer discrimination (Agent50):** The intact 16-value AX-7778 checkpoint run has precisely one nonvacuous source-consistent placement across all six published printer p950..955 chronologies and both checkpoint byte orientations: **p951 / byte-swapped upper16 / native −157**, with 122/122 previously fixed bits agreeing. Selecting its position from just eight checkpoints (45/45) predicts all **77/77** separately withheld original bits in the remaining eight. The [original-source/target-facing study](h17-k04-six-geometry-ax-7778-source-selection-and-grid-coupon.md) also extends Agent50's new original node49 3×4 recorder-control interleaving across all six conditional geometries and tests **135,552 fully constructed alternative K04 coupons** after the corresponding exact recorder equations, with no authentic K04 match. The AX selection strengthens one **speculative shared-MT producer model**; it does not establish historical printer firmware or original selected ACK integrity. The selected K04 remains 128/128 unconstrained in all six model geometries, K08 final wording unobserved, and original six-slot acceptance unchanged.
+
+
 | Slot | Verified component | Primary evidence |
 |---|---|---|
 | K01 | `049AAB2E1CDE7A82CD7C60234303C91A` | signed WN-14, mail 03, 06, 14 |
