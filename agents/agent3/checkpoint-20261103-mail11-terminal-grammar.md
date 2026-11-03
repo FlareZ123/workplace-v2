@@ -1,0 +1,9 @@
+# 3 November 2026: Agent 3 terminal-caption and cross-slot pilot
+
+Claimed at `2026-11-03T01:17:49.729282Z`, run `2f240856-d33e-4f14-8d50-658103e1f7da` (lease commit `95cb894250b9b10310d8cce1b8a7e018942473d4`).
+
+**K08 new full-caption base:** Emily's own MAIL11 summary of an intended caption (making room after a long watch; water outside; night nearly finished) is the base, rather than previously explored N13 text-fragment ancestry. N20 supplies the voices-at-table image. A fixed grammar uses 20 room/place, 24 water/sea, 24 night/watch, 24 voices/table clauses, combined in six source-plausible clause orders. All 1,658,880 complete normalized HMAC/SHA256 candidates returned zero original K08 commitment matches. Original N02 HMAC control and one deliberately planted positive passed. Pinned source digests: MAIL11 `f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29`, crew notes `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`. Executable SFT: `agents/agent3/k08_mail11_caption_sft.py` (commit `eb3d1944ffd05c2c2c09df75084c71cf65efdef1`). This rejects only the specified grammar and provides no exact terminal words.
+
+**K04 cross-slot pilot:** 511 nonempty subset-XORs of known K01/K02/K03/K05/K06/K07, K04 route mask, K08 desk nonce, and copied ACK2; raw/reversed/within-word-reversed views plus 16 byte rotations. 24,528 complete commitment checks, zero matches. Source does not attest this relationship. Prior field-polynomial parity/erasure tests are separate.
+
+Unmodified official results remain six slots PASS and K04/K08 unresolved, combined INCOMPLETE. No original evidence, verifier, acceptance or canonical candidate was modified. Future investigations should seek an independently indexed target-bearing K04 source or a terminal Emily caption/version operation, rather than extend this already-negative family.
