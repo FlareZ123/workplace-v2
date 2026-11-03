@@ -37,15 +37,15 @@ def source_seeds() -> list[str]:
     for file in files:
         data = file.read_bytes()
         digest.update(file.relative_to(ROOT).as_posix().encode("utf-8"))
-        digest.update(b"\\0")
+        digest.update(b"\0")
         digest.update(data)
-        digest.update(b"\\0")
+        digest.update(b"\0")
         corpus.append(data.decode("utf-8", errors="replace"))
     assert digest.hexdigest() == TEXT_MANIFEST_SHA
-    raw = "\\n".join(corpus)
-    ids = set(re.findall(r"\\b[A-Z0-9]{2,}(?:[-/:][A-Z0-9]+){1,5}\\b", raw))
-    ids.update(re.findall(r"\\b(?:2026|2025)[-/.]?[0-9]{2}[-/.]?[0-9]{2}(?:T[0-9:+-]{4,20}Z?)?", raw))
-    ids.update(re.findall(r"\\b(?:PS-\\d{6}-\\d{4}|AX-\\d{4}|IR-\\d{6}-H17|H17-IR-\\d{6}|PTW-\\d{3}|REC8/1|ESC-[NS])\\b", raw))
+    raw = "\n".join(corpus)
+    ids = set(re.findall(r"\b[A-Z0-9]{2,}(?:[-/:][A-Z0-9]+){1,5}\b", raw))
+    ids.update(re.findall(r"\b(?:2026|2025)[-/.]?[0-9]{2}[-/.]?[0-9]{2}(?:T[0-9:+-]{4,20}Z?)?", raw))
+    ids.update(re.findall(r"\b(?:PS-\d{6}-\d{4}|AX-\d{4}|IR-\d{6}-H17|H17-IR-\d{6}|PTW-\d{3}|REC8/1|ESC-[NS])\b", raw))
     ids.update((
         "H17", "H-17", "IR-261003-H17", "H17-IR-261003", "ESC-N", "ESC-S",
         "WATCH-SPARE", "REC8/1", "2026-10-03", "20261003", "2026-09-24",
