@@ -77,3 +77,25 @@ The new exact **32-bit low-bit-lifting inverse** of `(C xor mix(Q,M₂)) - Q = T
 The repeated-key constraints depend on early/late initial words `S[1], S[2], S[621], S[622], S[623]`. Keep them fixed and add arbitrary selected native output equations: the selected quotient still has full independent rank**128**. With the same source-constrained 622-word initializer, selected all-00, all-FF and all-AA 16-byte coupons each produce **132/132 original intact source matches and exactly the prescribed 128 selected bits**. This constructively establishes that **every 128-bit coupon remains possible under the equally unverified 622-word p951 seeded producer model**. No original K04 bit is recovered and the historical 18:02 copied fragment remains untrusted.
 
 Unlike length623 (source-excluded by exact bit0 contradiction), length622 has at least one fully legitimate source-matching seed and its entire selected coupon quotient is unconstrained. This supersedes any suggestion that simply solving the length622 repeated-key equalities would determine K04. The 14 other shorter survivors remain necessary-condition hypotheses, not complete solutions.
+
+## 3 November ~00:51 UTC addendum: length621 also source-feasible, selected 128-bit quotient untouched
+
+A further independent [source-pinned 621-word CPython SFT](../agents/agent19/k04_p951_cpython621_constructive_sft.py) extends the constructive proof by introducing an exact **two-equation 32-bit joint bit-lifting inverse**, not an unrestricted random-seed sweep. For seed length621 the 624 initialization injections repeat key indices **0,1,2** on steps621–623. With pre-second words `X`, fix a tentative source-compatible `S[621]` and `S[623]`; the repeated key1 fixes an equation for two unknown intermediate words `Y1` (first injection state) and `Q=X1`, while repeated key2 adds a second independent 32-bit equation:
+
+```text
+C = S[2]+2
+X2 = C xor mix(Q,M₂)
+key1 = X2 - (BASE[2] xor mix(Y1,M₁)) - 1
+key2 = X3 - (BASE[3] xor mix(X2,M₁)) - 2
+last2 = Q - (Y1 xor mix(X[623],M₁)) - 2
+require key1 = X[623]-(BASE[623] xor mix(X[622],M₁))-1
+require key2 = last2
+```
+
+Guess the top two bits of each of `Y1,Q,X2` (64 top-bit assignments); lift their 30 lower bits together, checking **both** equations at every bit. Full 32-bit checks eliminate spurious prefixes. The genuine original value `(Y1,Q)` was recovered in **10/10 randomly seeded CPython 621-word synthetic controls**, each independently prepared from `random.Random(integer)`.
+
+For any resulting `Y1,Q` source-compatible solution, invert mixed multipliers to obtain `S[1]` and `S[620]` from the repeated key0 constraint, then impose those complete words and the chosen `S[621],S[623]` on the original 132-packet GF(2) source basis. At deterministic trial7 (random seed20261103), a full source-feasible original register exists. The derived **actual CPython integer seed with precisely 621 32-bit words** recreates the entire register and **all 132 intact original printer packets exactly**.
+
+Keeping the source-compatible near-end register words fixed, the selected word quartet remains 128 independent GF(2) dimensions. The same exact 621-word initializer produced separate genuine seeds targeting **all-zero, all-FF, all-AA 16-byte selected coupons**, each reproducing the 132 intact packets and the exact forced coupon. The full original K04 target remains **128/128 indeterminate** for this *unverified historical producer architecture*. This positive result advances the short-seed feasibility boundary from 622 to 621; the excluded n623, and 13 other shorter necessary survivors, are unchanged.
+
+The result is conditional on p951 chronology/MT/LittleEndian CPython and says nothing about the real damaged physical ACK coupon, its mask provenance, or final keeper K08. In particular, it does not constitute a seventh accepted REC8 slot.
