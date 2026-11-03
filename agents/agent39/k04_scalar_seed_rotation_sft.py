@@ -126,6 +126,7 @@ def main(root: Path) -> None:
     assert original == {2:0xE32E1557, 3:0x3152E7CB,
                         4:0xBBDD46A0, 622:0xBBD5A4AB}
     print("PASS: 132 intact original packets fix four complete native initial words")
+    assert temper(native_output(initialized(5489), 0)[0]) == 3499211612
     controls = 0
     for seed in (1, 5489, 0xDEADBEEF):
         state = initialized(seed)
