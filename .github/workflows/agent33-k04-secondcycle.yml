@@ -1,0 +1,39 @@
+name: Agent33 K04 NumPy secondcycle source-only inversion
+on:
+  workflow_dispatch:
+jobs:
+  source-phases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 33}
+          - {start: 33, stop: 66}
+          - {start: 66, stop: 99}
+          - {start: 99, stop: 132}
+          - {start: 132, stop: 165}
+          - {start: 165, stop: 198}
+          - {start: 198, stop: 231}
+          - {start: 231, stop: 264}
+          - {start: 264, stop: 297}
+          - {start: 297, stop: 330}
+          - {start: 330, stop: 363}
+          - {start: 363, stop: 393}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source-only solver dependencies
+        run: python -m pip install --disable-pip-version-check numpy z3-solver
+      - name: Execute one disjoint original-source phase interval
+        run: python agents/agent33/k04_numpy_secondcycle_heldout_sft.py --phase-start ${{ matrix.start }} --phase-stop ${{ matrix.stop }} --timeout-ms 5000
+      - name: Preserve complete phase decisions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent33-num2-${{ matrix.start }}-${{ matrix.stop }}
+          path: '*.log'
+          if-no-files-found: ignore
