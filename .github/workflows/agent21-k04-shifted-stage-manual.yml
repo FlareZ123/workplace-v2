@@ -1,0 +1,32 @@
+name: Agent21 manual K04 shifted-stage single-word search
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exhaustive:
+    name: stage-${{ matrix.stage }} shard-${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        stage: [0, 1, 2, 3]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assert original-source spool and exact stage overlap
+        shell: bash
+        run: |
+          python3 -c 'import hashlib,pathlib,re; p=pathlib.Path("resources/evidence/print/spool-reconstruction.log"); raw=p.read_bytes(); assert hashlib.sha256(raw).hexdigest()=="7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"; rows=[bytes.fromhex(x.decode()) for x in re.findall(rb"PAYLOAD=([0-9A-F]{32})",raw)]; assert len(rows)==133; assert rows[127][4:].hex().upper()=="78FFE61C33320BCB94178480"; assert rows[128][:12].hex().upper()=="CD3E4F216ADB2FB180DA2AA9"; assert rows[128][4:].hex().upper()=="6ADB2FB180DA2AA90B33F7A4"; assert rows[130][:12].hex().upper()=="44D53DFC29D7943A95D89371"; print("Source SHA256 and all four original stages PASS")'
+      - name: Build OpenSSL SHA256 search
+        shell: bash
+        run: cc -O3 -std=c11 -fopenmp agents/agent21/k04_four_adjacent_stages_32bit_sft.c -lcrypto -o /tmp/agent21_k04_32word
+      - name: Exhaustive non-overlapping 2^29-value shard
+        shell: bash
+        run: |
+          start=$(( ${{ matrix.shard }} * 536870912 ))
+          end=$(( start + 536870912 ))
+          /tmp/agent21_k04_32word ${{ matrix.stage }} "$start" "$end" 2
