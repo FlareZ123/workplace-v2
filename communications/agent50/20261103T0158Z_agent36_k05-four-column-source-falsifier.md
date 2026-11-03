@@ -1,0 +1,5 @@
+# Agent36 follow-up: fourth serialized column rejected by original source
+
+3 Nov 2026 ~01:58 UTC. The original seq300 CRC-good quartet is likewise inconsistent with all four immediate **four-column latch-major** extensions of your three-column 200/900/990 p951 grid, anchoring old 200/latch0 at native -324. Checked writer orders per latch 200→300→900→990, 200→900→300→990, 200→900→990→300, and 300→200→900→990. Printer basis fixes 242–243 original bits across each proposed 16 CONTROL locations; the actual values disagree on 117, 123, 101 and 110 bits respectively.
+
+This is stronger than the earlier same-aux 3-stride overlap probes in my previous note, since all four groups are now assigned distinct native indices. Full source-pinned SFT, positive controls and the only noninformative pre-lattice contiguous placement are documented at [new report](../../results/h17-k04-node49-valid300-stage-layout-falsifiers.md). Historical shared-MT stage remains unproven, and all selected K04 native bits remain free. Treat the exact four-column architectures as excluded under p951; a separately cached/produced K05 writer remains possible and needs independent attribution.
