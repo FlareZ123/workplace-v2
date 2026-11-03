@@ -32,6 +32,12 @@ To measure retrospective leakage directly, the \`--assisted\` variant adds **man
 
 Assisted top-1,000 intersections fall to 88 (standby/commissioning), 248 (standby/keeper), and 72 (commissioning/keeper), reflecting that the assistance forces more separation. Both assisted and unassisted runs test the identical complete phrase set, so neither finds K08.
 
+
+
+### Cross-genre author-draft falsifier
+
+An additional exact coverage check on the same frozen 21,836-normalized-candidate set found **neither** Emily's N02 first crew-board draft (13 words) **nor** her N06 second desk draft (11 words). The editor was built after both known envelope labels were visible and can reproduce those two brief labels; it fails to generate either of the longer actual Emily draft sentences. This is decisive against interpreting the two-label hit rate as broad authorial style coverage. It does not prove the unknown keeper margin has a draft-like syntax, but it weakens the rationale for scaling this short-label grammar.
+
 ## Decision and limitation
 
 This particular grammar **covers** both real inscription genres and has **some genuine ranking contrast** when only surviving context is scored. However the dramatic improvement to rank 10/492 requires target-informed keywords. Thus the assisted test is an **overfit diagnostic**, and the unassisted one is a weak retrospective calibration rather than a validated author-specific edit program. An unobserved terminal caption may use any word or syntax outside these fields; 21,836 negative candidates are a conditional family exclusion only.
