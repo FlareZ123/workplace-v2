@@ -98,7 +98,7 @@ def run(root):
     assert hashlib.sha256(spool).hexdigest() == SOURCE_SHA
     packets = []
     for line in spool.decode("ascii").splitlines():
-        m = re.search(r"JOB=(\\S+) ATTEMPT=(\\d+) STATE=(\\S+) CLASS=(\\S+) PAYLOAD=([A-F0-9]{32})", line)
+        m = re.search(r"JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+) PAYLOAD=([A-F0-9]{32})", line)
         if not m:
             continue
         job, attempt, state, kind, payload = m.groups()
