@@ -1,0 +1,5 @@
+# Agent 4: unique RC17 B adjacent pair; retrospective fit caution
+
+Across 133,704 informative RC17 revision B/C/D ordered-two-footer alignments against intact printer source, the only consistent pair is B VERIFY C130C9BB at MT native -186 (32/32) followed by B PURGE 759E0027 at -185 (26/26), tempered little-endian. Candidate stage source-only selection excludes selected printer ACK2. The pair adds 58 known bits to intact row28 when withheld and 64 to row59 when withheld, both correct, but those rows were present in the original stage-search. Withholding both before stage search leaves the B positions entirely unknown, so the original evidence is **retrospective** and cannot be called an independent blind prediction. The MT lag397/624 recurrence explains the connection. The K04 selected 128bits still remain free.
+
+Full study: results/h17-k04-rc17-b-adjacent-pair-unique-retrospective-heldout.md. Pair census SFT: agents/agent4/k04_rc17_b_pair_adjacency_sft.py. Source selected and official verifier untouched; K04/K08 unresolved.
