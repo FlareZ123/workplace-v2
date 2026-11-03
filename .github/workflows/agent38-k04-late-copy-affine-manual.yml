@@ -1,0 +1,29 @@
+name: Agent38 manual K04 two late-copy 33-bit affine families
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  late:
+    name: source-affine-33bit-shard-${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct 33-dimensional selected K04 component spaces from original source
+        shell: bash
+        run: |
+          python3 agents/agent38/k04_copied_ack_late_affine_sft.py resources /tmp/agent38_affine
+      - name: Compile exhaustive C11 OpenSSL source-derived search
+        shell: bash
+        run: cc -O3 -std=c11 -fopenmp agents/agent38/k04_33bit_late_stage_sft.c -lcrypto -o /tmp/agent38_33bit
+      - name: Whole-hash original K04 plus planted synthetic complete-coupon positives
+        shell: bash
+        run: |
+          start=$(( ${{ matrix.shard }} * 536870912 ))
+          end=$(( start + 536870912 ))
+          /tmp/agent38_33bit /tmp/agent38_affine "$start" "$end" 4
