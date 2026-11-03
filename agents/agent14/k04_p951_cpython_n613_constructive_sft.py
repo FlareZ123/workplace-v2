@@ -160,7 +160,7 @@ def main() -> None:
     vals, masks, original_basis, expressions = prior.source_constraints()
     raw = (prior.ROOT / "resources/evidence/print/spool-reconstruction.log").read_bytes()
     assert hashlib.sha256(raw).hexdigest() == prior.SOURCE_SHA
-    payloads = [bytes.fromhex(x) for x in re.findall(rb"PAYLOAD=([0-9A-F]{32})", raw)]
+    payloads = [bytes.fromhex(x.decode()) for x in re.findall(rb"PAYLOAD=([0-9A-F]{32})", raw)]
     assert len(payloads) == 133
     results = []
     for branch, s7, s623, s1, s612 in BRANCHES:
