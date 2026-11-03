@@ -187,3 +187,29 @@ for expression in get(1407):
     synthetic.insert(expression, 0)
 assert target_residual(synthetic) == 96
 print("Synthetic donor +32-bit target gain PASS; no original K04 key recovered.")
+
+# A donor's output *width* matters. The original transfer checkpoints have
+# only two bytes, whereas recorder CONTROL words contain all four bytes.
+def target_gain_from_high_tempered_bits(index, number_of_bits):
+    test = clone(basis)
+    forms = temper_forms(get(index))[32-number_of_bits:]
+    for expression in forms:
+        if test.predict(expression) is None:
+            test.insert(expression, 0)
+    return 128-target_residual(test)
+
+for index, minimum in [(-523, 31), (724, 17)]:
+    gains = [
+        target_gain_from_high_tempered_bits(index, bits)
+        for bits in range(1, 33)
+    ]
+    assert gains[:minimum-1] == [0]*(minimum-1)
+    assert gains[minimum-1:] == [1]*(33-minimum)
+    print(
+        "First target-informative high-bit width:",
+        index, minimum,
+        "high16", gains[15],
+        "high32", gains[-1]
+    )
+print("Source-labelled CLASS/DEST 2-3-bit outputs and any high16 checkpoint "
+      "at these two positions have zero K04 target rank gain.")
