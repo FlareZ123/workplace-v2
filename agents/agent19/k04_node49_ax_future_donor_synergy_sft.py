@@ -1,7 +1,8 @@
 """Original-source K04 target quotient: node49 interleaved controls and AX donors.
 
-Conditional p951 native MT geometry. Original selected printer row129 omitted
-before decoding its bytes; no route mask, K04 hash, candidate or verifier.
+Conditional p951 native MT geometry. Original selected printer row129 excluded from fitted equations. The imported
+legacy parser decodes all entries, but row129 never enters its basis. No route
+mask, K04 hash, candidate or verifier is consulted.
 Run: python agents/agent19/k04_node49_ax_future_donor_synergy_sft.py
 """
 import hashlib
