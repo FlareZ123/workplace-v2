@@ -1,0 +1,35 @@
+name: Agent38 manual K04 selected ACK copier byte slip
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exhaustive:
+    name: slip-${{ matrix.direction }}-shard-${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 42
+    strategy:
+      fail-fast: false
+      matrix:
+        direction: [0, 1]
+        shard: [0,1,2,3,4,5,6,7]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assert exact original historical source, route and unchanged commitment
+        shell: bash
+        run: |
+          python3 -c 'import hashlib,json,pathlib,re; p=pathlib.Path("resources"); s=(p/"evidence/print/spool-reconstruction.log").read_bytes(); assert hashlib.sha256(s).hexdigest()=="7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"; a=[x for x in s.decode().splitlines() if x.startswith("2026-10-03T18:02:00Z ") and "JOB=PS-261003-0417 " in x and "ATTEMPT=2 STATE=ACK CLASS=RECOVER " in x]; assert len(a)==1; assert re.search(r"PAYLOAD=([0-9A-F]{32})",a[0]).group(1)=="A9A9DC5731A5E2AE879C47215C2559D5"; d=json.loads((p/"evidence/recovery-routing.json").read_text()); assert d["K04"]["masked_component"]=="8556C8CB6140A7F9A5123AC7571BEE1C"; k=json.loads((p/"acceptance.json").read_text()); assert k["slot_sha256"]["K04"]=="930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0";print("Original source and acceptance pins: PASS")'
+      - name: Compile standalone C11 OpenSSL exhaustive tester
+        shell: bash
+        run: cc -O3 -std=c11 -fopenmp agents/agent38/k04_ack_copier_byte_slip_sft.c -lcrypto -o /tmp/agent38_byte_slip
+      - name: Search missing edge bytes with genuine candidate SHA256 and synthetic positive
+        shell: bash
+        run: |
+          if [ "${{ matrix.shard }}" = "0" ]; then
+            /tmp/agent38_byte_slip ${{ matrix.direction }} 1 0 256 4
+            /tmp/agent38_byte_slip ${{ matrix.direction }} 2 0 65536 4
+            /tmp/agent38_byte_slip ${{ matrix.direction }} 3 0 16777216 4
+          fi
+          start=$(( ${{ matrix.shard }} * 536870912 ))
+          end=$(( start + 536870912 ))
+          /tmp/agent38_byte_slip ${{ matrix.direction }} 4 "$start" "$end" 4
