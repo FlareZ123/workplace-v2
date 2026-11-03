@@ -42,8 +42,12 @@ for revision in ("B", "C", "D-draft"):
                         hits.append((revision, order, swaps, reversed_whole, candidate.hex()))
 assert len(seen) == 2304, len(seen)
 assert hits == [], hits
-# Independently planted positive from a real revision footer packet
+# A synthetic commitment for an original, reassembled footer candidate
+# is found exactly once in the same complete candidate corpus.
 synthetic = bytes(a ^ b for a, b in zip(b"".join(base), mask))
-assert hashlib.sha256(synthetic).digest() == hashlib.sha256(synthetic).digest()
+assert synthetic in seen
+synthetic_target = hashlib.sha256(synthetic).hexdigest()
+assert sum(hashlib.sha256(x).hexdigest() == synthetic_target for x in seen) == 1
 print("SOURCE_SHA PASS, CANDIDATES", len(seen), "ORIGINAL_K04_HITS", len(hits))
+print("SYNTHETIC_COMMITMENT_POSITIVE PASS")
 print("COMPLETE_RELOCATION_FAMILY_NEGATIVE; no original K04 bytes recovered")
