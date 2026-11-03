@@ -37,3 +37,13 @@ Both were run read-only on the original 46-file ZIP extracted to the local root.
 No original final-caption word can be inferred obligatorily from this source relationship. MAIL-12 has no provenance link to the missing N23 envelope. The 777,600 search excludes its precise full-phrase grammar only; the final could omit the lamp or all these literal motifs. The **stronger potential next mechanism** is a historically sourced cross-author creative rewrite with an actual terminal witness or a genuinely blind independently calibrated source-to-author generator, rather than expanding 20×18 motif grids automatically.
 
 **REC8 state:** six verified slots PASS, K04/K08 MISSING, combined INCOMPLETE. Original target recovered information remains 0 authenticated selected K04 bits and 0 attested final K08 words.
+
+## Incremental N06 → N13 scene-word test (3 November 06:09 UTC)
+
+To distinguish mere repetition of N06's existing **lamp/little** words from **new N13 scene material**, remove all common stopwords, then subtract the N06 non-stopword set from N13's. The resulting **nine N13-only word types** are `beside,end,leave,mugs,night,remembered,somebody,stood,window`. Re-run the same original 20-mail body rare-token donor ranking on just those nine **added** words:
+
+- **MAIL-12 ranks first, score5.039**, independently supplying the novel `mugs,night,window` types. 
+- MAIL-19 second, score4.569 (`leave,night,somebody`).
+- MAIL-10 third, score3.786 (`beside,window`).
+
+Thus MAIL-12's top rank on N13 **does not depend entirely on N06's already shared `little,lamp` vocabulary**. It also predicts three distinctive additional N13 scene nouns. This makes the alternate-source interpretation somewhat more plausible but does not establish copying or the final envelope wording; N06 and N13 are undated and may themselves share material not represented by this model. No K08 commitment was consulted for this source-only result.
