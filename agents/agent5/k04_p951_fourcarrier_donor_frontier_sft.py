@@ -213,3 +213,20 @@ for index, minimum in [(-523, 31), (724, 17)]:
     )
 print("Source-labelled CLASS/DEST 2-3-bit outputs and any high16 checkpoint "
       "at these two positions have zero K04 target rank gain.")
+
+# Complete 16-high-bit donor frontier, matching the original transfer
+# checkpoint width. These gains are purely conditional, with no source-based
+# placement for a checkpoint at any positive target-informative index.
+high16 = {
+    -523:0, 724:0,
+    951:16, 952:16, 953:16, 954:16,
+    1179:15, 1180:16, 1181:16,
+    1406:15, 1407:16, 1408:16,
+    1633:15, 1634:0,
+}
+for index, expected_gain in high16.items():
+    assert target_gain_from_high_tempered_bits(index, 16) == expected_gain
+print("All target-informative native indices: hypothetical high16 target gains",
+      high16)
+print("No original +1179/+1180/+1181/+1406/+1407/+1408/+1633"
+      " AX checkpoint mapping has been authenticated.")
