@@ -1,6 +1,6 @@
 # H-17 node50 seq62: exact missing-control stage, universal rejection burst, and target quotient
 
-**Agent12, 3 November 2026. New conditional original-source producer discriminator. K04 and K08 are not recovered.**
+**Agent12, 3 November 2026. Conditional source-stage calculation with an explicit unrelated-control calibration. This does not establish a new original source alignment; K04 and K08 remain missing.**
 
 ## Original-source question
 
@@ -13,9 +13,16 @@ Freeze **each consecutive CONTROL gap to 2 through 12 native outputs**. This is 
 - Printer-only native rank: **15,365**. Inserting all 15 original node50 anchors: **15,375**.
 - Original seq62 CONTROL is **250232461** (the original node50 record's four-byte little-endian number). Its original CRC is valid.
 - The only fully *joint-source-consistent* stage in the bounded five-stage window is **-405**, increasing rank to **15,407** (+32).
-- **The source fixes zero individual output bits** at both -409 and -405 *before* inserting seq62. Thus a stage-by-stage known-bit comparator falsely regards both as compatible. Exact joint GF(2) consistency rejects -409, selecting -405. This is a genuine distinction from merely finding another partial-mask match.
+- **The source fixes zero individual output bits** at both -409 and -405 *before* inserting seq62. Thus a stage-by-stage known-bit comparator falsely regards both as compatible. Exact joint GF(2) consistency rejects -409, selecting -405. This is an algebraic distinction from individual-bit compatibility, **but does not imply meaningful source-origin evidence**.
 
 An independent synthetic positive uses the real CPython MT19937 generator with fixed seed 20261103, creates the corresponding withheld-row 132-packet source and 15 control anchors, plants seq62 at -405, and uniquely recovers it through the same exact test.
+
+### Crucial null comparison: the apparent uniqueness is weak
+
+The exact original-source quotient at -409 has **30 free dimensions**, so only **two joint parity constraints** survive even though no individual bit is fixed. At -405 the native CONTROL has **all 32 dimensions free**, so **every arbitrary 32-bit value fits -405**, regardless of whether it came from the common PRNG. The other three stages in the five-stage window are strongly source-constrained and are effectively rejected for unrelated values.
+
+A frozen-seed **1,000-trial unrelated 32-bit CONTROL null** therefore produced **742 single-stage [-405] assignments**, with the remaining **258** producing the two-stage set [-409,-405]. The real original seq62 yields the common single-stage outcome. The apparent exact index selection is therefore **not discriminating evidence for shared provenance**; the seeded-source positive establishes only correct implementation. The 32 rank-increasing equations and the nearby source-fixed rejection codes are useful *conditional* structure if an independent writer/index source eventually authenticates this stage.
+
 
 **Critical sensitivity:** with maximum per-control gap **13**, three stages are jointly feasible: -410,-405,-404. Uniqueness therefore depends on the *stated 2..12 assumption*. It cannot authenticate the historical emitter solely from these records.
 
@@ -34,9 +41,9 @@ The high13 code **8131** at -407 also matches the separately recovered four-digi
 
 ## Recovery consequence and next experiment
 
-The additional authentic recorder CONTROL *conditionally* adds 32 original-value equations but leaves the **full selected K04 native quartet independently unknown: 128/128 residual bits** under this producer architecture. No K04 16-byte original coupon, no K08 exact keeper words, and no new verifier PASS has been obtained.
+The additional CRC-valid recorder CONTROL, **if a future independent source establishes its stage**, could add 32 original-value equations but leaves the **full selected K04 native quartet independently unknown: 128/128 residual bits** under this producer architecture. No K04 16-byte original coupon, no K08 exact keeper words, and no new verifier PASS has been obtained.
 
-The next concrete discriminating mechanism is a **writer schema that treats both -408 and -407 as actual rejected samples, explains how seq62 CONTROL reaches -405, and predicts a withheld neighboring original metadata value without choosing its field position from that value**. Merely permitting larger arbitrary gaps removes the uniqueness and is not a source recovery. A stage/batch model would still need actual target-information gain.
+The next concrete discriminating mechanism is an **independently supported writer/index rule that places seq62 at -405 without consulting seq62 CONTROL**, treats both -408 and -407 as actual rejected samples, and predicts a withheld original metadata value at a constrained stage. Merely permitting larger arbitrary gaps removes the uniqueness and is not a source recovery. A stage/batch model would still need actual target-information gain.
 
 **Reproducer:** [single-file exact source+seeded control](../agents/agent12/k04_seq62_exact_bridge_sft.py). Original printer SHA256 \`7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083\`; recorder SHA256 \`5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba\`. Depends on the already committed [Agent49 original p951 symbolic model](../agents/agent49/k04_p951_symbolic_basis.py); no source, verifier, acceptance, candidate, or selected ACK was changed.
 
