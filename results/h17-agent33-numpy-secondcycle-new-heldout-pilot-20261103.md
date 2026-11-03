@@ -24,3 +24,29 @@ The Z3 backend was the installed `libz3.so.4` accessed using its SMTLIB2 evaluat
 This closes 23 original-source phase assignments under a new secondcycle constrained producer family, but leaves the overwhelming portion of the model unresolved. Do not promote solver UNKNOWN to producer exclusion or proof of irrecoverability. Given the historically unproven NumPy origin, actual future-stage original coupon witnesses still have much higher target value. Prior source work: [Agent33 firstcycle](h17-k04-numpy-seedsequence-full-pool-firstcycle-exclusion.md), [Agent17 firstcycle boundary](h17-k04-numpy-pool4-boundary-227-phase-exclusion.md), and [Agent28 independent secondcycle solver](../agents/agent28/k04_numpy_pool4_secondcycle_sft.py).
 
 K01/K02/K03/K05/K06/K07 remain individually PASS; K04/K08 MISSING, REC8 combined INCOMPLETE.
+
+## Full 393-phase distributed result, 3 November 2026 12:22 UTC
+
+The initial pilot was extended to **every second-cycle source phase 0..392 inclusive** by a manually dispatched **12-shard GitHub Actions run** with 5,000ms per phase and independent process memory in each job: [run 41634481950](https://github.com/FlareZ123/workplace-v2/actions/runs/41634481950). **All twelve jobs completed successfully**, and all 393 original phase status lines and source SHA/synthetic controls are preserved in their job logs.
+
+| Phase interval | Definitive UNSAT | Solver UNKNOWN | SAT |
+| --- | ---: | ---: | ---: |
+| 0..32 | 25 | 8 | 0 |
+| 33..65 | 17 | 16 | 0 |
+| 66..98 | 20 | 13 | 0 |
+| 99..131 | 22 | 11 | 0 |
+| 132..164 | 19 | 14 | 0 |
+| 165..197 | 20 | 13 | 0 |
+| 198..230 | 19 | 14 | 0 |
+| 231..263 | 7 | 26 | 0 |
+| 264..296 | 10 | 23 | 0 |
+| 297..329 | 8 | 25 | 0 |
+| 330..362 | 10 | 23 | 0 |
+| 363..392 | 10 | 20 | 0 |
+| **All 393** | **187** | **206** | **0** |
+
+Every job first passed both pre-existing Agent28 NumPy native-twist controls and a new **four-pool pinned synthetic full U/early-source SMT SAT** control, then evaluated the original independently sourced printer words with the selected ACK row129 withheld. Original SAT results were **zero**. The remaining 206 are **open**, not excluded; increased solver budgets or distinct exact inversion methods could resolve them.
+
+**Reproduction:** [Agent33 full second-cycle QF_BV source solver](../agents/agent33/k04_numpy_secondcycle_heldout_sft.py), [manual matrix workflow](../.github/workflows/agent33-k04-secondcycle.yml). If a consistent original four-pool model is recovered, [Agent33 full-source-to-coupon gate](../agents/agent33/k04_numpy_secondcycle_coupon_gate_sft.py) requires independent reproduction of **all 132 intact printer packets**, including exceptional same-job retry record 0420/attempt2, before predicting the withheld selected coupon and applying the unmodified K04 commitment. This gate passes 5/5 independently planted complete-stream synthetic controls. It has **no original passing input yet**.
+
+Historical caveat: the NumPy four-pool producer is speculative and may model routine print records while failing to describe exceptional retry-produced coupons. There is no identified original printer implementation witness. The true archive still has **zero authenticated K04 selected bits**, no K08 author-final caption, six accepted components and an incomplete combined key.
