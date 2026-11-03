@@ -36,7 +36,7 @@ For **each ordered carrier pair**, allow each carrier four consistent interpreta
 
 ## Original-target result
 
-The source-pinned C++20/OpenSSL enumerator reports:
+The [source-pinned carrier-builder](../agents/agent11/build_donor_corpus.py) recreates the 531 original groups and asserts their TSV SHA-256. The [C++20/OpenSSL inverse-twist enumerator](../agents/agent11/k04_two_donor_fast.cpp) consumes that TSV. The seed-based synthetic control runs before each test range. The enumerator reports:
 
 ```
 SYNTHETIC_CPP_MT_REVERSE_TWO_DONOR PASS
