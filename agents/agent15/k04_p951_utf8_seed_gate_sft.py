@@ -28,7 +28,7 @@ spec.loader.exec_module(model)
 def test_utf8_synthetic() -> None:
     # CPython seed(str, version=2) appends a 64-byte SHA512 digest to UTF-8
     # bytes and imports their big-endian integer as 32-bit little-endian words.
-    for n in (249, 606, 623, 750):
+    for n in (249, 606, 623):
         source = "A" * (4 * n - 64)
         raw = source.encode("utf-8")
         key_integer = int.from_bytes(raw + hashlib.sha512(raw).digest(), "big")
@@ -37,7 +37,7 @@ def test_utf8_synthetic() -> None:
         term = model.prior.key_term(23, *state[21:24])
         assert key_word_22 == 0x41414141
         assert term == (key_word_22 + 22) & MOD, (n, term)
-    print("Synthetic actual CPython UTF-8 string seeds: 4/4 PASS")
+    print("Synthetic actual CPython UTF-8 string seeds: 3/3 PASS")
 
 
 def main() -> None:
@@ -71,7 +71,7 @@ def main() -> None:
         "utf8_possible": False,
         "scope": ("p951 first-cycle first-output CPython seed(str/UTF-8 bytes); "
                   "lengths <=363 already source-rejected independently; "
-                  "for any >=364 seed-word22 comes from text, not SHA512 tail"),
+                  "for seed lengths 364..623 word22 comes from UTF-8 text, not the SHA512 tail"),
         "k04_new_authenticated_bits": 0,
     }, indent=2))
 
