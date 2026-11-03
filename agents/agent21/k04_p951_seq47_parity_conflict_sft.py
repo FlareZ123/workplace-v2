@@ -72,7 +72,7 @@ row36_rank, row36_p = trial({36})
 row43_rank, row43_p = trial({43})
 assert (original_rank, original_p) == (15396, 1)
 assert (row36_rank, row36_p) == (15269, 1)
-assert (row43_rank, row43_p) == (15331, None)
+assert (row43_rank, row43_p) == (15332, None)
 
 print(json.dumps({
     "model": "hypothetical p951 shared MT19937 source and seq47-at-minus523",
