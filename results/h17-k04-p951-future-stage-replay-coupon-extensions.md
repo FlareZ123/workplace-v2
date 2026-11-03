@@ -36,6 +36,10 @@ For every candidate four-word window, project its 128 native output bits onto th
 
 The original intact printer row130 at start955 is reproduced *exactly* without using its payload as a candidate target, and each lowrank stage has a planted complete assignment that the enumerator recovers. These validate equations, quotient enumeration and commitment-comparison machinery, but do not validate the hypothetical original copy relation. Original source originals, acceptance, verifier, and canonical candidate were never modified.
 
+## Reproduction
+
+The [source-pinned single-file test](../agents/agent11/k04_p951_future_replay_sft.py) uses the existing [p951 symbolic printer basis](../agents/agent49/k04_p951_symbolic_basis.py), constructs the original-source quotient, adds the AX/TRP2 observations under each declared source model, performs all complete-coupon SHA256 checks, and asserts the full candidate counts. An equivalent local extractor executed against the uploaded original ZIP and generated the numerical table above. The newly committed repository-script variant has not been separately run under CI.
+
 ## Interpretation and causal boundary
 
 The experiment excludes precisely this **future-stage, four consecutive native MT word, optional per-word reversal/reordering** representation in five original-source model branches, with an end at stage5300 and rank≤3. Other output encodings, copy operations, stage locations, original physical corruption, generators, and final K08 wording are untested. It would be wrong to generalize the zero hits into an authenticated proof that the original selected stage contained any particular bits.
