@@ -105,6 +105,47 @@ static Counts search(const char *title,State state,const Byte16 &mask,
               title,count,4*count,r.cross,r.hits);
   return r;
 }
+
+// Reverse the standard xoroshiro128** state transition exactly. This permits
+// generating possible selected coupon pairs BEFORE a later intact REQUESTED row.
+static State previous(State later){
+  uint64_t x=ror(later.b,37);
+  uint64_t a=ror(later.a^x^(x<<16),24);
+  return State{a,a^x};
+}
+static uint64_t current_output(State s){return rol(s.a*uint64_t{5},7)*uint64_t{9};}
+static Counts search_backward(const char *title,State later,const Byte16 &mask,
+                              const Byte16 &heldout,const Byte32 &goal,
+                              unsigned long long count){
+  Counts r{};
+  uint64_t more_recent=0;
+  for(unsigned long long i=0;i<count;i++){
+    later=previous(later);
+    uint64_t older=current_output(later);
+    if(i>0){
+      if(same_pair(older,more_recent,heldout)){
+        r.cross++;
+        std::printf("EARLIER_SOURCE_MATCH %s reverse_offset=%llu\n",title,i);
+      }
+      for(bool le:{false,true})for(bool rev:{false,true}){
+        Byte16 candidate=pack(older,more_recent,le,rev);
+        for(unsigned j=0;j<16;j++)candidate[j]^=mask[j];
+        if(sha16(candidate)==goal){
+          r.hits++;
+          std::printf("K04_REVERSE_HIT %s reverse_offset=%llu le=%u reverse=%u component=",
+                      title,i,unsigned(le),unsigned(rev));
+          for(unsigned char c:candidate)std::printf("%02X",c);
+          std::printf("\n");
+        }
+      }
+    }
+    more_recent=older;
+  }
+  std::printf("DONE_REVERSE %s prior_positions=%llu complete_SHA_checks=%llu earlier_source_hits=%llu commitment_hits=%llu\n",
+              title,count,4*(count-1),r.cross,r.hits);
+  return r;
+}
+
 int main(int argc,char **argv){
   unsigned long long limit=argc>1?std::strtoull(argv[1],nullptr,10):1000000;
   if(limit==0||limit>50000000){std::fputs("limit outside 1..50m\n",stderr);return 2;}
@@ -143,13 +184,23 @@ int main(int argc,char **argv){
   }
   std::puts("PLANTED FULL-SOURCE AND FULL-K04 POSITIVE PASS");
 
-  const bool retry_mode=argc>3 && std::strcmp(argv[3],"retry")==0;
+  const bool retro_mode=argc>3 && std::strcmp(argv[3],"retry-backward")==0;
+  const bool retry_mode=retro_mode || (argc>3 && std::strcmp(argv[3],"retry")==0);
+  if(retro_mode){
+    State late=planted;
+    for(unsigned j=0;j<5000;j++)next(late);
+    Counts positive_reverse=search_backward("PLANTED_REVERSE",late,mask,planted_field,planted_hash,5000);
+    if(positive_reverse.cross!=1 || positive_reverse.hits!=1){
+      std::fputs("reverse control failed\n",stderr);return 4;
+    }
+    std::puts("PLANTED REVERSE SOURCE AND COMPLETE COUPON PASS");
+  }
   const int requested_view=argc>4?std::atoi(argv[4]):-1;
   unsigned view_index=0;
   unsigned long long total=0,cross=0,checks=0;
   for(unsigned field=0;field<(retry_mode?1u:2u);field++){
-    const Byte16 &seedbytes=retry_mode?retry1:(field?nonce:mask);
-    const Byte16 &other=retry_mode?retry3:(field?mask:nonce);
+    const Byte16 &seedbytes=retro_mode?retry3:(retry_mode?retry1:(field?nonce:mask));
+    const Byte16 &other=retro_mode?retry1:(retry_mode?retry3:(field?mask:nonce));
     for(bool le:{false,true})for(bool rev:{false,true}){
       const unsigned current_view=view_index++;
       if(requested_view>=0 && current_view!=(unsigned)requested_view)continue;
@@ -158,12 +209,12 @@ int main(int argc,char **argv){
       State init=inverse(f,g),v=init;
       if(next(v)!=f||next(v)!=g)std::abort();
       char name[70];std::sprintf(name,"%s_%s_%s",
-                 retry_mode?"ATTEMPT1":(field?"NONCE":"MASK"),le?"LE":"BE",rev?"REV":"FWD");
-      Counts c=search(name,init,mask,other,target,limit);
-      total+=c.hits;cross+=c.cross;checks+=4*limit;
+                 retro_mode?"ATTEMPT3_BACKWARD":(retry_mode?"ATTEMPT1":(field?"NONCE":"MASK")),le?"LE":"BE",rev?"REV":"FWD");
+      Counts c=retro_mode?search_backward(name,init,mask,other,target,limit):search(name,init,mask,other,target,limit);
+      total+=c.hits;cross+=c.cross;checks+=4*(limit-(retro_mode?1ull:0ull));
     }
   }
   std::printf("ORIGINAL mode=%s: %u source views, %llu complete SHA checks, %llu crossfield hits, %llu authentic K04 hits\n",
-              retry_mode?"retry":"configuration",requested_view>=0?1u:view_index,checks,cross,total);
+              retro_mode?"retry-backward":(retry_mode?"retry":"configuration"),requested_view>=0?1u:view_index,checks,cross,total);
   return 0;
 }
