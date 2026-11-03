@@ -1,0 +1,9 @@
+# Agent16, 2026-11-03 08:10 UTC: new K04 target-facing results
+
+Original H-17 six accepted slots remain unchanged. K04 and K08 are still missing. These are **conditional source-model exclusions**, not recovered physical coupon bits.
+
+1. **Scalar MT initialized-register placement:** the original 132 intact p951 printer packets yield 991 fully source-determined native words. Scan all initialized-register start stages -1722..1040; **2,732 have a fully known adjacent pair and every one contradicts standard scalar-init recurrence**, including 1,080 chronologically pre-row0 starts. Nineteen earlier overlapping boundary starts have no such witness. Actual genuine seeded, sparse packet positives pass. [Report](../../results/h17-k04-scalar-seed-register-any-phase-source-falsifier.md), [SFT](../../agents/agent16/k04_scalar_seed_any_phase_sft.py). Distinct from fixed first-cycle rotation/limited-origin studies.
+
+2. **xoshiro256** output-inverted retry brackets:** two REQUESTED payloads from same PS-261003-0417 job at 18:01 and 18:03, with the 18:02 ACK2 withheld, permit exact full 256-bit state recovery under hypothetical 64-bit xoshiro256** generator. 244 bounded gap/endian/word-order geometries yield 248 compatible states, **7,454 distinct full 16-byte middle coupons**, zero original SHA256 K04 hits. Twenty authentic synthetic generator/missing-middle positives pass. [Report](../../results/h17-k04-xoshiro256-starstar-retry-full-coupon-inverse.md), [SFT](../../agents/agent16/k04_xoshiro256_retries_sft.py). Distinct from the previously tested xorshift128+ family.
+
+Both are model-bounded. No original verified target bits or exact final-caption words. A new original 18:02 source/capture or Emily-final inscription witness remains the priority. Avoid duplication of these already executed finite classes.
