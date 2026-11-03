@@ -22,3 +22,6 @@ jobs:
 
       - name: Source metadata shuffle and exact 24-order null
         run: python agents/agent2/k04_recorder_order_meta_permutation_sft.py
+
+      - name: Source-anchored fixed hidden draw gap with exact rejection constraints
+        run: python agents/agent2/k04_recorder_hidden_gap_reject_sft.py
