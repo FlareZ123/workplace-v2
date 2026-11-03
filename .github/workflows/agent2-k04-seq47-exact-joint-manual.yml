@@ -1,0 +1,16 @@
+name: Agent2 exact GF2 seq47 EVENT LATCH AUX rejection witness
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact_source_rejection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Joint original-source event/latch/aux rejection analysis
+        run: python agents/agent2/k04_seq47_exact_joint_reject_sft.py
