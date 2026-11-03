@@ -111,6 +111,24 @@ def main():
                 for p in range(-626,-617)}
     assert mismatch == {-626:16,-625:12,-624:5,-623:1,-622:19,
                         -621:13,-620:15,-619:12,-618:18}
+    # Stronger frozen-56-row-source geometry cut: seq33=-630 and seq36=-609.
+    # Any source-faithful, monotonically advancing recorder emitter must
+    # place seq34 strictly in the 20 native stages between them. Every
+    # such position contradicts at least one original printer-fixed bit,
+    # irrespective of the number of skipped/rejected intermediate draws.
+    open_window = range(-629, -609)
+    interior_mismatches = {
+        p: ((original[34] ^ fixed[p][1]) & fixed[p][0]).bit_count()
+        for p in open_window
+    }
+    assert len(interior_mismatches) == 20
+    assert min(interior_mismatches.values()) == 1
+    assert not any(matches(fixed, original[34], p) for p in open_window)
+    # Plant a source-compatible control at the closest stage to distinguish
+    # genuine model contradiction from an impossible visibility criterion.
+    planted_34 = (original[34] & ~fixed[-623][0]) | fixed[-623][1]
+    assert matches(fixed, planted_34, -623)
+    assert not matches(fixed, original[34], -623)
     maximum = best_subset(fixed, original)
     assert maximum and maximum[0] == 60
     omissions = sorted(set(range(7,71))-{s for s,_ in maximum[1]})
@@ -120,6 +138,9 @@ def main():
     print('seq33 source-only stage frontier: -630,-629')
     print('seq34 -626..-618 fixed-bit mismatches:', mismatch)
     print('all-64 prefix first impossible at seq34; endpoint70 not required')
+    print('even with UNBOUNDED gaps between fixed seq33=-630/seq36=-609,')
+    print('  seq34 has zero source-compatible native stages in -629..-610')
+    print('  minimum original conflict:', min(interior_mismatches.values()), 'of 20 positions')
     print('max source-only subsequence with 7/70 endpoints: 60/64')
     print('one optimal omission set:', omissions)
     print('K04/K08 recovery status: INCOMPLETE')
