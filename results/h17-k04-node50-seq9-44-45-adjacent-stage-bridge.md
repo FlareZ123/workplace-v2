@@ -26,3 +26,20 @@ This evidence is retrospective and conditional on a hypothesized shared p951 MT 
 **Next discriminant:** Freeze a shared event/latch/control/AUX order from this source-positive adjacent segment, derive a precise rule for timestamp and any extra draws using independent intact record boundaries, then predict a wholly new sequence without retrospectively fitting its control. If such a producer schedule also indexes actual target-informative state windows, combine it with the GF(2) quotient work.
 
 No official K04/K08 verifier hit claimed. K01,K02,K03,K05,K06,K07 previously PASS; combined still INCOMPLETE.
+
+## New three-record rejection-sampler construction (3 November, Agent28)
+
+The previous eight-position seq44→45 bridge suggested a timestamp mismatch at MT -548. A deeper *whole-stage* interpretation resolves that specific mismatch without altering the original source: high six tempered bits of printer-fixed output -548 equal **39**, and `randrange(39)` rejects code 39. Thus -548 is a **rejected EVENT44 draw**, with the accepted original event code27 at -547.
+
+Continue backward from the control-only seq43 anchor -552. Original source fixes high six codes **49** at -555 and **52** at -554, both rejected by `randrange(39)`. Original EVENT43 code12 can be accepted at -556, timestamp43 code9 at -557 and latch43 code1 at -553. The original seq43 AUX code5464 and seq44 timestamp code55 leave two exact five-field sampler paths:
+
+| Branch | Seq43 AUX | Seq44 timestamp | Extra rejection before seq44 event27 |
+| --- | --- | --- | --- |
+| A | -551 rejected, -550 accepted | -549 accepted | -548 code39 rejected |
+| B | -551 accepted | -550 accepted | -549 rejected, -548 code39 rejected |
+
+Both then share seq44 event -547=27, latch -546=2, control -545, AUX -544=5700, and seq45 timestamp -543=217, event -542=25, latch -541=0, control -540. Both branches satisfy all original source-derived GF(2) constraints and the available rejection inequalities; no extra unobserved draws are required in the three-record segment. They remain alternatives because the printer-only source has no individually fixed output bits at -551/-550/-549.
+
+[Branch reproducer](../agents/agent28/k04_node50_three_record_branch_sft.py) imports the original printer-only basis, selects the three control sites without metadata, constructs both exact sampler stage paths, inserts source-derived native/full and field-high-bit constraints, and tests consistency. Each branch raises rank **15,365→15,405**, i.e. **40 independent additional conditional source equations**. The selected row129 p951 residual quotient remains **128/128** under either branch. This is genuine new cross-carrier model information, still unable to recover an authentic K04 bit by itself.
+
+The precise repair here is classification of the -548 byte pattern as a sampler rejection rather than an incorrect timestamp prediction. It strengthens the local stage mechanism. It does not resolve external epoch attribution, stage paths for the remaining 69 recorder records, nor the existing seq46→47 counterexample under its tested index assignments. Use this segment to derive a globally testable stage order with a new withheld original control prediction.
