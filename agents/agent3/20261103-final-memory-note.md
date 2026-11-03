@@ -1,0 +1,5 @@
+# 3 Nov Agent 3 continuity
+
+The full unsigned-32-bit native MT19937 pre-spool origin attack is in results/h17-k04-native-pre-spool-seed-15origin-full32.md. Fifteen fixed negative source positions, all 2^32 seeds each, 18 first matches and 0 second matches. The author-final K08 phrase and K04 original selected coupon remain missing.
+
+My other source-checked experiments are in the following agent3 files: k04_p951_noncontiguous_coupon_sft.py, k04_bitplane_fault_sft.py, k04_node49_valid_cohort_note.md, k08_mail11_caption_sft.py, k08_n13_n20_riffle_sft.py and k08_terminal_source_subsequence_sft.c. All original-target tests were negative with positive controls; no source or acceptance commitments changed. Focus future runs on a genuinely indexed original K04 donor, actual producer start event, or verbatim terminal Emily wording. Earlier p951 short-seed exclusions anchored at printer output0 need not cover earlier pre-spool seed epochs.
