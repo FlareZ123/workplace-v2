@@ -23,3 +23,16 @@ Nevertheless, rank analysis demonstrates that three 16-checkpoint blocks hypothe
 ## Implication
 
 Future effort should target **an independently evidenced irregular transfer layout or alternative transform with a source-visible heldout prediction in the target-descendant stage**, rather than assume a sequential offset or increase hash-search radius. A complete payload still requires enough independent information to resolve the remaining target quotient and the physical ACK copy stage. No K08 final words were recovered.
+
+## Irregular-output and other-halfword generalization (3 November, follow-up)
+
+The earlier regular strides only test one simple omission schedule. A separate exact **source-only dynamic program**, [reproducible SFT](../agents/agent4/k04_ax_irregular_halfword_dp_sft.py), compares all four original 16/8 checkpoint layouts and both byte orientations to either the native MT tempered upper16 or lower16 views in the **entire -1100..+1800 interval**. It allows *every monotonically increasing position chain with any per-checkpoint hidden gap of 1..20 draws*, and maximizes the number of printer-source-fixed bit agreements subject to **zero bit contradictions**. Selected printer ACK2 is always excluded, and the baseline is printer-only rank15,365: even AX-7778's checkpoint observations are withheld from the source basis so its 122 fixed-bit hit is an independent positive source control.
+
+| Transfer | Maximum exact source-fixed matches over all bounded irregular chains |
+|---|---:|
+| AX-7778 (drill) | **122**, upper16, byte-swapped, 16 consecutive stages -157..-142 |
+| AX-7781 (dry run) | **35** |
+| AX-7782 (retained commit) | **33** |
+| AX-7783 (incomplete) | **36** |
+
+The surviving sequences for AX-7781/82/83 exploit sparse fixed-bit regions and **do not constitute authenticated producer/index placements**. Across this bounded family, none approaches the original AX-7778 122-bit same-stream agreement. This notably extends the earlier *fixed-stride* screen to variable hidden draw counts, both halfword views and a positive comparison using source-only baseline. It argues against a simple one-stream skipped-output explanation of the other three original transfer checkpoint chains. It says nothing about cryptographic checkpoint derivation, independently seeded transfers, non-MT producers or arbitrary index jumps larger than20. K04 still has zero authenticated original bits.
