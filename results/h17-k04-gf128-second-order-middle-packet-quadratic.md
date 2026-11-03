@@ -66,3 +66,18 @@ and therefore K04 `D8EB07D2F7EFCA50B8E9F85134936F92`, which fails the original c
 [Single-file source-pinned SFT](../agents/agent48/k04_gf128_secondorder_middle_sft.py). The genuine planted streams, original source checksum, derived field solutions, heldout source windows and original K04 commitment were executed locally with the original attached archive. The compact repository SFT preserves the same algebra and assertions; no independent remote execution is claimed.
 
 The next useful work would involve **source-visible coefficient reuse or a same-stage complete intact five-packet group** in the exceptional RECOVER retry class. A second-order field model that only fits the one missing event has little selection power. This is a finite original-candidate no-hit and a stronger rejection of the proposed common source stage, **not** a new original physical coupon or an accepted key. K04 remains unresolved, K08 final words unquoted, six original components PASS, REC8 combined INCOMPLETE.
+
+
+## Addendum, 3 November ~16:12 UTC: after-target-only GF(2^32) reverse producer
+
+A separate, more strongly controlled producer family avoids inferring the missing packet directly from arbitrary four endpoints. It interprets the **twelve fully intact 32-bit words in packet rows130,131,132**, all later than the disputed row129, as a common GF(2^32) output stream with arbitrary four-lag field-linear feedback, optionally with an unknown fixed 32-bit bias:
+
+```
+w[t] = A0*w[t-4] XOR A1*w[t-3] XOR A2*w[t-2] XOR A3*w[t-1] XOR C
+```
+
+For each combination of two verified irreducible degree-32 polynomials (low reductions `0x8D`, `0x04C11DB7`), eight original-byte/word/reflection representations and homogeneous/affine bias, algebraically fit four or five coefficients from the first four/five post-target equations. **Hold out all remaining three/four complete original output words** of the 12-word future cohort. Where the oldest coefficient is invertible, reverse the recurrence eight steps to derive both (1) all four missing 18:02 selected packet words and (2) the four previous 18:01 packet words as a separate intact backward control.
+
+**Original result:** all **32/32** models solve their limited training equations and reconstruct a complete candidate, but **0/32** have any correct future holdout output word, **0/32** reproduce the intact 18:01 packet when reversed, and all **32 distinct complete K04 candidates fail** the original untouched commitment. Hence this specific four-word finite-field producer class is source-inconsistent under its assumed continuity across the late printer packets, before any recovery claim. Four genuine planted field generators (both polynomials × both bias options) satisfy heldout forward equations and backward exact missing+prior-packet recovery. [Reversible after-target source SFT](../agents/agent48/k04_gf32_reverse_late_packet_sft.py).
+
+This follows a stronger selection policy than the four-endpoint interpolation above: **learn from independent later source, reserve actual heldout later outputs, and test a separately retained earlier packet**. The original 18:03 to18:24 clock gap and differing job classes still prevent generalizing this rejection to all physical RECOVER producers or variable-step generators. It contributes no accepted slot or authenticated target bit.
