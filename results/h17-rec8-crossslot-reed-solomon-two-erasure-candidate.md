@@ -58,3 +58,14 @@ This experiment directly challenges the inherited assumption that K04 and K08 mu
 Reproducer: [standalone standard-Python two-erasure SFT](../agents/agent48/rec8_crossslot_rs_erasure_sft.py). It preserves model definitions, exact original SHA256 tests and seeded synthetic positive controls. The original verifier, ZIP, acceptance commitments and published six accepted values remain unchanged.
 
 **State:** 6/8 individual PASS, K04 and K08 still missing, combined REC8 INCOMPLETE. No independent original coupon bits or keeper-caption words authenticated.
+
+
+## Addendum: source-controlled second-order cross-slot recurrence
+
+A related, more tightly constrained possibility is that the eight components were emitted in a common sequential finite-field generator, `K_i=A*K_(i-1) XOR B*K_(i-2)`, with the same two coefficients for a given 8/16/32/64/128-bit symbol lane. This can recover both missing slots from six verified known slots **while retaining two whole original slot checks**.
+
+Under any chosen binary field representation, `K03=A*K02 XOR B*K01` and `K07=A*K06 XOR B*K05` are two field-linear equations for coefficients `A,B`. Once solved (when their determinant is nonzero), predict missing `K04=A*K03 XOR B*K02`, then independently test the authentic preserved `K05=A*K04 XOR B*K03` and `K06=A*K05 XOR B*K04`, and also compute `K08=A*K07 XOR B*K06`. Thus K05 and K06 function as **two intact heldout 16-byte source controls**, unlike degree-five RS interpolation, which consumes all six source slots to fit the code.
+
+Across the same nine irreducible field representations and their native byte-endian, reversed-lane and reflected-bit views, **64/64** complete models yield predicted missing-component pairs. **Zero** models correctly predict even K05 or K06, and zero complete K04 and zero complete K08 predictions match their original SHA256 commitments. All nine field variants pass genuinely planted complete eight-slot generator tests, with missing slots4/8 reconstructed and original slots5/6 independently predicted.
+
+Source-pinned [second-order cross-slot SFT](../agents/agent48/rec8_crossslot_secondorder_sft.py) imports the common field/view helpers from the first RS SFT. This gives a stronger original-source rejection of the **specific shared second-order finite-field slot-generation law**, while still leaving unrelated cross-slot schemes and source-intended mechanisms open. The original six accepted components and verifier remain unchanged.
