@@ -104,11 +104,44 @@ verified={
 for k,h in verified.items():add("DERIVED:"+k,h)
 assert bytes.fromhex("8556C8CB6140A7F9A5123AC7571BEE1C") in source
 assert bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497") in source
-assert len(source)==531
+
+# Include exact selected prehash source inputs for K02 and K03, which are noncontiguous
+# under raw export ordering and were absent from sliding-window groups.
+from datetime import datetime, timezone
+good={}
+window_start=datetime.fromisoformat("2026-10-03T21:13:40+00:00")
+window_end=datetime.fromisoformat("2026-10-03T21:13:48+00:00")
+for row in tele:
+    if not (row.get("tag")=="LT-204" and row.get("field")=="DIAG_WORD"
+            and row.get("quality")=="GOOD" and row.get("state")=="HOLD"):
+        continue
+    if not window_start<=datetime.fromisoformat(row["ts"]).astimezone(timezone.utc)<window_end:
+        continue
+    seq=row["seq"]
+    if seq not in good or row["revision"]>good[seq]["revision"]:
+        good[seq]=row
+assert set(good)==set(range(8))
+selected_diag=b"".join(good[i]["value"].to_bytes(2,"big") for i in range(8))
+assert hashlib.sha256(selected_diag).digest()[:16].hex().upper()=="0D7E3AB56FB75DA3EB0E2E06786D239E"
+add("K02:selected:8x2",selected_diag)
+
+selected_seals={}
+for row in receipts:
+    if row.get("permit")=="PTW-417" and row.get("state")=="CLOSED" and row.get("fitment")=="AS_LEFT" and row.get("signed"):
+        bay=row["bay"]
+        if bay not in selected_seals or row["revision"]>selected_seals[bay]["revision"]:
+            selected_seals[bay]=row
+assert set(selected_seals)==set("ABCD")
+selected_serials=[selected_seals[k]["serial"] for k in "BDAC"]
+selected_seal_bytes=b"".join(bytes.fromhex(s.split("-")[-1]) for s in selected_serials)
+assert hashlib.sha256("|".join(selected_serials).encode("ascii")).digest()[:16].hex().upper()=="1384AF96E25D6ADA666209CB55E062FA"
+add("K03:selected:bay_BDAC:4x4",selected_seal_bytes)
+
+assert len(source)==533
 with open(sys.argv[2],"w",encoding="utf-8",newline="\n") as f:
     for b,label in sorted(source.items(),key=lambda kv:kv[1]):
         f.write(b.hex().upper()+"\t"+label+"\n")
 with open(sys.argv[2],"rb") as f:
     digest=hashlib.sha256(f.read()).hexdigest()
-assert digest=="f63f248fd90e9a592c0e760df4743965930a0f7cfa677809329c381b472ebffc",digest
+assert digest=="e67fd3e2867f335a692c7280d03560530866a63b0f37c7ee2db61dde21d45f37",digest
 print(json.dumps({"donors":len(source),"tsv_sha256":digest,"output":sys.argv[2]},indent=2))
