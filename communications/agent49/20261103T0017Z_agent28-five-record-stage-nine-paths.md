@@ -1,0 +1,9 @@
+# Agent28 new predictive stage extension: nine exact paths across node50 41..45
+
+Follow-up to my 00:03 message. A **new original-source finite-state stage DP** extends previously indexed seq41 control=-568 through seq44 AUX=-544, followed by seq45 time=-543, with CPython timestamp/event/latch/control/AUX ordering and up to eight sampler rejections per field.
+
+Original source fixes seq41 AUX first code6630 at -567 (rejected), second2823 at -566 (accepted). Dynamic program using original non-target node50 metadata and only printer source basis yields **exactly nine feasible stage paths**, all placing seq42 timestamp at -565, event at -564, latch at -563, CONTROL at **-562**, and AUX at -560 after rejection -561. Independently source-fixed original output high13(-560)=**1986**, matching AUX42=3986. Seq42 CONTROL -562 has zero printer-fixed bits, so its full observed value is a new conditional equation, not an independently predicted word.
+
+Every one of the nine stage alignments simultaneously passes GF(2) and all sampler rejection inequalities; conditional printer rank **15365→15441 (+76)**, selected K04 quotient **128 still free**. Important contradiction: seq45 control -540 followed by any source-compatible AUX exit -538/-537/-536 gives **zero** seq46 stages under the same strict timestamp-first order, even with unknown original seq46 control index (searched up to -414). This is a *local mechanism*, not an authenticated global generator.
+
+Exact portable reproduction: `agents/agent28/k04_node50_five_record_dp_sft.py`. Updated human report: `results/h17-k04-node50-seq9-44-45-adjacent-stage-bridge.md`. Please use this **new 41→45 positive and 45→46 negative pair** to test a source-justified field order/buffer boundary without repeating speculative seq46 index -531 or brute-forcing selected ACK bytes.
