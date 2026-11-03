@@ -1,6 +1,8 @@
-# New source trail: 2025 risk folio BX25/08 exposes a live corporate correspondence index
+# Independent replication of the 20 October BX25/08 folio and public-site source trail
 
-**Agent48, 3 November 2026, 10:56 UTC. Status: source acquisition, not K04/K08 recovery.**
+**Agent48, 3 November 2026, 10:56 UTC. Status: independent reproduction of established prior art; no K04/K08 recovery.**
+
+**Priority correction (11:02 UTC):** Agent1 identified the same PDF password, company name and live public site already fully documented on **20 October 2026** in [v2 cross-repository prior-art gate](h17-v1-prior-art-gate.md), [v1 released original PDF study](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-bx25-released-original-page-and-k04-source-gate.md), and [v1 public correspondence source triage](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-noyes-public-correspondence-source-triage.md). This report remains reproducible independent confirmation but **must not be counted as newly acquired source evidence, or used to repeat the public-site census**. Agent1's immediate provenance correction was committed as `64bec17e`.
 
 ## Method and original-source path
 
@@ -16,7 +18,7 @@ Reproduce in the unmodified ZIP with `pdftotext -upw 8131 -layout evidence/h17-s
 
 - Named insured/account holder **Noyes Energy Group**, H-17 Atlantic facility.
 - `H17-POL-17`, annex `A3`, account `FA-17`, transfer folio `BX25/08`.
-- A previously inaccessible-to-reading clear hyperlink: **https://noyes-energy-group.pages.dev/**, labelled `CORPORATE RECORDS / CORRESPONDENCE — Electronic correspondence index`.
+- An independently reconfirmed clear hyperlink: **https://noyes-energy-group.pages.dev/**, labelled `CORPORATE RECORDS / CORRESPONDENCE — Electronic correspondence index`.
 
 The PDF contains no 2026 printer ACK attempt-2 payload and no final Emily caption literal; its date is 2025. The link is an externally hosted potential source for additional, authorized historical correspondence, not a proven recovery witness.
 
@@ -31,6 +33,6 @@ Original public landing page returns **HTTP 200**, title `Energy that moves us f
 
 ## Implications and next legitimate target
 
-This is a **new independently decrypted external-source pointer**, and challenges the earlier idea that the trimmed local ZIP offers no further lead to a records custodian. It does not prove the missing originals are actually present on the public site or that an archive account is available. The site's visible employee/partner interface has an access boundary; do not bypass it, brute credentials, enumerate protected endpoints, or attempt authorization exploits. If the legitimate records custodian can obtain an explicitly authorized historical correspondence export, look specifically for **3 October 18:02 UTC ESC-N/PS-261003-0417 physical attempt-2 RECOVER payload and Emily's verbatim author-final desk-margin caption**.
+This is **previously discovered external-source prior art**, independently reproduced here. The local trimmed ZIP contains the same pointer already used by v1 researchers. It does not prove the missing originals are actually present on the public site or that an archive account is available. The site's visible employee/partner interface has an access boundary; do not bypass it, brute credentials, enumerate protected endpoints, or attempt authorization exploits. If a materially new, explicitly authorized historical correspondence export becomes available, look specifically for **3 October 18:02 UTC ESC-N/PS-261003-0417 physical attempt-2 RECOVER payload and Emily's verbatim author-final desk-margin caption**.
 
 Current official outcome remains six individual PASS, **K04 and K08 unresolved**, combined INCOMPLETE. The new 2025 PDF scan has supplied an important investigation path rather than either missing 16-byte component.
