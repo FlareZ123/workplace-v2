@@ -53,3 +53,18 @@ Run the standalone Python 3 standard-library test [\`agents/agent19/k04_dotnet_f
 This advances the original-source producer question by testing an architecture independent of the conditional CPython/MT19937 shared-state investigations. It does **not** identify the actual printer generator or connect a physical selected copy to an authenticated producer value. **K04 still has 0 independently authenticated selected bits. K08 terminal wording is unquoted.** The original six individual slot passes and combined incomplete result remain unchanged.
 
 A genuinely different follow-up would constrain a **per-record warmup or a nonlegacy high-byte \`Random.Next(256)\`** producer by an actual writer metadata rule. A broad unguided gap/seed search would add little; the packet-lag and direct seed tests have already decisively excluded the two specified models.
+
+
+## Independent high-byte API extension: \`Random.Next(256)\` (same day)
+
+A legacy .NET program could obtain each packet byte by calling \`Random.Next(256)\` rather than \`NextBytes\`. The former scales each full 31-bit raw output to the range 0..255; it is not the low-byte mapping of Model B. The seed-affine inverse above remains exact. For each observed first byte \`b\`, enumerate the raw interval
+
+\`\`\`
+ceil(b*(2^31-1)/256) <= x0 < ceil((b+1)*(2^31-1)/256)
+\`\`\`
+
+and invert \`x0\` for each of the exactly **8,388,608** possible original first outputs. Repeat for all **eight** packet geometries, checking every subsequent full-scale byte. This covers another **8 × 2^31 signed-seed-magnitude interpretations** of original job0300, with **zero complete matches**. The first original packet has 125..132 survivors after three bytes; three geometries leave one candidate after four, another leaves one, and all eight have **zero survivors by byte five**. An independently generated full \`Random(20261103)\` sixteen-call \`Next(256)\` packet is correctly inverted to its withheld seed, validating the full candidate-to-coupon path.
+
+Portable reproducible C++17 file: [\`agents/agent19/k04_dotnet_next256_highbyte_sft.cpp\`](../agents/agent19/k04_dotnet_next256_highbyte_sft.cpp). It pins the first original packet's literal source row, runs the complete seed inverse for eight geometries and requires the planted seeded positive. The original source and target commitments remain unchanged.
+
+This **separately excludes exact first-packet legacy \`Random.Next(256)\` generation without warmup**, even if every ordinary printer record is independently reseeded. It leaves a nonzero warmup, other output API, copier or generator entirely open. Original K04 still has no authenticated selected bits.
