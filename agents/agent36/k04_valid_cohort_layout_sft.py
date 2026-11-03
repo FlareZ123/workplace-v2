@@ -75,3 +75,21 @@ print('base',posterior(basis,[]),'lattice',posterior(basis,lattice))
 for name,indices in layout.items():
  test=[(idx,records[seq][1]) for seq,idx in zip(range(300,304),indices)]
  print('joint',name,posterior(basis,lattice+test))
+# Include the valid K05 writer as a fourth field in every latch-major row of
+# the previously source-supported 200/900/990 grid; anchor 200/latch0 at -324.
+for order in ((200,300,900,990),(200,900,300,990),
+              (200,900,990,300),(300,200,900,990)):
+    anchor= -324-order.index(200)
+    guessed={v:anchor+i for i,v in enumerate(order)}
+    placements=[(guessed[seq//10*10 if seq>=900 else seq//100*100] + 4*(seq%10), records[seq][1])
+        for seq in (200,201,202,203,300,301,302,303,900,901,902,903,990,991,992,993)]
+    # seq990..993 has cohort base 990; seq900..903 ->900; 200,300 -> base integer hundreds
+    pred=bad=0
+    for idx,native in placements:
+      for j,v in enumerate(symbolic.get(states,idx)):
+        x=basis.predict(v)
+        if x is not None:
+          pred+=1
+          bad+=x!=((native>>j)&1)
+    print('four-column-latch-major',order,'anchor200at',guessed[200],
+       'predicted',pred,'disagreements',bad,'joint',posterior(basis,placements))
