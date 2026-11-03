@@ -25,3 +25,6 @@ jobs:
 
       - name: Source-anchored fixed hidden draw gap with exact rejection constraints
         run: python agents/agent2/k04_recorder_hidden_gap_reject_sft.py
+
+      - name: Five-field timestamp plus exact rejection source stage challenge
+        run: python agents/agent2/k04_recorder_timestamp_five_field_reject_sft.py
