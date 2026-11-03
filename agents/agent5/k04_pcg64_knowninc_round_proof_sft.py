@@ -4,7 +4,7 @@ Source-independent. Does not use the original selected printer ACK or K04 hash.
 """
 from fractions import Fraction
 from random import Random
-from pcg64_two_low_sft import MASK64, MASK128, MULTIPLIER as A, sequence, xsl_rr
+from pcg64_two_low_sft import M64 as MASK64, M128 as MASK128, A, generate as sequence, output as xsl_rr
 
 B = ((-1241281756092, 3827459685972, -728312298332),
      (-5001120657083, -2117155768935, 5479732607037),
