@@ -22,7 +22,7 @@ def run():
     for i,(n,w) in enumerate(notes):
      a,b=nonce[2*i:2*i+2]
      rawidx=(a,b,(a<<8)|b,(b<<8)|a,a^b,a+b,a&b,a|b,a>>4,b>>4,a&15,b&15,i,int(n[1:]))[col]
-     p.append(w[((-1-rawidx) if reverse else rawidx)+d if False else (((-1-rawidx) if reverse else rawidx)+d)%len(w)])
+     p.append(w[(((-1-rawidx) if reverse else rawidx)+d)%len(w)])
     out.add(("single",tuple(p)))
  for method in range(8):
   for d in (-2,-1,0,1,2):
