@@ -1,0 +1,151 @@
+"""K04 selected-middle retry inverse SFT, read-only and source-pinned.
+
+Models 18:01 REQUESTED1 as four xorshift128+ 32-bit summed outputs,
+withholds four 18:02 ACK2 outputs, and constrains 18:03 REQUESTED3
+as the next four outputs. Tests both high/low 32-bit halves and four
+packet serialization views, 8 conditional producer families total.
+
+Requires an installed Z3 shared library (libz3.so / libz3.dll).
+"""
+import ctypes
+import ctypes.util
+import hashlib
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2] / "resources"
+SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
+MASK64 = (1 << 64) - 1
+
+
+def xorshift_step(a, b):
+    x = (a ^ ((a << 23) & MASK64)) & MASK64
+    c = (x ^ b ^ (x >> 17) ^ (b >> 26)) & MASK64
+    return (b, c), ((b + c) & MASK64)
+
+
+def inverse_middle(before, after, upper, timeout_ms=15000):
+    """Return all SMT model states and missing middle words, or fail on UNKNOWN."""
+    assert len(before) == len(after) == 4
+    name = ctypes.util.find_library("z3") or "libz3.so.4"
+    lib = ctypes.CDLL(name)
+    lib.Z3_mk_config.restype = ctypes.c_void_p
+    lib.Z3_mk_context.argtypes = [ctypes.c_void_p]
+    lib.Z3_mk_context.restype = ctypes.c_void_p
+    lib.Z3_del_config.argtypes = [ctypes.c_void_p]
+    lib.Z3_del_context.argtypes = [ctypes.c_void_p]
+    lib.Z3_eval_smtlib2_string.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+    lib.Z3_eval_smtlib2_string.restype = ctypes.c_char_p
+
+    config = lib.Z3_mk_config()
+    context = lib.Z3_mk_context(config)
+    lib.Z3_del_config(config)
+
+    def eval_smt(commands):
+        return lib.Z3_eval_smtlib2_string(context, commands.encode()).decode().strip()
+
+    try:
+        lines = [f"(set-option :timeout {timeout_ms})", "(set-logic QF_BV)"]
+        for i in range(13):
+            lines += [f"(declare-const a{i} (_ BitVec 64))",
+                      f"(declare-const b{i} (_ BitVec 64))"]
+        for i in range(12):
+            lines.append(f"(assert (= a{i+1} b{i}))")
+            x = f"(bvxor a{i} (bvshl a{i} #x0000000000000017))"
+            y = (f"(bvxor (bvxor (bvxor {x} b{i}) "
+                 f"(bvlshr {x} #x0000000000000011)) "
+                 f"(bvlshr b{i} #x000000000000001a))")
+            lines.append(f"(assert (= b{i+1} {y}))")
+            observed = before[i] if i < 4 else (after[i - 8] if i >= 8 else None)
+            if observed is not None:
+                top, bottom = (63, 32) if upper else (31, 0)
+                expr = f"((_ extract {top} {bottom}) (bvadd b{i} b{i+1}))"
+                lines.append(f"(assert (= {expr} #x{observed:08x}))")
+        eval_smt("\n".join(lines))
+        models = []
+        for _ in range(16):
+            # Explicit QF_BV bit-blast SAT tactic is far faster than the
+            # default solver on the lower32 historical/synthetic branches.
+            status = eval_smt("(check-sat-using (then simplify bit-blast sat))")
+            if status == "unsat":
+                return models
+            if status != "sat":
+                raise RuntimeError("Inconclusive exact inversion: " + status)
+            returned = eval_smt("(get-value (a0 b0))")
+            values = re.findall(r"#x([0-9a-fA-F]{16})", returned)
+            assert len(values) == 2, returned
+            seed = tuple(int(x, 16) for x in values)
+            state = seed
+            stream = []
+            for _ in range(12):
+                state, word64 = xorshift_step(*state)
+                stream.append(word64 >> 32 if upper else word64 & 0xFFFFFFFF)
+            assert stream[:4] == before and stream[8:] == after
+            models.append((seed, stream[4:8]))
+            a, b = seed
+            eval_smt(f"(assert (not (and (= a0 #x{a:016x}) (= b0 #x{b:016x}))))")
+        raise RuntimeError("More than 16 models; enumeration incomplete")
+    finally:
+        lib.Z3_del_context(context)
+
+
+def read_source():
+    data = (ROOT / "evidence/print/spool-reconstruction.log").read_bytes()
+    assert hashlib.sha256(data).hexdigest() == SOURCE_SHA
+    rows = []
+    for line in data.decode("ascii").splitlines():
+        if "PAYLOAD=" not in line:
+            continue
+        fields = dict(re.findall(r"([A-Z]+)=([^ ]+)", line))
+        fields["timestamp"] = line.split()[0]
+        rows.append(fields)
+
+    def select(when, attempt, state):
+        selected = [x for x in rows if x["JOB"] == "PS-261003-0417"
+                    and x["timestamp"].startswith(when)
+                    and x["ATTEMPT"] == str(attempt)
+                    and x["STATE"] == state and x["CLASS"] == "RECOVER"]
+        assert len(selected) == 1
+        return bytes.fromhex(selected[0]["PAYLOAD"])
+
+    first = select("2026-10-03T18:01:", 1, "REQUESTED")
+    # Explicit presence-only check: selected 18:02 ACK2 bytes are NEVER read.
+    assert sum(x["JOB"] == "PS-261003-0417" and x["ATTEMPT"] == "2"
+               and x["STATE"] == "ACK" for x in rows) == 1
+    last = select("2026-10-03T18:03:", 3, "REQUESTED")
+    assert first.hex().upper() == "CD3E4F216ADB2FB180DA2AA90B33F7A4"
+    assert last.hex().upper() == "44D53DFC29D7943A95D89371DA58EC64"
+    return first, last
+
+
+def main():
+    seed = (0x123456789ABCDEF0, 0xFEDCBA9876543210)
+    state = seed
+    stream = []
+    for _ in range(12):
+        state, out = xorshift_step(*state)
+        stream.append(out)
+    first, last = read_source()
+    count = 0
+    for upper in (True, False):
+        example = [x >> 32 if upper else x & 0xFFFFFFFF for x in stream]
+        planted = inverse_middle(example[:4], example[8:], upper)
+        assert planted == [(seed, example[4:8])]
+        print(f"SYNTHETIC upper32={upper} full missing coupon PASS")
+        for endian in ("little", "big"):
+            for reverse in (False, True):
+                before = [int.from_bytes(first[i:i + 4], endian) for i in range(0, 16, 4)]
+                after = [int.from_bytes(last[i:i + 4], endian) for i in range(0, 16, 4)]
+                if reverse:
+                    before.reverse()
+                    after.reverse()
+                models = inverse_middle(before, after, upper)
+                assert models == [], (upper, endian, reverse, models)
+                count += 1
+                print(f"ORIGINAL upper32={upper} endian={endian} reverse={reverse}: UNSAT")
+    assert count == 8
+    print("Eight historical source models UNSAT; K04 selected ACK withheld and unchanged")
+
+
+if __name__ == "__main__":
+    main()
