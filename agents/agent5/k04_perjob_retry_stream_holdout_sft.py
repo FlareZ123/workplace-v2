@@ -156,3 +156,93 @@ for job in ("0417", "0420"):
               "matches", hits)
         assert not hits, "This source model has an unexpected exact holdout hit"
 print("Selected original K04 coupon remained excluded; no recovery is claimed.")
+
+
+# Incremental target-facing inverse route: use only the later 18:03
+# REQUESTED3 packet as a source anchor. Agent24 already tested xorshift128
+# forward from 18:01 REQUESTED1 (0..8192 positions), while Agent3 tested
+# xoshiro128** joint REQUESTED outer-packet exact consistency (4 word orders).
+# The inverse route below tests all 24 four-word orders, 0..128 reverse
+# inter-draw positions, with separate exact seeded inversion controls.
+# No historical original payload authenticity is implied.
+
+import json
+
+
+def inverse_xoshiro_state(s):
+    a, b, c, d = s
+    d_b = rotl(d, 21)
+    old_a = a ^ d_b
+    q = c ^ b
+    old_b = q
+    old_b ^= (old_b << 9) & MASK
+    old_b ^= (old_b << 18) & MASK
+    return (old_a, b ^ old_b ^ old_a, d_b ^ old_b ^ 0 ^ 0
+            if False else b ^ old_b ^ old_a, d_b ^ old_b)
+
+
+def inverse_xorshift_state(s):
+    b, c, d, v = s
+    t = v ^ d ^ (d >> 19)
+    t ^= t >> 8
+    t ^= t >> 16
+    old_a = t
+    old_a ^= (old_a << 11) & MASK
+    old_a ^= (old_a << 22) & MASK
+    return (old_a, b, c, d)
+
+
+for forward, backward in ((next_xoshiro, inverse_xoshiro_state),
+                          (next_xorshift, inverse_xorshift_state)):
+    current = seed
+    for _ in range(17):
+        _, advanced = forward(current)
+        assert backward(advanced) == current
+        current = advanced
+
+root = Path(__file__).resolve().parents[2] / "resources"
+route = json.loads((root / "evidence/recovery-routing.json").read_text())
+acceptance = json.loads((root / "acceptance.json").read_text())
+mask = bytes.fromhex(route["K04"]["masked_component"])
+target = bytes.fromhex(acceptance["slot_sha256"]["K04"])
+later_request = next(r["payload"] for r in records
+                     if r["job"] == "0417" and r["state"] == "REQUESTED"
+                     and "18:03:00" in r["time"])
+
+
+def pack_order(output, endian, order):
+    physical = [None] * 4
+    for i, source_pos in enumerate(order):
+        physical[source_pos] = output[i].to_bytes(4, endian)
+    return b"".join(physical)
+
+
+attempts = 0
+hits = []
+for family in ("xoshiro128**", "xorshift128"):
+    forward = next_xoshiro if family == "xoshiro128**" else next_xorshift
+    backward = inverse_xoshiro_state if family == "xoshiro128**" \
+        else inverse_xorshift_state
+    for endian in ("big", "little"):
+        for order in permutations(range(4)):
+            observed = words(later_request, endian, order)
+            if family == "xoshiro128**":
+                state = invert_xoshiro(observed)  # before 18:03 block
+            else:
+                state = tuple(observed)           # after 18:03 block
+                for _ in range(4):
+                    state = backward(state)
+            for gap in range(129):
+                earlier = state
+                for _ in range(4):
+                    earlier = backward(earlier)
+                coupon_words = generate(earlier, forward, 4)
+                coupon = pack_order(coupon_words, endian, order)
+                component = bytes(a ^ b for a, b in zip(coupon, mask))
+                attempts += 1
+                if hashlib.sha256(component).digest() == target:
+                    hits.append((family, endian, order, gap,
+                                 component.hex().upper()))
+                state = backward(state)
+print("reverse-only candidate tests", attempts, "original K04 matches", hits)
+assert attempts == 12384
