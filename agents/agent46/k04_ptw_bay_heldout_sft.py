@@ -90,7 +90,7 @@ def main():
     assert set(by_id)==set(range(390,417))
     b,s=source(ROOT)
     assert b.rank==15365
-    predicted=predictions(b,s,-970,-930)
+    predicted=predictions(b,s,-970,-920)
     for permit,index in ((405,-964),(412,-944),(414,-937)):
         original=untemper(int.from_bytes(bytes.fromhex(by_id[permit]['serial'][3:]),'little'))
         value,mask,_,_=predicted[index]
@@ -166,6 +166,23 @@ def main():
     assert matched==420
     print('Exact shuffled-bay calibration: 420/2520 rearrangements retain '
           'both retrospective anchor indices. Not historical producer proof.')
+
+    # Falsify the uniform post-414 extension with original 416 serial
+    # withheld until after source-derived stage placement. Stage at 414
+    # was identified by retrospective source matching, a model assumption.
+    downstream={-937}
+    for permit in (415,416):
+        downstream={nxt for prior in downstream
+                    for nxt,_ in stage(predicted,prior,
+                         'ABCD'.index(by_id[permit]['bay']),9)}
+    assert downstream=={-929,-930,-931,-932}
+    original416=untemper(int.from_bytes(
+        bytes.fromhex(by_id[416]['serial'][3:]),'little'))
+    contradictions={pos:(((predicted[pos][0]^original416)&predicted[pos][1]).bit_count(),
+                         predicted[pos][1].bit_count()) for pos in downstream}
+    assert all(errors>0 for errors,known in contradictions.values())
+    print('FALSIFIED PTW414->416 stage: every allowed 416 position '
+          'contradicts the original heldout 416 serial',contradictions)
 
     # Only source-defined immediate placements gain +33 native input
     # equations at 406 and 413; none fixes even one selected K04 bit.
