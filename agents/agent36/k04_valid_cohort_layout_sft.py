@@ -93,3 +93,64 @@ for order in ((200,300,900,990),(200,900,300,990),
           bad+=x!=((native>>j)&1)
     print('four-column-latch-major',order,'anchor200at',guessed[200],
        'predicted',pred,'disagreements',bad,'joint',posterior(basis,placements))
+
+# Independent AX-7778 transfer checkpoint family: does it constrain the single
+# previously source-invisible pre-lattice valid K05 four-word stage?
+transfer_raw=(ROOT/'evidence/transfers/transfer-audit.jsonl').read_bytes()
+assert hashlib.sha256(transfer_raw).hexdigest()=='32970ad4431a9d610cc12dcca2813f39dd8fd2e396f9e748dc94b5932cb69adf'
+chunks=sorted((json.loads(line) for line in transfer_raw.splitlines()
+               if json.loads(line).get('kind')=='CHUNK'
+               and json.loads(line).get('transfer')=='AX-7778'),
+              key=lambda x:(x['seq'],x['attempt']))
+assert len(chunks)==16
+ax=symbolic.Basis();ax.rows=basis.rows.copy();ax.rank=basis.rank
+for i,ch in enumerate(chunks):
+  x=int(ch['checkpoint'],16)
+  upper16=(x>>8)|((x&255)<<8)
+  for bit,expr in enumerate(symbolic.temper(symbolic.get(states,-157+i))[16:]):
+    ax.insert(expr,(upper16>>bit)&1)
+assert ax.rank==15495,ax.rank
+assert posterior(ax,lattice)=={'consistent':True,'donor_gain':127,'target_unresolved_bits':128}
+for name,indices in layout.items():
+  layout_sample=[(idx,records[seq][1]) for seq,idx in zip(range(300,304),indices)]
+  result=posterior(ax,lattice+layout_sample)
+  assert result['consistent'] is False,(name,result)
+  print('ax+grid+300',name,result)
+# Identify which original source-labelled K05 bits are individually predicted
+# by AX and grid before ever adding any K05 source words.
+ax_grid=symbolic.Basis();ax_grid.rows=ax.rows.copy();ax_grid.rank=ax.rank
+for idx,native in lattice:
+    for j,expr in enumerate(symbolic.get(states,idx)):
+        ax_grid.insert(expr,(native>>j)&1)
+assert ax_grid.rank==15622,ax_grid.rank
+predictions={}
+for seq,idx in zip(range(300,304),layout['pre-lattice-contiguous']):
+    original=records[seq][1]
+    bits=[(j,ax_grid.predict(expr),(original>>j)&1)
+          for j,expr in enumerate(symbolic.get(states,idx))
+          if ax_grid.predict(expr) is not None]
+    predictions[seq]=bits
+    print('AX+GRID individually predicted K05',seq,idx,bits)
+assert predictions[300]==[] and predictions[301]==[]
+assert predictions[302]==[(10,1,1),(25,0,0)]
+assert predictions[303]==[(10,0,1)]
+# There is an independently predicted *single-bit* contradiction for seq303,
+# and an extra interword parity contradiction already at seq302 after
+# adding original seq300/301 source bytes. Trace the earliest parity failure.
+aug=symbolic.Basis();aug.rows=ax_grid.rows.copy();aug.rank=ax_grid.rank
+conflict=None
+for seq,idx in zip(range(300,304),layout['pre-lattice-contiguous']):
+    native=records[seq][1]
+    for bit,expr in enumerate(symbolic.get(states,idx)):
+        pred=aug.predict(expr)
+        if pred is not None and pred!=((native>>bit)&1):
+            conflict={'seq':seq,'native_index':idx,'native_bit':bit,
+                      'predicted':pred,'recorded':(native>>bit)&1,
+                      'source_rank':aug.rank}
+            break
+        aug.insert(expr,(native>>bit)&1)
+    if conflict is not None:
+        break
+assert conflict=={'seq':302,'native_index':-326,'native_bit':20,
+                  'predicted':1,'recorded':0,'source_rank':15701}
+print('AX+GRID+300 first multiword parity contradiction',conflict)
