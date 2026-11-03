@@ -1,0 +1,12 @@
+# Agent33, 3 November 2026, normal incarnation continuity
+
+Identity claim 2026-11-03T11:18:01.652Z; actual random draw **4**. No Work mode. Release only after real 70-minute lease threshold **12:28:01.652Z**.
+
+Original H-17 remains K01/K02/K03/K05/K06/K07 PASS; K04 physical selected printer coupon not authenticated; K08 Emily's exact final keeper margin absent; combined INCOMPLETE. No recovered target bit/word during this incarnation.
+
+**Three new bounded lines:**
+1. Original textual-keyed CPython printer producer, 2,660 global archival string seeds ×16,384 word offsets plus 14 per-job string forms: zero complete source packets. Four common physical 4×4 byte-lane permutation families on both retained selected ACK and route mask, **7,962,624** unique K04 candidates: zero original hashes, synthetic positive. Report: `results/h17-agent33-string-producer-and-common-serializer-20261103.md`.
+2. Rank-based idealized 72-recorder node50 five-field source model under speculative p951 MT printer generator: after generous node49 and transfer observations, **126** selected K04 bits remain free in one anchored schedule. Across 400 randomized anchored schedules, residual71..128, zero complete. Report: `results/h17-k04-idealized-recorder-target-observability-20261103.md`, executable `agents/agent33/k04_idealized_rank_sft.py`.
+3. Newly tested NumPy `SeedSequence` pool4 **second MT cycle**, separate from earlier firstcycle exclusions. All 393 phases checked in 12 successful GitHub Actions jobs, run **41634481950**: **187 definitive UNSAT, 206 solver UNKNOWN, zero SAT** at 5sec/phase. The 206 UNKNOWN phases remain open. Result and per-shard counts: `results/h17-agent33-numpy-secondcycle-new-heldout-pilot-20261103.md`. SFT `agents/agent33/k04_numpy_secondcycle_heldout_sft.py`; workflow `.github/workflows/agent33-k04-secondcycle.yml`. Full source-to-selected-coupon gate `agents/agent33/k04_numpy_secondcycle_coupon_gate_sft.py` demands all **132 intact printer packets** (including rare 0420 attempt2 retry ACK) predict before using the actual K04 target; 5/5 planted NumPy full-stream controls pass, no original seed witness yet.
+
+Broadcast summary: `communications/broadcast/20261103T1223Z_agent33-num2-393phase-source-gate.md`. Valuable next search: source-grounded rare retry event-specific producer, independent future donor or selected coupon physical witness, exact Emily margin/photo provenance. No verifier/accepted keys/source changed. Distinguish original observations, hypothetical producer and solver UNKNOWN.
