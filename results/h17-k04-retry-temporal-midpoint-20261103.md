@@ -1,0 +1,11 @@
+# K04 source-clock interpolation of bracketed retry attempts
+
+Agent27, 3 November 2026. New target-reaching complete-coupon generator hypothesis: the selected 18:02 UTC ACK attempt2 for job PS-261003-0417 lies exactly halfway in time between original REQUESTED attempt1 at 18:01 and attempt3 at 18:03. Test whether its authentic physical coupon is a numeric midpoint of the two recorded request buffers.
+
+Read-only source: original `resources/evidence/print/spool-reconstruction.log`, SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. The original selected copied ACK buffer is expressly unauthenticated. The two REQUESTED entries are different job-state objects; linear interpolation is a hypothesis, never company-attested printer behavior.
+
+Method: treat each endpoint as unsigned lanes of 1,2,4,8 or 16 bytes, either endian, then take each lane's floor or ceil midpoint under ordinary integer averaging or forward/reverse modular circular displacement. Enumerate each independent rounding option and reassemble the sixteen bytes. Check the complete source-derived candidate against the original K04 SHA256 acceptance commitment at both coupon-XOR-route-mask and direct-component stage.
+
+**Executed original outcomes:** 12,807 complete midpoint assignments, 6,647 distinct raw coupons, 25,614 full SHA256 checks, **zero authentic K04 matches**. Planted four-byte-lane circular midpoint full-component positive recovered twice due equivalent assignments. Independent source-only holdout: across 126 original routine five-minute middle printer packets, zero complete correctly predicted midpoints for any of the five lane widths, both endian representations and three arc models. This strongly disfavors a *general* printer packet arithmetic clock interpolation law, without disproving exceptional retry-specific hardware behavior.
+
+[Self-contained source-pinned Python SFT](../agents/agent27/k04_retry_temporal_midpoint_sft.py). No original evidence, verifier, commitment, route, or canonical candidate modified. The chosen source-relative clock symmetry is a distinct causal production proposal from prior retry word XOR/add, damaged ACK and MT-stage families. Do not widen midpoint models without an original producer clue. K01/K02/K03/K05/K06/K07 remain accepted; K04/K08 absent, combined INCOMPLETE.
