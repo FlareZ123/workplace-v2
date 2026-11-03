@@ -1,0 +1,23 @@
+name: Agent 2 K04 PRBS32 complete original digest test
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  crc32-scrambler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        mode: [msb0, lsb0]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile source-pinned complete K04 candidate test
+        shell: bash
+        run: g++ -O3 -std=c++17 -Wall -Wextra -march=native agents/agent2/k04_crc32_prbs_complete_sft.cpp -lcrypto -o /tmp/k04_crc32_prbs_sft
+      - name: Enumerate complete seed shard, check original and planted digests
+        shell: bash
+        run: /tmp/k04_crc32_prbs_sft ${{ matrix.shard }} 16 ${{ matrix.mode }}
