@@ -111,6 +111,25 @@ def main():
     assert (predicted[-962][2]>>29)==2 and (predicted[-962][3]>>29)==7
     print('Source-predicted first bay code7 rejected; second code2 accepted (BAY C)')
 
+    # A strictly forward candidate generator uses only PTW405's anchored
+    # original, and the BAY labels 406..414. The withheld downstream
+    # serial words do not enter index selection or candidate construction.
+    possible={-964}
+    for permit in range(406,415):
+        bay='ABCD'.index(by_id[permit]['bay'])
+        possible={nxt for prior in possible
+                  for nxt,_ in stage(predicted,prior,bay,9)}
+        assert possible
+        if permit in (412,414):
+            full={pos:predicted[pos][0] for pos in possible
+                  if predicted[pos][1]==0xffffffff}
+            expected_count={412:3,414:4}[permit]
+            original=untemper(int.from_bytes(
+                bytes.fromhex(by_id[permit]['serial'][3:]),'little'))
+            assert len(full)==expected_count and list(full.values()).count(original)==1
+            print(f'BLIND SERIAL{permit}: {expected_count} complete native candidates; '
+                  'original matched exactly once')
+
     # Without consulting BAY414, the two anchor serials and a two-bay
     # rejection stage require its label C. BAY413 remains ambiguous.
     viable=[]
@@ -124,6 +143,29 @@ def main():
     assert len(viable)==10 and {bay for _,_,bay in viable}=={2},viable
     assert 'ABCD'.index(by_id[414]['bay'])==2
     print('HELDOUT_BAY414 source stage predicts BAY C across all 10 admissible 412->414 paths')
+
+    # Exact Bay-label-shuffle calibration of the 405->412->414 constrained
+    # stage, not a producer-authentication probability. Repeated Bay labels
+    # are deduplicated before testing; the two source anchor indices were
+    # discovered retrospectively and are deliberately fixed.
+    from itertools import permutations
+    codes=tuple('ABCD'.index(by_id[p]['bay']) for p in range(406,415))
+    permutations_distinct=set(permutations(codes))
+    assert len(permutations_distinct)==2520
+    matched=0
+    for trial in permutations_distinct:
+        positions={-964}
+        for permit,bay in zip(range(406,415),trial):
+            positions={nxt for prior in positions
+                       for nxt,_ in stage(predicted,prior,bay,9)
+                       if permit not in (412,414) or
+                       nxt==({412:-944,414:-937}[permit])}
+            if not positions:
+                break
+        matched+=-937 in positions
+    assert matched==420
+    print('Exact shuffled-bay calibration: 420/2520 rearrangements retain '
+          'both retrospective anchor indices. Not historical producer proof.')
 
     # Only source-defined immediate placements gain +33 native input
     # equations at 406 and 413; none fixes even one selected K04 bit.
