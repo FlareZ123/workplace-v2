@@ -13,7 +13,7 @@ NOTES_SHA256 = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb
 
 
 def normalize(text):
-    return " ".join(re.sub(r"[^a-z0-9\\s]", " ", text.lower()).split())
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", text.lower()).split())
 
 
 def reduction(text, nonce):
@@ -27,7 +27,7 @@ def tokenize(text):
 def main():
     assert hashlib.sha256(NOTES.read_bytes()).hexdigest() == NOTES_SHA256
     raw = NOTES.read_text(encoding="utf-8")
-    matches = re.findall(r"(?m)^N(\\d\\d) / (.+)\\n([^\\n]+)$", raw)
+    matches = re.findall(r"(?m)^N(\d\d) / (.+)\n([^\n]+)$", raw)
     assert len(matches) == 24
     notes = []
     for index, byline, line in matches:
