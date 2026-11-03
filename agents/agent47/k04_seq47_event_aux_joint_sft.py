@@ -53,7 +53,7 @@ def fixed_accuracy(bits,value):
 
 def stage_report(model,vectors,position,observed,max_rejects=4):
     event,latch,aux=observed
-    assert (event,latch,aux)==(4,1,3075)
+    assert 1 <= event <= 39 and 0 <= latch <= 3 and 2000 <= aux < 8000
     cache={}
     def bits(stage,n):
         k=(stage,n)
@@ -113,6 +113,18 @@ def main():
         }
         rows.append(summary)
         print("STAGE_REPORT",summary,flush=True)
+        # Source-preserving placebo: substitute the complete intact metadata
+        # triple of each of 55 other node50 records, never changing CONTROL.
+        placebo=[]
+        for seq,_ in others:
+            other, _ = stage_report(model,vectors,stage,meta[seq])
+            placebo.append((seq,len(other)))
+        anyplace=sum(n>0 for seq,n in placebo)
+        print("CROSS_ROW_METADATA_PLACEBO",{
+            "stage":stage,"compatible_label_triples":anyplace,
+            "total_other_triples":len(placebo),
+            "first_passes":[(seq,n) for seq,n in placebo if n>0][:12],
+        },flush=True)
     # Separately calibrate the simplest (0,0,0) source-scoped architecture
     # on the other 55 original node50 controls, with independent metadata.
     reference=joint_basis(printer,vectors,controls,PATH)
