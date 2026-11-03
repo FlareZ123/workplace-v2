@@ -93,8 +93,12 @@ def read_source():
     data = (ROOT / "evidence/print/spool-reconstruction.log").read_bytes()
     assert hashlib.sha256(data).hexdigest() == SOURCE_SHA
     rows = []
+    selected_ack_count = 0
     for line in data.decode("ascii").splitlines():
         if "PAYLOAD=" not in line:
+            continue
+        if "JOB=PS-261003-0417 ATTEMPT=2 STATE=ACK CLASS=RECOVER " in line:
+            selected_ack_count += 1
             continue
         fields = dict(re.findall(r"([A-Z]+)=([^ ]+)", line))
         fields["timestamp"] = line.split()[0]
@@ -109,9 +113,8 @@ def read_source():
         return bytes.fromhex(selected[0]["PAYLOAD"])
 
     first = select("2026-10-03T18:01:", 1, "REQUESTED")
-    # Explicit presence-only check: selected 18:02 ACK2 bytes are NEVER read.
-    assert sum(x["JOB"] == "PS-261003-0417" and x["ATTEMPT"] == "2"
-               and x["STATE"] == "ACK" for x in rows) == 1
+    # Presence-only; the selected 18:02 payload was excluded before parsing.
+    assert selected_ack_count == 1
     last = select("2026-10-03T18:03:", 3, "REQUESTED")
     assert first.hex().upper() == "CD3E4F216ADB2FB180DA2AA90B33F7A4"
     assert last.hex().upper() == "44D53DFC29D7943A95D89371DA58EC64"
