@@ -43,3 +43,24 @@ The final stage -692 makes \`rank(S+prefix)=19,968\`, the complete native state 
 This is a conditional theorem about the stated p951 linear MT model with exactly one published chronology. The original label ACK buffer, acceptance hash, K04 mask, K08 nonce and all original evidence files remain unchanged. **K04 and K08 remain unresolved, six other slots PASS and combined REC8 INCOMPLETE**.
 
 **Reproducer:** [Agent32 single-file GF(2) target-horizon SFT](../agents/agent32/k04_ptw_early_horizon_sft.py), reusing [Agent49 pinned original source builder](../agents/agent49/k04_p951_symbolic_basis.py); the SFT includes baseline, early-cut, crossing and complete-state positive checks.
+
+
+## Constructive sparse 22-output early-donor mechanism (18:10 UTC extension)
+
+The cumulative fullword-prefix oracle above appears impossibly large. Tracking exact GF(2) back-substitution coefficients identifies a much smaller **inclusion-minimal 22-native-word** original-source oracle from within that large hypothetical prefix. In a fixed deterministic set-elimination order, these stages alone suffice:
+
+\`-1088,-1087,-1086,-1085,-1084,-1033,-1028,-1027,-1026,-975,-919,-918,-917,-916,-915,-861,-860,-859,-858,-857,-806,-692\`.
+
+Under the unchanged p951 original source basis, adding all **22 complete tempered 32-bit word values** raises rank **15,365→16,004** (+639). The 128 selected output bits are then all **in that source span**, so a complete fourword original K04 coupon is algebraically constructible. Every one of the listed 22 word stages is locally essential *within this set*: removing any one and recomputing the exact selected quotient leaves positive target uncertainty. This proves inclusion-minimality, not a globally minimum stage count. A separate previously published [seven future-donor oracle](h17-k04-future-seven-known-source-carrier-exclusion.md) is more compact and remains relevant.
+
+**Concrete nonlinear-genuine-state positive:** Construct an actual full 19,968-bit source-compatible MT state by back-substituting all 15,365 original printer equations and choosing free coordinates zero. Compute the corresponding *real* 22 donor words. Withhold the selected native 951..954 outputs, impose only those 22 donor outputs and original source equations, and recover all 128 target bits exactly. Synthetic held-out selected coupon:
+
+\`054AD23723EAFB47DDF71A422DD941CB\`.
+
+The independently generated candidate component after the unchanged route XOR mask is:
+
+\`801C1AFC42AA5CBE78E520857AC2AFD7\`.
+
+Its synthetic SHA256 is \`53d08e162f125c2b07816bcf0c112a035d2a70dfb439b5b1f1e66da69725807e\`. This is **a synthetic positive control**, not the authentic selected physical coupon, and it does not match or claim original K04 acceptance. All 22 single-word deletion controls fail to identify the entire target as expected.
+
+[Exact 22-word single-file reconstruction SFT](../agents/agent32/k04_p951_22stage_sparse_donor_sft.py) regenerates the source-compatible state, genuine donor values, target reconstruction and all removal controls. The experiment is target-facing in a stricter sense than a generic rank increase because it outputs an actual full 16-byte coupon from genuine specified oracles. However the surviving export provides **no historical source-indexed authentic values for all 22 listed stages**. Assigning arbitrary observed permit serials or other 16-byte blocks to those positions would produce unsupported complete candidates. Until independently anchored donor values exist, this mechanism preserves **zero authentic K04 bits** and the original six-PASS/two-MISSING status.
