@@ -80,24 +80,28 @@ static unsigned long long scan(State initial,unsigned gap,
     }
     return hits;
 }
-static void pin_route(const std::string &file){
+static void pin_route(const std::string &file,const char *expected){
     std::ifstream in(file,std::ios::binary);
     if(!in){std::fprintf(stderr,"missing original source %s\n",file.c_str());std::exit(2);}
     std::string body((std::istreambuf_iterator<char>(in)),std::istreambuf_iterator<char>());
     unsigned char h[SHA256_DIGEST_LENGTH];SHA256((const unsigned char*)body.data(),body.size(),h);
     char digest[65];for(unsigned i=0;i<32;i++)std::sprintf(digest+i*2,"%02x",h[i]);digest[64]=0;
-    if(std::strcmp(digest,"f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5")){
+    if(std::strcmp(digest,expected)){
         std::fprintf(stderr,"original routing SHA mismatch\n");std::exit(2);
     }
 }
 int main(int argc,char**argv){
     std::string root=argc>3 ? argv[3] : "resources/";
     if(root.back()!='/')root.push_back('/');
-    pin_route(root+"evidence/recovery-routing.json");
+    const bool retry=argc>4&&std::strcmp(argv[4],"retry")==0;
+    pin_route(root+(retry?"evidence/print/spool-reconstruction.log":"evidence/recovery-routing.json"),
+       retry?"7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083":
+       "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5");
     unsigned long long count=argc>1?std::strtoull(argv[1],nullptr,10):1000000;
     unsigned maxgap=argc>2?std::strtoul(argv[2],nullptr,10):32;
     if(!count||count>100000000||!maxgap||maxgap>64)return 2;
-    auto mask=fromhex("8556C8CB6140A7F9A5123AC7571BEE1C"),nonce=fromhex("5F933DA6A1BD03C32DA5CBC25344F497");
+    auto mask=fromhex(retry?"CD3E4F216ADB2FB180DA2AA90B33F7A4":"8556C8CB6140A7F9A5123AC7571BEE1C");
+    auto nonce=fromhex(retry?"44D53DFC29D7943A95D89371DA58EC64":"5F933DA6A1BD03C32DA5CBC25344F497");
     // Synthetic genuine producer across two different nonconsecutive gaps.
     State planted{UINT64_C(0x518f5e0a9726db40),UINT64_C(0x34127fabc52b067d)};
     State s=planted;U p0=next(s);for(unsigned i=1;i<5;i++)next(s);U p5=next(s);
@@ -129,6 +133,6 @@ int main(int argc,char**argv){
         }
     }
     double secs=std::chrono::duration<double>(std::chrono::steady_clock::now()-begin).count();
-    std::printf("ORIGINAL configurations=%u inverse_consistent=%llu inconsistent=%llu states=%llu minrank=%u offsets_per_state=%llu cross_matches=%llu wall=%.3fs\n",
-               8*maxgap,recovered,unfit,states,minrank,count,cross,secs);
+    std::printf("ORIGINAL mode=%s configurations=%u inverse_consistent=%llu inconsistent=%llu states=%llu minrank=%u offsets_per_state=%llu cross_matches=%llu wall=%.3fs\n",
+               retry?"retry":"configuration",8*maxgap,recovered,unfit,states,minrank,count,cross,secs);
 }
