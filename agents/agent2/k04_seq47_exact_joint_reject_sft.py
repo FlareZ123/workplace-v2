@@ -141,6 +141,29 @@ def calibration(printer, vectors, controls, metadata):
               "incompatible_seqs", [seq for seq, ok in data if not ok], flush=True)
 
 
+def all_accepted_positions(model, vectors, stage, observed):
+    """Necessary exact GF2 test for ALL field-rejection lengths within neighboring CONTROL boundaries.
+
+    Accepted EVENT draw can lie at any stage strictly after seq46=-531
+    and at least two stages before current CONTROL. Accepted LATCH remains
+    at stage-1 under the no-intervening-draw field-order hypothesis.
+    AUX accepted draw can lie anywhere after CONTROL and before seq48=-512.
+    If no joint accepted triple survives, no number of rejections can rescue
+    this candidate CONTROL stage in the stated producer order.
+    """
+    event, latch, aux = observed
+    options = []
+    for e_stage in range(-530, stage - 1):
+        for a_stage in range(stage + 1, -512):
+            rows = [(e_stage, 6, accepted(6, event - 1)),
+                    (stage - 1, 3, accepted(3, latch)),
+                    (a_stage, 13, accepted(13, aux - 2000))]
+            answer, _ = solvable(model, vectors, rows)
+            if answer is not None:
+                options.append((e_stage, stage - 1, a_stage))
+    return options
+
+
 def main():
     printer, vectors = source(ROOT / "resources")
     controls = recorder_controls()
@@ -151,6 +174,8 @@ def main():
           {k: len(v) for k, v in REJECT.items()}, flush=True)
     for stage in (-523, -522, -521, -520):
         model = joint_basis(printer, vectors, controls, other + ((47, stage),))
+        accepted_positions = all_accepted_positions(model, vectors, stage, metadata[47])
+        print("UNBOUNDED_ACCEPTED_POSITIONS",stage,"joint_triples",len(accepted_positions),"first",accepted_positions[:12],flush=True)
         stats = Counter()
         sample = []
         expansions = 0
