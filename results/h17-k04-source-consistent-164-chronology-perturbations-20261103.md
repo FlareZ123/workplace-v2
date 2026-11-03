@@ -6,7 +6,7 @@
 
 The original [six-geometry complete hidden-stage scan](h17-k04-p951-hidden-stage-source-derived-coupon-scan-20261103.md) assigned preserved printer payloads to six specific source-compatible, historically unconfirmed MT19937 output chronologies p950..955, generating 945 distinct complete masked component values. Those six are **examples** from a much larger family of source-consistent timings. A different original timing might fully reveal another *unprinted* 16-byte generator buffer that generated the disputed 18:02 ESC-N attempt2 physical coupon before its damaged archive copy was made.
 
-This experiment searches **new source-consistent chrono­logies**, then uses the original source state to construct complete four-output candidate values at alternate issuance stages. It requires no partial SHA256 target guesses, copied selected ACK2 bits, additional K04 component material or arbitrary 32-bit brute force.
+This experiment searches **new source-consistent chronologies**, then uses the original source state to construct complete four-output candidate values at alternate issuance stages. It requires no partial SHA256 target guesses, copied selected ACK2 bits, additional K04 component material or arbitrary 32-bit brute force.
 
 ### Exact finite method
 
@@ -30,7 +30,7 @@ This is an alternative generation-stage hypothesis. The source does **not** auth
 | 955 | 79 | 29 | 575 |
 | **Total** | **557** | **164** | **1,516 overall distinct** |
 
-The last column is **a set union**, so its per-model values must not be added to obtain the overall number. The 164 valid shifted placements produce **571 new distinct complete component values** beyond the earlier six-model union of 945. All **1,516** accepted-by-source *candidate assignments* are rejected by the **original unchanged K04 SHA256 commitment**; no physical coupon or masked component passes.
+The last column is **a set union**, so its per-model values must not be added to obtain the overall number. The 164 valid shifted placements produce **571 new distinct complete component values** beyond the earlier six-model union of 945. All **1,516** distinct source-generated complete component values are rejected by the **original unchanged K04 SHA256 commitment**; no physical coupon or masked component passes.
 
 Every shifted chronology's source-based selected target quotient remains exactly **128 unknown bits out of 128**. In particular, source compatibility of a new chronology does not imply any authentic selected-output bit was recovered. A committed local Python positive control plants the SHA256 commitment of one enumerated 16-byte component and recovers it exactly once, guarding the complete coupon/commitment path.
 
