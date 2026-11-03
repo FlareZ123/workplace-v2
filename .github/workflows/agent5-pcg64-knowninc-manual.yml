@@ -1,0 +1,24 @@
+name: Agent 5 PCG64 known-increment source falsifier (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-pcg64-known-increment:
+    name: Four-layout exact PCG64 source screen / view ${{ matrix.view }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile exact source-only CVP SFT
+        run: g++ -std=c++20 -O3 -march=native -Wall -Wextra agents/agent5/k04_pcg64_knowninc_exact_cvp_sft.cpp -o pcg64_sft
+      - name: Exhaust entire low19/three-rotation space for one original source layout
+        run: ./pcg64_sft ${{ matrix.view }} 0 524288
