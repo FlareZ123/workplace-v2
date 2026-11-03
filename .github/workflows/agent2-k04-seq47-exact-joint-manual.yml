@@ -19,3 +19,6 @@ jobs:
 
       - name: Source-anchored all-rejection-length 24-order placement screen
         run: python agents/agent2/k04_recorder_all_order_accepted_anchors_sft.py
+
+      - name: Source metadata shuffle and exact 24-order null
+        run: python agents/agent2/k04_recorder_order_meta_permutation_sft.py
