@@ -1,0 +1,32 @@
+name: Agent48 H17 public correspondence index probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Fetch PDF-disclosed public index without executing remote content
+        shell: bash
+        run: |
+          python - <<'PY'
+          import urllib.request, urllib.error
+          u = 'https://noyes-energy-group.pages.dev/'
+          req = urllib.request.Request(u, headers={'User-Agent': 'H17-archive-custodian-readonly/1.0'})
+          try:
+              with urllib.request.urlopen(req, timeout=18) as response:
+                  body = response.read(40000)
+                  print('HTTP_STATUS', response.status)
+                  print('FINAL_URL', response.url)
+                  print('CONTENT_TYPE', response.headers.get('Content-Type'))
+                  print('BODY_BEGIN')
+                  print(body.decode('utf-8', 'replace'))
+                  print('BODY_END')
+          except urllib.error.HTTPError as e:
+              print('HTTP_ERROR', e.code, e.reason)
+              print(e.read(6000).decode('utf-8','replace'))
+          except Exception as e:
+              print('FETCH_ERROR', type(e).__name__, str(e))
+          PY
