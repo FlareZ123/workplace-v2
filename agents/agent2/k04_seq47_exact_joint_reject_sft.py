@@ -200,6 +200,20 @@ def main():
               "no_rejection_survives", (0, 0, 0) in stats,
               "expansions", expansions,
               "sample_witnesses", sample, flush=True)
+    # The only remaining accepted-code placements for -522 have the EVENT
+    # accept draw at -530 and the LATCH accept draw at -523: six rejected
+    # LATCH outputs between them. Test those with exact inter-field GF2.
+    stage = -522
+    model = joint_basis(printer, vectors, controls, other + ((47, stage),))
+    for ar in range(4):
+        items = history(stage, 0, 6, ar, metadata[47])
+        assert items is not None
+        witness, expansions = solvable(model, vectors, items)
+        print("SIX_LATCH_REJECTS",stage,"aux_rejects",ar,
+              "feasible",witness is not None,
+              "prefix_expansions",expansions,
+              "sample",tuple((s,n,len(c)) for s,n,c in witness) if witness else None,
+              flush=True)
     calibration(printer, vectors, controls, metadata)
     print("Original selected K04 coupon and K08 phrase remain unknown.", flush=True)
 
