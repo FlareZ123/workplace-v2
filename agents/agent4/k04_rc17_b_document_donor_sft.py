@@ -22,7 +22,7 @@ def read_footers():
     raw = (ROOT / "resources/evidence/procedures/RC-17-scans.txt").read_bytes()
     assert hashlib.sha256(raw).hexdigest() == DOC_SHA
     text = raw.decode("utf-8")
-    regex = (r"DOCUMENT RC-17 / REV (B|C|D-draft) / SECTION (\\w+)"
+    regex = (r"DOCUMENT RC-17 / REV (B|C|D-draft) / SECTION (\w+)"
              r".*?Footer control strip: ([0-9A-F]{8})")
     items = {(m.group(1), m.group(2)): m.group(3)
              for m in re.finditer(regex, text, flags=re.S)}
