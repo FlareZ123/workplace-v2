@@ -55,6 +55,14 @@ def xor(a,b):
     return bytes(x^y for x,y in zip(a,b))
 
 
+def signature(buf):
+    return tuple(sorted(tuple(sorted(buf[i:i+4])) for i in range(0,16,4)))
+
+
+def transpose(buf):
+    return bytes(buf[4*(i%4)+i//4] for i in range(16))
+
+
 def main():
     copied,mask=source()
     ps=layouts(copied)
@@ -70,15 +78,30 @@ def main():
     unique=set()
     hits=0
     planted_hits=0
+    seen_payload_prior=0
+    seen_mask_prior=0
+    seen_both_prior=0
+    # Exact membership without enumerating either predecessor's 7.96M strings:
+    # a word-permutation / intraword-permutation output preserves the sorted
+    # multiset of its source's four sorted four-byte blocks.
+    source_payload_signature=signature(copied)
+    source_mask_signatures={signature(mask),signature(transpose(mask))}
     for p in ps:
         for m in ms:
             candidate=xor(p,m)
             unique.add(candidate)
+            in_payload_prior = signature(xor(candidate,mask)) == source_payload_signature
+            in_mask_prior = signature(xor(candidate,copied)) in source_mask_signatures
+            seen_payload_prior += int(in_payload_prior)
+            seen_mask_prior += int(in_mask_prior)
+            seen_both_prior += int(in_payload_prior and in_mask_prior)
             digest=hashlib.sha256(candidate).digest()
             hits+=int(digest==actual)
             planted_hits+=int(digest==planted)
     assert len(unique)==589824
     assert len(unique-alone)==588289
+    assert (seen_payload_prior,seen_mask_prior,seen_both_prior)==(384,768,1)
+    assert len(unique)-(seen_payload_prior+seen_mask_prior-seen_both_prior)==588673
     assert hits==0 and planted_hits==1
     print(json.dumps({
         'source_selector':'PS-261003-0417/RECOVER/ACK2/18:02Z',
@@ -86,6 +109,10 @@ def main():
         'unique_reduced_components':len(unique),
         'one_sided_union':len(alone),
         'new_beyond_one_sided':len(unique-alone),
+        'overlap_agent5_full_payload_wordperm':seen_payload_prior,
+        'overlap_agent30_full_mask_wordperm':seen_mask_prior,
+        'overlap_both_full_predecessor_families':seen_both_prior,
+        'new_beyond_agent5_agent30_full_families':len(unique)-(seen_payload_prior+seen_mask_prior-seen_both_prior),
         'original_K04_matches':hits,'genuinely_two_stage_planted_positive':planted_hits,
         'selected_original_coupon_authenticated_bits':0,
         'archive_status':'INCOMPLETE'},sort_keys=True))
