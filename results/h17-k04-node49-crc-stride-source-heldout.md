@@ -1,8 +1,12 @@
 # K04: node49 three-lane recorder stride and CRC-invalid original-control holdout
 
-**Agent 10 | 3 November 2026 UTC | Conditional original-source reconstruction.** [Executable single-file test](../agents/agent10/k04_node49_crc_stride_sft.py). All acceptance commitments, selected 18:02 spool ACK, original evidence, candidate and verifier are unchanged. **No seventh PASS or independently authenticated selected K04 bit.**
+**Agent 10 | 3 November 2026 UTC | Independent reproduction and distinct CRC-invalid holdout protocol.** [Executable single-file test](../agents/agent10/k04_node49_crc_stride_sft.py). All acceptance commitments, selected 18:02 spool ACK, original evidence, candidate and verifier are unchanged. **No seventh PASS or independently authenticated selected K04 bit.**
 
-## New question and construction
+## Provenance correction and specific different question
+
+**Same-session prior art identified after this report was first committed:** [Agent50 had already published the underlying node49 three-cohort/four-latch lattice](h17-k04-node49-interleaved-cohort-latch-grid.md), including seven matching anchors, a different five-control 19-bit holdout, and exactly the same +128 rank/128-bit target quotient. The lattice, rank increment and general source-coupling inference **are not new discoveries of Agent10** and should be credited to Agent50. Agent10's separate experiment uses *six CRC-valid controls as placement anchors* and then evaluates the **two full 32-bit CRC-invalid seq901 and seq903 raw controls as withheld predictions**, with the competing control-field repair alternative explicitly rejected in the model. seq903's direct original printer relation was independently known from v1 Agent43. This is an alternative holdout/evidence-stage calibration of the same model, not 67 new target bits nor an independently authenticated producer. The tests were developed concurrently and do not constitute independent physical source corroboration.
+
+## Question and construction
 
 The source-pinned p951 hypothetical MT19937 printer model in [Agent49's basis](../agents/agent49/k04_p951_symbolic_basis.py) fixes a subset of native-state bits from **132 intact spool packets**, while excluding selected packet row129. Can the independently retained node49 recorder CONTROL words identify a structured *three-lane* ordering with source-predictive checks on the four CRC-invalid records?
 
@@ -33,7 +37,7 @@ Freeze the six-anchor 3-step layout, then ask the unmodified *printer-only* mode
 | seq903 | -314 | **32 / 32**, retained `F2595C84` |
 | **Total** | | **67 / 67** |
 
-The **seq903 full-word printer correspondence has previous source precedent** in [v1 Agent43's CRC-layer study](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-trp2-crc-single-bit-syndrome.md). This test's incremental evidence is the six-control, fixed-stride layout and the independent **seq901 full-word** prediction at -320. The 67 matches should not be interpreted as 67 independent random bits: p951 state recurrence and the retrospective index selection affect the statistical model. Explicit assessment of look-elsewhere and historical producer provenance remains open.
+The **seq903 full-word printer correspondence has previous source precedent** in [v1 Agent43's CRC-layer study](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-trp2-crc-single-bit-syndrome.md). This test's narrower incremental *validation protocol* is to freeze a six-**CRC-valid**-anchor layout and treat both **seq901 and seq903** CRC-invalid fullwords as heldouts, then discriminate v1 Agent43's competing CRC-repair layer. Agent50's earlier original lattice is the substantive structural antecedent. The 67 matches should not be interpreted as 67 independent random bits: p951 state recurrence and the retrospective index selection affect the statistical model. Explicit assessment of look-elsewhere and historical producer provenance remains open.
 
 The alternative v1 Agent43 repaired-CONTROL hypothesis changes each damaged record's CONTROL by bytewise XOR `3F9B320D`, leaving the CRC stored. At the fully fixed seq901 and seq903 positions that alternative disagrees with printer-fixed native state at **14 of 32 bits** in each case. Thus **within this speculative shared-printer architecture**, the preserved original CONTROL bytes are better supported than those proposed control-field repairs. The four original CRCs remain invalid; K05 must continue to exclude them. Neither the model nor the checksum syndrome authenticates source integrity absolutely.
 
@@ -41,7 +45,7 @@ The alternative v1 Agent43 repaired-CONTROL hypothesis changes each damaged reco
 
 Insert the twelve original seq200/900/990 words at the per-latch positions into the 15,365-rank printer basis. They cause **no GF(2) contradiction** and increase rank to **15,493**, adding **128** independent *conditional source-state* constraints. Projecting onto the four withheld selected row129 native words at positions 951..954 still leaves **128 / 128 unconstrained selected coupon bits**, both before and after. No exact K04 payload is generated.
 
-The experiment is separate from K04 arbitrary ACK corruption repair, CRC bit-repair enumeration and the previously known seq903 direct printer fingerprint. It tests a **record-index structure derived from untouched controls**, and independently predicts a second, previously CRC-rejected full CONTROL. It does not establish a historical common RNG producer, a global recorder stage order, copied printer coupon integrity, or even a complete source-labelled index map. The K04 selected-event causal bridge remains absent. K08 was not touched.
+The different CRC-valid-anchor / CRC-invalid-heldout partition adds an integrity-stage comparison to the same node49 lattice investigated by Agent50; it is separate from K04 arbitrary ACK corruption repair and uses the prior CRC syndrome and seq903 direct printer fingerprint. It tests a **record-index structure derived from untouched controls**, and independently predicts a second, previously CRC-rejected full CONTROL. It does not establish a historical common RNG producer, a global recorder stage order, copied printer coupon integrity, or even a complete source-labelled index map. The K04 selected-event causal bridge remains absent. K08 was not touched.
 
 ## Reproduce and next discriminant
 
