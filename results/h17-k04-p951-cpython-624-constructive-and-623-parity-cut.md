@@ -57,3 +57,23 @@ Agent39's nonlinear+linear p951 screen restricted lengths to 1..623; it neither 
 Next useful attack: generalize repeated-key-index bit identities for each remaining length 606..622 against source-fixed register bits, seeking a new contradiction or a reproducible genuine short-seed solution; keep historical architecture and copy stage explicitly unproven. Do not use a 624-word posterior seed's arbitrary selected bytes as the true K04 coupon.
 
 The original ZIP, route, verifier, acceptance and six-slot candidate were untouched; no equipment or protected account was accessed.
+
+## 3 November 00:47 UTC addendum: length622 is also constructively nonidentifying
+
+[New standalone source-pinned 622-word inversion SFT](../agents/agent19/k04_p951_cpython622_constructive_sft.py) extends the 624-word construction into the highest surviving shorter seed length. CPython's 624 first-loop injections with **622** seed words repeat `key[0]` as word622 and `key[1]` as word623, with cyclic j values **0** and **1**. Backward inversion of the second diffusion loop gives pre-second register `X`. For a chosen source-consistent late initial-state word `S[621]` and the two source-compatible `S[623]` MSB values:
+
+```text
+key0 = X[623] - (BASE[623] xor mix(X[622], M₁))
+Y1   = key0 + A
+C    = S[2] + 2
+T    = (BASE[2] xor mix(Y1,M₁)) - (Y1 xor mix(X[623],M₁))
+Q    = X[1]
+(C xor mix(Q,M₂)) - Q = T                  (mod 2^32)
+S[1] = (Q xor mix(S[623],M₂)) - 1
+```
+
+The new exact **32-bit low-bit-lifting inverse** of `(C xor mix(Q,M₂)) - Q = T` enumerates both high bits of `Q`, then adds low bits sequentially, using final full-word validation. **12/12** genuinely seeded synthetic 622-word CPython controls recovered their true `Q` among solutions. For the original printer source, each candidate `S[621]` is imposed on the original linear basis; the inverse supplies `S[1]`, which is independently checked against all source constraints before constructing the complete register and actual 622-word seed. This found a source-compatible candidate at deterministic trial18 (seeded RNG 20261103), and exact `random.Random(seed).getstate()` plus **132/132 original packet equality** passed.
+
+The repeated-key constraints depend on early/late initial words `S[1], S[2], S[621], S[622], S[623]`. Keep them fixed and add arbitrary selected native output equations: the selected quotient still has full independent rank**128**. With the same source-constrained 622-word initializer, selected all-00, all-FF and all-AA 16-byte coupons each produce **132/132 original intact source matches and exactly the prescribed 128 selected bits**. This constructively establishes that **every 128-bit coupon remains possible under the equally unverified 622-word p951 seeded producer model**. No original K04 bit is recovered and the historical 18:02 copied fragment remains untrusted.
+
+Unlike length623 (source-excluded by exact bit0 contradiction), length622 has at least one fully legitimate source-matching seed and its entire selected coupon quotient is unconstrained. This supersedes any suggestion that simply solving the length622 repeated-key equalities would determine K04. The 14 other shorter survivors remain necessary-condition hypotheses, not complete solutions.
