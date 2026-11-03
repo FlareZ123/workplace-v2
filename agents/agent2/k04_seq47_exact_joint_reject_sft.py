@@ -205,6 +205,16 @@ def main():
     # LATCH outputs between them. Test those with exact inter-field GF2.
     stage = -522
     model = joint_basis(printer, vectors, controls, other + ((47, stage),))
+    # Independent human-readable cut at the very first mandatory reject.
+    accepted_event = accepted(6, metadata[47][0] - 1)[0]
+    event_equations = temper(get(vectors, -530))[26:]
+    for bit, value in accepted_event:
+        model.insert(event_equations[bit], value)
+    forced = tuple(model.predict(q) for q in temper(get(vectors, -529))[29:])
+    print("SIX_LATCH_FIRST_REJECTION", "stage",-529,"high3_fixed",forced,
+          "reject_requires_code_at_least_4", flush=True)
+    assert all(v is not None for v in forced) and sum(v << i for i,v in enumerate(forced)) < 4
+    model = joint_basis(printer, vectors, controls, other + ((47, stage),))
     for ar in range(4):
         items = history(stage, 0, 6, ar, metadata[47])
         assert items is not None
