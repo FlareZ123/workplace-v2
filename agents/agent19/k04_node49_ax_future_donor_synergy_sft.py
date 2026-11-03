@@ -74,6 +74,14 @@ def extend(include_recorder=False,valid_only=False,include_ax=False):
     return b
 
 
+def reduce(expr,basis):
+    while expr:
+        pivot=expr.bit_length()-1
+        if pivot not in basis:break
+        expr ^= basis[pivot]
+    return expr
+
+
 def rank_gain(base,donors):
     # Use homogeneous equations for observability; source RHS does not
     # matter to target *rank* once consistency was independently checked.
@@ -81,14 +89,14 @@ def rank_gain(base,donors):
     before=len(matrix)
     for index in donors:
         for expr in m.get(states,index):
-            residual=m.reduced(expr,matrix)
+            residual=reduce(expr,matrix)
             if residual:
                 matrix[residual.bit_length()-1]=residual
     rank=len(matrix)-before
     without=len(matrix)
     for index in range(951,955):
         for expr in m.get(states,index):
-            residual=m.reduced(expr,matrix)
+            residual=reduce(expr,matrix)
             if residual:
                 matrix[residual.bit_length()-1]=residual
     return len(matrix)-without,rank
