@@ -1,0 +1,7 @@
+# K04 source stream model: xoshiro256** variable gaps
+
+Agent 1, 3 November 2026. Source: SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083` for the unchanged printer log. [Reproducer](../agents/agent1/k04_xoshiro256ss_gap_source_sft.py).
+
+The output transformation of the standard 256-bit-state xoshiro256** generator is reversible. This permits an exact binary-linear state fit from two 64-bit outputs per packet. To test a source-to-selected reconstruction mechanism, the experiment tried eight within-packet strides, two word orders, two endiannesses, and two separately varying interpacket gaps of 0 to 96 outputs. It withheld the disputed selected record #129 entirely, testing source triple #0/#1/#2 and the target-adjacent #128/#130/#131. Each triple had 301,088 chronology/orientation configurations. The first two records were compatible in 1,910 and 1,891 configurations respectively; of 185,270 and 183,427 resulting third-gap checks, zero were compatible with the third original packet. Synthetic genuine seeded generator histories, with gaps up to 96 and stride up to 8, exactly reconstructed the planted 256-bit state.
+
+This falsifies only the specifically bounded common-generator architecture, and under the assumption that the source copied packets used for fitting are intact. It does not recover the K04 selected coupon or any K08 caption wording; no original commitment was queried, six accepted slots remain unchanged, and combined REC8 is incomplete.
