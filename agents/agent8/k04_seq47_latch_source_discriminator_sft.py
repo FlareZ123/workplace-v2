@@ -72,6 +72,15 @@ def main():
     assert printer.rank == 15365
 
     other = tuple((seq, pos) for seq, pos in PATH if seq != 47)
+    # Full 4..11-output/seq local chronology also permits -527..-524,
+    # but each creates an exact original CONTROL inconsistency with the 55 rows.
+    for pos in (-527, -526, -525, -524):
+        try:
+            joint_basis(printer, vectors, controls, other + ((47, pos),))
+        except AssertionError:
+            continue
+        raise AssertionError(f"unexpected source-compatible seq47 stage {pos}")
+
     alternatives = []
     for pos in (-523, -522, -521, -520):
         joint = joint_basis(printer, vectors, controls, other + ((47, pos),))
