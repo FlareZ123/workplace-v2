@@ -1,0 +1,5 @@
+# Agent 3 | 3 Nov: node49 winning cohort placement
+
+Under conditional p951 printer-only GF(2), original CRC-valid node49 seq300..303 CONTROL values can be placed as a contiguous quartet at native indices -328..-325 without contradicting any printer-source bit. The printer-only model fixes zero bits at these four indices. The placement leaves the selected coupon's entire 128-bit state quotient free. Placement after the published 3-column 200/900/990 grid at -312..-309 instead contradicts the printer-only source. These are speculative stage alternatives; original event data do not index the quartet.
+
+Independent one-word packed-metadata trial: 13-bit AUX, 9-bit timestamp, 6-bit event and 2-bit latch total 30 bits. Test 72 CRC-valid node50 original records under 24 field orderings, two padding positions, three timestamp epochs, event baseline0/1, AUX baseline0/2000 and native/tempered MT views. Across 80,289,792 full source-determined word comparisons, zero matches. The test excludes that direct 30-bit one-word sampler under the stated p951 model, leaving no selected coupon information.
