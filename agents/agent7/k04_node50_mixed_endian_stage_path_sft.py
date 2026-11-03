@@ -110,7 +110,12 @@ assert len(rows) == 15927, len(rows)
 test = dict(rows)
 for stage in range(951, 955):
     for vec in get(model, stage):
-        put(test, vec, 0)  # RHS is irrelevant to rank, may conflict.
+        while vec:
+            pivot = vec.bit_length() - 1
+            if pivot not in test:
+                test[pivot] = (vec, 0)
+                break
+            vec ^= test[pivot][0]
 assert len(test) - len(rows) == 127
 fixed = [
     (stage, j) for stage in range(951, 955)
