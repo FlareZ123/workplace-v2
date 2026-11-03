@@ -85,7 +85,7 @@ def run():
             r"JOB=PS-261003-(\d+) ATTEMPT=(\d+) STATE=(\w+) .*? PAYLOAD=([0-9A-F]{32}) ",
             line,
         )
-        if match and 300 <= int(match[1]) <= 427 and match[2:4] == ("1", "ACK"):
+        if match and 300 <= int(match[1]) <= 427 and match[2] == "1" and match[3] == "ACK":
             rows.append((int(match[1]), bytes.fromhex(match[4])))
     rows.sort()
     assert len(rows) == 128 and [i for i, _ in rows] == list(range(300, 428))
