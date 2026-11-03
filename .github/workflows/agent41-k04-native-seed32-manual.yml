@@ -1,9 +1,5 @@
 name: Agent 41 K04 selected native scalar full-seed
 on:
-  push:
-    branches: [main]
-    paths:
-      - agents/agent41/k04_selected_only_native_mt_fullseed_sft.cpp
   workflow_dispatch:
 permissions:
   contents: read
