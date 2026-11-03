@@ -57,3 +57,26 @@ The original K04 source, route mask, SHA256 commitment and the actual 18:02 copi
 The [same portable C++17/OpenSSL SFT](../agents/agent13/k04_xoroshiro_crossfield_target_sft.cpp) now includes the \`retry-backward\` mode, and sharding by serializer view 0..3. Direct local reproducer executed as \`/mnt/data/h17_research/k04_xoro_retry_backward_local.cpp\`; its positive and four original-shard logs have been preserved in the working session. The reverse test adds a distinct historical source direction and **159,999,984 target-facing checks**, bringing this document's forward+backward same-job total to **319,999,984** complete original K04 comparisons (with possible overlap among candidate strings, so counts are assignments). The source-only gap scan remains separate. Both temporal directions fail to recover an accepted original K04, and the observed REQUESTED-to-REQUESTED common producer link remains unproven.
 
 No authentic selected K04 coupon bit or K08 author-final word was recovered. Six original slot PASS statuses and REC8 INCOMPLETE remain authoritative.
+
+
+## New direct target model: independently skipped native outputs in both request and coupon
+
+The first source-to-target experiments above assumed two **adjacent** full 64-bit outputs per 16-byte source payload and every hypothetical missing 16-byte coupon. The new experiment drops both adjacency constraints, specifically retaining the original 18:01 REQUESTED source, while withholding the disputed 18:02 ACK2 and treating 18:03 as a separately tested source comparator.
+
+For each of four byte/word serializers of **18:01 REQUESTED attempt1**, permit its two observed 64-bit words to be separated by native-output gap **g=1..64**. Reverse both output scramblers and solve the exact 64×64 GF(2) state equation for each g. Enumerate all source-consistent initial states. For each state, advance to **source output offsets 0..8191**; after passing the second source word, permit the *hypothetical missing coupon's* two native outputs to have an independently selected **gap=1..32**. Serialize their full 16-byte value under each of the four byte views, XOR the unchanged K04 route mask, and compare its SHA256 to the original full unchanged K04 target. This creates **complete alternate-source hypothetical coupons**, with no reliance on the copied selected ACK2 bytes.
+
+| Source 64-bit view | Consistent within-source gaps | Inverted source states | Full original K04 SHA256 checks | Original target matches |
+|---|---:|---:|---:|---:|
+| Big endian, forward | 40 | 65 | 67,853,952 | 0 |
+| Big endian, reversed | 39 | 61 | 63,680,640 | 0 |
+| Little endian, forward | 44 | 77 | 80,398,976 | 0 |
+| Little endian, reversed | 46 | 77 | 80,422,784 | 0 |
+| **Total** | **169** | **280** | **292,356,352** | **0** |
+
+The remaining **87/256** source-gap/layout configurations are mathematically inconsistent, rather than unsearched. Counts are candidate assignments; overlapping byte strings may be generated under distinct source states or layouts. The same underlying source is still not historically authenticated as a xoroshiro128** generator.
+
+**Independent end-to-end seeded positive:** construct a genuine source field from raw generator word offsets **0 and 5**, then construct a complete masked coupon from outputs **700 and 711**. The source inverse recovers the true state under gap 5; the exact *same full SHA256 candidate loop* finds the planted coupon at source offset700 and coupon gap11 **exactly once**. The four original full-range source-view shards each independently passed the planted test. A first 1,024-output pilot completed 35,455,232 original candidate checks with no target match; the full 8,192-output run above supersedes that shorter pilot.
+
+The source-pinned [Agent13 C++17/OpenSSL strided SFT](../agents/agent13/k04_xoroshiro_strided_pair_source_sft.cpp) now supports \`retry-target\` mode with optional source-view index 0..3. It pins the original printer spool, routing and acceptance JSON SHA256 before reading and preserves the explicit positive. Locally executed source-equivalent SFT \`/mnt/data/h17_research/k04_xoro_retry_source_and_target_strided.cpp\`, SHA256 \`3dd470e49ad692f96b3bcc24ec68dabddd5f618be7f9a81b222d7f9ba8b71bc5\`, reproduces the original counts. Run measurements per widened shard were about 21.9, 21.6, 25.5 and 26.0 seconds.
+
+**Meaning:** This exact finite model checks a physically different complete-coupon geometry from an adjacent-pair PRNG continuation, allowing 63 skipped outputs inside the original request and 31 inside the missing coupon. It does **not** recover a seventh slot, establish actual source producer logic, or exclude other algorithms, longer offsets, damaged nonselected records, independent attempt reseeding or unrelated physical coupon provenance. Six previously verified REC8 slots and unresolved K04/K08 statuses remain unchanged.
