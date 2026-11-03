@@ -1,5 +1,6 @@
 /* H-17 K04: target-reaching, selected-only exhaustive uint32 native MT19937.
  * Fresh scalar-seeded std::mt19937 emits exactly four first native words per
+ * Sixteen disjoint 2^28-seed CI shards span every possible uint32 seed.
  * coupon, with forward/reversed word order and little/big endian serialization.
  * The untrusted selected copied ACK2 is never used to form a coupon.
  * Source pin, real seeded controls and a planted full-component control included.
