@@ -1,0 +1,51 @@
+name: Agent38 manual new K04 dual-halfword search
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  halfword:
+    name: twohalfword-${{ matrix.support }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 58
+    strategy:
+      fail-fast: false
+      matrix:
+        support: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pin original K04 selector, copy, XOR mask and commitment
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re
+          root = pathlib.Path("resources")
+          spool = (root / "evidence/print/spool-reconstruction.log").read_bytes()
+          assert hashlib.sha256(spool).hexdigest() == "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
+          labels = (root / "evidence/archive-labels.ini").read_text()
+          assert "ESC-N=PS-261003-0417" in labels
+          selected = [x for x in spool.decode("ascii").splitlines() if x.startswith("2026-10-03T18:02:00Z ") and "JOB=PS-261003-0417 " in x and "ATTEMPT=2 STATE=ACK CLASS=RECOVER " in x]
+          assert len(selected) == 1
+          captured = bytes.fromhex(re.search(r"PAYLOAD=([0-9A-F]{32})", selected[0]).group(1))
+          assert captured.hex().upper() == "A9A9DC5731A5E2AE879C47215C2559D5"
+          route = json.loads((root / "evidence/recovery-routing.json").read_text())
+          accept = json.loads((root / "acceptance.json").read_text())
+          mask = bytes.fromhex(route["K04"]["masked_component"])
+          assert mask.hex().upper() == "8556C8CB6140A7F9A5123AC7571BEE1C"
+          baseline = bytes(a ^ b for a,b in zip(captured, mask))
+          assert baseline.hex().upper() == "2CFF149C50E54557228E7DE60B3EB7C9"
+          assert accept["slot_sha256"]["K04"] == "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0"
+          assert hashlib.sha256(baseline).hexdigest() != accept["slot_sha256"]["K04"]
+          print("Source selector, original mask, failed baseline, commitment: PASS")
+          PY
+      - name: Compile original-commitment exhaustive test
+        shell: bash
+        run: cc -O3 -std=c11 -fopenmp agents/agent38/k04_two_disjoint_halfword_sft.c -lcrypto -o /tmp/agent38_halfword
+      - name: Planted complete four-byte repair positive
+        shell: bash
+        run: /tmp/agent38_halfword selftest
+      - name: Exhaustive one novel support (2^32 complete candidates)
+        shell: bash
+        env:
+          OMP_NUM_THREADS: '4'
+        run: /tmp/agent38_halfword run ${{ matrix.support }}
