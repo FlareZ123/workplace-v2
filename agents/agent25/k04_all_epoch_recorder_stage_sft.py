@@ -77,6 +77,13 @@ def main():
         first=epoch_options(model,symbolic,-540,-531,5088,6,1)
         second=epoch_options(model,symbolic,-531,-523,3111,4,1)
         assert sum(v.bit_count() for v in first.values())==516
+        # Stronger frozen-stage order discriminator. The seq44->45 source
+        # witness has AUX44,TIME45,EVENT45,LATCH45; every surviving
+        # seq45->46 order instead places TIME46 as the fourth field.
+        allowed_orders={o for o,v in first.items() if v}
+        assert allowed_orders=={(*p,"time") for p in permutations(("aux","event","latch"))}
+        assert all(first[o].bit_count()==86 for o in allowed_orders)
+        assert first[("aux","time","event","latch")]==0
         assert all(v==0 for v in second.values())
         # Original UTC: seq46 at21:11:52 => 172 s after21:09:00;
         # seq47 at21:14:15 => 315 s, difference 143 s.
