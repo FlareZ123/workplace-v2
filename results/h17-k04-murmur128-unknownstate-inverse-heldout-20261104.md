@@ -45,3 +45,25 @@ Under this finite message/serializer family, neither a standard 32-bit Murmur3 p
 This negative does **not** exclude a different hash variant, nonstandard different message serialization, producer reseeding per event, truncation from a larger digest, a different initial-state derivation, or an incorrect copied physical coupon. The authentic historical printer mechanism remains unidentified. This investigation confirms **zero authenticated selected K04 bits**, no verbatim K08 final words; six existing individual REC8/1 PASS slots remain unchanged and combined acceptance INCOMPLETE.
 
 Local read-only independent SFT: /mnt/data/h17_murmur128_keyinverse_sft.py. Its code was executed against the original attached 46-member export with the stated synthetic controls; no official evidence or acceptance file changed.
+
+
+## Independent second implementation: the genuine 32-bit-word x86_128 variant
+
+The [Austin Appleby smhasher canonical reference](https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp) defines **two distinct** 128-bit algorithms, MurmurHash3_x64_128 above and MurmurHash3_x86_128 using four independently mixed 32-bit state lanes. The x86 variant can also be algebraically inverted: reverse the four final feed-forward additions and independently invert each fmix32, then reverse its four 32-bit round steps in order 4→1 for each known 16-byte message block. This is materially distinct from the two-64-bit-lane hash and has a plausible 32-bit host interpretation, although the original copier software remains unknown.
+
+A separate local source-pinned implementation read all the same original 132 intact printer buffers, 24 metadata forms and eight 32-bit word/byte orientations, never using the selected 18:02 copied record for fitting. For each packet/form/orientation, recover **all four arbitrary initial native 32-bit state words** (128 unknown bits total), predict the selected coupon, reduce under the untouched route XOR mask and test original K04 SHA256.
+
+| x86-specific complete original check | Observed |
+| --- | ---: |
+| Full source-derived initial-state inversions | **25,344** |
+| Distinct complete selected K04 components tested | **23,916** |
+| Original selected K04 commitment hits | **0** |
+| Original source output matching a standard equal-four-lane scalar seed | **0** |
+| Adjacent original intact-source replay hits from first eight calibration anchors | **0** |
+| Full role-matched genuine 18:25 ACK2→other bench RECOVER ACK replays | **0 of 2,112** |
+
+The x86 algorithm passes arbitrary-four-lane and true identical-scalar-seed synthetic inverse checks at input lengths 0, 5, 8, 68, 99. It also reproduces the independent published x86_128 reference vector for bytes 01 02 03, seed0: hexadecimal 16-byte digest e16401f6334213b5334213b5334213b5 ([hashcodecs documentation](https://hashcodecs-rs.readthedocs.io/en/latest/murmur3/)). The published vector matters because inverse+forward roundtrips alone might share the same implementation error. Local read-only script: /mnt/data/h17_murmur_x86_128_inverse_sft.py.
+
+**Combined x64 and x86 original original-target coverage: 25,344 + 25,344 = 50,688 full source-derived producer assignments and 23,924 + 23,916 = 47,840 unique-within-variant 16-byte candidate tests, zero accepted**, with separately fixed original source/role-matched prediction failures. The number 47,840 counts uniqueness inside each variant, without asserting disjointness across variants.
+
+Both mechanisms are eliminated **only in the stated historical source/messaging/serialization assumptions**. The initial state reversibility itself is mathematical, with the genuine original selected coupon still unknowable absent a correct historic producer or independently certified physical copy. No seventh accepted component.
