@@ -9,7 +9,7 @@ raw = (root / "evidence/print/spool-reconstruction.log").read_bytes()
 assert hashlib.sha256(raw).hexdigest() == "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 rows = {}
 for line in raw.decode().splitlines():
-    match = re.search(r"JOB=PS-261003-(\\d{4}) .*?PAYLOAD=([0-9A-F]{32})", line)
+    match = re.search(r"JOB=PS-261003-(\d{4}) .*?PAYLOAD=([0-9A-F]{32})", line)
     if match and "ATTEMPT=1 STATE=ACK " in line:
         job = int(match[1])
         if 300 <= job <= 427:
