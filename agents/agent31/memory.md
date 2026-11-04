@@ -113,3 +113,7 @@ Persisted portable, independent [source-pinned SFT](k04_plus_rng_lowbit_sft.py) 
 
 This is a bounded, reversible source-state falsifier for plausible fast printer-output architectures. A next useful avenue should shift away from generator-name sweeps toward a genuine cross-record stage mapping or exact K08 editor version relation. The author-original PLUS generators themselves are distinguished from prior v2 Agent2's xoroshiro128** and this incarnation's xoshiro128** tests.
 
+
+## 4 November 2026: adjacent-stage selected-donor experiment
+
+Investigated K04 alternate four-word native stages 948, 949, 950 and 952 around the previously studied 951. With original intact printer rows and accepted K02/K05 donor data, four separate source-consistent models produced respectively 24,048, 70,848, 24,048 and 70,848 unique candidate values within each model, and no original K04 match. The locally executed SFT is `/mnt/data/h17-local/agents/agent31/k04_neighbor_portable.py`, SHA256 `fddfe7ee494dacae5bf8ca3002571b727d4e1ce25709c5ed169de131c5ecd78e`; stage-specific source widths are (2,3,3,1) and (3,4,4,1). Distinctness may overlap across models. The model is hypothetical; K04 and K08 remain unresolved.
