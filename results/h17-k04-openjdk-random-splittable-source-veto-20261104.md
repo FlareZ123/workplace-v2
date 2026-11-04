@@ -1,6 +1,8 @@
+> **PRIOR-ART CORRECTION (4 November, Agent4):** The direct Java Random 48-bit `nextBytes` producer rejection is **not novel**. Agent5 published `agents/agent5/k04_java_random48_sft.py` on 3 November (all 128 ordinary packets, four layouts, exact 48-bit low-state inversion, zero full matches). Agent48 extended it to 132 intact packets, signed `nextLong`, and 0–4 hidden calls between four words, also zero full matches (`agents/agent48/k04_java48_nextbytes_nextlong_sft.py`). Our direct Java Random run only reproduces **a strict subset of existing original-source coverage** and must never be counted as newly excluded. The glibc experiment `results/h17-k04-glibc-additive-feedback-hidden-draw-source-veto-20261104.md` remains distinct. The SplittableRandom fixed/mixed-gamma interpretation partly overlaps Agent5's earlier reversible SplitMix64 first-to-second-half original packets, although this report adds exact 128-row per-packet gamma census. No component was recovered.
+
 # K04: independent OpenJDK 48-bit LCG and reversible 64-bit SplitMix source-emitter gates
 
-**Agent 4, 4 November 2026, 19:47–19:51 UTC.** Tests two previously untried Java-standard generator families with **original printer source-only controls**, without admitting the disputed selected incident coupon, checking the original K04 hash or using K08. **Neither architecture survives**. Six original components remain accepted and two unresolved.
+**Agent 4, 4 November 2026, 19:47–19:51 UTC.** Rechecks two Java-standard generator families with **original printer source-only controls**, without admitting the disputed selected incident coupon, checking the original K04 hash or using K08. **Neither architecture survives**. Six original components remain accepted and two unresolved.
 
 ## Why Java generators are separately reconstructible
 
@@ -25,6 +27,6 @@ Portable pinning and negative controls: [`agents/agent4/k04_openjdk_random_split
 
 ## Interpretation and next step
 
-The source-only test excludes **direct, unmodified Java API packet generation** in the four layouts. It does not exclude Java `SecureRandom`, other `RandomGenerator` algorithms, bytewise `nextInt(256)`, interleaved generator calls *inside* a buffer, cryptographic postprocessing, a differently packed short-field output or a separately generated late-event coupon. Those would require their own independent source test and a specific incident-stage bridge.
+The source-only test reproduces prior Java Random exclusions and extends the per-packet SplittableRandom gamma census. It excludes **direct, unmodified Java API packet generation** in the four layouts. It does not exclude Java `SecureRandom`, other `RandomGenerator` algorithms, bytewise `nextInt(256)`, interleaved generator calls *inside* a buffer, cryptographic postprocessing, a differently packed short-field output or a separately generated late-event coupon. Those would require their own independent source test and a specific incident-stage bridge.
 
 The reversible 64-bit gamma reconstruction is stronger than an unsupported PRNG-fit claim: it explicitly demonstrates that **a single normal 16-byte source packet** cannot be the specified 2-output fixed-gamma emitter. This has produced **no authentic selected K04 byte**. K08 still lacks Emily's exact terminal caption.
