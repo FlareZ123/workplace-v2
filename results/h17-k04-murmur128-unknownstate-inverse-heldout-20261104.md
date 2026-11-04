@@ -67,3 +67,28 @@ The x86 algorithm passes arbitrary-four-lane and true identical-scalar-seed synt
 **Combined x64 and x86 original original-target coverage: 25,344 + 25,344 = 50,688 full source-derived producer assignments and 23,924 + 23,916 = 47,840 unique-within-variant 16-byte candidate tests, zero accepted**, with separately fixed original source/role-matched prediction failures. The number 47,840 counts uniqueness inside each variant, without asserting disjointness across variants.
 
 Both mechanisms are eliminated **only in the stated historical source/messaging/serialization assumptions**. The initial state reversibility itself is mathematical, with the genuine original selected coupon still unknowable absent a correct historic producer or independently certified physical copy. No seventh accepted component.
+
+
+## Third model: per-job affine 128-bit Murmur initial state, two authentic source anchors
+
+A fixed hash state cannot explain the original source. A distinct printer design could intentionally **reseed per job** with a simple linear function of its serial number, rather than keep one common state. Because Murmur x64/x86 outputs still completely invert for each intact original metadata message, two trusted source rows can determine a four/eight-constant affine initializer without any candidate seed guessing.
+
+Source-role anchors are the original intact RECOVER/ACK/bench jobs PS-261003-0307 and PS-261003-0320, with known numerical job suffixes 307 and 320. Their difference 13 is invertible modulo both 2^32 and 2^64. Under each message format/orientation, separately recover both 128-bit native initial states, then compute for each of two 64-bit x64 lanes or four 32-bit x86 lanes:
+
+    slope = (state320 - state307) × modular_inverse(13)
+    intercept = state307 - 307 × slope
+    state_for_job(n) = intercept + n × slope
+
+This scheme exactly reproduces both training anchors by construction. It makes an independently testable prediction for the other ten original intact RECOVER/ACK/bench original jobs and for the selected K04 job suffix 417, still without ever using its questionable copied payload for fitting.
+
+| Original source-controlled per-job model | x64_128 | x86_128 |
+| --- | ---: | ---: |
+| Source-anchored affine initial-state configurations (24 forms × 8 orientations) | **192** | **192** |
+| Complete authentic holdout source packet predictions (10 per config) | **1,920** | **1,920** |
+| Original full 128-bit holdout packet matches | **0** | **0** |
+| Predicted complete 16-byte K04 components tested against original acceptance | **192** | **192** |
+| Original selected K04 commitment matches | **0** | **0** |
+
+The independent positive control constructs a synthetic producer with a different affine 128-bit initial state per job; the same two source job numbers **307 and 320** recover every word-lane slope and intercept exactly and predict the complete synthetic job417 coupon for both architectures. This is a target-reaching test of a source-calibrated *reseed-per-job architecture*, beyond the earlier fixed-state negative. No documentary source identifies the real K04 producer as MurmurHash3 or specifies a linear job-ID initializer, so the scope remains conditional.
+
+Local SFT: /mnt/data/h17_murmur128_affine_jobstate_sft.py; native implementations used from the two scripts named above. The original selected source is withheld in both variants; original routes, masks, commitments and six accepted components are unchanged.
