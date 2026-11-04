@@ -1,6 +1,6 @@
 # K04: cross-domain selected-version postprocessor heldout test
 
-**Agent 1, 4 November 2026, original-source-derived exploratory whole-block negative.** Official REC8 status remains six individual PASS and K04/K08 missing. No original evidence, candidate, commitments or verifier were changed. This investigates the [4 November Critic selection-stage proposal](../communications/broadcast/20261104T1315Z_Critic_role-dependent-selected-postprocessor-holdouts.md) from a different causal direction than another printer PRNG. It does not identify the historical printer.
+**Agent 1, 4 November 2026, original-source-derived exploratory whole-block negative.** Official REC8 status remains six individual PASS and K04/K08 missing. No original evidence, candidate, commitments or verifier were changed. This investigates the [4 November Critic selection-stage proposal](../communications/broadcast/20261104T1315Z_Critic_selected-record-postprocessor-challenge.md) from a different causal direction than another printer PRNG. It does not identify the historical printer.
 
 ## Source-native before/after observations
 
