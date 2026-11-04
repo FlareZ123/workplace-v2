@@ -62,6 +62,45 @@ for seq, syndrome, repairs in bad:
           f"only_single_bit_repair={repairs}")
 print("blinded_fourth_bad_CRC_seq903_single_bit_prediction=PASS")
 
+# Counterfactual: removing just the common checksum-bit exclusion changes
+# K05's selected entire record group. This establishes the significance
+# of the shared footer defect for the original source reduction.
+from datetime import datetime
+routing_k05 = json.loads((ROOT / "evidence/recovery-routing.json").read_text())["K05"]
+start = int(datetime.fromisoformat(routing_k05["start_utc"]).timestamp())
+end = int(datetime.fromisoformat(routing_k05["end_utc_exclusive"]).timestamp())
+matching = []
+for record in records:
+    ts, node, event, latch, seq = struct.unpack_from("<I H B B I", record)
+    if (node, event) != (routing_k05["node"], routing_k05["event"]):
+        continue
+    if not (start <= ts < end and 0 <= latch <= 3):
+        continue
+    matching.append((seq, latch, bytes(record[12:16]), crc_valid(record)))
+
+
+def select_k05(allow_common_fault):
+    winners = []
+    for latch in range(4):
+        subset = [r for r in matching if r[1] == latch
+                  and (r[3] or allow_common_fault)]
+        assert subset
+        winners.append(max(subset, key=lambda r: r[0]))
+    return tuple(r[0] for r in winners), b"".join(r[2] for r in winners)
+
+
+selected_seq, selected_bytes = select_k05(False)
+repaired_seq, repaired_bytes = select_k05(True)
+assert selected_seq == (300, 301, 302, 303)
+assert repaired_seq == (900, 901, 902, 903)
+assert selected_bytes.hex().upper() == "FF8B78200A56E8586DCDA00EF01E4572"
+accept_source = json.loads((ROOT / "acceptance.json").read_text())["slot_sha256"]["K05"]
+assert hashlib.sha256(selected_bytes).hexdigest() == accept_source
+assert hashlib.sha256(repaired_bytes).hexdigest() != accept_source
+print("original_K05_selects=300,301,302,303 PASS; "
+      "if_four_footer_bits_repaired_selects=900,901,902,903 NO_MATCH")
+
+
 route = json.loads((ROOT / "evidence/recovery-routing.json").read_text())
 accept = json.loads((ROOT / "acceptance.json").read_text())
 rows = []
