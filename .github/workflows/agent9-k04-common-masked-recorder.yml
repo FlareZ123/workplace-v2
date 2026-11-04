@@ -1,0 +1,13 @@
+name: Agent9 K04 masked recorder source and full target SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-constrained-masked-recorder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute original-source and genuine synthetic MT controls
+        run: python agents/agent9/k04_common_mask_full_sft.py
