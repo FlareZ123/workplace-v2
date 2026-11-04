@@ -1,4 +1,4 @@
-name: Agent23 K04 xoroshiro128++ exceptional-gap inversion
+name: Agent23 K04 xoroshiro128+/++ exceptional-gap inversion
 on:
   workflow_dispatch:
 jobs:
@@ -17,4 +17,4 @@ jobs:
       - name: Install pinned SMT solver
         run: python -m pip install z3-solver==4.13.3.0
       - name: Test original source and planted bridge
-        run: python agents/agent23/k04_xoroshiro128pp_two_request_sft.py --view ${{ matrix.view }} --timeout-ms 180000
+        run: python agents/agent23/k04_xoroshiro128pp_two_request_sft.py --view ${{ matrix.view }} --variant plus --timeout-ms 180000
