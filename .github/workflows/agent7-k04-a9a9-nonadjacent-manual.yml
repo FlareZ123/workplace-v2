@@ -1,0 +1,27 @@
+name: Agent7 K04 A9A9 and arbitrary disjoint second-pair exhaustive
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  nonadjacent-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build original-source-pinned OpenSSL/OpenMP single-block SHA256 solver
+        run: |
+          g++ -O3 -std=c++17 -fopenmp -Wno-deprecated-declarations agents/agent7/k04_a9a9_nonadjacent_fourbyte_sft.cpp -lcrypto -o /tmp/k04_a9a9_pair
+      - name: Inspect source and check all 78 SHA target controls
+        run: /tmp/k04_a9a9_pair resources ${{ matrix.shard }} --smoke
+      - name: Exhaust complete disjoint four-byte coupons in this shard
+        env:
+          OMP_NUM_THREADS: '4'
+        run: /tmp/k04_a9a9_pair resources ${{ matrix.shard }}
