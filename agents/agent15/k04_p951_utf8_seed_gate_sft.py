@@ -1,4 +1,4 @@
-"""K04: original-source p951 CPython UTF-8 string-seed discriminator.
+"""K04: original-source p951 CPython UTF-8 string-seed discriminator to 1229 words.
 
 Run: python agents/agent15/k04_p951_utf8_seed_gate_sft.py
 No selected copied ACK, K04/K08 digest, route mask, or verifier is used.
@@ -95,47 +95,72 @@ def source_key_term() -> tuple[list[int], list[int]]:
     else:
         raise AssertionError("masked original-source recurrence did not converge")
 
-    indices = [origin-624+j for j in (21,22,23)]
-    missing = [U ^ masks[i] for i in indices]
-    assert [x.bit_count() for x in missing] == [0,0,1], [
-        hex(x) for x in missing
-    ]
-    a, b, c = [values[i] for i in indices]
-    terms = sorted({key_term(23,a,b,c), key_term(23,a,b,c | missing[2])})
-    return terms, [masks[i] for i in indices]
+    result = {}
+    for j in (22, 608):
+        indices = [origin-624+k for k in (j-1,j,j+1)]
+        missing = [U ^ masks[i] for i in indices]
+        assert [x.bit_count() for x in missing] == [0,0,1], (
+            j, [hex(x) for x in missing]
+        )
+        a, b, c = [values[i] for i in indices]
+        options = sorted({key_term(j+1,a,b,c),
+                          key_term(j+1,a,b,c | missing[2])})
+        result[j] = (options,[masks[i] for i in indices])
+    return result
 
 
 def synthetic_seed_controls() -> None:
-    for n in (249,606,623):
+    positives = 0
+    for n in (249,606,623,646,750,900,1200,1229,1230):
         text = "A" * (4*n-64)
         data = text.encode("utf-8")
         numeric = int.from_bytes(data + hashlib.sha512(data).digest(), "big")
-        true_word = (numeric >> (32*22)) & U
         state = random.Random(text).getstate()[1][:624]
-        observed = key_term(23,*state[21:24])
-        assert true_word == 0x41414141
-        assert observed == (true_word+22) & U, (n,observed)
-    print("3/3 actual CPython string-seed positive controls PASS",flush=True)
+        for j in (22,608):
+            observed = key_term(j+1,*state[j-1:j+2])
+            expected_key = (numeric >> (32*(j % n))) & U
+            if (j == 22 and n <= 645) or (j == 608 and 609 <= n <= 1229):
+                assert expected_key == 0x41414141, (n,j,expected_key)
+                assert observed == (expected_key+j % n)&U, (n,j,observed)
+                positives += 1
+            if n == 1230 and j == 608:
+                assert observed != (expected_key+j)&U, (
+                    "boundary control unexpectedly indistinguishable",observed
+                )
+    print(f"{positives} actual CPython UTF-8 seed term controls PASS",flush=True)
 
 
 def main() -> None:
     synthetic_seed_controls()
-    terms, masks = source_key_term()
-    assert terms == [0x7D6A4D0D,0xFD6A4D0D], [f"{x:08X}" for x in terms]
-    possible_little_endian_words = [
-        ((term-22)&U).to_bytes(4,"little") for term in terms
-    ]
-    assert all(word[0] == 0xF7 for word in possible_little_endian_words)
+    observed = source_key_term()
+    expected = {
+        22: [0x7D6A4D0D,0xFD6A4D0D],
+        608: [0x5D3DC8B5,0xDD3DC8B5],
+    }
+    words = {}
+    for j in (22,608):
+        options, masks = observed[j]
+        assert options == expected[j], (j,[f"{t:08X}" for t in options])
+        original_bytes = [((t-j)&U).to_bytes(4,"big") for t in options]
+        if j == 22:
+            assert all(b[0] == 0x7D or b[0] == 0xFD for b in original_bytes)
+            assert all(b[-1] == 0xF7 for b in original_bytes)
+        else:
+            assert all(b[-2:] == bytes.fromhex("C655") for b in original_bytes)
+            # UTF-8 0xC6 needs a following continuation byte 0x80..0xBF,
+            # whereas the next byte of this known fragment is 0x55.
+        words[str(j)] = {
+            "T": [f"{t:08X}" for t in options],
+            "register_masks": [f"{x:08X}" for x in masks],
+            "UTF8_seed_bytes": [b.hex().upper() for b in original_bytes],
+            "utf8_possible": False,
+        }
     print(json.dumps({
-        "source_key_term_T22": [f"{x:08X}" for x in terms],
-        "native_state_masks_S21_S22_S23": [f"{x:08X}" for x in masks],
-        "possible_seed_word_22_little_endian": [
-            x.hex().upper() for x in possible_little_endian_words
-        ],
-        "utf8_text_seed_possible": False,
-        "model": "original p951 chronology; CPython first-cycle init_by_array",
-        "scope": "UTF-8 text seed with key-word lengths 364..623",
-        "authenticated_k04_bits": 0
+        "source_key_terms": words,
+        "model": "p951 original chronology; CPython first-cycle init_by_array",
+        "text_seed_key_lengths_excluded": "364..1229",
+        "long_seed_second_pass_boundary": "j608 still single-visit through length1229",
+        "authenticated_k04_bits": 0,
     },indent=2))
 
 
