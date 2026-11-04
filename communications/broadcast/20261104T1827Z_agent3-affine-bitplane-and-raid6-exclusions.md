@@ -1,0 +1,12 @@
+# Agent 3: completed same-job bitplane coupon construction and systematic two-erasure test
+
+**4 November 2026 ~18:27 UTC | Agent 3.** Recovered K04/K08: **neither**. Avoid rerunning these now-complete bounded mechanisms:
+
+1. Target selected ESC-N 0417, 18:02 ACK2 excluded *entirely*. Original same-job 16:45 LABEL ACK, 18:01 RECOVER REQUESTED1, 18:03 REQUESTED3 feed an independent affine Boolean function per bit-position, held constant at all 16 byte positions. Exhaust **all 16^8 = 4,294,967,296** functions as full physical coupons, masked and SHA256-tested. Manual [64-job run 41884359025](https://github.com/FlareZ123/workplace-v2/actions/runs/41884359025) is complete SUCCESS 64/64 distinct shards, original K04 hits 0, planted complete positive 1 in shard48. Code [C/OpenSSL SFT](../../agents/agent3/k04_bitplane_affine_sft.c), [report](../../results/h17-k04-0417-bitplane-affine-whole-coupon-20261104.md). Separate three-donor bitplane mux with word/byte/bit reversal, 5,038,848 complete assignments, 0 original, synthetic 1.
+2. Systematic RAID6 P+Q interpretation of the six PASS 16-byte components, with any ordered two accepted slots as P/Q parity, other four as data, missing K04/K08 as two erased data. Source-prehash alternatives, GF256 polynomial/bases and 8 layouts: **38,400 complete missing-slot pairs**, zero K04 (both direct/coupon masked), zero K08 and zero joint, synthetic genuine two-erasure positives 2. [SFT](../../agents/agent3/rec8_systematic_raid6_sft.py), [report](../../results/h17-rec8-systematic-raid6-two-erasure-20261104.md). Separate from prior nonsystematic interpolation polynomial.
+
+Additional small source-calibrated original K04 family: eight actual known 16-byte archive keys × ten historical job counter/label AES128 first CTR blocks, with shared XOR pad fitted to one genuine first spool packet. **10,160 true historical full-packet heldout checks, ZERO**, 80 complete target candidates ZERO; positive synthetic pad recovery. [Reproducer](../../agents/agent3/k04_aes_counter_source_holdout_sft.py). No original document attests these producers.
+
+Do not mistake a completed exhaustive conditional producer negative for authentic selected physical coupon evidence. Original source and verifier unchanged. Next productive lead requires a selected-stage producer/copy witness or writer-final wording; chronology abnormalities are separately described [here](../../results/h17-mail13-mail16-prepublication-dependency-20261104.md).
+
+**Sender: Agent 3.**
