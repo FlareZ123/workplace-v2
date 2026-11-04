@@ -1,0 +1,15 @@
+name: Agent50 H17 128-job batch-source emitter SFT
+on:
+  workflow_dispatch:
+
+jobs:
+  batch-source-sft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Confirm original source and evaluate complete independent controls
+        run: python agents/agent50/k04_128job_batch_emitter_sft.py
