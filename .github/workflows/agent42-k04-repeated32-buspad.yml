@@ -1,0 +1,23 @@
+name: Agent42 K04 repeated 32-bit buspad exhaustive
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: agent42-k04-repeated32
+  cancel-in-progress: false
+jobs:
+  exhaustive-wordpad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile read-only SHA256 short-block gate
+        run: cc -O3 -std=c11 -Wno-deprecated-declarations agents/agent42/k04_repeated_32bit_buspad_sft.c -lcrypto -o /tmp/agent42-k04pad
+      - name: Run disjoint 32-bit repeating wordpad shard
+        run: /tmp/agent42-k04pad resources ${{ matrix.shard }} 32
