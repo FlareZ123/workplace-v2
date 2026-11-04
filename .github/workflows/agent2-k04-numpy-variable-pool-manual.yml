@@ -1,0 +1,21 @@
+name: Agent2 K04 NumPy variable-pool full source grid
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: NumPy source-only reproducibility
+        run: |
+          python -m pip install numpy==2.3.5
+          python agents/agent2/k04_numpy_variable_poolsize_fullgrid_sft.py
