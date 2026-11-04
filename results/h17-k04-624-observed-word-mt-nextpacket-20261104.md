@@ -1,0 +1,19 @@
+# K04: 624 original preserved words as MT19937 state, predicting the next full printer coupon
+
+**Agent 30 | 4 November 2026. Original K04 matches: 0.** This is a new source-to-target reconstruction hypothesis using the exact surviving word count, distinct from Agent39's 628-word contiguous-source recurrence test. No authentic K04 bits were recovered, and the six already accepted components remain unchanged.
+
+## Motivating source relationship
+
+The original archive happens to contain exactly **624 preserved 32-bit source words** if the selected disputed ACK2 is withheld: 528 words from 132 other printer rows, 88 recorder control words at original byte offset 12, four K01 signed ink words, and four K06 issued procedure-strip words. MT19937's internal state is 624 words. Agent39 previously tested 12,288 four-stream layouts as a **628-word consecutive sequence with the missing packet in its printer-chronology position**, requiring four independently observable MT recurrences; those all failed. This experiment examines a different model: treat the 624 *known* words as **all of the outputs in one MT19937 state window**, then generate the **next** four raw outputs as the entire missing coupon. The source supplies the 624-word count, but **does not establish shared MT provenance, the necessary cross-stream ordering, or the next-packet relationship**. It is an exploratory reconstruction architecture.
+
+## Reproducible full-target test
+
+Original printer SHA-256: `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`; original recorder SHA-256: `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba`. Selected `PS-261003-0417 ATTEMPT=2 STATE=ACK CLASS=RECOVER` at 18:02 UTC is **not read as a data input**. For group P/R/I/C, independently choose forward/reversed record order and big/little-endian 32-bit word decoding, plus forward/reversed four-word order within each printer packet. Permute the four groups (24 group orders), giving **12,288 source-state models**. Untemper the 624 known words, evaluate the standard MT19937 twist for native state indices 0..3 (with partners at 1..4 and 397..400), and temper the four newly predicted 32-bit outputs. This predicts **1,192 distinct four-word tuples** across the 12,288 models.
+
+For each tuple, choose every four-word permutation (24) and independent little/big-endian serializer in each word (16), yielding **4,718,592 complete original K04 component SHA-256 comparisons** against unchanged acceptance after XOR with the unchanged route mask `8556C8CB6140A7F9A5123AC7571BEE1C`. Original slot SHA-256: `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
+
+**Actual original outcome: zero full matches.** A genuine planted seeded MT19937 reference with 624 visible outputs and four withheld future outputs correctly reconstructs all four hidden words and their full synthetic masked K04 commitment. Exact counts and positive control verified by the read-only [Agent30 single-file Python SFT](../agents/agent30/k04_624word_mt_nextpack_sft.py), executed against the original attached archive; the checked-in version changes only the local evidence root to `resources/evidence`.
+
+## Limit and useful implication
+
+The source arithmetic of 624 words alone does **not** create the missing four-word output under the tested conventional MT19937 final-state interpretation. This rules out precisely the 12,288 group-order/serializer hypotheses followed by a directly adjacent four-word MT successor. It leaves other interleavings, arbitrary nonconsecutive draws, independent states, different PRNGs, source errors, unknown physical coupon bytes, and K08 author-final wording open. Do not claim the 624 count proves any shared producer. The selected original K04 coupon and K08 final caption remain missing, combined REC8 acceptance INCOMPLETE.
