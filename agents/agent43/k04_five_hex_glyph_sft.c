@@ -98,15 +98,17 @@ static void verify_file(const char *root,const char *path,const char *expected_h
 }
 static int select_mode(const char *mode,int p0,int p1,int p2,int p3,int p4) {
     if(strcmp(mode,"all5")==0)return 1;
+    if(strcmp(mode,"nonfront")==0)
+        return ((p0<4)+(p1<4)+(p2<4)+(p3<4)+(p4<4))<2;
     if(strcmp(mode,"front2")==0)
         return (p0<4)+(p1<4)+(p2<4)+(p3<4)+(p4<4)>=2;
     return 0;
 }
 int main(int argc,char **argv) {
     if(argc<3||argc>6){
-        fprintf(stderr,"Usage: %s RESOURCES_DIR front2|all5 [SHARD SHARDS [MAX_COMBOS]]\n",argv[0]);return 2;
+        fprintf(stderr,"Usage: %s RESOURCES_DIR front2|nonfront|all5 [SHARD SHARDS [MAX_COMBOS]]\n",argv[0]);return 2;
     }
-    if(strcmp(argv[2],"front2")&&strcmp(argv[2],"all5")){fprintf(stderr,"Unknown mode\n");return 2;}
+    if(strcmp(argv[2],"front2")&&strcmp(argv[2],"nonfront")&&strcmp(argv[2],"all5")){fprintf(stderr,"Unknown mode\n");return 2;}
     int shard=argc>=4?atoi(argv[3]):0, shards=argc>=5?atoi(argv[4]):1;
     uint64_t max_combos=argc>=6?strtoull(argv[5],NULL,10):0;
     if(shards<1||shards>256||shard<0||shard>=shards){fprintf(stderr,"Invalid shard\n");return 2;}
@@ -130,7 +132,7 @@ int main(int argc,char **argv) {
             fflush(stderr);
         }
     }
-    uint64_t expected_total=strcmp(argv[2],"front2")==0?21196ULL:201376ULL;
+    uint64_t expected_total=strcmp(argv[2],"front2")==0?21196ULL:(strcmp(argv[2],"nonfront")==0?180180ULL:201376ULL);
     if(eligible!=expected_total||checks!=completed*759375ULL){fprintf(stderr,"Enumeration count mismatch\n");return 3;}
     printf("RESULT mode=%s shard=%d shards=%d eligible=%"PRIu64" assigned=%"PRIu64" completed=%"PRIu64" checks=%"PRIu64" hits=%"PRIu64" %s\n",argv[2],shard,shards,eligible,mine,completed,checks,hits,(max_combos&&completed<mine)?"PILOT":"COMPLETE");
     if(hits)return 10;
