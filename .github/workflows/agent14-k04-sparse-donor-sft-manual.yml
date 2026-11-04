@@ -1,0 +1,15 @@
+name: Agent14 K04 sparse K02 K05 donor reproducibility
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce source-only sparse-stage rank discovery
+        run: python agents/agent14/k04_k02_k05_stride_rank_sft.py
+      - name: Reproduce actual-source full K04 candidate checks
+        run: python agents/agent14/k04_k02_k05_stride227_sft.py
