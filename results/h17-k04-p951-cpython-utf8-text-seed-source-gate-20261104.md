@@ -1,6 +1,6 @@
 # K04 first-cycle CPython text-seed falsifier from an original native-register byte
 
-**Agent 15 | 4 November 2026, UTC.** Conditional producer-family exclusion, independently executed against the unmodified original source in [successful path-scoped CI run 41743529149](https://github.com/FlareZ123/workplace-v2/actions/runs/41743529149). It recovers **zero authentic K04 target bits**, and makes no claim of identifying the real printer producer. The accepted components remain K01/K02/K03/K05/K06/K07, with K04/K08 and combined REC8/1 still unresolved.
+**Agent 15 | 4 November 2026, UTC.** Conditional producer-family exclusion, independently executed against the unmodified original source in [successful path-scoped CI run 41743529149](https://github.com/FlareZ123/workplace-v2/actions/runs/41743529149). It excludes text-seeded CPython version2 keys with lengths **364..1229 32-bit words**, using two source-fixed invalid UTF-8 fragments. It recovers **zero authentic K04 target bits**, and makes no claim of identifying the real printer producer. The accepted components remain K01/K02/K03/K05/K06/K07, with K04/K08 and combined REC8/1 still unresolved.
 
 ## Different original-source mechanism
 
@@ -24,6 +24,22 @@ Using 132 **original intact printer ACK packets** and withholding row129, the or
 | `FD6A4D0D` | `FD6A4CF7` | `FD 6A 4C F7` |
 
 Both have byte `F7`, which is **forbidden in a well-formed UTF-8 encoding at any position**, irrespective of character boundaries. Therefore the original intact-source equations contradict **all text-seeded CPython v2 generators at array lengths 364..623 under this p951 chronology**, including every one of the sixteen previously remaining integer-array lengths. This result does not depend on K04 acceptance or the disputed copied ACK2 value.
+
+## Extension: the late initial-register term excludes larger text seeds
+
+The first local finding only used source term `T[22]`. A second **independent source-fixed triple** reaches near the end of CPython's initialized register:
+
+- `S[607]=698199BB` and `S[608]=2BFE56FC`, both complete.
+- `S[609]=1D56D7D2` with only its high bit unknown.
+- Apply the **same** exact key-term equation at `i=609` to get `T[608] ∈ {5D3DC8B5, DD3DC8B5}`. Subtract the key-index offset 608 to obtain `key[608] ∈ {5D3DC655, DD3DC655}`.
+
+The original unencoded seed's four big-endian bytes must therefore be `5D 3D C6 55` or `DD 3D C6 55`. Each contains **C6 followed immediately by 55**. UTF-8 byte C6 begins a two-byte character and absolutely requires a following continuation byte 80..BF; ASCII 55 is impossible there. The alternative starting byte DD also requires a continuation byte and is immediately followed by 3D. This contradiction requires no knowledge of neighboring text, and differs from `T[22]`'s single forbidden byte.
+
+The original `init_by_array` first round makes a single pass over initialized register words 607,608,609 for every key-array length **609..1229**, even though earlier register words may be revisited when n exceeds 624. Hence `T[608]=key[608]+608 mod 2^32` remains valid over that entire range. At n=1230 the first-cycle one-pass equation at this index no longer holds, and no extrapolation beyond the boundary is claimed.
+
+Together the independent byte-local contradictions cover **text-seed key lengths 364..608 via T22** and **609..1229 via T608** under the stated p951 first-cycle chronology. The earlier source-seed inversion studies also rejected lengths 1..363, but those are separate, additional model-dependent calculations and are not needed for the new two-term result.
+
+The revised [source-pinned SFT](../agents/agent15/k04_p951_utf8_seed_gate_sft.py) now calculates both terms from the original intact packets and tests nine genuine seeded CPython strings across n249,606,623,646,750,900,1200,1229,1230. It asserts correct source-key agreement where the term is single-visit and checks that n1230 crosses the j608 boundary. **Original-target-independent run [41744321041](https://github.com/FlareZ123/workplace-v2/actions/runs/41744321041) SUCCESS** on 4 November. Both new required original-seed 4-byte forms `5D3DC655` and `DD3DC655` are absent from all 46 extracted member byte streams and the raw ZIP, just as the earlier T22 forms are.
 
 ## Execution and controls
 
