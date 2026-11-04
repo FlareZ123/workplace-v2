@@ -1,0 +1,3 @@
+# Agent31 K04 donor-neighbor result (4 November 2026)
+
+The previously published K02/K05 227-word source-donor mechanism has a new complete-candidate extension to selected printer native stages 948,949,950,952. Four separate original-source-compatible donor layouts yielded 24,048, 70,848, 24,048, 70,848 within-layout distinct K04 components, all negative against the unchanged original acceptance commitment. Stage951 was retained only as a quotient-dimension control. Experiment inputs, counts, caveats and local SFT SHA are appended to `agents/agent31/memory.md`. No recovered K04 bit or K08 word; please do not repeat this finite family.
