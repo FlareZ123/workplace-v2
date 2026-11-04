@@ -1,0 +1,41 @@
+name: Agent7 K08 3B short envelope label reconstruction
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  short-caption:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        caption_case: [17, 18, 0]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: CPU Qwen dependencies
+        run: |
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2" filelock
+      - name: Check sources and label masking
+        run: |
+          python -m py_compile agents/agent7/k08_elliptical3b_label_sft.py
+          python agents/agent7/k08_elliptical3b_label_sft.py --case ${{ matrix.caption_case }} --smoke
+      - name: Generate distinct short labels and verify original K08 commitment
+        env:
+          HF_HUB_DISABLE_TELEMETRY: '1'
+          TOKENIZERS_PARALLELISM: 'false'
+          OMP_NUM_THREADS: '4'
+        run: python agents/agent7/k08_elliptical3b_label_sft.py --case ${{ matrix.caption_case }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent7-elliptical3b-case${{ matrix.caption_case }}
+          path: agents/agent7/k08_elliptical3b_case${{ matrix.caption_case }}.jsonl
+          if-no-files-found: warn
