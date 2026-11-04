@@ -45,7 +45,7 @@ spool = (EVIDENCE / "print/spool-reconstruction.log").read_bytes()
 assert hashlib.sha256(spool).hexdigest() == SPOOL_SHA
 objects: dict[str, bytes] = {}
 for line in spool.decode().splitlines():
-    m = re.search(r"JOB=(\\S+) ATTEMPT=(\\d+) STATE=(\\S+) CLASS=(\\S+) PAYLOAD=([0-9A-F]{32})", line)
+    m = re.search(r"JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+) PAYLOAD=([0-9A-F]{32})", line)
     if m:
         job, attempt, state, cls, payload = m.groups()
         name = f"spool:{job}:attempt{attempt}:{state}:{cls}:{line.split()[0]}"
