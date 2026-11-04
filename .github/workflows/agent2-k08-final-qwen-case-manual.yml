@@ -1,0 +1,41 @@
+name: Agent2 K08 direct final keeper case-scoped 1.5B
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  final-k08:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    strategy:
+      fail-fast: false
+      matrix:
+        prompt_id: [0, 1, 2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU Qwen dependencies
+        run: |
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2" filelock
+      - name: Validate source and K08 reducer
+        run: |
+          python -m py_compile agents/agent2/k08_qwen_final_case_scoped_sft.py
+          python agents/agent2/k08_qwen_final_case_scoped_sft.py --prompt-id ${{ matrix.prompt_id }} --smoke
+      - name: Generate final keeper captions and test original commitment
+        env:
+          HF_HUB_DISABLE_TELEMETRY: '1'
+          TOKENIZERS_PARALLELISM: 'false'
+          OMP_NUM_THREADS: '4'
+        run: python agents/agent2/k08_qwen_final_case_scoped_sft.py --prompt-id ${{ matrix.prompt_id }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent2-k08-final-p${{ matrix.prompt_id }}
+          path: agents/agent2/k08_qwen_final_p${{ matrix.prompt_id }}.jsonl
+          if-no-files-found: warn
