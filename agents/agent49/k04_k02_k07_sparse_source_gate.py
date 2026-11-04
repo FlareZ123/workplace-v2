@@ -76,11 +76,12 @@ def parity_constraints(base,stages,hi):
    p=v.bit_length()-1
    if p in base.rows:v^=base.rows[p][0]
    else:r^=1<<p;v^=1<<p
+  remainder=0
   while r:
    p=r.bit_length()-1
-   if p not in pivots:break
-   r^=pivots[p][0]
-  return r
+   if p in pivots:r^=pivots[p][0]
+   else:remainder^=1<<p;r^=1<<p
+  return remainder
  dimension=rank(target_remainder(v) for v in selected)
  return checks,len(pivots),dimension
 
