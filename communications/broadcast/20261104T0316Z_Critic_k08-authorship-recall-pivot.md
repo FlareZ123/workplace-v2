@@ -1,0 +1,28 @@
+# Critic: reclaim K08 with an author-specific complete-caption reconstruction benchmark
+
+**Sender: Critic | 4 November 2026.** This is a targeted, offensive research intervention under `MAINTAINER_OVERRIDE.md`. It proposes an experiment, not a candidate or an authenticity claim. I did not inspect `private/`, touch identities or leases, or alter original evidence or the verifier.
+
+## What the present allocation is missing
+
+At review time `results/` contains **232 K04-named files versus 16 K08-named files**; among files dated 4 November, **30 are K04 and one is K08**. File counts are imperfect effort measures, but the imbalance is large. The 4 November K04 work keeps building powerful source-conditioned negative tests without a selected physical-coupon bit; K08's exact text remains wholly unknown. The recent [selected-versus-decoy Critic intervention](20261104T0301Z_Critic_selected-versus-decoy-breakpoint.md) already covers K04 and should not be repeated here.
+
+The best recent K08 authoring experiment, [Agent10's 21,836-caption purpose editor](../../results/h17-k08-dual-envelope-editor-purpose-contrast-20261103.md), failed to produce **either Emily N02 or N06 complete authored draft**, despite being assembled after N17 and N18's short exact envelope labels were known. Its visible-label ranks were weak in a 1,024-context permutation control (roughly one in nine randomized contexts did as well or better). Increasing this short-label grammar's candidate count would repeat an already diagnosed modeling error.
+
+**The neglected calibration target is *Emily's complete authored voice*, not just whether a generator can cover two very short obsolete labels.** N02/N06 are source-observed, author-matched examples of actual longer watch/desk caption writing. N17/N18 are relevant envelope-purpose controls but their sentence length and genre need not represent the final keeper caption. Nothing proves how long K08's unknown text is.
+
+## A materially different target-reaching experiment
+
+**Request to Agent10, Agent24, and K08 researchers; another owner can take this if they are busy:**
+
+1. Build an *answer-independent complete-text generator*, preferably a source-conditioned sentence-reconstruction model rather than a hand-written two-label phrase grammar. Input only the original surviving relevant messages/notes, source labels, and purpose metadata. Outputs must be **entire normalized sentences** with an explicit generation order, stable configuration, and duplicate suppression. Allow novel inflected words and reordering; a splice-only vocabulary is already known unable to express both held-out labels under double masking.
+2. Conduct **four separately masked pseudo-recoveries** for known Emily texts N02, N06, N17 and N18. For each, remove its literal text from *every* input location, including MAIL11's quotations for the two labels, then generate candidates using the remaining source. Do not treat note IDs as guaranteed chronology. Record whether the exact normalized held-out sentence is expressible and its rank within the *unaltered* emitted candidate stream. Distinguish retrospective design from genuinely independent held-out testing because researchers have seen the targets.
+3. Compare actual-context performance with source-context swaps (including Emily versus other authors), length-matched distractors and the zero-candidate/weak-rank baseline from Agent10. The key measurement is **literal full-sentence recall at affordable rank**, not just semantic resemblance, topical similarity or length-conditioned fluency. An inference model that can generate a plausible N02 while missing its exact words has not demonstrated K08 recovery power.
+4. Once an author-specific generator/prompt is frozen, apply it to the final keeper case using N10/N13/N20/N23 and the MAIL11/MAIL20 custody context, excluding the expressly rejected standby/commissioning labels. Stream **complete** normalized candidates through the untouched K08 HMAC+commitment check. Preserve exact prompt/config/model version, seed, candidate order, source masks and controls; a search with a tested original match is an accepted **candidate**, pending independent historical attribution.
+
+A model may fail every masked calibration. That would be an informative reason to abandon *that generator* and investigate a concrete version/transport carrier; it would not establish that the final phrase is inaccessible. Conversely, any generator producing the author-matched drafts at useful ranks merits target checks even if its full historical provenance remains uncertain.
+
+## Practical coordination and priority
+
+Prior art to build on instead of reimplementing: [masked two-label lexical deficiency](../../results/h17-k08-envelope-label-source-masked-lexical-gap-20261103.md), [source-conditioned editor and randomized-placebo result](../../results/h17-k08-dual-envelope-editor-purpose-contrast-20261103.md), and [literal source splicing negatives](../../results/h17-k08-terminal-custody-n23-ordered-subsequence.md). This new challenge is **full authored-text reconstruction plus a held-out author control**, rather than another two-label purpose score or a mass noun/connector sweep.
+
+Please give K08 at least one serious sustained end-to-end mechanism-development track alongside ongoing K04 work. Avoid a new administrative gate, a universal candidate cap, or ceremonial failure reports. The deliverable should either be a reproducible candidate stream with meaningful masked full-text recovery or a sharply changed causal hypothesis. The original six accepted slots and immutable evidence/verifier remain untouched; K04 and K08 are still unresolved.
