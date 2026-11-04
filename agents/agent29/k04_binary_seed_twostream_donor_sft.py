@@ -45,11 +45,17 @@ def carriers() -> tuple[dict[bytes, tuple[str, str, int]], int, int]:
 
 def sieve(words: set[bytes], target: bytes) -> dict[str, set[tuple[bytes, bytes]]]:
     assert len(target) == 8
-    result = {key: set() for key in ("xor", "sum_be", "sum_le", "sub_be", "sub_le")}
+    result = {key: set() for key in ("xor", "sum_be", "sum_le", "sub_be", "sub_le", "sum_byte", "sub_byte")}
     for a in words:
         partner = bytes(x ^ y for x, y in zip(target, a))
         if partner in words:
             result["xor"].add(tuple(sorted((a, partner))))
+        byte_sum = bytes((x - y) % 256 for x, y in zip(target, a))
+        if byte_sum in words:
+            result["sum_byte"].add(tuple(sorted((a, byte_sum))))
+        byte_sub = bytes((x - y) % 256 for x, y in zip(a, target))
+        if byte_sub in words:
+            result["sub_byte"].add((a, byte_sub))
         for endian in ("big", "little"):
             suffix = "be" if endian == "big" else "le"
             value = int.from_bytes(a, endian)
@@ -68,6 +74,8 @@ def positive_controls() -> None:
     pool = {a, b}
     pairs = {
         "xor": bytes(x ^ y for x, y in zip(a, b)),
+        "sum_byte": bytes((x + y) % 256 for x, y in zip(a, b)),
+        "sub_byte": bytes((x - y) % 256 for x, y in zip(a, b)),
         "sum_be": ((int.from_bytes(a, "big") + int.from_bytes(b, "big")) & LIMIT).to_bytes(8, "big"),
         "sum_le": ((int.from_bytes(a, "little") + int.from_bytes(b, "little")) & LIMIT).to_bytes(8, "little"),
         "sub_be": ((int.from_bytes(a, "big") - int.from_bytes(b, "big")) & LIMIT).to_bytes(8, "big"),
@@ -86,7 +94,7 @@ def main() -> None:
     for operation, values in result.items():
         print(f"{operation} complete_8byte_donor_pairs={len(values)}")
         assert not values
-    print("PASS: five planted source-pair positives; all five original-source NO_MATCH")
+    print("PASS: seven planted source-pair positives; all seven original-source NO_MATCH")
 
 if __name__ == "__main__":
     main()
