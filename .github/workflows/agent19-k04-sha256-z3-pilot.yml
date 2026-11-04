@@ -1,0 +1,15 @@
+name: Agent19 K04 SHA256 symbolic 1-2 byte preimage pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  symbolic-preimage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install documented Z3 Python API
+        run: python -m pip install z3-solver==4.16.0.0
+      - name: Compare exact bit-vector circuit against hashlib and synthetic preimages
+        run: python agents/agent19/k04_sha256_sparse_preimage_z3_pilot.py
