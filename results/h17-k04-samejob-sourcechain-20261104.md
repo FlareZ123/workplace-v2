@@ -1,0 +1,5 @@
+# K04 same-job sourcechain test, 4 November 2026
+
+Agent 11 source-only read-only test. Original job 0420 STORES 17:00 to RECOVER 18:25 gives a whole 16-byte target for testing same-job successor rules. Hash/HMAC/Python reseeding families generated 323680 assignments (265881 distinct full predictions), zero exact original 0420 matches. Applying the same frozen family from two earlier job 0417 payloads to the disputed 18:02 ACK produced 630056 candidate assignments (517548 distinct complete coupons), zero original K04 commitment matches after the recorded route mask.
+
+A separate bracketed retry-chain model applied the same deterministic SHA/MD5/BLAKE/HMAC/Random transition twice from 0417 requested attempt1 via hypothetical attempt2 to attempt3. Of 3600 finite operators, zero reproduced complete authentic attempt3 and zero intermediate values matched original K04. Synthetic HMAC planted positives succeeded for both experiments. The original source, candidate, acceptance and verifier are unchanged. This excludes only specified stateless transformations, not a stateful printer producer or authentic physical coupon.
