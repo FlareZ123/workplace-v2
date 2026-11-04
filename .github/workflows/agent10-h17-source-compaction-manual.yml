@@ -1,0 +1,21 @@
+name: Agent10 H17 selected-source and caption controls
+on:
+  workflow_dispatch:
+
+jobs:
+  reproducibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run original-source SFT controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 -Wno-deprecated-declarations agents/agent10/k04_selected_source_xorshift128_sft.cpp -lcrypto -o /tmp/k04_xorshift_sft
+          /tmp/k04_xorshift_sft resources 2>&1 | tee /tmp/k04_output.txt
+          grep -q 'ORIGINAL_NO_MATCH complete_sha256_checks=32000000 original_source_holdouts=0' /tmp/k04_output.txt
+          g++ -O3 -std=c++17 -Wno-deprecated-declarations agents/agent10/k08_author_source_compaction_insertion_sft.cpp -lcrypto -o /tmp/k08_compaction_sft
+          /tmp/k08_compaction_sft resources 2 2>&1 | tee /tmp/k08_output.txt
+          grep -q 'BASE_DONE name=N20-sea-time-table' /tmp/k08_output.txt
+          grep -q 'original_hits=0 planted_hits=1' /tmp/k08_output.txt
