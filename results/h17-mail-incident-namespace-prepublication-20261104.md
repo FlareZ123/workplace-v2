@@ -41,3 +41,12 @@ The finding does **not** establish the reconstruction process for spool payloads
 - RESULT header-namespace prediction PASS, two independent future-event gaps PASS
 
 This is an archived historical-record provenance result, without access to any live facility system or restricted account. Source evidence and candidate/acceptance/verifier files remain untouched. **K01/K02/K03/K05/K06/K07 PASS; K04 and K08 MISSING; combined INCOMPLETE, accepted=false.**
+
+## Additional independent source-carrier provenance boundaries
+
+A further original-source scan found the same 3 October incident-specific naming in two **non-mail** documents nominally linked to earlier administrative states:
+
+- The appliance transcription [archive-labels.ini](../resources/evidence/archive-labels.ini), SHA256 146fa698f44bc9b9fa7a443d8dc71a2e23ff0f883dabd01512f8ade82d3666ad, reports 'commissioned=2026-09-24', alongside 'object=IR-261003-H17'; its September-effective route block names the exact **3 October printer jobs** ESC-N/PS-261003-0417, ESC-S/PS-261003-0448 and WATCH-SPARE/PS-261003-0420. The actual spool records confirm these jobs later on 3 October. The file is expressly a **label transcription**, so its present contents need not have existed on the physical label on 24 September.
+- The [retired-office-bookmarks.html](../resources/evidence/h17-supplemental-office-files/retired-office-bookmarks.html), SHA256 b9261ac17524e66bb5a6e3f3ce4996df65737aa34564b6d29a87ebab681a6096, begins with an office migration comment describing 'cached browser favorites from September 2026', but includes the local reference 'file:///R:/Records/INDEX/IR-261003-H17.txt', naming the October incident. This proves the **preserved bookmark copy** mixes a September-profile context and October-incident path. The source does not date that particular bookmark's addition, so it cannot establish when the URL was originally saved.
+
+The new K04-relevant caution is especially narrow: **a September-effective printer-route heading does not certify that its incident-specific job selector was issued in September**. A retrospective route transcription may have been normalized against the actual 3 October job. Likewise a surviving bookmark path is an index reference, not evidence that the referenced local file's contents survive. These observations strengthen the cross-carrier source-assembly hypothesis without supplying any new original selected coupon byte or Emily's literal final phrase.
