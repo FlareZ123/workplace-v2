@@ -82,10 +82,10 @@ int main(int argc,char **argv) {
     verify_file(argv[1],"acceptance.json",ACCEPT_SHA);
     synthetic_positive();
     uint64_t eligible=0,assigned=0,completed=0;
-    for(int a=0;a<29;a++)for(int b=a+1;b<30;b++)for(int c=b+1;c<31;c++) {
-        int last=(K==3)?31:32;
-        for(int d=c+1;d<last;d++) {
-            if(K==3 && d!=c+1)break;
+    for(int a=0;a<((K==3)?30:29);a++)
+    for(int b=a+1;b<((K==3)?31:30);b++)
+    for(int c=b+1;c<((K==3)?32:31);c++) {
+        for(int d=(K==3)?0:c+1;d<((K==3)?1:32);d++) {
             uint64_t ordinal=eligible++;
             if(ordinal%(uint64_t)shards!=(uint64_t)shard)continue;
             ++assigned;
