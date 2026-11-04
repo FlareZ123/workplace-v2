@@ -212,4 +212,67 @@ def run():
     print('ADJACENT_SELECTED_K05_GROUP',adjacent,'source_compatible',len(consistent),consistent[:5])
     assert not consistent
 
-if __name__=='__main__':run()
+def individual_selected_k05_target_stage():
+    # Source-selected K05 latches considered individually as possible native
+    # printer outputs at an unobserved K04 target word. Complete 16-byte
+    # original target checks when the residual coupon quotient <=16 bits.
+    assignments = consistent = solved = hashes = 0
+    ranks = {}
+    matches = []
+    for donor in STAGES:
+        for mode in itertools.product(('big','little'), (False, True), (False, True), (False, True)):
+            source_fit = impose(orig, donor, pair_words(K02,mode))
+            for stage in range(949, 956):
+                for latch in range(4):
+                    part = K05[4*latch:4*latch+4]
+                    for endian in ('big','little'):
+                        for native in (False,True):
+                            assignments += 1
+                            val = int.from_bytes(part,endian)
+                            word = val if native else mt.untemper(val)
+                            known = mismatches = 0
+                            for bit, eq in enumerate(mt.get(symbolic,stage)):
+                                p = source_fit.predict(eq)
+                                if p is not None:
+                                    known += 1
+                                    mismatches += p != ((word>>bit)&1)
+                            if mismatches:
+                                continue
+                            consistent += 1
+                            joint = copy_basis(source_fit)
+                            for bit, eq in enumerate(mt.get(symbolic,stage)):
+                                joint.insert(eq,(word>>bit)&1)
+                            dimension, checks, accepted = full_candidates(joint,limit_dim=16)
+                            ranks[dimension] = ranks.get(dimension,0)+1
+                            if checks:
+                                solved += 1
+                                hashes += checks
+                            if accepted:
+                                matches.append((donor,mode,stage,latch,endian,native,dimension,accepted))
+    print('SINGLE_REAL_K05_TARGET_STAGE',assignments,consistent,solved,hashes,'ranks',ranks,'ACTUAL_HITS',matches,flush=True)
+    assert assignments==2*16*7*4*2*2
+    # Planted original-printer-constrained native target word. A 32-bit input
+    # must reduce 33 coupon dimensions to exactly one and contain the genuine
+    # source-state selected coupon in its two-member affine set.
+    base = impose(orig,1178,pair_words(K02,('big',False,False,False)))
+    s = 0
+    for pivot,(eq,val) in sorted(base.rows.items()):
+        if val ^ ((eq&s).bit_count()&1):s |= 1<<pivot
+    stage = 951
+    word = sum(((eq&s).bit_count()&1)<<j for j,eq in enumerate(mt.get(symbolic,stage)))
+    consistent_basis = copy_basis(base)
+    for bit,eq in enumerate(mt.get(symbolic,stage)):
+        consistent_basis.insert(eq,(word>>bit)&1)
+    seed_candidate, deltas = target_affine(consistent_basis)
+    expected_raw = b''.join(sum(bit<<j for j,bit in enumerate(mt.temper([((eq&s).bit_count()&1) for eq in mt.get(symbolic,951+lane)]))).to_bytes(4,'little') for lane in range(4))
+    expected = bytes(a^z for a,z in zip(expected_raw,MASK))
+    assert len(deltas)==1
+    assert expected in (seed_candidate,bytes(x^y for x,y in zip(seed_candidate,deltas[0])))
+    print('PLANTED_SINGLE_LATCH_STAGE951_COUPON_RANK1_POSITIVE PASS',expected.hex().upper())
+    assert not matches
+
+
+if __name__=='__main__':
+    run()
+    individual_selected_k05_target_stage()
+
