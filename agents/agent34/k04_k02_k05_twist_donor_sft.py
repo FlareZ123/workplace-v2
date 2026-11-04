@@ -83,6 +83,7 @@ def target_affine(b):
     for lane in range(4):
         for eq in mt.get(symbolic, 951 + lane):
             v, p = eq, 0
+            residual = 0
             while v:
                 k = v.bit_length() - 1
                 if k in b.rows:
@@ -90,8 +91,8 @@ def target_affine(b):
                     v ^= w
                     p ^= bit
                 else:
-                    break
-            residual = v
+                    residual ^= 1 << k
+                    v ^= 1 << k
             tagged = 0
             while residual:
                 k = residual.bit_length() - 1
