@@ -42,3 +42,30 @@ The [single-file source-pinned Python SFT](../agents/agent34/k04_k02_k05_twist_d
 **The actual K05 selected recorder bytes do not break the K02-stage 33-bit K04 ambiguity at seven previously untested MT twist-related future positions.** Their direct target-stage overlap is incompatible with the very same source-fitting hypotheses. The result is a new target-facing rank negative rather than another free-output generator name or copied-payload repair search.
 
 A truly useful next donor needs an **originally labelled producer/stage relation** whose full selected value removes K04 dimensions in a source-compatible manner, or an independent trustworthy physical print coupon. A new K08 result requires Emily's exact author-final margin or a source-grounded exact extraction. Original combined REC8/1 still INCOMPLETE.
+
+
+## Direct original-target follow-on: individually selected K05 latch at the unknown first K04 word
+
+The main full-fourword K05 tests above impose a *contiguous group*, although the original K05 source gives **four separately identified latches**. A different, sharper model allows **one genuinely selected K05 latch alone** to be a printer-generator word, with the other three K05 latches emitted by another source or at another stage. This tests an authentic source field that can collapse the remaining candidate space rather than requiring a speculative fourword shared writer.
+
+Agent26's source-affine analysis proves that both K02-stage coset families leave **all 32 bits of K04 component bytes0..3 free** and one additional independent bit in bytes4..7. Therefore a single selected K05 32-bit native MT word placed at *native stage951*, the first unknown selected printer word, should determine 32 of 33 missing bits and yield exactly two **complete** original-target candidates per source interpretation, provided its observed value is otherwise consistent.
+
+Test both K02 donors (1178/1405), each of their 16 original K02 presentations, **all four original selected K05 latches**, both byte endians and native/tempered word presentations, at **each native stage949..955** (seven positions including the unknown target boundary). This yields **3,584 complete individual source-placement assignments**.
+
+| Original K05 single-latch test | Actual |
+| --- | ---: |
+| Whole source assignments evaluated | **3,584** |
+| Source-compatible assignments | **512** |
+| Compatible assignments by K05 native stage | **all 512 at stage951** |
+| Other six stages, source-compatible | **0** |
+| Residual target dimension after compatibility | **1 bit, all 512 assignments** |
+| Distinct complete-candidate checks, counting any cross-mode overlap | **1,024** |
+| Original unchanged K04 SHA256 matches | **0** |
+
+These are **actual complete K04 component commitment checks**, unlike the earlier seven twist-offset donor models where 33 target bits remained free. The 512 two-member cosets have different hypothetical writers/source K02 views; the 1,024 checks count assignments, without claiming all candidate byte values are distinct. All 512 original K05 selected one-word values are algebraically consistent with placing a single raw source word at the unknown first K04 position, showing why restricting to fourword group matches missed this branch. The original K04 commitment rejects every two-member candidate constructed from these genuine selected source values under the specified conditional model.
+
+**Positive control:** Construct a full 19,968-bit state satisfying all 132 intact original printer packets and one original K02 donor interpretation. Read the genuine source-state native MT word at selected stage951; impose it as a *synthetic* single selected K05 latch. The quotient drops to exactly **one remaining bit**, and the two computed complete K04 components include the exactly regenerated true synthetic full coupon \`34489314F66E4A22D32AEA1E52228B9D\`. This is an authentic-algorithm planted control and **is not the historical K04**. Correct full original-target comparator, mask, word tempering and affine reconstruction are therefore exercised.
+
+[The same committed single-file SFT](../agents/agent34/k04_k02_k05_twist_donor_sft.py) now executes this distinct second phase after the whole K05-group tests. All 3,584 original-source checks, all 1,024 original K04 commitment checks, and the rank-one planted positive ran locally on the unchanged source extraction.
+
+**Scope:** A selected actual K05 latch could still be related to the physical K04 printer through some unmodelled transform, stage, generator or timestamp. Under *this* explicit p951 MT linear bridge and stage placements949..955, no authentic K04 component exists among the completed candidates. The historical selected print coupon and exact Emily margin remain missing.
