@@ -68,3 +68,40 @@ A sparsely emitted, source-selected recorder quartet can in fact collapse a hypo
 Any further extension needs a historically motivated alternative writer rule, original printer producer trace, or legitimate attested physical coupon. Arbitrary permutations, increasing stride alphabets or unrelated byte transforms may create many small mathematical cosets without establishing the historical source. K08's exact author-final caption remains independently unresolved.
 
 **Original REC8/1: six individual PASS, K04/K08 MISSING, combined INCOMPLETE.**
+
+
+## Extension: full 227-word twist-phase lattice and new 4-bit completion (02:13 UTC)
+
+After the first 30,720-geometry rank screen, we widened the experiment to **all first-K05 stages1041..2401**, at stride227, and allowed K02 telemetry at **eight** prospective donor generations `951+227*k`, k=1..8. This adds **10,888 fresh exact rank geometries** without source RHS or original-target feedback. This scan is now included in the same [rank SFT](../agents/agent14/k04_k02_k05_stride_rank_sft.py).
+
+Only **ten** phase-lattice placements across all eight donors have a K04 quotient dimension <=16. All ten occur for the two already-established K02 stages1178 and1405, with five first-K05 positions each:
+
+| First K05 writer stage | Four K05 writer stages (stride227) | Target quotient under either donor |
+| ---: | --- | ---: |
+| 1120 | 1120,1347,1574,1801 | 2 bits |
+| 1347 | 1347,1574,1801,2028 | 2 bits |
+| 1516 | 1516,1743,1970,2197 | 3 bits |
+| 1743 | 1743,1970,2197,2424 | 3 bits |
+| **2139** | **2139,2366,2593,2820** | **4 bits** |
+
+All K02 donor generations k=3..8 retain at least34 selected-target free bits even after these proposed K05 stage constraints. The rank-only K05 starts1120,1347,1743 are source-incompatible with the actual K05 values in all independent 4-format-per-latch presentations and 24 permutations (98,304 complete source assignments per first-stage and K02-donor combination).
+
+The newly exposed **first stage2139** is *after* both K02 donor stages, offering a distinct late four-latch generator interpretation. It has 122 independent K05 native equations beyond the K02 source (6 left-nullspace parity checks) and a **four-bit original selected K04 quotient**.
+
+For **each** K02 donor (1178 or1405) at K05 writer stages **2139,2366,2593,2820**:
+
+| Original-source / original-target test | Chronological latch order | 24 independent writer-latch permutations |
+| --- | ---: | ---: |
+| Complete K02/K05 source assignments | 4,096 | **98,304** |
+| Genuine selected K05 source compatible | **224** | **5,920** |
+| Exact full original K04 SHA256 checks | **3,584** | **94,720** |
+| Unique full coupon components per donor | **3,584** | **8,704** |
+| K04 original commitment matches | **0** | **0** |
+
+The augmented source-compatible complete-state **planted positive** passed for each donor and each source-order interpretation. The source input, route mask, original commitment and all eight accepted/missing slot statuses are unchanged.
+
+**Expanded cumulative actual original-target search:** first-stage1516 3-bit donor family **38,912** full commitment checks, plus new first-stage2139 4-bit family **189,440**, totaling **228,352 complete source-conditioned original K04 SHA256 checks**, with no hit. The program [K04 four-latch sparse-donor SFT](../agents/agent14/k04_k02_k05_stride227_sft.py) now includes all ten selected layouts and asserts this precise total. The original local extractor was run with the expanded ranks and K05 source compatibility; it completed with the counts above.
+
+The earlier [GitHub SUCCESS validation run 41758695991](https://github.com/FlareZ123/workplace-v2/actions/runs/41758695991) covered the **initial 3-bit two-donor version** before the subsequent 4-bit phase extension was committed. Do not describe that earlier run as verification of the expanded revision; the updated source code was committed after that run and its extension has locally executed matching exploratory logic only.
+
+**Decision:** A second finite, historically unconfirmed K05 writer spacing is now exactly excluded against the real K04 target. The expanded phase scan found no higher K02 generator generation with a small selected-target quotient. Full physical K04 and exact K08 text remain outstanding.
