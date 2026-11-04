@@ -1,0 +1,23 @@
+name: Agent19 K04 independent dual copier bursts
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  two-independent-bursts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        mode: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile original source-pinned search
+        run: cc -O3 -std=c11 -Wno-deprecated-declarations agents/agent19/k04_four_word_byte_lane_sft.c -lcrypto -o /tmp/k04copy
+      - name: Verify two planted full-component controls
+        run: /tmp/k04copy self-test
+      - name: Exhaust disjoint four-byte replacement shard
+        run: /tmp/k04copy ${{ matrix.mode }} ${{ matrix.shard }} 8
