@@ -1,0 +1,41 @@
+name: Agent7 K08 3B author-voice four-control cloze
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  k08-author-cloze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        caption_case: [2, 6, 17, 18, 0]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU Qwen dependencies
+        run: |
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2" "filelock"
+      - name: Verify original source masks and complete caption reducer
+        run: |
+          python -m py_compile agents/agent7/k08_qwen3b_author_cloze_sft.py
+          python agents/agent7/k08_qwen3b_author_cloze_sft.py --case ${{ matrix.caption_case }} --smoke
+      - name: Run case-scoped historical caption reconstruction
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          OMP_NUM_THREADS: "4"
+        run: python agents/agent7/k08_qwen3b_author_cloze_sft.py --case ${{ matrix.caption_case }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent7-k08-qwen3b-case${{ matrix.caption_case }}
+          path: agents/agent7/k08_qwen3b_case${{ matrix.caption_case }}.jsonl
+          if-no-files-found: warn
