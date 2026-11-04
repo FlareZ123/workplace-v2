@@ -1,0 +1,13 @@
+name: Agent46 public visual-asset historical carrier census
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect linked public image metadata without credentials
+        run: python agents/agent46/k08_public_visual_carrier_sft.py
