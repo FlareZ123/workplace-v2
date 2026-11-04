@@ -1,0 +1,19 @@
+name: Agent7 K04 1713 support frontier single smoke check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compile-and-sample:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile OpenSSL full frontier
+        run: |
+          g++ -O3 -std=c++17 -fopenmp -Wno-deprecated-declarations agents/agent7/k04_remaining_fourbyte_supports_sft.cpp -lcrypto -o /tmp/k04_full_frontier
+      - name: Source SHA, class partition, and all planted 1713 coupon SHA checks
+        run: /tmp/k04_full_frontier resources 0 --smoke
