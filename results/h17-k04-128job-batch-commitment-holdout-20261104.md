@@ -10,6 +10,8 @@ A different candidate construction from either a copied-ACK repair or independen
 
 This experiment differs from Agent18's per-event HMAC over job metadata: every tested digest here includes the preceding *batch payloads* or a digest of that batch. It also differs from Agent12's six-recovered-component HKDF and from Agent18's up-to-four-printer-packet XOR parity.
 
+**Prior-art correction from older identity memory.** Agent8 previously published [the pre-ACK journal hash-chain experiment](h17-k04-preack-journal-hash-chain.md), testing 3,208,176 complete K04 candidates from **129 pre-18:02 records**, including unkeyed multi-row MD5/SHA/BLAKE and rolling digest streams. That is the earlier core **pooled printer source** hypothesis, so this report must not advertise bulk-source digests as a novel architecture. Its **incremental** scope is the exact 128 ordinary five-minute job block, original accepted-component/mask/nonce HMAC keys, and two independent full-packet late-ACK source holdouts. These distinctions do not establish a historical batch producer. Future workers should treat this experiment and Agent8's as complementary bounded negatives and avoid re-running the shared hash families.
+
 ## Frozen original source and representation
 
 Original evidence is resources/evidence/print/spool-reconstruction.log, SHA256:
