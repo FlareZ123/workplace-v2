@@ -1,0 +1,13 @@
+name: Agent24 H17 public Common Crawl history
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  historical-public-index:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Search public third-party crawl index metadata
+        run: python agents/agent24/h17_commoncrawl_public_index_sft.py
