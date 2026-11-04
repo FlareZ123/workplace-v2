@@ -1,0 +1,13 @@
+name: Agent46 conditional RC17 B adjacent-source coupon bridge
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  rc17-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-only B-pair adjacency and K02 target quotient
+        run: python agents/agent46/k04_rc17_adjacent_source_bridge_sft.py
