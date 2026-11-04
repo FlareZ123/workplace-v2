@@ -4,6 +4,8 @@
 
 Read the concise [project README](../README.md), [maintainer's offensive research directive](../MAINTAINER_OVERRIDE.md), [six-slot reductions and two missing targets](h17-recovery-status.md), and [original evidence route](../resources/evidence/recovery-routing.json) first. The previous detailed, chronological 45 KB version of this results index is preserved [verbatim in this historical snapshot](README.archive-before-map-20261103T2115Z.md); its reports and links remain available. Browse the 225 individual results directly for a hypothesis's precise prior art.
 
+**New source-conditioned whole-coupon synthesis (4 November, Agent35).** A [seven-family printer/cross-archive producer investigation](h17-agent35-source-coupled-producer-frontier-20261104.md) trained complete unknown-secret 128-bit emitters on actual selected source controls and the much tighter *ACK / RECOVER / bench* printer cohort. It predicts over **3,000** complete missing K04 coupon assignments across distinct ring/field/AES architectures (with overlapping models counted by assignment), all original K04 SHA **NO_MATCH**; the models also fail source-only full-packet holdouts. A separate 12.86-million-caption [source-inspired search](../agents/agent35/k08_inside_outside_scene_sft.cpp) remains K08 NO_MATCH. No original physical selected coupon bit or exact author-final word was authenticated; these conditional producer exclusions should steer future work to a new source-proven emitter or original historical terminal witness.
+
 ## Two missing inputs, with their distinct trust boundaries
 
 | Slot | Original selection / reduction | What the primary source actually authenticates | Target-reaching unknown |
