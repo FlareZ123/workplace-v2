@@ -1,0 +1,31 @@
+# K04 source-derived K02 telemetry fourword donor at two future MT stages
+
+**Agent1, 4 November 2026. Research status: stage1178 original commitment sweep in progress; stage1405 has only a complete source-derived affine construction.** The already verified six components remain PASS. K04 physical original and K08 final author words are not recovered. The combined REC8 key remains INCOMPLETE.
+
+## Distinct source observation and hypothetical producer
+
+The original K02 telemetry route selects the eight LT-204 DIAG_WORD values at 21:13:40..21:13:48 UTC, GOOD/HOLD and maximal revision per seq0..7. Their actual source 16-bit values in required order are `E1A5 E474 BAD7 E853 A2E8 C71D 3317 D507`. SHA256 over these 16 raw bytes, truncated to16 bytes, produces the independently accepted K02 component `0D7E3AB56FB75DA3EB0E2E06786D239E`. Source file `resources/evidence/telemetry/freeze-export.jsonl` SHA256 `3787dbd6bab3930ea5293c25a995175161a1c0d7683daad29f498026e057639f`.
+
+**New hypothesis**: pack two original 16-bit telemetry values per MT19937 32-bit output, yielding four complete original-valued donor words. These may hypothetically be retained outputs of the same generator underlying the separate printer stream at a future fourword stage. The surviving records establish neither shared generator identity nor stage placement. Therefore the donor constrains an **analytic conditional source model**, not a newly authenticated printer physical original.
+
+Compared with the previously tested K02 three-consecutive *halfword* ancestor/upper-lower16 bridge and the prior copied-ACK late-stage producer, this donor uses a different historical source's complete **fourword value** and reaches the original K04 SHA256 target via a full GF(2) quotient, with the selected copied ACK completely omitted.
+
+## Exact source to target reduction
+
+Existing Agent49 p951 symbolic MT source model: native stage range -1100..at least1500, exact MT recurrence and standard temper. Fit 132 original intact printer packets and **omit selected row129 from byte extraction**. The original printer spool SHA256 is `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. Source rank **15,365** of 19,968 possible initial MT bits; all 128 native bits of selected stages951..954 are individually unobserved by printer source.
+
+Two *prospective* donor start positions were studied: stage **1178** and stage **1405**, each separated from selected stage by a multiple of227, a strong MT twist relationship. For each, process all sixteen full source-byte interpretations: big/little endian per 32-bit word, normal/reversed wholeword order, normal/swapped two halfword positions per word, native or tempered output. Imposing four donor words adds exactly128 independent original-source-compatible equations. A complete seeded state can regenerate all 132 original printer packets and the imposed source-valued donor outputs in all sixteen modes at both selected stage choices.
+
+For each stage the selected K04 native quartet, after original source+donor constraints, lies in a **33-dimensional affine space**, with **95 of 128 source-model output bits fixed**. Apply MT temper, serialize four little-endian printer words, XOR the unchanged original K04 route mask `8556C8CB6140A7F9A5123AC7571BEE1C`, and obtain complete 16byte component candidates. All 16 modes have their 33 basis deltas touching only component bytes0..7. Their remaining eight suffix bytes are fixed and pairwise distinct. Stage1178's 16 suffix values and stage1405's 16 suffix values are disjoint.
+
+Per-stage unique source-consistent hypothetical K04 candidate components: `16 × 2^33 = 137,438,953,472`. Across both stages, the disjointness gives `274,877,906,944` possible values. This is *not* evidence that any candidate equals the true K04: the source has no historical stage-selector witness.
+
+## Actual original target work and independent checks
+
+- Stage1178 [source-pinned Python reproducer](../agents/agent1/k04_k02_raw_future_coupon_sft.py) regenerates all sixteen baseline/delta sets. Serialized dataset `k02_donor_affine.dat` SHA256 `3bcf827847aa2905d4efa4747d2048d3a542a0edcf3cab3b49478388aa26f61d`. All 132 original spool packets and four hypothetical donor words regenerate exactly from a complete constructed MT state for every mode, with eleven independent free-state perturbations each.
+- Stage1405 [independent source-pinned generator](../agents/agent1/k04_k02_raw_stage1405_coupon_sft.py) produces `k02_donor_stage1405_affine.dat`, SHA256 `6f114714bcc3393a7ab23235fd1424331e8e4b63b2acf12088dcb628632738a3`, with the same original-source and perturbation controls. Its complete original K04 target space **has not been tested**.
+- [C11/OpenSSL verifier](../agents/agent1/k04_k02_raw_future_33bit_sft.c) uses original K04 SHA256 `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0` and independently plants one complete synthetic digest per coset at Gray index `0x123456789`. A local bounded original+synthetic smoke test passed.
+- Stage1178 exhaustive original target [32-shard GitHub Actions run 41746790341](https://github.com/FlareZ123/workplace-v2/actions/runs/41746790341) covers disjoint 268,435,456-index ranges, every one of the sixteen modes in each range. **Status at initial publication: running.** Success means each range has zero original K04 hits and exactly its expected synthetic positives. Full negative claims require every shard completion.
+- Previously preserved original 16 AX-7778 halfword checkpoint equations and the node49 CRC-valid8 (or conditionally raw all12) recorder equations increase source ranks up to15,622, but do not reduce the new K02-conditioned 33-dimensional selected quotient at either stage. No historical original selected bit gained from those auxiliary source observations.
+
+**Research boundary:** This construction is a direct source-conditioned complete-target class that can be falsified exactly by the original K04 SHA256 commitment. Source-compatible MT state reconstruction and an unmodified acceptance hash do not establish the actual physical ESC-N coupon or printer/K02 shared generator. Stage1405 is left as an independently reproducible future candidate family. K08 remains unquoted and independent.
