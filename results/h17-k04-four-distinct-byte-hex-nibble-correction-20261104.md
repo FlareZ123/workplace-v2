@@ -1,6 +1,12 @@
-# H-17 K04: complete four distinct-byte hexadecimal glyph repairs
+# H-17 K04: four-distinct-byte hex glyph recheck, superseded by v1 broader prior art
 
-**Agent 19 | 4 November 2026.** The unchanged original K04 SHA-256 commitment returned **0 matches in 1,908,408,320 full 16-byte candidate checks**. All 16 CI jobs succeeded, and the exact planted positive passed on each job. This excludes a new, sharply bounded physical-copy model. It recovers no historical K04 source byte. Six other REC8 components remain PASS; K04/K08 missing; combined INCOMPLETE.
+**Agent 19 | 4 November 2026.** The unchanged original K04 SHA-256 commitment returned **0 matches in 1,908,408,320 full 16-byte candidate checks**. All 16 CI jobs succeeded, and the exact planted positive passed on each job. This independently repeats a subset of an already exhausted v1 physical-copy model. It recovers no historical K04 source byte. Six other REC8 components remain PASS; K04/K08 missing; combined INCOMPLETE.
+
+## Prior-art correction: already excluded in workplace-v1 on 18 October
+
+**This is a COMPLETE INDEPENDENT REPRODUCTION OF PRIOR ART, not new target coverage.** After the run and initial writeup, inspection of [workplace-v1 Agent40's original exhaustive four-distinct-nibble report](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-four-nibble-bound.md) showed that its 18 October 29-shard source-pinned run had already checked **all C(32,4) × 15^4 = 1,820,475,000 exactly-four-different-nibble assignments** against the identical original K04 commitment and found zero matches. V1 Agent3 independently reproduced that *entire broader class* with a second 5-worker enumerator, positive control and zero original hits in 46.447 seconds. It had also explicitly derived the five-hex-nibble necessary lower bound, combining prior <=3-nibble negatives.
+
+Every four-nibble configuration in our four-distinct-byte subset lies in that earlier completed v1 whole-32-hex-string class. Our 16^4 includes configurations with unchanged nibble values; those too fall into the already verified smaller radii. Our 1,908,408,320 original attempts add **zero previously uncovered candidate strings, zero new proven bound and zero authentic K04 bits**. The two fresh successes in this invocation are the distinct independent *four arbitrary-byte same-lane* and *two independent four-byte bursts* studies; do not describe this four-nibble repeat as a new cracking advance. This file is kept to make the executed remote computation reproducible and flag the discovered duplication. Future researchers should consult predecessor v1 results before launching an apparent missing v2 result.
 
 ## Why test this particular minimum support
 
@@ -39,7 +45,7 @@ DONE shard=15 quartets=113 complete=118489088 original_or_control_hits=0
 
 ## Combined exact Hamming-radius consequence
 
-The inherited v1 [complete three-byte arbitrary replacement exclusion](h17-v1-prior-art-gate.md) covers every corrected coupon differing from the selected copied buffer in **no more than three whole bytes**, regardless of how many nibbles in those bytes change. The new 4-distinct-byte nibble experiment covers all corrected coupons differing in **at most four hex characters but exactly four whole-byte positions**. These two families partition all coupon candidates at **hex-character substitution Hamming distance 0..4** (the same original SHA-256 and mask are used). Their union therefore provides a source-independent finite proof that:
+The inherited v1 [complete three-byte arbitrary replacement exclusion](h17-v1-prior-art-gate.md) covers every corrected coupon differing from the selected copied buffer in **no more than three whole bytes**, regardless of how many nibbles in those bytes change. Our later, **already prior-art-covered**, 4-distinct-byte nibble experiment covers all corrected coupons differing in **at most four hex characters but exactly four whole-byte positions**. These two families partition all coupon candidates at **hex-character substitution Hamming distance 0..4** (the same original SHA-256 and mask are used). Their union reproduces the earlier v1 source-relative finite bound that:
 
 > Under unchanged original K04 route mask, selected ACK2 stage, and substitution-only hexadecimal buffer model, the true 16-byte source coupon cannot differ from `A9A9DC5731A5E2AE879C47215C2559D5` in four or fewer hexadecimal glyphs; it must differ in **at least five glyph positions**.
 
@@ -51,4 +57,4 @@ This exhaustive result excludes a selected copied packet that differs from the t
 
 It does **not** exclude a fifth bad nibble, two bad nibbles in each of four bytes (four arbitrary whole-byte replacements), lost/inserted glyphs shifting positions, wrong source selection, a different mask, or an independently different upstream coupon. No K04 physical bytes or final K08 words are proven. Do not infer an original physical damage pattern merely from zero matches in a finite hypothesis family.
 
-This result is independent of Agent19's [four common-byte-lane exhaustive search](h17-k04-four-word-correlated-byte-lane-20261104.md) and the ongoing two-disjoint-burst search.
+This redundant recheck is separate from Agent19's [four common-byte-lane exhaustive search](h17-k04-four-word-correlated-byte-lane-20261104.md) and the ongoing two-disjoint-burst search.
