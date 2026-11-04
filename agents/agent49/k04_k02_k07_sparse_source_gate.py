@@ -70,7 +70,19 @@ def parity_constraints(base,stages,hi):
     residual^=q;marker^=t;constant^=c
    if not residual:checks.append((marker,constant))
  assert len(checks)+len(pivots)==128
- return checks,len(pivots)
+ def target_remainder(v):
+  r=0
+  while v:
+   p=v.bit_length()-1
+   if p in base.rows:v^=base.rows[p][0]
+   else:r^=1<<p;v^=1<<p
+  while r:
+   p=r.bit_length()-1
+   if p not in pivots:break
+   r^=pivots[p][0]
+  return r
+ dimension=rank(target_remainder(v) for v in selected)
+ return checks,len(pivots),dimension
 
 def rank(expressions):
  pivots={}
@@ -102,7 +114,8 @@ for mode,values in donor_modes():
  for start in starts:
   stages=[start+227*i for i in range(8)]
   for high in (False,True):
-   checks,rank_donor=parity_constraints(base,stages,high)
+   checks,rank_donor,freedom=parity_constraints(base,stages,high)
+   assert freedom==18
    assert len(checks)>=30
    for order_name,order in orders.items():
     for flips in range(256):
@@ -115,6 +128,7 @@ for mode,values in donor_modes():
      if all(((word&tag).bit_count()&1)==rhs for tag,rhs in checks):
       compatible.append((mode,start,high,order_name,flips,rank_donor))
 print("K02 33-bit conditional quotient; selected K07 sparse 227-word source gate:")
+print("STAGE_GEOMETRIES",starts,"TARGET_BITS_REMAINING",18)
 print("COMPLETE_SOURCE_ASSIGNMENTS",count,"SOURCE_COMPATIBLE",len(compatible))
 assert count==16*5*2*3*256==122880
 assert not compatible
