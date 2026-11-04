@@ -91,7 +91,7 @@ static int search(int mode, uint64_t first, uint64_t count,
             found++;
         }
         if (progress && ((value-first+1)&0xFFFFFF)==0) {
-            printf("CHECKED mode=%d count=%" PRIu64 "\n",lane,value-first+1);
+            printf("CHECKED mode=%d count=%" PRIu64 "\n",mode,value-first+1);
             fflush(stdout);
         }
     }
