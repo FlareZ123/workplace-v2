@@ -1,0 +1,21 @@
+name: Agent2 K04 NumPy second-cycle pool4 full phase
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-phase-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned NumPy
+        run: python -m pip install numpy==2.3.5
+      - name: Eleven synthetic NumPy positives and 624 original phases
+        run: python agents/agent2/k04_numpy_secondcycle_pool4_fullphase_sft.py
