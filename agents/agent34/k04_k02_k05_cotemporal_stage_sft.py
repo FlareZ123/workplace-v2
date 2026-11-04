@@ -135,3 +135,55 @@ for stage, item in stats.items():
     assert item["min_mismatch_when_96_known"] > 0
     print("K02_ST", stage, item)
 print("PLANTED full-state positive PASS and single-bit negative detected; physical K04 withheld")
+
+
+# Follow-on variable-gap model: each original K05 latch can independently
+# occupy any later native output at donor+4..donor+96. This strictly includes
+# the contiguous quartet subfamily above, and tests interleaved 1Hz producers.
+# Each tested whole 32-bit original is retained in its original latch identity.
+def compare_one(ext, stage, value, native):
+    eqs = mt.get(symbolic, stage)
+    if not native:
+        eqs = mt.temper(eqs)
+    known = errors = 0
+    for bit, expr in enumerate(eqs):
+        p = ext.predict(expr)
+        if p is not None:
+            known += 1
+            errors += p != ((value >> bit) & 1)
+    return known, errors
+
+
+# A planted source-constrained full-word positive is recognized, and a single
+# flip against the same full source-witness is detected.
+assert compare_one(source, 1185, words[0], native=False) == (32, 0)
+assert compare_one(source, 1185, words[0] ^ 1, native=False) == (32, 1)
+
+for donor_stage in (1178, 1405):
+    total = matches = 0
+    per_latch = {k: 0 for k in range(4)}
+    minimum_errors = 33
+    for mode, source_words in donor_modes():
+        ext = source_basis(donor_stage, source_words)
+        for offset in range(4, 97):
+            test_stage = donor_stage + offset
+            if test_stage > mt.LAST:
+                break
+            for native in (False, True):
+                for latch in range(4):
+                    part = selected[4*latch:4*latch+4]
+                    for endian in ("big", "little"):
+                        observed = int.from_bytes(part, endian)
+                        known, errors = compare_one(ext, test_stage, observed, native)
+                        if known >= 16:
+                            total += 1
+                            minimum_errors = min(minimum_errors, errors)
+                            if errors == 0:
+                                matches += 1
+                                per_latch[latch] += 1
+    assert total == (11520 if donor_stage == 1178 else 11008)
+    assert matches == 0
+    assert minimum_errors == 7
+    print("K05_SPLIT", donor_stage, "informative_checks", total,
+          "exact_matches", matches, "minimum_mismatching_bits", minimum_errors,
+          "by_latch", per_latch)
