@@ -44,12 +44,14 @@ def hmask(base,sym,stage):
     return mask,value
 
 def can_add(b,sym,stage,value,tempered=True):
-    w=mt.untemper(value) if tempered else value
-    for j,eq in enumerate(mt.get(sym,stage)):
-        bit=(w>>j)&1
-        known=b.predict(eq)
-        if known is not None and known!=bit:return False
-    return True
+    # The 32 output equations can have nontrivial joint source dependencies
+    # even when no individual output bit is fixed. Test whole-word consistency.
+    trial=clone(b)
+    try:
+        add(trial,sym,stage,value,tempered)
+        return True
+    except AssertionError:
+        return False
 
 def add(b,sym,stage,value,tempered=True):
     w=mt.untemper(value) if tempered else value
