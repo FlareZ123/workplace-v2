@@ -35,7 +35,7 @@ def read_node49():
         if node == 49:
             data[seq] = (control, zlib.crc32(packet[:20]) == crc, latch, event, aux)
     assert set(data) == {n + i for n in (200, 300, 900, 990) for i in range(4)}
-    assert all(data[seq][2] == seq % 100 for seq in data)
+    assert all(data[seq][2] == seq % 10 for seq in data)
     return data
 
 
