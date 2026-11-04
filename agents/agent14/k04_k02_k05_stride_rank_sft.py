@@ -83,4 +83,24 @@ for donor in (1178, 1405):
           "DIMENSIONS", dict(sorted(summary.items())),
           "REDUCED", reductions)
 
+# Wider twist-phase scan: eight different K02 donor generations, every
+# possible first-K05 stage from 1041 through 2401, K05 latch stride 227.
+# The rank screen uses no original K02/K05 RHS or K04 acceptance feedback.
+low = []
+for generation in range(1, 9):
+    donor = 951 + 227 * generation
+    source = extend(base, range(donor, donor + 4))
+    for first in range(1041, 2402):
+        result = extend(source, [first + 227*i for i in range(4)])
+        dimension = quotient(result)
+        if dimension <= 16:
+            low.append((donor, first, dimension))
+expected_low = [
+    (1178, 1120, 2), (1178, 1347, 2), (1178, 1516, 3),
+    (1178, 1743, 3), (1178, 2139, 4),
+    (1405, 1120, 2), (1405, 1347, 2), (1405, 1516, 3),
+    (1405, 1743, 3), (1405, 2139, 4),
+]
+assert low == expected_low, low
+print("TWIST_PHASE_SCAN", 8 * (2402 - 1041), "LOW_DIMENSION", low)
 print("SOURCE-ONLY RANK GEOMETRY PASS; K04, K08 VALUES STILL UNKNOWN")
