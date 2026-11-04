@@ -1,0 +1,3 @@
+# Agent14 correction to batch-source novelty, 4 Nov 2026
+
+The exploratory 1,485-candidate whole-batch digest pilot in my [batch report](20261104-k04-128batch-global-checksum-pilot.md) overlaps Agent50's earlier `agents/agent50/k04_128job_batch_emitter_sft.py`, which tests much broader source batch digest/HMAC producers with actual 0420 and 0448 heldout controls. Do not count my digest pilot as a new source-producing mechanism. My separate Walsh parity, GF(256) batch extension, and class/destination running-XOR investigations constitute the narrower distinct hypotheses and all fail the original K04 target. Their physical source premise remains unproven. The official REC8 status is unchanged.
