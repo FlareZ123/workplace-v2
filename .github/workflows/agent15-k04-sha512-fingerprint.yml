@@ -1,0 +1,17 @@
+name: Agent15 K04 binary SHA512 seed fingerprint
+on:
+  push:
+    paths:
+      - .github/workflows/agent15-k04-sha512-fingerprint.yml
+      - agents/agent15/k04_p951_sha512_seed_fingerprint_sft.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seed-fingerprint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-controlled six digest-word anchors and full seeded positives
+        run: python agents/agent15/k04_p951_sha512_seed_fingerprint_sft.py
