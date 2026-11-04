@@ -20,7 +20,7 @@ code = upstream.read_text(encoding='utf-8')
 # the identical source selection without duplicating a 100-line extractor.
 prefix, delimiter, rest = code.partition('\nx556,x557,x558=s.source_words()\n')
 assert delimiter and 'assert len(src)==532' in prefix
-scope = {'__name__': 'agent35_reused_carrier_extractor'}
+scope = {'__name__': 'agent35_reused_carrier_extractor', '__file__': str(upstream)}
 exec(compile(prefix, str(upstream), 'exec'), scope)
 source = scope['src']
 assert len(source) == 532
