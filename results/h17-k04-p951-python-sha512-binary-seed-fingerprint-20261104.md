@@ -21,6 +21,26 @@ The 132 unchanged intact original printer packets, with the disputed row129 with
 
 The chunk offset into `SHA512(B)` is `[64-4*(j+1) : 64-4*j]`, interpreted as a big-endian integer. Every candidate `B` under this producer/length hypothesis must satisfy **all six exact conditions**, a 192-bit source-only candidate filter. It can eliminate or exceptionally identify a small candidate corpus of binary seeds by a single standard-library SHA-512 evaluation per seed, instead of enumerating candidate K04 coupons. The 192 constrained bits do **not** mean 192 authenticated bits of the missing 128-bit selected K04 payload.
 
+## Additional original-source SHA-512 fingerprint via the CPython seed-key index wrap
+
+The baseline six SHA-512 words contribute 192 constrained digest bits to **every** remaining n606..623. The initialized-register source also fixes two near-terminal reverse key terms that earlier investigations used for key-length repetition rather than SHA-512 fingerprinting:
+
+- `T[607]=13231B97` exactly, because original S606..608 are all fixed.
+- `T[608] ∈ {5D3DC8B5, DD3DC8B5}`, because original S609 has one unresolved high bit.
+
+In standard CPython `init_by_array`, the key is cyclically indexed by `j mod n`, and the additive constant is the same residue. For `n606..608`, these original native-register terms therefore refer directly to **additional digest words** `key[0..2]` from SHA-512's appended 64-byte suffix. They produce the following *additional* SHA-512 digest chunks over the six baseline words:
+
+| Assumed key length | Additional digest chunk(s) from original source | Digest bits constrained in total |
+| --- | --- | ---: |
+| n606 | `key[1]=13231B96`, `key[2] ∈ {5D3DC8B3, DD3DC8B3}` | **255** |
+| n607 | `key[0]=13231B97`, `key[1] ∈ {5D3DC8B4, DD3DC8B4}` | **255** |
+| n608 | `key[0] ∈ {5D3DC8B5, DD3DC8B5}` | **223** |
+| n609..623 | No additional digest chunks from these two late terms | **192** |
+
+A two-option 32-bit word constrains 31 bits. These 255/223/192 figures are independent positions in a **hypothetical seed's SHA-512 digest**, not authenticated original K04 coupon bits, and do not support identifying the unknown source seed without a historical candidate.
+
+The updated SFT independently recomputes both late original-source terms from the **same 132 original intact printer packets** and additionally executes two complete synthetic source-spool positives at n607 and n608, besides n606 and n623. For each seeded stream, it verifies the authentic `T[j] = key[j mod n] + (j mod n)` value appears in the source-derived term set, including the wrap boundary. **[CI run 41746140738 SUCCESS](https://github.com/FlareZ123/workplace-v2/actions/runs/41746140738)**. This is a stronger fingerprint for n606..608, with no target commitment used in selection.
+
 ## Reproducible synthetic and original-source controls
 
 The [standalone Python SFT](../agents/agent15/k04_p951_sha512_seed_fingerprint_sft.py) builds its own 1,601-word symbolic native MT linear recurrence, derives the source register basis and the exact low key words, and pins original printer spool SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. It never decodes the disputed selected ACK2 row129, reads no route mask or K04/K08 commitments and does not touch the original verifier. The source constraints are independent of whichever K04 component would eventually be accepted.
