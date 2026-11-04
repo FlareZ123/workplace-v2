@@ -1,14 +1,16 @@
 """Target-reaching candidate: PTW417 complete 17-serial generator run around selected p951 coupon.
 Source printed origin is held fixed; selected copier ACK withheld.
 """
-import sys,json,collections,time
+import sys,json,collections,time,hashlib
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'agent49'))
 import k04_p951_symbolic_basis as M
 ROOT=Path(__file__).resolve().parents[2]/'resources'
 basis,states=M.source(ROOT)
 orig={k:v[0] for k,v in basis.rows.items()}
-rows=[json.loads(x) for x in (ROOT/'evidence/maintenance/seal-receipts.jsonl').read_text().splitlines()]
+seal=(ROOT/'evidence/maintenance/seal-receipts.jsonl')
+assert hashlib.sha256(seal.read_bytes()).hexdigest()=='c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32'
+rows=[json.loads(x) for x in seal.read_text().splitlines()]
 items=[r for r in rows if r['permit']=='PTW-417'];assert len(items)==17
 views={
  'revision_bay':sorted(items,key=lambda x:(x['revision'],x['bay'])),
@@ -35,7 +37,9 @@ for stride in (1,2,3,4,5,6,7,8):
   if start+16*stride>M.LAST:continue
   q=structural(start,stride)
   if q<128:interesting.append((q,start,stride))
-print('REDUCING_STAGE_GEOMETRIES',len(interesting),'BEST',sorted(interesting)[:20],flush=True)
+nonoverlap=[(q,s,d) for q,s,d in interesting if not {s+i*d for i in range(17)}.intersection(range(951,955))]
+assert len(interesting)==499 and len(nonoverlap)==117 and all(q==127 for q,_,_ in nonoverlap)
+print('REDUCING_STAGE_GEOMETRIES',len(interesting),'NO_DIRECT_TARGET_OVERLAP',len(nonoverlap),'ALL_NONOVERLAP_QUOTIENT',127,'BEST',sorted(interesting)[:20],flush=True)
 
 survivors=[];inspected=0;direct_fixed_conflict=0
 for q,start,stride in sorted(interesting):
