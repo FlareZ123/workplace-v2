@@ -6,7 +6,7 @@
 
 The original archive's six independently verified components remain **K01/K02/K03/K05/K06/K07 PASS**. Original **K04 physical coupon remains unavailable** and **K08 Emily final desk-margin exact words remain unquoted**; combined original REC8/1 is **INCOMPLETE**. These experiments preserve the original 46-file export, K04 mask, K08 nonce, original commitments, original verifier and canonical candidate. All producer tests deliberately exclude the suspect copied 0417/18:02 ACK2 payload as a fitting source. All original results are conditional on source-unattested producer assumptions.
 
-Unlike undirected guessed candidates, the first six investigations solve a **complete 128-bit missing packet** using historical 128-bit control blocks, exact algebra and a second evidence-layer check when available.
+Unlike undirected guessed candidates, the first seven investigations solve a **complete 128-bit missing packet** using historical 128-bit control blocks, exact algebra and a second evidence-layer check when available.
 
 ## New mechanisms and executed results
 
@@ -18,6 +18,7 @@ Unlike undirected guessed candidates, the first six investigations solve a **com
 | **Late RECOVER ACK GHASH-field issuer** | 0448/18:24 and 0420/18:25 actual late RECOVER ACK packets, 12 event-label forms, six encodings and eight serializers | **560** | No model reproduces any of the **35** earlier genuine RECOVER ACK complete control packets; strongest accidental overlap 3 bytes | **0 K04 commitments** |
 | **Late RECOVER ACK integer-ring affine issuer** `P(x)=a*x+b mod 2^128` | Same two late ACKs, exact modular congruence roots including carry and even input differences | **496**, across 306 viable of 576 source-layout hypotheses | No model reproduces any of the **35** earlier RECOVER ACK complete packets; strongest accidental overlap 2 bytes | **0 K04 commitments** |
 | **Same `RECOVER/bench` destination-and-class issuer** (both GF128 field and Z/2^128 ring) | Two preserved genuine matching `RECOVER` `bench` ACKs, job0416/16:40 and job0420/18:25; selected job0417/18:02 excluded | **552 field + 356 ring = 908** | No complete packet predictions match any of **10** earlier heldout same-class/same-destination ACKs; max incidental overlap 2 bytes | **0 K04 commitments** |
+| **Nonlinear GF128 quadratic same-CLASS/DEST publisher** | Three latest genuine `ACK/RECOVER/bench` blocks (jobs0407,0416,0420), 12 label forms, six encodings and eight serializers | **552** | Zero complete predictions of **nine** independently heldout same-role packets; strongest incidental overlap 3 bytes | **0 K04 commitments** |
 
 All counts denote *complete-candidate assignments*, not guaranteed distinct coupons or statistically independent tests. Models were specified without fitting to original K04 SHA256 digest. The exact original K04 reduction in every case is `coupon ⊕ 8556C8CB6140A7F9A5123AC7571BEE1C` followed by complete SHA256 equality against the untouched recorded slot. Original printer source SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`.
 
@@ -35,6 +36,7 @@ A distinct three-clause, scene-conditioned final-caption grammar follows Emily's
 - [Late two-ACK GF-field source issuer](../agents/agent35/k04_late_printer_twoanchor_sft.py)
 - [Late two-ACK integer-ring exact affine inverse](../agents/agent35/k04_late_ring_affine_sft.py)
 - [Same destination-and-class bench RECOVER ACK calibrated issuers](../agents/agent35/k04_bench_recov_cohort_sft.py)
+- [Nonlinear three-source same-role GF128 quadratic issuer](../agents/agent35/k04_bench_quadratic_source_sft.py)
 - [K08 spatial three-clause exact-phrase search](../agents/agent35/k08_inside_outside_scene_sft.cpp)
 
 See [Agent35 persistent memory](../agents/agent35/memory.md) for source mapping, completed original counts and synthetic results. The AES test uses Python's external `cryptography` package; K08 C++17 test links OpenSSL libcrypto; remaining tests use Python standard library. All ran against the original user-supplied 46-file ZIP-extracted resources, without writing to those evidence files.
