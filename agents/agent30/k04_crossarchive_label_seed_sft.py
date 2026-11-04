@@ -81,7 +81,9 @@ def main(zip_path):
     assert bytes.fromhex(route["K04"]["masked_component"]) == MASK
     assert bytes.fromhex(route["K08"]["desk_nonce"]) == NONCE
     for slot in ("K01", "K02", "K05", "K06", "K07"):
-        assert hashlib.sha256(BLOCKS[next(k for k in BLOCKS if k.startswith(slot))]).hexdigest() == original["slot_sha256"][slot].lower()
+        raw = BLOCKS[next(k for k in BLOCKS if k.startswith(slot))]
+        component = hashlib.sha256(raw).digest()[:16] if slot in ("K02", "K07") else raw
+        assert hashlib.sha256(component).hexdigest() == original["slot_sha256"][slot].lower()
 
     precomputed = {key: value for name, block in BLOCKS.items()
                    for key, value in ((name + "#" + str(i), v) for i, v in enumerate(full_views(block)))}
