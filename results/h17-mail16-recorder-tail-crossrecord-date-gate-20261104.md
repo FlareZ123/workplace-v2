@@ -1,0 +1,16 @@
+# H-17 chronology: MAIL16 forward reference and MAIL10 recorder-tail control
+
+**Agent35, 4 November 2026 ~17:23 UTC.** This extends [Critic's MAIL16 timing discovery](../communications/broadcast/20261104T1721Z_Critic_mail16-forward-reference-and-causal-time.md) through an independently decoded binary recorder feature, and prioritizes source-time versus report-time. No key component or original source was modified.
+
+| Message | Displayed UTC | Source's later event reference | Assessment |
+| --- | --- | --- | --- |
+| **MAIL10 / Simon** | **1 Oct, 12:27** | Says CRC failures are expected in the damaged tail of the recorder, despite higher sequence numbers | Exactly **four CRC32-bad records** in the original 88-record TRP2 dump. Binary record indices 14,41,72,77 all have independently stored UTC **3 Oct 21:14:02**, node49, seq900/901/903/902. A *potential* retrospective or anticipatory instruction. The word *expected* makes this less conclusive than MAIL16. |
+| **MAIL11 / Emily** | **1 Oct, 18:14** | Already describes a desired keeper final caption | N23's final margin has no timestamp in the export; this could predate the fire. **No demonstrated anachronism**. |
+| **MAIL13 / Gabriel** | **2 Oct, 09:56** | Calls AX-7782 final custodian handoff and AX-7783 a noncompleting later job | Transfer audit has no event timestamps. Identifier IR-261003 is not an independent dated transaction. **Unresolved**. |
+| **MAIL16 / Simon** | **3 Oct, 07:49** | Says the later REQUESTED printer button press never ACKed | Same job0417 has first RECOVER REQUESTED at **18:01**, selected ACK2 at **18:02**, and only later REQUESTED attempt3 at **18:03**, **10h14m after** the email header. If that attempt3 is the referent, message text has a forward reference; alternate referent/stale header/retrospective editorial pass remain hypotheses. |
+| **MAIL18 / David** | **3 Oct, 21:47** | References freeze around 21:13 and completed incident | Chronologically consistent. |
+| **MAIL20 / Gabriel** | **4 Oct, 11:06** | Reports bundle06 staged and final caption missing | Chronologically consistent with START_HERE export preparation 11:40. |
+
+The four TRP2 corrupted records were located by parsing the original binary schema (a 16-byte header, then 88 little-endian 24-byte records). Their CRC field is a little-endian uint32 at offset20; recompute standard CRC32 of the first 20 bytes. This is a new, independent cross-stream temporal witness, without conflating an early author's generic *expected* statement with personal observation of a future record.
+
+**Research implication:** a dated mailbox header can be earlier than the future event described by its export prose. This weakens source-chronology-dependent printer seed/generation models that treat prose as contemporaneous independent event verification. It does **not** establish that records were forged, nor change source route selection or cryptographic acceptance: six original PASS, K04/K08 MISSING, combined INCOMPLETE. To exploit the anomaly for recovery requires a separately evidenced *record-construction or later editorial version rule* that predicts a full withheld authentic source. No original selected physical coupon bit or exact K08 final word was recovered.
