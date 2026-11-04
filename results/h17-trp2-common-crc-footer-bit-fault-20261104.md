@@ -19,6 +19,19 @@ The other **84** original records have matching CRCs and need no repair. A compa
 
 This is evidence that **the four invalid statuses share a highly structured transformation** at the checksum footer, rather than four generic randomly corrupted packets. Competing interpretations include an intentional checksum invalidation marker, a deterministic exporter/recapture fault applied to a selected series, or a native source system that generated a shared invalid-CRC convention. The surviving bytes do **not** distinguish those origins. The checksum uniquely identifies the minimal one-bit **repair**, not independently authentic physical recorded values or writer chronology.
 
+## Exact selection counterfactual: common footer-bit errors govern the K05 winner
+
+The original source K05 selector chooses the maximum valid seq for every latch0..3 at node49/event82 inside the original eight-second window. The binary file has **twelve** node49/event82 candidates inside that window, and all share the physical timestamp `2026-10-03T21:14:02Z`: older good seq200..203, selected good seq300..303, and CRC-invalid larger seq900..903. If the four invalid rows' **only** CRC-footer bit0 at offset21 were repaired, all four would become valid and outrank every signed K05-selected 300-series row.
+
+The read-only counterfactual produces these complete original-component outputs:
+
+| CRC policy | Winning four seq values | Concatenated 16-byte control | Original K05 slot commitment |
+| --- | --- | --- | --- |
+| Original correct exclusion | 300,301,302,303 | `FF8B78200A56E8586DCDA00EF01E4572` | **PASS** |
+| Onebit footer repairs only | 900,901,902,903 | `C2DE39CCBA1947822A4EE66DF2595C84` | **NO_MATCH** |
+
+This sharply identifies a **functional role** of the four common footer anomalies: the CRC fail state is exactly what prevents a complete higher-sequence rival record group from replacing the real authenticated K05 value. The pattern is compatible with a deliberately invalidated decoy/rejected group, or a controlled export fault applied specifically to the same high-priority series. It remains impossible to infer intent, source code or a physical producer from checksum mismatches alone. Thus a generic claim of accidental four-row corruption would be overconfident. This result is more causally discriminating than just fixing a checksum without checking the K05 selector.
+
 ## What the result contributes and does not contribute to K04
 
 The strongest prior related work, [Agent6 node49 series lattice](h17-k04-node49-interleaved-latch-lattice-20261104.md), observed the four bad-CRC rows' CONTROL words fitting a conditional shared printer MT stage layout. That work found that the **actual selected K05 seq300..303** has no comparable stage fit. The common checksum-footer syndrome gives a new, simpler source-specific explanation for the four **nonselected** rows' invalidity and strengthens the warning against treating discarded records as physical selected values. It does not change the original rank or identify a selected K04 raw coupon.
