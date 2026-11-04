@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "agents" / "agent49"))
 import k04_p951_symbolic_basis as mt
 
-mt.LAST = 2700
+mt.LAST = 3000
 SOURCE = ROOT / "resources"
 PINS = {
     "telemetry/freeze-export.jsonl": "3787dbd6bab3930ea5293c25a995175161a1c0d7683daad29f498026e057639f",
@@ -184,7 +184,12 @@ def state_from_basis(base):
 
 # These source-only rank-reducing layouts were identified before looking at
 # original K05 values. The remaining higher-dimensional layouts are omitted.
-layouts = [(1178, 169, 2), (1178, 338, 3), (1405, 111, 3), (1405, 338, 3)]
+layouts = [
+    (1178, -58, 2), (1178, 169, 2), (1178, 338, 3),
+    (1178, 565, 3), (1178, 961, 4),
+    (1405, -285, 2), (1405, -58, 2), (1405, 111, 3),
+    (1405, 338, 3), (1405, 734, 4),
+]
 totals = Counter()
 for free_order in (False, True):
     orders = list(itertools.permutations(range(4))) if free_order else [(0, 1, 2, 3)]
@@ -220,20 +225,21 @@ for free_order in (False, True):
                         if hashlib.sha256(coupon).digest() == target:
                             counts["original_hits"] += 1
                             print("ORIGINAL_K04_MATCH", coupon.hex().upper())
-        expected = {
-            (1178, 169): 0, (1178, 338): 2432,
-            (1405, 111): 2432, (1405, 338): 0,
-        }[(donor, offset)] if free_order else {
-            (1178, 169): 0, (1178, 338): 192,
-            (1405, 111): 192, (1405, 338): 0,
-        }[(donor, offset)]
+        expected_cases = {
+            (1178, 338): (192, 2432),
+            (1178, 961): (224, 5920),
+            (1405, 111): (192, 2432),
+            (1405, 734): (224, 5920),
+        }
+        expected = expected_cases.get((donor, offset), (0, 0))[int(free_order)]
         assert counts["source_assignments"] == (98304 if free_order else 4096)
         assert counts["compatible"] == expected
         assert counts["synthetic_positive"] == (1 if expected else 0)
         assert not counts["original_hits"]
         if free_order:
-            assert counts["complete_checks"] == (19456 if expected else 0)
-            assert len(unique) == (2944 if expected else 0)
+            assert counts["complete_checks"] == expected * (1 << expected_dimension)
+            distinct = {3: 2944, 4: 8704}.get(expected_dimension, 0) if expected else 0
+            assert len(unique) == distinct
             totals.update(counts)
         print("ORDER_PERMUTED", int(free_order), "K02_STAGE", donor,
               "K05_STAGES", stages, "DIMENSION", expected_dimension,
@@ -241,6 +247,6 @@ for free_order in (False, True):
               "COMPLETE_HASHES", counts["complete_checks"],
               "UNIQUE_COMPONENTS", len(unique), "ORIGINAL_HITS", counts["original_hits"],
               "PLANTED_CONTROL", counts["synthetic_positive"])
-assert totals["complete_checks"] == 38912
+assert totals["complete_checks"] == 228352
 assert totals["original_hits"] == 0
-print("ORIGINAL K04 UNSOLVED; TWO SOURCE-COMPATIBLE 3-BIT MODELS EXHAUSTED")
+print("ORIGINAL K04 UNSOLVED; TWO 3-BIT AND TWO 4-BIT SELECTED-DONOR MODELS EXHAUSTED")
