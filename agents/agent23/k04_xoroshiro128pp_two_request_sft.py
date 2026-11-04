@@ -23,13 +23,13 @@ def rot(v, shift):
 def step(a, b, plus=False):
     out = ((a + b) & N) if plus else (rot((a + b) & N, 17) + a) & N
     t = a ^ b
-    return out, (rot(a, 49) ^ t ^ ((t << 21) & N)) & N, rot(t, 28)
+    return out, (rot(a, 24 if plus else 49) ^ t ^ ((t << (16 if plus else 21)) & N)) & N, rot(t, 37 if plus else 28)
 
 
 def smtstep(a, b, plus=False):
     out = (a + b) if plus else RotateLeft(a + b, 17) + a
     t = a ^ b
-    return out, RotateLeft(a, 49) ^ t ^ (t << 21), RotateLeft(t, 28)
+    return out, RotateLeft(a, 24 if plus else 49) ^ t ^ (t << (16 if plus else 21)), RotateLeft(t, 37 if plus else 28)
 
 
 def encode(words, view):
