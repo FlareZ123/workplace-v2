@@ -105,8 +105,12 @@ for rep, layout, method, op, scope, direction, sep in product(
         max_equal_bytes = max(max_equal_bytes, equal)
     hash_family_count += 1
 assert hash_family_count == 6144 and hash_holdout == 0
-assert all(apply(x, 0x1234567890ABCDEF1234567890ABCDEF, "xor") ==
-           (x ^ 0x1234567890ABCDEF1234567890ABCDEF) for x in (0, 3, MASK))
+planted_pad = 0x1234567890ABCDEF1234567890ABCDEF
+planted_source = [int.from_bytes(digest128(emitter_input(n, "raw", "ptw", "suffix", b"|"), "sha256-first"), "big") for n in numbers]
+planted_packets = [apply(v, planted_pad, "xor") for v in planted_source]
+recovered_pad = offset(planted_packets[0], planted_source[0], "xor")
+assert recovered_pad == planted_pad
+assert all(apply(v, recovered_pad, "xor") == p for v, p in zip(planted_source[1:], planted_packets[1:]))
 
 # The second boundary comprises genuine selected K02 revision pairs and
 # selected AX7782 K07 checkpoint attempt pairs, all eight sequence positions.
@@ -174,8 +178,12 @@ for name, p in pairs.items():
         hits += sum((a*x+b)&65535 == y for x, y in p[2:])
     ring[name] = (len(alphas), hits)
 assert ring == {"K02": (1, 0), "K07": (1, 0)}
-assert all((0x53db*x+0x6a23)&65535 == y for x,y in
-           zip(range(8), [(0x53db*x+0x6a23)&65535 for x in range(8)]))
+planted_old = list(range(8))
+planted_new = [(0x53db*x+0x6a23)&65535 for x in planted_old]
+planted_alpha = (planted_new[1]-planted_new[0])&65535
+planted_beta = planted_new[0]
+assert (planted_alpha, planted_beta) == (0x53db, 0x6a23)
+assert all(((planted_alpha*x+planted_beta)&65535)==z for x,z in zip(planted_old[2:],planted_new[2:]))
 
 # Direct matched-ID coupon source family: every PTW417 four-serial ordered
 # tuple, both common 32-bit serializers, then the fixed original route mask.
@@ -194,7 +202,14 @@ for indexes in permutations(range(17), 4):
         attempts += 1
 assert attempts == 114240 and hits == 0
 planted = b"".join(ptw417[i][::-1] for i in (1, 6, 12, 4))
-assert hashlib.sha256(bytes(a ^ b for a, b in zip(planted, mask))).digest() == hashlib.sha256(bytes(a ^ b for a, b in zip(planted, mask))).digest()
+synthetic_commitment = hashlib.sha256(bytes(a ^ b for a, b in zip(planted, mask))).hexdigest()
+synthetic_found = 0
+for indexes in permutations(range(17), 4):
+    for reverse in (False, True):
+        coupon = b"".join(ptw417[i][::-1] if reverse else ptw417[i] for i in indexes)
+        key = bytes(a ^ b for a, b in zip(coupon, mask))
+        synthetic_found += hashlib.sha256(key).hexdigest() == synthetic_commitment
+assert synthetic_found == 1
 print(json.dumps({
     "sources_pinned": len(PINS), "matched_PTWs_and_printer_jobs": len(numbers),
     "hash_emitter_models": hash_family_count, "exact_emitter_holdouts": hash_holdout,
