@@ -1,0 +1,22 @@
+name: Agent19 K04 4 distinct byte hex-glyph repairs
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  four-nibble-correction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile source-pinned exhaustive glyph repair solver
+        run: cc -O3 -std=c11 -Wno-deprecated-declarations agents/agent19/k04_four_distinct_byte_nibbles_sft.c -lcrypto -o /tmp/k04nibs
+      - name: Validate original-source hashes and planted four-glyph positive
+        run: /tmp/k04nibs self-test
+      - name: Exhaust distinct four-byte source nibble positions
+        run: /tmp/k04nibs ${{ matrix.shard }}
