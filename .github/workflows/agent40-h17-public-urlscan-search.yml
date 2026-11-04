@@ -1,0 +1,64 @@
+name: Agent40 H17 public urlscan index
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read only indexed public capture metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          from datetime import datetime, timezone
+
+          HOST = "noyes-energy-group.pages.dev"
+          BASE = "https://urlscan.io/api/v1/search/"
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+          opener = urllib.request.build_opener(NoRedirect)
+          print("PROBE_TIME", datetime.now(timezone.utc).isoformat(), flush=True)
+          q = urllib.parse.urlencode({"q": "task.domain:" + HOST, "size": "100"})
+          u = BASE + "?" + q
+          try:
+              with opener.open(urllib.request.Request(u, headers={
+                  "User-Agent": "H17-archival-public-index-inventory/1.0",
+                  "Accept": "application/json"
+              }), timeout=20) as response:
+                  data = response.read(150001)
+                  print("INDEX_STATUS", response.status, "BYTES",len(data), flush=True)
+          except urllib.error.HTTPError as e:
+              print("INDEX_HTTP_ERROR", e.code, str(e.reason), flush=True)
+          except (urllib.error.URLError,TimeoutError) as e:
+              print("INDEX_NETWORK_ERROR", str(e)[:250], flush=True)
+          else:
+              if len(data) > 150000:
+                  print("INDEX_OVERSIZE", flush=True)
+              else:
+                  try:
+                      data = json.loads(data)
+                  except ValueError:
+                      print("INDEX_NONJSON", flush=True)
+                  else:
+                      rows = data.get("results", [])
+                      print("PUBLIC_RESULT_ROWS",len(rows),"TOTAL",data.get("total"),flush=True)
+                      for item in rows:
+                          task=item.get("task",{})
+                          original=task.get("url","")
+                          p=urllib.parse.urlsplit(original)
+                          if (p.scheme!="https" or p.hostname!=HOST or p.username is not None
+                              or p.password is not None or p.path.lower().startswith(
+                              ("/admin","/api","/login","/signin","/partner","/account"))):
+                              continue
+                          print("PUBLIC_INDEXED_SOURCE", task.get("time",""),original,
+                                item.get("page",{}).get("status",""),
+                                item.get("result",""),flush=True)
+          print("INDEX_QUERY_COMPLETE",flush=True)
+          PY
