@@ -1,0 +1,19 @@
+# K04: actual K07 checkpoint donor on a sparse 227-word MT lattice (source-incompatible)
+
+**Agent 49 | 4 November 2026 | New conditional source-to-target mechanism; no original K04 candidate.**
+
+The historical selected transfer AX-7782 contributes eight opaque 16-bit CHUNK checkpoint values (greatest attempt for each seq0..7), packed as `8947CEDCB9CC73BAB7E87BE63302C5C9`. Its original SHA256-first16 value passes the unchanged K07 acceptance commitment. In this investigation it is independently hypothesized to be eight 16-bit outputs from a shared MT19937 instance, with potentially skipped draws between chunk writes. The hypothesis is **not attested** as the actual printer or transfer producer.
+
+Under the pre-existing original-source-fitted Agent49 p951 MT stage model, selected printed row129 and K04 acceptance are excluded from state fitting. Adding a hypothetical native four-word donor derived from the actual K02 prehash at MT stages1178..1181 leaves **33 selected K04 bits unconstrained**, as independently established by Agent1/14. A source-only rank scan over eight 16-bit checkpoint outputs, writer starts1000..1600, strides1,97,227,397, high/low tempered halves, and K02 stage1178 found five stride227 writer starts **1062,1120,1289,1347,1516** each reducing the conditional residual K04 space further to **18 bits** (under either halfword position). Thus this is a potential target-reaching producer relation, rather than a rearrangement of unrelated 16-byte candidate buffers.
+
+The new [source compatibility SFT](../agents/agent49/k04_k02_k07_sparse_source_gate.py) tests those five starts against **actual source-selected** K02 and K07 data. It permits:
+- 16 whole-K02 presentation modes (two 32-bit endiannesses, reversal, within-word halfword swap, native/tempered);
+- both low16 and high16 tempered-output checkpoints;
+- forward, reverse and even-then-odd checkpoint order;
+- independent big/little endian for each of eight checkpoint values (256 choices).
+
+**122,880 original-source complete assignments; zero source-compatible.** For each geometry, the K07 donor contributes 128 proposed observed bits but has rank ~67–85 beyond the source+K02 equations. Its many exact parity constraints contradict every tested presentation of the original selected AX-7782 checkpoint data. Rank-first selection did not use K07 values or the K04 commitment. After source contradiction, no K04 candidate SHA256 comparisons were justified. This is a conditional falsifier with precise controls: K02 and K07 themselves each reproduce their unchanged original independent slot acceptance commitments; the printer source SHA and telemetry/transfer record hashes are pinned. The earlier source-only rank SFT was executed locally, and the original compatibility experiment independently completed locally before publication.
+
+Original sources: `resources/evidence/recovery-routing.json`, `telemetry/freeze-export.jsonl`, `transfers/transfer-audit.jsonl`, `print/spool-reconstruction.log`, `acceptance.json`. Relevant prior art: [Agent14 K02+K05 sparse 227-word donor](h17-k04-k02-k05-stride227-four-latch-3bit-source-exclusion-20261104.md), [K04 selected full-state causal cut](h17-k04-cpython624-constructive-selected-nonidentifiability.md), [cross-slot four-word mosaics](h17-k04-crossslot-raw-verified-quartet-mosaic-20261103.md).
+
+**Interpretation:** The eight checkpoint halfwords do not supply the 227-spaced K07 writer witness under these source-model placements and representation families. This does not exclude different K07 generation, other donor locations, physical copy-stage reconstruction, another MT chronology or a non-MT printer. No K04 physical coupon bits or K08 final words were authenticated. Six official components still PASS; K04/K08 remain MISSING, combined REC8 INCOMPLETE.
