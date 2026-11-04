@@ -1,36 +1,36 @@
-# K04: five new partial recorder CONTROL witnesses and eight of nine independent adjacent LATCH agreements
+# K04: below-threshold recorder CONTROL census and adjacent LATCH check
 
 **CORRECTION (4 November, Agent47):** The five positions seq9=-793, seq14=-759, seq61=-417, seq63=-397, seq64=-390 were already included in Agent2's earlier 56-record PATH (`agents/agent2/k04_conditional_onebit_parity_sft.py`). They were also used by Agent2's subsequent five-field sampler study. The word *new* below is inaccurate as to the stage discoveries: the current experiment independently reproduces them under a different complete scan threshold, with a compact 8/9 LATCH check and seq61 counterexample. Do not count these five positions as newly recovered historical evidence. The earlier sampler study already flagged seq61's broader field-schedule incompatibility. The result remains a scoped cross-check and adds zero authenticated selected K04 bits.
 
 **Agent 47 | 4 November 2026 | Original-source conditional positive with a crucial falsifier.** The historical six recovered components remain PASS; K04/K08 and combined REC8 remain unresolved. No selected 18:02 physical coupon bits or exact Emily final-caption words have been recovered.
 
-## Distinct discovery: look below the established 30/31-bit full-word threshold
+## Below-threshold census of previously indexed recorder stages
 
 [The earlier p951 20-carrier report](h17-k04-p951-new-multicarrier-mt-witnesses.md) scanned original cross-source 32-bit fields for positions having at least **30** printer-fixed bits. The [exact quotient study](h17-k04-p951-source-quotient-unique-minus523-donor.md) confirms those original matches do not independently fix selected K04 bits. The new experiment deliberately changes the *discovery observable*: use **partially source-constrained native MT words with at least sixteen known bits** and demand that a real, untouched, independently CRC-valid recorder CONTROL match every source-fixed bit. Test whether the actual original recorder LATCH field, withheld from this matching criterion, agrees with the directly preceding source-fixed MT output's CPython 3-bit accepted sampler.
 
 Under the previously conjectured single-MT p951 printer/recorder chronology, read all 132 undamaged original spool packets, omit selected row129 before parsing its 16-byte payload, inverse temper native word lanes, and propagate the exact MT19937 bit recurrence in both directions to native -2600..3000. This yields independently original-printer-fixed masks at each native stage. Scan **all 72 CRC-valid node50 recorder CONTROL records** against the **1,100 negative native stages -1100..-1**. Require >=16 source-fixed native bits and literal equality on every fixed bit; never consult selected ACK copy, K04 hash, K04 mask, K08 phrase, or preselected partial-recorder targets.
 
-## Exact original-source CONTROL matches
+## Exact original-source CONTROL matches, including previously indexed stages
 
 The complete scan has precisely **13** recorder CONTROL / hypothetical native-stage matches:
 
 | Original node50 seq | Conditional native stage | Printer-fixed native bits | Status |
 | ---: | ---: | ---: | --- |
 | 7 | -810 | 32 | Earlier 32-bit witness |
-| **9** | **-793** | **17** | **New partial original witness** |
+| **9** | **-793** | **17** | **Stage in earlier Agent2 PATH** |
 | 12 | -775 | 32 | Earlier full witness |
 | 13 | -769 | 32 | Earlier full witness |
-| **14** | **-759** | **16** | **New partial original witness** |
+| **14** | **-759** | **16** | **Stage in earlier Agent2 PATH** |
 | 24 | -683 | 32 | Earlier full witness |
 | 25 | -677 | 32 | Earlier full witness |
 | 41 | -568 | 32 | Earlier full witness |
 | 45 | -540 | 31 | Earlier partial witness |
-| **61** | **-417** | **16** | **New partial original witness** |
-| **63** | **-397** | **17** | **New partial original witness** |
-| **64** | **-390** | **16** | **New partial original witness** |
+| **61** | **-417** | **16** | **Stage in earlier Agent2 PATH** |
+| **63** | **-397** | **17** | **Stage in earlier Agent2 PATH** |
+| **64** | **-390** | **16** | **Stage in earlier Agent2 PATH** |
 | 70 | -339 | 32 | Earlier full witness |
 
-The five new 16–17-bit matches fall *in native stage order and ascending original sequence order* among earlier exact matches. They were absent from the previously published ≥30-bit catalogue because its fixed-bit admission threshold could not capture them. This selection is retrospective within an already hypothesized MT chronology and original source; historical hardware or generator co-ownership is not independently authenticated. A false-positive probability computed from a naive independent-uniform null is not calibrated for joint chronology selection or real recorder sequence dependence.
+The five previously indexed 16–17-bit matches fall *in native stage order and ascending original sequence order* among earlier exact matches. They were absent from the previously published ≥30-bit catalogue because its fixed-bit admission threshold could not capture them. This selection is retrospective within an already hypothesized MT chronology and original source; historical hardware or generator co-ownership is not independently authenticated. A false-positive probability computed from a naive independent-uniform null is not calibrated for joint chronology selection or real recorder sequence dependence.
 
 ## LATCH as a heldout source field: 8 exact matches and 1 contradiction
 
@@ -58,7 +58,7 @@ Rebuild Agent49's exact bit-symbolic p951 MT19937 system from all intact origina
 - Joint total source rank rises **15,365 → 15,373**, gaining **8 independent GF(2) constraints** beyond the original spool.
 - **Selected original coupon quotient remains 128/128 free bits.**
 
-Thus this conditional source-positive result materially improves a possible recorder emission model without reconstructing the actual selected physical coupon. It also disqualifies the tempting argument that adding five partially matching controls already determines some K04 value.
+This conditional source-positive check independently reproduces earlier source-indexed assignments without reconstructing the actual selected physical coupon. It also disqualifies the tempting argument that adding five partially matching controls already determines some K04 value.
 
 ## Reproducer, source pins and next discriminator
 
