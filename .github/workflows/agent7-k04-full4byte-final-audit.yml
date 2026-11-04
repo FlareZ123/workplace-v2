@@ -1,0 +1,50 @@
+name: Agent7 K04 full-fourbyte final log and coupon-hit audit
+
+on:
+  workflow_run:
+    workflows:
+      - Agent7 K04 remaining 1713 full arbitrary four-byte supports
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      status_only:
+        description: Only test GitHub API and index all 128 jobs
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  reconcile:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.id == 41838591961
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned atomic-write dependency
+        run: python -m pip install --disable-pip-version-check "filelock>=3.0,<4"
+      - name: Compile audit and check full 128-worker API
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m py_compile agents/agent7/k04_full4byte_128job_audit.py
+          python agents/agent7/k04_full4byte_128job_audit.py --status-only
+      - name: Reconcile all 128 original SHA256 logs and detect K04 matches
+        if: github.event_name == 'workflow_run' || inputs.status_only == false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/agent7/k04_full4byte_128job_audit.py
+      - name: Preserve source-pinned full-run provenance and original hits
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent7-k04-41838591961-complete-audit
+          path: agents/agent7/k04_full4byte_reconciled_41838591961.json
+          if-no-files-found: warn
