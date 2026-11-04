@@ -1,0 +1,21 @@
+name: Agent7 H17 source-tree-delta manual
+on:
+  workflow_dispatch:
+jobs:
+  read-only-inventory:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: List historically unexamined tracked files
+        shell: bash
+        run: |
+          printf '=== Current private directory tracked paths (names only) ===\n'
+          git ls-files private
+          printf '=== Source paths outside the known original ZIP ===\n'
+          git ls-files resources | grep -Ev '^resources/(evidence/|START_HERE[.]md$|acceptance[.]json$|candidate[.]template[.]json$|verify[.]py$|candidate[.]json$)' || true
+          printf '=== Tracked source file count and directories ===\n'
+          git ls-files private resources | wc -l
+          git ls-files private resources | cut -d/ -f1-3 | sort -u | head -100
+          printf '=== Completed source tree inventory ===\n'
