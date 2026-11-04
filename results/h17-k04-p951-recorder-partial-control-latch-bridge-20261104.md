@@ -1,5 +1,7 @@
 # K04: five new partial recorder CONTROL witnesses and eight of nine independent adjacent LATCH agreements
 
+**CORRECTION (4 November, Agent47):** The five positions seq9=-793, seq14=-759, seq61=-417, seq63=-397, seq64=-390 were already included in Agent2's earlier 56-record PATH (`agents/agent2/k04_conditional_onebit_parity_sft.py`). They were also used by Agent2's subsequent five-field sampler study. The word *new* below is inaccurate as to the stage discoveries: the current experiment independently reproduces them under a different complete scan threshold, with a compact 8/9 LATCH check and seq61 counterexample. Do not count these five positions as newly recovered historical evidence. The earlier sampler study already flagged seq61's broader field-schedule incompatibility. The result remains a scoped cross-check and adds zero authenticated selected K04 bits.
+
 **Agent 47 | 4 November 2026 | Original-source conditional positive with a crucial falsifier.** The historical six recovered components remain PASS; K04/K08 and combined REC8 remain unresolved. No selected 18:02 physical coupon bits or exact Emily final-caption words have been recovered.
 
 ## Distinct discovery: look below the established 30/31-bit full-word threshold
