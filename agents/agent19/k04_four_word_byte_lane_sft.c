@@ -1,6 +1,8 @@
 /*
  * H-17 REC8/1 K04, selected ACK2 copy: independently arbitrary same byte-lane repairs.
- * Each 32-bit word may have exactly one arbitrary replacement byte at the same offset.
+ * Modes 0..3 replace one arbitrary byte in each 32-bit word in the same lane.
+ * Modes 4..15 replace the first two bytes plus a second adjacent two-byte burst
+ * starting at offset 3..14. Mode 4 = first2 and 3,4; mode 15 = first2 and 14,15.
  * No selected physical coupon bytes are inferred from the copier. A hit requires the
  * untouched SHA256 commitment, then separate historical authenticity assessment.
  *
@@ -8,7 +10,8 @@
  *   cc -O3 -std=c11 agents/agent19/k04_four_word_byte_lane_sft.c -lcrypto -o k04lane
  *
  * Usage:
- *   k04lane 0 0 16      scan lane 0, shard 0 of 16
+ *   k04lane 0 0 8       scan lane 0, shard 0 of 8
+ *   k04lane 4 0 8       scan dual-burst offset3, shard0 of8
  *   k04lane self-test   confirm complete planted 4-byte target is rediscovered
  */
 #include <openssl/sha.h>
@@ -65,12 +68,13 @@ static int sources_pinned(void) {
     }
     return 1;
 }
-static int search(int lane, uint64_t first, uint64_t count,
+static int search(int mode, uint64_t first, uint64_t count,
                   const unsigned char target[SHA256_DIGEST_LENGTH],
                   int progress) {
     unsigned char candidate[16],digest[SHA256_DIGEST_LENGTH];
     for (int i=0;i<16;i++) candidate[i]=COPIED[i]^MASK[i];
-    const int a=lane, b=lane+4, c=lane+8, d=lane+12;
+    const int a=(mode<4?mode:0), b=(mode<4?mode+4:1),
+              c=(mode<4?mode+8:mode-1), d=(mode<4?mode+12:mode);
     int found=0;
     for (uint64_t value=first; value<first+count; value++) {
         candidate[a]=(unsigned char)(value>>24);
@@ -79,7 +83,7 @@ static int search(int lane, uint64_t first, uint64_t count,
         candidate[d]=(unsigned char)value;
         SHA256(candidate,16,digest);
         if (!memcmp(digest,target,SHA256_DIGEST_LENGTH)) {
-            printf("MATCH lane=%d bytes=%08" PRIX64 " component=",lane,value);
+            printf("MATCH mode=%d bytes=%08" PRIX64 " component=",mode,value);
             hexprint(candidate,16);
             printf(" physical_coupon=");
             for (int i=0;i<16;i++) printf("%02X",candidate[i]^MASK[i]);
@@ -87,7 +91,7 @@ static int search(int lane, uint64_t first, uint64_t count,
             found++;
         }
         if (progress && ((value-first+1)&0xFFFFFF)==0) {
-            printf("CHECKED lane=%d count=%" PRIu64 "\n",lane,value-first+1);
+            printf("CHECKED mode=%d count=%" PRIu64 "\n",lane,value-first+1);
             fflush(stdout);
         }
     }
@@ -105,18 +109,28 @@ static int selftest(void) {
     SHA256(expected,16,digest);
     int found=search(lane,0xDEAD0000ULL,65536,digest,0);
     printf("Synthetic 4-independent-byte lane positive: %s\n",found==1?"PASS":"FAIL");
-    return found==1;
+    const int mode=9;  /* first two bytes and adjacent offsets 8,9 */
+    for (int i=0;i<16;i++) expected[i]=COPIED[i]^MASK[i];
+    const uint32_t planted2=0xB10C89ABu;
+    expected[0]=(unsigned char)(planted2>>24);
+    expected[1]=(unsigned char)(planted2>>16);
+    expected[8]=(unsigned char)(planted2>>8);
+    expected[9]=(unsigned char)planted2;
+    SHA256(expected,16,digest);
+    int found2=search(mode,0xB10C0000ULL,65536,digest,0);
+    printf("Synthetic independent dual-burst positive: %s\n",found2==1?"PASS":"FAIL");
+    return found==1 && found2==1;
 }
 int main(int argc,char **argv) {
     if (!sources_pinned()) return 2;
     if (argc==2 && !strcmp(argv[1],"self-test")) return selftest()?0:3;
     if (argc!=4) {
-        fprintf(stderr,"Usage: %s LANE(0..3) SHARD(0..N-1) N(1..256)\n",argv[0]);
+        fprintf(stderr,"Usage: %s MODE(0..15) SHARD(0..N-1) N(1..256)\n",argv[0]);
         return 2;
     }
     char *end;
-    long lane=strtol(argv[1],&end,10);
-    if (*end||lane<0||lane>3) return 2;
+    long mode=strtol(argv[1],&end,10);
+    if (*end||mode<0||mode>15) return 2;
     long shard=strtol(argv[2],&end,10);
     if (*end||shard<0) return 2;
     long shards=strtol(argv[3],&end,10);
@@ -124,12 +138,12 @@ int main(int argc,char **argv) {
         (shards&(shards-1))!=0) return 2;
     uint64_t count=(UINT64_C(1)<<32)/(uint64_t)shards;
     uint64_t first=count*(uint64_t)shard;
-    printf("ORIGINAL lane=%ld shard=%ld/%ld range=%" PRIu64 "..%" PRIu64
+    printf("ORIGINAL mode=%ld shard=%ld/%ld range=%" PRIu64 "..%" PRIu64
            " candidates=%" PRIu64 "\n",
-           lane,shard,shards,first,first+count-1,count);
+           mode,shard,shards,first,first+count-1,count);
     fflush(stdout);
-    int found=search((int)lane,first,count,EXPECTED,1);
-    printf("DONE lane=%ld shard=%ld complete=%" PRIu64
-           " original matches=%d\n",lane,shard,count,found);
+    int found=search((int)mode,first,count,EXPECTED,1);
+    printf("DONE mode=%ld shard=%ld complete=%" PRIu64
+           " original matches=%d\n",mode,shard,count,found);
     return found?10:0;
 }
