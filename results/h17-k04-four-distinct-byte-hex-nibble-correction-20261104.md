@@ -37,6 +37,14 @@ DONE shard=15 quartets=113 complete=118489088 original_or_control_hits=0
 | Arbitrary hexadecimal replacements for each plane | 65,536 candidate values | |
 | **Total complete 16-byte hashes** | **1,908,408,320** | **0** |
 
+## Combined exact Hamming-radius consequence
+
+The inherited v1 [complete three-byte arbitrary replacement exclusion](h17-v1-prior-art-gate.md) covers every corrected coupon differing from the selected copied buffer in **no more than three whole bytes**, regardless of how many nibbles in those bytes change. The new 4-distinct-byte nibble experiment covers all corrected coupons differing in **at most four hex characters but exactly four whole-byte positions**. These two families partition all coupon candidates at **hex-character substitution Hamming distance 0..4** (the same original SHA-256 and mask are used). Their union therefore provides a source-independent finite proof that:
+
+> Under unchanged original K04 route mask, selected ACK2 stage, and substitution-only hexadecimal buffer model, the true 16-byte source coupon cannot differ from `A9A9DC5731A5E2AE879C47215C2559D5` in four or fewer hexadecimal glyphs; it must differ in **at least five glyph positions**.
+
+This is a **lower bound on hypothetical physical-coupon distance under a declared transport model**, not five authenticated values or a statement that a five-glyph physical corruption occurred. Any alternative source/copy path or insert/delete/shift can invalidate the premise.
+
 ## Interpretation and boundary
 
 This exhaustive result excludes a selected copied packet that differs from the true physical coupon through substitution of **at most four nibble glyphs**, each located in a different byte, while all other printed hex glyphs are faithfully retained. Earlier <=3-byte original-target negatives already handle nibble mistakes confined to three or fewer bytes. Together they reject all substitution-only four-nibble mistakes, provided **the original route mask and candidate-stage reduction are correct**.
