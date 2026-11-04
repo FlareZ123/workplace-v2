@@ -1,0 +1,27 @@
+name: Agent43 K04 exact-five-hex-glyph manual search
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'front2 (>=2 leading A9A9 glyph changes) or all5'
+        required: true
+        default: 'front2'
+        type: choice
+        options:
+          - front2
+          - all5
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile
+        run: cc -O3 -std=c11 -Wall -Wextra agents/agent43/k04_five_hex_glyph_sft.c -lcrypto -o /tmp/k04_five_glyph
+      - name: Verify source pins, planted positive, and complete assigned shard
+        run: /tmp/k04_five_glyph resources '${{ inputs.mode }}' '${{ matrix.shard }}' 32
