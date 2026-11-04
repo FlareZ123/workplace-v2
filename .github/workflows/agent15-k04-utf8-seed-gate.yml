@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - .github/workflows/agent15-k04-utf8-seed-gate.yml
+      - agents/agent15/k04_p951_utf8_seed_gate_sft.py
   workflow_dispatch:
 permissions:
   contents: read
