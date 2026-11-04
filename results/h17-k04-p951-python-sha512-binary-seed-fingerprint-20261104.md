@@ -89,6 +89,28 @@ The theorem is strictly about **verbatim concatenation of original preserved byt
 
 Reproducer: [source-pinned sparse-seed donor SFT](../agents/agent15/k04_p951_sparse_seed_donor_sft.py), which re-derives the 86 word domains from the original 132 safe source packets using the fingerprint SFT, includes a two-path planted positive, and accepts the uploaded ZIP for full 47-stream coverage. Local execution against the original uploaded ZIP independently reproduced the exact counts above. The complete 86-position binary-seed derivation, six baseline SHA-512 digest terms, two late terms and four genuine complete synthetic printer-spool controls were independently verified by [successful CI run 41747605948](https://github.com/FlareZ123/workplace-v2/actions/runs/41747605948) on the [companion source SFT](../agents/agent15/k04_p951_sha512_seed_fingerprint_sft.py). A separate [candidate-seed-to-complete-K04 gate](../agents/agent15/k04_p951_full_seed_candidate_gate.py) now accepts a proposed B, requires all source-derived word/digest conditions first, then predicts the *entire selected stage951 coupon* and compares its reduced component with the untouched original K04 commitment. Its implementation was executed locally in an independent code path with four true Python source-spool positives n606/n607/n608/n623, four heldout selected-coupon reproductions, and four altered-seed source rejections. No B from original records has passed it.
 
+## Entire family of nested affine 32-bit seed streams excluded by two original distant pairs
+
+The large binary seed B might itself have been generated from a short scalar state by a simple 32-bit LCG, then supplied to standard `random.Random(B)`. This *two-level* source producer is distinct from testing a 32-bit LCG directly against the printer output. It offers a potentially complete coupon generator through a low-entropy seed **if the historical source supports it**.
+
+The original-source 86-word map contains two sufficiently distant adjacent word pairs within B (in backward CPython key order):
+
+- `key[602]∈{64589C88,E4589C88}` then `key[601]=49342EC0`, when read as forward B words.
+- Exactly **579** output transitions later, `key[23]=06EDCDAD` then `key[22]=FD6A4CF7`.
+
+For any 32-bit affine LCG generator `x_next=(a*x+b) mod 2^32`, with **arbitrary** multiplier `a`, increment `b`, origin and seed, both adjacent pairs must have the same coefficients. Their difference gives the exact necessary modular equation
+
+```text
+a * (key23 - key602) = key22 - key601  (mod 2^32)
+b = key22 - a * key23  (mod 2^32)
+```
+
+Check both 32-bit big- and little-endian serialization and both possible high-bit completions of `key602`. Complete modular-congruence inversion yields **six possible (a,b) assignments** total: two big-endian and four little-endian. Advance each from the earlier `key602` value by 579 exact LCG steps. **Zero of six** reaches the independently fixed later `key23` value, so no standard fixed-step, contiguous, source-key-compatible 32-bit affine word stream can be B under this assumed outer Python model. The calculation covers **all 2^64 choices of a,b** implicitly through the two observed neighboring-pair equations, rather than a dictionary of named LCG constants.
+
+An independently generated true affine seed-stream construction at n606/n623 and both BE/LE serialization serves as **four synthetic positive controls**: the exact same coefficient solver finds at least one consistent assignment each time. [Source-pinned standalone reproducer](../agents/agent15/k04_p951_nested_lcg_seed_sft.py) recomputes the four authentic source-key word domains with selected row129 omitted and uses the four controls before performing the source test. [CI run 41750075126 SUCCESS](https://github.com/FlareZ123/workplace-v2/actions/runs/41750075126), 4 November 2026.
+
+This **excludes only the nested unrestricted affine LCG32 single-output-per-word architecture with direct whole-word BE/LE serialization**, not skipped/dropped outputs, non-affine generators, encoded word transformations, independent random B, or any real physical printer model. Authentic selected K04 bits remain 0/128; no final K08 words are inferred.
+
 ## Limits and useful next crack
 
 The source documents never establish CPython, the p951 output positions, a first-output initialization epoch, or the specific binary seed. All assertions here are conditional on that model. A matching six-chunk SHA512 fingerprint is **strong evidence for a specific proposed seed within the model**, but it is not by itself proof of the physical printer/copy stage. An actual complete seed can be advanced to a full withheld selected-output prediction and checked with the untouched original K04 slot commitment.
