@@ -1,0 +1,39 @@
+name: Agent49 K08 four-control author voice Qwen1.5B
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/agent49-k08-author-15b.yml
+
+permissions:
+  contents: read
+
+jobs:
+  author-voice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU inference stack
+        run: |
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2" filelock
+      - name: Validate source masking then generate all four heldout controls and K08
+        env:
+          HF_HUB_DISABLE_TELEMETRY: '1'
+          TOKENIZERS_PARALLELISM: 'false'
+        run: |
+          python -m py_compile agents/agent49/k08_author_15b_fourholdout_sft.py
+          python agents/agent49/k08_author_15b_fourholdout_sft.py --smoke
+          python agents/agent49/k08_author_15b_fourholdout_sft.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent49-k08-author-15b-predictions
+          path: agents/agent49/k08_author_15b_candidates.jsonl
+          if-no-files-found: warn
