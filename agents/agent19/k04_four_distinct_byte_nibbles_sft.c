@@ -88,15 +88,14 @@ int main(int argc,char **argv){
  four(0,5,10,15,5,0xC0DE,test);
  SHA256(test,16,hash);
  if(argc==2 && strcmp(argv[1],"self-test")==0){
-  /* The synthetic true quartet [0,5,10,15] is rank of its actual source order. */
-  int rank=0;for(int a=0;a<13;a++)for(int b=a+1;b<14;b++)
-  for(int c=b+1;c<15;c++)for(int d=c+1;d<16;d++,rank++)
-   if(a==0&&b==5&&c==10&&d==15){
-    int shard=rank%16;int ok=search(shard,hash,1);
-    printf("Synthetic four-distinct-byte nibble recovery: %s (shard %d)\n",ok?"PASS":"FAIL",shard);
-    return ok?0:3;
-   }
-  return 3;
+  unsigned char candidate[16];int hits=0;
+  for(unsigned plane=0;plane<16;plane++)for(unsigned glyphs=0;glyphs<65536;glyphs++){
+   four(0,5,10,15,plane,(uint16_t)glyphs,candidate);
+   if(equal(candidate,hash))hits++;
+  }
+  printf("Synthetic four-distinct-byte nibble recovery: %s (%d exact hits)\n",
+    hits==1?"PASS":"FAIL",hits);
+  return hits==1?0:3;
  }
  if(argc!=2){fputs("Usage: k04nibs SHARD(0..15) | self-test\n",stderr);return 2;}
  char *end;long shard=strtol(argv[1],&end,10);
