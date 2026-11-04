@@ -55,6 +55,40 @@ The companion [UTF-8 source-byte impossibility](h17-k04-p951-cpython-utf8-text-s
 
 For the remaining original n606..623 model branch, however, a binary seed `B` would have to supply both (a) the exact SHA-512 192-bit fingerprint here, and (b) source-forced raw bytes `FD 6A 4C F7` at the last 28..24-byte region of its input (the full source basis removes an earlier ambiguous `7D...` case). The 46 files of the supplied 50,526-byte ZIP contain no such raw four-byte substring. This excludes **verbatim individual source-file inputs and their direct substrings** as the seed `B`, but does not exclude independently generated, encoded, or source-transformed binary seeds.
 
+## Stronger source-to-binary-seed reconstruction and donor threshold
+
+A further use of the **same existing 94 source-fixed/near-fixed CPython key terms** is to interpret `key[j]` at `j>=16` as actual four-byte pieces of **the binary seed input B** immediately preceding the 64-byte SHA-512 suffix. The inverse key word's big-endian byte representation has the exact offset in the original seed:
+
+```text
+B[len(B)-4*(j-15) : len(B)-4*(j-16)] = key[j].to_bytes(4,"big")
+```
+
+The equation holds for every possible n606..623 for key positions `16<=j<=602`, and is agnostic to leading partial seed words. The original intact 132 printer rows supply **86 disjoint constrained original binary-seed word positions**, much stronger as a direct source-matching signature than the six SHA-512 digest chunks alone:
+
+| Direct seed-input constraints | Value |
+| --- | ---: |
+| Distinct four-byte positions `j=16..602` supported by original data | **86** |
+| Full 32-bit fixed words | **62** |
+| Two-option 32-bit words differing in one bit | **24** |
+| **Individual seed-input bits fixed under the generator model** | **2,728** |
+| Distinct four-byte allowed values across those positions | **110** |
+
+Illustrative exact source constraints: `key[22]=FD6A4CF7`, `key[23]=06EDCDAD`, `key[601]=49342EC0`; `key[602]∈{64589C88,E4589C88}`. The `seed(bytes,version=2)` case must satisfy all 86 position-constrained values **and** the six digest chunks, plus the optional wrap constraints for n606..608. As before, **these are bits of a hypothetical seed input**. They do not fix or authenticate the missing selected 16-byte K04 coupon.
+
+### Original-file donor coverage and a minimum-fragment theorem
+
+On the **exact original uploaded ZIP** (ZIP SHA-256 `e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94e1d64342bf7`), compare all 110 permitted four-byte values against the 46 original regular member bodies **and the raw ZIP container**. Scan each sliding four-byte raw window and every sliding eight-hex-digit window of maximal ASCII hex runs, with both nibble phases included.
+
+- **47 carrier streams**, 168,658 raw four-byte windows and 4,765 decoded-hex four-byte windows scanned.
+- **Zero** matches to any of the 110 source-required seed word values.
+- Synthetic control injected the source-required `key[22]` as raw bytes and `key[23]` as ASCII hex; the unchanged scanner recovered **exactly two** seeded hits.
+
+This produces a stronger, rigorously bounded conclusion than the earlier isolated `key[22]` absence: **a proposed B made solely by concatenating contiguous raw-source or decoded-hex carrier fragments would require at least 87 separate fragments.** Proof: all 86 constrained four-byte seed windows are disjoint and none occurs intact in any permitted carrier. Each such window must therefore straddle at least one concatenation boundary; one boundary can interrupt at most one of the 86 disjoint windows. Hence there must be at least 86 boundaries and at least 87 pieces.
+
+The theorem is strictly about **verbatim concatenation of original preserved byte spans**, including direct hex decoding, under a generator model whose historical application remains unknown. It does not rule out a seed drawn from OS randomness, a seed made from external/unrecovered material, a cryptographic transform, an encrypted/compressed-derived seed, arbitrary per-byte transformations, or a different print production method. The lack of four-byte matches is expected when comparing only 110 random-looking values against a small archive; it is a conditional provenance bound, not an independently positive signal of CPython.
+
+Reproducer: [source-pinned sparse-seed donor SFT](../agents/agent15/k04_p951_sparse_seed_donor_sft.py), which re-derives the 86 word domains from the original 132 safe source packets using the fingerprint SFT, includes a two-path planted positive, and accepts the uploaded ZIP for full 47-stream coverage. Local execution against the original uploaded ZIP independently reproduced the exact counts above. The complete binary-seed derivation is also now included in [the companion 4-spool SFT](../agents/agent15/k04_p951_sha512_seed_fingerprint_sft.py); its newest CI invocation is queued while other research workloads run, so no unobserved CI success is claimed here.
+
 ## Limits and useful next crack
 
 The source documents never establish CPython, the p951 output positions, a first-output initialization epoch, or the specific binary seed. All assertions here are conditional on that model. A matching six-chunk SHA512 fingerprint is **strong evidence for a specific proposed seed within the model**, but it is not by itself proof of the physical printer/copy stage. An actual complete seed can be advanced to a full withheld selected-output prediction and checked with the untouched original K04 slot commitment.
