@@ -1,4 +1,4 @@
-"""K04 p951: derive six SHA512 digest words of a hypothetical CPython bytes seed.
+"""K04 p951: derive six baseline and three length-dependent SHA512 digest words.
 
 Source-only, selected printer row129 withheld; no acceptance digest or XOR.
 Run: python agents/agent15/k04_p951_sha512_seed_fingerprint_sft.py
@@ -69,7 +69,7 @@ def reduce(equation: int, basis: dict[int,int]) -> int:
 
 
 def derive_seed_digest_words(packets: list[bytes],
-                             expr: list[list[int]]) -> dict[int,int]:
+                             expr: list[list[int]]) -> tuple[dict[int,int],dict[int,list[int]]]:
     assert len(packets)==len(STARTS)==133 and STARTS[129]==951
     basis: dict[int,int]={}
     for row,start in enumerate(STARTS):
@@ -105,7 +105,30 @@ def derive_seed_digest_words(packets: list[bytes],
             assert m==U,(j,i,hex(m))
             words.append(v)
         result[j]=(key_term(j,*words)-j)&U
-    return result
+    # These two late original source terms wrap into low SHA512 digest
+    # words for shorter possible seed-array lengths n606..608.
+    tails={}
+    for j in (607,608):
+        words=[]
+        missing=[]
+        for i in (j-1,j,j+1):
+            v=m=0
+            for bit,equation in enumerate(expr[i]):
+                reduced=reduce(equation<<1,basis)
+                if reduced<=1:
+                    v|=reduced<<bit
+                    m|=1<<bit
+            words.append(v)
+            missing.append(U^m)
+        assert sum(x.bit_count() for x in missing)<=1
+        options={key_term(j,*words)}
+        for pos,unfixed in enumerate(missing):
+            if unfixed:
+                extra=words.copy()
+                extra[pos]|=unfixed
+                options.add(key_term(j,*extra))
+        tails[j]=sorted(options)
+    return result,tails
 
 
 def seeded_spool_control(n: int, expr: list[list[int]]) -> None:
@@ -120,15 +143,19 @@ def seeded_spool_control(n: int, expr: list[list[int]]) -> None:
         for start in STARTS
     ]
     packet[129]=b""
-    observed=derive_seed_digest_words(packet,expr)
+    observed,tails=derive_seed_digest_words(packet,expr)
     expected={j:((complete>>(32*j))&U) for j in ANCHORS}
     assert observed==expected,(n,observed,expected)
+    for j in (607,608):
+        true_word=(complete>>(32*(j%n)))&U
+        true_term=(true_word+(j%n))&U
+        assert true_term in tails[j],(n,j,hex(true_term),tails[j])
     print(f"Actual seeded binary Python full-source positive n={n}: PASS",flush=True)
 
 
 def main() -> None:
     expr=expressions()
-    for n in (606,623):
+    for n in (606,607,608,623):
         seeded_spool_control(n,expr)
     raw=(ROOT/"resources/evidence/print/spool-reconstruction.log").read_bytes()
     assert hashlib.sha256(raw).hexdigest()==SOURCE_SHA
@@ -137,13 +164,23 @@ def main() -> None:
     # Source's selected payload bytes are never decoded.
     packets=[b"" if i==129 else bytes.fromhex(token.decode("ascii"))
              for i,token in enumerate(tokens)]
-    observed=derive_seed_digest_words(packets,expr)
+    observed,tails=derive_seed_digest_words(packets,expr)
     assert tuple(observed[j] for j in ANCHORS)==EXPECTED,observed
+    assert tails == {607:[0x13231B97],608:[0x5D3DC8B5,0xDD3DC8B5]},tails
+    expanded={}
+    for n in (606,607,608):
+        words={}
+        for j,options in tails.items():
+            if j%n<16:
+                words[str(j%n)]=[f"{(t-(j%n))&U:08X}" for t in options]
+        expanded[str(n)]=words
     print(json.dumps({
         "source_derived_SHA512_digest_32bit_big_endian_chunks": {
             str(j):f"{observed[j]:08X}" for j in ANCHORS
         },
         "conditional_seed_key_lengths": "606..623",
+        "late_source_first_pass_terms": {str(j):[f"{t:08X}" for t in choices] for j,choices in tails.items()},
+        "extra_SHA512_digest_words_by_seed_length": expanded,
         "model": "p951 first-cycle first-output CPython seed(bytes, version=2)",
         "binary_seed_matches": "not asserted",
         "selected_K04_bits_authenticated": 0,
