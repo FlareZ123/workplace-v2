@@ -1,0 +1,17 @@
+name: Agent15 K04 nested affine seed source cut
+on:
+  push:
+    paths:
+      - .github/workflows/agent15-k04-nested-lcg.yml
+      - agents/agent15/k04_p951_nested_lcg_seed_sft.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nested-seed-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Solve all source-consistent affine seed producers with genuine positives
+        run: python agents/agent15/k04_p951_nested_lcg_seed_sft.py
