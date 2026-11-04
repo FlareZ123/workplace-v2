@@ -1,4 +1,4 @@
-"""K04 p951: derive six baseline and three length-dependent SHA512 digest words.
+"""K04 p951: recover 86 sparse seed words and six SHA512 digest words.
 
 Source-only, selected printer row129 withheld; no acceptance digest or XOR.
 Run: python agents/agent15/k04_p951_sha512_seed_fingerprint_sft.py
@@ -69,7 +69,7 @@ def reduce(equation: int, basis: dict[int,int]) -> int:
 
 
 def derive_seed_digest_words(packets: list[bytes],
-                             expr: list[list[int]]) -> tuple[dict[int,int],dict[int,list[int]]]:
+                             expr: list[list[int]]) -> tuple[dict[int,int],dict[int,list[int]],dict[int,list[int]]]:
     assert len(packets)==len(STARTS)==133 and STARTS[129]==951
     basis: dict[int,int]={}
     for row,start in enumerate(STARTS):
@@ -128,7 +128,36 @@ def derive_seed_digest_words(packets: list[bytes],
                 extra[pos]|=unfixed
                 options.add(key_term(j,*extra))
         tails[j]=sorted(options)
-    return result,tails
+    # A Python bytes seed B is immediately followed by SHA512(B).
+    # Words j>=16 are four-byte fragments of B, counted from its end.
+    # A common stable 86-word source-only partial seed map exists for
+    # all the remaining hypothetical key lengths 606..623.
+    raw_seed_words={}
+    for j in range(16,603):
+        values=[]
+        missing=[]
+        for i in (j-1,j,j+1):
+            word=known_mask=0
+            for bit,equation in enumerate(expr[i]):
+                reduced=reduce(equation<<1,basis)
+                if reduced<=1:
+                    word|=reduced<<bit
+                    known_mask|=1<<bit
+            values.append(word)
+            missing.append(U^known_mask)
+        if sum(bits.bit_count() for bits in missing)>1:
+            continue
+        candidates={key_term(j,*values)}
+        for pos,unfixed in enumerate(missing):
+            if unfixed:
+                variant=values.copy()
+                variant[pos]|=unfixed
+                candidates.add(key_term(j,*variant))
+        raw_seed_words[j]=sorted({(t-j)&U for t in candidates})
+    assert len(raw_seed_words)==86
+    assert sum(len(choices)==1 for choices in raw_seed_words.values())==62
+    assert sum(len(choices)==2 for choices in raw_seed_words.values())==24
+    return result,tails,raw_seed_words
 
 
 def seeded_spool_control(n: int, expr: list[list[int]]) -> None:
@@ -143,9 +172,12 @@ def seeded_spool_control(n: int, expr: list[list[int]]) -> None:
         for start in STARTS
     ]
     packet[129]=b""
-    observed,tails=derive_seed_digest_words(packet,expr)
+    observed,tails,raw_seed_words=derive_seed_digest_words(packet,expr)
     expected={j:((complete>>(32*j))&U) for j in ANCHORS}
     assert observed==expected,(n,observed,expected)
+    for j,choices in raw_seed_words.items():
+        true_word=(complete>>(32*j))&U
+        assert true_word in choices,(n,j,hex(true_word),choices)
     for j in (607,608):
         true_word=(complete>>(32*(j%n)))&U
         true_term=(true_word+(j%n))&U
@@ -164,7 +196,7 @@ def main() -> None:
     # Source's selected payload bytes are never decoded.
     packets=[b"" if i==129 else bytes.fromhex(token.decode("ascii"))
              for i,token in enumerate(tokens)]
-    observed,tails=derive_seed_digest_words(packets,expr)
+    observed,tails,raw_seed_words=derive_seed_digest_words(packets,expr)
     assert tuple(observed[j] for j in ANCHORS)==EXPECTED,observed
     assert tails == {607:[0x13231B97],608:[0x5D3DC8B5,0xDD3DC8B5]},tails
     expanded={}
@@ -174,7 +206,22 @@ def main() -> None:
             if j%n<16:
                 words[str(j%n)]=[f"{(t-(j%n))&U:08X}" for t in options]
         expanded[str(n)]=words
+    assert raw_seed_words[22]==[0xFD6A4CF7]
+    assert raw_seed_words[23]==[0x06EDCDAD]
+    assert raw_seed_words[601]==[0x49342EC0]
+    assert raw_seed_words[602]==[0x64589C88,0xE4589C88]
     print(json.dumps({
+        "raw_binary_seed_word_constraints": {
+            "word_positions":len(raw_seed_words),
+            "exact_32bit_words":62,
+            "31bit_two_option_words":24,
+            "individual_bits_constrained":2728,
+            "source_word22": [f"{v:08X}" for v in raw_seed_words[22]],
+            "source_word23": [f"{v:08X}" for v in raw_seed_words[23]],
+            "source_word601": [f"{v:08X}" for v in raw_seed_words[601]],
+            "source_word602": [f"{v:08X}" for v in raw_seed_words[602]],
+            "byte_offset_for_key_word_j": "B[L-4*(j-15):L-4*(j-16)]",
+        },
         "source_derived_SHA512_digest_32bit_big_endian_chunks": {
             str(j):f"{observed[j]:08X}" for j in ANCHORS
         },
