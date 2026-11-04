@@ -109,12 +109,16 @@ for name, (src, selected) in transitions.items():
     out[name] = {"models":len(models),"exact_other_selected":matches,
                  "maximum_bytes_correct_of_16":max_correct}
 
-# Genuine planted full-record postprocessor prediction test.
+# Independently generated synthetic holdout, with fixed hidden four-word pad.
 a=bytes.fromhex("731462BCA19E5754FA10504B09037A5C")
-b=bytes.fromhex("1722A6AA413040A7693C19B07B322ED1")
 x=bytes.fromhex("40A7629A3C2255263DC1871B6EBD6504")
-y=fit(a,b,"rol32-le",7)(x)
-assert y == fit(a,b,"rol32-le",7)(x) and x != y
+pad=(0x131D1701,0xA536F09A,0x48381E6B,0x0F121A3D)
+def independent_transform(source):
+    words=[int.from_bytes(source[i:i+4],"little") for i in range(0,16,4)]
+    return b"".join((rol(v,7)^p).to_bytes(4,"little") for v,p in zip(words,pad))
+b=independent_transform(a)
+y=independent_transform(x)
+assert a != b and x != y and fit(a,b,"rol32-le",7)(x) == y
 print(json.dumps({"original_transitions":{k:[a.hex(),b.hex()] for k,(a,b) in transitions.items()},
                   "printer_controls":{k:[a.hex(),b.hex()] for k,(a,b) in other.items()},
                   "heldout_results":out,"synthetic_nontrivial_rol_positive":True},indent=2))
