@@ -21,6 +21,7 @@ from sympy import Matrix
 A = 0x5DEECE66D
 C = 11
 M = 1 << 48
+SHIFT = M.bit_length() - 9  # high 8 bits of the reduced LCG state
 PIN = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 ROOT = Path(os.environ.get("H17_RESOURCE_ROOT",
     str(Path(__file__).resolve().parents[2] / "resources")))
@@ -33,7 +34,7 @@ def emit(initial, count, stride=1):
     for _ in range(count):
         for _ in range(stride):
             state = (state * A + C) % M
-        output.append(state >> 40)
+        output.append(state >> SHIFT)
     return bytes(output)
 
 
@@ -63,7 +64,7 @@ def exact_states(observed, stride):
         row[i + 1] = 256 * M
         basis.append(row)
     target = [M // 2] + [
-        256 * (value * (1 << 40) + (1 << 39) - offset)
+        256 * (value * (1 << SHIFT) + (1 << (SHIFT - 1)) - offset)
         for value, offset in zip(observed, biases)
     ]
 
