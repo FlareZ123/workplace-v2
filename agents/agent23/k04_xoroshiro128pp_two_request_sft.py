@@ -20,14 +20,14 @@ def rot(v, shift):
     return ((v << shift) | (v >> (64 - shift))) & N
 
 
-def step(a, b):
-    out = (rot((a + b) & N, 17) + a) & N
+def step(a, b, plus=False):
+    out = ((a + b) & N) if plus else (rot((a + b) & N, 17) + a) & N
     t = a ^ b
     return out, (rot(a, 49) ^ t ^ ((t << 21) & N)) & N, rot(t, 28)
 
 
-def smtstep(a, b):
-    out = RotateLeft(a + b, 17) + a
+def smtstep(a, b, plus=False):
+    out = (a + b) if plus else RotateLeft(a + b, 17) + a
     t = a ^ b
     return out, RotateLeft(a, 49) ^ t ^ (t << 21), RotateLeft(t, 28)
 
@@ -45,22 +45,22 @@ def decode(block, view):
     return words[::-1] if view & 2 else words
 
 
-def solve(words0, words3, timeout_ms=180000, return_target=False):
-    # First output directly expresses b in terms of a and observed word0:
-    # y0 = rotl(a+b,17) + a (mod 2^64).
+def solve(words0, words3, timeout_ms=180000, return_target=False, plus=False):
+    # Invert the first observed 64-bit output symbolically to express b
+    # through a. ++: y0=rotl(a+b,17)+a; +: y0=a+b.
     a = BitVec("initial_s0", 64)
-    b = RotateRight(BitVecVal(words0[0], 64) - a, 17) - a
+    b = (BitVecVal(words0[0], 64) - a) if plus else (RotateRight(BitVecVal(words0[0], 64) - a, 17) - a)
     s = Solver()
     s.set(timeout=timeout_ms)
-    out, a1, b1 = smtstep(a, b)
+    out, a1, b1 = smtstep(a, b, plus)
     s.add(out == BitVecVal(words0[0], 64))
-    out, a2, b2 = smtstep(a1, b1)
+    out, a2, b2 = smtstep(a1, b1, plus)
     s.add(out == BitVecVal(words0[1], 64))
-    out2, a3, b3 = smtstep(a2, b2)
-    out3, a4, b4 = smtstep(a3, b3)
-    out, a5, b5 = smtstep(a4, b4)
+    out2, a3, b3 = smtstep(a2, b2, plus)
+    out3, a4, b4 = smtstep(a3, b3, plus)
+    out, a5, b5 = smtstep(a4, b4, plus)
     s.add(out == BitVecVal(words3[0], 64))
-    out, _, _ = smtstep(a5, b5)
+    out, _, _ = smtstep(a5, b5, plus)
     s.add(out == BitVecVal(words3[1], 64))
 
     status = s.check()
@@ -74,7 +74,7 @@ def solve(words0, words3, timeout_ms=180000, return_target=False):
     values = []
     a0, b0 = initial
     for _ in range(6):
-        out, a0, b0 = step(a0, b0)
+        out, a0, b0 = step(a0, b0, plus)
         values.append(out)
     assert values[:2] == list(words0)
     assert values[4:] == list(words3)
@@ -108,8 +108,10 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--view", type=int, choices=range(4), required=True)
     p.add_argument("--timeout-ms", type=int, default=180000)
+    p.add_argument("--variant", choices=("plus", "plusplus"), default="plusplus")
     args = p.parse_args()
     view = args.view
+    plus = args.variant == "plus"
     assert encode(decode(bytes(range(16)), view), view) == bytes(range(16))
     before, after = load()
 
@@ -117,17 +119,17 @@ def main():
     synthetic = []
     s0, s1 = 0x5D1DE1A5CAFEBEEF, 0x17A5B3CB69A1CBCA
     for _ in range(6):
-        o, s0, s1 = step(s0, s1)
+        o, s0, s1 = step(s0, s1, plus)
         synthetic.append(o)
-    planted = solve(synthetic[:2], synthetic[4:], args.timeout_ms, True)
+    planted = solve(synthetic[:2], synthetic[4:], args.timeout_ms, True, plus)
     assert planted["status"] == "SAT", planted
     assert planted["missing_values"] == synthetic[2:4], planted
     print("GENUINE_SEEDED_COMPLETE_TWO_REQUEST_BRIDGE_PASS", flush=True)
 
     words0 = decode(before, view)
     words3 = decode(after, view)
-    outcome = solve(words0, words3, args.timeout_ms, True)
-    result = {"view": view, "original_source": outcome["status"],
+    outcome = solve(words0, words3, args.timeout_ms, True, plus)
+    result = {"view": view, "variant": args.variant, "original_source": outcome["status"],
               "original_synthetic_control": "PASS"}
     if outcome["status"] == "SAT":
         payload = encode(outcome["missing_values"], view)
