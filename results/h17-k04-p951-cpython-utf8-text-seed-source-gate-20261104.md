@@ -32,7 +32,7 @@ Both have byte `F7`, which is **forbidden in a well-formed UTF-8 encoding at any
 - **Three genuinely seeded positives** use `random.Random("A" * (4*n-64))` at actual CPython key-array lengths `n=249,606,623`. All return `T[22]=41414157` and key[22]=`41414141`, agreeing with Python's actual SHA512-extended integer seed semantics. Thus the method does *not* falsely reject string-seeded synthetic generators.
 - The attached 50,526-byte original ZIP contains 46 files (56 entries including directories), totaling 118,273 uncompressed member bytes. A supplementary exact 4-byte scan found neither `7D6A4CF7` nor `FD6A4CF7` in any member or in raw ZIP bytes. This excludes a direct in-place raw byte seed fragment from those scanned carriers, **not** arbitrary transformed binary seeds.
 
-The first CI invocation failed before the final reproducibility proof because its prototype depended on a heavyweight imported symbolic model. It was replaced with an independent, minimal masked-recurrence script; the follow-on Actions run **41743529149** completed successfully. No recurring all-commit CI was introduced; workflow only runs on dispatch or change to its own SFT/workflow files.
+An initial CI prototype importing the larger symbolic-state implementation failed; its specific failure was not diagnosed. The independent, minimal masked-recurrence replacement passed the follow-on Actions run **41743529149**. No recurring all-commit CI was introduced; workflow only runs on dispatch or change to its own SFT/workflow files.
 
 ## Scope and next cracking direction
 
