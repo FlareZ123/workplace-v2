@@ -1,0 +1,29 @@
+name: Agent1 K04 K02 telemetry future-donor cosets
+on:
+  push:
+    paths:
+      - 'agents/agent1/k02_future_run.trigger'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exhaustive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regenerate original-source 16 affine cosets
+        run: python agents/agent1/k04_k02_raw_future_coupon_sft.py resources "$RUNNER_TEMP"
+      - name: Compile complete candidate verifier
+        run: cc -std=c11 -O3 -fopenmp agents/agent1/k04_k02_raw_future_33bit_sft.c -lcrypto -o "$RUNNER_TEMP/checker"
+      - name: Exhaust disjoint Gray-code source-derived range
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          BEGIN=$((SHARD * 268435456))
+          END=$(((SHARD + 1) * 268435456))
+          "$RUNNER_TEMP/checker" "$RUNNER_TEMP/k02_donor_affine.dat" "$BEGIN" "$END" 4
