@@ -97,6 +97,9 @@ def main() -> int:
         status = job["conclusion"] or job["status"]
         status_counts[status] = status_counts.get(status, 0) + 1
     print("128_JOB_STATUS", json.dumps(status_counts), flush=True)
+    if "--status-only" in sys.argv:
+        print("GITHUB_ACTIONS_API_AND_128_SHARD_INDEX_PASS", flush=True)
+        return 0
 
     if any(job["status"] != "completed" for job in jobs):
         raise RuntimeError("Full 128-job run not yet completed; defer audit")
