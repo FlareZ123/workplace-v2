@@ -37,3 +37,20 @@ The K02 raw-donor stages **1178/1405 cannot be promoted to a common near-time K0
 This falsifier does **not** invalidate either complete K04 coset computation as a mathematical conditional candidate family: K02 and K05 may have independent producers, the source record times may be separate from generator output times, the gap may be larger, the stage may be different, and the K05 four-word grouping may use a different transform. The actual selected 18:02 ACK2 print media remains unauthenticated; the original source provides no shared-generator declaration. This is a precise, useful historical-stage warning, **not** a seventh-slot recovery.
 
 Continue seeking a source-grounded stage/role explanation that predicts a complete heldout *original* source object, and an exact terminal K08 caption. Avoid another blind K02-phrase or arbitrary stage-coset sweep without new discriminating structure.
+
+
+## 4 November follow-on: interleaved individual K05 writer words, +4..+96
+
+The initial test required all four selected K05 latches to be emitted as a *contiguous* four-word printer-generator block. A second, materially different chronology hypothesis allows independent intervening draws between each 1Hz selected K05 latch; its necessary condition is that **each individual selected 32-bit K05 word** can occur *somewhere* after the four K02 donor words and before stage+96.
+
+Source-only screening expanded the same two K02 donor-stage families, sixteen K02 input presentations and both native/tempered K05 word interpretations; for every source-selected K05 latch 0..3, it looked at every stage+4..+96, with both within-word byte endiannesses. This is an **individual word** screen. If no single latch can match in any informative position, no monotone four-latch interleaved schedule exists in that range. Predictions counted only when >=16 of a candidate word's 32 bits are independently fixed by the other original source fields.
+
+| K02 donor stage | Informative individual K05-word assignments | Full fixed-bit matches | Minimum mismatching fixed bits |
+| --- | ---: | ---: | ---: |
+| 1178 | 11,520 | **0** | 7 |
+| 1405 | 11,008 | **0** | 7 |
+| **Combined** | **22,528** | **0** | |
+
+All four actual K05 selected words fail to produce **even one** informative full-word match at any tested future stage under this conditional producer. A planted source-constrained output at stage1185 matches all 32 fixed bits; flipping one bit produces exactly one discrepancy. The [existing SFT](../agents/agent34/k04_k02_k05_cotemporal_stage_sft.py) was extended to reproduce these counts, keeping the source/commitment separation.
+
+The extension refutes all informative monotone/interleaved schedules in this *finite future interval* under the two hypothetical donors, but remains unable to rule out a more distant epoch, an independent recorder producer or a different non-wordwise transform. No actual physical K04 coupon or K08 final text is thereby recovered.
