@@ -1,0 +1,35 @@
+name: Agent43 K04 inserted prefix with internal nibble losses
+on:
+  workflow_dispatch:
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        include:
+          - { k: 3, shard: 0, shards: 1 }
+          - { k: 4, shard: 0, shards: 16 }
+          - { k: 4, shard: 1, shards: 16 }
+          - { k: 4, shard: 2, shards: 16 }
+          - { k: 4, shard: 3, shards: 16 }
+          - { k: 4, shard: 4, shards: 16 }
+          - { k: 4, shard: 5, shards: 16 }
+          - { k: 4, shard: 6, shards: 16 }
+          - { k: 4, shard: 7, shards: 16 }
+          - { k: 4, shard: 8, shards: 16 }
+          - { k: 4, shard: 9, shards: 16 }
+          - { k: 4, shard: 10, shards: 16 }
+          - { k: 4, shard: 11, shards: 16 }
+          - { k: 4, shard: 12, shards: 16 }
+          - { k: 4, shard: 13, shards: 16 }
+          - { k: 4, shard: 14, shards: 16 }
+          - { k: 4, shard: 15, shards: 16 }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile
+        run: cc -O3 -std=c11 -Wall -Wextra agents/agent43/k04_prefix_insertion_internal_loss_sft.c -lcrypto -o /tmp/k04_prefixloss
+      - name: Original file pins, synthetic positive and exact complete search
+        run: /tmp/k04_prefixloss resources '${{ matrix.k }}' '${{ matrix.shard }}' '${{ matrix.shards }}'
