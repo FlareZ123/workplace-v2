@@ -1,0 +1,26 @@
+name: Agent30 NumPy pool4 partial-word inversion
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  partial-pool:
+    name: Partial pool phase ${{ matrix.offset }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        offset: [2496, 3000, 3120, 3744, 4368, 4992, 6240]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install NumPy
+        run: python -m pip install "numpy>=2.0,<3"
+      - name: Invert partial pool lanes and verify whole original packet stream
+        run: python agents/agent30/k04_numpy_pool4_partialword_inversion_sft.py ${{ matrix.offset }}
