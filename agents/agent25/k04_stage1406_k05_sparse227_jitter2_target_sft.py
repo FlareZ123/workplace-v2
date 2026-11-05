@@ -152,8 +152,13 @@ for source_mode,words in sft.views(k02):
       print('ORIGINAL_K04_MATCH',real_hits[-1],flush=True)
 assert source_valid_modes==10
 assert mode_checks=={positions:61440 for positions in models}
-assert synthetic==780
-assert not real_hits
+assert synthetic==780 and sum(conditions_pass.values())==869900
+assert len(seen_coupon)==11040 and not real_hits
 print("SOURCE original printer rank",source.rank,"selected K02 modes",source_valid_modes)
 print("ASSIGNMENTS_SUM",sum(mode_checks.values()),"SOURCE_COMPATIBLE_SUM",sum(conditions_pass.values()),"SYNTHETIC_FULL_COUPON",synthetic)
 print("UNIQUE_COMPLETE_K04",len(seen_coupon),"ORIGINAL_K04_HITS",len(real_hits))
+
+# Cross-geometry full-component set control: the +/-2 shell adds no coupon
+# absent from the +/-1 shell, despite different compatible K05 assignments.
+assert hashlib.sha256(b"".join(sorted(seen_coupon))).hexdigest()=="9b249a0536e05804cee16b33fb7b5d8c17a38ae9f328e3ca37313a6c483dbd47"
+print("COMPLETE_K04_SET_SHA256",hashlib.sha256(b"".join(sorted(seen_coupon))).hexdigest())
