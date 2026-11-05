@@ -1,0 +1,26 @@
+name: Agent 45 K04 CPython uint32 selected-only full seed
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exhaustive:
+    name: CPython seed shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 32
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile source-pinned CPython MT init and coupon comparator
+        run: |
+          set -euo pipefail
+          g++ -O3 -std=c++17 agents/agent45/k04_cpython_uint32_selected_sft.cpp -lcrypto -o k04_cpython_uint32
+      - name: Exhaustive 32-bit seed shard with synthetic positive controls
+        run: |
+          set -euo pipefail
+          start=$((67108864 * ${{ matrix.shard }}))
+          ./k04_cpython_uint32 "$start" 67108864 3
