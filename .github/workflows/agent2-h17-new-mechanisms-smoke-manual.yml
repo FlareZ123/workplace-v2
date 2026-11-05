@@ -1,0 +1,22 @@
+name: Agent 2 H17 New Cracking Mechanisms Smoke
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-source-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout original archive and committed SFTs
+        uses: actions/checkout@v4
+      - name: Exact 128-bit modular ring retry inversion, planted and original
+        run: python3 agents/agent2/k04_ring128_retry_hensel_sft.py resources
+      - name: Compile the no-three-theme K08 source-bigram SFT
+        run: g++ -O3 -std=c++17 -fopenmp agents/agent2/k08_implicit_motif_bigram_complement_sft.cpp -lcrypto -o /tmp/k08_implicit_motifs
+      - name: K08 original and planted controls, omitted 2..9 word paths
+        env:
+          OMP_NUM_THREADS: "2"
+        run: /tmp/k08_implicit_motifs resources 9 2
