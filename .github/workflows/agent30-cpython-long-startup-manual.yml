@@ -1,0 +1,24 @@
+name: Agent30 CPython long-startup source probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-probe:
+    name: Phase ${{ matrix.offset }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        offset: [624, 625, 1247, 1248, 1872, 2496]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source-only original and genuine seeded positives
+        run: python agents/agent30/k04_cpython_long_startup_phase_sft.py ${{ matrix.offset }}
