@@ -191,20 +191,33 @@ def positives(measurements):
         if t in (0, 1, 9, 10):
             observed.append(word)
     assert seed in recover(reduced_matrix(measurements, 7), tuple(observed), 7)
-    # End-to-end synthetic full coupon from output pair before the source seed.
+    # Synthetic complete full-hash acceptance, with known previous output pair.
+    mask = bytes.fromhex("8556C8CB6140A7F9A5123AC7571BEE1C")
     earlier = seed
     for _ in range(77):
         earlier = backward(earlier)
-    planted = (emit(earlier), emit(step(earlier)[0]))
-    assert any(
-        (emit(backward(s)), emit(s)) == (planted[0], planted[1])
-        for s in [step(earlier)[0]]
-    ) is False or len(planted) == 2
-    # More direct deterministic identity: the planted two-output window roundtrips.
-    assert step(earlier)[1] == planted[0]
-    assert step(step(earlier)[0])[1] == planted[1]
-    print("SYNTHETIC_ORIGINAL_REDUCER and seeded full 256-bit inversion PASS")
-
+    planted_coupon = serialize(
+        (emit(earlier), emit(step(earlier)[0])), "little-forward"
+    )
+    planted_component = bytes(a ^ b for a, b in zip(planted_coupon, mask))
+    planted_hash = hashlib.sha256(planted_component).digest()
+    recovered = recover(reduced_matrix(measurements, 7), tuple(observed), 7)
+    recovered_positions = []
+    for candidate_seed in recovered:
+        cur = candidate_seed
+        for steps in range(1, 102):
+            cur = backward(cur)
+            if steps < 2:
+                continue
+            candidate_coupon = serialize(
+                (emit(cur), emit(step(cur)[0])), "little-forward"
+            )
+            candidate_component = bytes(a ^ b for a, b in zip(candidate_coupon, mask))
+            if hashlib.sha256(candidate_component).digest() == planted_hash:
+                recovered_positions.append((candidate_seed, steps))
+    assert (seed, 77) in recovered_positions
+    assert len(recovered_positions) == 1
+    print("PLANTED_COMPLETE_COUPON retro77 full synthetic SHA256 PASS")
 
 def main():
     selected, intact, mask, target = source()
