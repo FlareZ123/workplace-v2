@@ -20,3 +20,15 @@ jobs:
         env:
           OMP_NUM_THREADS: "2"
         run: /tmp/k08_implicit_motifs resources 9 2
+      - name: Compile original pre-final galley-email extension SFTs
+        run: |
+          g++ -O3 -std=c++17 -fopenmp agents/agent2/k08_prefinal_galley_mail02_12_newedge_sft.cpp -lcrypto -o /tmp/k08_galley_emails
+          g++ -O3 -std=c++17 -fopenmp agents/agent2/k08_prefinal_galley_long_3motif_sft.cpp -lcrypto -o /tmp/k08_galley_long
+      - name: New 155 galley-email bigrams, full new 2..8 word original checks
+        env:
+          OMP_NUM_THREADS: "2"
+        run: /tmp/k08_galley_emails resources 8 2
+      - name: New 155 galley-email bigrams, full 12 word three-motif original checks
+        env:
+          OMP_NUM_THREADS: "2"
+        run: /tmp/k08_galley_long resources 12 12
