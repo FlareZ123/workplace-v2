@@ -44,3 +44,12 @@ Workflow source: [`.github/workflows/agent25-k08-n13-ordered-insertion.yml`](../
 This test does not authenticate any final K08 word. The actual keeper margin can differ by new nouns or verbs, paraphrase source scenes, preserve 13 or more N13 words, mix two or more captions, change their order, omit any insertion or use multiple additions. The 91-word editor was not calibrated as a blindly predictive author-final transformation. Further large-scale lexical expansion is lower value than a genuine author-final version relation or an original physical text carrier. The source-caption SFT is retained for reproducibility, and the completed 32-shard workflow needs no repeat.
 
 Original K04 status unchanged: missing selected original physical coupon; six other slots verified, combined REC8/1 INCOMPLETE.
+
+
+## Complementary N13 all-length pure-deletion class (22:45 UTC)
+
+The original CI grammar required *exactly one inserted word* and at most 12 original N13 words. A separate read-only Python source-pinned search tested **every nonempty original-order subsequence of N13's complete 22 original word positions with zero insertion**, covering all retained lengths **1..22**, or exactly **4,194,303 complete assignments**. This is a different author-edit operation, and includes the exact full 22-word scene. It compares the complete original K08 SHA256(HMAC16) commitment for every phrase.
+
+**Original K08 matches: 0.** Exact known N02 HMAC16 calibration `BF889359B0303F2B2B2FD96AE841210B` passed; a planted N13 first-four-word source phrase `at the end of` passed **once**. The original note-source SHA256 pin passed. Executed source locally in 17.13 seconds (single Python process), original files read-only. Reproducer: [`agents/agent25/k08_n13_full_ordered_subsequence_sft.py`](../agents/agent25/k08_n13_full_ordered_subsequence_sft.py). This closes pure deletion of N13 at any length, separately from the 3.086-billion source-insertion family.
+
+It remains possible that an actual author-final caption uses original N13 words in a new order, edits existing words, adds multiple words or uses a different scene source. These negative checks establish exact bounded coverage only.
