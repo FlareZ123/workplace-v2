@@ -31,3 +31,24 @@ A planted full-buffer transform with a=3, b=5, plane permutation (2,7,0,4,1,6,5,
 **Result:** zero original K04 matches under these two structured complete-buffer transformation families; no authenticated original K04 bit and no terminal K08 word. This constrains the tested bit-plane/bit-position layouts, not arbitrary bit corruption, genuine fax framing or other sources. Existing six individual PASS, K04/K08 MISSING and combined INCOMPLETE remain unchanged.
 
 **Decision:** the N22 analogy alone does not justify escalating to independent arbitrary bit permutations. A stronger next attack requires a historical serialization-stage observation or a distinctive copy-fault signature that predicts an intact held-out source record.
+
+
+## Reverse scan direction and two mask stages: second original-target experiment
+
+An important distinction after the initial forward-transpose run: the inverse of an 8-by-16 bit-plane transpose need not be represented by either previous forward or per-byte bit permutation. The reverse operation interprets each consecutive **two-byte source pair** as one 16-pixel bit-plane, assigns the eight physical planes to eight output-bit positions in all 8! orders, and recombines the 16 pixels into 16 bytes using the same 128 invertible affine column maps.
+
+Two complete reducer-stage hypotheses were independently checked:
+
+- **Post-mask:** inverse-transpose the copied 16-byte coupon (plus inversion/XOR overlay alternatives), then XOR the official 16-byte mask to form K04.
+- **Pre-mask:** XOR the copied coupon with the official mask first, inverse-transpose that tentative K04 component (plus inversion/XOR overlay alternatives), then SHA-256 directly. This addresses a different ordering of the two historical reduction operations.
+
+Each stage again contains **20,643,840** full original K04 commitment checks. Independently run local original-archive results:
+
+```text
+STAGE pre  hash_checks 20643840 planted 1 real_hits [] elapsed 23.51
+STAGE post hash_checks 20643840 planted 1 real_hits [] elapsed 22.72
+```
+
+Both independent stages passed a planted complete candidate control and found **zero** original K04 matches. [Portable inverse/postmask SFT](../agents/agent31/k04_fax_inverse_stage_sft.py), invoked with a ZIP path and optional stage argument, recomputes these exact families.
+
+**Cumulative experimental scope:** four distinct family/stage runs, **82,575,360** complete commitment checks, zero original K04 hits and four planted positives. Overlap between the hypothetical candidate families has not been deduplicated. These are reversible complete-candidate transformations of the copied bytes and official mask; they cannot authenticate the actual historical coupon or rule out a different source or a lossy damaged copy.
