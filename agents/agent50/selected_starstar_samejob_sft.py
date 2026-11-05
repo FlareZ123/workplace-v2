@@ -231,4 +231,107 @@ for endian in ("big","little"):
                             ["xoshiro256starstar",endian,swap,h,g1,comp.hex().upper()])
 out["xoshiro"]=dict(counts)
 out["total_original_k04_checks"]=sum(v["full_original_k04_checks"] for v in out["xoro"].values())+counts["complete_k04_sha256_checks"]
+
+# 32-bit xoshiro128** complete 128-bit state inverse via four source words.
+M32=(1<<32)-1
+I5_32=pow(5,-1,1<<32)
+I9_32=pow(9,-1,1<<32)
+
+def rol32(x,n):return ((x<<n)|(x>>(32-n)))&M32
+def ror32(x,n):return ((x>>n)|(x<<(32-n)))&M32
+def scr32(x):return (rol32(x*5&M32,7)*9)&M32
+def uns32(x):return (ror32(x*I9_32&M32,7)*I5_32)&M32
+
+def next32(st):
+    a,b,c,d=st;res=scr32(b);t=b<<9&M32
+    c^=a;d^=b;b^=c;a^=d;c^=t;d=rol32(d,11)
+    return res,(a,b,c,d)
+
+def coeff32():
+    s=[[1<<(32*k+j) for j in range(32)] for k in range(4)]
+    rows=[]
+    for _ in range(4):
+        a,b,c,d=s
+        rows.extend(b)
+        t=[b[j-9] if j>=9 else 0 for j in range(32)]
+        c1=[c[j]^a[j] for j in range(32)]
+        d1=[d[j]^b[j] for j in range(32)]
+        b1=[b[j]^c1[j] for j in range(32)]
+        a1=[a[j]^d1[j] for j in range(32)]
+        s=[a1,b1,[c1[j]^t[j] for j in range(32)],
+           [d1[(j-11)%32] for j in range(32)]]
+    return rows
+
+ROW32=coeff32()
+
+def invert32(first):
+    rights=[(uns32(x)>>j)&1 for x in first for j in range(32)]
+    basis={}
+    for row,rhs in zip(ROW32,rights):
+        v=row;b=rhs
+        while v:
+            i=v.bit_length()-1
+            if i not in basis:
+                basis[i]=(v,b)
+                break
+            x,y=basis[i];v^=x;b^=y
+        else:assert b==0
+    assert len(basis)==128
+    state=0
+    for i in sorted(basis):
+        v,b=basis[i]
+        if b^((v&state).bit_count()&1):state|=1<<i
+    return tuple((state>>(32*k))&M32 for k in range(4))
+
+def parse32(block,endian,reverse):
+    values=[int.from_bytes(block[j:j+4],endian) for j in range(0,16,4)]
+    if reverse:values.reverse()
+    return values
+
+def pack32(values,endian,reverse):
+    values=list(values)
+    if reverse:values.reverse()
+    return b"".join(x.to_bytes(4,endian) for x in values)
+
+# Genuine first-packet state inversion, selected and later source stages.
+first_state=(0x12345678,0x9ABCDEF0,0x01234567,0x89ABCDEF)
+values=[];st=first_state
+for _ in range(12+35+37):
+    v,st=next32(st);values.append(v)
+st=invert32(values[:4])
+assert st==first_state
+replay=[]
+for _ in range(len(values)):
+    v,st=next32(st);replay.append(v)
+assert replay[39:43]==values[39:43]
+assert replay[80:84]==values[80:84]
+synthetic=bytes(x^y for x,y in zip(pack32(values[39:43],"little",False),mask))
+recovered=bytes(x^y for x,y in zip(pack32(replay[39:43],"little",False),mask))
+assert hashlib.sha256(synthetic).digest()==hashlib.sha256(recovered).digest()
+
+x128_ks=0;x128_source=0;x128_hits=[];x128_later=[]
+for endian in ("big","little"):
+    for reverse in (False,True):
+        early=parse32(source[0],endian,reverse)
+        later=parse32(source[1],endian,reverse)
+        state=invert32(early)
+        predicted=[]
+        for _ in range(8+512+4):
+            v,state=next32(state);predicted.append(v)
+        assert early==predicted[:4]
+        for gap in range(257):
+            physical=pack32(predicted[4+gap:8+gap],endian,reverse)
+            component=bytes(a^b for a,b in zip(physical,mask))
+            x128_ks+=1
+            if original_match(component):
+                x128_hits.append([endian,reverse,gap,component.hex().upper()])
+        for g in range(513):
+            x128_source+=1
+            if predicted[8+g:12+g]==later:
+                x128_later.append([endian,reverse,g])
+out["xoshiro128starstar"]={"full_original_k04_checks":x128_ks,
+                           "complete_later_source_packet_checks":x128_source,
+                           "original_k04_hits":x128_hits,"later_source_matches":x128_later}
+out["total_original_k04_checks"]+=x128_ks
+
 print(json.dumps(out,indent=2))
