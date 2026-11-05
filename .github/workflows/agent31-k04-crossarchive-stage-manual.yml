@@ -1,0 +1,13 @@
+name: Agent31 H17 crossarchive MT stage source SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-mt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-only all-16 AX and fullword recorder/RC17 matching
+        run: python agents/agent31/k04_crossarchive_exact160_sft.py
