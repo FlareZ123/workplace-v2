@@ -1,0 +1,13 @@
+name: Agent32 H17 source-named public incident index
+on:
+  workflow_dispatch:
+jobs:
+  incident-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe source-named public static document paths
+        run: python agents/agent32/h17_named_public_incident_index_sft.py
