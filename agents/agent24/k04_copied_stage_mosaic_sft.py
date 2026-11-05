@@ -86,6 +86,31 @@ def untemper_packet(packet):
 def compatible(value, checks):
     return all(((value & mask).bit_count() & 1) == rhs for mask, rhs in checks)
 
+# Real source-blind holdout: additionally exclude entire intact row83 from
+# the original source system. The OTHER 131 intact rows must predict 95 bits
+# (including two complete native words) of row83 without inspecting its value.
+holdout_row = 83
+holdout_basis = mt.Basis()
+for row, packet in enumerate(packets):
+    if row in (129, holdout_row):
+        continue
+    for lane in range(4):
+        value = mt.untemper(int.from_bytes(packet[4*lane:4*(lane+1)], "little"))
+        for bit, equation in enumerate(mt.get(words, mt.STARTS[row] + lane)):
+            holdout_basis.insert(equation, (value >> bit) & 1)
+assert holdout_basis.rank == 15332
+fixed_by_lane = []
+for lane in range(4):
+    value = mt.untemper(int.from_bytes(packets[holdout_row][4*lane:4*(lane+1)], "little"))
+    fixed = 0
+    for bit, equation in enumerate(mt.get(words, mt.STARTS[holdout_row] + lane)):
+        inferred = holdout_basis.predict(equation)
+        if inferred is not None:
+            assert inferred == ((value >> bit) & 1)
+            fixed += 1
+    fixed_by_lane.append(fixed)
+assert fixed_by_lane == [32, 0, 31, 32]
+
 # A complete untouched, known original packet must fit its true source stage.
 control = next(checks for stage, checks in stages if stage == mt.STARTS[3])
 assert len(control) == 128 and compatible(untemper_packet(packets[3]), control)
@@ -119,6 +144,6 @@ print("COPIED_ACK_REPLAY_VIEWS", views, "ASSIGNMENTS", views * len(stages))
 print("SOURCE_COMPATIBLE_BY_INDEPENDENT_PARITY_BITS", dict(sorted(pass_counts.items())))
 print("EXPECTED_SOURCE_COMPATIBLE_UNIFORM_COPY", null_expected)
 print("MAX_INDEPENDENT_SOURCE_BITS_PER_SURVIVING_REPLAY", max(pass_counts))
-print("GENUINE_INTACT_PACKET_TRUE_AND_SINGLEBIT_FALSE_CONTROLS_PASS")
+print("INDEPENDENT_ROW83_SOURCE_HOLDOUT_PREDICTED_BITS", fixed_by_lane, "PASS")\nprint("GENUINE_INTACT_PACKET_TRUE_AND_SINGLEBIT_FALSE_CONTROLS_PASS")
 print("SELECTED_STAGE_951_HAS_128_UNOBSERVED_BITS")
 print("NO_ORIGINAL_K04_MEDIA_BITS_OR_K08_AUTHOR_FINAL_WORDS_RECOVERED")
