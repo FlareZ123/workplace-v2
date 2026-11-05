@@ -77,7 +77,7 @@ def discover(rows: list[tuple[int, list[int]]]):
     words = [item[2] for item in flat]
     indexed_xors: dict[int, list[tuple[int, int]]] = defaultdict(list)
     for k in range(len(words)):
-        for l in range(k + 32, min(k + 251, len(words))):
+        for l in range(k + 1, len(words)):
             indexed_xors[words[k] ^ words[l]].append((k, l))
     evidence = []
     for base in range(0, len(words), 4):
