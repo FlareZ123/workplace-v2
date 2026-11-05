@@ -29,7 +29,8 @@ static void source_check(const char *root,const char *relative,const char *liter
  char *first=strstr(data,literal);
  if(!first||strstr(first+strlen(literal),literal))fail("nonunique source selector");
  if(sha){uint8_t digest[32];char hex[65];SHA256((uint8_t*)data,(size_t)n,digest);
-  for(int i=0;i<32;i++)sprintf(hex+i*2,"%02x",digest[i]);hex[64]=0;
+  for(int i=0;i<32;i++){sprintf(hex+i*2,"%02x",digest[i]);}
+  hex[64]=0;
   if(strcmp(hex,sha))fail("source checksum");}
  free(data);
 }
