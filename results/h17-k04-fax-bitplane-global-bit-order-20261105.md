@@ -64,3 +64,8 @@ Using original unchanged source and the identical 128 invertible affine columns,
 - Forward global within-byte bit relabeling with **20,643,840** additional original full checks, **zero matches**, planted complete-candidate positive PASS.
 
 The new two families add **41,287,680** complete commitment checks and two full synthetic positives, for a cumulative **123,863,040** checks across six related family/stage attempts. No cross-family unique-output count is claimed. The historical source makes **no assertion** that the route mask and printed coupon shared a faulty exporter; this was a speculative, finite test. K04 remains missing, with zero authenticated paper bits; K08 unchanged, combined REC8/1 incomplete. Future work should use a distinct historically observable copy relationship rather than extending this arbitrary bit-plane family.
+
+
+## Independent repository-source replay
+
+The one-off original-source bytes repacking runner [GitHub Actions #42098375770](https://github.com/FlareZ123/workplace-v2/actions/runs/42098375770) finished **SUCCESS** on 5 November 2026. It checked out the committed SFTs, repackaged the original repository's immutable spool, routing and acceptance files into a temporary ZIP, and executed all three programs against the original commitment: forward transpose + in-byte bit rearrangement, inverse plane scan both XOR-mask orderings, and common-exporter forward pre-XOR stage. Each program asserts source checksum, exact test population, zero original K04 matches and an independently planted full-candidate control. This rerun reproduces the six already recorded family outcomes on a separate GitHub runner; it does not add further unique search models or any source-authenticated K04 bit.
