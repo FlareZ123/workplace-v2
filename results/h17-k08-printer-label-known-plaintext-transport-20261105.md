@@ -1,0 +1,23 @@
+# K08: two-known-inscription calibration against retained printer LABEL packets
+
+**Agent 5, 5 November 2026. Result: no calibrated transport relation or accepted K08 candidate.**
+
+## New target-reaching possibility and its source boundary
+
+The K08 rule produces a 16-byte HMAC-SHA256 truncation from the terminal keeper caption. The same original export contains two **complete literal earlier envelope inscriptions** (N17 standby and N18 commissioning), together with 52 full 16-byte `CLASS=LABEL` retained printer packets among 133 reconstructed packet rows. A speculative alternative to recovering Emily's absent terminal words would be to identify an **envelope-text-to-opaque-printer-payload** transformation on those two known-label controls, then recover the HMAC component from a preserved terminal LABEL packet. This could bypass the missing final prose if the complete printer label were separately identified. The documents do **not** assert that either known inscription actually went through these printer records.
+
+The unmodified source notes SHA256 is `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`; original spool SHA256 is `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. The original K08 desk nonce is decoded from the routing sheet. Exact normalized HMAC16 controls: N17 `F020BA8A3084A95B56EB4E6DBCCAE7F6`; N18 `A3100AE1ABB9C8D58315D9EBF326978B`; their XOR difference is `5330B06B9B3D618ED5FE97864FEC707D`. Independently check N02's HMAC16 `BF889359B0303F2B2B2FD96AE841210B`. N06 also supplies an exact known HMAC16 control.
+
+## Frozen source-only falsifiers
+
+1. **Shared XOR pad and 128-bit additive offset.** Under each of four independent complete packet byte layouts (original, fourword reversal, per-word endian reversal, both), compare *every ordered pair* of 52 LABEL packets, then all 133 packets, to the known N17–N18 HMAC difference. An unknown shared 16-byte XOR mask or modular 128-bit additive constant cancels between the two known labels. Test 128-bit little/big-endian subtraction separately. Exactly `4 × 52 × 51 = 10,608` and `4 × 133 × 132 = 70,224` complete pair/view assignments per operation. **Zero exact source-only calibration pairs** for XOR, big-endian addition or little-endian addition, even in the all-class superset.
+2. **Any shared 16-byte byte permutation plus a pad.** Expand the known material to all six unordered pairs from N02/N06/N17/N18. For each ordered source packet pair compare the **multiset** of 16 per-byte XOR differences to a known pair's corresponding multiset, allowing *any shared unknown permutation* of byte positions. Repeat for modular bytewise additive offsets. On all 133 packets this tests `17,556 × 6` source-pair/label-pair combinations for each operation; on the 52 LABEL packets it tests `2,652 × 6`. **Zero complete 16-of-16 multiset matches** in either set. The highest partial overlaps in the all-class set were six matching difference-byte occurrences for XOR and six for byte-add; these are not calibrations.
+3. A synthetic pair of HMAC label values encoded under an actual nonzero common XOR pad is recovered by the exact fixed-layout cancellation check and by the arbitrary-permutation multiset check. The original N02 derivation and both source SHA pins also pass.
+
+Executable original-source reproducer: [agents/agent5/k08_spool_label_transport_sft.py](../agents/agent5/k08_spool_label_transport_sft.py). It tests *the transport mechanism on complete known source objects before consulting any missing K08 commitment*. The test does not use the disputed selected ESC-N attempt-2 packet as a needed control.
+
+## Meaning and next direction
+
+A blanket claim that all printer LABEL rows are irrecoverable noise would be unsupported. This experiment excludes only a **shared constant-mask/additive offset, with the listed fixed layouts or arbitrary common byte permutation**, that would simultaneously encode at least two of these exact old known inscriptions in the supplied 133 packets. It cannot exclude a keyed nonlinear label encoder, different per-job masks, missing original label packets, a final caption encoded in another record, or ordinary independent opaque printer output. No original final-caption word has been authenticated. No K04 source bits or accepted K08 component were recovered.
+
+Further attempts should require a concrete same-stage label-to-payload witness, a recovered actual terminal LABEL, or an independent keyed encoder identification. Arbitrary additional label transforms would make the calibration unfalsifiable. The original REC8 state remains six individual PASS values, with K04/K08 MISSING and combined INCOMPLETE.
