@@ -1,0 +1,20 @@
+name: Agent33 H17 K04 sourcewide two-share XOR cracking
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-original-pair-search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build full-commitment source-pair engine
+        run: gcc -O3 -fopenmp -Wall -Wextra -Werror agents/agent33/k04_sourcewide_two_share_sft.c -lcrypto -o /tmp/k04_sourcewide_two_share
+      - name: Test all source window pairs and planted positive
+        env:
+          OMP_NUM_THREADS: '2'
+        run: python agents/agent33/k04_sourcewide_two_share_sft.py resources /tmp/k04_sourcewide_two_share
