@@ -44,7 +44,7 @@ def inverse_twist(x):
 def source_closure(root):
     data = (root / "evidence/print/spool-reconstruction.log").read_bytes()
     assert hashlib.sha256(data).hexdigest() == SPOOL_SHA
-    payloads = [bytes.fromhex(x) for x in
+    payloads = [bytes.fromhex(x.decode("ascii")) for x in
                 re.findall(rb"PAYLOAD=([A-F0-9]{32})", data)]
     assert len(payloads) == 133 and len(STARTS) == 133 and STARTS[129] == 951
     offset, count = 2000, 6000
