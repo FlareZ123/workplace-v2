@@ -1,0 +1,26 @@
+name: Agent30 NumPy pool623 1.8m printer boot millisecond seed search
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seed-shard:
+    name: K04 pool623 first-print millisecond seed ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install NumPy
+        run: python -m pip install "numpy>=2.0,<3"
+      - name: Full pool623 original source and selected K04 test
+        run: python agents/agent30/k04_numpy_pool623_bootmillis_sft.py ${{ matrix.shard }}
