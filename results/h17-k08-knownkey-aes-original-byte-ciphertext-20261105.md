@@ -30,3 +30,16 @@ The CBC synthetic test encrypts a real complete two-block English/zero payload u
 ## Limit
 
 This rules out only the identified AES key/IV/mode/alignment families and a *literal contiguous 16-printable-character plaintext* at the tested block boundary. A shorter text with nonprintable padding, longer text with a mixed partial block, a different key or encryption algorithm, non-AES packing, or a final version never copied into the surviving export remains untested. The experiment adds **no** actual K08 normalized author-final word or K04 physical bit. The sample ciphertext mechanism is conjectural; this result should not be interpreted as historical evidence of encryption. Further trials need a source-supported encoding cue or a true independent original cipher/carrier relation.
+
+## 5 November follow-on: previously unchecked K04 AES-CTR archival carrier
+
+The same **5,922,720 CTR-only original 16-byte carrier assignments** also yield an entirely different original target-reaching reduction: decrypt each candidate source block under a selected key/IV/CTR offset to obtain a proposed *physical K04 coupon*, XOR the unchanged official route mask, and compare its entire SHA256 with original K04 commitment `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`. This does not use the selected copied ACK2 and deliberately bypasses hypothesized MT producer stages. Agent33's earlier AES source-wide study already covers **ECB/CBC** to K04, so the current **CTR branch** is the new finite original-target class.
+
+The actual original-source execution on the same immutable 61,695 windows, eight validated AES keys and 3×4 CTR IV/offsets returned:
+
+```text
+ORIGINAL_CTR_K04 windows=61695 keys=8 iv=3 stages=4 component_checks=5922720 hits=0
+SYNTHETIC_FULL_COUPON_AES_CTR_PLANT PASS
+```
+
+The synthetic positive independently encrypts a full known 16-byte *physical coupon* with a real source key and nonce; the exact same CTR inverse recovers it, XORs the source mask, and reproduces the planted full 16-byte component/SHA256. Reproducer: [source-pinned K04 AES-CTR SFT](../agents/agent48/k04_archive_ctr_carrier_sft.py), importing the shared read-only original carrier selector and AES source controls. No historical evidence authenticates AES CTR as a mechanism for the lost printer coupon, and this exclusion cannot recover any real physical bit. It is independent of the test's negative K08 plaintext words, though the same candidate AES transformation is reused on a different original target.
