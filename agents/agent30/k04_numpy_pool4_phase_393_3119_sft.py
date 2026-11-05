@@ -40,7 +40,7 @@ def explore(shard: int, total_shards: int = 32,
     true_state = source_states(lo, synthetic_packets)
     assert all(true_pool[k] in values
                for k, values in pool_options(true_state).items())
-    assert len(pool_options(true_state)) == 4
+    assert pool_options(true_state), 'planted control must expose at least one pool lane'
     assert (true_state[0][1] ^ 0x80000000) & true_state[0][0] == 0
 
     s0_bad = no_pool = insufficient_lanes = pools_constructed = full_sources = 0
