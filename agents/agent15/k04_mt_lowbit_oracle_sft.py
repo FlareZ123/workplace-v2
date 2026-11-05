@@ -42,10 +42,10 @@ def remainder(rows,expr):
     return residual
 
 
-def scenario(planes,native):
+def scenario(planes,native,stages=None):
     basis={p:row[0] for p,row in source.rows.items()}
     increase=0
-    for stage in gaps:
+    for stage in (gaps if stages is None else stages):
         fields=mt.get(symbolic,stage)
         if not native:fields=mt.temper(fields)
         for bit in planes:
@@ -77,4 +77,23 @@ assert results['tempered_low12']['K04_quotient_rank']==128
 assert results['tempered_high12']['K04_quotient_rank']==128
 assert results['native_all32']['K04_quotient_rank']==0
 assert results['tempered_all32']['K04_quotient_rank']==0
+
+# Eight hidden MT source words determine the four native missing words.
+eight=(328,329,330,331,724,725,726,727)
+assert all(stage in gaps for stage in eight)
+for name,planes in [('low2',range(2)),('low12',range(12)),('all32',range(32))]:
+    results[f'eight_native_{name}']=scenario(planes,True,eight)
+    assert results[f'eight_native_{name}']['K04_quotient_rank']==results[f'native_{name}']['K04_quotient_rank']
+    assert results[f'eight_native_{name}']['fixed_per_native_word_mask']==results[f'native_{name}']['fixed_per_native_word_mask']
+
+# Independent full symbolic MT twist equation for all selected word bits.
+for stage in target:
+    lhs=mt.get(symbolic,stage)
+    x=mt.get(symbolic,stage-624)
+    y=mt.get(symbolic,stage-623)
+    z=mt.get(symbolic,stage-227)
+    for bit in range(32):
+        term=z[bit] ^ (x[31] if bit==30 else (y[bit+1] if bit<30 else 0))
+        if (0x9908B0DF >> bit)&1:term^=y[0]
+        assert lhs[bit]==term
 print(json.dumps({'spool_source_rank':source.rank,'hidden_nonselected_stages':len(gaps),'selected_stages':[951,952,953,954],'hypothetical_oracle_results':results},indent=2))
