@@ -1,0 +1,23 @@
+name: H17 K04 classic dotnet scalar selected-only (manual)
+on:
+  workflow_dispatch:
+jobs:
+  scalar-seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exhaustive selected-only scalar seed shard
+        env:
+          SHARD: ${{ matrix.shard }}
+        shell: bash
+        run: |
+          cc -O3 -std=c11 -Wall -Wextra -o scalar agents/agent4/k04_dotnet_selected_target_sft.c -lcrypto
+          start=$((SHARD * 134217728))
+          end=$(((SHARD + 1) * 134217728))
+          ./scalar "$start" "$end"
