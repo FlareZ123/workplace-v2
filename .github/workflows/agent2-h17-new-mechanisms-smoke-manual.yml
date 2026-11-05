@@ -32,3 +32,15 @@ jobs:
         env:
           OMP_NUM_THREADS: "2"
         run: /tmp/k08_galley_long resources 12 12
+      - name: Compile source-pinned October 3 galley log K08 tests
+        run: |
+          g++ -O3 -std=c++17 -fopenmp agents/agent2/k08_03oct_galley_log_newedges_sft.cpp -lcrypto -o /tmp/k08_03oct_short
+          g++ -O3 -std=c++17 -fopenmp agents/agent2/k08_03oct_galley_log_long_three_motifs_sft.cpp -lcrypto -o /tmp/k08_03oct_long
+      - name: Complete original K08 03 October galley log 2-11 word new edges
+        env:
+          OMP_NUM_THREADS: "2"
+        run: /tmp/k08_03oct_short resources 11 2
+      - name: Complete original K08 03 October galley log 12-14 word triple themes
+        env:
+          OMP_NUM_THREADS: "2"
+        run: /tmp/k08_03oct_long resources 14 12
