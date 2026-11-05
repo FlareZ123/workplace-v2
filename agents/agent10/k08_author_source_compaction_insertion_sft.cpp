@@ -65,8 +65,14 @@ int main(int argc,char** argv){
  uint64_t total=uint64_t(1)<<n;
  uint64_t lo=argc>=4?strtoull(argv[3],nullptr,10):0,hi=argc>=5?strtoull(argv[4],nullptr,10):total;
  if(hi>total||lo>hi)return 2;
- const char* planted="the sea night and voices table lamp";
- digest(planted,strlen(planted),d);unsigned char targetPlant[32];memcpy(targetPlant,d,32);
+ // Freeze an in-family planted phrase separately for each actual source base.
+ // Mask 0xF retains its first four original source words; the fifth is
+ // exactly one inserted source-lexicon word, so every base has a real control.
+ std::string planted;
+ for(int i=0;i<4;i++){if(i)planted+=' ';planted+=base.words[i];}
+ planted+=" sea";
+ digest(planted.data(),planted.size(),d);
+ unsigned char targetPlant[32];memcpy(targetPlant,d,32);
  unsigned long long checks=0,hits=0,plantedHits=0,eligible=0;
  char buff[512];
  for(uint64_t mask=lo;mask<hi;mask++){
@@ -92,6 +98,7 @@ int main(int argc,char** argv){
    }
   }
  }
+ if(lo<=15&&15<hi&&plantedHits==0){fprintf(stderr,"PLANTED_COMPLETE_IN_FAMILY_CONTROL_FAIL\n");return 3;}
  fprintf(stdout,"BASE_DONE name=%s mask_range=[%llu,%llu) eligible_masks=%llu complete_checks=%llu original_hits=%llu planted_hits=%llu lex=%zu\n",base.name.c_str(),(unsigned long long)lo,(unsigned long long)hi,(unsigned long long)eligible,checks,hits,plantedHits,lex.size());
  return hits?1:0;
 }
