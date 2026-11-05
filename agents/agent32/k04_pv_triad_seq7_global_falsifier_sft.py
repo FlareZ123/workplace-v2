@@ -35,10 +35,13 @@ def read_sources():
     lines = re.findall(rb'PAYLOAD=([0-9A-F]{32})', spool)
     assert len(lines) == len(STARTS) == 133
     packets = [None if row == 129 else bytes.fromhex(raw.decode()) for row, raw in enumerate(lines)]
-    values = {int(o['seq']): int(round(float(o['value']) * 1000)) for o in map(json.loads, pv.splitlines()) if o['field'] == 'PV'}
+    pv_rows = [o for o in map(json.loads, pv.splitlines()) if o['field'] == 'PV']
+    values = {int(o['seq']): int(round(float(o['value']) * 1000)) for o in pv_rows}
+    qualities = {int(o['seq']): o['quality'] for o in pv_rows}
     assert sorted(values) == list(range(100, 212))
+    assert len(qualities) == 112
     print('SOURCE_PIN_PASS printer 132 intact packets, 1 selected withheld; PV=112', flush=True)
-    return packets, values
+    return packets, values, qualities
 
 def untemper(x):
     for k, left, mask in ((18, False, U), (15, True, 0xEFC60000), (7, True, 0x9D2C5680), (11, False, U)):
@@ -161,11 +164,20 @@ def synth_source_positive(expressions):
 
 def main():
     t = perf_counter()
-    packets, values = read_sources()
+    packets, values, qualities = read_sources()
     expressions = symbolic_state()
     printer = printer_basis(expressions, packets)
     print('ORIGINAL_P951_PRINTER_RANK', printer.rank, flush=True)
     original = check_sequence(expressions, printer, values)
+    good = [r for r in original.values() if qualities[r[0]] == 'GOOD']
+    suspect = [r for r in original.values() if qualities[r[0]] == 'SUSPECT']
+    assert len(good) == 73 and len(suspect) == 39
+    assert original[119][3:] == (15, 9) and qualities[119] == 'GOOD'
+    assert sum(r[3] > 0 for r in good) == 31
+    assert sum(r[4] > 0 for r in good) == 25
+    assert sum(r[3] >= 8 and r[4] > 0 for r in good) == 10
+    assert sum(r[3] >= 8 and r[4] == 0 for r in good) == 2
+    print('GOOD_ONLY 73 original PV rows; printer_fixed=31, contradicted=25; strong(>=8): 10 contradicted, 2 matched', flush=True)
     assert original[111][3:] == (9, 5), original[111]
     assert original[174][3:] == (3, 2), original[174]
     assert [(original[s][3], original[s][4]) for s in (175, 176, 177)] == [(15,0), (11,0), (13,0)]
