@@ -1,0 +1,36 @@
+# H-17 joint K04/K08 loss: chronology-cutoff and flat-latest selectors fail a six-slot holdout
+
+**Agent 10 | 5 November 2026.** A concise source-selection analysis in response to the [5 November Critic's shared terminal-version-loss proposal](../communications/broadcast/20261105T2023Z_Critic_crossslot-terminal-version-loss-hypothesis.md). This is an explicit **conditional negative for two simple whole-export rules**, not a recovered missing target or a claim that no shared physical loss process is possible. Original REC8/1 remains six PASS, K04/K08 MISSING and combined INCOMPLETE.
+
+## Selection/capture structure of eight original source families
+
+Capture/transport integrity means **actual selected payload bytes/text** independently survived. Version metadata and a receipt alone do not establish it. The table keeps source event time distinct from export timestamp 4 October 2026 11:40 UTC.
+
+| Slot | Genuine route-selected version and competing versions | Surviving selected bytes/text status | Original acceptance |
+|---|---|---|---|
+| K01 | WN-14 signed 2 October 2026 **ink A/B/C/D** in order; pencil/standby notes and sticker are superseded | Four signed ink control groups retained through MAIL03/06 and confirmed MAIL14; source-backed accepted bytes | PASS |
+| K02 | LT-204 **3 October 21:13:40..21:13:48 UTC**, GOOD/HOLD, greatest revision per seq0..7; earlier duplicate revisions exist | Selected 8×16bit raw samples preserved, source-selected, first16 SHA256 independently committed | PASS |
+| K03 | PTW-417 highest **signed CLOSED AS_LEFT** revision, bay order from mail; other status/revisions not selected | Selected historical seal serials preserved; source signing and receipts | PASS |
+| K04 | ESC-N logical PS-261003-0417, **3 October 18:02 UTC RECOVER ACK attempt2**; attempt1 REQUESTED earlier and attempt3 REQUESTED later; unrelated WATCH-SPARE and ESC-S survive | Dispatch ACK metadata survived; 16-byte copied spool payload **lacks independent media checksum**, and its derived component **fails** acceptance. Physical selected coupon unverified | MISSING |
+| K05 | TRP2 node49 event82 **3 October 21:14:00..21:14:08 UTC**, CRC-valid, highest seq per latch; invalid-CRC/older cohorts exist | Selected four 4-byte CRC-valid controls independently retained and accepted | PASS |
+| K06 | RC-17 authorized **revision C** in MAIL11, original four page strips in SERVICE_ORDER; B withdrawn and later-file-timestamp **D draft** unissued | C strips and independent authorization both retained | PASS |
+| K07 | Transfer **AX-7782 COMMIT, dry_run=false**, confirmed MAIL13; AX7778 drill, AX7781 dry run, numerically newer AX7783 aborted, older chunk attempts retained | Actual eight chunk checkpoints and final receipt retained, selected reduction accepted | PASS |
+| K08 | Emily's author-final keeper-purpose desk-margin caption; N02/N06 earlier drafts, N17 standby and N18 commissioning captions, N20 themes and N23 final-margin remark | Final **verbatim** normalized caption never quoted in surviving export; previous and ancillary texts survive but do not certify the final wording | MISSING |
+
+Sources: [original route](../resources/evidence/recovery-routing.json), [original labels](../resources/evidence/archive-labels.ini), [MAIL11](../resources/evidence/mail/11.eml), [MAIL13](../resources/evidence/mail/13.eml), [MAIL14](../resources/evidence/mail/14.eml), [MAIL16](../resources/evidence/mail/16.eml), [MAIL20](../resources/evidence/mail/20.eml), [N02/N06/N17/N18/N20/N23](../resources/evidence/crew/noticeboard-and-desk-notes.txt), original acceptance and [six accepted selector audit](h17-recovery-status.md). All selected values correspond to the frozen source definitions and previously reported six independent original verifier PASS; no alternative values were substituted.
+
+## Two common transport rules and their counterexamples
+
+**Model A: one monotone archive-wide cutoff on each source object's event timestamp.** If an exporter preserves all source events **before** a cutoff, it cannot preserve both post-incident K02 (21:13:40+) and K05 (21:14:00+) but lose earlier K04 (18:02) solely due to that cutoff. If it preserves only events **after** a cutoff, it cannot retain K01's 2 October signed ink while excluding the later 3 October 18:02 printer event by the same cutoff. Any **single contiguous event-time retention interval** containing both K01 and K05 contains K04's event. Thus this exact simple event-timestamp cutoff cannot be the cause of the *metadata presence/absence pattern* if the timestamps describe the records actually filtered.
+
+**Crucial scope limit:** K04 dispatch metadata **was** retained and its copied payload may be wrong. The cutoff test by event timestamp alone does not address payload-byte corruption, and original event, production, print-host copy, author inscription, acquisition and archive-export times have different meanings. A model filtering on a distinct actual *capture* timestamp, or using per-media cutoffs, is not excluded without an independently recorded capture time. The single-cut result is therefore conditional, not a universal impossibility.
+
+**Model B: choose the numerically or temporally greatest surviving variant for every slot.** This would select K04's **later 18:03 REQUESTED attempt3** instead of the route-mandated last **ACK attempt2**; it could select K06's later unissued D-draft instead of approved C; and would select the numerically newer **AX-7783 aborted transfer** instead of the committed AX-7782 for K07. These are **three direct source-defined counterexamples** in different media families. Therefore no homogeneous flat “latest wins” selector can reproduce the original six accepted slot lineage and the selected K04 metadata. Any viable common algorithm must incorporate each medium's source-specific validity predicate, making a later generic supersession explanation insufficient.
+
+## Joint K04/K08 research decision
+
+The two missing cases share an **observability boundary**, but the retained evidence presents different failure shapes: K04 has original selected *dispatch provenance* with uncertified copied **bytes**, while K08 has author-final *referential provenance* with **no verbatim final words**. Neither chronological retention nor flat latest-record selection supplies a **target-reaching full 16-byte coupon or normalized author-final caption**. A common deeper **media-content capture failure** is still plausible, but the records give no independent shared copy operator to predict from the six accepted heldouts. Fitting two unrelated free operations to explain two losses would be post hoc.
+
+The binary research decision for these explicitly tested models is **REJECT as a reconstruction method**. Future progress requires a source-derived content-level transform that correctly predicts an independently withheld selected complete object before K04/K08 commitments are queried, or an original authenticated physical coupon/author-final text carrier. Avoid inferring historical print or writing stages from UTC email headers or job IDs alone.
+
+This result makes no candidate, commitment, original-source, or verifier modifications. Original K04 0/128 authenticated physical bits; original K08 0 authenticated final words; six original slots PASS, combined INCOMPLETE.
