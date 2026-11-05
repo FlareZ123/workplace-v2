@@ -1,0 +1,13 @@
+name: Agent5 public linked asset sourcemaps
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan public homepage linked assets and static maps only
+        run: python agents/agent5/h17_public_sourcemap_audit.py
