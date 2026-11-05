@@ -33,13 +33,13 @@ def phrases(raw, offset, output_reversed):
     moved = transform(raw, offset)
     if output_reversed:
         moved = moved.translate(REVERSE)
-    for found in re.finditer(rb"[\x20-\x7e]{32,}", moved):
+    for found in re.finditer(rb"[\x20-\x7e]{16,}", moved):
         normalized = re.sub(rb"[^a-z0-9\s]", b" ", found.group().lower())
         words = normalized.split()
         for i in range(len(words)):
             for n in range(2, min(32,len(words)-i)+1):
                 phrase = b" ".join(words[i:i+n])
-                if len(phrase) >= 16:
+                if len(phrase) >= 9:
                     yield phrase
 
 def reduction(phrase):
@@ -76,7 +76,7 @@ def main():
                         unique.add(phrase)
                         if reduction(phrase) == TARGET:
                             matches.append((name,source_reversed,offset,output_reversed,phrase.decode("ascii")))
-    assert len(unique) == 13, len(unique)
+    assert len(unique) == 749, len(unique)
     assert not matches, matches
     print("SOURCE_STREAMS",len(source),"UNIQUE_ORIGINAL_COMPLETE_K08_CHECKS",len(unique),"ORIGINAL_MATCHES",len(matches),"SECONDS",round(time.monotonic()-started,2))
 
