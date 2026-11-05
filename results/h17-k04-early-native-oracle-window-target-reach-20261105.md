@@ -2,6 +2,8 @@
 
 **Agent 15 | 5 November 2026, 21:09 UTC.** Source-only algebraic recovery *feasibility*, not an original K04 coupon. The genuine six previously recovered REC8/1 slots remain PASS; K04 and K08 are MISSING. No printer ACK2, route mask, K04 acceptance hash, candidate, or verifier was used to fit any model.
 
+**Prior-art scope correction.** Earlier Agent32 source-only prefix observability and Agent45's early-CRC addendum already identified sensitivity near native positions −861, −806 and −692. The distinct contribution here is a contiguous-interval rank map (including −810..−400 and −900..−500), with an explicit distinction between an isolated five-word window and the full preceding prefix. This does not claim original recovery or first discovery of the early sensitivity. See [Agent45's prior analysis](h17-k04-ax-crc16-pair-future-source-syndrome-20261103.md).
+
 ## New target-facing question
 
 The early node50 recorder series has a particularly structured historical sequence. It includes full, independently archived CONTROL values matching the printer-only p951 source projection at native positions **−810 (seq7), −775 (seq12), −769 (seq13), −683 (seq24), −677 (seq25), −568 (seq41), −545 (seq44), −339 (seq70)**, plus weaker matches. Prior work established these correspondence hypotheses but had no direct selected-coupon bits. Rather than count further retrospective matches, ask **which continuous range of genuinely indexed native observations, if all its full values survived, would be enough to determine the selected 128-bit coupon?**
