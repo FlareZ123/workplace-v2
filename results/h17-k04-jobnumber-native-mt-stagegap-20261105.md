@@ -14,14 +14,12 @@ The unmodified `resources/evidence/print/spool-reconstruction.log`, SHA256 `7d71
 
 | Original row | UTC on 3 October 2026 | Job suffix | Attempt / state / class |
 | ---: | --- | ---: | --- |
-| 127 | 17:35 | **0427** | attempt1 ACK LABEL/RECOVER (original metadata supplies class) |
+| 127 | 17:35 | **0427** | attempt1 ACK RECOVER |
 | 128 | 18:01 | **0417** | attempt1 REQUESTED RECOVER |
 | **129** | **18:02** | **0417** | **attempt2 ACK RECOVER, selected K04; value withheld** |
 | 130 | 18:03 | **0417** | attempt3 REQUESTED RECOVER |
 | 131 | 18:24 | **0448** | attempt1 ACK RECOVER |
 | 132 | 18:25 | **0420** | attempt2 ACK RECOVER |
-
-**Correction of shorthand:** row127's actual class is **RECOVER**, as the source log explicitly shows; only the job number and the complete 16-byte payload matter to the bound.
 
 There are 20 integers strictly between suffixes 0427 and 0448: **0428..0447**. Their existence as *issued physical print jobs in this time interval* is a hypothesis. The archive does not guarantee that each identifier was issued, executed, survived, or consumed one sequential PRNG block.
 
