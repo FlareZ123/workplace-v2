@@ -1,0 +1,13 @@
+name: Agent25 K04 stage1406 K05 plus/minus-two timing SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-rank-and-coupon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rank all 3125 stage layouts and test all 78 new low-rank K04 coupon spaces
+        run: python agents/agent25/k04_stage1406_k05_sparse227_jitter2_target_sft.py resources
