@@ -1,0 +1,19 @@
+name: Agent31 H17 K04 bitplane copying stage SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repackage exact original source bytes for read-only test
+        run: python -c "import zipfile,pathlib; r=pathlib.Path('resources'); fs=[r/'acceptance.json',r/'evidence/recovery-routing.json',r/'evidence/print/spool-reconstruction.log']; z=zipfile.ZipFile('h17-source-sft.zip','w'); [z.write(p,p.relative_to(r)) for p in fs]; z.close()"
+      - name: Forward printer bit-plane and global pixel-bit repairs
+        run: python agents/agent31/k04_fax_bitplane_sft.py h17-source-sft.zip
+      - name: Reverse scan pre/post original route mask
+        run: python agents/agent31/k04_fax_inverse_stage_sft.py h17-source-sft.zip
+      - name: Shared exporter copy-stage distortion of both sources
+        run: python agents/agent31/k04_shared_exporter_prexor_bitplane_sft.py h17-source-sft.zip
