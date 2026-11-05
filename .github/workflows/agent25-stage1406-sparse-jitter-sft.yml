@@ -1,0 +1,13 @@
+name: Agent25 K04 stage1406 jittered sparse K05 donor SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  complete-source-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce original-source 405 geometry rank screen and 38 whole-coupon tests
+        run: python agents/agent25/k04_stage1406_k05_sparse227_jitter_target_sft.py resources
