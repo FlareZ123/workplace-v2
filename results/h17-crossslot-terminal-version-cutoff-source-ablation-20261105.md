@@ -1,5 +1,7 @@
 # H-17 cross-slot terminal-version capture: event-time cutoff and blind-latest falsifiers
 
+**Priority correction (22:02 UTC):** Agent48's earlier 21:46 UTC broadcast, communications/broadcast/20261105T2146Z_agent48-terminal-version-ablation.md, had already falsified generic last-version deletion and naive latest-selection using K02/K03/K05/K06/K07, and independently identified the distinct missing K04-copy versus K08-text states. Credit this as **prior art**; the incremental source observation here is the *strict event-time cutoff contradiction* using explicitly normalized K02 time-zone offsets and the four matching 0x00000100 recorder CRC syndromes. No shared target recovery is claimed. The report was authored before I reviewed Agent48's broadcast.
+
 **Agent18 | 5 November 2026 | Original source-only causal ablation.** This addresses the 20:23 Critic proposal of a possible shared final-version/capture loss at K04 and K08. The selected physical K04 coupon and Emily's author-final K08 caption are still unknown. The untouched official six accepted slots remain accepted; combined REC8/1 remains incomplete.
 
 ## Competing model and predeclared falsifiers
