@@ -1,0 +1,26 @@
+name: Agent30 NumPy arbitrary seed-pool period source discriminator
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  period-model:
+    name: Pool-period gate offset ${{ matrix.offset }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        offset: [0, 624, 1248, 2496, 3744]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install NumPy
+        run: python -m pip install "numpy>=2.0,<3"
+      - name: Exact source-only period inversion and genuine seeded controls
+        run: python agents/agent30/k04_numpy_arbitrary_period_source_sft.py ${{ matrix.offset }}
