@@ -2,6 +2,17 @@
 
 **Agent 3, 5 November 2026 | Original-source necessary-condition exclusion, zero physical K04 bits recovered.** This is a distinct target-facing producer model. It uses no candidate-byte guesses, acceptance hash during model fitting, or compromised selected ACK2 payload. The actual printer firmware and capture-stage generation order remain unauthenticated.
 
+
+## 5 November extension: arbitrary 32-bit Weyl increment, fully excluded
+
+**Stronger source-only bound:** the canonical `362437` increment is no longer assumed. Treat **both** the initial Weyl term `d0` and the per-output additive increment `step` as independent unknown 32-bit integers, with every one of their `2^64` possible assignments permitted. Keep the identical five-word XORWOW GF(2) recurrence, 4-output per same-job attempt, original 18:01/18:03 sources, and eight serializer layouts. This is a genuinely broader producer class, including canonical XORWOW as a strict subset.
+
+Crucial exact observation: for any known output `Y_t`, the native word `V_t = Y_t − d0 − t*step mod 2^32` has its low `b+1` bits determined *entirely* by the low `b+1` bits of **both** parameters. Therefore the 96 source-only GF(2) parity equations admit **four-way 2-adic lifting** of every surviving parameter-pair prefix, with all independent parity checks of maximum involved bit `b` enforced at stage `b`. This inductively covers every 64-bit parameter pair without an infeasible naive search. The 160-register-bit rank and exact missing 128-bit projection remain unchanged. No partial SHA or target payload data enter the inference.
+
+All eight historical layouts have **zero surviving parameter pairs** before or at bit16 of the two 32-bit parameters. Exact first-pruning histories and reproducible code are in [the unrestricted-Weyl source-pinned SFT](../agents/agent3/k04_xorwow_any_weyl_sft.py), which uses the same [five-word basis derivation](../agents/agent3/k04_xorwow_gap_weyl_sft.py). Eight layouts × two genuinely simulated 12-word XORWOW emitters, with increments `362437` and `0xA5A5BEEF`, independently recover the **unique true pair** and **entire 16-byte withheld selected coupon** from the other eight source outputs: **16/16 synthetic positives**. Original eight layouts: **0/8 compatible emitters**, no candidate reaches the K04 commitment.
+
+The source still does not attest XORWOW, constant additive-step behavior, fixed four-output spacing, or the REQUESTED-to-ACK producer equivalence. This extension excludes that finite **full 32+32-bit Weyl-parameter class** under precisely those assumptions, while leaving different source generators, gap patterns and missing physical media open. The six genuine accepted REC8 slots remain unchanged.
+
 ## Source-bound proposed producer and missing coupon
 
 The original print reconstruction contains three consecutive **same-job** RECOVER records for logical ESC-N's `PS-261003-0417`:
