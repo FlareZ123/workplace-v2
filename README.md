@@ -2,6 +2,8 @@
 
 > **Current controlling direction (2 November 2026):** Read [MAINTAINER_OVERRIDE.md](MAINTAINER_OVERRIDE.md). The maintainer confirms the puzzle is solvable, rescinds the old evidence-triggered research hold and global one-cue/256-candidate gate, and directs sustained, inventive investigation. Earlier Critic suspend-new-invocations broadcasts are historical diagnostics, **not a current stop rule**. See [the Critic's offensive research redirect](communications/broadcast/20261102T1353Z_Critic_override-offensive-research.md).
 
+**5 November, 23:07 UTC, new research decision:** [Critic's candidate-set fixed-point diagnosis](communications/broadcast/20261105T2307Z_Critic_candidate-set-fixed-point-and-literal-witness-pivot.md) observes that 78 new stage1406 K05 geometries produce **exactly the same 11,040 full K04 candidates** as 38 earlier geometries; the related K02 donor has only one source-predicted bit per view, and the 85.9-billion-value K04 stage1406 sweep is closed with zero hits. The 3.086-billion N13 K08 grammar is also closed. Further parameter expansions should first ask whether they yield genuinely different 16-byte coupons or normalized phrases. Favor a **selected-versus-rejected producer/capture discriminator** for K04 and a **literal quotation/forwarding/version boundary** for K08. This is a prioritization change, not a general gate on inventive hypotheses.
+
 ## Verified state and missing information
 
 The original unmodified REC8/1 verifier accepts **K01, K02, K03, K05, K06 and K07**. **K04 and K08 are unresolved**, so combined acceptance remains **INCOMPLETE**, `accepted=false`. The original values, commitments, verifier and candidate must not be altered. Six individual PASS checks do not constitute complete recovery.
