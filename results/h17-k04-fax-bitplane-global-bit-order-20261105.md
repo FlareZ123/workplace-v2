@@ -52,3 +52,15 @@ STAGE post hash_checks 20643840 planted 1 real_hits [] elapsed 22.72
 Both independent stages passed a planted complete candidate control and found **zero** original K04 matches. [Portable inverse/postmask SFT](../agents/agent31/k04_fax_inverse_stage_sft.py), invoked with a ZIP path and optional stage argument, recomputes these exact families.
 
 **Cumulative experimental scope:** four distinct family/stage runs, **82,575,360** complete commitment checks, zero original K04 hits and four planted positives. Overlap between the hypothetical candidate families has not been deduplicated. These are reversible complete-candidate transformations of the copied bytes and official mask; they cannot authenticate the actual historical coupon or rule out a different source or a lossy damaged copy.
+
+
+## Shared exporter distortion applied to both route mask and copied payload (5 November, follow-on)
+
+A new **joint-stage hypothesis** is that the same byte/bit copier transform affected **both** the source K04 printer coupon and the separately transcribed sixteen-byte route mask. Under a linear common binary transform T the tentative final component is T(copied XOR mask), rather than T(copied) XOR original-mask. The first forward-layout search used the second form; the prior inverse-layout stage pilot addressed only the inverse scan family. The new construction extends this to the two forward bit-plane families and changes the source stage instead of widening the per-byte corruption radius.
+
+Using original unchanged source and the identical 128 invertible affine columns, 8! bit-plane layouts and four full-buffer inversion/XOR-overlay modes, the new source-pinned [joint source-transform SFT](../agents/agent31/k04_shared_exporter_prexor_bitplane_sft.py) executed:
+
+- Forward transposition with **20,643,840** original full SHA-256 K04 checks, **zero matches**, planted complete-candidate positive PASS.
+- Forward global within-byte bit relabeling with **20,643,840** additional original full checks, **zero matches**, planted complete-candidate positive PASS.
+
+The new two families add **41,287,680** complete commitment checks and two full synthetic positives, for a cumulative **123,863,040** checks across six related family/stage attempts. No cross-family unique-output count is claimed. The historical source makes **no assertion** that the route mask and printed coupon shared a faulty exporter; this was a speculative, finite test. K04 remains missing, with zero authenticated paper bits; K08 unchanged, combined REC8/1 incomplete. Future work should use a distinct historically observable copy relationship rather than extending this arbitrary bit-plane family.
