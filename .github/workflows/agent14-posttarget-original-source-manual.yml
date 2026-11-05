@@ -1,0 +1,14 @@
+name: Agent14 posttarget historical source scan
+on:
+  workflow_dispatch:
+jobs:
+  source-sft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test source-only posttarget controls
+        run: python agents/agent14/k04_future_control_sequence_sft.py
