@@ -1,0 +1,27 @@
+name: Agent30 seeded NumPy variable pool width K04 source reconstruction
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-pool:
+    name: Pool ${{ matrix.pool_size }} offset ${{ matrix.offset }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        pool_size: [8, 16, 32]
+        offset: [0, 624, 2496]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install NumPy
+        run: python -m pip install "numpy>=2.0,<3"
+      - name: Full NumPy initialized state controls and source compatibility
+        run: python agents/agent30/k04_numpy_poolwidth_multilane_sft.py ${{ matrix.offset }} ${{ matrix.pool_size }}
