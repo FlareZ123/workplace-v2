@@ -1,0 +1,24 @@
+name: Agent25 K08 Emily N13 ordered compaction insertion complete
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  complete-n13:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile source-pinned original-K08 HMAC complete-caption checker
+        run: c++ -std=c++17 -O3 -Wno-deprecated-declarations agents/agent10/k08_author_source_compaction_insertion_sft.cpp -lcrypto -o "$RUNNER_TEMP/k08_checker"
+      - name: Exhaust one of 32 disjoint N13 source-mask ranges
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          LO=$(( SHARD * 131072 ))
+          HI=$(( (SHARD + 1) * 131072 ))
+          "$RUNNER_TEMP/k08_checker" resources 4 "$LO" "$HI"
