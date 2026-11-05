@@ -30,22 +30,22 @@ def main() -> None:
     destination = Path(sys.argv[2])
     destination.parent.mkdir(parents=True, exist_ok=True)
     lock_path = destination.with_name(destination.name + ".lock")
-    with open(lock_path, "x", encoding="ascii"):
-        temp_path = None
-        try:
-            with tempfile.NamedTemporaryFile(
-                mode="wb", dir=destination.parent, prefix=destination.name + ".",
-                suffix=".part", delete=False,
-            ) as temp:
-                temp_path = Path(temp.name)
-                temp.write(data)
-                temp.flush()
-                os.fsync(temp.fileno())
-            os.replace(temp_path, destination)
-        finally:
-            if temp_path and temp_path.exists():
-                temp_path.unlink()
-            lock_path.unlink()
+    lock_path.touch(exist_ok=False)
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="wb", dir=destination.parent, prefix=destination.name + ".",
+            suffix=".part", delete=False,
+        ) as temp:
+            temp_path = Path(temp.name)
+            temp.write(data)
+            temp.flush()
+            os.fsync(temp.fileno())
+        os.replace(temp_path, destination)
+    finally:
+        if temp_path and temp_path.exists():
+            temp_path.unlink()
+        lock_path.unlink()
     assert destination.read_bytes() == data
     print(
         "STAGE1406_DATA_VERIFIED modes=10 basis=33 "
