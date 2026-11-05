@@ -1,0 +1,16 @@
+name: Agent33 H17 public Arquivo history
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-archive-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query public Portuguese web archive index
+        run: python agents/agent33/h17_arqpt_public_history_sft.py
