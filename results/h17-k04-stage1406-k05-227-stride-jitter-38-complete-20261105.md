@@ -52,3 +52,25 @@ Read-only reproducer: [`agents/agent25/k04_stage1406_k05_sparse227_jitter_target
 ## Independent clean GitHub Actions reproduction
 
 [Manual original-source run 42125542257](https://github.com/FlareZ123/workplace-v2/actions/runs/42125542257) was dispatched against the newly committed portable reproducer and **completed SUCCESS at 22:56 UTC, 5 November 2026**. It independently checked the exact 405 stage-geometry source-rank histogram, all ten original source-compatible K02 modes, the authentic 2,334,720 K05 presentations, the zero real K04 matches, the 11,040 distinct candidates and all 380 planted positives in the repository's fresh checkout. This confirms the committed script's portable reproduction without relying only on the local precursor.
+
+## 23:02 UTC extension: radius-two source layouts saturate exactly the same 11,040 coupons
+
+To determine whether a broader but still bounded original K05 per-latch generator timing relation adds genuinely new candidate values, independently widened the offsets from +/-1 to **+/-2** native outputs around each 227-stride K05 stage and first stage. This gives **5 × 5 × 5³ = 3,125** whole four-latch placements, including the previously tested 405. Apply the identical K02 stage1406 source-only p951 GF(2) rank test before any K05 content or K04 SHA.
+
+Exact 3,125-layout remaining-target-rank histogram: **50 dim2, 70 dim3, 1 dim4, 2 dim29, 44 dim30, 65 dim31, 77 dim32, 2,816 dim33**. Among the 121 low-dimensional layouts, **43** are the five original exact-227 plus 38 +/-1 variants already fully tested. Exactly **78** are new +/-2-shell layouts with 2/3 unknown target bits.
+
+The original selected K05 full-byte check on these 78 source-only selected layouts covered **78×10×24×256 = 4,792,320** complete source presentations, of which **869,900** are source-compatible. All **780/780** full-state planted MT source/coupon positives pass, and **zero** complete coupons match the untouched original K04 SHA256.
+
+**Crucial new saturation result:** The 78 layouts collectively generate **11,040 distinct full 16-byte K04 components**, and their *sorted complete-candidate-set SHA256* is **`9b249a0536e05804cee16b33fb7b5d8c17a38ae9f328e3ca37313a6c483dbd47`**. That is byte-identical to the independently recomputed full candidate-set hash for the previous 38 +/-1-shell layouts, which also contained 11,040 members. Thus **the 78 new layouts add zero new complete K04 coupon values** to the existing +/-1-shell original commitment search. This is a candidate-space **set equality**, stronger than merely two equal candidate counts. The fingerprint controls both source-pinned reproducers.
+
+New read-only SFT: [`agents/agent25/k04_stage1406_k05_sparse227_jitter2_target_sft.py`](../agents/agent25/k04_stage1406_k05_sparse227_jitter2_target_sft.py), rederiving all 3,125 ranks and excluding all previously inspected layouts before content assignment. [Manual fresh checkout GitHub Actions workflow](../.github/workflows/agent25-stage1406-sparse-jitter2-sft.yml), [run 42126380274](https://github.com/FlareZ123/workplace-v2/actions/runs/42126380274). Original local complete run yielded:
+
+```text
+JITTER_MODELS 78
+SOURCE original printer rank 15365 selected K02 modes 10
+ASSIGNMENTS_SUM 4792320 SOURCE_COMPATIBLE_SUM 869900 SYNTHETIC_FULL_COUPON 780
+UNIQUE_COMPLETE_K04 11040 ORIGINAL_K04_HITS 0
+COUPON_SET_SHA256 9b249a0536e05804cee16b33fb7b5d8c17a38ae9f328e3ca37313a6c483dbd47
+```
+
+**Decision:** This source-specific K05 writer-stage drift model has reached a concrete coupon-value fixed point by radius two; simply adding nearby jitter is unlikely to generate new target components unless it causes a qualitatively new source mapping. Deduplicate by full-component bytes in future research, and do not mistake millions of new source-assignment encodings for millions of new cryptographic target hypotheses. Other noncontiguous source mechanisms and independently authentic coupon witnesses remain possible.
