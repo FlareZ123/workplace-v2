@@ -1,6 +1,9 @@
 name: Agent 45 K04 joint middle-word source closure
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'agents/agent45/joint_middle_trigger_20261105.txt'
 permissions:
   contents: read
 jobs:
