@@ -76,7 +76,6 @@ def run(phase:int):
     states=source_states(phase,original)
     possible,record=valid_periods(states)
     s0_valid= ((states[0][1]^0x80000000)&states[0][0])==0
-    assert s0_valid or not possible or True
     print("ORIGINAL_PERIOD_SCAN",phase,"S0_possible",s0_valid,
           "possible_count",len(possible),"first_30_possible",possible[:30],
           "last_30_possible",possible[-30:],"max_excluded",
