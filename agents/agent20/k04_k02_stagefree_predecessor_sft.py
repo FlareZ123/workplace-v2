@@ -7,7 +7,7 @@ its output is a source-only diagnosis. K04 copied ACK2 and commitments are omitt
 from collections import defaultdict
 from datetime import datetime, timezone
 from hashlib import sha256
-from itertools import combinations, product
+from itertools import combinations, permutations, product
 from pathlib import Path
 import json
 import random
@@ -122,6 +122,13 @@ def main():
         tested[name] = {'records': len(values), 'window_views': 2 * (len(values) - 2),
                         'triple_matches': len(hits)}
         assert len(hits) == 0, (name, hits)
+        for swapped in (False, True):
+            other = [int.from_bytes(v.to_bytes(2, 'little'), 'big') if swapped else v
+                     for v in values]
+            for i, j, k in permutations(range(len(other)), 3):
+                assert (other[i], other[j], other[k]) not in index
+        tested[name]['ordered_triple_views'] = 2 * len(values) * (len(values) - 1) * (len(values) - 2)
+        tested[name]['ordered_triple_matches'] = 0
     assert sum(d['window_views'] for d in tested.values()) == 198
     print(json.dumps({'source_only': 'NO_K02_STAGEFREE_PRECURSOR_TRIPLE',
                       'printer_source_packets': 132, 'printer_triple_hypotheses': 276672,
