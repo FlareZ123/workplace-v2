@@ -162,3 +162,20 @@ print("UNIQUE_COMPLETE_K04",len(seen_coupon),"ORIGINAL_K04_HITS",len(real_hits))
 # absent from the +/-1 shell, despite different compatible K05 assignments.
 assert hashlib.sha256(b"".join(sorted(seen_coupon))).hexdigest()=="9b249a0536e05804cee16b33fb7b5d8c17a38ae9f328e3ca37313a6c483dbd47"
 print("COMPLETE_K04_SET_SHA256",hashlib.sha256(b"".join(sorted(seen_coupon))).hexdigest())
+
+# Exact source-derived coupon-language structure across all K02 view modes:
+# ten fixed eight-byte suffixes, each with the same 552 possible first words
+# crossed with its own two four-byte middle fragments. This makes the
+# 11,040-member set explicit as a union of ten independent Cartesian products.
+from collections import defaultdict
+groups=defaultdict(set)
+for raw_coupon in seen_coupon:groups[raw_coupon[8:]].add(raw_coupon[:8])
+shared_first={raw_coupon[:4] for raw_coupon in seen_coupon}
+assert len(groups)==10 and len(shared_first)==552
+for suffix,first_eight in groups.items():
+ middle={raw[4:8] for raw in first_eight}
+ assert len(middle)==2 and len(first_eight)==1104
+ assert {raw[:4] for raw in first_eight}==shared_first
+ assert len(first_eight)==len(shared_first)*len(middle)
+print("COUPON_CARTESIAN_GROUPS",len(groups),"SHARED_FIRST_WORDS",len(shared_first),
+      "MIDDLE_VARIANTS_PER_SUFFIX",2,"TOTAL",len(seen_coupon))
