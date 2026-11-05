@@ -78,3 +78,18 @@ COUPON_SET_SHA256 9b249a0536e05804cee16b33fb7b5d8c17a38ae9f328e3ca37313a6c483dbd
 ## Remote confirmation of the radius-two extension
 
 [Original-source GitHub Actions run 42126380274](https://github.com/FlareZ123/workplace-v2/actions/runs/42126380274) **completed SUCCESS at 23:02:39 UTC on 5 November 2026** from a fresh repository checkout. The independent runner reproduced the 3,125 source-only rank screen, 78 fresh small source quotients, all 4,792,320 authentic K05 presentations, 869,900 compatible assignments, 780 planted positives and zero original K04 commitment hits. Local independent coupon-set fingerprint checks on the two completed shells matched exactly; those assertions were subsequently incorporated into both portable SFTs.
+
+## A compact exact description of the saturated full-coupon set (23:07 UTC)
+
+A separate source-preserving analysis of **all 11,040 actual reconstructed 16byte coupon components** reveals an exact, unexpectedly simple **Cartesian product decomposition**:
+
+- **Ten** mutually distinct fixed final eight-byte suffixes, exactly the ten stage1406 K02 source-compatible interpretations.
+- Each suffix is associated with exactly **two** possible four-byte middle words.
+- All ten suffix families share precisely the **same 552 possible four-byte initial words**.
+- For every suffix, **every one of the 552 initial-word values occurs with both middle-word variants**, so each suffix family has `552×2=1,104` coupons and the ten families give `10×2×552=11,040` complete component values, with no missing Cartesian combinations.
+
+This is established by direct source-derived enumeration, per-suffix grouping and ten positive exact Cartesian-equality assertions, now embedded in both original-source SFTs. The source-grounded candidate-set SHA256 fingerprint is unchanged at `9b249a0536e05804cee16b33fb7b5d8c17a38ae9f328e3ca37313a6c483dbd47`.
+
+The ten fixed final-eight-byte suffixes (hex) are `201D6AD99C14245F`, `740B24D4BA875953`, `816ED1B13ED5DD01`, `819F76A12E722C01`, `AED16E9E013C343E`, `B3332C5B7330F7B9`, `CB240B6B53B866BA`, `D31B24254B8749F4`, `E41E42AEC0CB3C1B`, and `F393B52633906EC4`.
+
+This gives future investigators a **compact exact representation** for the entire stage1406 K02/K05 radius-one and radius-two donor model without re-enumerating millions of historical-source codecs. It also explains why the extra +/-2 layouts cause many distinct source assignments but **zero new original K04 commitment inputs**. The model remains conditional on an unverified original printer/telemetry/recorder common-MT producer. Nothing in this decomposition authenticates the physical selected coupon.
