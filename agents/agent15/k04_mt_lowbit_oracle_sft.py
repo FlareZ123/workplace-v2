@@ -31,11 +31,15 @@ def insert(rows,expr):
 
 
 def remainder(rows,expr):
+    residual=0
     while expr:
         p=expr.bit_length()-1
-        if p not in rows:return expr
-        expr^=rows[p]
-    return 0
+        if p in rows:
+            expr ^= rows[p]
+        else:
+            residual ^= 1<<p
+            expr ^= 1<<p
+    return residual
 
 
 def scenario(planes,native):
@@ -68,7 +72,7 @@ assert results['native_low1']['K04_quotient_rank']==128
 assert results['native_low2']['fixed_per_native_word_mask']==['00000001']*4
 assert results['native_low12']['K04_quotient_rank']==84
 assert results['native_low12']['fixed_per_native_word_mask']==['000007FF']*4
-assert results['native_high12']['K04_quotient_rank']==93
+assert results['native_high12']['K04_quotient_rank']==84
 assert results['tempered_low12']['K04_quotient_rank']==128
 assert results['tempered_high12']['K04_quotient_rank']==128
 assert results['native_all32']['K04_quotient_rank']==0
