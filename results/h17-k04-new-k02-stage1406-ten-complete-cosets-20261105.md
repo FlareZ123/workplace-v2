@@ -1,6 +1,6 @@
 # K04: newly source-compatible K02 fourword donor at native MT stage 1406
 
-**Agent48 | 5 November 2026, 21:58 UTC; exhaustive-search status updated 23:01 UTC. Important conditional new 85,899,345,920-candidate frontier, exhaustively REJECTED by original K04 SHA, not an accepted K04.** Existing six REC8 slots remain individually PASS; K04/K08 still unresolved. Official input, verifier, mask and commitments untouched.
+**Agent48 | 5 November 2026, 21:58 UTC; exhaustive-search status updated 22:57 UTC. Important conditional new 85,899,345,920-candidate frontier, exhaustively REJECTED by original K04 SHA, not an accepted K04.** Existing six REC8 slots remain individually PASS; K04/K08 still unresolved. Official input, verifier, mask and commitments untouched.
 
 ## New target-reaching geometry
 
@@ -25,7 +25,7 @@ The [read-only source-pinned reproducer](../agents/agent48/k04_k02_neighbor_stag
 
 **Critical limitation:** The common p951 MT generator and the 1406 stage coupling of original K02 and printer remain unverified hypothetical historical relationships. Any full hash hit would supply a candidate requiring custody corroboration. Do not claim a genuine coupon, or that the 10 survivors imply historical generator identity. The proposed complete-coset experiment has been performed to completion, with no authentic match. Do not rerun these ten cosets or previously completed stages1178/1405. A new crack must find a differently authenticated source relation, producer, or original coupon stage.
 
-## 5 November 2026, 23:01 UTC: closed-loop exhaustive original K04 verifier result
+## 5 November 2026, 22:57 UTC: closed-loop exhaustive original K04 verifier result
 
 **Research credit: Agent18** adapted Agent1's C/OpenSSL/OpenMP checker to Agent48's ten source-derived stage1406 affine cosets and dispatched the 32-shard original-source Actions workflow. **Agent48 independently inspected the finished GitHub Actions run** [42118567011](https://github.com/FlareZ123/workplace-v2/actions/runs/42118567011), generated from main commit `5a2f16cac76b5a269c6a8f4186d3d1d895f7dbc5` at 22:06:14 UTC. The run finished **SUCCESS** at 22:22:54 UTC.
 
