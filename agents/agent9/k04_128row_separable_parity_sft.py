@@ -34,6 +34,19 @@ def main(root: Path) -> None:
     cols = [[sum(((row[j] >> bit) & 1) << rowid
                  for rowid, row in enumerate(rows))
              for j in range(16)] for bit in range(8)]
+    # The original 128 column vectors have full GF(2) rank, making every
+    # nonzero 16-by-8 separable selection unique within one packing view.
+    basis = {}
+    for lane in cols:
+        for source_vector in lane:
+            value = source_vector
+            while value:
+                pivot = value.bit_length() - 1
+                if pivot not in basis:
+                    basis[pivot] = value
+                    break
+                value ^= basis[pivot]
+    assert len(basis) == 128
     agg = [0] * 8
     lo = int.from_bytes(MASK, "little")
     hi = int.from_bytes(MASK, "big")
