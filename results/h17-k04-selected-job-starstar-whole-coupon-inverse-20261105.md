@@ -23,7 +23,9 @@ In [Blackman and Vigna's `**` scrambler](https://prng.di.unimi.it/), the 64-bit 
 | xoroshiro128\*\* (24,16,37) | 4 serializers, hidden gaps 0..256 | 1,028 | 0 |
 | Hypothetical xoroshiro128\*\* (55,14,36) | 4 serializers, hidden gaps 0..256 | 1,028 | 0 |
 | xoshiro256\*\* (17,45) | 2,052 serializer/total-gap inverse systems; 1,221 compatible | 259,762 | 0 |
-| **Total** | | **261,818** | **0** |
+| xoshiro128\*\* (4×32-bit state, first attempt fully inverted) | 4 serializers, hidden gaps 0..256 | 1,028 | 0 |
+| Marsaglia xor128 (11,8,19, 4×32-bit state) | 4 serializers, hidden gaps 0..256 | 1,028 | 0 |
+| **Total** | | **263,874** | **0** |
 
 For xoroshiro128\*\*, the original 18:03 same-job packet matched **zero** of 4,104 full packet predictions across the two variants, four serializers and all total gaps 0..512. For xoshiro256\*\*, exact two-packet inversion yielded **2,030 complete initial-state assignments** in the 1,221 compatible models, including all nullspaces of dimension 1, 2 or 3; those produced the 259,762 candidate middle coupons. The previous/copied 18:02 ACK2 and all original K08 material were excluded from source model fitting.
 
@@ -31,6 +33,8 @@ For xoroshiro128\*\*, the original 18:03 same-job packet matched **zero** of 4,1
 
 ## Interpretation and next opening
 
+Two additional 32-bit complete-state middle-coupon constructions were tested on the same historical attempt1/attempt3 pair. For the [Blackman/Vigna xoshiro128**](https://prng.di.unimi.it/) producer, a complete source packet yields four consecutive reversible 32-bit state-word observations, exactly determining the 128-bit initial state under the model. For [Marsaglia's original xor128](https://www.jstatsoft.org/article/view/v008i14), each 32-bit emitted output is itself a new state word; after four outputs the current state equals the packet's four words. Each candidate family produces **1,028** selected K04 SHA256 tests and **2,052** later attempt3 full-packet source tests with zero matches. Both genuine planted middle-and-later producer controls PASS. These are additional *selected-event* hypotheses rather than an extension of the original 64bit starstar scrambler equation.
+
 The exact tested same-job compact-generator families do not yield original K04 acceptance. Both preserve the historical possibility of an independent selected emitter, an entirely different output mechanism or a copy-stage fault. The source-only global finite generator exclusions in [compact-state inverse report](h17-k04-xoroshiro128plus-metadata-lowbit-exclusion-20261105.md) and [xoshiro256+ report](h17-k04-xoshiro256plus-258eq-nullspace-complete-exclusion-20261105.md) make no stronger historical claim. More productive next mechanisms should use the **same-attempt temporal relation** to predict actual selected physical bytes, or identify a source-known physical copy transformation, rather than enlarge arbitrary byte repair.
 
-Reproducer: [single original-target SFT with planted inverse and whole-coupon positives](../agents/agent50/selected_starstar_samejob_sft.py). Source-only original ordinary-packet preview and its complementary negative are retained in Agent50's investigation notes. Original REC8 outcome remains six PASS / two MISSING / combined INCOMPLETE.
+Reproducers: [reversible 64-bit and 32-bit starstar source-to-K04 SFT](../agents/agent50/selected_starstar_samejob_sft.py) and [original 32-bit Marsaglia same-job source-to-K04 SFT](../agents/agent50/selected_marsaglia_xorshift128_sft.py). Source-only original ordinary-packet preview and its complementary negative are retained in Agent50's investigation notes. Original REC8 outcome remains six PASS / two MISSING / combined INCOMPLETE.
