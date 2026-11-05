@@ -125,6 +125,26 @@ def all_original_16byte_carriers() -> dict[bytes, str]:
         for i in range(len(vals) - 3):
             add(f"SEAL:{permit}:{i}", b"".join(bytes.fromhex(x[2]) for x in vals[i:i + 4]))
 
+    transfers = [json.loads(line) for line in (E / "transfers" / "transfer-audit.jsonl").read_text().splitlines()]
+    for transfer in ("AX-7778", "AX-7781", "AX-7782", "AX-7783"):
+        rows = sorted(
+            (x for x in transfers if x["kind"] == "CHUNK" and x["transfer"] == transfer),
+            key=lambda x: (x["seq"], x["attempt"])
+        )
+        checkpoints = [bytes.fromhex(x["checkpoint"]) for x in rows]
+        for i in range(len(checkpoints) - 7):
+            add(f"{transfer}:sorted8:{i}", b"".join(checkpoints[i:i + 8]))
+        for attempt in (1, 2):
+            add(
+                f"{transfer}:attempt{attempt}",
+                b"".join(bytes.fromhex(x["checkpoint"]) for x in rows if x["attempt"] == attempt)
+            )
+        greatest = [
+            bytes.fromhex(max((x for x in rows if x["seq"] == seq), key=lambda x: x["attempt"])["checkpoint"])
+            for seq in range(8)
+        ]
+        add(f"{transfer}:greatest", b"".join(greatest))
+
     accepted = {
         "K01": "049AAB2E1CDE7A82CD7C60234303C91A",
         "K02": "0D7E3AB56FB75DA3EB0E2E06786D239E",
