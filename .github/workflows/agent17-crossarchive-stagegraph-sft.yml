@@ -1,0 +1,16 @@
+name: Agent 17 source-causal K04 stage graph SFT
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-source-stagegraph:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run original-source stage graph and synthetic consistency assertions
+        run: python agents/agent17/k04_crossarchive_stagegraph_sft.py
