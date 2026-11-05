@@ -54,3 +54,7 @@ Five separately accepted historical source blocks **do not fit one common stream
 A true common generator could use discontiguous outputs, a larger inter-source gap, independently keyed/reseeded streams, a different packet codec or a different algorithm. The physical selected original may be unrelated to these selected source blocks. None of these negatives recovers an authenticated bit of the K04 original or a word of the K08 final caption.
 
 **Next information-bearing bridge:** acquire or discover a contemporary emitter rule predicting two independently selected intact source objects, or an original authenticated selected ACK2/media witness. Scaling unrelated PRNG families without such a source connection would add little. Preserve all six verified slots and keep K04/K08 null in the canonical candidate until exact commitments pass.
+
+## Clean repository CI verification (5 November, 20:16 UTC)
+
+The committed reproducible SFT ran **SUCCESS** on original repository resources under Python 3.11 in [manual GitHub Actions run 42101828580](https://github.com/FlareZ123/workplace-v2/actions/runs/42101828580), independently from the earlier uploaded-ZIP local test. The run re-derived all five original selected blocks, passed every planted full-state/withheld-future control, and checked the same **3,276,800** full original K04 candidates with zero matches and zero cross-source common-gamma matches. The manual workflow was temporary and may be retired after verification; the test source persists.
