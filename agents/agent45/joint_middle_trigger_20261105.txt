@@ -1,0 +1,1 @@
+One-shot 5 November 2026 Agent45 source-pinned joint CPython initialized-word propagation, 16 disjoint source-only shards. The disputed selected spool ACK2, K04 target commitment, and verifier are excluded from this model.
