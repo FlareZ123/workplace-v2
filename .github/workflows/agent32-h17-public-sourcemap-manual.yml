@@ -1,0 +1,13 @@
+name: Agent32 H17 declared public JavaScript source map
+on:
+  workflow_dispatch:
+jobs:
+  source-map:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read public linked script and declared map only
+        run: python agents/agent32/h17_public_site_declared_sourcemap_sft.py
