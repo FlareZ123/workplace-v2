@@ -26,3 +26,12 @@ Reproducible original-source SFTs:
 ## Boundary
 
 These source-indexed encoders failed. A fully unconstrained bit position for each row has 128 choices repeated 128 times and cannot be supported by the export without a source-specified selector. This experiment authenticates **zero new selected K04 physical-coupon bits** and no final K08 words. It does not establish that a paper bit-selection channel existed. Seek a different original selected-stage witness or bounded source-derived transformation.
+
+
+## K08 independent full-text carrier using the same 128-row structure
+
+A second, distinct interpretation of these unusually regular 128 source packets would hide the **literal** keeper inscription as a four-bit nibble per row, giving **128 nibbles = 64 ASCII bytes**. This directly addresses K08 without guessing source-caption grammar. For each row i, select nibble `(a*i+b) mod32` (`a,b` 0..31), four source-byte/nibble orientations, two record orders, and two high/low assembly orientations. Exactly **16,384 entire 64-byte decoded streams** were reconstructed from the original printer packets, with the selected suspect 0417 RECOVER ACK2 excluded.
+
+The original K08 route nonce, exact ASCII punctuation/space normalization, HMAC-SHA256 first16 and untouched full 256-bit K08 commitment were preserved. Only maximal decoded ASCII printable runs of length **at least 16 bytes** with two or more normalized words would reach the HMAC test. **None of the 16,384 original streams yielded any qualifying printable run: 0 complete plausible K08 phrases, 0 original HMAC/commitment hits.** An independently planted **entire known N17 standby caption** in 128 synthetic source nibbles was decoded correctly with a nontrivial `a=9,b=3` selector, and its full synthetic 16-byte HMAC component and SHA256 passed; N02 authentic original HMAC fixture also passed. These are tests of the decoder and reducer, never a recovered final author caption.
+
+Portable source-pinned [K08 indexed-nibble SFT](../agents/agent9/k08_128row_diagonal_nibble_carrier_sft.py). This excludes only the defined direct, coherent nibble-to-ASCII encoding; original archive material provides **no evidence that the printer ever carried Emily's final text**. Compressed, encrypted, fragmented or different source media remain outside this family. The confirmed status remains six individual PASS, K04/K08 unknown, combined INCOMPLETE.
