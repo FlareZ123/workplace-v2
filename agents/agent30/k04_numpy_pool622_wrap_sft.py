@@ -47,10 +47,10 @@ def run():
         bg=np.random.MT19937(ss)
         pool=tuple(int(x) for x in ss.pool)
         assert np.array_equal(seeded_key(pool),bg.state["state"]["key"])
+        initialized=bg.state["state"]["key"].copy()
         emitted=[int(x) for x in bg.random_raw(max(mt.STARTS)+5)]
         s=source_states(0,packets(emitted,0))
-        assert all((val==(pool[i%size] if False else val)) for i,(mask,val) in enumerate(s))
-        assert all((val&(mask))==(int(bg.state["state"]["key"][i])&mask) for i,(mask,val) in enumerate(s))==False or True
+        assert all((val==(int(initialized[i])&mask)) for i,(mask,val) in enumerate(s))
         if size==622:
             controls=inversion(s)
             assert any(p==pool[1] and accepted for p,pred,accepted in controls)
