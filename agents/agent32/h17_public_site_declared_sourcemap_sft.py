@@ -7,7 +7,7 @@ from urllib.request import Request, urlopen
 
 HOST = "https://noyes-energy-group.pages.dev"
 SCRIPT = HOST + "/assets/site.js"
-REF = re.compile(r"(?m)//[#@]\\s*sourceMappingURL\\s*=\\s*([^\\s]+)")
+REF = re.compile(r"(?m)//[#@]\s*sourceMappingURL\s*=\s*([^\s]+)")
 TOKENS = re.compile(r"(?i)h[- ]?17|ps-261003|esc[- ]?n|coupon|keeper|emily|caption|archive|recovery|incident")
 
 def safe_url(parent, target):
