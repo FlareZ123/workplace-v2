@@ -278,6 +278,13 @@ def planted_controls():
 def main():
     source=source_blocks(); print('SOURCE_SELECTED',[(k,v.hex().upper()) for k,v in source.items()])
     planted_controls()
+    for kind in ('stafford','murmur'):
+        gammas=[(name,layout,(unmix64(pair[1],kind)-unmix64(pair[0],kind))&MASK64)
+                for name,block in source.items() for layout,pair in layouts(block,8)]
+        equal=[(a[0],a[1],b[0],b[1]) for i,a in enumerate(gammas)
+               for b in gammas[i+1:] if a[0]!=b[0] and a[2]==b[2]]
+        print('SOURCE_GAMMA',kind,'inferred',len(gammas),'independent_source_agreements',len(equal))
+        assert not equal
     total=0
     for engine in ('xorshift128','xoshiro11','xoshiro10','splitmix-stafford','splitmix-murmur'):
         total+=search(source,engine)
