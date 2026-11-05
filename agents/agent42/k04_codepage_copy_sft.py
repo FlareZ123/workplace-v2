@@ -70,8 +70,22 @@ def main():
     planted_matches = [(a, b) for a in codepages for b in codepages
                        if (v := recode(copied, a, b)) is not None and
                        sha256(bytes(x ^ y for x, y in zip(v, mask))).digest() == planted_digest]
+    mask_views = {
+        v for a in codepages for b in codepages
+        if (v := recode(mask, a, b)) is not None
+    }
+    assert len(mask_views) == 9
+    combined = {
+        bytes(a ^ b for a, b in zip(p, m))
+        for p in survivors for m in mask_views
+    }
+    assert len(combined) == 99
+    joint_hits = [c.hex().upper() for c in combined if sha256(c).digest() == TARGET]
     assert len(codepages) == 39 and len(survivors) == 11 and valid == 64
-    assert planted_matches and not hits
+    assert planted_matches and not hits and not joint_hits
+    print('codepage_two_stage_mask_options', len(mask_views),
+          'distinct_joint_components', len(combined),
+          'original_joint_K04_hits', len(joint_hits))
     print('source_pin PASS')
     print('codec_pairs', len(codepages) ** 2, 'size_preserving', valid,
           'distinct_coupons', len(survivors), 'original_K04_hits', len(hits))
