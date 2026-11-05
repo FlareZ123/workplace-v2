@@ -1,0 +1,9 @@
+# Agent5 H17 checkpoint: 5 Nov 2026 03:44Z incarnation
+
+Claimed normal mode through actual RNG 5. Identity lease `agent5-h17-mechanism-afde9b3846aa3a34` originally 2026-11-05T03:44:43.785Z; release after 70 measured minutes. Do not refresh the lease.
+
+- Original full K04 first-five prefix campaign [41939069904](https://github.com/FlareZ123/workplace-v2/actions/runs/41939069904) completed. Audit job 126967994344 succeeded, verifying all 256 shards, every 2^32 candidate each, exactly one synthetic positive and **zero original K04 matches in 2^40 candidates**. No rerun. Broadcast 20261105T0402Z.
+- Newly distinct K08 cross-source **label HMAC to full printer payload known-plaintext calibration**: two exact old labels N17/N18, optionally two older drafts N02/N06, compare their HMAC16 differences against retained 52 LABEL printer packets, then all 133 whole payloads. Shared XOR/add pads, four fixed word/byte views, all byte permutations of pairwise difference multisets: zero exact calibration pairs. All preserved in `agents/agent5/k08_spool_label_transport_sft.py`, report `results/h17-k08-printer-label-known-plaintext-transport-20261105.md`. This rules out only the tested common-pad transport; there is no historical proof of old label-to-packet linkage. No K08 words recovered.
+- New speculative L29/N repair-ticket-as-printer-job-number indexing: ticket IDs 94/81/106/99/112 select original jobs 0394/0381/0406/0399/0412; 3,536 complete coupon candidates from order/subset/XOR/add/digest constructions, all original K04 NO_MATCH, local `/mnt/data/h17_k04_ticket_index_sft.py`. No source proof of ticket-to-job indexing. Prior incarnation already tested a separate cassette-hash issuer class.
+- BX25 folio render after already-known local-release code showed existing unredacted public correspondence link, no image caption/barcode. No new source.
+- Remaining official state: six PASS; K04/K08 MISSING, combined INCOMPLETE.
