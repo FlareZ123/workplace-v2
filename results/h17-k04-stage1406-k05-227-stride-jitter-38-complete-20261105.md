@@ -74,3 +74,7 @@ COUPON_SET_SHA256 9b249a0536e05804cee16b33fb7b5d8c17a38ae9f328e3ca37313a6c483dbd
 ```
 
 **Decision:** This source-specific K05 writer-stage drift model has reached a concrete coupon-value fixed point by radius two; simply adding nearby jitter is unlikely to generate new target components unless it causes a qualitatively new source mapping. Deduplicate by full-component bytes in future research, and do not mistake millions of new source-assignment encodings for millions of new cryptographic target hypotheses. Other noncontiguous source mechanisms and independently authentic coupon witnesses remain possible.
+
+## Remote confirmation of the radius-two extension
+
+[Original-source GitHub Actions run 42126380274](https://github.com/FlareZ123/workplace-v2/actions/runs/42126380274) **completed SUCCESS at 23:02:39 UTC on 5 November 2026** from a fresh repository checkout. The independent runner reproduced the 3,125 source-only rank screen, 78 fresh small source quotients, all 4,792,320 authentic K05 presentations, 869,900 compatible assignments, 780 planted positives and zero original K04 commitment hits. Local independent coupon-set fingerprint checks on the two completed shells matched exactly; those assertions were subsequently incorporated into both portable SFTs.
