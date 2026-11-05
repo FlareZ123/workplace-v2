@@ -57,6 +57,23 @@ static unsigned scan_packed(const uint8_t *p,unsigned reverse,unsigned order){
     return 1;
 }
 
+static unsigned scan_packed_phase(const uint8_t *p,unsigned reverse,unsigned order,unsigned phase){
+    uint8_t oriented[16];
+    for(unsigned i=0;i<16;i++)oriented[i]=p[reverse?15-i:i];
+    unsigned off=(3-phase)%3;
+    uint32_t word=order==0?
+        ((uint32_t)oriented[off]<<16)|((uint32_t)oriented[off+1]<<8)|oriented[off+2]:
+        ((uint32_t)oriented[off+2]<<16)|((uint32_t)oriented[off+1]<<8)|oriented[off];
+    uint32_t state=phase?((word-C)*602453u)&MASK:word;
+    uint8_t output_bytes[18];
+    for(unsigned i=0;i<6;i++){
+        for(unsigned j=0;j<3;j++)
+            output_bytes[i*3+j]=(uint8_t)(state>>(8*(order?j:2-j)));
+        state=advance(state);
+    }
+    return memcmp(oriented,output_bytes+phase,16)==0;
+}
+
 int main(int argc,char **argv){
     if(argc!=2){fprintf(stderr,"Require original spool path\n");return 2;}
     FILE *file=fopen(argv[1],"rb");
@@ -91,5 +108,10 @@ int main(int argc,char **argv){
         printf("ORIGINAL packed-24 reverse=%u order=%u match=%u\n",
                reverse,order,scan_packed(p,reverse,order));
     }
+    for(unsigned reverse=0;reverse<2;reverse++)for(unsigned order=0;order<2;order++)
+        for(unsigned phase=0;phase<3;phase++){
+            printf("ORIGINAL 24-bit packed reverse=%u order=%u phase=%u match=%u\n",
+                   reverse,order,phase,scan_packed_phase(p,reverse,order,phase));
+        }
     return 0;
 }
