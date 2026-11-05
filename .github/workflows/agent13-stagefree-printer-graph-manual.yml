@@ -1,0 +1,13 @@
+name: Agent13 stage-free MT printer inverse graph
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-graph:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact original-source recurrence discovery and all-stage interval
+        run: python agents/agent13/k04_stagefree_mt_packet_graph_sft.py resources/evidence/print/spool-reconstruction.log
