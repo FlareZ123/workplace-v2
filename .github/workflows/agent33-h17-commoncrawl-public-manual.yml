@@ -1,0 +1,16 @@
+name: Agent33 H17 public Common Crawl correspondence index
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-index-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read independent public historic index
+        run: python agents/agent33/h17_commoncrawl_public_index_sft.py
