@@ -1,5 +1,8 @@
 name: Agent18 K04 stage1406 new ten coset exhaustive SHA
 on:
+  push:
+    paths:
+      - 'agents/agent18/k04_stage1406_run.trigger'
   workflow_dispatch:
 permissions:
   contents: read
