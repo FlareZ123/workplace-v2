@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        offset: [2496, 3000, 3120, 3744, 4368, 4992, 6240]
+        offset: [3114, 3115, 3116, 3117, 3118, 3119]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
