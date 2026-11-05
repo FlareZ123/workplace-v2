@@ -8,10 +8,9 @@ from itertools import product
 import hashlib
 import json
 import re
-import zipfile
+from pathlib import Path
 
-z=zipfile.ZipFile('resources/h17-archive-dump.zip')
-spool=z.read('evidence/print/spool-reconstruction.log')
+spool=(Path(__file__).resolve().parents[2] / 'resources/evidence/print/spool-reconstruction.log').read_bytes()
 assert hashlib.sha256(spool).hexdigest()=='7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083'
 records=[]
 rawlines=spool.decode()
