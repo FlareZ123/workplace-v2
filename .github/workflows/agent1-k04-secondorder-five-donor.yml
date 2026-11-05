@@ -1,0 +1,11 @@
+name: Agent 1 K04 second-order five-donor full-coupon source gate
+on:
+  workflow_dispatch:
+jobs:
+  source-pinned-five-donor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Native MT five-donor full-coupon source and seeded controls
+        run: python -u agents/agent1/k04_mt_secondorder_5donor_fullcoupon_sft.py
