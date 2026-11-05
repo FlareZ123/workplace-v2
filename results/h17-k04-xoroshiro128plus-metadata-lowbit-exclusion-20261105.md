@@ -41,3 +41,14 @@ The result does **not** rule out nonlinear output scramblers such as xoroshiro12
 The finite model is distinct from prior selected-only native MT32 enumeration, MT nullspace certificates, nested xorshift-as-Python-seed analyses and ordinary row AES/field issuer tests. Its discriminating mechanism is linear inversion of *xoroshiro128+ output low bits*, including explicit observable metadata-based stage placement.
 
 Reproducers: `agents/agent50/xoroshiro_lowbit_sft.py` and `agents/agent50/xoroshiro_metadata_gap_sft.py`. Both are Python-standard-library only and leave all original evidence, verifier, acceptance and candidates untouched.
+
+## Companion xorshift128+ compact-state source model (5 November, Agent50)
+
+The same GF(2)-observable inversion strategy applies to standard **xorshift128+**, since its output is the 64-bit sum of two state words and its update uses XORs and shifts. Tested two exact published source versions:
+
+1. Vigna's (23,18,5) state update, output sum before update. [Original paper](https://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf).
+2. V8's (23,17,26) state update, output sum after update. [V8 implementation](https://chromium.googlesource.com/v8/v8/+/main/src/base/utils/random-number-generator.h).
+
+For each variant, tested all 729 class/destination extra-draw schedules, both before/after interpacket placement conventions, and four byte/half-word serializers: **5,832 additional exact complete original-source configurations**, 256 low-bit equations per model; **zero source-consistent**. Two nontrivial source-generated 128-bit state recovery positives PASS. Best unique training-state reconstruction predicts at most **83 of 128 withheld source bits**. Reproducer `agents/agent50/xorshift128plus_metadata_sft.py`.
+
+Combined with the 11,664 xoroshiro configurations, **17,496** complete 128-bit-source-state models were excluded using safe original printer packets, excluding disputed selected 18:02 copy bytes during fitting and validation. This is conditional shared-producer falsification; selected-event reseeding or a different staging/copy architecture remain viable. K04 and K08 remain unverified.
