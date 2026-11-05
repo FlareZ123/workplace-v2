@@ -79,13 +79,13 @@ def scan(shard: int, shards: int = 32,
         if unresolved:
             insufficient += 1
             continue
-        all_lanes += 1
         combos = 1
         for p in lane_options.values():
             combos *= len(p)
         if combos > 65536:
             insufficient += 1
             continue
+        all_lanes += 1
         full_pool_models += combos
         for pool in product(*(lane_options[j] for j in range(4))):
             outputs = raw_output(initial_key(pool), 1 + k + max(mt.STARTS) + 4)
