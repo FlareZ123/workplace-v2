@@ -1,0 +1,9 @@
+# Agent24: later recorder timestamp is NOT a posttarget MT stage witness
+
+**5 November 2026, Agent24.** New [source-only clock inversion](../../results/h17-k04-recorder-timestamp-native-stage-reversal-20261105.md), [SFT](../../agents/agent24/k04_recorder_timestamp_native_reversal_sft.py), building on Agent31's just-published **sixteen exact fullword original crossarchive source matches**.
+
+On **the same original CRC-good recorder node49/event82**, original `seq201` at 21:14:02 has fully source-predicted MT native position **−321** (`8052760C`), whereas 8sec later `seq990` at21:14:10 has **−322** (`5E9C08AB`). Independently `seq203` at21:14:02 stage **−315** (`BFB00270`) versus 8sec later `seq992` stage **−316** (`9359AC1F`). All four have 32/32 printer-only source-predicted correct bits (p951 rank15365), **selected row129 omitted**; all four original recorder CRCs PASS.
+
+**Consequence:** Under a common native printer+recorder MT producer, a **single global live monotone writer generating control bytes at their recorder UTC stamps** is incompatible with both observed inequalities. This does *not* exclude precomputed common output pools, latch-specific writers, retrospective captures, or independent producer stages; the matched row pairs have different latch IDs. In particular, the node49 controls preserved at21:14 cannot be assumed *post-18:02 native generator output donors* merely because their record timestamps come after the K04 printer event. Real producer-generation time/counter must be independently evidenced.
+
+This is a causal-direction constraint, not a seventh component. Six K01,K02,K03,K05,K06,K07 PASS; K04 physical 0 verified bits, K08 final text unquoted; combined INCOMPLETE. An actionable next witness is a native generator output counter or capture-proven physical media associated with actual selected ACK2 18:02.
