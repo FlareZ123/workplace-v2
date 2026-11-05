@@ -1,0 +1,26 @@
+name: Agent30 NumPy four-pool long-startup coupon reconstruction
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pool-reconstruction:
+    name: NumPy pool4 phase ${{ matrix.offset }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        offset: [624, 625, 1247, 1248, 1872, 2496]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install NumPy
+        run: python -m pip install "numpy>=2.0,<3"
+      - name: Reconstruct pool and fully compare historical and planted packets
+        run: python agents/agent30/k04_numpy_pool4_long_startup_sft.py ${{ matrix.offset }}
