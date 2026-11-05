@@ -1,0 +1,16 @@
+name: Agent12 K04 selected K02 PTW417 strided source SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-projection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run read-only original-source SFT
+        run: python agents/agent12/h17_k04_k02_ptw_strided_source_sft.py
