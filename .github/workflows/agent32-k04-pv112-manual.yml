@@ -1,0 +1,13 @@
+name: Agent32 K04 PV triad stage-seven extrapolation falsifier
+on:
+  workflow_dispatch:
+jobs:
+  source-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-only original with planted MT positive
+        run: python agents/agent32/k04_pv_triad_seq7_global_falsifier_sft.py
