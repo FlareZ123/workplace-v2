@@ -23,8 +23,8 @@ INDEXES = (
 DENY_PATHS = ("/admin", "/api")
 
 
-def query(index: str) -> tuple[str, list[dict]]:
-    qs = urlencode({"url": HOST + "/*", "output": "json", "filter": "status:200"})
+def query(index: str, exact_root: bool = False) -> tuple[str, list[dict]]:
+    qs = urlencode({"url": HOST + ("/" if exact_root else "/*"), "output": "json", "filter": "status:200"})
     url = f"https://index.commoncrawl.org/{index}-index?{qs}"
     request = Request(url, headers={
         "User-Agent": "H17-archive-preservation-research/1.0 (public-index-only)"
@@ -61,6 +61,12 @@ def run() -> None:
         if n:
             time.sleep(1)
         status, entries = query(index)
+        if status == "HTTP_504":
+            time.sleep(1)
+            fallback_status, fallback_entries = query(index, exact_root=True)
+            print(f"EXACT_ROOT_FALLBACK {index}: {fallback_status}, rows={len(fallback_entries)}")
+            status = status + ";ROOT=" + fallback_status
+            entries = fallback_entries
         public = [entry for entry in entries if permitted_public(entry)]
         other = len(entries) - len(public)
         print(f"INDEX {index}: status={status} result_rows={len(entries)} permitted_public={len(public)} excluded={other}")
