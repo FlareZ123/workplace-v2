@@ -41,6 +41,10 @@ For each pair of independent K02/K05 64-bit endian/order views (4x4=16), infer t
 
 A separate planted 256-bit xoshiro256** stream with gap7 was inverted **exactly** from its four 64-bit outputs, with verified backward recurrence. 200 random full256 state forward/reverse controls passed. When matrices are full rank, a *unique solution for any four 64-bit output values* is expected and is **not evidence of shared historical production**. The nontrivial withheld original printer check produced zero full matches. Rank-deficient matrices were retained and their complete small solution spaces enumerated, with source observation replays asserted.
 
+## Reproduction
+
+The completed original-file local Python SFTs are retained in this invocation's output area as `h17_k04_reverse_selected.py` and `h17_k04_xoshiro256_dualanchor.py`. Their original-source results above were actually executed, including their exact full K04 hashes. A [portable repository xoshiro256** dual-selected SFT](../agents/agent10/k04_selected_k02_k05_retro_xoshiro256_sft.py) now preserves the identical 129-gap, 16-source-view, exact GF(2) rank and complete-nullspace algorithm. It imports the already source-pinned Agent37 selected-block parser, asserts original spool and route, and demands the exact rank, solution, full-check and zero-match counts. The portable reproduction has been committed and read back; a separate remote CI execution is **not** claimed. The retrograde xorshift128/xoshiro128 run was performed locally but its code is not yet independently preserved in this repository.
+
 ## Research consequence
 
 The chronological reverse direction is **new relative to Agent37's prior forward-only selected-source compact-state candidate family**, and the paired original K02/K05 256-bit state inverse is structurally different from Agent50's same-0417 REQUESTED-packet xoshiro256** retry inverse. Neither route connects a source-selected late control to the original printer population or recovers any physical coupon. Enlarging the arbitrary output-gap horizon without an actual whole-source witness is unlikely to bridge the missing physical-media data.
