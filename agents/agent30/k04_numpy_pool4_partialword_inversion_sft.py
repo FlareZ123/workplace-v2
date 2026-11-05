@@ -74,7 +74,7 @@ def model_outcome(offset: int) -> None:
     control = []
     for lane in range(4):
         missing, vals = inverse_lane(reference, lane)
-        assert not vals or true_pool[lane] in vals
+        assert missing > LIMIT or true_pool[lane] in vals
         control.append((missing, len(vals)))
     print("PLANTED_NUMPY_POOL_CONTROL", offset, true_pool, control, flush=True)
 
@@ -102,8 +102,8 @@ def model_outcome(offset: int) -> None:
     full_matches = hits = 0
     for p in product(*(vals for _, vals in out)):
         outputs = raw_output(initial_key(p), 1 + offset + max(mt.STARTS) + 4)
-        if not all(packets(outputs, offset)[i] == original[i]
-                   for i in range(133) if i != 129):
+        predicted = packets(outputs, offset)
+        if not all(predicted[i] == original[i] for i in range(133) if i != 129):
             continue
         full_matches += 1
         c = coupon(outputs, offset)
