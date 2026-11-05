@@ -12,7 +12,7 @@ Official selected copied payload: `A9A9DC5731A5E2AE879C47215C2559D5`, printer SH
 
 For **each** of six 128-bit raster factorizations **2×64,4×32,8×16,16×8,32×4,64×2**:
 
-- For both source bit-endian orders, choose row-major or column-major input, straight or serpentine scan, independently reflect each axis, and cyclically vary each row and column origin. Each raster shape has **16,384 distinct scan-parameter assignments** before the neighbor-prediction operation; maps can generate duplicate outputs.
+- For both source bit-endian orders, choose row-major or column-major input, straight or serpentine scan, independently reflect each axis, and cyclically vary each row and column origin. Each raster shape has **4,096 scan-parameter assignments** before neighbor prediction; some assignments may generate identical geometric maps or outputs.
 - Apply any of **six** binary predictors: above-source XOR, cumulative above-output XOR, left-source XOR, cumulative left-output XOR, above+left-source XOR, or cumulative above+left-output XOR. At a first row/column, the absent neighbor is zero.
 - Try all **three** exact reducer stages: transform copied payload then original-mask XOR, transform original mask then XOR with unmodified copy, or transform existing copied-payload XOR original-mask component. Also test both image polarities.
 - Every complete 16-byte candidate goes through the untouched original full SHA256 commitment. Stage count is **147,456** per raster shape, totaling **884,736** complete assignments. Output collisions are possible and were not deduplicated.
