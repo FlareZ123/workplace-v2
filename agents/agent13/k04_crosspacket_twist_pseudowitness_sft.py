@@ -108,6 +108,30 @@ def main(path: str):
     assert not (set(donor_stages) & {
         328, 329, 330, 331, 724, 725, 726, 727
     })
+    # Real seeded CPython output streams: source geometry identical, no
+    # historical target/hash inputs. False fullword matches remain common.
+    import random
+    eligible = [b for b in range(1, 133)
+                if b in row_words and b - 1 in row_words
+                and starts[b] + 396 in by_stage
+                and starts[b] + 623 in by_stage]
+    assert len(eligible) == 17
+    synthetic_counts = []
+    for seed in range(200):
+        rng = random.Random(seed)
+        native = [g.untemper(rng.getrandbits(32)) for _ in range(967)]
+        synthetic_counts.append(sum(
+            g.twist_mix(native[starts[b-1] + 3], native[starts[b]])
+            == (native[starts[b] + 396] ^ native[starts[b] + 623])
+            for b in eligible))
+    assert (min(synthetic_counts), max(synthetic_counts),
+            sum(synthetic_counts), sum(v <= 6 for v in synthetic_counts)) \
+        == (3, 14, 1665, 41)
+    print("GENUINE_SYNTHETIC_MT_SEED_COUNT", len(synthetic_counts))
+    print("GENUINE_SYNTHETIC_FALSE_FULLWORD_MEAN",
+          sum(synthetic_counts) / len(synthetic_counts))
+    print("GENUINE_SYNTHETIC_COUNTS_LE_ORIGINAL6",
+          sum(v <= 6 for v in synthetic_counts))
     print("ORIGINAL_SPOOL_SHA256", g.SPOOL_SHA256)
     print("TRUE_INTRA_PACKET_RELATIONS", len(inside))
     print("ADJACENT_INTACT_PACKET_BOUNDARIES", possible)
