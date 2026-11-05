@@ -1,0 +1,16 @@
+name: Agent 37 H17 original-source mechanisms manual
+on:
+  workflow_dispatch:
+jobs:
+  source-recovery-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Selected source compact-state coupon gate
+        run: python agents/agent37/k04_selected_crossslot_lowstate_sft.py
+      - name: Fully inferred hidden MT packet copy overlay gate
+        run: python agents/agent37/k04_hidden_mt_overlay_sft.py
