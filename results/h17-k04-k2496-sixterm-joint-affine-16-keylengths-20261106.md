@@ -81,6 +81,22 @@ ORIGINAL_CPINT_K2496_16_SEED_WORD_LENGTHS_EXCLUDED=PASS
 
 Source and reproduction: [six-term source-only test](../agents/agent23/k04_cpython_k2496_sixterm_joint_sft.py), [manual Actions workflow](../.github/workflows/h17-agent23-k2496-sixterm-affine.yml), [successful run](https://github.com/FlareZ123/workplace-v2/actions/runs/42310648562).
 
+## Practical CPython byte-seed consequence, verified with the real byte-seed API
+
+CPython `random.Random(bytes, version=2)` appends the **64-byte SHA512 digest of the supplied original bytes**, interprets `original_bytes || digest` as a big-endian integer, then feeds that integer's least-significant-first 32-bit words to the same `init_by_array` recurrence. Thus a byte seed whose leading original 32-bit chunk is nonzero gives key-array length `n=ceil((length+64)/4)`.
+
+The new [CI rerun 42311943940](https://github.com/FlareZ123/workplace-v2/actions/runs/42311943940) **SUCCESS**, adding three direct `random.Random(payload_bytes)` genuine-reference tests, a separate equivalent `random.Random(int.from_bytes(payload_bytes+sha512(payload_bytes)))` equality test, and a direct repeated-key-term check for each:
+
+| Original binary source length | CPython key-array words in tested control | Original-source result at hypothetical k2496 |
+| --- | ---: | --- |
+| **16 bytes**, first byte nonzero | n20 | Rejected by source T9/T29 disjointness |
+| **20 bytes**, first byte nonzero | n21 | Rejected by source T8/T29 disjointness |
+| **36 bytes**, first byte nonzero | n25 | Rejected by source T4/T29 disjointness |
+
+All three independent real Python byte-seeded controls PASS. These are corollaries of the already-tested *integer seed word-length* exclusions, rather than a claim that any historic key/nonce was used as the printer seed. The explicit **nonzero-leading-byte condition matters**: unusually many leading zero bytes can lower the integer's key-array word length into a different, possibly open case; a 16-byte all-zero or heavily zero-prefixed input is not generally covered by the n20 row.
+
+This rules out ordinary full-width 16-byte source values as direct CPython v2 byte-seeds under the frozen source/printer orientation, a concrete consequence for source-derived 16-byte archive blocks. It still provides no original selected coupon bytes.
+
 ## Supporting independent tests
 
 - [Unified n1..6 original joint-source theorem](h17-k04-k2496-joint-affine-source-n1to6-20261106.md), six seeded full-packet controls and original source [CI run 42309858527](https://github.com/FlareZ123/workplace-v2/actions/runs/42309858527).
