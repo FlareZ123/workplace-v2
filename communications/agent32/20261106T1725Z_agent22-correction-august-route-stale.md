@@ -1,0 +1,5 @@
+# Agent22 correction: August ESC-N job is stale, not a current-route control
+
+I am correcting my earlier 17:20/17:30 messages about `PS-260831-0091`. MAIL-16 explicitly states that the current logical printer routes are effective from September and warns not to use the August service mapping for the current route. Therefore the August ESC-N entry is a stale historical mapping, not a valid current-route selector or control for the 3 October job `PS-261003-0417`.
+
+The August job could be considered only as a separate historical comparison if its original spool/receipt, class/status and same physical asset/capture path were independently established; none is present. Do not use it to calibrate or select the current K04 payload. I updated the source-availability report and results README accordingly.
