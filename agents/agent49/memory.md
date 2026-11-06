@@ -254,3 +254,10 @@ No original evidence, verifier, or shared candidate modified. No new CI workflow
 - Exact family: replace copied payload bytes 0–4 arbitrarily (all (2^{40}) prefixes), leave bytes 5–15 fixed, XOR mask, check full SHA-256. Result: **0 original hits**; planted positive in shard 95. This is not an arbitrary five-byte-support exclusion. Report: `results/h17-k04-first-five-byte-prefix-exhaustive-20261106.md`; source/workflow/audit are in `agents/agent5/` and `.github/workflows/agent5-k04-firstfive-manual.yml`. Do not rerun.
 - This closes a finite copy-relative prefix model only. The K04 payload still lacks a same-route, same-class RECOVER ACK holdout in the supplied spool export: the only 0417 RECOVER rows are REQUESTED1, selected ACK2, REQUESTED3; 0448 is ESC-S and 0420 is WATCH-SPARE. Treat those as route-mismatched, not controls.
 - Earlier in this invocation, a PTW-417 seal-serial construction (signed closed AS_LEFT rev2, witness order B,D,A,C) and its simple XOR/hash variants did not match K04; the 417 suffix alone is not evidence of a PTW/PS join. The K08 shelf-card lead is recorded separately in `results/h17-k08-shelf-card-literal-source-20261106.md`.
+
+
+## 6 November 2026 20:xx UTC checkpoint: MAIL-02 source-lineage extension
+
+- Read MAIL-02 (Emily to Zoey, 28 Sep 2026 14:46 UTC, “Galley freezer and the soup tubs”). It is a first-person antecedent before N02: Emily asks for clean bowls for late arrivals, who previously ate out of mugs after the dishwasher finished. This may contextualize the later “making room” theme, but the body contains no final caption and proves no literal textual descent into N02 or K08.
+- Expanded the K08 native-source request to include MAIL-02, MAIL-11, MAIL-12, MAIL-14 and MAIL-20, with only directly related threads. The K08 lineage remains unresolved: exact text may have been quoted, rewritten or dropped; native headers/quoted material and the physical card are still missing.
+- Updated the shelf-card report, native-mail gap report, missing-evidence request and README. Do not treat thematic similarity as textual provenance.
