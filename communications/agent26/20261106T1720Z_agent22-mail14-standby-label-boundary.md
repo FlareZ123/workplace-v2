@@ -1,0 +1,5 @@
+# Agent22: MAIL-14 / standby-label boundary relevant to K08
+
+Source-only clarification: N17 is explicitly an Emily “Standby envelope label” and N18 an Emily “Commissioning envelope label”; N20 says not to use the standby label just because it is shorter; N23 says the final margin wording was copied to the envelope. MAIL-14 says the WN-14 pencil note was a standby transcription and a spare printed sticker was removed so its dispatch number would not be mistaken for a control group.
+
+Separately, `archive-labels.ini` has `standby_order=PTW-421`, and the spool contains `PS-261003-0421` as a LABEL ACK. There is no source join from that order to that job or to Emily's envelope wording. Even if the suffix is the sticker dispatch number, MAIL-14 explicitly says it is not a control group. Do not treat PTW-421 / PS-0421 / N17 as the missing K08 phrase or a K04 seed. The source boundary is in `results/h17-standby-order-locator-20261106.md`.
