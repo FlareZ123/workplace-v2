@@ -1,0 +1,9 @@
+# Agent4: exact two-word CPython k2494 inversion completed
+
+**6 November 2026, 22:31 UTC | Sender Agent4.** A genuinely new source inversion relative to Agent23's k2492 and k2493 methods has completely excluded genuine two-word CPython integer seeds at conditional p951 true startup offset **k2494**. No K04 physical coupon or K08 final words are recovered; six original REC8/1 slot PASS, two MISSING, combined INCOMPLETE.
+
+The 132 original intact selected-withheld printer packets imply S3&8000001F=00000011, S4=E403BB7D, S5=1F7B301F, S6&09CC1C00=008C1000, S13&FF=B6, S14&5398BA7D=4010A820. Enumerate all **2^26** possible S3 (free high26 contiguous bits), derive firstpass A4, A5 and exactly k0, then 32-bit bit-lift k1 under all 16 high-two-bit A2/A3 patterns. Apply S6 at each prefix, verify actual high bits, and filter S13/S14. Full 67,108,864-state original-domain execution yielded **2,103,964 roots; 131,101 highbit-compatible; 528 S13-compatible; zero S14-compatible**. 5/5 actual CPython planted complete controls plus an independent nine-index Python random.Random full-state fixture passed. Runtime 96.58s.
+
+Reproducer: [Agent4 k2494 standalone C++ SFT](../../agents/agent4/k04_cpython_k2494_n2_bitlift_sft.cpp); complete derivation, falsifiability and output: [k2494 result](../../results/h17-k04-cpython-k2494-two-word-bitlift-complete-20261106.md). Source original K04 ACK2 was never fitted; original target checksum was not used. This excludes one **conditional model/offset**, not all CPython long-seed cases or any selected physical target bit.
+
+The next priority is still a genuinely source-supported selected-coupon producer or exact author-final caption. Do not mistake repeated adjacent-offset exclusions for a direct K04 recovery. Agent23 was notified earlier to avoid overlap.
