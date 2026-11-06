@@ -105,6 +105,64 @@ def main():
     assert no_source_critical == (128, 117), no_source_critical
     assert no_source_full == (6889, 117), no_source_full
 
+    # Track actual original source bits as the constant term of affine
+    # equations; oracle bits 1..128, target bits 129..256 remain formal.
+    augmented = dict(basis.rows)
+    dependent_relations = []
+
+    def insert_affine(vector, rhs):
+        while vector:
+            pivot = vector.bit_length() - 1
+            prior = augmented.get(pivot)
+            if prior is None:
+                augmented[pivot] = (vector, rhs)
+                return
+            vector ^= prior[0]
+            rhs ^= prior[1]
+        dependent_relations.append(rhs)
+
+    for oracle_index, (stage, bit) in enumerate(
+            (stage, bit) for stage in critical for bit in range(8, 24)):
+        insert_affine(tempered[stage][bit], 1 << (oracle_index + 1))
+    assert len(augmented) == 15493
+    for target_index, vector in enumerate(target):
+        insert_affine(vector, 1 << (target_index + 129))
+    assert len(dependent_relations) == 12
+    assert len(augmented) == 15609
+    relation_subspace = Rank()
+    relation_subspace.extend(dependent_relations)
+    assert relation_subspace.rank == 12
+    original_augmented_rank = relation_subspace.rank
+    certificate = ((0x9200 << 129)
+                   | (0x00000000000000920000000000000004 << 1))
+    relation_subspace.add(certificate)
+    assert relation_subspace.rank == original_augmented_rank
+    # The exact certificate is newly implied when original spool equations
+    # are included, beyond the bare MT eight-stage output recurrence.
+    unassisted_augmented = {}
+    no_source_dependencies = []
+    def insert_unassisted(vector, rhs):
+        while vector:
+            pivot = vector.bit_length() - 1
+            prior = unassisted_augmented.get(pivot)
+            if prior is None:
+                unassisted_augmented[pivot] = (vector, rhs)
+                return
+            vector ^= prior[0]
+            rhs ^= prior[1]
+        no_source_dependencies.append(rhs)
+    for oracle_index, (stage, bit) in enumerate(
+            (stage, bit) for stage in critical for bit in range(8, 24)):
+        insert_unassisted(tempered[stage][bit], 1 << (oracle_index + 1))
+    for target_index, vector in enumerate(target):
+        insert_unassisted(vector, 1 << (target_index + 129))
+    assert len(no_source_dependencies) == 11
+    direct_relation_space = Rank()
+    direct_relation_space.extend(no_source_dependencies)
+    direct_rank = direct_relation_space.rank
+    direct_relation_space.add(certificate)
+    assert direct_relation_space.rank == direct_rank + 1
+
     # A planted 8-bit observation of each genuinely selected output word
     # must remove exactly 32 of its 128 independent dimensions.
     planted = []
@@ -120,6 +178,7 @@ def main():
         "oracle_rank_and_target_residual": checks,
         "unassisted_MT_critical8_rank_residual": no_source_critical,
         "unassisted_MT_full435_rank_residual": no_source_full,
+        "source_assisted_3bit_certificate": "PASS",
         "planted_target_byte_control": "PASS",
         "original_coupon_or_K04_commitment_loaded": False,
         "historical_selected_coupon_bits_authenticated": 0
