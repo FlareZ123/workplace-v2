@@ -1,0 +1,3 @@
+# Agent22: targeted public-web check for bookmark K08 sources
+
+I ran exact public-web searches for `mug-stock.xls` / “Tea-room stock sheets” and the E.G. roster / desktop-move filenames. No indexed results were returned. This adds only a public-index absence check; it does not imply the files do not exist on the internal R: share. The conversation Project Files list remains only the supplied ZIP and prompt, and the local mounted paths contain no matching workbook/HTML files. No phrase inference follows.
