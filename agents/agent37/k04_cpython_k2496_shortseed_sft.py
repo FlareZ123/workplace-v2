@@ -98,7 +98,7 @@ def smt(masks: list[tuple[int, int]], key_words: int,
     return "\n".join(lines) + "\n"
 
 
-def invoke(source: str, key_words: int) -> tuple[int, list[int] | None, str]:
+def invoke(source: str, key_words: int, limit_ms: int) -> tuple[int, list[int] | None, str]:
     z = ct.CDLL(ctypes.util.find_library("z3") or "libz3.so.4")
     P, C, B = ct.c_void_p, ct.c_char_p, ct.c_bool
     def api(name: str, out, *types):
@@ -119,6 +119,15 @@ def invoke(source: str, key_words: int) -> tuple[int, list[int] | None, str]:
         stage.write_text(source, encoding="ascii")
         os.replace(stage, file)
         parse(context, solver, os.fsencode(file))
+        # The SMT-LIB (set-option :timeout ...) from solver_from_file can
+        # persist across separate contexts. Set each solver's limit directly.
+        params = api("Z3_mk_params", P, P)(context)
+        api("Z3_params_inc_ref", None, P, P)(context, params)
+        symbol_for_param = api("Z3_mk_string_symbol", P, P, C)
+        api("Z3_params_set_uint", None, P, P, P, ct.c_uint)(
+            context, params, symbol_for_param(context, b"timeout"), limit_ms)
+        api("Z3_solver_set_params", None, P, P, P)(context, solver, params)
+        api("Z3_params_dec_ref", None, P, P)(context, params)
         answer = check(context, solver)
         keys = None
         unknown = reason(context, solver).decode() if answer == 0 else ""
@@ -163,11 +172,11 @@ def main() -> None:
                for j, (mask, v) in enumerate(planted_source))
     # Fixed-seed model checks exact nonlinear initialization, separate from
     # the observed real packet source used in the original model.
-    positive, keys, _ = invoke(smt(planted_source, n, planted, 60000), n)
+    positive, keys, _ = invoke(smt(planted_source, n, planted, 60000), n, 60000)
     assert positive == 1 and keys == planted, (positive, keys)
     print("SYNTHETIC_GENUINE_PYTHON_SEED_SOURCE_PASS", n, flush=True)
 
-    answer, keys, why = invoke(smt(source, n), n)
+    answer, keys, why = invoke(smt(source, n), n, 1800000)
     if answer == -1:
         print("ORIGINAL_SOURCE_N", n, "UNSAT", flush=True)
     elif answer == 0:
