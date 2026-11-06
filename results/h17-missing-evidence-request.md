@@ -145,11 +145,11 @@ A bounded test treated one checkpoint per sequence as a 16-byte coupon/component
 
 ## Separate source request: FA-17 / H17-POL-17 / A3 risk-renewal ledger
 
-The supplier reconciliation assigns the L-29/N return set to account reference `FA-17/H17-POL-17/A3`. This is a distinct source locator from `RN-052 / BX25/08`; the latter's property annex must not be treated as a substitute.
+The supplier reconciliation assigns the L-29/N return set to account reference `FA-17/H17-POL-17/A3`. The retired-office bookmark export separately identifies the exact file locator `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx`. This is distinct from `RN-052 / BX25/08`; the latter's property annex must not be treated as a substitute.
 
-Request the original FA-17/H17-POL-17/A3 risk-renewal ledger and complete folio A3, including its asset schedule, annexes, attachments, transfer/scan index, revision history, and any supporting records that identify the L-29/N cassette, printer, archive appliance, or H-17 incident-preservation equipment. Specifically request any cross-reference that connects the five posted L-29/N service tickets to print job `PS-261003-0417`, and ask the custodian to state explicitly if no such cross-reference exists.
+Request the original `renewal-ledger-2025.xlsx` workbook and complete folio A3, including its native formulas, hidden sheets, comments, embedded objects, asset schedule, annexes, attachments, transfer/scan index, revision history, and any supporting records that identify the L-29/N cassette, printer, archive appliance, or H-17 incident-preservation equipment. Specifically request any cross-reference that connects the five posted L-29/N service tickets to print job `PS-261003-0417`, and ask the custodian to state explicitly if no such cross-reference exists.
 
-Preserve the original record and its metadata. Do not merge this request with the separate `RN-052 / BX25/08` property-annex request, and do not infer that the FA-17 ledger contains the missing coupon. The current export establishes the account reference only; the ledger itself is absent.
+Preserve the original workbook and metadata. Do not merge this request with the separate `RN-052 / BX25/08` property-annex request, and do not infer that the FA-17 ledger contains the missing coupon. The current export establishes the account reference and bookmark locator only; the workbook itself is absent.
 
 
 ## Separate source request: complete H-17 rounds notebook (pages 1–11)
