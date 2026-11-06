@@ -20,3 +20,11 @@ jobs:
         env:
           PYTHONUNBUFFERED: '1'
         run: python agents/agent49/k04_cpython_k2496_shortforward_bitwuzla_sft.py ${{ matrix.seed_words }} --timeout-seconds 900
+      - name: Upload machine-readable solver result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bitwuzla-shortforward-n${{ matrix.seed_words }}
+          path: bitwuzla-result-n${{ matrix.seed_words }}.json
+          if-no-files-found: ignore
+          retention-days: 7
