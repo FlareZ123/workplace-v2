@@ -34,6 +34,11 @@ def boolector_original(model: str, timeout: int) -> str:
     for line in source_constraints.splitlines():
         if line.lstrip().startswith("(set-option"):
             continue
+        declared = re.fullmatch(r"\(declare-const ([^ ]+) (\(_ BitVec [0-9]+\))\)", line)
+        if declared is not None:
+            symbol, sort = declared.groups()
+            rebuilt.append(f"(declare-fun {symbol} () {sort})")
+            continue
         m = re.fullmatch(r"\(define-fun ([^ ]+) \(\) \(_ BitVec 32\) (.+)\)", line)
         if m is not None:
             name, expression = m.groups()
