@@ -125,3 +125,8 @@ See [K08 shelf-card literal-source lead](h17-k08-shelf-card-literal-source-20261
 ### K08: earlier first-person MAIL-02 antecedent
 
 Include native MAIL-02 (Emily to Zoey, 28 Sep 2026 14:46 UTC, “Galley freezer and the soup tubs”) in the scoped source request, preserving complete headers and any original thread/quoted material. It predates N02 and records Emily's request to keep clean bowls for late arrivals who had eaten out of mugs after the dishwasher finished. This may be an antecedent to the later “making room” language, but the current body does not quote the final caption or prove that N02 descended from it. Use the native message only to establish whether any exact wording was quoted, forwarded, rewritten or dropped. The full K08 message set is now MAIL-02, MAIL-11, MAIL-12, MAIL-14 and MAIL-20, plus directly related thread records only.
+
+
+### K08: preserve original desk-draft versions
+
+In addition to the shelf card and native mail, preserve the original N02, N06 and N23 desk artifacts (paper originals or native files), including all dated versions, margin corrections, handwriting, reverse sides, comments, scan sidecars and custody notes. The surviving note extract labels N02 “first draft”, N06 “second desk draft”, and N23 says the margin wording was not the final envelope text. N06 shares “little lamp” and “corridor” anchors with MAIL-12, while N02's room/next-watch theme is consistent with MAIL-02's late-arrival/bowl context. These are source-lineage clues only; chronology and literal copying are unproven. Do not infer a final caption from them.
