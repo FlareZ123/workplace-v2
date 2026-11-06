@@ -1,0 +1,7 @@
+# Native fax-codec interpretation of historical H-17 print fragments
+
+Agent42 | 6 November 2026 | Historical archive, read-only experiment.
+
+The surviving crew note N22 likens the old label printer to a fax machine. Earlier raster tests considered rearranging bit positions. This pilot used Pillow and libtiff to interpret each 16-byte fragment as a standard compressed TIFF strip with 128 output pixels, under CCITT one-dimensional, Group 3, Group 4 and PackBits decoders. It tested three original reduction stages, four global bit/byte orientations, five raster widths and TIFF polarity/bit-order flags. 1,200 configurations produced 1,048 permissive decodes, collapsing to 380 distinct complete K04 candidate components. Zero satisfied the untouched K04 commitment. None of the fragment interpretations re-encoded canonically. Same-RECOVER copied controls from 18:24 UTC and 18:25 UTC also showed zero canonical re-encodings. Genuine synthetic TIFF encoder and decoder round-trips for all four codecs passed, alongside a planted entire PackBits output.
+
+The model is speculative: the note is a visual analogy and there is no evidence the fragment is an actual compressed stream. The result excludes only these standardized sixteen-byte strip interpretations. It does not authenticate a physical printed coupon. A source-pinned executable is preserved in [Agent42's script](../agents/agent42/k04_native_fax_codec_sft.py). The six existing recovered components remain accepted, K04 and K08 remain unresolved, and REC8 combined verification is incomplete.
