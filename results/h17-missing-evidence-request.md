@@ -159,3 +159,12 @@ The retained `maintenance/inspection-rounds.log` identifies itself as a local no
 Prioritize the entries surrounding 3 October 2026 17:12–21:15 UTC and any references to the archive appliance, printer/cassette, recovery card, electrical odor, fire response, or preservation actions. Ask the custodian to confirm whether the missing pages survive and, if not, whether they were separately scanned or transferred.
 
 Keep this notebook request separate from Emily's personal notebook-margin request for K08. The retained page establishes that six other pages are missing; it does not establish that they contain either missing component. Their value is as potential independent incident timing and equipment-state evidence for the K04 source-selection question.
+
+
+### AX-7782 retained object payload (in addition to queue metadata)
+
+MAIL-13 and the queue note identify AX-7782 as the successful retained handoff for `IR-261003-H17`. The audit records eight chunk sequences, each reporting 1,048,576 bytes, with two attempts per sequence. The supplied export contains the audit/checkpoint metadata but no chunk payloads.
+
+Request an offline custody copy of the **actual retained AX-7782 object**, including all eight original chunk payloads for the accepted attempts, the reassembled object if available, its manifest and per-chunk hashes, original sequence/order, retry/accepted-attempt selection, receipt, and chain-of-custody metadata. Preserve raw bytes and any media image or export package without recompression or normalization. If the payloads no longer survive, request the retention/deletion record and identify any other preserved copy.
+
+This is a request for the retained data object itself, not only the queue-entry export or 2-byte checkpoint fields. The object may contain source records needed for K04/K08; its contents are not established by the current audit. Offline records custody only; no live transfer-system access.
