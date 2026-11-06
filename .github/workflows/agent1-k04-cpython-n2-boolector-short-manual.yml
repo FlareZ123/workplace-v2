@@ -1,0 +1,23 @@
+name: Agent1 original n2 CPython short-pair Boolector source
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent1-k04-cpython-k2496-n2-boolector
+  cancel-in-progress: false
+
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout historical archive and tests
+        uses: actions/checkout@v4
+      - name: Install official Ubuntu Boolector
+        run: sudo apt-get update -qq && sudo apt-get install -y boolector
+      - name: Original n2 k2496 17-to-41round genuine controls
+        run: python3 -u agents/agent1/k04_cpython_k2496_n2_boolector_short_sft.py
