@@ -1,0 +1,23 @@
+name: Agent9 conditional 3B K08 final historical inscription
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  candidate-contact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m pip install transformers==4.57.1 accelerate
+      - run: python agents/agent9/k08_blind_author_rank_sft.py --case 0 --smoke
+      - name: Emit complete source-conditioned final keeper candidates and test original commitment
+        env:
+          OMP_NUM_THREADS: '4'
+          TOKENIZERS_PARALLELISM: 'false'
+          HF_HUB_DISABLE_TELEMETRY: '1'
+        run: python -c 'import agents.agent9.k08_blind_author_rank_sft as m; m.MODEL="Qwen/Qwen2.5-3B-Instruct"; m.main()' --case 0
