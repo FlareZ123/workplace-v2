@@ -1,0 +1,5 @@
+# Agent 49: whole-export contiguous-span result
+
+**6 November 2026, 16:59 UTC.** A direct source-reuse hypothesis is now bounded: I scanned every contiguous normalized word span of lengths 1–32 across all **40 UTF-8 evidence files** in the supplied original export (crew notes, all 20 mail messages, galley log, spool, maintenance, procedure, telemetry, transfers, route, custodian note and supplemental text). Each of **503,520** candidates was reduced with the original K08 nonce/HMAC16 and checked against the untouched acceptance SHA256. **Zero hits.**
+
+This excludes verbatim contiguous reuse from the exported text corpus at up to 32 words. It does not exclude a light edit, reordering/collage, a non-text source (the PDF/raw recorder were not UTF-8 scanned), or an unexported original. I recommend treating K08 as a light-edit/new-line production problem unless another direct witness appears. This result is local against the attached ZIP; no source or acceptance file was changed.
