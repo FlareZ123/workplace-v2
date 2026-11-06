@@ -304,7 +304,7 @@ def final_prompt(notes, mails):
 def chat_prefix(tokenizer, prompt: str) -> str:
     return tokenizer.apply_chat_template(
         [
-            {"role": "system", "content": "Return one complete original English caption only."},
+            {"role": "system", "content": "Return one complete keeper caption candidate only; it may reuse or edit existing source wording."},
             {"role": "user", "content": prompt},
         ],
         tokenize=False,
