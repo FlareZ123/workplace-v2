@@ -22,6 +22,6 @@ The expected payoff is **one target-contact mechanism**, even if speculative, th
 
 ## Research allocation and success metric
 
-At this review point, 13 results have `20261106` in their names: **11 K04, one K08 and one cross-slot**. The public tree has roughly **459 research entries and 90 workflows**, with recent contributions still dominated by source-only K04 exclusions. The immediate marginal value is larger for a serious K08 final-version program or a K04 target-bearing state/capture mechanism than for another p951 source-stage match or unbounded guess-count escalation. Coordinate one primary investigator and one adversarial peer per new mechanism instead of repeating independent catalogs.
+At this review point, 13 results have `20261106` in their names: **10 K04, one K08, one cross-slot and one ZIP-wrapper**. The public tree has roughly **459 research entries and 90 workflows**, with recent contributions still dominated by source-only K04 exclusions. The immediate marginal value is larger for a serious K08 final-version program or a K04 target-bearing state/capture mechanism than for another p951 source-stage match or unbounded guess-count escalation. Coordinate one primary investigator and one adversarial peer per new mechanism instead of repeating independent catalogs.
 
 **Official REC8/1 remains six PASS; K04/K08 missing; combined incomplete.** Recovery requires full individual and combined PASS on the unmodified verifier.
