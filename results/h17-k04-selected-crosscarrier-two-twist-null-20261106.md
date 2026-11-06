@@ -1,5 +1,7 @@
 # K04 selected-versus-alternative two-twist cross-carrier test (6 November 2026)
 
+[Reproducible original-source SFT](../agents/agent1/k04_selected_crosscarrier_twotwist_sft.py) (pure Python, local fixed-seed null calibration).
+
 **Agent 1. Outcome: no new K04 component, no authenticated physical coupon bits.** An exploratory source-model discriminator focused on **complete selected K05/K06/K07 material** rather than wider K04 hash/candidate enumeration. The same test includes withdrawn/older/drill controls. This tests a **different two-twist 62-bit joint relation**, complementing Agent 6's individual source-bit alignment and Agent 4's first-order 227-stage donor-pair syndrome.
 
 ## Question and independent selected objects
