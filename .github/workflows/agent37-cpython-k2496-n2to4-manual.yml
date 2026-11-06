@@ -1,0 +1,17 @@
+name: Agent37 CPython k2496 two to four word source inverse
+on:
+  workflow_dispatch:
+jobs:
+  source-inverse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        seed_words: [2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Z3 runtime
+        run: sudo apt-get update -qq && sudo apt-get install -y libz3-4
+      - name: Real original-source CPython nonlinear inverse and planted control
+        run: python3 agents/agent37/k04_cpython_k2496_shortseed_sft.py ${{ matrix.seed_words }}
