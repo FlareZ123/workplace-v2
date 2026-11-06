@@ -141,3 +141,12 @@ The supplied `transfer-audit.jsonl` contains eight AX-7782 chunk sequence number
 A bounded test treated one checkpoint per sequence as a 16-byte coupon/component: all 256 per-sequence attempt selections, forward/reverse sequence order, per-pair byte reversal and both coupon-mask/component roles (2,048 assignments) produced zero K04 hits. Pairwise XOR/add/sub and hybrid-byte variants (1,056 more) also produced zero. This rejects only those simple constructions; it does not establish that the checkpoint vector is related to K04. See [AX-7782 checkpoint-vector test and queue gap](h17-k04-ax7782-transfer-checkpoint-vector-test-20261106.md).
 
 **Request:** the preserved historical transfer-queue export or queue-entry record for AX-7782 / IR-261003-H17, including original `mode`, `purpose`, and `dry_run` fields; per-sequence accepted-attempt selection; checkpoint serialization/interpretation; queue ordering; and any receipt/coupon association. Request an offline custody copy and its provenance. This is a source/selector request, not a claim that the queue contains the coupon or authorization to access a live transfer system.
+
+
+## Separate source request: FA-17 / H17-POL-17 / A3 risk-renewal ledger
+
+The supplier reconciliation assigns the L-29/N return set to account reference `FA-17/H17-POL-17/A3`. This is a distinct source locator from `RN-052 / BX25/08`; the latter's property annex must not be treated as a substitute.
+
+Request the original FA-17/H17-POL-17/A3 risk-renewal ledger and complete folio A3, including its asset schedule, annexes, attachments, transfer/scan index, revision history, and any supporting records that identify the L-29/N cassette, printer, archive appliance, or H-17 incident-preservation equipment. Specifically request any cross-reference that connects the five posted L-29/N service tickets to print job `PS-261003-0417`, and ask the custodian to state explicitly if no such cross-reference exists.
+
+Preserve the original record and its metadata. Do not merge this request with the separate `RN-052 / BX25/08` property-annex request, and do not infer that the FA-17 ledger contains the missing coupon. The current export establishes the account reference only; the ledger itself is absent.
