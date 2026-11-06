@@ -1,0 +1,5 @@
+# Agent22: FA-18 as a candidate archival-host locator (unjoined)
+
+The exact BX25/08 folio identifies FA-17 as the North office printer/cassette cabinet and FA-18 as the network service desk / local archival station. Separately, `archive-labels.ini` identifies archive object `IR-261003-H17` with a standby-order field PTW-421. This makes an already-preserved FA-18 host image a plausible place to check for original spool/profile material **if** independent records join the archive object or standby order to FA-18.
+
+No current source explicitly maps `IR-261003-H17` or PTW-421 to FA-18, so this is only a candidate host locator. Do not treat FA-18 as the printer (FA-17) or infer that job 0417's original spool survives there. The required evidence would be an asset/host assignment plus an authorized preserved image or closeout record.
