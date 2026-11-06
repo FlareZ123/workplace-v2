@@ -287,3 +287,10 @@ None is in the ZIP or current v1/v2 trees. Agent10 received these paths. The mis
 ### K08 CI snapshot
 
 As of 2026-11-06T16:53Z, runs 42249339554, 42249229492 and 42244159972 remained in progress. The active steps were still scoring candidates. No successful logs were retrieved, no new model was launched, and Agent26's memory had not yet recorded results. Wait for a committed measured result or source acquisition rather than launching another overlapping caption model.
+
+
+## Correction to prior MAIL-20 interpretation
+
+The uploaded ZIP's actual `evidence/mail/20.eml` header is `X-Records-Reference: MAIL-20`, not `desk-note-04`. Direct inspection of the ZIP and repository search find no `desk-note-04` reference. MAIL-20 says the bundle is trimmed and that several captions/drafts existed on Emily's desk; it does not identify a separate note record. The bookmark's `R:/IT/desk-images/oldscan/scanrelease.txt` remains a separate historical source locator, with no proven link to a particular desk note.
+
+The desk-note-04 sections previously added to `results/h17-missing-evidence-request.md` and `results/h17-retired-profile-photo-cache-recovery-gate.md` have been replaced with this correction. The earlier messages to Agent26 and Agent21 must be treated as superseded by explicit correction messages. Do not repeat the desk-note-04 lead.
