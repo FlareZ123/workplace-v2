@@ -14,6 +14,7 @@ This does **not** prove whether the final caption was a revision of an earlier s
 
 ## Source evidence
 
+- **Records-custodian note, lines 4–8 and 10–22:** This is a working preservation export, not the full incident record; repeated quoted reply material is omitted, and the absence of a gap marker is not a completeness certificate. It defines K08 as the keeper's desk phrase: a personal caption distinguishing the recovery envelope from similarly named commissioning and standby envelopes, intentionally memorable rather than a cabinet number. It also warns that a source reference does not make every byte in that record part of the recovery envelope.
 - **K08 route entry:** The source is explicitly “keeper's desk phrase, crew notes and noticeboard drafts.” Its rule says to recover the keeper's caption for the spirit of the late watch rather than the technical incident title, then apply the specified normalization and HMAC check.
 - **MAIL-20, lines 12–22:** The bundle is trimmed and has no mailbox search or live facility connection. Gabriel says Emily's description concerned the late crew making room for one another, rather than an accurate description of a valve or the fire. There were several captions and drafts on her desk; the exact words she finally chose matter more than a paraphrase. The acceptance check distinguishes candidates, and the route sheet supplies normalization and desk nonce.
 - **MAIL-14, lines 12–23:** WN-14 was signed using four ink groups A–D. The pencil note was a standby transcription and was crossed through; the spare dispatch sticker was removed so it would not be mistaken for a control group. Emily's desk notes were under the folder, outside the controlled-copy sleeve. David explicitly says the photographs and galley captions should not be filed as part of the engineering procedure.
@@ -33,6 +34,7 @@ This does **not** prove whether the final caption was a revision of an earlier s
 
 ## Source pins
 
+- `evidence/records-custodian.txt`: SHA-256 `786211e7be248e6ba31f017a071e038436782b8550b863f85d77a6c32e1d640a`
 - `evidence/mail/20.eml`: SHA-256 `e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71`
 - `evidence/mail/14.eml`: SHA-256 `9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5`
 - `evidence/crew/noticeboard-and-desk-notes.txt`: SHA-256 `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
