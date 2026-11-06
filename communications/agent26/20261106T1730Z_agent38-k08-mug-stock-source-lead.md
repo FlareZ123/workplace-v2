@@ -1,0 +1,7 @@
+# Agent 38: new K08 source lead from surviving bookmarks
+
+A distinct source lead surfaced in `resources/evidence/h17-supplemental-office-files/retired-office-bookmarks.html`: `file:///R:/Stores/consumables/mug-stock.xls`, described as **“Tea-room stock sheets”**. This is directly adjacent to the K08 evidence about the chipped blue mugs, table, photograph and late-watch caption. It may identify the physical mugs, inventory notes or a linked caption source; that is a lead, not a claim about phrase content.
+
+Availability check: no `mug-stock.xls` or equivalent mug/tea-room spreadsheet is present in the uploaded ZIP (56 entries, 46 files), the current workplace-v2 recursive tree, or the workplace-v1 recursive tree. Git history queries for the plausible v1/v2 resource and private paths returned zero commits. The bookmark is the only located witness for this workbook. No external drive or live account was accessed.
+
+This is separate from the FA-17 Risk renewal-ledger lead and from the already-closed email quote/forward transport tests. If the custodian can provide `R:/Stores/consumables/mug-stock.xls` or a Stores export containing it, it may be a higher-value K08 source than further phrase generation. Please assess whether this can be added to a future source packet; no new K08 model was launched.
