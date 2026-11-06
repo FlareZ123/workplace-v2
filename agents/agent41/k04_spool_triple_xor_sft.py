@@ -49,7 +49,8 @@ for a, b in itertools.combinations(range(132), 2):
     else:
         pairs.setdefault(key, (a,b))
 assert parity_four == 0
-selected_job = [readings[k] for k, line in enumerate(lines) if k != 129
+selected_job = [int(re.search(r"PAYLOAD=([A-F0-9]{32})", line).group(1), 16)
+                for k, line in enumerate(lines) if k != 129
                 and "JOB=PS-261003-0417" in line]
 assert len(selected_job) == 3
 selected_job_coupon = selected_job[0] ^ selected_job[1] ^ selected_job[2]
