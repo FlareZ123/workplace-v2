@@ -93,13 +93,9 @@ The bookmark export also lists `file:///R:/Finance/PrevERP/posted-items-26.xls` 
 
 
 
-### K08: exact referenced desk note and old-scan record
+### Correction: MAIL-20 source reference
 
-MAIL-20's preserved header contains `X-Records-Reference: desk-note-04`. Its body says Gabriel copied Emily's exact phrase from a note she left at the desk. The local export contains no file or index entry named `desk-note-04`; the only matching source identifier is this header. Do not conflate it with N04 in `noticeboard-and-desk-notes.txt`, which is explicitly authored by David.
-
-Request the original record `desk-note-04`, its scan/image if any, and the contemporaneous scan-release metadata. The surviving bookmark separately points to `file:///R:/IT/desk-images/oldscan/scanrelease.txt`, titled **"Desktop scanner release notes"**. These may establish the original note's location, scan identity and custody chain. The records-custodian instruction says a source reference is a pointer, not an instruction to include every byte of that record in the recovery envelope. Preserve the full original record and provenance, then identify only the exact final wording with independent version evidence. No phrase can be inferred from the reference alone.
-
-Neither the note nor the scan-release file is present in the supplied ZIP, current v1/v2 trees, or the searched Git history. Request these originals from the records custodian if they survive.
+A previous draft misread the header of `evidence/mail/20.eml`. The supplied original has `X-Records-Reference: MAIL-20`, not `desk-note-04`. A direct search of the uploaded ZIP and repository finds no `desk-note-04` reference. Do not request or infer a separate record on that basis. MAIL-20 itself says the bundle is trimmed and that several captions and drafts existed on Emily's desk, but it does not identify a separate note record. The bookmark's `R:/IT/desk-images/oldscan/scanrelease.txt` remains a separate historical source locator, with no established link to a specific desk note.
 
 ### K04: hired-equipment loan-set register
 
