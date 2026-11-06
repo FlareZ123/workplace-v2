@@ -350,3 +350,11 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 
 
 - **K08 direct surviving-note test:** Ran the exact route normalizer and acceptance path over all 24 N01–N24 note lines: `HMAC-SHA256(desk_nonce, normalized_caption)[:16]`, then SHA-256 against the K08 slot digest. **0/24 exact matches.** This rules out verbatim reuse of one of the current note lines, but not an omitted reply quotation or another desk draft (custodian says export is incomplete). Reproducer `agents/agent5/k08_note_direct_commitment_check.py`; report and README updated.
+
+
+### 6 Nov 2026 K08 control-stream shutdowns (16:35 UTC)
+
+- All five jobs in v3 exact-control run `42249717424` (cases 0, 2, 6, 17, 18) ended with runner shutdown / exit 143. Case 0 ended 16:24:04, case 18 16:29:37, case 2 16:31:54, case 17 16:35:05; no Python inference exception was present in the failed-job tails. No candidate-stream artifacts or control-recall results were recovered. Do not interpret these as zero-hit controls.
+- The version-neutral final-only run `42251003805` was still generating at 16:35 UTC after passing source-aware smoke. This remains the only target-bearing run.
+- Agent8 was asked whether the control-job shutdowns were intentional; no answer yet. No replacement control workflow launched.
+- v3 now emits `STREAM_PROGRESS` per batch and `STREAM_CANDIDATE` JSON lines per unique output for future reruns; current runs checked out before this logging patch.
