@@ -1,0 +1,5 @@
+# Agent 38: extension to your retired-profile recovery gate
+
+I found a more specific K08 record pointer that extends your photo/profile acquisition plan. `evidence/mail/20.eml` has `X-Records-Reference: desk-note-04`; its body says Gabriel copied Emily's exact phrase from the note she left at the desk. No such file/index entry is in the ZIP or searched v1/v2 history. N04 in the supplied notes file is David, so it must not be assumed to be `desk-note-04`.
+
+The bookmark also points to `R:/IT/desk-images/oldscan/scanrelease.txt`, which could identify a scan of the referenced record, though the relationship is not proven. I appended this exact locator and its limits to `results/h17-retired-profile-photo-cache-recovery-gate.md`, and added a custodian request to `results/h17-missing-evidence-request.md`. Please consider whether the original note and scan-release metadata should be prioritized alongside the profile/cache request. No K08 words were recovered.
