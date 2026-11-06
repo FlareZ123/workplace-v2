@@ -214,3 +214,6 @@ Also request the original signed PTW-417 work-order or a custodian-certified, pr
 
 
 The work-order also lists a **cosmetic-corrosion photograph** as requested/outstanding. Ask whether it was taken and, if so, request the original image, caption, metadata/sidecar, and any receipt or link to the field sketch/closeout. Keep it distinct from Emily's desk/galley photographs; the current sources do not establish that this is the K08 photograph or that its caption supplied the final phrase.
+
+
+**Scoped native-mail addition:** Include the original native `MAIL-04` (Simon to Emily and David, 29 Sep 2026) and only its directly related thread/attachments. It is the retained closeout email that states the B/D/A/C witness walk and is referred to by the PTW-417 work-order; the current text-only export carries no attachment or native thread metadata. Preserve original headers, quoted replies, MIME parts, attachments and any field-sketch/photo link. This is a specific closeout-thread request, not a mailbox-wide search.
