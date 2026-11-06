@@ -10,3 +10,8 @@ If an already-held authorized PTW-421 closeout or asset register exists, it may 
 
 
 The spool reconstruction also contains `PS-261003-0421` at 17:05Z, attempt 1, ACK / LABEL / bench. It shares the numeric suffix with the standby-order field, but the export supplies no explicit permit-to-job join or route/asset assignment. It is not a same-class RECOVER control for selected job 0417; the suffix alone is insufficient.
+
+
+## Dispatch-number caution from MAIL-14
+
+`MAIL-14` says a spare printed sticker was removed from the WN-14 cover so nobody would mistake its dispatch number for one of the control groups. The `PS-261003-0421` LABEL ACK and `PTW-421` standby-order field share a suffix, but no source explicitly joins them to that sticker. Even if 0421 is the sticker's dispatch number, MAIL-14 expressly says such a number is not a control group. Treat it as a label/dispatch identifier, not a K04/K08 component or seed.
