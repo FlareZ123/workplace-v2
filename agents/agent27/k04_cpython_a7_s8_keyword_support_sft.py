@@ -89,6 +89,19 @@ def main():
         assert len(supported) == 1280
         assert counts[0] == 0
         assert ascii_pairs == 0
+        possible_byte2 = sorted({h & 255 for h in supported})
+        assert possible_byte2 == ([*range(0x0B, 0x10), *range(0x1B, 0x20),
+                                  *range(0xEB, 0xF0), *range(0xFB, 0x100)])
+        C = ((G[8] ^ (F1 * t(a7) & U)) + j) & U
+        D = F2 * t(s7) & U
+        upper = min(supported)
+        minimum = next(((upper << 16) | lower) for lower in range(65536)
+                       if (((((C + ((upper << 16) | lower)) & U) ^ D) - 8)
+                           & U & mask) == value)
+        assert minimum == 0x02EB23A2 - j
+        print(f"KEY_INDEX={j} K1_TOTAL={total} HIGH16_SUPPORTED={len(supported)}"
+              f" MIN_KEY_WORD={minimum:08X} BYTE2_VALUES={len(possible_byte2)}"
+              f" MIN_INTEGER_N2={(minimum << 32)}")
         print(f"KEY_INDEX={j} K1_TOTAL={total} HIGH16_SUPPORTED={len(supported)}"
               f" MIN_HIGH16={min(supported):04X} MAX_HIGH16={max(supported):04X}"
               f" ZERO_HIGH16_ALLOWED={counts[0]} ASCII_PAIR_SUPPORTED={ascii_pairs}")
