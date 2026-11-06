@@ -72,6 +72,12 @@ All ten responses were the same 3,331-byte generic 404 body (SHA-256 `5b4ce0b472
 
 The run was `42293175265`, artifact `13539359317`, digest `sha256:81b1b67e43a3a6785a38141f460b0b116eae1fc231bafda75e66522ddc90c3f0`. The one-off workflow was deleted after the run. Together with the earlier tests in this report, this checks the path equivalents of every file listed in the supplied retired-office bookmark export. It closes only the guessed public URL mapping; the original Windows `R:` files remain offline source locators and may still exist on an authorized historical image.
 
+## Repository-history check for missing bookmark files
+
+Path-specific GitHub commit-history queries on the repository's current default branch returned zero commits for the missing local-file targets and their obvious `resources/evidence/` and `private/` path equivalents. This included the mug-stock workbook, IR incident index, EG roster, desktop-move calendar, SEP26 returns index, Finance/PrevERP files, BX25 transfer index, scanrelease notes, H17 renewal ledger, hired-plant loan register, and blank request form. The current `private/` directory contains only its placeholder. The bookmark HTML itself is present; the missing targets are not represented in path history at the tested paths.
+
+This is not an exhaustive search of every branch or every possible renamed copy. It does rule out a simple recovery from the current default branch's history at the source names and likely paths. Combined with the public 404 results, the remaining credible route is an authorized offline copy of the historical R: drive or the original records-custody source.
+
 ## Conclusion and boundary
 
 At the time of this probe, the referenced host serves a public corporate marketing site and a protected partner/employee login portal. The tested archive-index, workbook, correspondence, and search paths are absent. The portal's `/admin` and `/api/` paths are explicitly disallowed by `robots.txt`; no attempt was made to authenticate, guess credentials, or access the login API.
