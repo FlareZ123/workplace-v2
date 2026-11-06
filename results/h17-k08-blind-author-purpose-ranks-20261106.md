@@ -46,3 +46,14 @@ For the **uncontaminated author-draft controls**, the original historical whole-
 | N06 | **5/12** | 7/12 | 7/12 | -6.143317 | -6.410149 |
 
 Both legitimate roles gave a modest improvement in actual source-blinded historical draft rank and true-sentence log likelihood. The older-envelope swap jobs are affected by the exact competing-label mail quotation identified in the correction above and are **excluded from this inference** until the corrected run completes. Two authentic positives are too few to establish predictive reliability, and neither one was the final keeper-envelope caption. The stronger 3B genuine-draft scorer is a separate ongoing preselected model-family check, not an escalation of raw K08 phrase-guessing.
+
+## Corrected envelope-label controls (CI run 42214254478)
+
+The [successful corrected source run](https://github.com/FlareZ123/workplace-v2/actions/runs/42214254478) withheld the competing note even when it was re-quoted in MAIL11, using [the new sanitization wrapper](../agents/agent9/k08_blind_author_rank_quote_clean.py). The full competing normalized phrase is asserted absent from each model input.
+
+| Original historical label | Correct-purpose rank | Generic rank |
+| --- | ---: | ---: |
+| N17 standby | **1/12** | 1/12 |
+| N18 commissioning | **10/12** | 11/12 |
+
+N17's earlier 3/12 raw rank was distorted by the explicit competing quote. The 1/12 result supersedes it. N18 remains poorly predicted, and the successful historical standby recognition does not identify the final keeper wording.
