@@ -34,6 +34,7 @@ jobs:
           TOKENIZERS_PARALLELISM: "false"
           HF_HUB_DISABLE_TELEMETRY: "1"
         run: |
+          set -o pipefail
           python agents/agent8/k08_independent_lexical_ab_3b_sft_v3.py --case ${{ matrix.case }} --beams 64 2>&1 | tee "k08-v3-case-${{ matrix.case }}.log"
       - uses: actions/upload-artifact@v4
         if: always()
