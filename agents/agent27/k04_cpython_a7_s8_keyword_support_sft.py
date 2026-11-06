@@ -51,6 +51,22 @@ def allowed_high_words(a7: int, s7: int, mask: int, value: int,
     return counts, sum(counts)
 
 
+
+def s5_from_key_word(key: int, s6: int, s7: int, key_index: int) -> int:
+    """Reverse genuine first- and second-pass CPython steps at i7 and i6.
+
+    With S6/S7 known, A7 is known. For any candidate key[6 mod n],
+    derive A6 and S5 exactly; the original S5 six-bit source mask is
+    an independent necessary condition on this word, regardless of
+    all other seed words and the first-pass index-1 wrap.
+    """
+    a7 = ((s7 + 7) & U) ^ (F2 * t(s6) & U)
+    inv_f1 = pow(F1, -1, 1 << 32)
+    inv_f2 = pow(F2, -1, 1 << 32)
+    a6 = t((inv_f1 * (((a7 - key - key_index) & U) ^ G[7])) & U)
+    return t((inv_f2 * (a6 ^ ((s6 + 6) & U))) & U)
+
+
 def control():
     for words in ([0x1234, 0x5678], [0xABCD, 0xFEDC],
                   [0, 1], [0x11111111, 0x22222222, 0x33333333, 0x44444444]):
@@ -59,6 +75,8 @@ def control():
         assert state == list(random.Random(seed).getstate()[1][:624])
         a7 = ((state[7] + 7) & U) ^ (F2 * t(state[6]) & U)
         assert a7 == a[7]
+        assert s5_from_key_word(words[6 % len(words)], state[6], state[7],
+                                6 % len(words)) == state[5]
         mask = 0x09CC1C00
         j = 7 % len(words)
         counts, total = allowed_high_words(a7, state[7],
@@ -77,6 +95,16 @@ def main():
     s6, s7 = source[6][1], source[7][1]
     a7 = ((s7 + 7) & U) ^ (F2 * t(s6) & U)
     assert a7 == 0x2AED5290
+    mask5, value5 = source[5]
+    assert (mask5, value5) == (0x8000001F, 0x00000011)
+    # T(x) is involutory and both odd multiplication constants invert mod 2^32.
+    # Therefore the S5 six-bit mask selects exactly 2^26 key[6 mod n] words.
+    s5_small_j0 = sum((s5_from_key_word(k, s6, s7, 0) & mask5) == value5
+                      for k in range(65536))
+    assert s5_small_j0 == 1070
+    print(f"S5_BACKINVERSE_KEYWORD_COUNT={1 << (32 - mask5.bit_count())}"
+          f" S5_SMALL16_KEYWORDS_J0={s5_small_j0}"
+          f" N2_CARTESIAN_PAIR_AFTER_S5_S8={1 << 49}")
     mask, value = source[8]
     assert mask == 0x09CC1C00 and value == 0x008C1000
     for j in range(8):
