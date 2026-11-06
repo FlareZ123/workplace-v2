@@ -1,0 +1,13 @@
+name: Agent37 CPython k2496 one-word conditional SFT
+on:
+  workflow_dispatch:
+jobs:
+  original-source-sft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Z3 runtime
+        run: sudo apt-get update -qq && sudo apt-get install -y libz3-4
+      - name: Reconstruct source and test actual CPython n1 model
+        run: python3 agents/agent37/k04_cpython_k2496_singleword_sft.py
