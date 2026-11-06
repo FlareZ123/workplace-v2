@@ -4,7 +4,7 @@ on:
 jobs:
   bitwuzla:
     runs-on: ubuntu-latest
-    timeout-minutes: 32
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -19,4 +19,4 @@ jobs:
       - name: Solve original-source model with selected row withheld
         env:
           PYTHONUNBUFFERED: '1'
-        run: python agents/agent49/k04_cpython_k2496_bitwuzla_sft.py ${{ matrix.seed_words }} --timeout-seconds 1500
+        run: python agents/agent49/k04_cpython_k2496_shortforward_bitwuzla_sft.py ${{ matrix.seed_words }} --timeout-seconds 900
