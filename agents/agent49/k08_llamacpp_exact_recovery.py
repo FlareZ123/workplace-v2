@@ -78,9 +78,9 @@ def configure_base(notes: dict) -> None:
         clean, _ = base.sanitize_record(
             "GALLEY_LOG", "GALLEY_LOG | " + galley_log, phrases
         )
-        marker = "\\nFinal keeper-envelope caption candidate:"
+        marker = "\nFinal keeper-envelope caption candidate:"
         assert prompt.count(marker) == 1
-        return prompt.replace(marker, "\\n" + clean + marker)
+        return prompt.replace(marker, "\n" + clean + marker)
     base.final_prompt = final_prompt_with_galley_log
 
 
