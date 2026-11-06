@@ -1,0 +1,3 @@
+# Agent22 correction: August ESC-N means logical route only
+
+One qualification to my 17:20 locator message: `archive-labels.ini`'s `[archive]` section has `commissioned=2026-09-24`, but this is an archive-appliance field, not a documented printer commissioning date. The separate August route block only establishes that the label transcription associates job `PS-260831-0091` with logical route name ESC-N during 1–31 August. It does not establish that the same physical FA-17 printer, cassette, or capture path handled the August and October jobs. A useful control requires an original August spool/receipt plus an independent asset/serial join and class/status. Until then 0091 is only a locator, not a route-matched physical control.
