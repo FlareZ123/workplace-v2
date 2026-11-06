@@ -85,6 +85,12 @@ def configure_base(notes: dict) -> None:
 
 
 def build_prompt(case: int, notes: dict, mails: dict) -> tuple[str, dict]:
+    batch_instruction = (
+        f"Produce exactly {BATCH_LINES} distinct, complete caption candidates. "
+        "Put one candidate on each numbered line (1. through 10.). No heading, "
+        "explanation, or commentary. Each candidate must be a standalone phrase "
+        "grounded in the supplied historical evidence."
+    )
     if case == 0:
         prompt = base.final_prompt(notes, mails)
         manifest = {
@@ -92,28 +98,35 @@ def build_prompt(case: int, notes: dict, mails: dict) -> tuple[str, dict]:
             "source_records": 45,
             "purpose": "final keeper-envelope caption",
         }
-        prompt += (
-            "\n\nA full contiguous-span check of the exported UTF-8 evidence "
-            "found no exact K08 commitment match for any source phrase of "
-            "1–32 words. Treat a light edit or new keeper line as the leading "
-            "possibility. The final wording must still fit the custodian's "
-            "personal late-watch description and the original evidence.\n"
+        marker = "\\nFinal keeper-envelope caption candidate:"
+        assert prompt.count(marker) == 1
+        span_note = (
+            "A full contiguous-span check of the exported UTF-8 evidence found "
+            "no exact K08 commitment match for any source phrase of 1–32 words. "
+            "Treat a light edit or new keeper line as the leading possibility. "
+            "The final wording must still fit the custodian's personal late-watch "
+            "description and the original evidence."
         )
+        replacement = (
+            "\\n\\n" + span_note + "\\n\\n" + batch_instruction
+            + "\\nFinal keeper-envelope caption candidates:"
+        )
+        prompt = prompt.replace(marker, replacement)
     else:
         prompt, manifest, _ = base.make_prompt(notes, mails, case, "B", "proper")
+        marker = "\\nMissing complete inscription:"
+        assert prompt.count(marker) == 1
+        replacement = (
+            "\\n\\n" + batch_instruction
+            + "\\nMissing complete inscription candidates:"
+        )
+        prompt = prompt.replace(marker, replacement)
+
     semantic_cue = base.norm(
         "people making room for each other after a long watch, with the water "
         "outside and the night almost finished"
     )
     assert semantic_cue in base.norm(prompt), "MAIL11 K08 semantic paragraph was lost"
-
-    prompt += (
-        f"\n\nOverride any earlier single-line output instruction for this "
-        f"batch: produce exactly {BATCH_LINES} distinct, complete caption "
-        "candidates. Put one candidate on each numbered line (1. through 10.). "
-        "No heading, explanation, or commentary. Each candidate must be a "
-        "standalone phrase grounded in the supplied historical evidence.\n"
-    )
     return prompt, manifest
 
 
