@@ -174,6 +174,13 @@ original_hits = [
     for coupon in all_candidates
     if candidate_digest(coupon) == target
 ]
+# Alternate cross-slot interpretation: a constructed RC-17 block is the K04
+# component itself, so the corresponding physical coupon would be block XOR mask.
+direct_component_hits = [
+    component.hex().upper()
+    for component in all_candidates
+    if hashlib.sha256(component).hexdigest() == target
+]
 
 # Plant one complete positive from the tested set to validate the full
 # mask/XOR/SHA256 acceptance path independently of the original target.
@@ -184,7 +191,16 @@ planted_hits = [
     coupon for coupon in all_candidates if candidate_digest(coupon) == planted_target
 ]
 assert planted_hits == [planted_coupon]
+planted_direct_component = min(all_candidates)
+planted_direct_target = hashlib.sha256(planted_direct_component).hexdigest()
+planted_direct_hits = [
+    component
+    for component in all_candidates
+    if hashlib.sha256(component).hexdigest() == planted_direct_target
+]
+assert planted_direct_hits == [planted_direct_component]
 assert original_hits == []
+assert direct_component_hits == []
 
 candidate_set_sha256 = hashlib.sha256(
     b"\n".join(coupon.hex().upper().encode("ascii") for coupon in sorted(all_candidates))
@@ -202,6 +218,8 @@ print(f"revision_delta_assignments={revision_delta_assignments}")
 print(f"revision_delta_unique={len(revision_delta_candidates)}")
 print(f"overlap_existing_revision_delta={len((c_permutation_candidates | mixed_revision_candidates | service_standby_delta_candidates) & revision_delta_candidates)}")
 print(f"union_unique={len(all_candidates)}")
-print(f"original_k04_hits={len(original_hits)}")
-print(f"planted_positive_hits={len(planted_hits)}")
+print(f"original_k04_masked_coupon_hits={len(original_hits)}")
+print(f"original_k04_direct_component_hits={len(direct_component_hits)}")
+print(f"planted_masked_coupon_positive_hits={len(planted_hits)}")
+print(f"planted_direct_component_positive_hits={len(planted_direct_hits)}")
 print(f"candidate_set_sha256={candidate_set_sha256}")
