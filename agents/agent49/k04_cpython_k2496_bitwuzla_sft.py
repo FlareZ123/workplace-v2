@@ -73,14 +73,7 @@ def solve(formula: str, key_words: int, timeout_seconds: int):
             value = str(solver.get_value(term).value(16)).lower()
             value = value.removeprefix("0x").removeprefix("#x")
             keys.append(int(value, 16))
-    stats = solver.statistics()
-    selected_stats = {
-        key: value for key, value in stats.items()
-        if any(token in key.lower() for token in (
-            "time", "conflict", "decision", "sat", "propag", "bitblast"
-        ))
-    }
-    return result, keys, elapsed, deadline.expired, selected_stats
+    return result, keys, elapsed, deadline.expired
 
 
 def main() -> None:
@@ -114,7 +107,7 @@ def main() -> None:
     synthetic_packets = base.seeded_packets(planted)
     synthetic_masks = base.source_states(base.OFFSET, synthetic_packets)
     positive_formula = base.smt(synthetic_masks, n, planted, timeout_ms=60000)
-    positive, positive_keys, positive_elapsed, positive_timeout, _ = solve(
+    positive, positive_keys, positive_elapsed, positive_timeout = solve(
         positive_formula, n, 120
     )
     assert positive == "SAT" and positive_keys == planted and not positive_timeout, (
@@ -129,7 +122,7 @@ def main() -> None:
     )
 
     original_formula = base.smt(masks, n, timeout_ms=args.timeout_seconds * 1000)
-    result, keys, elapsed, timed_out, stats = solve(
+    result, keys, elapsed, timed_out = solve(
         original_formula, n, args.timeout_seconds
     )
     print(
@@ -141,9 +134,6 @@ def main() -> None:
         "selected_row_WITHHELD",
         flush=True,
     )
-    if stats:
-        print("SOLVER_STATS", json.dumps(stats, sort_keys=True), flush=True)
-
     if result == "UNSAT":
         print("ORIGINAL_SOURCE_N", n, "UNSAT under frozen CPython/k2496 model", flush=True)
         return
