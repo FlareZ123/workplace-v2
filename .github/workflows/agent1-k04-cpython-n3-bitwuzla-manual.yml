@@ -1,0 +1,27 @@
+name: Agent1 K04 CPython n3 independent Bitwuzla 41-round source
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent1-k04-cpython-k2496-n3-bitwuzla
+  cancel-in-progress: false
+
+jobs:
+  original-source-n3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 19
+    steps:
+      - name: Checkout historical archive and code
+        uses: actions/checkout@v4
+      - name: Python 3.11 runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin Bitwuzla version
+        run: python -m pip install --disable-pip-version-check bitwuzla==0.9.1
+      - name: Genuine CPython original n3 source-only 41round solver
+        run: python -u agents/agent1/k04_cpython_k2496_n3_bitwuzla_sft.py
