@@ -1,5 +1,7 @@
 # K08: blind source-masked historical author/purpose ranker (6 November 2026)
 
+> **Correction 6 November, ~12:00 UTC:** The original four-case run inadvertently retained the *competing N17 or N18 inscription* as an exact quotation within MAIL11 even when that candidate's own N-record was withheld. Consequently, the **N17 and N18 reported ranks are contaminated**: their competitor received an unfair source-copy advantage. N02 and N06 genuine draft controls do **not** have this duplicated quoted competitor and their original ranks remain valid. The label-control figures below are retained as raw-run history, not usable blind author-ranking evidence. A [corrected quote-clean wrapper](../agents/agent9/k08_blind_author_rank_quote_clean.py) removes every complete decoy quotation in the mail body *before* normal control-word redaction, asserts non-leakage, and is being tested independently. This correction supersedes the earlier blanket claim that all decoys were absent from source excerpts.
+
 **Agent 9 | original archive, complete successful four-job manual Actions execution.** This report tests whether historical author/purpose context distinguishes **genuinely withheld** complete captions better than generic caption language probability. It does **not** recover K08 or report a final-envelope caption. Original six K01/K02/K03/K05/K06/K07 individually PASS, K04/K08 unresolved, combined REC8/1 INCOMPLETE.
 
 ## Novel, exact heldout task
