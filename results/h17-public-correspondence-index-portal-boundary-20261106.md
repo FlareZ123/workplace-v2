@@ -51,6 +51,27 @@ As a bounded public-path check, their path equivalents were requested from the s
 
 The exact-source K08 HMAC scan was configured from the repository's route and acceptance files, but neither document returned a body to scan. This was a path-availability check only, not a phrase no-hit. The run was `42291846210`, artifact `13540685504`, digest `sha256:111259457e6aa1bfdb45faa4c010082a35cfa2238650f36ec66f6a9814aa9ba2`. The one-off workflow was deleted after the run.
 
+## Remaining exact bookmark-path checks
+
+The bookmark export also names the following local files. Their exact path equivalents were requested from the same public host:
+
+| Local bookmark target | Public path tested | HTTP |
+|---|---|---:|
+| `R:/Stores/returns/SEP26/index.htm` | `/Stores/returns/SEP26/index.htm` | 404 |
+| `R:/Finance/PrevERP/posted-items-26.xls` | `/Finance/PrevERP/posted-items-26.xls` | 404 |
+| `R:/Finance/PrevERP/reversal-register.htm` | `/Finance/PrevERP/reversal-register.htm` | 404 |
+| `R:/Finance/letterheads/EG-operator-2025.pdf` | `/Finance/letterheads/EG-operator-2025.pdf` | 404 |
+| `R:/Finance/PrevERP/bench-expenses-2025.xls` | `/Finance/PrevERP/bench-expenses-2025.xls` | 404 |
+| `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx` | `/Risk/H17-POL-17/renewal-ledger-2025.xlsx` | 404 |
+| `R:/Risk/Transfers/BX25/transfer-index.htm` | `/Risk/Transfers/BX25/transfer-index.htm` | 404 |
+| `R:/IT/desk-images/oldscan/scanrelease.txt` | `/IT/desk-images/oldscan/scanrelease.txt` | 404 |
+| `R:/Risk/hired-plant/CS-18/loan-set-register.htm` | `/Risk/hired-plant/CS-18/loan-set-register.htm` | 404 |
+| `R:/Records/blank-request-form.doc` | `/Records/blank-request-form.doc` | 404 |
+
+All ten responses were the same 3,331-byte generic 404 body (SHA-256 `5b4ce0b472214bcdfe0cbf9a1996b693d6870527633d636bc416644a6b64e5b0`). The exact-source K08 scan and four-digit-token summary were conditional on a 200 response; no file body was returned, so neither scan ran and no release value was exposed.
+
+The run was `42293175265`, artifact `13539359317`, digest `sha256:81b1b67e43a3a6785a38141f460b0b116eae1fc231bafda75e66522ddc90c3f0`. The one-off workflow was deleted after the run. Together with the earlier tests in this report, this checks the path equivalents of every file listed in the supplied retired-office bookmark export. It closes only the guessed public URL mapping; the original Windows `R:` files remain offline source locators and may still exist on an authorized historical image.
+
 ## Conclusion and boundary
 
 At the time of this probe, the referenced host serves a public corporate marketing site and a protected partner/employee login portal. The tested archive-index, workbook, correspondence, and search paths are absent. The portal's `/admin` and `/api/` paths are explicitly disallowed by `robots.txt`; no attempt was made to authenticate, guess credentials, or access the login API.
