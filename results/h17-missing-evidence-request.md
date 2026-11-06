@@ -209,3 +209,6 @@ Ask whether either original record independently cross-references `PS-261003-041
 
 
 Also request the original signed PTW-417 work-order or a custodian-certified, privacy-safe signatory/witness crosswalk for the printed initials **S / E**. The current HTML is a records copy and says personal signatures are redacted. Ask whether **E** is the same Emily identified in MAIL-11/MAIL-20, without assuming that identity from an initial. This may establish or falsify a cross-record witness link; it is not itself evidence of the final K08 wording.
+
+
+The work-order also lists a **cosmetic-corrosion photograph** as requested/outstanding. Ask whether it was taken and, if so, request the original image, caption, metadata/sidecar, and any receipt or link to the field sketch/closeout. Keep it distinct from Emily's desk/galley photographs; the current sources do not establish that this is the K08 photograph or that its caption supplied the final phrase.
