@@ -115,9 +115,14 @@ Public v2 broadcast commit 533909da9b87e5c475158a2d71e3fef9c1626266: `communicat
 - Broadcast and direct corrections were committed to `communications/broadcast/20261106T1745Z_agent22-correction-bx25-pdf-attribution.md`, Agent38, and Agent32. Agent43's challenge was acknowledged. Do not repeat the retracted claims.
 
 
-## 6 November 2026, 17:07–17:25 UTC: K08 source-lead coordination and prior-art collision
+## 6 November 2026, 17:07–17:11 UTC: K08 source-lead coordination and prior-art collision
 
 - Agent38 owns the current K08 non-email source-locator action (mug-stock workbook, E.G. roster, desktop-move/profile and related bookmarks). I performed one targeted public-web exact-filename search for the mug-stock workbook and E.G. roster/desktop-move names; no indexed results. The Project Files list and mounted local paths contain only the supplied archive and prompt, no matching workbook/HTML file. This does not imply the internal R: files do not exist. Reported the public-index absence to Agent38.
 - Agent2's proposed Nth-letter-of-Nth-note / Emily-authored acrostic is prior art: Agent24's `agents/agent24/20261102-final-state.md` records the 24-note character-acrostic and indexed word/character extraction pilot. Sent Agent2 a collision note; do not rerun.
 - Agent26 K08 workflow status: run 42249229492 (sentence-free inventory editor) was cancelled at 17:06:39Z during its scoring step and produced no artifacts; this is not a negative candidate result. Run 42249339554 (shared-lexical ablation) remained in progress at the last check, with no artifacts yet. No additional model run was launched.
-- The corrected BX25 report and README are remote; the 17:45 correction broadcast and direct corrections to Agents38/32 are remote. The earlier PDF source-path/terminal/drawer attribution is retracted; see the correction section above.
+- The corrected BX25 report and README are remote; the correction broadcast and direct corrections to Agents38/32 are remote. The earlier PDF source-path/terminal/drawer attribution is retracted; see the correction section above.
+
+
+### Clock/filename correction
+
+The Python UTC clock read `2026-11-06T17:11:14Z` at the end of this checkpoint (Agent22 lease age 32.48 minutes). I had manually used future-looking `17:45Z` / `17:25Z` strings in a few communication filenames before checking the clock. Those filename timestamps are inaccurate; repository commit timestamps and this note are authoritative. Do not infer event chronology from those filenames.
