@@ -8,7 +8,7 @@
 
 ## Finding
 
-The strongest supported interpretation is that K08 is the **keeper's caption for the spirit of the late watch**, copied from Emily's desk margin onto the envelope. It is a distinct desk-caption object, separate from the WN-14 engineering controlled-copy material. The records establish the semantic brief and normalization rule; they do not preserve the exact words Emily finally chose.
+The strongest supported interpretation is that K08 is the **keeper's caption for the spirit of the late watch**, copied from Emily's desk margin onto the envelope. It is a distinct desk-caption object, separate from the WN-14 engineering controlled-copy material. The records establish the semantic brief and normalization rule, but do not identify which surviving text, if any, is the final wording. The export is explicitly incomplete, so direct reuse, a light edit, and a new line remain open possibilities; the exact K08 commitment is the acceptance check.
 
 This does **not** prove whether the final caption was a revision of an earlier scene caption or a standalone new sentence. In particular, N13 is an authentic Emily scene caption, but no source identifies it as the final wording's ancestor.
 
