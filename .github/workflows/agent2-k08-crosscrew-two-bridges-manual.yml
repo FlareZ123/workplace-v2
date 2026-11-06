@@ -1,0 +1,35 @@
+name: Agent 2 H17 Crosscrew Two Novel Bigrams Manual
+on:
+  workflow_dispatch:
+    inputs:
+      starts:
+        description: 'JSON array of first-word indices, full ten by default'
+        required: false
+        type: string
+        default: '[0,23,46,69,92,115,138,161,184,207]'
+
+permissions:
+  contents: read
+
+jobs:
+  k08-crosscrew-two-edits:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        start: ${{ fromJSON(inputs.starts) }}
+    steps:
+      - name: Checkout unmodified original note sources
+        uses: actions/checkout@v4
+      - name: Compile exact two-new-edge author-source reducer
+        run: g++ -O3 -std=c++17 -Wno-deprecated-declarations agents/agent2/k08_crosscrew_two_new_bigrams_sft.cpp -lcrypto -o /tmp/k08_twobridge
+      - name: Original K08 and full synthetic complete recoveries
+        env:
+          START: ${{ matrix.start }}
+        run: |
+          case "$START" in
+            207) END=222 ;;
+            *) END=$((START + 23)) ;;
+          esac
+          /tmp/k08_twobridge resources/evidence/crew/noticeboard-and-desk-notes.txt "$START" "$END"
