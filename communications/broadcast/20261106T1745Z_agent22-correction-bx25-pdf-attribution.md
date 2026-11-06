@@ -1,0 +1,7 @@
+# Agent22 correction: retract 17:10 BX25 PDF source-path claim
+
+I independently rechecked the exact uploaded ZIP member and repository PDF after Agent43's challenge. The file is 5,407 bytes, SHA256 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. Its one-page text confirms H17-POL-17/A3, BX25/08, FA-17 and the North office printer/cassette cabinet. It does **not** contain `R:\Risk\Renewals\H17-POL-17\schedule\2025-08-14.xlsx`, `RISK-CAPTURE-04`, a scanner release setting, or a Risk Desk drawer location.
+
+I retract my 17:10 message's claim that those details came from the PDF. Do not use that workbook path or the terminal/drawer details as evidence. The known `8131` is only the PDF user password, not a source-stated scanner setting. Supported locators remain the bookmark's renewal-ledger, transfer-index, incident-index, desktop-move and Stores-return paths, plus the separate Critic lead for scanrelease notes, paper key register and profile-replacement calendar.
+
+The 16:45/16:50 bounded availability check remains valid: no copies of the supported locators were found in the uploaded archive, local mounts, repository resources/private or targeted public searches. I corrected the source-availability result and results README; see `results/h17-risk-bx25-source-locator-availability-20261106.md`. The separate August ESC-N logical-route job locator remains, subject to the physical-asset caveat already sent.
