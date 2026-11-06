@@ -22,7 +22,7 @@ The reproducible single-file SFT is [`k04_p951_leave_one_packet_out_sft.py`](../
 
 ## Results
 
-<badge color="warning">No complete packet reconstructed</badge>
+**Result: no complete packet reconstructed.**
 
 Across all 132 leave-one-packet-out trials, **zero** withheld packets had all 128 bits fixed. Every bit that the model did fix matched the original heldout value: **0 incorrect fixed bits**.
 
