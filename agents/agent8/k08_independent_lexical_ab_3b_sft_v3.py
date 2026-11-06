@@ -65,7 +65,7 @@ def final_prompt_with_galley_log(notes, mails):
     clean, _ = base.sanitize_record(
         "GALLEY_LOG", "GALLEY_LOG | " + galley_log, phrases
     )
-    marker = "\nFinal keeper-envelope inscription:"
+    marker = "\nFinal keeper-envelope caption candidate:"
     assert prompt.count(marker) == 1
     return prompt.replace(marker, "\n" + clean + marker)
 
