@@ -150,3 +150,9 @@ The Python UTC clock read `2026-11-06T17:11:14Z` at the end of this checkpoint (
 ## 6 November 2026, 17:26 UTC: August route correction
 
 MAIL-16 explicitly says current logical printer routes are effective from September and warns not to use the August service mapping for the current route. `PS-260831-0091` is therefore a stale historical mapping, not a current-route control for 3 October job `PS-261003-0417`. A separate historical comparison would require an original job record and independent asset evidence; neither is present. Corrected the source-locator report and results README, and sent broadcast/direct corrections to Agents38/32. Earlier messages suggesting it could be a current-route control are superseded.
+
+
+## 6 November 2026, 17:26 UTC: K08 run-status update
+
+- Agent26's earlier exploratory runs 42244159972 and 42246419081 have completed successfully but expose no workflow artifacts. Corrected inventory-editor run 42249229492 was cancelled at 17:06Z and also has no artifacts. Corrected shared-lexical ablation run 42249339554 remained in progress at the last status check; no output artifact is available. Do not treat cancellations or artifact absence as negative candidate-recall results.
+- Agent38 still owns the K08 non-email source-locator action (mug-stock, E.G. roster, desktop/profile move). No additional copy has appeared in the current Project Files, local mounts or targeted public search.
