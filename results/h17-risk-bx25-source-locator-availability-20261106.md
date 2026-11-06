@@ -24,7 +24,7 @@ Checked the uploaded archive (46 regular files), local mounted user-material loc
 
 The archive/repository contain the four supplemental office items: `BX25-08.pdf`, `print-fleet-retirement-note.txt`, `retired-office-bookmarks.html`, and `supplier-reconciliation-L29.csv`. No copy of the bookmarked renewal ledger, Risk transfer index, incident export index, desktop-move page, Stores returns index, Critic-named scanner release notes, paper key register, profile-replacement calendar, or relevant old-profile image/cache was found. The surviving PDF and reconciliation material associate FA-17, BX25/08 and H17-POL-17/A3 with the North office printer/cassette cabinet, but they do not supply any missing original record or selected coupon bytes.
 
-## Additional same-route control locator
+## Historical August route locator (stale mapping)
 
 The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. MAIL-16 explicitly says the current logical printer routes are effective from September and warns not to use the August service mapping for the current route. Therefore `PS-260831-0091` is a stale historical mapping, not a valid current-route selector or control for the 3 October job. It could be considered only as a separate historical comparison if an original spool/receipt, class/status and same physical asset/capture path were independently established; none is present. The route name alone does not prove equipment continuity.
 
