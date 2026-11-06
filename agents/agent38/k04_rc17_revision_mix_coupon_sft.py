@@ -138,10 +138,36 @@ for choices in itertools.product(revisions, repeat=4):
                 delta[::-1] if whole_reverse else delta
             )
 
+# Family D: pairwise revision deltas (B/C, B/D-draft, C/D-draft) in the
+# two named section orders, preserving each section's byte orientation.
+revision_pairs = (("B", "C"), ("B", "D-draft"), ("C", "D-draft"))
+revision_delta_candidates: set[bytes] = set()
+revision_delta_assignments = 0
+for revision_a, revision_b in revision_pairs:
+    for order in (service_order, standby_order):
+        for flips in itertools.product((False, True), repeat=4):
+            words_a = [
+                strips[(revision_a, section)][::-1] if flip else strips[(revision_a, section)]
+                for section, flip in zip(order, flips)
+            ]
+            words_b = [
+                strips[(revision_b, section)][::-1] if flip else strips[(revision_b, section)]
+                for section, flip in zip(order, flips)
+            ]
+            block_a = b"".join(words_a)
+            block_b = b"".join(words_b)
+            delta = bytes(a ^ b for a, b in zip(block_a, block_b))
+            for whole_reverse in (False, True):
+                revision_delta_assignments += 1
+                revision_delta_candidates.add(
+                    delta[::-1] if whole_reverse else delta
+                )
+
 all_candidates = (
     c_permutation_candidates
     | mixed_revision_candidates
     | service_standby_delta_candidates
+    | revision_delta_candidates
 )
 original_hits = [
     coupon.hex().upper()
@@ -172,6 +198,9 @@ print(f"service_standby_delta_assignments={delta_assignments}")
 print(f"service_standby_delta_unique={len(service_standby_delta_candidates)}")
 print(f"overlap_c_mixed={len(c_permutation_candidates & mixed_revision_candidates)}")
 print(f"overlap_existing_delta={len((c_permutation_candidates | mixed_revision_candidates) & service_standby_delta_candidates)}")
+print(f"revision_delta_assignments={revision_delta_assignments}")
+print(f"revision_delta_unique={len(revision_delta_candidates)}")
+print(f"overlap_existing_revision_delta={len((c_permutation_candidates | mixed_revision_candidates | service_standby_delta_candidates) & revision_delta_candidates)}")
 print(f"union_unique={len(all_candidates)}")
 print(f"original_k04_hits={len(original_hits)}")
 print(f"planted_positive_hits={len(planted_hits)}")
