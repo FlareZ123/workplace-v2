@@ -9,7 +9,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
+import os
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -82,6 +85,22 @@ def solve(formula: str, key_words: int, timeout_seconds: int):
     return result, keys, elapsed, deadline.expired
 
 
+def write_result(seed_words: int, payload: dict) -> None:
+    """Atomically persist a small per-job result for Actions artifact upload."""
+    target = ROOT / f"bitwuzla-result-n{seed_words}.json"
+    temporary = None
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=ROOT, prefix=target.name + ".",
+        suffix=".tmp", delete=False
+    ) as stream:
+        temporary = stream.name
+        json.dump(payload, stream, sort_keys=True, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, target)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("seed_words", type=int, choices=(2, 3, 4))
@@ -139,9 +158,28 @@ def main() -> None:
         n, stop, masks, masks[6][1], masks[7][1],
         timeout_ms=args.timeout_seconds * 1000
     )
+    record = {
+        "workflow_run_id": os.environ.get("GITHUB_RUN_ID"),
+        "workflow_job": os.environ.get("GITHUB_JOB"),
+        "seed_words": n,
+        "stop": stop,
+        "source_constrained_bits": observed_bits,
+        "key_bits": n * 32,
+        "selected_row_129_withheld": True,
+        "solver": "Bitwuzla 0.9.1 / CaDiCaL",
+        "source_model_sha256": hashlib.sha256(original_formula.encode()).hexdigest(),
+        "synthetic_control": "PASS",
+        "status": "RUNNING",
+    }
+    write_result(n, record)
     result, keys, elapsed, timed_out = solve(
         original_formula, n, args.timeout_seconds
     )
+    record.update({
+        "status": result,
+        "elapsed_seconds": elapsed,
+        "terminator_fired": timed_out,
+    })
     print(
         "ORIGINAL_SOURCE_BITWUZLA_SHORT_FORWARD",
         "seed_words", n,
@@ -151,6 +189,8 @@ def main() -> None:
         flush=True,
     )
     if result == "UNSAT":
+        record["interpretation"] = "conditional CPython short-forward model excluded"
+        write_result(n, record)
         print(
             "ORIGINAL_SOURCE_N", n,
             "UNSAT under the source-exact short-forward CPython model",
@@ -158,6 +198,8 @@ def main() -> None:
         )
         return
     if result == "UNKNOWN":
+        record["interpretation"] = "inconclusive; no exclusion"
+        write_result(n, record)
         print("ORIGINAL_SOURCE_N", n, "UNKNOWN; no exclusion", flush=True)
         return
 
@@ -180,6 +222,22 @@ def main() -> None:
     component = bytes(left ^ right for left, right in zip(coupon, base.MASK))
     digest = hashlib.sha256(component).hexdigest()
     target_match = digest == base.K04_SHA
+    record.update({
+        "seed_words_hex": [f"{value:08X}" for value in keys],
+        "intact_packet_matches": intact_matches,
+        "predicted_selected_coupon": coupon.hex().upper(),
+        "derived_component": component.hex().upper(),
+        "derived_sha256": digest,
+        "K04_SHA_MATCH": target_match,
+        "candidate_accepted": intact_matches == 132 and target_match,
+    })
+    if intact_matches == 132 and target_match:
+        record["interpretation"] = "complete K04 candidate"
+    elif intact_matches < 132:
+        record["interpretation"] = "necessary projection only; no original-source model"
+    else:
+        record["interpretation"] = "full packet fit but K04 commitment mismatch"
+    write_result(n, record)
     print(
         "SOURCE_PROJECTION_SAT",
         "seed_words", n,
