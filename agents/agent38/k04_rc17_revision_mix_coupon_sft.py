@@ -51,7 +51,7 @@ rc17 = RC17_PATH.read_text(encoding="utf-8")
 strips = {
     (revision, section): bytes.fromhex(value)
     for revision, section, value in re.findall(
-        r"DOCUMENT RC-17 / REV (B|C|D-draft) / SECTION (\\w+).*?"
+        r"DOCUMENT RC-17 / REV (B|C|D-draft) / SECTION (\w+).*?"
         r"Footer control strip: ([0-9A-F]{8})",
         rc17,
         re.S,
@@ -138,7 +138,7 @@ assert planted_hits == [planted_coupon]
 assert original_hits == []
 
 candidate_set_sha256 = hashlib.sha256(
-    b"\\n".join(coupon.hex().upper().encode("ascii") for coupon in sorted(all_candidates))
+    b"\n".join(coupon.hex().upper().encode("ascii") for coupon in sorted(all_candidates))
 ).hexdigest()
 
 print(f"c_permutation_assignments={c_assignments}")
