@@ -189,3 +189,10 @@ If the original directory survives, request a read-only custody copy or a comple
 Each of the 12 retained `RC-17-scans.txt` extracts explicitly states that its **supporting process instructions and signatures are omitted**. The pages describe a records-service sequence and a required witness entry; they are expressly marked as not being plant operating instructions. Request the original controlled-copy package for the issued **revision C**, including its supporting records-service instructions, cover/index, witness entries and signatures, attachments, revision/issue history, and any preservation-reference crosswalk.
 
 Ask specifically for any witness or preservation entry that names the recovery envelope, ESC-N coupon/print job, AX-7782 transfer, or keeper's desk phrase. Keep this request distinct from the four revision-C footer control strips already used for K07. The current extracts establish that supporting material was omitted; they do not establish that it contains K04/K08 evidence.
+
+
+## Separate source request: complete H17/HST-4 historian export
+
+`telemetry/export-readme.txt` identifies `trip-recorder.raw` as a **retained sample only**, with rows in retrieval order rather than chronological order. Request the complete native H17/HST-4 historian export for the incident period, including the channel/tag dictionary, schema and units, acquisition interval, original sequence numbers, clock-quality metadata, dropped/omitted-row map, and any power/UPS, archive-appliance, records-room, printer, or incident-alarm channels if they exist.
+
+Preserve the native records and timestamps without sorting or normalization. Ask the custodian to state explicitly which equipment channels were never connected to HST-4. This is a supporting K04 source request: the retained sample establishes a partial event record, but does not establish that the historian monitored the printer or contains a reset/power event.
