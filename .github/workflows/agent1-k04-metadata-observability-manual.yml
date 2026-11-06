@@ -1,0 +1,15 @@
+name: H17 K04 metadata observability SFT (manual)
+on:
+  workflow_dispatch:
+
+jobs:
+  observability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Six source-compatible printer chronology information-rank audit
+        run: python agents/agent1/k04_printer_metadata_observability_sft.py
