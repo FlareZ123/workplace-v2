@@ -1,0 +1,15 @@
+name: H17 K04 128-job metadata-bitstream SFT (manual)
+on:
+  workflow_dispatch:
+
+jobs:
+  source-bitstream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source-pinned category-bitstream and complete original K04 checks
+        run: python agents/agent1/k04_spool_metadata_bitmap_sft.py
