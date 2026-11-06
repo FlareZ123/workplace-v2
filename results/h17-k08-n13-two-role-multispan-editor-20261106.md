@@ -35,3 +35,17 @@ All original words outside the two replaced passages remain in their original or
 The final literal is **not** any normalized output of this precisely defined two-role multispan editor. This negative does not refute a substantially different revision operation, independently authored final wording, missing printed/inked margin, or another medium. It offers no authenticated final K08 word, and no K04 physical selected coupon bit. Six original K01/K02/K03/K05/K06/K07 checks remain accepted, K04 and K08 unresolved, combined REC8/1 INCOMPLETE.
 
 The next useful experiment should be a different author-final version producer, a specific literal source witness, or an independently held-out selected K04 physical/capture transformation. More boundary jitter on this same family has little expected discriminating value.
+
+## Complement: cross-author photograph/galley transplant, original source (6 November ~03:27 UTC)
+
+The original MAIL11 specifically says *photograph captions* and everyday desk notes helped Emily work out the keeper wording. A separate version-editor branch retains the same first six N13 temporal words and cut geometries but draws its two multiword roles from **actual other-crew photograph and galley captions**, rather than Emily's N20/MAIL11 purpose sentences. This is an additional **source-provenance choice**, not simply expanded lengths or boundary jitter:
+
+- Environmental exact contiguous spans length2..7 from photograph/source notes **N01, N08, N14** (Jason/Gabriel), anchored to `sea, water, daylight, horizon, rain, window, outside, night, boat`: **88 distinct**.
+- Human/care exact contiguous spans length2..7 from notes **N03, N04, N09, N11, N19** (Zoey/David), anchored to `cup, mugs, chair, head, heads, someone, somebody, alone, sat, down, blue, belongs, bed, needs, one`: **183 distinct**.
+- The same **264** N13 four-cut choices preserve its first six words, source-order left/middle/right residuals, and complete normalized caption grammar.
+
+**Complete original execution:** `264 × 88 × 183 = 4,251,456` author-scene assignments, **0 original K08 full HMAC/SHA commitment hits**. Exact notes SHA and historical N02 HMAC confirmed; a separate in-grammar planted complete phrase returned **exactly one positive**. The scratch runtime produced the full terminal counter output after 33.92s. The container invocation wrapper displayed a timeout flag after the complete counters printed; the algorithm itself completed its assertions and output, so distinguish a *completed local computation with wrapper timeout* from an independent CI proof. No unique-string count asserted for this complement.
+
+Reproducer: [Agent49 cross-crew multispan Python SFT](../agents/agent49/k08_crosscrew_multispan_version_sft.py). This complements but does not override [Agent3's different 2 November model](h17-k08-crosscrew-two-interior-ancestry.md), whose **base** sentence is a non-Emily caption and whose replacement roles are Emily fragments. Here the retained base is Emily's N13 and both replacements come from photo/galley captions written by other crew. Neither model supplies her final authentic margin words.
+
+**Both original K08 branch totals:** **7,110,576 complete assignment checks**, zero authentic K08 matches, with one planted source-positive per branch. This aggregate is assignment counts and may include overlapping normalized strings across branches. Original K04/K08 still MISSING; combined REC8/1 INCOMPLETE. Do not mechanically expand these two role templates without a new editorial witness.
