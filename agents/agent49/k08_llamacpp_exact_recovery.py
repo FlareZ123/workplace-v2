@@ -98,7 +98,7 @@ def build_prompt(case: int, notes: dict, mails: dict) -> tuple[str, dict]:
             "source_records": 45,
             "purpose": "final keeper-envelope caption",
         }
-        marker = "\\nFinal keeper-envelope caption candidate:"
+        marker = "\nFinal keeper-envelope caption candidate:"
         assert prompt.count(marker) == 1
         span_note = (
             "A full contiguous-span check of the exported UTF-8 evidence found "
@@ -108,17 +108,17 @@ def build_prompt(case: int, notes: dict, mails: dict) -> tuple[str, dict]:
             "description and the original evidence."
         )
         replacement = (
-            "\\n\\n" + span_note + "\\n\\n" + batch_instruction
-            + "\\nFinal keeper-envelope caption candidates:"
+            "\n\n" + span_note + "\n\n" + batch_instruction
+            + "\nFinal keeper-envelope caption candidates:"
         )
         prompt = prompt.replace(marker, replacement)
     else:
         prompt, manifest, _ = base.make_prompt(notes, mails, case, "B", "proper")
-        marker = "\\nMissing complete inscription:"
+        marker = "\nMissing complete inscription:"
         assert prompt.count(marker) == 1
         replacement = (
-            "\\n\\n" + batch_instruction
-            + "\\nMissing complete inscription candidates:"
+            "\n\n" + batch_instruction
+            + "\nMissing complete inscription candidates:"
         )
         prompt = prompt.replace(marker, replacement)
 
