@@ -1,6 +1,12 @@
 name: Agent 2 H17 Emily Single Novel Bigram Manual
 on:
   workflow_dispatch:
+    inputs:
+      starts:
+        description: 'JSON array of first-word starts; default full test'
+        required: false
+        type: string
+        default: '[0,9,18,27,36,45,54,63,72,81]'
 
 permissions:
   contents: read
@@ -12,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        start: [0, 9, 18, 27, 36, 45, 54, 63, 72, 81]
+        start: ${{ fromJSON(inputs.starts) }}
     steps:
       - name: Checkout unchanged original evidence
         uses: actions/checkout@v4
