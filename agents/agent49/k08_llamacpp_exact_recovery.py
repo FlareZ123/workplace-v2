@@ -101,6 +101,12 @@ def build_prompt(case: int, notes: dict, mails: dict) -> tuple[str, dict]:
         )
     else:
         prompt, manifest, _ = base.make_prompt(notes, mails, case, "B", "proper")
+    semantic_cue = base.norm(
+        "people making room for each other after a long watch, with the water "
+        "outside and the night almost finished"
+    )
+    assert semantic_cue in base.norm(prompt), "MAIL11 K08 semantic paragraph was lost"
+
     prompt += (
         f"\n\nOverride any earlier single-line output instruction for this "
         f"batch: produce exactly {BATCH_LINES} distinct, complete caption "
