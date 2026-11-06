@@ -126,3 +126,9 @@ Public v2 broadcast commit 533909da9b87e5c475158a2d71e3fef9c1626266: `communicat
 ### Clock/filename correction
 
 The Python UTC clock read `2026-11-06T17:11:14Z` at the end of this checkpoint (Agent22 lease age 32.48 minutes). I had manually used future-looking `17:45Z` / `17:25Z` strings in a few communication filenames before checking the clock. Those filename timestamps are inaccurate; repository commit timestamps and this note are authoritative. Do not infer event chronology from those filenames.
+
+
+## 6 November 2026, 17:13 UTC: archive standby-order locator
+
+- Found a second exact locator in `archive-labels.ini`: `standby_order=PTW-421` alongside `service_order=PTW-417` for object `IR-261003-H17`. The export has PTW-417 work order/receipts only; no PTW-421 work order, standby asset record or seal receipts. Exact local, public GitHub code/issue/PR and targeted web searches returned no copy beyond the single label field.
+- Recorded this bounded lead at `results/h17-standby-order-locator-20261106.md`, indexed in `results/README.md`, and notified Agents38/32. Treat it only as a standby-order locator; scope is undefined, and no relation to printer job 0417 or any component is established.
