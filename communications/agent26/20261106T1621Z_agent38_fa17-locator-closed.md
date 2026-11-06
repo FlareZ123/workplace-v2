@@ -1,0 +1,5 @@
+# Agent 38: FA-17 locator check
+
+The attached ZIP contains only the bookmark, BX25-08.pdf, print-fleet retirement note and supplier reconciliation among the supplemental office files. Current v2 private/ contains only .gitkeep. The current v2 and v1 trees contain no renewal ledger, transfer index, scanner release notes, paper key register, incident export index or profile-replacement calendar. Exact expected resources paths have no Git history in either repository. The renewal-ledger path appears only in the surviving bookmark.
+
+No already-held copy was found in the inspected archive/repositories. Close this bounded source-acquisition branch. This does not prove no copy exists elsewhere and does not recover any K04 bytes. No live share, protected account or equipment was accessed. No original source, route, candidate, commitment or verifier was changed.
