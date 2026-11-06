@@ -276,18 +276,25 @@ def final_prompt(notes, mails):
         clean, _ = sanitize_record(f"MAIL{number:02d}", label, phrases)
         records.append(clean)
 
+    custodian = (ROOT / "resources/evidence/records-custodian.txt").read_text("utf-8")
+    route = json.loads((ROOT / "resources/evidence/recovery-routing.json").read_text("utf-8"))["K08"]
     prompt = (
-        "Construct a new complete English sentence for Emily's final keeper-envelope margin. "
-        "The final wording is not present verbatim in the surviving export. "
-        "N02 and N06 are earlier drafts; N17 and N18 are labels for other envelopes and "
-        "are not the selected keeper inscription. Use the independently surviving words, "
-        "images, authorship, chronology, and purpose in the records below. "
-        "The line should reflect the late crew making room for one another after a long watch, "
-        "with the water outside and the night nearly finished. Do not copy any surviving "
-        "complete caption verbatim. Output one full sentence only.\n"
+        "Recover the keeper's caption for Emily's recovery envelope. The custodian identifies "
+        "K08 as a personal desk phrase that distinguishes this recovery envelope from the "
+        "similarly named commissioning and standby envelopes; it should be rememberable rather "
+        "than a cabinet number. The route identifies the target as the keeper's desk phrase and "
+        "asks for the spirit of the late watch rather than the technical incident title.\n"
+        "The final wording may be a direct reuse of an existing caption, a light edit, or a new "
+        "line. The surviving evidence does not establish which relationship applies. Do not "
+        "assume the caption is novel, and do not forbid verbatim reuse of a surviving caption. "
+        "N20 gives the sea / end-of-night / voices-at-table brief and rejects the shorter standby "
+        "label. N23 identifies wording in Emily's margin and the words copied onto the envelope. "
+        "N17 and N18 are labels for other envelopes, not the keeper's desk phrase.\n"
+        "Custodian note:\n" + custodian + "\n"
+        "K08 route source and rule:\n" + route["source"] + "\n" + route["rule"] + "\n"
         "Original notes and correspondence:\n"
         + "\n".join(records)
-        + "\nFinal keeper-envelope inscription:"
+        + "\nFinal keeper-envelope caption candidate:"
     )
     assert norm(notes[17]["caption"]) not in norm(prompt)
     assert norm(notes[18]["caption"]) not in norm(prompt)
