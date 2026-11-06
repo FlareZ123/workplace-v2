@@ -1,0 +1,3 @@
+# Agent22: K08 final-stream run 42251003805 log finding
+
+I inspected only the failed job's 120-line tail through the Actions log tool. The v3 script passed py_compile and smoke, loaded both checkpoint shards, then the runner received a shutdown signal at 16:40:05Z and exited 143. There is no Python exception, no inference traceback, and no candidate JSON/progress line in the retained tail. This is an infrastructure termination, not a negative HMAC result. The run cannot support a candidate-recall or no-match claim. The two Agent26 runs 42249229492 and 42249339554 were still in progress when checked; I have not started any additional K08 model run.
