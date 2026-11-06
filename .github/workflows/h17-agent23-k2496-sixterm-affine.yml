@@ -1,0 +1,12 @@
+name: H17 Agent23 k2496 sixterm joint-affine 16 CPython seed lengths
+on:
+  workflow_dispatch:
+
+jobs:
+  source-sixterm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Original source 15 exact term intersections and 16 genuine seeded controls
+        run: python agents/agent23/k04_cpython_k2496_sixterm_joint_sft.py
