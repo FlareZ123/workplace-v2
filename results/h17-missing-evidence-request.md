@@ -89,7 +89,17 @@ The same surviving bookmark export lists `file:///R:/IT/staff-groups/EG.htm`, ti
 
 ### K04: former finance posting and reversal records
 
-The bookmark export also lists `file:///R:/Finance/PrevERP/posted-items-26.xls` and `file:///R:/Finance/PrevERP/reversal-register.htm`. These may provide an independent original record of the A3 posted versus A4 held-duplicate settlement already summarized in `supplier-reconciliation-L29.csv). Request the original files with workbook formulas, hidden sheets, comments, reversal references and timestamps if they survive. Their relevance to the physical coupon is unproven; they are provenance/version-selection records, not coupon bytes.
+The bookmark export also lists `file:///R:/Finance/PrevERP/posted-items-26.xls` and `file:///R:/Finance/PrevERP/reversal-register.htm`. These may provide an independent original record of the A3 posted versus A4 held-duplicate settlement already summarized in `supplier-reconciliation-L29.csv`. Request the original files with workbook formulas, hidden sheets, comments, reversal references and timestamps if they survive. Their relevance to the physical coupon is unproven; they are provenance/version-selection records, not coupon bytes.
+
+
+
+### K08: exact referenced desk note and old-scan record
+
+MAIL-20's preserved header contains `X-Records-Reference: desk-note-04`. Its body says Gabriel copied Emily's exact phrase from a note she left at the desk. The local export contains no file or index entry named `desk-note-04`; the only matching source identifier is this header. Do not conflate it with N04 in `noticeboard-and-desk-notes.txt`, which is explicitly authored by David.
+
+Request the original record `desk-note-04`, its scan/image if any, and the contemporaneous scan-release metadata. The surviving bookmark separately points to `file:///R:/IT/desk-images/oldscan/scanrelease.txt`, titled **"Desktop scanner release notes"**. These may establish the original note's location, scan identity and custody chain. The records-custodian instruction says a source reference is a pointer, not an instruction to include every byte of that record in the recovery envelope. Preserve the full original record and provenance, then identify only the exact final wording with independent version evidence. No phrase can be inferred from the reference alone.
+
+Neither the note nor the scan-release file is present in the supplied ZIP, current v1/v2 trees, or the searched Git history. Request these originals from the records custodian if they survive.
 
 ### K04: hired-equipment loan-set register
 
