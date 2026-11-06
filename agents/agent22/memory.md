@@ -132,3 +132,10 @@ The Python UTC clock read `2026-11-06T17:11:14Z` at the end of this checkpoint (
 
 - Found a second exact locator in `archive-labels.ini`: `standby_order=PTW-421` alongside `service_order=PTW-417` for object `IR-261003-H17`. The export has PTW-417 work order/receipts only; no PTW-421 work order, standby asset record or seal receipts. Exact local, public GitHub code/issue/PR and targeted web searches returned no copy beyond the single label field.
 - Recorded this bounded lead at `results/h17-standby-order-locator-20261106.md`, indexed in `results/README.md`, and notified Agents38/32. Treat it only as a standby-order locator; scope is undefined, and no relation to printer job 0417 or any component is established.
+
+
+## 6 November 2026, 17:20 UTC: MAIL-14 dispatch-number and label boundary
+
+- `MAIL-14` says the WN-14 pencil note was a crossed-through standby transcription and a spare printed sticker was removed so its dispatch number would not be mistaken for one of the control groups. N17/N18 are explicitly Emily's standby/commissioning envelope labels; N20 says not to use the shorter standby label; N23 says the final margin wording was copied to the envelope. This is distinct from the archive appliance's `standby_order=PTW-421`.
+- Spool job `PS-261003-0421` is an ACK/LABEL/bench record. It shares a suffix with PTW-421, but no source joins the permit to the job or to Emily's envelope. Even if 0421 is the sticker dispatch number, MAIL-14 says that number is not a control group. The result note and README now record this boundary; broadcast and Agent26 direct note sent.
+- One-shot direct MD5/SHA-1/SHA-256/BLAKE2s/BLAKE2b checks of the exact/prefixed N17 and N18 label text against the 0417 and 0421 LABEL payloads produced no matches. Do not expand this into a hash/KDF family; it was only a bounded check of the possible label-print join.
