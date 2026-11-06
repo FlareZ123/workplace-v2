@@ -182,3 +182,10 @@ This is a separate desk-image locator. The current export establishes the bookma
 `START_HERE.md` describes the supplied preservation set as trimmed, and MAIL-20 says **Bundle 06** was staged as a local directory and reduced to the material that could be extracted. Request the original Bundle 06 directory manifest and the associated trim/extraction log: original relative paths, filenames, sizes, hashes, timestamps, omitted-file list, extraction failures, redaction/omission reasons, and any attachment or scan sidecars excluded from this 46-file export.
 
 If the original directory survives, request a read-only custody copy or a complete metadata-preserving file listing. If it does not, request the export operator's manifest and omission/deletion record. This is a scoped request for the provenance and missing-file inventory of Bundle 06, **not** an unrestricted mailbox dump or a live facility connection. It may identify the missing source objects for K04/K08; no omitted file or content is presumed to exist.
+
+
+## Separate source request: complete RC-17 records-service package
+
+Each of the 12 retained `RC-17-scans.txt` extracts explicitly states that its **supporting process instructions and signatures are omitted**. The pages describe a records-service sequence and a required witness entry; they are expressly marked as not being plant operating instructions. Request the original controlled-copy package for the issued **revision C**, including its supporting records-service instructions, cover/index, witness entries and signatures, attachments, revision/issue history, and any preservation-reference crosswalk.
+
+Ask specifically for any witness or preservation entry that names the recovery envelope, ESC-N coupon/print job, AX-7782 transfer, or keeper's desk phrase. Keep this request distinct from the four revision-C footer control strips already used for K07. The current extracts establish that supporting material was omitted; they do not establish that it contains K04/K08 evidence.
