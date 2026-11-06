@@ -1,0 +1,29 @@
+name: Agent26 K08 shared-lexical evidence ablation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-ablation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned scoring software
+        run: |
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2"
+      - name: Smoke source hashes, quotation masking, and paired prompts
+        run: python agents/agent26/k08_shared_lexical_ablation_sft.py --smoke
+      - name: Score blind historical controls and test 64 complete final captions
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          OMP_NUM_THREADS: "4"
+        run: python agents/agent26/k08_shared_lexical_ablation_sft.py --run
