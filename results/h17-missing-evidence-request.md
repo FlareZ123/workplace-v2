@@ -206,3 +206,6 @@ Preserve the native records and timestamps without sorting or normalization. Ask
 `work-order-417.html` explicitly says the **field sketch supersedes cabinet lettering** and directs the reader to **closeout correspondence**. Request the original PTW-417 field sketch (all sides, annotations, revisions and scale/orientation marks) and the complete closeout correspondence, including attachments, witness/author metadata, and any linked receipt or photo.
 
 Ask whether either original record independently cross-references `PS-261003-0417`, ESC-N, the L-29/N cassette, or the archive appliance. This is a provenance check of the shared **417** reference and a possible cross-record link; it does not assume the permit and printer job are related, and it does not reopen the already accepted K03 serial component or its ordering.
+
+
+Also request the original signed PTW-417 work-order or a custodian-certified, privacy-safe signatory/witness crosswalk for the printed initials **S / E**. The current HTML is a records copy and says personal signatures are redacted. Ask whether **E** is the same Emily identified in MAIL-11/MAIL-20, without assuming that identity from an initial. This may establish or falsify a cross-record witness link; it is not itself evidence of the final K08 wording.
