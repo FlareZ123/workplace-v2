@@ -66,7 +66,7 @@ def domains_from_rows(rows:list[tuple[int,int]])->dict[int,list[int]]:
     }
     return domains
 
-def exact_join(domains:dict[int,list[int]])->tuple[int,int,int,list[tuple[tuple[int,...],int]]]:
+def exact_join(domains:dict[int,list[int]],s5_value:int=SOURCE_S5_VALUE)->tuple[int,int,int,list[tuple[tuple[int,...],int]]]:
     """Full necessary source-domain join on repeated key3 term at i4/i10."""
     left={}
     for s2 in domains[2]:
@@ -94,7 +94,7 @@ def exact_join(domains:dict[int,list[int]])->tuple[int,int,int,list[tuple[tuple[
                 source_matches+=1
                 keys,s5=key_from_eight_words(s2,s3,s4,
                     domains[6][0],domains[7][0],s8,s9,s10)
-                if (s5&SOURCE_S5_MASK)==SOURCE_S5_VALUE:
+                if (s5&SOURCE_S5_MASK)==s5_value:
                     s5_passes.append((keys,s5))
     return len(left),len(right),source_matches,s5_passes
 
@@ -117,7 +117,7 @@ def genuine_controls(terms:list[list[int]])->None:
                               for j in range(4)) for pos in mt.STARTS]
             domains=domains_from_rows(source_rows(packets,terms))
             assert all(state[index] in domains[index] for index in domains)
-            left,right,matches,s5passes=exact_join(domains)
+            left,right,matches,s5passes=exact_join(domains,state[5]&SOURCE_S5_MASK)
             assert keys in (candidate for candidate,s5 in s5passes)
             print("GENUINE_CPYTHON_N6_FULL_SOURCE_DOMAIN_JOIN_WITNESS=PASS",
                   left,right,matches,len(s5passes))
