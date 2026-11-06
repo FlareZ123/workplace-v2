@@ -123,10 +123,10 @@ def main():
         for row, (packet, position) in enumerate(zip(packets, mt.STARTS)):
             if row == 129:
                 continue
-            predicted = b"".join(draws[position + i].to_bytes(4,"little")
+            predicted = b"".join(draws[2496 + position + i].to_bytes(4,"little")
                                  for i in range(4))
             assert predicted == packet, (row, position)
-        selected = b"".join(draws[951 + i].to_bytes(4,"little") for i in range(4))
+        selected = b"".join(draws[2496 + 951 + i].to_bytes(4,"little") for i in range(4))
         routing = json.loads((ROOT/"resources/evidence/recovery-routing.json").read_text())
         mask = bytes.fromhex(routing["K04"]["masked_component"])
         key = bytes(x^y for x,y in zip(selected,mask))
