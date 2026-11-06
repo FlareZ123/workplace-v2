@@ -1,0 +1,22 @@
+name: Agent49 CPython k2496 Bitwuzla independent solver
+on:
+  workflow_dispatch:
+jobs:
+  bitwuzla:
+    runs-on: ubuntu-latest
+    timeout-minutes: 32
+    strategy:
+      fail-fast: false
+      matrix:
+        seed_words: [2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned Bitwuzla
+        run: python -m pip install --upgrade pip && python -m pip install bitwuzla==0.9.1
+      - name: Solve original-source model with selected row withheld
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: python agents/agent49/k04_cpython_k2496_bitwuzla_sft.py ${{ matrix.seed_words }} --timeout-seconds 1500
