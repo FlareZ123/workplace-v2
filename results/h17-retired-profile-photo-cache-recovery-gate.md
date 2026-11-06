@@ -40,3 +40,14 @@ For the missing historical R: incident index, recover original text if present a
 - [Windows Search forensic artifact overview](https://www.windowsforensics.app/en/artifacts/windows-search-index): scoped description of indexed paths, timestamps, content and deleted-data remnants. Third-party forensic resource; validate specific schema against the preserved OS image.
 
 **Recovery accounting:** new authenticated original `PS-261003-0417` coupon bits: **0/128**. Exact final K08 words: **0**. REC8: **six PASS; K04/K08 MISSING; combined INCOMPLETE**. This document is a new preservation lead for *already-held historical media* only, not a claim that the missing originals are accessible or that any source has been delivered to a records custodian.
+
+
+## Additional exact K08 record pointer: desk-note-04
+
+A separate, more specific pointer is preserved in `evidence/mail/20.eml`: its header contains `X-Records-Reference: desk-note-04`. The message body says Gabriel copied Emily's exact phrase from the note she left at the desk. The supplied export contains no matching `desk-note-04` file or index entry; a repository-wide search finds the identifier only in this mail header.
+
+Do not equate `desk-note-04` with N04 in `noticeboard-and-desk-notes.txt`: N04 is explicitly authored by David, while MAIL-20 describes Emily's note. The records-custodian instruction says a source reference identifies a record, not that every byte in the referenced record belongs in the recovery envelope.
+
+The bookmark export separately points to `R:/IT/desk-images/oldscan/scanrelease.txt`, titled **Desktop scanner release notes**. This may help locate a scanned copy or identify the scan record associated with `desk-note-04`, but that relationship is unproven. Request the original `desk-note-04` record, any associated image/scan, and the contemporaneous scan-release metadata as one provenance package. Preserve timestamps, source path, scan identity, author attribution and custody before interpreting text.
+
+This narrows the K08 acquisition request from a general search for a retired profile to a specific missing record reference. It recovers no phrase words, does not prove the old profile belonged to Emily, and does not authenticate a scan merely because it matches the identifier. The unchanged K08 HMAC remains the only acceptance test.
