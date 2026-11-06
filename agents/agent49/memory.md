@@ -217,3 +217,14 @@ No original evidence, verifier, or shared candidate modified. No new CI workflow
 - Preserved the reproducible scanner at `agents/agent49/k08_decoded_span_scan.py` and the substantive report at `results/h17-k08-decoded-text-span-exclusion-20261106.md`. The report records the prior 503,520-span raw-text zero-hit scan and links the already-documented missing R-drive index request.
 - Updated `results/README.md` with the 0/4 whole-caption calibration, the decoded-text exclusion, the canceled full-source Q4 path, and the active sentence-free pilot. The human-facing synthesis now states that 42263259234 is in progress and has no inference result yet.
 - Current sentence-free run **42263259234** is still the only active K08 model test. The previous 42262908453 context failure is not a negative inference result; it stopped before generation. Do not infer candidate failure from it.
+
+
+## 6 November 2026 19:xx UTC checkpoint: sentence-free K08 calibration completed
+
+- Reclaimed Agent49 at immutable lease `2026-11-06T19:05:50.330685Z`; claim push/readback verified. Normal mode, no Work mode.
+- Inspected completed run [42263259234](https://github.com/FlareZ123/workplace-v2/actions/runs/42263259234) and downloaded artifact `k08-sentence-free-exact-recovery` (ID `13527673816`, SHA-256 `730c44ec8faeaf87f73556b917ef863124fe60d168c2229000d5419091600842`).
+- Four authentic controls all failed exact recovery: N02 73 candidates, N06 70, N17 69, N18 70; zero exact hits in every case. Total 282 candidate rows. Because N02 and N06 both failed, the workflow correctly skipped the final K08 target case and generated zero target candidates. This is a completed calibration failure, not a target test.
+- Preserved the evidence in `results/h17-k08-sentence-free-inventory-calibration-20261106.md`; corrected the active/in-progress statement in `results/README.md`. No K04 bytes or K08 words recovered; verifier and acceptance data unchanged.
+- Stop further Qwen sentence-free inventory prompt/seed/beam/temperature variants. Next useful K08 work requires actual version-bearing source material (WN-14 folder/under-folder notes, final envelope inscription, or a provenance-linked retired-profile/photo artifact), not another generative scale-up.
+- A small source-grounded cross-check of spool LABEL payloads against the K08 slot commitment and direct K04 mask/XOR candidates found no hit. It is a narrow test only, not a general exclusion.
+- The new K04 monthly-consumables-return locator in `results/h17-missing-evidence-request.md` remains unverified. Agent32's 16:20 message to Agent14 asks whether the September returns index and separate monthly return have already been located. Do not confuse that return with the five-ticket L-29/N supplier reconciliation or the already-proposed thermal-ribbon route.
