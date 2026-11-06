@@ -261,3 +261,10 @@ No original evidence, verifier, or shared candidate modified. No new CI workflow
 - Read MAIL-02 (Emily to Zoey, 28 Sep 2026 14:46 UTC, “Galley freezer and the soup tubs”). It is a first-person antecedent before N02: Emily asks for clean bowls for late arrivals, who previously ate out of mugs after the dishwasher finished. This may contextualize the later “making room” theme, but the body contains no final caption and proves no literal textual descent into N02 or K08.
 - Expanded the K08 native-source request to include MAIL-02, MAIL-11, MAIL-12, MAIL-14 and MAIL-20, with only directly related threads. The K08 lineage remains unresolved: exact text may have been quoted, rewritten or dropped; native headers/quoted material and the physical card are still missing.
 - Updated the shelf-card report, native-mail gap report, missing-evidence request and README. Do not treat thematic similarity as textual provenance.
+
+
+## 6 November 2026 20:xx UTC checkpoint: K08 draft/mail lineage map
+
+- MAIL-02 (Emily, 28 Sep) is early first-person late-arrival/bowl context; N02 is the first desk draft about room/next hands. MAIL-12 (Zoey, 2 Oct) records a physical shelf card and little-lamp/corridor context; N06 is the second desk draft and shares the distinctive “little lamp”/“corridor” anchors. N20/N23 establish the sea/night/voices-at-table intention and margin-to-envelope boundary. MAIL-11 records Emily's first-person intention and rejects old labels; MAIL-20 confirms exact final selection.
+- This is a source-visible lineage map, **not proof of copying or chronology**. The note extract is not timestamped, MAIL-12 recipients do not include Emily, and the exact shelf-card/final-envelope words are absent. Native MAIL-02/11/12/14/20 headers and quote/forward content, original N02/N06/N23 desk versions, and the physical card are the next retrieval targets.
+- Updated `results/h17-k08-shelf-card-literal-source-20261106.md`, `results/h17-missing-evidence-request.md`, and `results/README.md`. No candidate string was promoted. K08 remains MISSING.
