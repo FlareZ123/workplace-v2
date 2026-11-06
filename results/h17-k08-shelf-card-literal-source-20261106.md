@@ -41,3 +41,10 @@ If the corresponding historical records are available in the authorized export c
 Do not infer the card's text from MAIL-12 or N11. Do not promote a shelf-card phrase to K08 unless a source links the exact wording to the words Emily finally placed on the recovery envelope. This is a source-acquisition lead, not a recovered phrase.
 
 **Recovery accounting is unchanged:** six components PASS; K04 and K08 remain MISSING; combined recovery remains INCOMPLETE.
+
+
+## Earlier first-person antecedent: MAIL-02
+
+MAIL-02 (Emily to Zoey, 28 September 2026 14:46 UTC, “Galley freezer and the soup tubs”) predates N02 and the later K08 discussion. Emily asks that six clean bowls be kept aside for late arrivals, noting that the previous late crew ate out of mugs after the dishwasher had finished. This is a source-visible early context for the later “making room” theme and the N02 first-draft language, but the supplied message contains no final caption, no direct quotation of N02, and no evidence that the shelf card or this mail was forwarded into the envelope text.
+
+The K08 native-source scope should include MAIL-02 as well as MAIL-11/12/14/20. The native headers and any omitted quoted material may establish whether Emily's earlier galley wording was quoted, rewritten, or dropped between the first draft, shelf card, margin note and final envelope inscription. Do not treat the thematic connection as proof of textual descent.
