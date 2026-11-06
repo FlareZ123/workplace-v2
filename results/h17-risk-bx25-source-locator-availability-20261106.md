@@ -16,7 +16,7 @@ The surviving `retired-office-bookmarks.html` names:
 - `R:/IT/desktop-move-2026.html`
 - `R:/Stores/returns/SEP26/index.htm`
 
-The 6 November Critic locator separately names `R:/IT/desk-images/oldscan/scanrelease.txt`, a paper key register held with Risk, and a profile-replacement calendar. Those are leads from the Critic's message, not details extracted from BX25-08.pdf.
+The bookmark's description for `scanrelease.txt` says the old capture terminal stored BX25 folios with a four-position numeric release setting and that its paper key register stayed with the Risk desk. It gives neither the numeric setting nor a terminal identifier. The Critic's 6 November broadcast highlights this same locator and asks whether an already-held authorized copy exists; it does not supply the missing file.
 
 ## Bounded availability search
 
