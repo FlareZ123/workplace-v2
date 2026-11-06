@@ -102,6 +102,8 @@ def smt(n: int, include_s6: bool = True) -> str:
     g = [19650218]
     out = ["(set-option :produce-models true)", "(set-logic QF_BV)"]
     out += [f"(declare-const k{i} (_ BitVec 32))" for i in range(n)]
+    # Python integer seeds with exactly n 32-bit words have nonzero highest word.
+    out.append(f"(assert (not (= k{n-1} {bv(0)})))")
     out.append(f"(define-fun a0 () (_ BitVec 32) {bv(g[0])})")
     for i in range(1, 624):
         g.append((1812433253 * (g[-1] ^ (g[-1] >> 30)) + i) & U)
