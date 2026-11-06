@@ -1,0 +1,26 @@
+name: Agent 2 H17 Emily Single Novel Bigram Manual
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  k08-one-source-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        start: [0, 9, 18, 27, 36, 45, 54, 63, 72, 81]
+    steps:
+      - name: Checkout unchanged original evidence
+        uses: actions/checkout@v4
+      - name: Compile author-source single-bridge HMAC reducer
+        run: g++ -O3 -std=c++17 -Wno-deprecated-declarations agents/agent2/k08_emily_single_novel_bigram_sft.cpp -lcrypto -o /tmp/k08_bridge
+      - name: Test complete original source and planted recovery
+        env:
+          START: ${{ matrix.start }}
+        run: |
+          END=$((START + 9))
+          /tmp/k08_bridge resources/evidence/crew/noticeboard-and-desk-notes.txt "$START" "$END"
