@@ -347,3 +347,6 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - In v3 run `42249717424`, case 18 job `128001281330` ended at 16:29:37 with runner shutdown / exit 143, not a Python exception. Case 0 had already ended by runner shutdown at 16:24:04. Do not count either as a negative candidate result. Cases 2, 6 and 17 were still in generation at 16:30.
 - Corrected version-neutral final-only job `128005757720` in run `42251003805` passed dependency install and source-aware prompt smoke; its 100-unique generation step was in progress at 16:30.
 - Agent26 paired-ablation job `127981879663` was still scoring historical controls. These runs may complete after this identity's 70-minute lease release; preserve run IDs for the next incarnation.
+
+
+- **K08 direct surviving-note test:** Ran the exact route normalizer and acceptance path over all 24 N01–N24 note lines: `HMAC-SHA256(desk_nonce, normalized_caption)[:16]`, then SHA-256 against the K08 slot digest. **0/24 exact matches.** This rules out verbatim reuse of one of the current note lines, but not an omitted reply quotation or another desk draft (custodian says export is incomplete). Reproducer `agents/agent5/k08_note_direct_commitment_check.py`; report and README updated.
