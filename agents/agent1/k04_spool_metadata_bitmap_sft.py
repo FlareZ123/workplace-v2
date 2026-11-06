@@ -162,9 +162,106 @@ def candidates(ordinary):
     assert len(seen-bitmaps)==334210
     return seen,bitmaps,counts
 
+
+def multiset_rank(seq,alphabet):
+    from math import factorial
+    counts=Counter(seq)
+    n=len(seq)
+    m=factorial(n)
+    for count in counts.values():
+        m//=factorial(count)
+    value=0
+    for x in seq:
+        for a in alphabet:
+            if a==x:
+                break
+            if counts[a]:
+                value+=m*counts[a]//n
+        m=m*counts[x]//n
+        counts[x]-=1
+        n-=1
+    assert m==1 and n==0
+    return value
+
+def lehmer_rank(order):
+    remaining=list(range(len(order)))
+    result=0
+    for item in order:
+        pos=remaining.index(item)
+        result=result*len(remaining)+pos
+        del remaining[pos]
+    return result
+
+def rank_candidate_bytes(n):
+    raw=n.to_bytes((n.bit_length()+7)//8 or 1,"big")
+    strings={raw,raw[::-1],str(n).encode(),n.to_bytes(max(16,len(raw)),"big")}
+    for s in (str(n).encode(),raw,raw[::-1]):
+        for fun in RADIX_HASHES:
+            digest=fun(s).digest()
+            strings.update((digest[:16],digest[-16:],digest[::-1][:16]))
+    pool=set()
+    for s in strings:
+        if len(s)>=16:
+            pool.update((s[:16],s[-16:]))
+            for k in (0,4,8,len(s)//2-8,len(s)-16):
+                if k>=0 and k+16<=len(s):
+                    pool.add(s[k:k+16])
+            if len(s)%16==0:
+                value=bytes(16)
+                for k in range(0,len(s),16):
+                    value=bytes(a^b for a,b in zip(value,s[k:k+16]))
+                pool.add(value)
+        else:
+            pool.update((s.ljust(16,b"\x00"),s.rjust(16,b"\x00")))
+    assert all(len(v)==16 for v in pool)
+    return pool
+
+def enumerative_metadata_candidates(ordinary):
+    classes=["LABEL","RECOVER","STORES"]
+    dests=["bench","desk","store"]
+    category_orders=list(permutations(range(3)))
+    enumerative=set()
+    permutational=set()
+    variants=Counter()
+    for axis in ("CLASS","DEST","JOINT"):
+        cfgs=category_orders if axis!="JOINT" else [
+            (a,b,o) for a in category_orders for b in category_orders for o in (0,1)]
+        for cfg in cfgs:
+            if axis=="CLASS":
+                code=[cfg[classes.index(r[3])] for r in ordinary]
+                alphabet=[0,1,2]
+            elif axis=="DEST":
+                code=[cfg[dests.index(r[5])] for r in ordinary]
+                alphabet=[0,1,2]
+            else:
+                ca,da,order=cfg
+                code=[(ca[classes.index(r[3])]*3+da[dests.index(r[5])]
+                       if order==0 else da[dests.index(r[5])]*3+ca[classes.index(r[3])])
+                      for r in ordinary]
+                alphabet=list(range(9))
+            for reverse in (False,True):
+                for shift in (0,1,117,127):
+                    seq=code[::-1] if reverse else code[:]
+                    seq=seq[shift:]+seq[:shift]
+                    erank=multiset_rank(seq,alphabet)
+                    indices=list(range(128))
+                    if reverse:
+                        indices=indices[::-1]
+                    indices=indices[shift:]+indices[:shift]
+                    prank=lehmer_rank(sorted(indices,key=lambda i:code[i]))
+                    enumerative.update(rank_candidate_bytes(erank))
+                    permutational.update(rank_candidate_bytes(prank))
+                    variants[axis]+=1
+    assert variants==Counter({"CLASS":48,"DEST":48,"JOINT":576})
+    assert len(enumerative)==44150 and len(permutational-enumerative)==40022
+    return enumerative|permutational,variants
+
 def main():
     ordinary,mask,target=fixture()
     pool,bitmaps,counts=candidates(ordinary)
+    ranks,rank_variants=enumerative_metadata_candidates(ordinary)
+    pool.update(ranks)
+    assert len(pool)==679504,len(pool)
     direct=0
     masked=0
     for payload in pool:
@@ -190,6 +287,7 @@ def main():
     print("BOOLEAN_MAPS",512,"CYCLIC_ALIGNMENTS",128,"BIT_LAYOUTS",4)
     print("BOOLEAN_ASSIGNMENTS",262144,"BOOLEAN_DISTINCT",len(bitmaps))
     print("OTHER_ENCODINGS",dict(counts))
+    print("CATEGORY_RANK_VARIANTS",dict(rank_variants),"CATEGORY_RANK_NEW_CANDIDATES",84172)
     print("UNIQUE_SOURCE_COMPONENTS",len(pool),"TOTAL_COMPLETE_HASHES",2*len(pool))
     print("ORIGINAL_K04_DIRECT_HITS",direct,"ORIGINAL_K04_ROUTE_MASKED_HITS",masked)
     print("PLANTED_FULL_COUPON_CONTROL PASS")
