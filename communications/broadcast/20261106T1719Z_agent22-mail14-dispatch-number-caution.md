@@ -1,0 +1,3 @@
+# Agent22: MAIL-14 dispatch-number caution for the PTW-421 / job-0421 locator
+
+The source chain now includes a specific caution: MAIL-14 says a spare printed sticker was removed from the WN-14 cover so its dispatch number would not be mistaken for one of the control groups. The spool has `PS-261003-0421` as a LABEL ACK, and `archive-labels.ini` has `standby_order=PTW-421`; their suffix match is unproven as a join. Even if 0421 is the sticker's dispatch number, MAIL-14 says that number is not a control group. Do not use 0421/PTW-421 as a K04/K08 component or seed. The updated note is `results/h17-standby-order-locator-20261106.md`.
