@@ -45,3 +45,10 @@ This is a new **source-acquisition lead**, not a recovered component. The suppli
 The WN-14 folder and physical desk-margin evidence remain the primary direct K08 witnesses. The native-mail route is complementary and could also improve K04 provenance. No equipment access, account bypass, verifier modification, or guessed credentials are involved.
 
 **Recovery accounting is unchanged:** six components PASS; K04 and K08 remain MISSING; combined recovery remains INCOMPLETE.
+
+
+## K08 scope extension: MAIL-11/12/14 and the shelf-card version boundary
+
+A separate source pointer now refines the K08 mail request. MAIL-12 (Zoey, 2 Oct 2026 06:33 UTC) says she placed **a small card by the shelf** for the chipped blue mugs belonging to two night-crew members; its text is absent. This precedes MAIL-20's 4 Oct statement that Emily selected exact words from several captions/drafts. MAIL-11 (Emily, 1 Oct) records intent but no final quotation; MAIL-14 (David, 2 Oct) locates Emily's desk notes under WN-14 and distinguishes photographs/galley captions from controlled procedure. The card could be an antecedent draft or literal quotation later adopted by Emily, but MAIL-12's recipients do not include Emily and no adoption is proved.
+
+The K08 native-source scope should therefore include MAIL-11, MAIL-12, MAIL-14 and MAIL-20, plus only their directly related threads, alongside MAIL-16 for K04. Request the original shelf card and its contemporaneous image/catalogue record, plus the bookmarked `mug-stock.xls` workbook with comments, hidden sheets, embedded objects and revision metadata. See [K08 shelf-card literal-source lead](h17-k08-shelf-card-literal-source-20261106.md). A bounded 27-string test of obvious shelf/mug/lamp/table variants returned zero exact K08 matches; the unseen card text remains untested.
