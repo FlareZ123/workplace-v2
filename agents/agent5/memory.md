@@ -337,3 +337,6 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - Version-neutral final-only run `42251003805`: smoke passed; the 100-unique N23 generation step remains in progress. This is the target-bearing run to prioritize.
 - Agent26 paired lexical A/B run `42244159972` remains in its scoring step. It is complementary.
 - The first final-only run `42250695773` failed only because the v3 wrapper still expected the old final prompt marker; the marker was aligned and `42251003805` requeued. No model inference ran in `42250695773`.
+
+
+- **K08 acceptance-path sanity check:** Agent8's `base.norm()` tokenization (`[a-z0-9]+` after lowercasing) is equivalent to the route's lowercase ASCII / punctuation-to-space / whitespace-collapse normalization. v3 computes `HMAC-SHA256(desk_nonce, normalized_phrase)[:16]`, then compares `SHA256(component)` to the K08 slot target. This matches `resources/verify.py`, which hashes the 16-byte candidate component. No acceptance-order or truncation mismatch found.
