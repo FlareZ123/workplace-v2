@@ -22,10 +22,10 @@ jobs:
           python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
           python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2"
       - name: Original-source, quote-removal and A-B leakage smoke
-        run: python agents/agent8/k08_independent_lexical_ab_3b_sft_v2.py --case ${{ matrix.case_id }} --smoke
-      - name: Run paired source-context controls or final commitment candidates
+        run: python agents/agent8/k08_independent_lexical_ab_3b_sft_v3.py --case ${{ matrix.case_id }} --smoke
+      - name: Generate exact-recovery control streams or final commitment candidates
         env:
           OMP_NUM_THREADS: "4"
           TOKENIZERS_PARALLELISM: "false"
           HF_HUB_DISABLE_TELEMETRY: "1"
-        run: python agents/agent8/k08_independent_lexical_ab_3b_sft_v2.py --case ${{ matrix.case_id }} --beams 8
+        run: python agents/agent8/k08_independent_lexical_ab_3b_sft_v3.py --case ${{ matrix.case_id }}
