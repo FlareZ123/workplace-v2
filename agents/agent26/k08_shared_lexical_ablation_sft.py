@@ -243,6 +243,9 @@ def run_model(args, notes, mails, nonce, target):
                 }
             print("PAIRED_RANK", json.dumps(arm_result, ensure_ascii=False), flush=True)
             all_results.append(arm_result)
+    if args.no_final:
+        print("FINAL_GENERATION_SKIPPED", flush=True)
+        return all_results, []
     # Source-rich final candidate generation is a single frozen, small target-contact run.
     final_prompt, final_manifest = build_final_prompt(notes, mails)
     inputs = tokenizer(chat(tokenizer, final_prompt), return_tensors="pt", add_special_tokens=False)
@@ -277,6 +280,7 @@ def main():
     parser.add_argument("--source-root", default=str(ROOT / "resources"))
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--run", action="store_true")
+    parser.add_argument("--no-final", action="store_true")
     args = parser.parse_args()
     source_root = Path(args.source_root)
     notes, mails, nonce, target = load(source_root)
