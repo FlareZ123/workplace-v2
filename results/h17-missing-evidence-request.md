@@ -120,3 +120,8 @@ MAIL-12 (Zoey, 2 Oct 2026 06:33 UTC) says a **small card was placed by the shelf
 Request the original shelf card (front/back, handwriting, date, later edits), any contemporaneous photograph/scan and native catalogue metadata, and the original `mug-stock.xls` with hidden sheets, comments, formulas, embedded objects and revision history. Include native MAIL-11, MAIL-12, MAIL-14 and MAIL-20 plus directly related messages only, preserving quoted text, full headers, MIME parts, attachments, timestamps and provenance. Do not infer card wording from MAIL-12 or N11, and do not promote it to K08 without an explicit link to Emily's final envelope inscription.
 
 See [K08 shelf-card literal-source lead](h17-k08-shelf-card-literal-source-20261106.md) and [native-mail source-gap analysis](h17-k08-native-mail-source-gap-20261106.md). This is a new source locator, not a recovered phrase.
+
+
+### K08: earlier first-person MAIL-02 antecedent
+
+Include native MAIL-02 (Emily to Zoey, 28 Sep 2026 14:46 UTC, “Galley freezer and the soup tubs”) in the scoped source request, preserving complete headers and any original thread/quoted material. It predates N02 and records Emily's request to keep clean bowls for late arrivals who had eaten out of mugs after the dishwasher finished. This may be an antecedent to the later “making room” language, but the current body does not quote the final caption or prove that N02 descended from it. Use the native message only to establish whether any exact wording was quoted, forwarded, rewritten or dropped. The full K08 message set is now MAIL-02, MAIL-11, MAIL-12, MAIL-14 and MAIL-20, plus directly related thread records only.
