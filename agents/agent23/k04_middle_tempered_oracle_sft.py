@@ -73,7 +73,12 @@ def main():
                      for stage in stages for bit in range(low, high))
         return rank_with_oracle(source_basis, equations, target)
 
+    compact_cut = (104, 105, 328, 329, 330, 331, 332,
+                   500, 501, 724, 725, 726, 727)
+    independent_five = (100, 101, 328, 496, 497)
     checks = {
+        "compact_13stage_tempered_mid16": run(compact_cut, 8, 24),
+        "alternate_5stage_tempered_mid16": run(independent_five, 8, 24),
         "all_tempered_low12": run(hidden, 0, 12),
         "all_tempered_high12": run(hidden, 20, 32),
         "all_tempered_mid16": run(hidden, 8, 24),
@@ -84,6 +89,8 @@ def main():
         "critical8_tempered_high16": run(critical, 16, 32),
     }
     assert checks == {
+        "compact_13stage_tempered_mid16": (15569, 115),
+        "alternate_5stage_tempered_mid16": (15443, 125),
         "all_tempered_low12": (18203, 128),
         "all_tempered_high12": (18203, 128),
         "all_tempered_mid16": (18820, 115),
@@ -104,6 +111,11 @@ def main():
              for bit in range(8, 24)), target)
     assert no_source_critical == (128, 117), no_source_critical
     assert no_source_full == (6889, 117), no_source_full
+
+    compact_without_source = rank_with_oracle(
+        {}, (tempered[stage][bit] for stage in compact_cut
+             for bit in range(8, 24)), target)
+    assert compact_without_source == (206, 117), compact_without_source
 
     # Track actual original source bits as the constant term of affine
     # equations; oracle bits 1..128, target bits 129..256 remain formal.
@@ -178,6 +190,7 @@ def main():
         "oracle_rank_and_target_residual": checks,
         "unassisted_MT_critical8_rank_residual": no_source_critical,
         "unassisted_MT_full435_rank_residual": no_source_full,
+        "unassisted_MT_compact13_rank_residual": compact_without_source,
         "source_assisted_3bit_certificate": "PASS",
         "planted_target_byte_control": "PASS",
         "original_coupon_or_K04_commitment_loaded": False,
