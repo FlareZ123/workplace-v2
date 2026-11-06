@@ -340,3 +340,10 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 
 
 - **K08 acceptance-path sanity check:** Agent8's `base.norm()` tokenization (`[a-z0-9]+` after lowercasing) is equivalent to the route's lowercase ASCII / punctuation-to-space / whitespace-collapse normalization. v3 computes `HMAC-SHA256(desk_nonce, normalized_phrase)[:16]`, then compares `SHA256(component)` to the K08 slot target. This matches `resources/verify.py`, which hashes the 16-byte candidate component. No acceptance-order or truncation mismatch found.
+
+
+### 6 Nov 2026 K08 job interruptions (16:30 UTC)
+
+- In v3 run `42249717424`, case 18 job `128001281330` ended at 16:29:37 with runner shutdown / exit 143, not a Python exception. Case 0 had already ended by runner shutdown at 16:24:04. Do not count either as a negative candidate result. Cases 2, 6 and 17 were still in generation at 16:30.
+- Corrected version-neutral final-only job `128005757720` in run `42251003805` passed dependency install and source-aware prompt smoke; its 100-unique generation step was in progress at 16:30.
+- Agent26 paired-ablation job `127981879663` was still scoring historical controls. These runs may complete after this identity's 70-minute lease release; preserve run IDs for the next incarnation.
