@@ -8,6 +8,7 @@ hash is used. Tests 16 exactly classified integer seed word lengths.
 from __future__ import annotations
 
 from itertools import combinations
+import hashlib
 from pathlib import Path
 import random
 import sys
@@ -107,6 +108,26 @@ def genuine_controls(terms:list[list[int]])->None:
         print(f"GENUINE_CPYTHON_N{n}_KEYTERM_IDENTITY_PASS")
     print("GENUINE_CPYTHON_16_LENGTHS_REPEATED_KEYTERM_CONTROLS=16/16 PASS")
     print("GENUINE_CPYTHON_FOUR_FULL_SOURCE_DOMAIN_WITNESSES=4/4 PASS")
+    # CPython version-2 bytes seeding appends SHA512 bytes to the original byte
+    # string, converts that whole stream to a big-endian integer and then to
+    # a little-endian 32-bit MT init_by_array key. Real byte-seed call controls
+    # help interpret the source exclusions for ordinary 16B and 20B carriers.
+    for length,n in ((16,20),(20,21),(36,25)):
+        payload=bytes(((i*29+13)&255) for i in range(length))
+        expanded=int.from_bytes(payload+hashlib.sha512(payload).digest(),"big")
+        assert (expanded.bit_length()+31)//32==n
+        state=random.Random(payload).getstate()[1][:624]
+        assert state==random.Random(expanded).getstate()[1][:624]
+        actual={at:term(at,{idx:state[idx]
+                for idx in (at-2,at-1,at)}) for at in GROUPS}
+        matched_pairs=0
+        for a,b in combinations(GROUPS,2):
+            if (b-a)%n==0:
+                assert actual[a]==actual[b],(length,n,a,b)
+                matched_pairs+=1
+        assert matched_pairs>0
+        print(f"GENUINE_CPYTHON_BYTES{length}_KEY_WORDS{n}_REPEATED_TERM=PASS")
+    print("GENUINE_CPYTHON_V2_BYTES_SOURCE_CARRIER_CONTROLS=3/3 PASS")
 
 if __name__=="__main__":
     terms=words(OFFSET)
