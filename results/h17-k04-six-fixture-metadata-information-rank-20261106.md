@@ -43,3 +43,19 @@ The native-MT recurrence synthetic control passed 56/56; every source-fit preser
 **Research direction:** stop treating additional sparse CLASS/DEST two-bit values as a plausible K04 missing-coupon solver *inside these six fixed generator geometries*. Concentrate on an actual full-value selected-original/capture relation, an independently attested output selector, or a materially different producer model; distinguish target-bit information gain from apparent source-state rank growth.
 
 No original spool, route, acceptance, candidate or verifier file was modified.
+
+## Six-fixture two-quartet complete target bridge
+
+A follow-on calculation, executed against the exact same frozen original source model and the selected packet excluded before fitting, tests whether **both** causal four-word donor groups would determine the selected K04 output. For a selected start `p`, the earlier groups are `p-623..p-620` and `p-227..p-224`. Revealing each donor group as **four entire native MT19937 words** is a hypothetical 256-bit observation, not a source claim. Their observed independent target-rank contribution depends sharply on the donor combination.
+
+| Selected start | Early hypothetical donor quartet | Later hypothetical donor quartet | Selected free bits after early alone | Later alone | Both |
+| ---: | --- | --- | ---: | ---: | ---: |
+| 950 | 327..330 | 723..726 | 128 | 127 | **0** |
+| 951 | 328..331 | 724..727 | 128 | 127 | **0** |
+| 952 | 329..332 | 725..728 | 128 | 127 | **0** |
+| 953 | 330..333 | 726..729 | 128 | 127 | **0** |
+| 954 | 331..334 | 727..730 | 128 | 127 | **0** |
+| 955 | 332..335 | 728..731 | 128 | 127 | **0** |
+
+This is a conditional, complete **source-to-selected-coupon reconstruction bridge** in all six model geometries, independently run in [manual GitHub Actions CI 42287416887](https://github.com/FlareZ123/workplace-v2/actions/runs/42287416887), source code revision `969a2d0b95a5ab22f5a602992b33a50bbe2df5fb`. The original spool equations and controls PASS, all six both-group residuals are zero. Agent15 had already proved the p951 eight-word donor bridge on 5 November; the six-layout extension is incremental. The critical limitation is that **neither donor quartet has been read from an independently authenticated original source**. Stage relationships alone cannot produce a valid K04 hash preimage. If a matching full-width donor is discovered, the 128-bit result is algebraically reconstructible without guessing the copied ACK; then the official original K04 commitment must be checked.
+
