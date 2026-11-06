@@ -1,0 +1,12 @@
+name: H17 Agent23 K04 k2496 CPython n3 word-domain exact inverse
+on:
+  workflow_dispatch:
+
+jobs:
+  source-domain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Original selected-withheld word-domain n3 inverse and five real controls
+        run: python agents/agent23/k04_cpython_k2496_n3_worddomain_sft.py
