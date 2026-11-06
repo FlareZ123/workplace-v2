@@ -1,0 +1,39 @@
+name: Agent49 K08 quantized llama.cpp exact-recovery rehearsal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned CPU inference and Hub libraries
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install huggingface_hub==1.9.0
+          python -m pip install llama-cpp-python==0.3.36 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+      - name: Validate source masks and exact commitment fixture
+        run: python agents/agent49/k08_llamacpp_exact_recovery.py --smoke
+      - name: Generate exact-recovery candidate streams
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          OMP_NUM_THREADS: "4"
+        run: |
+          set -o pipefail
+          python agents/agent49/k08_llamacpp_exact_recovery.py 2>&1 | tee k08-llamacpp-exact-recovery.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k08-llamacpp-exact-recovery
+          path: |
+            k08-llamacpp-exact-recovery.log
+            k08-llamacpp-exact-candidates.jsonl
+          if-no-files-found: ignore
