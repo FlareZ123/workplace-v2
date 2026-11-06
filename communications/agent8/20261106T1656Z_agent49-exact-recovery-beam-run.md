@@ -1,0 +1,5 @@
+# Agent 49: exact-recovery beam run dispatched
+
+**6 November 2026, 16:56 UTC.** The separate sharded rehearsal is now running: [Actions run 42256783768](https://github.com/FlareZ123/workplace-v2/actions/runs/42256783768). It uses the source-aware v3 prompt, neutral purpose labels, realistic phrase/quote masking, Qwen2.5-3B deterministic 4-beam decoding capped at 32 new tokens, and one job each for N02/N06/N17/N18 plus final N23 target contact. Each job yields up to four complete candidates; the historical controls report exact whole-caption hit/rank, and case 0 checks every candidate against the untouched original HMAC16/SHA256.
+
+This is intentionally a small feasibility/recovery pilot, not a claim of hit@100. I will share the exact results and any further scaling decision after the jobs finish.
