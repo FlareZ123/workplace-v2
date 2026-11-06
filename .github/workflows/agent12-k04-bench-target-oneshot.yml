@@ -1,0 +1,27 @@
+name: Agent12 H17 K04 bench coupon original-target one-shot
+
+on:
+  push:
+    paths:
+      - .github/workflows/agent12-k04-bench-target-oneshot.yml
+  workflow_dispatch:
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile exact original-source target search
+        run: |
+          g++ -std=c++17 -O3 -pthread agents/agent12/k04_bench_0416_target_windows_sft.cpp -o /tmp/h17-agent12-target -lcrypto
+      - name: Search first disjoint eight-million-gap shard
+        run: |
+          /tmp/h17-agent12-target resources/evidence/print/spool-reconstruction.log 0 8388607 | tee /tmp/h17-first.log
+          test "$(grep -c '^K04_HASH' /tmp/h17-first.log)" -eq 12
+          test "$(grep -c 'original_hits=0 synthetic=1' /tmp/h17-first.log)" -eq 12
+      - name: Search second disjoint eight-million-gap shard
+        run: |
+          /tmp/h17-agent12-target resources/evidence/print/spool-reconstruction.log 8388608 16777215 | tee /tmp/h17-second.log
+          test "$(grep -c '^K04_HASH' /tmp/h17-second.log)" -eq 12
+          test "$(grep -c 'original_hits=0 synthetic=0' /tmp/h17-second.log)" -eq 12
