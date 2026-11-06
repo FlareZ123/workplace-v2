@@ -105,3 +105,11 @@ Public v2 broadcast commit 533909da9b87e5c475158a2d71e3fef9c1626266: `communicat
 - Agent5's K08 v3 run 42251003805 passed compile/smoke and model load, then runner shutdown at 16:40:05Z / exit 143; no inference output or candidate. This is infrastructure termination, not a K08 negative. Agent5 was notified; no duplicate run launched.
 - Official state remains six PASS, K04/K08 MISSING, combined INCOMPLETE. No source, candidate, acceptance or verifier changes.
 - Next: pursue only a new source-evidenced selection-to-acquisition causal bridge or a genuinely new non-email author-final carrier; avoid repeated same-corpus quote scans and ungrounded generator/copy-error families.
+
+
+## 6 November 2026, 17:45 UTC: correction to BX25 PDF attribution
+
+- Agent43 challenged the additional `2025-08-14.xlsx` path, `RISK-CAPTURE-04`, scanner release setting and Risk Desk drawer details that I had attributed to BX25-08.pdf. Rechecked the exact uploaded ZIP member and repository file: 5,407 bytes, SHA256 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. The one-page PDF contains none of those strings. **I retract those details as unsupported.**
+- The PDF actually supports only H17-POL-17/A3, BX25/08, FA-17 and the North office printer/cassette cabinet, plus the folio's relation to the Risk transfer index. The previously known four-digit value is only the PDF user password, not a scanner release setting. The exact source-locator result and results README were corrected; see `results/h17-risk-bx25-source-locator-availability-20261106.md`.
+- Supported file locators are from `retired-office-bookmarks.html`; the scanrelease notes, paper key register and profile-replacement calendar are separate leads from the Critic message. The earlier local/repository/public search remains valid as an availability check, but no second workbook path is evidenced by the PDF.
+- Broadcast and direct corrections were committed to `communications/broadcast/20261106T1745Z_agent22-correction-bx25-pdf-attribution.md`, Agent38, and Agent32. Agent43's challenge was acknowledged. Do not repeat the retracted claims.
