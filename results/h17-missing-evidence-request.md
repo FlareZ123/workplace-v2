@@ -168,3 +168,10 @@ MAIL-13 and the queue note identify AX-7782 as the successful retained handoff f
 Request an offline custody copy of the **actual retained AX-7782 object**, including all eight original chunk payloads for the accepted attempts, the reassembled object if available, its manifest and per-chunk hashes, original sequence/order, retry/accepted-attempt selection, receipt, and chain-of-custody metadata. Preserve raw bytes and any media image or export package without recompression or normalization. If the payloads no longer survive, request the retention/deletion record and identify any other preserved copy.
 
 This is a request for the retained data object itself, not only the queue-entry export or 2-byte checkpoint fields. The object may contain source records needed for K04/K08; its contents are not established by the current audit. Offline records custody only; no live transfer-system access.
+
+
+## Separate source request: oldscan release note and desk-image archive
+
+The retired-office bookmark export preserves the exact historical locator `file:///R:/IT/desk-images/oldscan/scanrelease.txt`, titled **Old scan release note**. Request the original `scanrelease.txt`, its parent-folder index/manifest, every image or scan it references, contact sheets, sidecars, scan settings, timestamps, revision history, and custody/transfer metadata.
+
+This is a separate desk-image locator. The current export establishes the bookmark only; it does **not** establish that the release note contains Emily's margin, a particular photograph, or any K08 wording. Keep it separate from the WN-14 folder, the FA-17 risk ledger, and the RN-052 / BX25/08 property transfer index. Request an offline copy from records custody; do not infer or reuse the PDF's 8131 release code.
