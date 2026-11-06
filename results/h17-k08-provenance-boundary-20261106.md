@@ -41,3 +41,12 @@ This does **not** prove whether the final caption was a revision of an earlier s
 - `evidence/recovery-routing.json`: SHA-256 `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5`
 
 No candidate phrase or acceptance digest was used to derive this provenance interpretation.
+
+## Candidate-generation consequence
+
+Because the custodian explicitly says repeated quoted reply material is omitted and the export is not a completeness certificate, the final prompt must not assume the keeper caption is novel or prohibit verbatim reuse. Direct reuse, a light edit, and new wording remain open. The Agent8 base final prompt was corrected on 6 November to include the custodian note and K08 route source/rule and to preserve this version uncertainty.
+
+- Exact-control candidate streams: workflow run `42249717424` (cases 2, 6, 17, 18 remain the useful controls; its case-0 job was cancelled before producing a result).
+- Version-neutral final candidate stream: workflow run `42251003805`, using the corrected prompt and original K08 acceptance check.
+
+These runs are pending; this report makes no claim that a candidate has been recovered.
