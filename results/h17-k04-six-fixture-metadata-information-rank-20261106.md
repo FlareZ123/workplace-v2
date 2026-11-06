@@ -1,0 +1,41 @@
+# K04 six-fixture MT metadata observability and single-word donor quotient
+
+**Agent 1 | 6 November 2026 | exact source-fitted GF(2) result; no original K04 coupon or K08 final text recovered.**
+
+## Question
+
+Can the nominally hidden two-bit `CLASS`/`DEST` printer-metadata draws, if obtained from another surviving source, make the selected 18:02 RECOVER ACK2 physical coupon reconstructible under the six original-source-compatible native MT19937 printer chronologies p950..955? The original archive does not authenticate MT19937 as the historical printer producer, so these conclusions are explicitly conditional on each frozen stage layout.
+
+Instead of using only the two highest bits of an actual documented metadata draw, grant an unusually powerful *hypothetical oracle*: reveal the highest eight **tempered** bits of **every** unobserved, nonselected native MT word between the first and last observed printer packet. This includes all possible metadata positions and any other hidden draws at those stages. Ask whether even this disclosure removes any independent target K04 coupon bit.
+
+## Method and source
+
+The immutable source is `resources/evidence/print/spool-reconstruction.log`, SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. Extract 133 original sixteen-byte packets; exclude row129 (selected RECOVER ACK attempt2) *before fitting*, preserving all 132 intact nonselected packets. Decode four little-endian native MT19937 32-bit outputs per packet, invert standard tempering, and impose their 16,896 observed native bits on an exact 624×32-bit symbolic GF(2) generator. The six frozen historical *hypotheses* for packet starts are from `agents/agent5/k04_crosssource_six_vectors.json` in workplace-v1, mirrored verbatim for reproducibility to `agents/agent1/k04_prior_six_stage_fixtures.json`.
+
+For each vector, measure the independent rank of the original 132-packet observations and the incremental rank of the 128 target native bits, then add top-eight tempered bits for every hidden nonselected stream position. The reported residual is the rank increment of the selected 128-bit packet after granting those hypothetical additional observations. Importantly this is *rank*, not a hash-candidate count or a claim of actual recovered metadata.
+
+A separate quotient-space test takes every one of the hidden native 32-bit word positions individually, appends its *entire* 32-bit observation to the observed source basis, and calculates how many independent target equations intersect with the revealed word. Algebraically, for original observation space \(O\), target space \(T\), and a hypothetical donor-word observation span \(D\), the new independent target information is \(\dim(T+O)+\dim(D+O)-\dim(T+D+O)-\dim(O)\). The implementation computes this through exact quotient ranks, without relying on sample-word coincidence or the target SHA-256.
+
+## Executed results
+
+| Frozen fixture | Original state rank | Hidden nonselected native words | Selected residual after original source | State rank after every hidden top octet | Selected residual after every hidden top octet | Sole individually informative fullword (stage, independent target bits) |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| p950 | 15,366 | 434 | 128 | 17,239 | **128** | (723, 1) |
+| p951 | 15,365 | 435 | 128 | 17,271 | **128** | (724, 1) |
+| p952 | 15,367 | 436 | 128 | 17,326 | **128** | (725, 1) |
+| p953 | 15,368 | 437 | 128 | 17,307 | **128** | (726, 1) |
+| p954 | 15,365 | 438 | 128 | 17,312 | **128** | (727, 1) |
+| p955 | 15,369 | 439 | 128 | 17,331 | **128** | (728, 1) |
+
+The native-MT recurrence synthetic control passed 56/56; every source-fit preserved original byte values without contradictions. An independent manual GitHub Actions runner completed successfully and reported the complete table: [run 42280807142](https://github.com/FlareZ123/workplace-v2/actions/runs/42280807142). The [read-only single-file SFT](../agents/agent1/k04_printer_metadata_observability_sft.py) and its [six stage fixtures](../agents/agent1/k04_prior_six_stage_fixtures.json) preserve reproduction. The SFT explicitly asserts the p951 15,365 rank, 128 residual, top-octet 128 residual and unique stage724 donor.
+
+## Cracking implications
+
+1. Within each frozen full-source-compatible p950..955 model, learning any amount of mere `getrandbits(2)` first-draw metadata cannot rescue K04 when even the complete hidden **eight-MSB oracle** leaves its 128 target bits free. This differs from earlier individual contradictory `DEST` first-draw checks: it bounds the *information content* of metadata **even under an implausibly generous disclosure**, and covers all six conditional fixture vectors.
+2. The complete-word donor census isolates a narrow, falsifiable potential next-source location for a **single** extra target bit: native stage `723 + (p-950)`. No original independent fullword donor for these exact stages was authenticated. The one-bit result is for a donor **in isolation**; combinations of several words may be synergistic, so it does not exclude a compound cross-source relation.
+3. The zero-bit effect concerns the top octet of every omitted **nonselected stream position** in the specified fixed chronology. It does not exclude actual full 32-bit PRNG donor observations, a nonlinear metadata/chronology selection rule, alternative physical printer/capture producer, alternate MT stage assignment, or a separate independent copy of the original selected coupon. The surviving copied ACK2 has no independent physical integrity witness.
+4. There is no K04 commitment match, newly authenticated original coupon bit, or K08 author-final word. The six previously accepted REC8 components stay unchanged; K04 and K08 remain MISSING and combined verification INCOMPLETE.
+
+**Research direction:** stop treating additional sparse CLASS/DEST two-bit values as a plausible K04 missing-coupon solver *inside these six fixed generator geometries*. Concentrate on an actual full-value selected-original/capture relation, an independently attested output selector, or a materially different producer model; distinguish target-bit information gain from apparent source-state rank growth.
+
+No original spool, route, acceptance, candidate or verifier file was modified.
