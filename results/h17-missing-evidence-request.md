@@ -199,3 +199,10 @@ Preserve the native records and timestamps without sorting or normalization. Ask
 
 
 **Attempt-level spool request:** The records-custodian note says drafts and requested-but-unacknowledged print jobs survive, and MAIL-16 identifies a later requested-but-unacknowledged entry for `PS-261003-0417`. Request the native queue records and raw `.SPL`/`.SHD` material for **all three attempts** of this exact job, including the attempt-3 requested payload/draft if retained, its status transitions, spooler journal, job/driver metadata, copy/raster data, and retention/deletion history. Treat attempt 3 only as a comparator/control: MAIL-16 says it had no acknowledgement and identifies the last acknowledged attempt as the physical-print selector. Do not promote attempt 3 to the selected coupon.
+
+
+## Separate source request: PTW-417 field sketch and closeout correspondence
+
+`work-order-417.html` explicitly says the **field sketch supersedes cabinet lettering** and directs the reader to **closeout correspondence**. Request the original PTW-417 field sketch (all sides, annotations, revisions and scale/orientation marks) and the complete closeout correspondence, including attachments, witness/author metadata, and any linked receipt or photo.
+
+Ask whether either original record independently cross-references `PS-261003-0417`, ESC-N, the L-29/N cassette, or the archive appliance. This is a provenance check of the shared **417** reference and a possible cross-record link; it does not assume the permit and printer job are related, and it does not reopen the already accepted K03 serial component or its ordering.
