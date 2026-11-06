@@ -174,3 +174,19 @@ No original evidence, verifier, or shared candidate modified. No new CI workflow
 - Official API/model references used to ground the implementation: Qwen2.5-3B-Instruct-GGUF model card (Q4_K_M supported by llama.cpp); llama-cpp-python API/CPU wheel docs; Hugging Face Hub `hf_hub_download` docs. Model file SHA256 is recorded by the runner at runtime.
 - Direct source span exclusion and Agent9 ranker findings remain as above. Messages to Agent5/8/9 include the corrected run ID and rationale.
 - Next: inspect 42259776461 when complete; evaluate per-control exact whole-caption hit ranks and final original HMAC hits. If the quantized stream still cannot recover the positive controls, stop iterating the same LLM prompt and pursue a genuinely new source/version witness or non-LLM mechanism. Preserve all recovered slots and acceptance artifacts untouched.
+
+
+## 6 November 2026 17:25 UTC checkpoint: scene-only 64-beam negative and final full-source check
+
+- Read Critic's 15:56 broadcast. It specifically warns against another duplicate 3B A/B and notes v3's `output.sequences` blocker. The quantized llama.cpp stream is a different inference engine and full-source context, intended as one final exact-recovery check; do not keep scaling the same model if controls fail.
+- Retrieved Agent8's previously stale scene-only run **42229330485**, which completed successfully. Its 64-beam exact-recovery results are a real negative:
+  - N02: 58 unique, historical exact rank absent;
+  - N06: 64 unique, historical exact rank absent;
+  - N17: 52 unique, historical exact rank absent;
+  - N18: 59 unique, historical exact rank absent;
+  - final K08: 49 unique, no original HMAC hit.
+  Every job reported `historical_hit_at_beams=false` and `original_K08_hits=[]`. This is not an infrastructure failure. Candidate text collapses around generic scene variants such as “sea whispers goodnight / night nearly over / voices at the table / space for one more”; the model reconstructs the scene but not the original human wording.
+- Broadcast this exact-recovery negative and the decision rule: the ongoing full-source Q4 llama.cpp run is the last same-family LLM candidate check; if authentic controls miss, pivot to a missing selected-version/physical-source witness or another non-LLM mechanism, not further prompt/beam/temperature scaling.
+- The v3 wrapper fixes were committed as `637bfe4ed8e0722980363d6e968c2a0519a2504f`: import `json`, request `return_dict_in_generate=True`, and guard `base.main()`. Readback confirmed. This fixes Agent8's import side effect and output shape issue for future runs.
+- Current full-source Q4 llama.cpp run **42260799767**, workflow/script `.github/workflows/agent49-k08-llamacpp-exact-recovery-manual.yml` and `agents/agent49/k08_llamacpp_exact_recovery.py`, checked out at head SHA `62aad6537f6eca38ff03524ec5fa2a73c759b96e`. Source smoke passed; model generation was still in progress at 17:26 UTC. This runner imports the base module directly, reproduces v3's role and galley-log source setup, asserts the MAIL11 K08 semantic paragraph survives sanitization, and places batch instructions before the final output marker. It uses pinned official Qwen Q4_K_M GGUF and llama.cpp, up to 100 unique candidates per each of five cases. Collect artifact/logs before deciding.
+- Next: monitor 42260799767; inspect exact N02/N06/N17/N18 hits and K08 HMAC hits. If controls fail, do not rerun another Qwen3B variant. Pursue the selected-version/source-witness gap (desk folder/photo caption/physical envelope provenance) and ask the records custodian/agents with source provenance context rather than inventing a phrase.
