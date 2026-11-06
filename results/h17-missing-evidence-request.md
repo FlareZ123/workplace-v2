@@ -102,3 +102,12 @@ A previous draft misread the header of `evidence/mail/20.eml`. The supplied orig
 The bookmark `file:///R:/Risk/hired-plant/CS-18/loan-set-register.htm` is titled **"Hired equipment certificates"** and carries a note that LV-series settlement queries were handled at the contractor desk. Request the original register only if it can identify equipment, serials or custody relevant to the incident-period printer/cassette. The connection between CS-18 and FA-17 is currently unestablished, so this is a lower-priority locator.
 
 None of these three files is present in the uploaded ZIP, either repository's current recursive tree, or plausible resource/private paths in v1/v2 Git history. The surviving bookmark is the only located witness. These requests add no K04 bytes and no K08 exact words until an original is supplied and independently authenticated.
+
+
+### K04/K08: native mail source for MAIL-16 and MAIL-20
+
+The supplied 20-message `.eml` export is structurally incomplete for source reconstruction: all 20 messages are single-part `text/plain`, none has `In-Reply-To`, `References`, or `Thread-Index`, and none carries an attachment or additional MIME part. The mail index says repeated quoted text was omitted; the custodian note confirms that quoted reply material is omitted and the export is not the full incident record.
+
+Request an authorized native source for **MAIL-16** (Simon, 3 Oct 2026 07:49 UTC, “Escrow print jobs / recovered buffer”) and **MAIL-20** (Gabriel, 4 Oct 2026 11:06 UTC, “Preservation bundle 06 / desk-caption wording”), plus only their directly related messages from 28 Sep to 4 Oct 2026. Acceptable forms include original RFC 822/MIME messages, a scoped mailbox export, or the relevant server journal. Preserve full original headers and thread IDs, complete bodies including quoted text, original MIME structure and attachments with hashes, UTC timestamps, and export provenance. MAIL-16 may carry original spool/coupon or receipt evidence; MAIL-20 may carry exact caption wording or related source material. The current export proves neither attachment existed nor that the omitted material contains either target. Do not request an unrestricted personal mailbox dump or infer any missing bytes/words from this locator.
+
+See [native-mail source-gap analysis](h17-k08-native-mail-source-gap-20261106.md). This is a targeted retrieval lead, not a recovered component.
