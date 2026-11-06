@@ -86,7 +86,13 @@ def candidates():
     for key,chain in chains.items():
         if all(i in chain for i in range(8)):
             groups["AX_" + key] = bytes.fromhex("".join(chain[i][1] for i in range(8)))
-    assert len(groups) == 11 and all(len(x) == 16 for x in groups.values())
+    # Independently accepted raw administrative controls, before any K02/K03 hashes.
+    groups.update({
+        "ACCEPTED_K01_WN14": bytes.fromhex("049AAB2E1CDE7A82CD7C60234303C91A"),
+        "ACCEPTED_K02_PREHASH_TELEMETRY": bytes.fromhex("E1A5E474BAD7E853A2E8C71D3317D507"),
+        "ACCEPTED_K03_SEAL_SERIALS": bytes.fromhex("D7DAD6BC9714519B7DAD0AD4BE8E87FD"),
+    })
+    assert len(groups) == 14 and all(len(x) == 16 for x in groups.values())
     return groups
 
 def main():
@@ -150,7 +156,7 @@ def main():
                                    for k in range(2))
                         best = max(best,bits)
         maxima.append(best)
-    assert (min(maxima),sorted(maxima)[500],max(maxima),sum(v>=44 for v in maxima)) == (41,44,50,794)
+    assert (min(maxima),sorted(maxima)[500],max(maxima),sum(v>=44 for v in maxima)) == (42,45,50,859)
     print("NULL_SETS",len(maxima),"NULL_MAX_RANGE",min(maxima),max(maxima))
     print("NULL_MEDIAN",sorted(maxima)[500],"NULL_TAIL_GE_OBS",sum(v>=44 for v in maxima))
     print("K04_AUTHENTICATED_COUPON_BITS",0,"K08_VERBATIM_WORDS",0)
