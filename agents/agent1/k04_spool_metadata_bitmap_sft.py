@@ -183,8 +183,9 @@ def main():
     planted=rotate128(value,17).to_bytes(16,"big").translate(BITS_REVERSE)
     assert planted in bitmaps
     seeded_commit=sha256(bytes(a^b for a,b in zip(planted,mask))).digest()
-    assert any(sha256(bytes(a^b for a,b in zip(x,mask))).digest()==seeded_commit
-               for x in (planted,)), "planted full-coupon reduction failed"
+    planted_hits=[x for x in pool
+                  if sha256(bytes(a^b for a,b in zip(x,mask))).digest()==seeded_commit]
+    assert planted_hits==[planted], "enumerated synthetic full-coupon oracle failed"
     print("ORIGINAL_SOURCE_SHA256",PIN)
     print("BOOLEAN_MAPS",512,"CYCLIC_ALIGNMENTS",128,"BIT_LAYOUTS",4)
     print("BOOLEAN_ASSIGNMENTS",262144,"BOOLEAN_DISTINCT",len(bitmaps))
