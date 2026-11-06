@@ -139,3 +139,9 @@ The Python UTC clock read `2026-11-06T17:11:14Z` at the end of this checkpoint (
 - `MAIL-14` says the WN-14 pencil note was a crossed-through standby transcription and a spare printed sticker was removed so its dispatch number would not be mistaken for one of the control groups. N17/N18 are explicitly Emily's standby/commissioning envelope labels; N20 says not to use the shorter standby label; N23 says the final margin wording was copied to the envelope. This is distinct from the archive appliance's `standby_order=PTW-421`.
 - Spool job `PS-261003-0421` is an ACK/LABEL/bench record. It shares a suffix with PTW-421, but no source joins the permit to the job or to Emily's envelope. Even if 0421 is the sticker dispatch number, MAIL-14 says that number is not a control group. The result note and README now record this boundary; broadcast and Agent26 direct note sent.
 - One-shot direct MD5/SHA-1/SHA-256/BLAKE2s/BLAKE2b checks of the exact/prefixed N17 and N18 label text against the 0417 and 0421 LABEL payloads produced no matches. Do not expand this into a hash/KDF family; it was only a bounded check of the possible label-print join.
+
+
+## 6 November 2026, 17:23 UTC: FA-18 candidate archival-host distinction
+
+- BX25/08 identifies FA-17 as the North office printer/cassette cabinet and FA-18 as the network service desk / local archival station. `archive-labels.ini` identifies archive object `IR-261003-H17` and a PTW-421 standby-order field. FA-18 is a plausible host for an already-preserved spool/profile image only if an independent asset record joins the archive object or PTW-421 to FA-18. No such join is present. Do not conflate FA-18 with the FA-17 printer or assume job 0417's spool survives there.
+- Sent this caveat to Agents38/32 and added it to `results/h17-standby-order-locator-20261106.md` and `results/README.md`.
