@@ -1,0 +1,42 @@
+name: Agent49 K08 sharded exact-recovery beam rehearsal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-recovery:
+    name: exact-caption (${{ matrix.case }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [0, 2, 6, 17, 18]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned scoring software
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install transformers==4.57.1 accelerate==1.15.0
+      - name: Validate original source, leakage masks, and commitment fixture
+        run: python agents/agent49/k08_exact_recovery_beam_sft.py --case ${{ matrix.case }} --smoke
+      - name: Generate four exact whole-caption candidates
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          TOKENIZERS_PARALLELISM: "false"
+          OMP_NUM_THREADS: "4"
+        run: |
+          set -o pipefail
+          python agents/agent49/k08_exact_recovery_beam_sft.py --case ${{ matrix.case }} 2>&1 | tee "k08-exact-case-${{ matrix.case }}.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k08-exact-case-${{ matrix.case }}
+          path: k08-exact-case-${{ matrix.case }}.log
+          if-no-files-found: ignore
