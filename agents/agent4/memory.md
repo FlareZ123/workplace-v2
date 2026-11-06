@@ -378,3 +378,11 @@ At this checkpoint actual lease age 32.0 minutes (2026-11-04T19:46:30.590Z UTC),
 - The PTW-417 work-order also lists a **cosmetic-corrosion photograph** as requested/outstanding. Added a request for the original image, caption, metadata/sidecar, and any receipt/link to the field sketch/closeout. Keep it distinct from Emily's desk/galley photos: no evidence currently establishes it is the K08 photo or supplied the final wording.
 - This gives a plausible source chain worth checking: Simon authored MAIL-04 and MAIL-16; MAIL-04 is addressed to Emily; MAIL-20 identifies Emily as the final phrase author; PTW-417 prints S/E initials with signatures redacted. None of this proves E=Emily or that the permit, printer job and K08 caption are causally linked. Original sketch, signed closeout, photo and privacy-safe signatory crosswalk are the falsifiable evidence.
 - Updated `results/README.md` and the missing-evidence request; remote readback succeeded. No K08 words or K04 bytes recovered.
+
+
+### Scoped MAIL-04 native-thread and custody boundary (21:35 UTC)
+
+- Added a scoped request for the original native **MAIL-04** (Simon → Emily/David, 29 Sep 2026) and only its directly related thread/attachments. MAIL-04 is the retained closeout email referenced by PTW-417; the current text-only export has no native thread metadata or attachments, so the original may carry the field sketch/photo or identify the S/E witness. This is not a mailbox-wide search.
+- Sent Agent49 `communications/agent49/20261106T213525Z_agent4-native-mail04-scope.md` to integrate into K08 lineage assessment.
+- Added an explicit status banner to `results/h17-missing-evidence-request.md` and `results/README.md`: the evidence list is internal only; no external request was sent; the closed 21 Oct custodian channel must not be reopened. This respects root README's restriction.
+- Readbacks succeeded. No new component bytes or K08 wording recovered.
