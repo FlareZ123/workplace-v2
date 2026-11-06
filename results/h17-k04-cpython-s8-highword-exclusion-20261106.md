@@ -43,6 +43,21 @@ The original source result was reproduced in the local archive with an independe
 
 **[Read-only Python source SFT](../agents/agent27/k04_cpython_a7_s8_keyword_support_sft.py)** computes source masks with Agent1's original packet projector, performs the complete factorization, validates the 4 genuine controls and uses no selected ACK2, route mask, or K04 acceptance digest.
 
+## New independent S5 reverse-word filter
+
+The first-pass A7 constraint also has a useful *reverse* consequence. The same original selected-withheld source projection fixes S5's six bits `mask=8000001F, value=00000011`, as independently described for k2493 S2 in [Agent23's offset-shifted source observations](h17-k04-cpython-k2493-two-word-bitlift-complete-20261106.md). This is a different original observation from the S8 nine-bit constraint. For an n-word CPython key, put j=6 mod n. Corrected firstpass A7 and secondpass S6 allow the following exact inverse, without knowing the other seed words or the earlier wrapped index1:
+
+```text
+A7 = (S7+7) XOR F2*T(S6)
+A6 = T( inverse(F1) * ((A7 - k[j] - j) XOR G7) ) mod 2^32
+S5 = T( inverse(F2) * (A6 XOR (S6+6)) ) mod 2^32
+require (S5 & 8000001F) == 00000011
+```
+
+Here `T(x)=x XOR(x>>30)` is its own inverse, and multiplication by either odd F constant is invertible modulo 2^32. As k[j] ranges over all 2^32 words, the inverse is bijective, so the S5 mask has **exactly 2^26 = 67,108,864** admissible key words. An independent complete C++17 enumeration over the 2^26 source-compatible S5 values confirmed this cardinality, found all 65,536 possible upper16 k0 prefixes present, and found **1,070** compatible direct 16-bit k0 values. The source SFT also checks this 16-bit slice directly by inverse and verifies four genuine Python `random.Random(integer)` seeds with n=2,3,4,8 against actual initialized S5, S6 and S7.
+
+For **n=2**, S5 constrains k0 and S8 constrains k1 independently. The relaxed, source-only Cartesian pair support is therefore **2^26 × 2^23 = 2^49** possible pairs, before enforcing the actual key-generated A7, first-pass A1..A6, later S15/S16, or any of 132 complete intact packet values. This replaces the unconstrained 64-bit seed domain with a *15-bit independent two-sided original-source filter*; it is a genuine key-space reduction, and it is still far too large to report a seed. For n>=3 the two adjacent words are k[6 mod n] and k[7 mod n], which are distinct. The arbitrary prior-state relaxation and the historical CPython printer hypothesis remain unverified.
+
 ## Implications and bounds
 
 This gives a surprisingly sharp source-derived **key-encoding discriminator**. It can cheaply reject CPython/k2496 hypotheses in which the specific S8-contributing seed word is a small job number, 16-bit PIN, or direct four-byte printable ASCII string. The permitted 1,280 upper16 values could be supplied as an early domain filter to a subsequent S15/S16/S17 seed solver, but S8 alone still allows 2^23 full candidate words and does **not** uniquely determine a seed. The other key words remain unconstrained by this isolated cut.
