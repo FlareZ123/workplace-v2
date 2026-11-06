@@ -34,6 +34,10 @@ Source-rank-zero **complete** wrong predictions were generated without reading a
 
 This directly demonstrates that higher source rank and even perfect 128/128 source determinacy **do not identify the correct historical packet stage**. In the five high-constraint two-candidate original holdouts, this same min-rank rule selects four correct stages (rows12,41,66,125) and one incorrect fully predictable stage (row95), so using source entropy to choose among candidate paper coupons is unsafe even in the most favorable subset.
 
+### Tie-aware stage-selection baseline
+
+Of the 127 exact source-only row tests, minimum-entropy choice is unique in 79 rows and tied in 48 rows (28 ties of two; five of three; four of four; ten of five; one of nine). Selecting uniformly among every tied minimum-entropy stage produces **11.611111 expected correct historical stages out of 127** from the observed source sets. A simple uniform stage choice inside each same original neighbor bracket has **17.930812 expected correct stages out of 127**. Thus the speculative minimum-source-entropy selector is **worse than the no-producer baseline by this tie-aware prospective-stage accuracy metric**, despite several very strongly determined individual packet locations. These are computed expectations over tie-breaking choices with the original fixed 127-job corpus, not a probabilistic confidence interval or historical firmware assertion.
+
 ## Scope, historical limitations and next credible step
 
 This **excludes the specific minimum-rank stage-selection rule** under the preexisting p951 symbolic MT chronology and adjacent known printer stage bounds; it does not exclude a source-documented stage scheduler, other speculative issuer, modified copy channel, or historical printer producer. The allowed q interval itself uses adjacent frozen native stage labels, an advantage unavailable if stages were wholly unknown. True-stage inclusion only26/127 **despite this advantage** means downstream selected-physical prediction cannot responsibly use this entropy heuristic.
