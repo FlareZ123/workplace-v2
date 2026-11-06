@@ -114,13 +114,50 @@ def main():
         assert observe(baseline, symbolic, packets[index], STARTS[index]) == 0
     assert baseline.rank == 15365
     assert synthetic_control(symbolic)
+    rejection_grid = bounded_rejection_grid(base, symbolic, packets)
     print(json.dumps({
+        "rejection_grid": rejection_grid,
         "source_pin_pass": True,
         "frozen_prefix_rank": base.rank,
         "unshifted_full_source_rank": baseline.rank,
         "synthetic_four_extra_draws_positive": True,
         "outcomes": outcomes,
     }, indent=2))
+
+
+
+def bounded_rejection_grid(base, symbolic, packets, maximum=8):
+    """Each terminal edge consumes 0..maximum separate MT draws, including rejects."""
+    from itertools import product
+    # Each retained whole-packet holdout is always measured against frozen prefix.
+    scores = {}
+    for index in (130, 131, 132):
+        scores[index] = {}
+        for offset in range(4 * maximum + 1):
+            score = heldout(base, symbolic, packets,
+                            [STARTS[k] + offset for k in range(133)])
+            scores[index][offset] = score[index - 130]
+    no_conflict = []
+    for draws in product(range(maximum + 1), repeat=4):
+        offsets = (draws[0] + draws[1],
+                   sum(draws[:3]), sum(draws))
+        errors = sum(scores[index][offset][0]
+                     for index, offset in zip((130, 131, 132), offsets))
+        if errors == 0:
+            no_conflict.append({"draws": draws, "offsets": offsets,
+                                "holdout_fixed_bits": sum(
+                                    scores[index][offset][1] for index, offset
+                                    in zip((130, 131, 132), offsets))})
+    if maximum == 8:
+        assert no_conflict == [
+            {"draws": (0, 0, 0, 0), "offsets": (0, 0, 0),
+             "holdout_fixed_bits": 158}
+        ], no_conflict
+    return {"max_extra_draws_per_edge": maximum,
+            "histories": (maximum + 1) ** 4,
+            "nonzero_consumption_histories_rejected":
+                (maximum + 1) ** 4 - len(no_conflict),
+            "histories_without_conflict": no_conflict}
 
 
 if __name__ == "__main__":
