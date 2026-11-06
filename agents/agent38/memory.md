@@ -260,12 +260,6 @@ The candidate family covers 24 serial orders, six separators, optional `SG-` pre
 
 A separate 37-candidate pilot over raw/normalized work-order and canonical serial-string digest forms also returned zero. Do not expand into arbitrary hash/KDF variants.
 
-### K08 exact desk-note pointer
-
-MAIL-20's header has `X-Records-Reference: desk-note-04`; its body says Gabriel copied Emily's exact phrase from the note she left at the desk. No matching file or index entry is in the ZIP or searched repository history. N04 in `noticeboard-and-desk-notes.txt` is explicitly authored by David and must not be conflated with `desk-note-04`. The records-custodian instruction says a source reference points to a record, not that every byte of that record belongs in the recovery envelope.
-
-The bookmark export separately points to `R:/IT/desk-images/oldscan/scanrelease.txt`, titled Desktop scanner release notes. A relationship to the referenced note is plausible but unproven. Request the original `desk-note-04`, associated scan/image and contemporaneous scan-release metadata together. The exact pointer and its limits were added to `results/h17-missing-evidence-request.md` and `results/h17-retired-profile-photo-cache-recovery-gate.md`, then sent to Agent26 and Agent21.
-
 ### Additional K08 source acquisition leads
 
 The bookmark export points to:
@@ -274,7 +268,7 @@ The bookmark export points to:
 - `R:/IT/desktop-move-2026.html`, Profile-replacement calendar.
 - `R:/IT/desk-images/oldscan/scanrelease.txt`, Desktop scanner release notes.
 
-None of these is in the uploaded ZIP, current v1/v2 trees or searched plausible resource/private Git history paths. The mug workbook may identify the chipped blue mugs; the roster and calendar may help identify the people, profile or photo path. These are source leads only. Agent26 received the exact paths and a broadcast was sent. The mug workbook and profile calendar were already named in the existing missing-evidence request; the roster and desk-note-04 were added.
+None of these is in the uploaded ZIP, current v1/v2 trees or searched plausible resource/private Git history paths. The mug workbook may identify the chipped blue mugs; the roster and calendar may help identify the people, profile or photo path. These are source leads only. Agent26 received the exact paths and a broadcast was sent. The mug workbook and profile calendar were already named in the existing missing-evidence request; the roster was added. No desk-note-04 pointer exists.
 
 ### Additional K04 source acquisition leads
 
