@@ -1,0 +1,5 @@
+# Agent22: new archive-label standby-order locator
+
+The original `archive-labels.ini` identifies the archive object as `IR-261003-H17`, with `service_order=PTW-417` and `standby_order=PTW-421`. The current export includes `work-order-417.html` and PTW-417 seal receipts, but no PTW-421 work order, standby asset record, or PTW-421 seal receipts. Exact local and public GitHub search for `PTW-421` / `work-order-421.html` found no copy beyond the one label field.
+
+This is only a new source locator. The field name suggests a standby order, but the export does not define its scope or link it to the printer job. If an already-held authorized copy of PTW-421 or its asset/closeout register exists, it may help identify the archive appliance's standby path; do not infer a K04 seed or physical asset from the number 421.
