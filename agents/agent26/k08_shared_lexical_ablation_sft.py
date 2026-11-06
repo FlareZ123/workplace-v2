@@ -12,14 +12,36 @@ import hashlib
 import hmac
 import json
 import re
+from email import policy
+from email.parser import BytesParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 MODEL = "Qwen/Qwen2.5-3B-Instruct"
 CASES = (2, 6)
 CREW_SHA = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
-MAIL11_SHA = "f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29"
-MAIL20_SHA = "e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71"
+MAIL_HASHES = {
+    1: "df0729237a3d6d5e90bcaffa95b396d54e511007ec4b0c7e5e8490280aa1d698",
+    2: "a4ac849e45362b93eea9950e61132213494ab3a7cc3967e353850dc221de3a11",
+    3: "3cf886c12e094cb0362999c5a4d93f913c848a64471f833fbddbfdc2d57ff889",
+    4: "c9e83a610f9240c3abd4b4d435588bd9056de34edf6fa3e6d7aca88d8a21f439",
+    5: "29d6d60c6addc16b6f3fd1803b582481a22ce0e757e0a1601a3dc7e116730272",
+    6: "6049994562a82e46afd3f0231e136a1e6911cc3040d848e32eaa5771a6f8c2f3",
+    7: "ee0830aba2e08cc862179aeca034e075f76a08914e5ee6d604ad17f4b806ac22",
+    8: "2da71346103454b6743698103f4d80d79bc0b6013046646e4611c08e8d5f0937",
+    9: "1bda8bbf1e7b661a04fd58c36c38f2b66d2e2410265c311cc09c8e2bf810f08c",
+    10: "ccfc592fe570ca6928a74de813c378443030e841bba169434c0f413721122e48",
+    11: "f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29",
+    12: "4cadd373aa676f97e64690a631eea3f3993e0908eaac0aacb86e76ed0c2c68fd",
+    13: "80d7b086d77fe7036a596198825dd221fec82e34cbd5a5a43edae74569e171aa",
+    14: "9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5",
+    15: "249ec45e7c21b66faf0d3310cc742ffdc70e88396a10272932ce821649b7c9e2",
+    16: "02535cc5966a9215d01ecada4a14b6a403d78ca8d09310a5c3cf1a574f817a08",
+    17: "67493c660dcd08de990c2490af5718072ee9e0991476c0272bf9fff9e96e8014",
+    18: "7dc1f122f92ce23c110aa50fd78ae7a471bdf9e60a44e358e3b90e497f664cf0",
+    19: "caff45f8c477f9fa6fc5fae0847c9c7f7842ba83c41319c8a47ddace00bd2fbd",
+    20: "e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71",
+}
 ROUTE_SHA = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
 ACCEPT_SHA = "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
 ROLE = {
@@ -39,6 +61,15 @@ def norm(s):
 def caption(t):
     return t.split(":", 1)[-1].strip()
 
+def mail_text(mail):
+    return (
+        f"From: {mail['from']}\n"
+        f"To: {mail['to']}\n"
+        f"Date: {mail['date']}\n"
+        f"Subject: {mail['subject']}\n\n"
+        f"{mail['body']}"
+    )
+
 def phrase_pattern(phrase):
     words = tokens(phrase)
     return r"(?<![A-Za-z0-9])" + r"[\W_]+".join(re.escape(w) for w in words) + r"(?![A-Za-z0-9])"
@@ -46,23 +77,31 @@ def phrase_pattern(phrase):
 def load(source_root):
     evidence = Path(source_root) / "evidence"
     crew_raw = (evidence / "crew/noticeboard-and-desk-notes.txt").read_bytes()
-    mail11_raw = (evidence / "mail/11.eml").read_bytes()
-    mail20_raw = (evidence / "mail/20.eml").read_bytes()
     route_raw = (evidence / "recovery-routing.json").read_bytes()
     accept_raw = (Path(source_root) / "acceptance.json").read_bytes()
     assert hashlib.sha256(crew_raw).hexdigest() == CREW_SHA
-    assert hashlib.sha256(mail11_raw).hexdigest() == MAIL11_SHA
-    assert hashlib.sha256(mail20_raw).hexdigest() == MAIL20_SHA
     assert hashlib.sha256(route_raw).hexdigest() == ROUTE_SHA
     assert hashlib.sha256(accept_raw).hexdigest() == ACCEPT_SHA
+    mails = {}
+    for mail_path in sorted((evidence / "mail").glob("*.eml")):
+        raw = mail_path.read_bytes()
+        mail_id = int(mail_path.stem)
+        digest = hashlib.sha256(raw).hexdigest()
+        assert digest == MAIL_HASHES[mail_id], (mail_id, digest)
+        msg = BytesParser(policy=policy.default).parsebytes(raw)
+        assert not msg.is_multipart() and msg.get_content_type() == "text/plain"
+        mails[mail_id] = {
+            "from": str(msg.get("From", "")),
+            "to": str(msg.get("To", "")),
+            "date": str(msg.get("Date", "")),
+            "subject": str(msg.get("Subject", "")),
+            "body": msg.get_content(),
+        }
+    assert list(mails) == list(range(1, 21))
     records = re.findall(r"N(\d\d) / ([^\n]+)\n([^\n]+)", crew_raw.decode("utf-8"))
     notes = {int(n): (a.split()[0], t) for n, a, t in records}
     assert list(notes) == list(range(1, 25))
     assert {k for k, (a, _) in notes.items() if a == "Emily"} == {2, 6, 10, 13, 17, 18, 20, 23}
-    mails = {
-        11: mail11_raw.decode("utf-8").split("\n\n", 1)[-1],
-        20: mail20_raw.decode("utf-8").split("\n\n", 1)[-1],
-    }
     route = json.loads(route_raw)
     acceptance = json.loads(accept_raw)
     nonce = bytes.fromhex(route["K08"]["desk_nonce"])
@@ -115,9 +154,9 @@ def independent_word_sources(notes, mails, held, decoy_rows, phrases):
             continue
         clean, _ = scrub_leaks(text, phrases)
         source_tokens[f"N{note_id:02d}"] = set(tokens(clean))
-    for mail_id, body in mails.items():
-        clean, _ = scrub_leaks(body, phrases)
-        source_tokens[f"MAIL{mail_id:02d}"] = set(tokens(clean))
+    for mail_id, mail in mails.items():
+        clean, _ = scrub_leaks(mail_text(mail), phrases)
+        source_tokens[f"MAIL{mail_id:02d} ({mail['from']}; {mail['date']}; {mail['subject']})"] = set(tokens(clean))
     target_words = set(tokens(caption(notes[held][1])))
     return {
         word: [source_id for source_id, words in source_tokens.items() if word in words]
@@ -135,8 +174,8 @@ def build_prompt(notes, mails, held, arm, mode, decoy_rows):
     parts = [f"N{i:02d} by {author}: {text}" for i, (author, text) in notes.items() if i not in excluded]
     clean_mails = []
     manifest = []
-    for mail_id, body in mails.items():
-        clean, removed = scrub_leaks(body, phrases)
+    for mail_id, mail in mails.items():
+        clean, removed = scrub_leaks(mail_text(mail), phrases)
         clean_mails.append(f"MAIL{mail_id:02d}: {clean}")
         manifest.extend({"mail": mail_id, **item} for item in removed)
     parts.extend(clean_mails)
@@ -182,8 +221,8 @@ def build_final_prompt(notes, mails):
     phrases = [(i, caption(notes[i][1])) for i in excluded]
     parts = [f"N{i:02d} by {author}: {text}" for i, (author, text) in notes.items() if i not in excluded]
     manifest = []
-    for mail_id, body in mails.items():
-        clean, removed = scrub_leaks(body, phrases)
+    for mail_id, mail in mails.items():
+        clean, removed = scrub_leaks(mail_text(mail), phrases)
         parts.append(f"MAIL{mail_id:02d}: {clean}")
         manifest.extend({"mail": mail_id, **item} for item in removed)
     prompt = (
@@ -305,7 +344,7 @@ def main():
                 })
     final_prompt, final_manifest = build_final_prompt(notes, mails)
     print("SOURCE_CONTROLS", json.dumps({
-        "crew_sha256": CREW_SHA, "mail11_sha256": MAIL11_SHA, "mail20_sha256": MAIL20_SHA,
+        "crew_sha256": CREW_SHA, "mail_sha256": MAIL_HASHES,
         "route_sha256": ROUTE_SHA, "acceptance_sha256": ACCEPT_SHA,
         "cases": manifests, "final_prompt_sha256": hashlib.sha256(final_prompt.encode()).hexdigest(),
         "final_quote_scrub_manifest": final_manifest,
