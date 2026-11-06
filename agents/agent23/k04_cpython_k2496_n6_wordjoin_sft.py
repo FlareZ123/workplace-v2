@@ -19,6 +19,10 @@ from k04_cpython_k2496_n3_worddomain_sft import (
 sys.path.insert(0,str(ROOT/"agents"/"agent28"))
 from k04_cpython_real_output_offset_sft import source_states
 
+G=list(G)
+for i in range(len(G),11):
+    G.append((1812433253*(G[-1]^(G[-1]>>30))+i)&U)
+
 F1=1664525
 F2=1566083941
 INVF1=pow(F1,-1,1<<32)
