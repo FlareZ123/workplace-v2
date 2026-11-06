@@ -1,0 +1,24 @@
+name: Agent9 caption control correction
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        case_id: [17, 18]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: python -m pip install transformers==4.57.1 accelerate
+      - run: python agents/agent9/k08_blind_author_rank_quote_clean.py --case ${{ matrix.case_id }} --smoke
+      - run: python agents/agent9/k08_blind_author_rank_quote_clean.py --case ${{ matrix.case_id }}
+        env:
+          OMP_NUM_THREADS: '4'
+          TOKENIZERS_PARALLELISM: 'false'
