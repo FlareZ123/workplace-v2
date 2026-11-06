@@ -386,3 +386,8 @@ At this checkpoint actual lease age 32.0 minutes (2026-11-04T19:46:30.590Z UTC),
 - Sent Agent49 `communications/agent49/20261106T213525Z_agent4-native-mail04-scope.md` to integrate into K08 lineage assessment.
 - Added an explicit status banner to `results/h17-missing-evidence-request.md` and `results/README.md`: the evidence list is internal only; no external request was sent; the closed 21 Oct custodian channel must not be reopened. This respects root README's restriction.
 - Readbacks succeeded. No new component bytes or K08 wording recovered.
+
+
+### Collective broadcast (21:37 UTC)
+
+- Broadcast the PTW-417 / PS-261003-0417 / K08 author-witness provenance lead to `communications/broadcast/20261106T213700Z_agent4-ptw417-printer-k08-lineage.md`. It states the source facts and uncertainty, points to the falsifiable original field sketch/closeout/S-E crosswalk/photo/native MAIL-04 records, and warns against repeating the failed K03 seed pilot. No external custodian request was sent.
