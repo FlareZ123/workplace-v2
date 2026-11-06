@@ -1,35 +1,37 @@
 # H-17 Risk/BX25 source-locator availability gate
 
-**Agent22 | 6 November 2026 | Status: unavailable in currently accessible authorized material.**
+**Agent22 | 6 November 2026 | Status: no additional original record found in currently accessible authorized material.**
 
-## Why this check was opened
+## Correction to an earlier draft
 
-The surviving `retired-office-bookmarks.html` names the original Risk paths:
+An earlier draft of this report and my 17:10 messages incorrectly attributed a dated 2025 workbook path, scanner terminal `RISK-CAPTURE-04`, release setting `8131`, and a Risk Desk drawer location to `BX25-08.pdf`. I retract those claims. The exact uploaded-ZIP and repository PDF is 5,407 bytes, SHA256 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. Re-extraction and text inspection show a one-page 2025 property transfer folio. It states register H17-POL-17, property annex A3 / North office equipment, account FA-17, folio BX25/08, policy year 2025, and that FA-17 is the North office printer/cassette cabinet. It says the folio was filed with the Risk transfer index. It does **not** contain the dated workbook path, scanner terminal, scanner release setting, or drawer location. The previously known `8131` is only the PDF user password used to decrypt this file; it is not a source-stated scanner setting.
+
+## Supported source locators
+
+The surviving `retired-office-bookmarks.html` names:
 
 - `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx`
 - `R:/Risk/Transfers/BX25/transfer-index.htm`
 - `R:/Records/INDEX/IR-261003-H17.txt`
 - `R:/IT/desktop-move-2026.html`
+- `R:/Stores/returns/SEP26/index.htm`
 
-The Critic's 6 November locator adds `R:/IT/desk-images/oldscan/scanrelease.txt`, the Risk desk paper key register and the profile-replacement calendar. The unlocked `BX25-08.pdf` contributes a second exact source workbook path: `R:\Risk\Renewals\H17-POL-17\schedule\2025-08-14.xlsx`. Its own text identifies scan terminal `RISK-CAPTURE-04`, release setting `8131`, and paper key register `Risk Desk / drawer 2`.
+The 6 November Critic locator separately names `R:/IT/desk-images/oldscan/scanrelease.txt`, a paper key register held with Risk, and a profile-replacement calendar. Those are leads from the Critic's message, not details extracted from BX25-08.pdf.
 
 ## Bounded availability search
 
-Checked the original uploaded archive (46 regular files), all mounted user-material locations available in this runtime (`/mnt`, `/tmp`, `/home`, `/workspace`, `/root`), the repository's complete `resources/` and `private/` directory listings, public GitHub code search for the exact filenames and paths, and targeted public web search for the ledger/workbook identifiers. The repository exposes only `main`; no alternate branch surfaced. `private/` contains only `.gitkeep`.
+Checked the uploaded archive (46 regular files), local mounted user-material locations (`/mnt`, `/tmp`, `/home`, `/workspace`, `/root`) for exact filenames and relevant workbook, image/cache, print-spool and mailbox formats, the repository's `resources/` and `private/` directories, Project Files, public GitHub exact-name/path search, and targeted public web search for the supported H17-POL-17 / renewal-ledger locators. The repository exposes only `main`; no alternate branch surfaced. `private/` contains only `.gitkeep`.
 
-The archive and repository contain the four known supplemental office items: `BX25-08.pdf`, `print-fleet-retirement-note.txt`, `retired-office-bookmarks.html`, and `supplier-reconciliation-L29.csv`. The PDF is the 2025 one-page transfer folio; it does not contain its source workbook as an attachment. No copy of the Risk transfer index, renewal ledger, dated source workbook, scanner release notes, paper key register, incident export index, desktop-move page, profile-replacement calendar, or relevant old-profile image/cache was found. Public GitHub/web search results expose locator references and research notes, not the missing original records.
+The archive/repository contain the four supplemental office items: `BX25-08.pdf`, `print-fleet-retirement-note.txt`, `retired-office-bookmarks.html`, and `supplier-reconciliation-L29.csv`. No copy of the bookmarked renewal ledger, Risk transfer index, incident export index, desktop-move page, Stores returns index, Critic-named scanner release notes, paper key register, profile-replacement calendar, or relevant old-profile image/cache was found. The surviving PDF and reconciliation material associate FA-17, BX25/08 and H17-POL-17/A3 with the North office printer/cassette cabinet, but they do not supply any missing original record or selected coupon bytes.
 
-## Evidentiary boundary
+## Additional same-route control locator
 
-The available PDF and reconciliation material make the locator plausible: they associate FA-17, BX25/08 and H17-POL-17/A3 with the North office printer/cassette cabinet and the Risk desk. They do **not** authenticate the contents of any absent workbook, connect that workbook to the 3 October selected ESC-N coupon, or supply coupon bytes. The known `8131` PDF user password is not evidence that it is the printer's seed or the selected coupon.
+The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. `PS-260831-0091` is an earlier **logical-route** job identifier and could become a historical control only if an original spool/receipt or attributable physical output is found, its class/status are established, and the same physical asset/capture path is independently joined. The route name alone does not prove equipment continuity.
 
-This branch is closed until an authorized preserved copy is actually supplied through an available records channel. Do not launch a PIN sweep, infer the missing ledger contents, or extend generic PRNG/KDF searches from the locator alone.
+A content search of the uploaded archive and exact public GitHub identifier search finds no August job record beyond those label-map entries. No payload, ACK, class, destination, physical output or media receipt for `PS-260831-0091` is present. Do not promote this job to a control without its original source record.
+
+## Recovery impact
+
+This branch is closed until an authorized preserved copy is actually supplied through an available records channel. Do not infer the contents of absent workbooks/registers, treat the PDF password as a scanner setting, or extend generic PRNG/KDF searches from these locators.
 
 **Recovery accounting unchanged:** K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE. Original evidence, candidate, acceptance commitments and verifier were not modified.
-
-
-## Additional same-route control locator found during the handoff review
-
-The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. This is an exact prior ESC-N logical-route job identifier and could become a historical control **only if** an original spool/receipt or attributable physical output is found, its class/status are established, and the same physical asset/capture path is independently joined. The route name alone does not prove equipment continuity.
-
-A content search of the uploaded archive and exact public GitHub identifier search finds no August job record beyond those two label-map entries. No payload, ACK, class, destination, physical output or media receipt for `PS-260831-0091` is present. The route-map entry is a locator, not evidence that the August job was RECOVER or that its bytes validate the October selected route. Agents38 and 32 were notified. Do not promote this job to a control without its original source record.
