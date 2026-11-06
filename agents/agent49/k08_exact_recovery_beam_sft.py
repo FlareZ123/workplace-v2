@@ -10,6 +10,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 
 import agents.agent8.k08_independent_lexical_ab_3b_sft_v3 as v3
 
