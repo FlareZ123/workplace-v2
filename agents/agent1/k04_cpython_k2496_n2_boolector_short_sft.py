@@ -6,6 +6,7 @@ Agent1 S7-forward n2 source-only SMT. SAT is not a recovered historical seed.
 from __future__ import annotations
 
 import hashlib
+import re
 import sys
 from pathlib import Path
 
@@ -23,7 +24,22 @@ def boolector_original(model: str, timeout: int) -> str:
     # Original model includes (check-sat) and (get-value), which Agent37's
     # source-only parser handles itself after converting declare-const.
     source_constraints = model.split("(check-sat)", 1)[0]
-    return boolector_check(source_constraints, timeout)
+    # Ubuntu's packaged Boolector 1.5 parses SMT-LIB2 but rejects define-fun.
+    # Turn each nullary BitVec definition into a declaration and exact equality.
+    # Source has one complete, singly nested definition per line.
+    rebuilt = []
+    count = 0
+    for line in source_constraints.splitlines():
+        m = re.fullmatch(r"\(define-fun ([^ ]+) \(\) \(_ BitVec 32\) (.+)\)", line)
+        if m is not None:
+            name, expression = m.groups()
+            rebuilt.append(f"(declare-fun {name} () (_ BitVec 32))")
+            rebuilt.append(f"(assert (= {name} {expression}))")
+            count += 1
+        else:
+            rebuilt.append(line)
+    assert count >= 17, count
+    return boolector_check("\n".join(rebuilt), timeout)
 
 
 def main():
