@@ -198,10 +198,10 @@ def build_prompt(case: int, notes: dict, mails: dict):
         "order and complete sentence spans have been destroyed. Do not reproduce "
         "any surviving source sentence; use independent lexical evidence, author "
         "identity, chronology, and record role to reconstruct the missing original. "
-        "Write natural English, not a word list or an official procedure.\\n"
-        "SOURCE_RECORD_INVENTORIES:\\n"
-        + "\\n".join(inventory)
-        + "\\nOUTPUT: exactly ten distinct complete caption candidates, each 3–24 "
+        "Write natural English, not a word list or an official procedure.\n"
+        "SOURCE_RECORD_INVENTORIES:\n"
+        + "\n".join(inventory)
+        + "\nOUTPUT: exactly ten distinct complete caption candidates, each 3–24 "
         "words, numbered 1. through 10., one per line, no explanation or commentary."
     )
 
@@ -226,7 +226,7 @@ def parse_candidates(text: str) -> list[str]:
         line = raw_line.strip()
         if not line:
             continue
-        match = re.match(r"^(?:\\d{1,2}[.):]|[-*•])\\s*(.+)$", line)
+        match = re.match(r"^(?:\d{1,2}[.):]|[-*•])\s*(.+)$", line)
         if match:
             line = match.group(1).strip()
             destination = numbered
@@ -243,7 +243,7 @@ def parse_candidates(text: str) -> list[str]:
 
 def atomic_write_jsonl(path: Path, rows: list[dict]) -> None:
     temp = path.with_suffix(path.suffix + ".tmp")
-    payload = "".join(json.dumps(row, ensure_ascii=False) + "\\n" for row in rows)
+    payload = "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows)
     temp.write_text(payload, encoding="utf-8")
     os.replace(temp, path)
 
