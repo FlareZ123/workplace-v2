@@ -40,3 +40,23 @@ The [read-only original-source SFT](../agents/agent1/k04_spool_metadata_bitmap_s
 The simple and quite broad hypothesis **“128 categorical printer events were deliberately made into a fixed codebook bitstream”** produces no authentic K04 under the specified full Boolean-map/packing/reduction vocabulary. An arbitrary position-varying codebook, an unknown secret salt, or data in the original payloads rather than labels is untested and should never be called excluded by this result. The uncommitted historical provenance of the labels also means a coincident K04 digest hit would still require physical verification. Further random category-packings are low-priority absent an encoder clue; another genuinely different evidence dependency is preferable.
 
 K04 remains without an independently authenticated coupon bit; K08 final authored wording remains unquoted; the original six other slots still PASS and the combined REC8 verifier remains INCOMPLETE. The original spool, acceptance file, route, existing candidate and verifier are unchanged.
+
+## Extended rank-carrier test: categorical ordering rather than literal bitcodes
+
+The one-bit/packed-symbol results above were followed by a separate, exact **combinatorial ordering** hypothesis. If the original 128 job sequence were deliberately arranged to carry an escrow coupon, its information could reside in the *permutation* of CLASS/DEST categories, instead of their literal bit codes. For each original class, destination and joint class/destination sequence, the SFT computes (a) an exact lexicographic multiset rank respecting repeated category counts and (b) a stable-sort Lehmer rank of all 128 original job indices. This second approach distinguishes original job identities even when categories repeat. Encodings vary class/destination labels, joint-pair orientation, forward/reverse job order and four anchored rotations (0, 1, job 0417 offset117, and 127). Each whole integer rank is reduced through bounded byte, text, six-digest and folding presentations, then checked against the complete original K04 commitment, directly and with the immutable source mask.
+
+| Extended test result | Count |
+| --- | ---: |
+| CLASS rank parameter choices | 48 |
+| DEST rank parameter choices | 48 |
+| Joint CLASS/DEST rank parameter choices | 576 |
+| Distinct multiset-rank 16byte values | 44,150 |
+| Distinct additional stable-sort permutation-rank values | 40,022 |
+| **New complete 16byte values beyond previous bitcode candidate set** | **84,172** |
+| **All distinct complete source-category values, combined** | **679,504** |
+| **All complete K04 SHA256 checks, direct + source-mask XOR** | **1,359,008** |
+| **Original K04 commitment matches** | **0** |
+
+The corrected and expanded [SFT](../agents/agent1/k04_spool_metadata_bitmap_sft.py) asserts every total above, including the uniqueness of the synthetically planted full-coupon candidate in the **entire** enumerated pool. The precise expanded revision `addb9b4bc563669f491264ee2d69300a0c39cad8` independently [completed manual CI PASS](https://github.com/FlareZ123/workplace-v2/actions/runs/42285233860) on 6 November at 20:05 UTC, with original direct hits zero, masked hits zero, planted control PASS.
+
+This eliminates the **tested** fixed categorical rank and ordering carriers as well as fixed literal codebook encodings. It does not rule out an arbitrary unknown ordering algorithm, original physical coupon data, or another selected-stage producer. No authenticated K04 bit or final K08 text resulted. Earlier totals in this document are a proper subset of the definitive combined count reported here.
