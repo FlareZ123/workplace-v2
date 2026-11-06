@@ -9,6 +9,7 @@ controls. The same frozen Qwen2.5-3B editor and decoding settings produce N23
 candidates, which are checked against the original HMAC16/SHA256 commitment.
 """
 import hashlib
+import json
 import hmac
 
 import k08_independent_lexical_ab_3b_sft as base
@@ -258,4 +259,5 @@ print("GALLEY_LOG_SOURCE", {
 }, flush=True)
 base.run_control = run_control
 base.run_final = run_final
-base.main()
+if __name__ == "__main__":
+    base.main()
