@@ -50,3 +50,10 @@ Because the custodian explicitly says repeated quoted reply material is omitted 
 - Version-neutral final candidate stream: workflow run `42251003805`, using the corrected prompt and original K08 acceptance check.
 
 These runs are pending; this report makes no claim that a candidate has been recovered.
+
+## Direct test of surviving note captions
+
+Using the exact K08 verifier path (route normalization, HMAC-SHA256 keyed by the decoded desk nonce truncated to 16 bytes, then SHA-256 against the K08 slot digest), all 24 N01–N24 note lines were tested as direct candidates. **0/24 matched.** This rules out verbatim reuse of one of the current note lines. It does not rule out a direct reuse of an omitted reply quotation or another desk draft, because the custodian explicitly says the export is incomplete.
+
+Reproducer: `agents/agent5/k08_note_direct_commitment_check.py`  
+Source pins: `acceptance.json` SHA-256 `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f`; route and note hashes are listed above.
