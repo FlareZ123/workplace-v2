@@ -55,3 +55,22 @@ All six bracketing records are `ACK` events in the unmodified `evidence/print/sp
 **Acquisition use:** If an authorized records custodian already has an *independent, historically indexed printer-state/diagnostic export* mentioning exact producer draw indices for the original incident-day jobs, the three bracketing intervals offer specific places to check for a missing output witness. A contemporaneous original coupon for `PS-261003-0417` attempt 2 remains the preferred direct evidence, irrespective of generator models. The 5-minute windows do not imply that PRNG state was necessarily generated during that five-minute period: buffering, asynchronous scheduling and separate producers are unestablished. They are provenance search anchors only. Do not infer target bytes, reproduce unprotected printer access, or treat these conditional MT indices as real without independent validation.
 
 These are additional *testable source locator descriptions*, not three new original observations and not a change to the six-PASS/two-MISSING acceptance result.
+
+
+## Additional source locators identified 6 November 2026
+
+### K08: WN-14 folder custody boundary
+
+MAIL-14 is David's 2 October message, **"WN-14 signed / pencil note removed"**. It distinguishes the crossed-through pencil standby transcription from Emily's desk notes: the desk notes were **under the WN-14 folder**, outside the controlled-copy sleeve, and the photographs/galley captions were separate from the engineering procedure. Request the preserved original WN-14 folder with the material physically under it, the associated desk-note originals, photograph captions, and any margin annotations, retaining their original order and provenance. This is a more precise locator for the already-requested final caption evidence.
+
+MAIL-11's primary subject is **"RC-17 issue receipt"** (Emily, 1 October). It contains an embedded paragraph describing the keeper desk phrase, but should be preserved as a mixed-purpose issue receipt, not reclassified as a dedicated K08 message. MAIL-20 (Gabriel, 4 October, **"Preservation bundle 06 / desk-caption wording"**) is the preservation-bundle message explicitly about the keeper component and its route-sheet normalization/nonce. Keep those roles and dates distinct.
+
+### K08: tea-room stock workbook (contextual lead only)
+
+The surviving `retired-office-bookmarks.html` contains the exact historical local bookmark `file:///R:/Stores/consumables/mug-stock.xls`, labelled **"Tea-room stock sheets"**. That workbook is not in the 46-file local export. N11, MAIL-02 and MAIL-12 independently refer to the chipped blue mugs, window and little lamp. Request the preserved original workbook, if it survives, including hidden sheets, comments, formulas, cell metadata and original file timestamps. This is a **contextual source locator**, not evidence that the workbook contains Emily's final words; do not treat any paraphrase or inferred spreadsheet content as the HMAC input.
+
+### K04: separate monthly consumables return
+
+The 4 October print-fleet retirement note says the rollers and feed brackets were handled on a **separate monthly consumables return**. The supplied `supplier-reconciliation-L29.csv` is the five-ticket L-29/N supplier return-set check; it is not that monthly consumables return and does not establish the physical cassette identity. Request the original monthly return covering the incident-period FA-17/North printer/cassette, its source index, and any associated cassette/lot/serial or media-retention fields. The bookmark `file:///R:/Stores/returns/SEP26/index.htm` is a historical locator to the September returns index, not proof that the relevant monthly return is present there.
+
+These three leads are grounded in the surviving bookmark, MAIL-14, and print-fleet note. They identify missing originals for custodian retrieval; they add **zero recovered K04 bytes and zero exact K08 words** until the originals are supplied and authenticated.
