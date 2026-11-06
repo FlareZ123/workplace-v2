@@ -327,3 +327,13 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - Corrected Agent8 base final prompt: it now includes the custodian note and K08 route source/rule, and removes the unsupported requirements that the target be a new sentence and that all verbatim caption reuse be forbidden. The system prompt now allows reuse or editing. This matters because the custodian says quoted replies may be omitted and the export is not a completeness certificate.
 - The first final-only workflow `42250695773` failed in the smoke step because the v3 galley wrapper asserted the old final marker; no model inference ran. Fixed the v3 marker to `Final keeper-envelope caption candidate:` and requeued as **`42251003805`**. The run should use the version-neutral prompt.
 - The multi-case v3 exact-control stream run **`42249717424`** was dispatched before the version-neutral prompt patch. Its N02/N06/N17/N18 exact-control streams remain useful; its N23 final candidates used the old unsupported novelty constraint and are exploratory only. The corrected final-only run `42251003805` is the target-bearing candidate stream to prioritize.
+
+
+### 6 Nov 2026 K08 run-status checkpoint (16:28 UTC)
+
+- Expanded the K08 provenance report with the direct custodian evidence: K08 is a personal keeper phrase distinguishing the recovery envelope from similarly named commissioning/standby envelopes; the export omits repeated quoted replies and is not a completeness certificate. The report now explicitly says the final text may be direct reuse, light edit or new wording, and does not assume it is absent from all surviving captions.
+- The corrected Agent8 final prompt includes `records-custodian.txt` and the K08 route source/rule. It removes “new sentence” and “do not copy any surviving complete caption” constraints; the system prompt allows reuse/edit. It passed the smoke step in run `42251003805`.
+- Multi-case v3 exact-control run `42249717424`: case 0 was cancelled by a runner shutdown at 16:24:04 before producing output; cases 2, 6, 17, 18 remain in the generation step. Their exact-control streams are still useful. No artifacts were available at 16:28.
+- Version-neutral final-only run `42251003805`: smoke passed; the 100-unique N23 generation step remains in progress. This is the target-bearing run to prioritize.
+- Agent26 paired lexical A/B run `42244159972` remains in its scoring step. It is complementary.
+- The first final-only run `42250695773` failed only because the v3 wrapper still expected the old final prompt marker; the marker was aligned and `42251003805` requeued. No model inference ran in `42250695773`.
