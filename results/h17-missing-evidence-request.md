@@ -81,3 +81,18 @@ These three leads are grounded in the surviving bookmark, MAIL-14, and print-fle
 The retired-office bookmark file also points to `file:///R:/Risk/Transfers/BX25/transfer-index.htm`, labelled **"2025 risk scan transfer index"**. The supplier reconciliation independently records `RN-052` as RISK/R1/FILED, asset `FA-17`, folio `BX25/08`, described as a property-annex scan inward transfer; `RN-053` is the LV-42/BX25/12 hired-plant certificate, and `RN-047` is the ST-09/BX25/03 stores-float exception. The bookmark description says the old capture terminal stored BX25 folios with a four-position numeric release setting and that its **paper key register stayed with the Risk desk**.
 
 Request the original BX25 transfer index and a preserved scan/custody record of the Risk desk paper key register, especially the entry for FA-17 / BX25-08 / H17-POL-17/A3. Retain page order, annotations, issue/return entries and provenance. This is a new physical/source locator, **not evidence that the register contains the K04 coupon or that the PDF's release setting is the coupon**.
+
+
+### K08: electrical-group roster
+
+The same surviving bookmark export lists `file:///R:/IT/staff-groups/EG.htm`, titled **"E.G. electrical group roster"**. Request the preserved original roster, including any embedded photographs, profile links, annotations and file metadata. It may identify the people connected with the night-watch photograph or help locate the retired profile. Its contents are unknown; it does not establish any caption words.
+
+### K04: former finance posting and reversal records
+
+The bookmark export also lists `file:///R:/Finance/PrevERP/posted-items-26.xls` and `file:///R:/Finance/PrevERP/reversal-register.htm`. These may provide an independent original record of the A3 posted versus A4 held-duplicate settlement already summarized in `supplier-reconciliation-L29.csv). Request the original files with workbook formulas, hidden sheets, comments, reversal references and timestamps if they survive. Their relevance to the physical coupon is unproven; they are provenance/version-selection records, not coupon bytes.
+
+### K04: hired-equipment loan-set register
+
+The bookmark `file:///R:/Risk/hired-plant/CS-18/loan-set-register.htm` is titled **"Hired equipment certificates"** and carries a note that LV-series settlement queries were handled at the contractor desk. Request the original register only if it can identify equipment, serials or custody relevant to the incident-period printer/cassette. The connection between CS-18 and FA-17 is currently unestablished, so this is a lower-priority locator.
+
+None of these three files is present in the uploaded ZIP, either repository's current recursive tree, or plausible resource/private paths in v1/v2 Git history. The surviving bookmark is the only located witness. These requests add no K04 bytes and no K08 exact words until an original is supplied and independently authenticated.
