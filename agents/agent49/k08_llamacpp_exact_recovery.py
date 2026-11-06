@@ -17,9 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "agents" / "agent8"))
-import k08_independent_lexical_ab_3b_sft_v3 as v3
-
-base = v3.base
+import k08_independent_lexical_ab_3b_sft as base
 MODEL_REPO = "Qwen/Qwen2.5-3B-Instruct-GGUF"
 MODEL_FILE = "qwen2.5-3b-instruct-q4_k_m.gguf"
 MODEL_REVISION = "7dabda4d13d513e3e842b20f0d435c732f172cbe"
@@ -36,6 +34,54 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def configure_base(notes: dict) -> None:
+    base.ROLE = {
+        2: "First draft for the crew board.",
+        6: "Second desk draft.",
+        17: "Standby-envelope label.",
+        18: "Commissioning-envelope label.",
+    }
+    base.WRONG_ROLE = {
+        2: base.ROLE[6],
+        6: base.ROLE[2],
+        17: base.ROLE[18],
+        18: base.ROLE[17],
+    }
+    for case, role in base.ROLE.items():
+        content_vocab = set(base.tokens(notes[case]["caption"])) - base.STOPWORDS
+        assert not (set(base.tokens(role)) & content_vocab)
+    for case, role in base.WRONG_ROLE.items():
+        content_vocab = set(base.tokens(notes[case]["caption"])) - base.STOPWORDS
+        assert not (set(base.tokens(role)) & content_vocab)
+
+    log_path = base.ROOT / "resources/evidence/crew/galley-and-stores.log"
+    galley_log = log_path.read_text("utf-8").strip()
+    galley_sha = hashlib.sha256(log_path.read_bytes()).hexdigest()
+    assert galley_sha == "23dfef679a125e725654b95e7d27dffc46e7c3e9980f64b8b65fbfc2f7b75d46"
+
+    original_source_records = base.source_records
+    def source_records_with_galley_log(notes, mails, held, excluded, phrases):
+        records = original_source_records(notes, mails, held, excluded, phrases)
+        clean, manifest = base.sanitize_record(
+            "GALLEY_LOG", "GALLEY_LOG | " + galley_log, phrases
+        )
+        records.append(("GALLEY_LOG", clean, manifest))
+        return records
+    base.source_records = source_records_with_galley_log
+
+    original_final_prompt = base.final_prompt
+    def final_prompt_with_galley_log(notes, mails):
+        prompt = original_final_prompt(notes, mails)
+        phrases = [("N17", notes[17]["caption"]), ("N18", notes[18]["caption"])]
+        clean, _ = base.sanitize_record(
+            "GALLEY_LOG", "GALLEY_LOG | " + galley_log, phrases
+        )
+        marker = "\\nFinal keeper-envelope caption candidate:"
+        assert prompt.count(marker) == 1
+        return prompt.replace(marker, "\\n" + clean + marker)
+    base.final_prompt = final_prompt_with_galley_log
 
 
 def build_prompt(case: int, notes: dict, mails: dict) -> tuple[str, dict]:
@@ -103,6 +149,7 @@ def main() -> None:
     args = parser.parse_args()
 
     notes, mails, nonce, target = base.load_sources()
+    configure_base(notes)
     prompts = {}
     for case in CASES:
         prompt, manifest = build_prompt(case, notes, mails)
