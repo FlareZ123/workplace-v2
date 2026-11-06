@@ -28,4 +28,4 @@ jobs:
           OMP_NUM_THREADS: "4"
           TOKENIZERS_PARALLELISM: "false"
           HF_HUB_DISABLE_TELEMETRY: "1"
-        run: python agents/agent8/k08_independent_lexical_ab_3b_sft_v2.py --case ${{ matrix.case_id }} --beams 64
+        run: python agents/agent8/k08_independent_lexical_ab_3b_sft_v2.py --case ${{ matrix.case_id }} --beams 8
