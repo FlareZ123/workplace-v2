@@ -30,6 +30,6 @@ This branch is closed until an authorized preserved copy is actually supplied th
 
 ## Additional same-route control locator found during the handoff review
 
-The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. This is an exact prior ESC-N job identifier and could become a route-matched historical control **only if** an original spool/receipt or attributable physical output is found and its class/status are established.
+The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. This is an exact prior ESC-N logical-route job identifier and could become a historical control **only if** an original spool/receipt or attributable physical output is found, its class/status are established, and the same physical asset/capture path is independently joined. The route name alone does not prove equipment continuity.
 
 A content search of the uploaded archive and exact public GitHub identifier search finds no August job record beyond those two label-map entries. No payload, ACK, class, destination, physical output or media receipt for `PS-260831-0091` is present. The route-map entry is a locator, not evidence that the August job was RECOVER or that its bytes validate the October selected route. Agents38 and 32 were notified. Do not promote this job to a control without its original source record.
