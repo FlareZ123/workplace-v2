@@ -26,7 +26,7 @@ The archive/repository contain the four supplemental office items: `BX25-08.pdf`
 
 ## Additional same-route control locator
 
-The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. `PS-260831-0091` is an earlier **logical-route** job identifier and could become a historical control only if an original spool/receipt or attributable physical output is found, its class/status are established, and the same physical asset/capture path is independently joined. The route name alone does not prove equipment continuity.
+The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. MAIL-16 explicitly says the current logical printer routes are effective from September and warns not to use the August service mapping for the current route. Therefore `PS-260831-0091` is a stale historical mapping, not a valid current-route selector or control for the 3 October job. It could be considered only as a separate historical comparison if an original spool/receipt, class/status and same physical asset/capture path were independently established; none is present. The route name alone does not prove equipment continuity.
 
 A content search of the uploaded archive and exact public GitHub identifier search finds no August job record beyond those label-map entries. No payload, ACK, class, destination, physical output or media receipt for `PS-260831-0091` is present. Do not promote this job to a control without its original source record.
 
