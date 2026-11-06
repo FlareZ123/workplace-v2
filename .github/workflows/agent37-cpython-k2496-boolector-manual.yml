@@ -1,0 +1,17 @@
+name: Agent37 CPython shortseed Boolector independent source solver
+on:
+  workflow_dispatch:
+jobs:
+  boolector:
+    runs-on: ubuntu-latest
+    timeout-minutes: 19
+    strategy:
+      fail-fast: false
+      matrix:
+        seed_words: [1, 2]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ubuntu Boolector
+        run: sudo apt-get update -qq && sudo apt-get install -y boolector
+      - name: Source-only CPython nonlinear inverse through Boolector
+        run: python3 agents/agent37/k04_cpython_k2496_boolector_sft.py ${{ matrix.seed_words }}
