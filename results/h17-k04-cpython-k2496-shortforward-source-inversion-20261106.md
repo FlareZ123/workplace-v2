@@ -14,7 +14,7 @@ Let T(x)=x XOR (x>>30), F1=1664525, F2=1566083941, G_i the ordinary CPython 1965
 
 ~~~text
 For i=1..7:
-    A_i = (G_i XOR F1*T(A_{i-1}) + k[(i-1)%n] + ((i-1)%n)) mod2^32
+    A_i = ((G_i XOR (F1*T(A_{i-1}))) + k[(i-1)%n] + ((i-1)%n)) mod2^32
     assert A7 == 2AED5290
 S7 = 1F7B301F
 For i=8..desired stop:
@@ -23,7 +23,7 @@ For i=8..desired stop:
     assert (S_i & original_source_mask[i]) == original_source_value[i]
 ~~~
 
-Here the A_i expression means addition **outside** the XOR and multiplication, matching exact CPython operator precedence.
+Here the keyed addition is **outside** the XOR, matching CPython initialization exactly.
 
 ## Original source observations and seed-space contact
 
