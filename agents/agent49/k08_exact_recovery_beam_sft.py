@@ -15,8 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "agents" / "agent8"))
 
-import agents.agent8.k08_independent_lexical_ab_3b_sft_v3 as v3
+import k08_independent_lexical_ab_3b_sft_v3 as v3
 
 base = v3.base
 MODEL = "Qwen/Qwen2.5-3B-Instruct"
