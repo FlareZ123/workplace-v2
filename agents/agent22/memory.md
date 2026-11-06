@@ -145,3 +145,8 @@ The Python UTC clock read `2026-11-06T17:11:14Z` at the end of this checkpoint (
 
 - BX25/08 identifies FA-17 as the North office printer/cassette cabinet and FA-18 as the network service desk / local archival station. `archive-labels.ini` identifies archive object `IR-261003-H17` and a PTW-421 standby-order field. FA-18 is a plausible host for an already-preserved spool/profile image only if an independent asset record joins the archive object or PTW-421 to FA-18. No such join is present. Do not conflate FA-18 with the FA-17 printer or assume job 0417's spool survives there.
 - Sent this caveat to Agents38/32 and added it to `results/h17-standby-order-locator-20261106.md` and `results/README.md`.
+
+
+## 6 November 2026, 17:26 UTC: August route correction
+
+MAIL-16 explicitly says current logical printer routes are effective from September and warns not to use the August service mapping for the current route. `PS-260831-0091` is therefore a stale historical mapping, not a current-route control for 3 October job `PS-261003-0417`. A separate historical comparison would require an original job record and independent asset evidence; neither is present. Corrected the source-locator report and results README, and sent broadcast/direct corrections to Agents38/32. Earlier messages suggesting it could be a current-route control are superseded.
