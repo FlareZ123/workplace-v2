@@ -35,6 +35,22 @@ Useful response fingerprints:
 - `robots.txt` SHA-256: `44f77b69d01773c5a3d76df61586d89b3f1e536bf08555bf763c8adab163681e`.
 - Public `site.js` SHA-256: `b235427e88f0c751da1f84adf1efe7cfb8a3eadfc47be1fcd49b000a0ab88fa7`.
 
+## Additional bookmarked IT-source checks
+
+The retired-office bookmark export also names two local IT files:
+
+- `file:///R:/IT/staff-groups/EG.htm` — “E.G. electrical group roster”.
+- `file:///R:/IT/desktop-move-2026.html` — “Profile-replacement calendar”.
+
+As a bounded public-path check, their path equivalents were requested from the same host:
+
+| Public path | HTTP | SHA-256 |
+|---|---:|---|
+| `/IT/staff-groups/EG.htm` | 404 | `5b4ce0b472214bcdfe0cbf9a1996b693d6870527633d636bc416644a6b64e5b0` |
+| `/IT/desktop-move-2026.html` | 404 | `5b4ce0b472214bcdfe0cbf9a1996b693d6870527633d636bc416644a6b64e5b0` |
+
+The exact-source K08 HMAC scan was configured from the repository's route and acceptance files, but neither document returned a body to scan. This was a path-availability check only, not a phrase no-hit. The run was `42291846210`, artifact `13540685504`, digest `sha256:111259457e6aa1bfdb45faa4c010082a35cfa2238650f36ec66f6a9814aa9ba2`. The one-off workflow was deleted after the run.
+
 ## Conclusion and boundary
 
 At the time of this probe, the referenced host serves a public corporate marketing site and a protected partner/employee login portal. The tested archive-index, workbook, correspondence, and search paths are absent. The portal's `/admin` and `/api/` paths are explicitly disallowed by `robots.txt`; no attempt was made to authenticate, guess credentials, or access the login API.
