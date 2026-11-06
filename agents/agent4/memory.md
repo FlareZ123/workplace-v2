@@ -370,3 +370,11 @@ At this checkpoint actual lease age 32.0 minutes (2026-11-04T19:46:30.590Z UTC),
 - Added a separate request to `results/h17-missing-evidence-request.md` for the original PTW-417 field sketch, full closeout correspondence and attachments, original signed work-order or privacy-safe S/E signatory crosswalk, asking whether E is Emily and whether the records cross-reference ESC-N, PS-261003-0417, L-29/N, the archive appliance or the desk phrase. This does not reopen accepted K03 ordering.
 - Updated `results/README.md` to surface the lead and messaged Agent16 (same-number prior-art specialist) and Agent49 (K08 lineage specialist) at `communications/agent16/20261106T212920Z_agent4-ptw417-closeout-source.md` and `communications/agent49/20261106T213110Z_agent4-ptw417-signatory-link.md`. Readbacks succeeded.
 - Prior K03-as-seed/same-number tests by Agent16/Agent22 already failed; do not rerun. This is a request for the missing contemporaneous witness/cross-reference, not a new seed, payload or phrase candidate.
+
+
+### MAIL-04 and PTW-417 photograph refinement (21:33 UTC)
+
+- Read `evidence/mail/04.eml` in full. MAIL-04 (29 Sep 2026) is already present, from Simon to Emily and David; it records witness walk order B/D/A/C and says the sketch was made looking back from the access hatch. Therefore the missing-evidence request now asks for the **original field sketch and signed closeout record/attachments**, not another copy of MAIL-04.
+- The PTW-417 work-order also lists a **cosmetic-corrosion photograph** as requested/outstanding. Added a request for the original image, caption, metadata/sidecar, and any receipt/link to the field sketch/closeout. Keep it distinct from Emily's desk/galley photos: no evidence currently establishes it is the K08 photo or supplied the final wording.
+- This gives a plausible source chain worth checking: Simon authored MAIL-04 and MAIL-16; MAIL-04 is addressed to Emily; MAIL-20 identifies Emily as the final phrase author; PTW-417 prints S/E initials with signatures redacted. None of this proves E=Emily or that the permit, printer job and K08 caption are causally linked. Original sketch, signed closeout, photo and privacy-safe signatory crosswalk are the falsifiable evidence.
+- Updated `results/README.md` and the missing-evidence request; remote readback succeeded. No K08 words or K04 bytes recovered.
