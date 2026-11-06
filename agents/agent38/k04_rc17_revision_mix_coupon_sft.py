@@ -119,7 +119,30 @@ for choices in itertools.product(revisions, repeat=4):
                     coupon[::-1] if whole_reverse else coupon
                 )
 
-all_candidates = c_permutation_candidates | mixed_revision_candidates
+# Family C: the bytewise XOR of the same four section strips arranged in
+# SERVICE_ORDER and STANDBY_ORDER. Revision choice is independent per section.
+service_standby_delta_candidates: set[bytes] = set()
+delta_assignments = 0
+for choices in itertools.product(revisions, repeat=4):
+    for flips in itertools.product((False, True), repeat=4):
+        chosen = {
+            section: strips[(revision, section)][::-1] if flip else strips[(revision, section)]
+            for section, revision, flip in zip(service_order, choices, flips)
+        }
+        service_block = b"".join(chosen[section] for section in service_order)
+        standby_block = b"".join(chosen[section] for section in standby_order)
+        delta = bytes(a ^ b for a, b in zip(service_block, standby_block))
+        for whole_reverse in (False, True):
+            delta_assignments += 1
+            service_standby_delta_candidates.add(
+                delta[::-1] if whole_reverse else delta
+            )
+
+all_candidates = (
+    c_permutation_candidates
+    | mixed_revision_candidates
+    | service_standby_delta_candidates
+)
 original_hits = [
     coupon.hex().upper()
     for coupon in all_candidates
@@ -145,7 +168,10 @@ print(f"c_permutation_assignments={c_assignments}")
 print(f"c_permutation_unique={len(c_permutation_candidates)}")
 print(f"mixed_revision_named_order_assignments={mixed_assignments}")
 print(f"mixed_revision_named_order_unique={len(mixed_revision_candidates)}")
-print(f"overlap_unique={len(c_permutation_candidates & mixed_revision_candidates)}")
+print(f"service_standby_delta_assignments={delta_assignments}")
+print(f"service_standby_delta_unique={len(service_standby_delta_candidates)}")
+print(f"overlap_c_mixed={len(c_permutation_candidates & mixed_revision_candidates)}")
+print(f"overlap_existing_delta={len((c_permutation_candidates | mixed_revision_candidates) & service_standby_delta_candidates)}")
 print(f"union_unique={len(all_candidates)}")
 print(f"original_k04_hits={len(original_hits)}")
 print(f"planted_positive_hits={len(planted_hits)}")
