@@ -1,0 +1,100 @@
+"""Exact CPython k2496 A7/S7/S8 source-only key-word sieve.
+
+The original printer issuer is hypothetical, and selected ACK2 row129 is
+excluded from the 132-packet source projection. This script does not read
+the K04 route mask, acceptance hash, or disputed selected payload.
+"""
+from __future__ import annotations
+
+import random
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "agents/agent1"))
+from k04_cpython_k2496_shortforward_source_sft import original_source
+from k04_cpython_initarray_wrap_sft import direct_initialized, F1, F2, t, U
+
+G = [19650218]
+for i in range(1, 9):
+    G.append((1812433253 * t(G[-1]) + i) & U)
+
+
+def allowed_high_words(a7: int, s7: int, mask: int, value: int,
+                       key_index: int) -> tuple[list[int], int]:
+    """Exact inversion without enumerating all 2**32 key words.
+
+    S8 = (((G8 xor F1*t(A7)) + key[j] + j) xor F2*t(S7)) - 8,
+    all unsigned modulo 2**32. Split 16+16 and propagate carry/borrow.
+    """
+    C = ((G[8] ^ (F1 * t(a7) & U)) + key_index) & U
+    D = F2 * t(s7) & U
+    c0, c1 = C & 65535, C >> 16
+    d0, d1 = D & 65535, D >> 16
+    m0, m1 = mask & 65535, mask >> 16
+    v0, v1 = value & 65535, value >> 16
+    groups: dict[tuple[int, int], int] = {}
+    for low in range(65536):
+        raw = c0 + low
+        carry = raw >> 16
+        mixed = (raw & 65535) ^ d0
+        borrow = int(mixed < 8)
+        if ((mixed - 8) & 65535) & m0 == v0:
+            pair = carry, borrow
+            groups[pair] = groups.get(pair, 0) + 1
+    counts = [0] * 65536
+    for high in range(65536):
+        for (carry, borrow), nlow in groups.items():
+            upper = (((c1 + high + carry) & 65535) ^ d1) - borrow
+            if (upper & m1) == v1:
+                counts[high] += nlow
+    return counts, sum(counts)
+
+
+def control():
+    for words in ([0x1234, 0x5678], [0xABCD, 0xFEDC],
+                  [0, 1], [0x11111111, 0x22222222, 0x33333333, 0x44444444]):
+        a, _, state = direct_initialized(words)
+        seed = sum(k << (32 * j) for j, k in enumerate(words))
+        assert state == list(random.Random(seed).getstate()[1][:624])
+        a7 = ((state[7] + 7) & U) ^ (F2 * t(state[6]) & U)
+        assert a7 == a[7]
+        mask = 0x09CC1C00
+        j = 7 % len(words)
+        counts, total = allowed_high_words(a7, state[7],
+                                           mask, state[8] & mask, j)
+        assert counts[words[j] >> 16] > 0
+        assert total == (1 << (32 - mask.bit_count()))
+        reconstructed = (((G[8] ^ (F1 * t(a7) & U)) + words[j] + j) & U)
+        reconstructed = ((reconstructed ^ (F2 * t(state[7]) & U)) - 8) & U
+        assert reconstructed == state[8]
+    print("GENUINE_CPYTHON_COMPLETE_STATE_AND_S8_CONTROLS=4/4 PASS")
+
+
+def main():
+    control()
+    source = original_source()
+    s6, s7 = source[6][1], source[7][1]
+    a7 = ((s7 + 7) & U) ^ (F2 * t(s6) & U)
+    assert a7 == 0x2AED5290
+    mask, value = source[8]
+    assert mask == 0x09CC1C00 and value == 0x008C1000
+    for j in range(8):
+        counts, total = allowed_high_words(a7, s7, mask, value, j)
+        supported = [h for h, n in enumerate(counts) if n]
+        ascii_pairs = sum(counts[(b << 8) | a] > 0
+                          for a in range(0x20, 0x7F)
+                          for b in range(0x20, 0x7F))
+        assert total == 8_388_608
+        assert len(supported) == 1280
+        assert counts[0] == 0
+        assert ascii_pairs == 0
+        print(f"KEY_INDEX={j} K1_TOTAL={total} HIGH16_SUPPORTED={len(supported)}"
+              f" MIN_HIGH16={min(supported):04X} MAX_HIGH16={max(supported):04X}"
+              f" ZERO_HIGH16_ALLOWED={counts[0]} ASCII_PAIR_SUPPORTED={ascii_pairs}")
+    print("SOURCE_S8_EXCLUDES_SHORT_WORD_AND_PRINTABLE_WORD_AT_INDEX_7_MOD_N")
+    print("Conditional CPython/k2496 producer only; no K04 or K08 accepted")
+
+
+if __name__ == "__main__":
+    main()
