@@ -7,12 +7,14 @@ from __future__ import annotations
 
 import hashlib
 import re
+import os
+import subprocess
+import tempfile
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "agents/agent37"))
-from k04_cpython_k2496_boolector_sft import boolector_check
 
 sys.path.insert(0, str(ROOT / "agents/agent1"))
 from k04_cpython_initarray_wrap_sft import direct_initialized
@@ -39,7 +41,28 @@ def boolector_original(model: str, timeout: int) -> str:
         else:
             rebuilt.append(line)
     assert count >= 17, count
-    return boolector_check("\n".join(rebuilt), timeout)
+    query = "\n".join(rebuilt) + "\n(check-sat)\n(exit)\n"
+    with tempfile.TemporaryDirectory(prefix="h17_short_boolector_") as folder:
+        dest = Path(folder) / "short_source.smt2"
+        staging = dest.with_suffix(".part")
+        staging.write_text(query, encoding="ascii")
+        os.replace(staging, dest)
+        try:
+            run = subprocess.run(["boolector", str(dest)], capture_output=True,
+                                 text=True, check=False, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            return "UNKNOWN_TIMEOUT"
+    # Boolector 1.5 uses conventional SAT return code 10, UNSAT 20.
+    lines = [x.strip().lower() for x in run.stdout.splitlines() if x.strip()]
+    status = lines[-1] if lines else ""
+    if status == "sat" and run.returncode in (0, 10):
+        return "SAT"
+    if status == "unsat" and run.returncode in (0, 20):
+        return "UNSAT"
+    if status == "unknown" and run.returncode == 0:
+        return "UNKNOWN"
+    raise RuntimeError(("Boolector parse/solver failure", run.returncode,
+                        run.stdout[-800:], run.stderr[-800:]))
 
 
 def main():
