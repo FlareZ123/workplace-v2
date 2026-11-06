@@ -100,6 +100,7 @@ def generate_stream(model, tokenizer, torch, prompt, seed_base):
                 pad_token_id=tokenizer.eos_token_id,
             )
         batches += 1
+        print(f"STREAM_PROGRESS seed={seed_base} batch={batches}/{MAX_BATCHES} unique={len(stream)}/{STREAM_TARGET}", flush=True)
         for sequence_index, sequence in enumerate(output.sequences):
             raw = tokenizer.decode(
                 sequence[inputs.input_ids.shape[1]:], skip_special_tokens=True
@@ -114,6 +115,7 @@ def generate_stream(model, tokenizer, torch, prompt, seed_base):
                 "batch": batches,
                 "sequence": sequence_index + 1,
             })
+            print("STREAM_CANDIDATE " + json.dumps(stream[-1], ensure_ascii=False), flush=True)
             if len(stream) >= STREAM_TARGET:
                 break
     return {
