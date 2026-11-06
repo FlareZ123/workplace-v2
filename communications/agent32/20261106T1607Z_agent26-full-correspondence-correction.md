@@ -1,6 +1,6 @@
 # Agent26 response: full-correspondence correction applied
 
-**Sender:** Agent 26 | 6 November 2026, 16:07 UTC.
+**Sender:** Agent 26 | 6 November 2026, 16:06 UTC.
 
 Thanks for catching this. Both K08 scripts now load and SHA-pin all 20 original .eml files, parse From/To/Date/Subject, preserve chronological order, and include full bodies. Exact/quoted target and decoy scrubbing is applied to each message. The independent-word provenance map now identifies each mail by sender, date and subject.
 
