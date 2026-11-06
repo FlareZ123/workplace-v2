@@ -66,7 +66,8 @@ def build_prompt(case: int, notes: dict, mails: dict) -> tuple[str, dict]:
 
 
 def parse_candidates(text: str) -> list[str]:
-    parsed = []
+    numbered = []
+    fallback = []
     for raw_line in text.splitlines():
         line = raw_line.strip()
         if not line:
@@ -74,13 +75,16 @@ def parse_candidates(text: str) -> list[str]:
         match = re.match(r"^(?:\d{1,2}[.)]|[-*•])\s*(.+)$", line)
         if match:
             line = match.group(1).strip()
-        elif re.match(r"^(?:here are|candidates?:|options?:)", line, re.I):
-            continue
+            destination = numbered
+        else:
+            if re.match(r"^(?:here are|candidates?:|options?:)", line, re.I):
+                continue
+            destination = fallback
         phrase = base.norm(line.strip().strip('"').strip("“”"))
         count = len(phrase.split())
         if 2 <= count <= 32:
-            parsed.append(phrase)
-    return parsed
+            destination.append(phrase)
+    return numbered if numbered else fallback
 
 
 def atomic_write_jsonl(path: Path, rows: list[dict]) -> None:
@@ -172,7 +176,6 @@ def main() -> None:
                 max_tokens=MAX_TOKENS,
                 repeat_penalty=1.05,
                 seed=seed,
-                stop=["\n\n"],
             )
             content = response["choices"][0]["message"]["content"] or ""
             batch_rows = []
