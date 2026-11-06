@@ -175,3 +175,10 @@ This is a request for the retained data object itself, not only the queue-entry 
 The retired-office bookmark export preserves the exact historical locator `file:///R:/IT/desk-images/oldscan/scanrelease.txt`, titled **Old scan release note**. Request the original `scanrelease.txt`, its parent-folder index/manifest, every image or scan it references, contact sheets, sidecars, scan settings, timestamps, revision history, and custody/transfer metadata.
 
 This is a separate desk-image locator. The current export establishes the bookmark only; it does **not** establish that the release note contains Emily's margin, a particular photograph, or any K08 wording. Keep it separate from the WN-14 folder, the FA-17 risk ledger, and the RN-052 / BX25/08 property transfer index. Request an offline copy from records custody; do not infer or reuse the PDF's 8131 release code.
+
+
+## Separate source request: Bundle 06 manifest and trim/omission record
+
+`START_HERE.md` describes the supplied preservation set as trimmed, and MAIL-20 says **Bundle 06** was staged as a local directory and reduced to the material that could be extracted. Request the original Bundle 06 directory manifest and the associated trim/extraction log: original relative paths, filenames, sizes, hashes, timestamps, omitted-file list, extraction failures, redaction/omission reasons, and any attachment or scan sidecars excluded from this 46-file export.
+
+If the original directory survives, request a read-only custody copy or a complete metadata-preserving file listing. If it does not, request the export operator's manifest and omission/deletion record. This is a scoped request for the provenance and missing-file inventory of Bundle 06, **not** an unrestricted mailbox dump or a live facility connection. It may identify the missing source objects for K04/K08; no omitted file or content is presumed to exist.
