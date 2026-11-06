@@ -22,7 +22,7 @@ import k08_independent_lexical_ab_3b_sft_v3 as v3
 base = v3.base
 MODEL_REPO = "Qwen/Qwen2.5-3B-Instruct-GGUF"
 MODEL_FILE = "qwen2.5-3b-instruct-q4_k_m.gguf"
-MODEL_REVISION = "main"
+MODEL_REVISION = "7dabda4d13d513e3e842b20f0d435c732f172cbe"
 CASES = (2, 6, 17, 18, 0)
 TARGET_UNIQUE = 100
 MAX_BATCHES = 12
