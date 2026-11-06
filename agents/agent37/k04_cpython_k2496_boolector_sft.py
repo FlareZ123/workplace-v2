@@ -23,8 +23,8 @@ from k04_cpython_k2496_shortseed_sft import (
 def boolector_check(formula: str, seconds: int) -> str:
     # The distro CLI auto-detects SMT-LIB2 from the .smt2 extension.
     formula = "\n".join(
-        re.sub(r"^\\(declare-const ([^ ]+) (\\(_ BitVec [0-9]+\\))\\)$",
-               r"(declare-fun \\1 () \\2)", line)
+        re.sub(r"^\(declare-const ([^ ]+) (\(_ BitVec [0-9]+\))\)$",
+               r"(declare-fun \1 () \2)", line)
         for line in formula.splitlines()
         if not line.startswith("(set-option")
     ) + "\n(check-sat)\n"
