@@ -297,12 +297,24 @@ def main() -> None:
 
     llm = Llama(
         model_path=str(model_path),
-        n_ctx=8192,
-        n_threads=4,
-        n_batch=512,
+        n_ctx=16384,
+        n_threads=2,
+        n_batch=256,
         chat_format="chatml",
         verbose=False,
     )
+
+    for case, prompt in prompts.items():
+        prompt_tokens = len(llm.tokenize(prompt.encode("utf-8"), add_bos=True, special=False))
+        print("PROMPT_TOKEN_COUNT", json.dumps({
+            "case": case,
+            "prompt_tokens": prompt_tokens,
+            "context_window": 16384,
+            "max_output_tokens": MAX_TOKENS,
+        }), flush=True)
+        assert prompt_tokens + MAX_TOKENS + 128 < 16384, (
+            case, prompt_tokens, "prompt plus output margin exceeds context"
+        )
 
     all_rows: list[dict] = []
     summaries = {}
