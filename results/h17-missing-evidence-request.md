@@ -130,3 +130,14 @@ Include native MAIL-02 (Emily to Zoey, 28 Sep 2026 14:46 UTC, “Galley freezer 
 ### K08: preserve original desk-draft versions
 
 In addition to the shelf card and native mail, preserve the original N02, N06 and N23 desk artifacts (paper originals or native files), including all dated versions, margin corrections, handwriting, reverse sides, comments, scan sidecars and custody notes. The surviving note extract labels N02 “first draft”, N06 “second desk draft”, and N23 says the margin wording was not the final envelope text. N06 shares “little lamp” and “corridor” anchors with MAIL-12, while N02's room/next-watch theme is consistent with MAIL-02's late-arrival/bowl context. These are source-lineage clues only; chronology and literal copying are unproven. Do not infer a final caption from them.
+
+
+### K04: AX-7782 transfer-queue metadata and checkpoint selection
+
+The supplied `evidence/transfers/queue-note.txt` says the receipt ledger can contain COMMIT entries for dry runs and explicitly directs the reader to the queue's `mode`, `purpose`, and `dry_run` fields to select the actual handoff. It identifies AX-7778 as a pre-incident drill export, AX-7781 as a dry run, AX-7783 as stopped before handoff, and AX-7782 as the actual retained copy. It also says each checkpoint is a 2-byte opaque field.
+
+The supplied `transfer-audit.jsonl` contains eight AX-7782 chunk sequence numbers with two attempts each, but its chunk events have no `mode` or `purpose`; its COMMIT records contain only `dry_run`, chunk count, object, and receipt time. AX-7778 and AX-7782 both have `dry_run:false`, so that field alone does not select the actual transfer. The local `evidence/transfers/` directory contains only the queue note and audit ledger; the queue export itself is absent. The audit also does not identify which attempt was accepted for each chunk.
+
+A bounded test treated one checkpoint per sequence as a 16-byte coupon/component: all 256 per-sequence attempt selections, forward/reverse sequence order, per-pair byte reversal and both coupon-mask/component roles (2,048 assignments) produced zero K04 hits. Pairwise XOR/add/sub and hybrid-byte variants (1,056 more) also produced zero. This rejects only those simple constructions; it does not establish that the checkpoint vector is related to K04. See [AX-7782 checkpoint-vector test and queue gap](h17-k04-ax7782-transfer-checkpoint-vector-test-20261106.md).
+
+**Request:** the preserved historical transfer-queue export or queue-entry record for AX-7782 / IR-261003-H17, including original `mode`, `purpose`, and `dry_run` fields; per-sequence accepted-attempt selection; checkpoint serialization/interpretation; queue ordering; and any receipt/coupon association. Request an offline custody copy and its provenance. This is a source/selector request, not a claim that the queue contains the coupon or authorization to access a live transfer system.
