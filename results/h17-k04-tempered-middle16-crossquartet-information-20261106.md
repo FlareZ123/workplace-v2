@@ -45,3 +45,25 @@ This is an algebraic counterfactual, **not a discovered external leak**. No K04 
 The former edge-bitplane information ceiling must **not** be extrapolated to all possible 16bit public-output projections: the *position* of the observed bits can change selected target information. For an actual attempt to recover K04, seek a source-selected and independently held-out 16bit emitter with time/stage provenance at or around the two causal quartets. Critically, a source only identifying or reporting guessed printer categories is insufficient, and unindexed K02/K07 substitutions cannot establish the proposed carrier. Without a real original carrier, the 13bit information bound has **no direct effect on the original K04 solution**.
 
 All official files, original selected copied ACK, K04/K08 commitments and canonical six accepted candidate components remain unchanged.
+
+
+## Stronger decomposition and explicit original-data parity witness (20:42 UTC)
+
+The 12/13 counts above should be separated into **pure native-MT recurrence identities** and genuine constraints supplied by intact original printer records. A second exact rank run **removed all 132 original source packet equations**, retaining only the symbolic 624×32 generator and the hypothetical same middle16 oracle:
+
+| Perfect hypothetical middle16 oracle | Independent selected coupon equations with no original spool data | Independent selected coupon equations after all 132 intact originals |
+| --- | ---: | ---: |
+| Only eight causal stages | **11** | **12** |
+| All 435 hidden stages | **11** | **13** |
+
+Thus the authentic intact source contributes **one extra** target relation to the eight-stage oracle and **two extra** to the full hidden-word oracle. Without the independent partial-output measurements, the original spool alone contributes **zero** target relations. This decomposition identifies a particularly narrow hypothetical *source-coupling opportunity*, rather than mistaking bare MT recurrence identities for data newly recovered from archive records. The portable SFT now asserts no-original-source ranks **128** (eight-oracle only) and **6,889** (435-stage oracle only), both with selected residual **117**.
+
+An independent, right-hand-side-tracking GF(2) elimination using the source's actual 132 accepted intact packet bytes further produces **12 exact parity certificates** relating the selected tempered coupon bits, the eight hypothetical middle-halfwords, and the observed source. Removing the source equations leaves **11** of these independent; only the first source-inclusive relation adds a genuinely archive-dependent linear constraint. With bit0 as the LSB of the first 32bit emitted target word, oracle bits ordered by stage \`328,329,330,331,724,725,726,727\` and by bits8..23 ascending within each stage, that one additional relation has:
+
+- selected 128bit mask: \`00000000000000000000000000009200\` (three selected bits);
+- concatenated oracle 128bit mask: \`00000000000000920000000000000004\` (four hypothetical outside bits);
+- original-source parity constant: **0**.
+
+The equation is \`parity(selected & 0x9200) XOR parity(oracle & 0x00000000000000920000000000000004) = 0\`. This **does not reveal** the three selected bits, since the four oracle bits are unobserved in the original material. Its value is an explicit falsifiable source-derived equality: any proposed genuine independent halfword carrier at the eight exact stage positions must satisfy it, whereas the pure MT recurrence does not itself entail this particular equation. A complete source-consistent 19,968bit state was constructed by backsubstitution, all 132 intact original packets regenerated exactly and every one of the 12 eight-stage parity identities verified against this independent state completion.
+
+The full 435-stage gain of two source-assisted equations likewise depends on hypothetical values for far more hidden outputs; it cannot be read as recovered physical coupon data. All computations avoid the disputed original selected copied ACK and K04 commitment.
