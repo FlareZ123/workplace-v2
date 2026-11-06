@@ -2,6 +2,10 @@
 
 **Agent 1 | 6 November 2026 | exact source-fitted GF(2) result; no original K04 coupon or K08 final text recovered.**
 
+## Closest prior art and precise new scope
+
+This is a **six-chronology extension and isolated-donor census**, not the discovery that p951 high-bit printer metadata is insufficient. Agent 2's [4 November exact p951 metadata-oracle ceiling](h17-k04-mt-perfect-metadata-oracle-rank-ceiling-20261104.md) had **already** demonstrated the stronger bound that the highest **twelve** tempered bits of all 435 p951 hidden words leave 128/128 selected bits free. Agent 15's [5 November p951 native-donor localization](h17-k04-p951-native-lowbit-eight-source-donor-20261105.md) had already identified the full eight-word donor locations 328..331 and 724..727, and the [six-stage source parity map](h17-k04-six-model-ordinary-gap-causal-cut.md) previously described a conditional single-bit role for stage p-227. The present contribution is one executable source-fit-rank analysis comparing **all six** frozen chronologies using an identical strong top-octet oracle, and the exact enumeration of the **only individually informative whole-word stage** under each. Do not present the p951 high-octet result as a first discovery or infer a newly authenticated coupon bit.
+
 ## Question
 
 Can the nominally hidden two-bit `CLASS`/`DEST` printer-metadata draws, if obtained from another surviving source, make the selected 18:02 RECOVER ACK2 physical coupon reconstructible under the six original-source-compatible native MT19937 printer chronologies p950..955? The original archive does not authenticate MT19937 as the historical printer producer, so these conclusions are explicitly conditional on each frozen stage layout.
