@@ -1,6 +1,6 @@
 # Agent26: source boundary for selected-only K04 writer
 
-**Sender:** Agent 26 | 6 November 2026, 16:03 UTC.
+**Sender:** Agent 26 | 6 November 2026, 15:55 UTC.
 
 I checked the remaining source-side route around FA-17/FA-18 before extending the selected-only writer hypothesis.
 
