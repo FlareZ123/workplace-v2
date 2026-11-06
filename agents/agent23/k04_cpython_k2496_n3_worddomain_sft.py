@@ -145,6 +145,26 @@ def state_domains(rows:list[tuple[int,int]])->dict[int,list[int]]:
     assert {k:len(domains[k]) for k in domains}=={2:8,3:64,4:512,6:1,7:1,8:8}
     return domains
 
+def fourword_repeat(domains:dict[int,list[int]])->tuple[int,list[tuple[int,int,int,int]]]:
+    """For genuine CPython n=4, the two exact key terms at i=4,8 must equal k3+3."""
+    s6=domains[6][0];s7=domains[7][0]
+    a7=((s7+7)&U)^f(1566083941,s6)
+    terms8={(((((s8+8)&U)^f(1566083941,s7))-
+             (G[8]^f(1664525,a7)))&U) for s8 in domains[8]}
+    count=0
+    matched=[]
+    for s2 in domains[2]:
+        for s3 in domains[3]:
+            a3=((s3+3)&U)^f(1566083941,s2)
+            for s4 in domains[4]:
+                a4=((s4+4)&U)^f(1566083941,s3)
+                term4=(a4-(G[4]^f(1664525,a3)))&U
+                count+=len(domains[8])
+                if term4 in terms8:
+                    matched.append((s2,s3,s4,term4))
+    assert count==2097152 and len(terms8)==len(domains[8])
+    return count,matched
+
 def seeded_controls(terms:list[list[int]])->None:
     seeds=((0x12345678,0x23456789,0x3456789A),
            (1,1,1),(U,U,U),(8131,4242,54321),
@@ -166,6 +186,30 @@ def seeded_controls(terms:list[list[int]])->None:
             assert total==2097152 and (k0,k1,k2) in hits
             print("GENUINE_CPYTHON_N3_COMPLETE_DOMAIN_SELECTED_WITNESS=PASS")
     print("GENUINE_CPYTHON_N3_REAL_INITIALIZED_SOURCE_DOMAIN_CONTROLS=5/5 PASS")
+    seeds4=((0x12345678,0x23456789,0x3456789A,0x456789AB),
+            (1,1,1,1),(U,U,U,U),(0,0x80000000,0,0x7fffffff),
+            (8131,4242,54321,98989))
+    for trial,(k0,k1,k2,k3) in enumerate(seeds4):
+        generator=random.Random(k0|(k1<<32)|(k2<<64)|(k3<<96))
+        state=generator.getstate()[1][:624]
+        a3=((state[3]+3)&U)^f(1566083941,state[2])
+        a4=((state[4]+4)&U)^f(1566083941,state[3])
+        a7=((state[7]+7)&U)^f(1566083941,state[6])
+        a8=((state[8]+8)&U)^f(1566083941,state[7])
+        term4=(a4-(G[4]^f(1664525,a3)))&U
+        term8=(a8-(G[8]^f(1664525,a7)))&U
+        assert term4==term8==((k3+3)&U),trial
+        if trial==0:
+            draws=[generator.getrandbits(32) for _ in range(OFFSET+974)]
+            packets=[b"".join(draws[OFFSET+position+j].to_bytes(4,"little")
+                              for j in range(4)) for position in mt.STARTS]
+            domains=state_domains(source_rows(packets,terms))
+            assert all(state[index] in domains[index] for index in domains)
+            total,hits=fourword_repeat(domains)
+            assert total==2097152
+            assert (state[2],state[3],state[4],term4) in hits
+            print("GENUINE_CPYTHON_N4_COMPLETE_DOMAIN_SELECTED_WITNESS=PASS")
+    print("GENUINE_CPYTHON_N4_REAL_SEEDED_REPEATED_KEYTERM_CONTROLS=5/5 PASS")
 
 def original(terms:list[list[int]])->None:
     source=original_packets()
@@ -178,6 +222,10 @@ def original(terms:list[list[int]])->None:
     assert total==2097152 and hits==[],(total,hits[:10])
     print("K2496_N3_ALL_THREE_WORD_INTEGER_SEEDS_EXCLUDED=PASS "
           "EXACT_DOMAIN_PAIRS=2097152 A7_SURVIVORS=0")
+    count,matched=fourword_repeat(domains)
+    assert count==2097152 and matched==[],(count,matched[:10])
+    print("K2496_N4_ALL_FOUR_WORD_INTEGER_SEEDS_EXCLUDED=PASS "
+          "EXACT_DOMAIN_COMPARISONS=2097152 REPEATED_K3_TERM_MATCHES=0")
     print("K04_PHYSICAL_COUPON_UNRECOVERED K08_FINAL_CAPTION_UNRECOVERED")
 
 if __name__=="__main__":
