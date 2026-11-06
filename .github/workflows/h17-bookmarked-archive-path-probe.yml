@@ -74,7 +74,7 @@ jobs:
                       self.parts.append(data.strip())
 
           def normalize(value):
-              return " ".join(re.sub(r"[^a-z0-9\\s]", " ", value.lower()).split())
+              return " ".join(re.sub(r"[^a-z0-9\s]", " ", value.lower()).split())
 
           def scan_k08(text):
               words = normalize(text).split()
@@ -127,7 +127,7 @@ jobs:
                           item["k08_exact_hits"] = hits
                           item["reference_flags"] = {term: term.lower() in text.lower() for term in ("FA-17","BX25/08","RN-052","H17-POL-17/A3","IR-261003-H17","SEP26","WN-14")}
                           if path.endswith("scanrelease.txt") or path.endswith("transfer-index.htm"):
-                              tokens = re.findall(r"(?<!\\d)\\d{4}(?!\\d)", text)
+                              tokens = re.findall(r"(?<!\d)\d{4}(?!\d)", text)
                               item["four_digit_token_count"] = len(tokens)
                               item["four_digit_token_sha256"] = hashlib.sha256(" ".join(tokens).encode()).hexdigest()
                       else:
