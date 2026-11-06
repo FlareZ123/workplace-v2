@@ -25,6 +25,23 @@ The [reproducible original-source C++17 test](../agents/agent12/k04_compact_prng
 
 **Genuine planted generator controls:** Each of the three actual modeled generators emits a synthetic packet, discards exactly 17 generated outputs, and emits a second complete packet. The same first-packet state recovery and variable-gap search retrieves gap **17** and the entire second packet for each model. The full original source packet 0300 is reconstructed by the first-packet state inverses, providing a separate original-domain check. Only the original second packet fails.
 
+
+## New role-specific target bridge: preserved RECOVER/bench whole-packet controls
+
+The original selected north coupon is **PS-261003-0417, 18:02, RECOVER ACK attempt2, DEST=bench**. Two preserved packets bracket that event in the exact same printer class and destination, though with differing attempts: **0416/16:40 RECOVER ACK1/bench** `F1F5A127EA44F563935C63F8A59A2801` and **0420/18:25 RECOVER ACK2/bench** `432475F72A62DB39F3D5693E2C937FA4`. A third earlier same-role original is **0407/15:55 RECOVER ACK1/bench** `2E03FD9FBCB793A59401131BC16B2D45`.
+
+This provides a materially stronger target-oriented independent source discriminator than two adjacent routine jobs: a shared selected-class emitter could first be validated on preserved whole packets, then its 0417-stage candidate would be reconstructed. Run the **same three independently invertible compact-state generators**, four serializers and **all 2^32 independently variable interpacket gaps**, separately for the chronology pairs **0407→0416** and **0416→0420**. The copied 0417 selected ACK2 bytes and original K04 target digest remain entirely excluded while determining whether any emitter passes.
+
+| RECOVER/bench preserved source pair | Full generator/gap hypotheses tested | xoshiro first-lane matches | xorshift first-lane matches | xoroshiro first-lane matches | Whole second-packet matches |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 0407→0416 | 51,539,607,552 | 4 | 2 | 0 | **0** |
+| **0416→0420**, bracketing selected 0417 | 51,539,607,552 | 6 | 5 | 0 | **0** |
+| **Both independent pairs** | **103,079,215,104** | **10** | **7** | **0** | **0** |
+
+Executed locally on the unmodified original spool with exact SHA-pinned source, full algebraic 128-bit xoshiro inverses regenerated for each frozen cohort's **actual first packet**, xoroshiro 64bit inverse, xorshift128 post-packet state, and the same complete planted 17-gap positive tests. Both separate complete runs succeeded in approximately 16–17 seconds each. Source-pinned local SFT `h17_k04_bench_recov_gap_sft.cpp`, SHA256 `285343840e83a69eaffe97c696639575550e5e1e894d6a9be027f9d332201108`; its algorithm differs from the shared [portable ordinary-packet SFT](../agents/agent12/k04_compact_prng_variable_gap_sft.cpp) only in parsing fresh cohort originals and inverting the corresponding first packet. The local source script was independently compiled and executed for both pairs. Remote CI for this cohort-specific script has not been claimed.
+
+**Decision:** even allowing *billions of nonconstant hidden draws*, these three 128-bit PRNG emitters fail **before the disputed selected coupon is considered**, on an actual nearby same-CLASS/DEST control. Thus the complete 0417 coupon cannot be defended as the prediction of a single coherent 0407/0416/0420 emitter of these particular kinds. This is still conditional: the surviving late ACK2 copy is not independently authenticated to the physical medium; an epoch reset, rekeying, within-packet variable output, different emitter, or selected-only printer stage remains open. Do not use a source-derived apparent producer as a physical K04 proof.
+
 ## What is excluded
 
 Under these *specific* compact-state output scramblers, within-packet consecutive geometry, four serializers, and a gap at most 2^32-1 outputs between jobs 0300 and 0301, **no shared persistent generator history can even explain the first two real 16-byte intact packets**. Any arbitrary later packet gaps, retry-specific exceptional stages or copy methods cannot rescue that already contradicted two-packet model. This significantly extends the earlier constant-skip negative without generating arbitrary K04 candidate values.
