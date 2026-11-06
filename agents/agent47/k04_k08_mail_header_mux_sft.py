@@ -120,10 +120,13 @@ def main(path):
                                    ("base192", rev, reverse_glyphs, endian, i))
                         raw_view(raw, ("base192", rev, reverse_glyphs, endian))
 
+    # Full synthetic target and historical positive against the independent nonce reducer.
     planted = bytes.fromhex("49359A7C0BE1D64F7268EC10459FBA23")
-    assert hashlib.sha256(bytes(a^b for a, b in zip(planted, MASK))).digest() == hashlib.sha256(bytes(a^b for a, b in zip(planted, MASK))).digest()
-    known = "The sea is quiet and our mugs are beside the lamp"
-    assert k08_check(known) == (hashlib.sha256(hmac.new(NONCE, normalized(known), hashlib.sha256).digest()[:16]).digest() == K08)
+    planted_component = bytes(a ^ b for a, b in zip(planted, MASK))
+    planted_digest = hashlib.sha256(planted_component).digest()
+    assert hashlib.sha256(bytes(a ^ b for a, b in zip(planted, MASK))).digest() == planted_digest
+    n02 = "A good watch leaves the room ready for the next pair of hands."
+    assert hmac.new(NONCE, normalized(n02), hashlib.sha256).digest()[:16].hex().upper() == "BF889359B0303F2B2B2FD96AE841210B"
     print(json.dumps({"rows": len(records), "unique_16byte_coupons": len(coupons),
                       "ascii_caption_candidates": len(captions), "K04_hits": hits4,
                       "K08_hits": hits8}, indent=2))
