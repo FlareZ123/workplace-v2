@@ -203,7 +203,7 @@ Preserve the native records and timestamps without sorting or normalization. Ask
 
 ## Separate source request: PTW-417 field sketch and closeout correspondence
 
-`work-order-417.html` explicitly says the **field sketch supersedes cabinet lettering** and directs the reader to **closeout correspondence**. Request the original PTW-417 field sketch (all sides, annotations, revisions and scale/orientation marks) and the complete closeout correspondence, including attachments, witness/author metadata, and any linked receipt or photo.
+`MAIL-04` (29 Sep 2026, Simon to Emily and David) is already present and states that the witness walk was B, D, A, C, with the sketch made looking back from the access hatch. `work-order-417.html` independently says the **field sketch supersedes cabinet lettering** and directs the reader to closeout correspondence. Request the original PTW-417 field sketch (all sides, annotations, revisions and orientation marks) and the signed closeout record/attachments referred to by MAIL-04 and the work-order, rather than another copy of MAIL-04.
 
 Ask whether either original record independently cross-references `PS-261003-0417`, ESC-N, the L-29/N cassette, or the archive appliance. This is a provenance check of the shared **417** reference and a possible cross-record link; it does not assume the permit and printer job are related, and it does not reopen the already accepted K03 serial component or its ordering.
 
