@@ -101,6 +101,17 @@ def main():
         "critical8_tempered_high16": (15493, 127),
     }, checks
 
+    # Every stage is necessary for this particular 13-stage witness.
+    deletion_residuals = {
+        stage: run([s for s in compact_cut if s != stage], 8, 24)[1]
+        for stage in compact_cut
+    }
+    assert deletion_residuals == {
+        104: 116, 105: 116, 328: 119, 329: 119, 330: 119,
+        331: 119, 332: 116, 500: 116, 501: 116,
+        724: 119, 725: 119, 726: 119, 727: 116,
+    }, deletion_residuals
+
     # Distinguish the bare MT recurrence from additional original-source
     # constraints: these observations alone transmit 11 target equations.
     no_source_critical = rank_with_oracle(
@@ -191,6 +202,7 @@ def main():
         "unassisted_MT_critical8_rank_residual": no_source_critical,
         "unassisted_MT_full435_rank_residual": no_source_full,
         "unassisted_MT_compact13_rank_residual": compact_without_source,
+        "13stage_witness_all_13_essential": "PASS",
         "source_assisted_3bit_certificate": "PASS",
         "planted_target_byte_control": "PASS",
         "original_coupon_or_K04_commitment_loaded": False,
