@@ -150,3 +150,12 @@ The supplier reconciliation assigns the L-29/N return set to account reference `
 Request the original FA-17/H17-POL-17/A3 risk-renewal ledger and complete folio A3, including its asset schedule, annexes, attachments, transfer/scan index, revision history, and any supporting records that identify the L-29/N cassette, printer, archive appliance, or H-17 incident-preservation equipment. Specifically request any cross-reference that connects the five posted L-29/N service tickets to print job `PS-261003-0417`, and ask the custodian to state explicitly if no such cross-reference exists.
 
 Preserve the original record and its metadata. Do not merge this request with the separate `RN-052 / BX25/08` property-annex request, and do not infer that the FA-17 ledger contains the missing coupon. The current export establishes the account reference only; the ledger itself is absent.
+
+
+## Separate source request: complete H-17 rounds notebook (pages 1–11)
+
+The retained `maintenance/inspection-rounds.log` identifies itself as a local notebook transcription and explicitly says **page 4 of 11 retained**; the rest of the notebook is absent from this export. Request the original complete notebook, including pages 1–3 and 5–11, its cover/index, any inserts or attachments, page-order record, and any scans or transcription/UTC-conversion notes.
+
+Prioritize the entries surrounding 3 October 2026 17:12–21:15 UTC and any references to the archive appliance, printer/cassette, recovery card, electrical odor, fire response, or preservation actions. Ask the custodian to confirm whether the missing pages survive and, if not, whether they were separately scanned or transferred.
+
+Keep this notebook request separate from Emily's personal notebook-margin request for K08. The retained page establishes that six other pages are missing; it does not establish that they contain either missing component. Their value is as potential independent incident timing and equipment-state evidence for the K04 source-selection question.
