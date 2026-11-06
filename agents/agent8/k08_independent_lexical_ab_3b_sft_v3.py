@@ -96,6 +96,7 @@ def generate_stream(model, tokenizer, torch, prompt, seed_base):
                 temperature=0.8,
                 top_p=0.95,
                 top_k=50,
+                return_dict_in_generate=True,
                 pad_token_id=tokenizer.eos_token_id,
             )
         batches += 1
