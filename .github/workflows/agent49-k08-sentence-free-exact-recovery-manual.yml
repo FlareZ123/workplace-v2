@@ -25,7 +25,7 @@ jobs:
       - name: Test held-out whole-caption controls before final target
         env:
           HF_HUB_DISABLE_TELEMETRY: "1"
-          OMP_NUM_THREADS: "4"
+          OMP_NUM_THREADS: "2"
         run: |
           set -o pipefail
           python agents/agent49/k08_sentence_free_exact_recovery.py 2>&1 | tee k08-sentence-free-exact-recovery.log
