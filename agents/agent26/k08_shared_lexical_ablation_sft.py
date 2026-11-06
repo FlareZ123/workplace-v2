@@ -23,8 +23,8 @@ MAIL20_SHA = "e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71"
 ROUTE_SHA = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
 ACCEPT_SHA = "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
 ROLE = {
-    2: "First draft for a crew common-area board: human handover after a watch.",
-    6: "Second private desk draft: a small light and an empty night corridor.",
+    2: "First draft for the crew board, intended for a shared crew space.",
+    6: "Second desk draft for private use.",
     0: "Final keeper-envelope desk margin: people making room after a late watch, the sea outside, night nearly finished, and voices around a table.",
 }
 GENERIC = "A historical H-17 crew note."
@@ -280,6 +280,10 @@ def main():
     args = parser.parse_args()
     source_root = Path(args.source_root)
     notes, mails, nonce, target = load(source_root)
+    stopwords = {"a", "an", "the", "for", "of", "to", "and", "in", "on"}
+    for case in CASES:
+        role_overlap = (set(tokens(ROLE[case])) & set(tokens(caption(notes[case][1])))) - stopwords
+        assert not role_overlap, (case, "role prompt contains heldout content words", sorted(role_overlap))
     manifests = []
     for case in CASES:
         rows = decoys(notes, case)
