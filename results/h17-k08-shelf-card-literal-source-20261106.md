@@ -48,3 +48,18 @@ Do not infer the card's text from MAIL-12 or N11. Do not promote a shelf-card ph
 MAIL-02 (Emily to Zoey, 28 September 2026 14:46 UTC, “Galley freezer and the soup tubs”) predates N02 and the later K08 discussion. Emily asks that six clean bowls be kept aside for late arrivals, noting that the previous late crew ate out of mugs after the dishwasher had finished. This is a source-visible early context for the later “making room” theme and the N02 first-draft language, but the supplied message contains no final caption, no direct quotation of N02, and no evidence that the shelf card or this mail was forwarded into the envelope text.
 
 The K08 native-source scope should include MAIL-02 as well as MAIL-11/12/14/20. The native headers and any omitted quoted material may establish whether Emily's earlier galley wording was quoted, rewritten, or dropped between the first draft, shelf card, margin note and final envelope inscription. Do not treat the thematic connection as proof of textual descent.
+
+
+## Source-visible lineage map (copying not established)
+
+| Source | Surviving wording / role | What it establishes |
+|---|---|---|
+| MAIL-02, Emily → Zoey, 28 Sep | Six clean bowls for late arrivals who had previously eaten from mugs | Early first-person context for making room for late crew; no final caption |
+| N02, Emily, first draft | “A good watch leaves the room ready for the next pair of hands.” | Draft wording with a room/next-watch theme; no explicit source citation |
+| MAIL-12, Zoey, 2 Oct | A small card by the shelf for two crew members' chipped blue mugs; little lamp/corridor context | Physical card exists; exact text and whether Emily saw it are unknown |
+| N06, Emily, second desk draft | “The little lamp stays on until the corridor has gone quiet.” | Shares the distinctive “little lamp” and “corridor” anchors with MAIL-12; this suggests a source relationship, but no forwarding/copy record proves it |
+| MAIL-11, Emily, 1 Oct | Desired line should convey people making room after a long watch, water outside and night almost finished; excludes two old labels | First-person intent and explicit exclusions, not the final wording |
+| N20/N23, Emily | Sea/night/voices-at-table intent; margin wording was not an official slogan and envelope retained the final words | Confirms a margin-to-envelope version boundary while withholding the actual text |
+| MAIL-20, Gabriel, 4 Oct | Several captions/drafts existed; Emily's exact selected words matter | Confirms final selection occurred; does not quote it |
+
+The ordering of the notes themselves is not a reliable timestamp sequence. In particular, MAIL-12's date does not prove N06 was written after it. The lexical overlap is a retrieval clue for native thread/copy provenance, not a claim that N06 copied MAIL-12. The next useful evidence is the original N02/N06/N23 desk material with dates/edits, the physical shelf card, and native MAIL-02/11/12/14/20 headers plus quoted/forwarded MIME content.
