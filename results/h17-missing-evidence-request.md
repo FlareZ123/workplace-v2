@@ -1,5 +1,7 @@
 # H-17 REC8/1: precise request for missing preservation evidence
 
+**Status:** Internal source-dependency list only. No external request has been sent. The root README states that the 21 October custodian channel is closed and must not be reopened; do not submit this file through that channel. Use these leads only if a new authorized custody path or unsolicited source delivery becomes available.
+
 **Prepared:** 2026-10-20 UTC. **Purpose:** Finish the original eight-component recovery without fabricating bytes or modifying the verifier. This is a records request, not an equipment-action instruction.
 
 ## Already recovered
