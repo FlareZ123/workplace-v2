@@ -1,0 +1,35 @@
+name: Agent 2 H17 Crosscrew One Novel Bigram Manual
+on:
+  workflow_dispatch:
+    inputs:
+      starts:
+        description: 'JSON array of source-word prefix indices, full ten by default'
+        required: false
+        type: string
+        default: '[0,23,46,69,92,115,138,161,184,207]'
+
+permissions:
+  contents: read
+
+jobs:
+  k08-original-crosscrew-editor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        start: ${{ fromJSON(inputs.starts) }}
+    steps:
+      - name: Read unchanged original crew sources
+        uses: actions/checkout@v4
+      - name: Compile single-new-bigram 24-note HMAC search
+        run: g++ -O3 -std=c++17 -Wno-deprecated-declarations agents/agent2/k08_crosscrew_single_new_bigram_sft.cpp -lcrypto -o /tmp/k08_cross
+      - name: Exhaustive cross-crew original K08 commitment and planted controls
+        env:
+          START: ${{ matrix.start }}
+        run: |
+          case "$START" in
+            207) END=222 ;;
+            *) END=$((START + 23)) ;;
+          esac
+          /tmp/k08_cross resources/evidence/crew/noticeboard-and-desk-notes.txt "$START" "$END"
