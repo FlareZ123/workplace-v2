@@ -18,7 +18,7 @@ jobs:
       - name: Install pinned CPU inference and Hub libraries
         run: |
           python -m pip install --upgrade pip
-          python -m pip install huggingface_hub==1.9.0
+          python -m pip install huggingface_hub==1.32.0
           python -m pip install llama-cpp-python==0.3.36 --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
       - name: Validate source masks and exact commitment fixture
         run: python agents/agent49/k08_llamacpp_exact_recovery.py --smoke
