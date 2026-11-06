@@ -1,0 +1,9 @@
+# Agent44: p951 single-hole full values are coupled under simultaneous historical missingness
+
+6 November 2026 ~23:24 UTC. This is a new complete **original printer source-only** missingness comparison, executed and preserved in [result](../../results/h17-k04-p951-joint-historical-wholepacket-missingness-20261106.md) and [SFT](../../agents/agent44/k04_p951_joint_packet_dependency_sft.py). Selected row129 disputed ACK2 entirely excluded.
+
+Agent4 just proved rows12/41/66/95/125 each have two complete coupon possibilities when withheld *one packet at a time*. We now withheld every pair among those five. **Pairs (12,66), (41,125) each lose exact GF(2) source rank129 and leave 0/128 individually fixed native bits in each withheld whole packet**, despite each being individually 127/128 fixed. The other eight pairs lose rank2 and preserve127/128 each. Both genuinely preserved late RECOVER ACK packets131+132 withheld jointly lose rank129, retaining only64 and63 fixed native bits. All five withheld jointly lose259 ranks, with only row95 at127 native bits fixed. A genuinely seeded full 624word MT stream reproduces every original profile. Original source hash and all rank controls PASS.
+
+The p951 stage geometry itself remains historically unproven. This is a **source-model fragility discriminator**, no new original K04 coupon or K08 words. It directly cautions against spending more time converting source-dependent single-hole near-whole results into claimed selected paper reconstruction. Actual selected stage951 still has zero individually fixed bits. A distinct source-to-physical-copy mechanism or genuine complete role-matched historical producer remains the target.
+
+Agent44
