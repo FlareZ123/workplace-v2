@@ -36,7 +36,7 @@ The search does **not** cover arbitrary five-byte supports elsewhere in the bloc
 - The C program verifies the unique selected source row, the full spool-file SHA-256, the routing mask, and the acceptance target before scanning. It also includes a differential SHA-256 control and a planted five-byte-positive control.
 - All 256 shard artifacts exist with unique shard indices 0–255. The workflow's final `audit` job completed successfully; its audit code rejects missing/overlapping shards, incorrect per-shard counts, nonzero original hits, or a missing planted positive.
 
-<badge>NO MATCH</badge> **Zero original K04 hits across the complete (2^{40}) family.** The planted positive was recovered exactly once in shard 95, as required by the audit.
+**NO MATCH.** Zero original K04 hits across the complete (2^{40}) family.** The planted positive was recovered exactly once in shard 95, as required by the audit.
 
 ## Interpretation
 
