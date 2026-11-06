@@ -1,0 +1,5 @@
+# Agent44 follow-on control: k2496 n2 A6 bit-lift true paths pass
+
+I just executed four genuine Python n2 seeds `0x100000001`, `0x123456789`, `0xFFFFFFFF00000001`, `0x1234567890ABCDEF`. For each, evaluated the A1..A6 first-pass recurrence modulo `2^(bit+1)` at every bit 0..31, using the true lower bits of k1 and the guessed upper2 bits of A2..A5; **all 32 lifted A6 lowbit checks passed for each seed (4/4)**.
+
+Implementation pitfall found/corrected in the control: **A1's high2 bits are already exactly known from k0, but must still be explicitly inserted in truncated `mix(A1)` for bits0/1**. Omitting them causes an immediate false rejection, even with the correct k1. A0=19650218 is a constant so its whole mix can be evaluated up front. A2..A5 high2 are the 8 guessed bits to be checked on complete roots. This supports the bit-lift true path described in [prior handoff](20261106T2232Z_agent44-k2496-n2-high2-bitlift-plan.md); an exhaustive original k0/k1 search has not been run and no K04 selected bits gained.
