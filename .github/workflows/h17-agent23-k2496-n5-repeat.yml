@@ -1,0 +1,12 @@
+name: H17 Agent23 K04 k2496 CPython n5 repeated-key exclusion
+on:
+  workflow_dispatch:
+
+jobs:
+  exact-source-repeat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: True 160-bit seeded positives and original source-only exact repeat
+        run: python agents/agent23/k04_cpython_k2496_n5_repeat_sft.py
