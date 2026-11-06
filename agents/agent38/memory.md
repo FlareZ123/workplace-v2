@@ -246,3 +246,44 @@ As of 2026-11-06T17:10Z, Agent26's runs 42249339554 (corrected blind 3B control 
 ### Next useful direction
 
 Seek a genuinely new source-grounded relation or original witness that can constrain K04 or K08. Do not reopen the FA-17 locator, RC-17 permutation/delta family, generic PRNG enumeration, public-site census, email quote-transport checks, or current K08 model portfolio. If no new source or falsifiable mechanism exists, preserve the boundary rather than manufacture more candidate families.
+
+
+## 2026-11-06 continuation: PTW-417 label-digest and K08 record pointers
+
+### PTW-417 seal-label text digest hypothesis
+
+The work order says PTW-417 seal-rack labels were replaced, and the print-fleet retirement note maps the incident-period ESC-N job `PS-261003-0417` to the L-29/N / FA-17 route. This supports a bounded hypothesis that the K04 coupon might be a digest of the four selected signed as-left PTW-417 seal serials serialized as label text. This is distinct from Agent13's prior exhaustive raw-serial byte ordering test.
+
+Reproducer: `agents/agent38/k04_ptw417_serial_label_digest_sft.py`, commit `8b3312529069ea6bce8689324cd808ff619ef42e`. It derives B,D,A,C from MAIL-04, selects the highest signed CLOSED/AS_LEFT record per bay, and verifies canonical K03 component `1384AF96E25D6ADA666209CB55E062FA` against the original K03 commitment. It pins work-order-417.html, seal-receipts.jsonl, MAIL-04, spool-reconstruction.log, print-fleet-retirement-note.txt, routing and acceptance. All seven remote Git blob IDs match the local ZIP copies.
+
+The candidate family covers 24 serial orders, six separators, optional `SG-` prefix, uppercase/lowercase, four explicit PTW/job metadata contexts as prefix/suffix, and 12 standard 16-byte digest reductions. Result: 4,608 text inputs, 55,296 digest assignments, 48,384 unique 16-byte candidates. Both K04 interpretations were checked: coupon then XOR mask, and direct component. Both yielded zero original hits, with one planted positive per path. Candidate-set fingerprint: `74a239ce561a524bffa0db7b3f786bda7227334f2fbf8e5697a6bbbea682c063`. Messages were sent to Agent13 and Agent6. This closes only the enumerated serial-label digest family; no K04 bytes were authenticated.
+
+A separate 37-candidate pilot over raw/normalized work-order and canonical serial-string digest forms also returned zero. Do not expand into arbitrary hash/KDF variants.
+
+### K08 exact desk-note pointer
+
+MAIL-20's header has `X-Records-Reference: desk-note-04`; its body says Gabriel copied Emily's exact phrase from the note she left at the desk. No matching file or index entry is in the ZIP or searched repository history. N04 in `noticeboard-and-desk-notes.txt` is explicitly authored by David and must not be conflated with `desk-note-04`. The records-custodian instruction says a source reference points to a record, not that every byte of that record belongs in the recovery envelope.
+
+The bookmark export separately points to `R:/IT/desk-images/oldscan/scanrelease.txt`, titled Desktop scanner release notes. A relationship to the referenced note is plausible but unproven. Request the original `desk-note-04`, associated scan/image and contemporaneous scan-release metadata together. The exact pointer and its limits were added to `results/h17-missing-evidence-request.md` and `results/h17-retired-profile-photo-cache-recovery-gate.md`, then sent to Agent26 and Agent21.
+
+### Additional K08 source acquisition leads
+
+The bookmark export points to:
+- `R:/Stores/consumables/mug-stock.xls`, Tea-room stock sheets.
+- `R:/IT/staff-groups/EG.htm`, E.G. electrical group roster.
+- `R:/IT/desktop-move-2026.html`, Profile-replacement calendar.
+- `R:/IT/desk-images/oldscan/scanrelease.txt`, Desktop scanner release notes.
+
+None of these is in the uploaded ZIP, current v1/v2 trees or searched plausible resource/private Git history paths. The mug workbook may identify the chipped blue mugs; the roster and calendar may help identify the people, profile or photo path. These are source leads only. Agent26 received the exact paths and a broadcast was sent. The mug workbook and profile calendar were already named in the existing missing-evidence request; the roster and desk-note-04 were added.
+
+### Additional K04 source acquisition leads
+
+The same bookmark export points to:
+- `R:/Finance/PrevERP/posted-items-26.xls` and `reversal-register.htm`, potentially independent evidence for the A3-posted versus A4-held duplicate.
+- `R:/Risk/hired-plant/CS-18/loan-set-register.htm`, a lower-priority hired-equipment certificate record with an unestablished relationship to FA-17.
+
+None is in the ZIP or current v1/v2 trees. Agent10 received these paths. The missing-evidence request was extended with the finance and hired-equipment records. The separate Stores monthly return and Risk transfer index are already covered by prior requests; do not duplicate them.
+
+### K08 CI snapshot
+
+As of 2026-11-06T16:53Z, runs 42249339554, 42249229492 and 42244159972 remained in progress. The active steps were still scoring candidates. No successful logs were retrieved, no new model was launched, and Agent26's memory had not yet recorded results. Wait for a committed measured result or source acquisition rather than launching another overlapping caption model.
