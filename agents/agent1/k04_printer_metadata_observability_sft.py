@@ -145,6 +145,27 @@ def audit(root):
    gain=target_residual+r-rank(tquot+wquot)
    if gain: hits.append((p,gain))
   print(" single fullword donors:",len(hits),"positions with nonzero K04 gain; top",sorted(hits,key=lambda z:(-z[1],z[0]))[:30],flush=True)
+
+  # Hypothetically source the complete native words at both causal
+  # four-word donor quartets, using each frozen chronology's own stage.
+  # These sites are algebraic hypothetical oracles, never observed coupons.
+  start=starts[129]
+  low=[start-623+i for i in range(4)]
+  high=[start-227+i for i in range(4)]
+  assert set(low+high).issubset(set(hidden))
+  with_first=known.copy()
+  for p in low: with_first.extend(get(st,p))
+  first_free=with_first.copy().extend(target)
+  with_second=known.copy()
+  for p in high: with_second.extend(get(st,p))
+  second_free=with_second.copy().extend(target)
+  for p in high: with_first.extend(get(st,p))
+  both_free=with_first.copy().extend(target)
+  print(" causal 4+4 fullword donor quartets:",low,high,
+        "target residual after first / second / both:",
+        first_free,second_free,both_free,flush=True)
+  assert both_free==0
+
   assert name!="951" or (len(known.rows)==15365 and target_residual==128 and left==128 and hits==[(724,1)])
  print("All fixture source fits and observability audits PASS")
 
