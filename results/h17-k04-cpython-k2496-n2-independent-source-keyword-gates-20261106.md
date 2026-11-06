@@ -59,3 +59,5 @@ k1 = A8 - (G8 XOR F1*mix(A7)) - 1
 All steps modulo 2^32. These generate the **entire** independent-filter key projections exactly once, avoiding 2^32-sized scans and branch-heavy SMT just to reject those 15 source bits. They require a subsequent join satisfying the original first-pass A7 path, followed by all other source rows. Four additional authentic CPython seeded controls (`0x100000001`, `0x123456789`, `0xFFFFFFFF00000001`, `0x1234567890ABCDEF`) were run with `random.Random(seed).getstate()`: the formulas recovered **each entire true k0 and k1 exactly**, four of four.
 
 This is an exact key-domain parameterization within a conditional model. It does not resolve the 2^49 join or identify the actual historical printer issuer.
+
+Portable Python implementation of the two constructive key-word maps, four genuine CPython seed positives, four forward/inverse consistency checks and original spool SHA256 pin: [Agent44 source-gate SFT](../agents/agent44/k04_k2496_n2_split_seed_prefilter_sft.py), committed at `4eaa3b83701c5b17bba975ff35880cb1d19eafd7`.
