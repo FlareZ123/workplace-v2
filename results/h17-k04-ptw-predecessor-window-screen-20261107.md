@@ -47,7 +47,7 @@ Neither candidate payload equals the selected ACK2 payload, and neither componen
 
 `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
 
-The latest-per-bay A/B/C/D and B/D/A/C candidate blocks also fail both checks. Their exact serial order, bytes, predicted payloads, and component hashes are printed by the reproducer.
+The **pre-job latest-per-bay snapshot** was also tested on 21 complete controls, PS-0396..0416: the latest singleton PTW serial for each bay before the corresponding job, assembled in A/B/C/D and B/D/A/C order, then XORed with the K04 mask. Both orders produced zero matches. For PS-0417, the A/B/C/D component is `F8DD126A5AD7D397645EB28C0C814A5E` (SHA-256 `eef469494783b5278d225329f5c584e220af5387c281601de74c98288378d31e`); B/D/A/C is `5AD7D3970C814A5EF8DD126A645EB28C` (SHA-256 `fb324325f058f623ad608d328ede136568ba94d65863b65df763932679df72fe`). Their masked payload predictions are `7D8BDAA13B97746EC14C884B5B9AA442` and `DF811B5C6DC1EDA75DCF28AD33455C90`, respectively; neither equals selected ACK2. The reproducer prints the exact permit IDs for both orders.
 
 ## Conclusion and limits
 
