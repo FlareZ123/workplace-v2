@@ -87,6 +87,9 @@ MAIL-20 also asks that the envelope label be preserved exactly as printed. That 
 
 A bounded comparison of the paired note text against common raw/normalized MD5, SHA-1, SHA-256 and BLAKE2s digests, plus HMACs under the available nonce/mask/component keys, produced no direct payload identity. That does not rule out a rendered-output, native spool, device-side, or other source-defined representation.
 
+
+The queue semantics add an important limit. `evidence/transfers/queue-note.txt` says queue names are physical print destinations and that a handoff proves acceptance by the queue, not paper collection. The fleet return register maps only PS-261003-0417 → ESC-N/FA-17, PS-261003-0448 → ESC-S/LV-42, and PS-261003-0420 → WATCH-SPARE/ST-09. It does not map job 0323. Thus `DEST=store` makes 0323 a useful physical-destination locator, while its device, queue host and collection remain unknown. Do not infer that 0323 used FA-17 or that paper was collected merely from its ACK.
+
 ## Highest-value next evidence
 
 If an authorized custody path or unsolicited source delivery becomes available, prioritize:
