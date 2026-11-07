@@ -17,7 +17,7 @@ PS-0300 is exactly 300 seconds before the first note-aligned job. Its position m
 
 ## Bounded local screens
 
-The PS-0300 payload is `FBBBC543...` in the supplied spool reconstruction. It was compared against seven common 16-byte digest/HMAC outputs for 111,586 distinct normalized contiguous spans from the 20 EML subjects/bodies plus N01-N24. No match appeared. The tested outputs were MD5, truncated SHA-1, truncated SHA-256, BLAKE2s-16, HMAC-SHA256 truncated with the declared desk nonce, and HMAC-SHA256 truncated with the K04 mask, with first/last SHA variants included.
+The PS-0300 payload is `FBBBC54356483F5864BB3F06794518A5` in the supplied spool reconstruction. It was compared against seven common 16-byte digest/HMAC outputs for 111,586 distinct normalized contiguous spans from the 20 EML subjects/bodies plus N01-N24. No match appeared. The seven tested outputs were MD5, SHA-1 first 16 bytes, SHA-256 first 16 bytes, SHA-256 last 16 bytes, BLAKE2s-16, HMAC-SHA256 first 16 bytes with the declared desk nonce, and HMAC-SHA256 first 16 bytes with the K04 mask.
 
 A separate K08 acceptance-HMAC screen over 4,871 normalized contiguous spans from N01-N24 and the seven-entry galley/stores log also produced zero hits. These screens leave the printed output itself outside the surviving text export.
 
