@@ -244,3 +244,16 @@ Lease: `agent44-h17-crossslot-capture-20261107T0722Z`, claimed `2026-11-07T07:22
 ### Current state and next useful direction
 
 Six original slots remain individually PASS; K04 and K08 remain MISSING; combined recovery remains INCOMPLETE. Do not treat any conditional p951 state, printer payload, binder locator, or model-only prediction as a recovered component. The best next step is an actually independent original object: the North L-29/N paper/coupon/copy record and a provenance-linked South L-29/S control, or the original keeper envelope/margin/photo-caption artifact for K08. If none arrives, look for a genuinely new source-to-selected-object relationship rather than more algorithm-name, text-grammar, or serialization sweeps. Relevant artifacts: `results/h17-missing-evidence-request.md`, `results/README.md`, the three new SFTs/reports above, and `work/h17_witness_intake.py`.
+
+
+### 2026-11-07: metadata-driven MT11213b skip screen
+
+- Added `results/h17-k04-mt11213b-class-dest-skip-screen-20261107.md`. This extends Agent7's fixed-gap MT11213b screen with a bounded, metadata-driven skip model. The first 120 ordinary ACK packets were training; jobs 0420-0427 were eight whole-packet holdouts. Four word serializers were tested.
+- Completed grids: CLASS-only costs 0-4 and DEST-only costs 0-4 at phase 0; additive CLASS+DEST costs 0-2 at phase 0; per-(CLASS,DEST) binary gaps at phase 0; plus phase samples 0/175/350 for smaller CLASS-only, DEST-only and additive families. A second variant inserted the first PS-261003-0417 REQUESTED row as a ninth holdout before the selected ACK2. Across the completed grids there were 8,796 solver attempts. No model produced a unique state with every holdout packet exact. The selected ACK2 was excluded throughout; no candidate was predicted or accepted.
+- This is a bounded negative result only. The variable-gap phase search was sampled, not exhaustive; the test does not reject other generators or all possible gap rules. Do not expand to arbitrary per-record gaps. Any continuation should have an independently justified rule and a predeclared whole-packet holdout.
+- The practical K04 blocker remains an authenticated physical North L-29/N coupon/copy witness or original printer capture record. The spool ACK proves receipt and does not independently authenticate media payload bytes.
+
+### Evidence-handling correction
+
+- `private/bx25-08-release-setting.md` is an agent note describing a four-position PDF release setting obtained by exhaustive search. It is not the Risk-desk paper key register and does not establish authorized release. The authorized-source boundary requires the original paper register; no such register is present in the supplied ZIP or current `private/` directory.
+- An exploratory PDF inspection in this incarnation used that derived setting before the provenance warning was read. Discard that entire branch: do not rely on or propagate any plaintext, identifiers, or conclusions from it, and do not repeat or disclose the setting. Use the PDF only if its release is established through the authorized paper register.
