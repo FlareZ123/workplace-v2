@@ -204,6 +204,96 @@ def rejection_aware_local_row(
     return unit_ok
 
 
+def fixed_schedule_holdout(
+    outputs, pv_rows: list[dict], q_values: dict[int, int]
+) -> tuple[int, int, int, int]:
+    """Whole-row chronological split for the strict five-word/no-rejection branch.
+
+    Training uses only the first 38 complete timestamp groups. The remaining
+    groups are not evaluated unless a training start/codebook survives.
+    """
+    ordered = sorted(pv_rows, key=lambda row: (row["ts"], row["seq"]))
+    groups = []
+    index = 0
+    for _, group in groupby(ordered, key=lambda row: row["ts"]):
+        records = list(group)
+        positions = list(range(index, index + len(records)))
+        groups.append((positions, records))
+        index += len(records)
+
+    train_groups = groups[:38]
+    holdout_groups = groups[38:]
+    train_rows = sum(len(records) for _, records in train_groups)
+    holdout_rows = sum(len(records) for _, records in holdout_groups)
+    assert (len(groups), train_rows, holdout_rows) == (75, 59, 53)
+
+    max_start = 3_000
+    max_tag_stage = max_start + 5 * 111
+    stage_range = range(POST_START, max_tag_stage + 1)
+    models = [(tag_map, unit_map, QUALITY_MAP)
+              for tag_map in TAG_MAPS for unit_map in UNIT_MAPS]
+
+    def compatibility(records: list[dict], tag_map, unit_map, quality_map):
+        by_seq = {}
+        for row in records:
+            q = q_values[row["seq"]]
+            accepted = set()
+            for stage in stage_range:
+                tag_codes = possible_codes(outputs, stage, 3)
+                quality_codes = possible_codes(outputs, stage + 3, 2)
+                unit_codes = possible_codes(outputs, stage + 4, 2)
+                pv_value, pv_mask = pair_projection(outputs, stage + 1)
+                if (
+                    tag_map[row["tag"]] in tag_codes
+                    and tag_map[row["tag"]] < 4
+                    and base.compatible(q, pv_value, pv_mask)
+                    and quality_map[row["quality"]] in quality_codes
+                    and quality_map[row["quality"]] < 2
+                    and unit_map[row["unit"]] in unit_codes
+                    and unit_map[row["unit"]] < 3
+                ):
+                    accepted.add(stage)
+            by_seq[row["seq"]] = accepted
+        return by_seq
+
+    def group_passes(group, start_stage: int, by_seq) -> bool:
+        positions, records = group
+        slots = [start_stage + 5 * position for position in positions]
+        return any(
+            all(slot in by_seq[row["seq"]] for slot, row in zip(slots, order))
+            for order in permutations(records)
+        )
+
+    candidates = []
+    for model_index, (tag_map, unit_map, quality_map) in enumerate(models):
+        train_compat = compatibility(
+            [row for _, records in train_groups for row in records],
+            tag_map, unit_map, quality_map
+        )
+        for start_stage in range(POST_START, max_start + 1):
+            if all(
+                group_passes(group, start_stage, train_compat)
+                for group in train_groups
+            ):
+                candidates.append((model_index, start_stage))
+
+    holdout_survivors = 0
+    if candidates:
+        for model_index, start_stage in candidates:
+            tag_map, unit_map, quality_map = models[model_index]
+            holdout_compat = compatibility(
+                [row for _, records in holdout_groups for row in records],
+                tag_map, unit_map, quality_map
+            )
+            if all(
+                group_passes(group, start_stage, holdout_compat)
+                for group in holdout_groups
+            ):
+                holdout_survivors += 1
+
+    return train_rows, holdout_rows, len(candidates), holdout_survivors
+
+
 def main() -> None:
     spool = base.SPOOL.read_bytes()
     historian = base.HIST.read_bytes()
@@ -227,6 +317,13 @@ def main() -> None:
     basis = source_basis(packets, LAST_STAGE)
     outputs = predict_words(basis, LAST_STAGE)
     q_values = {row["seq"]: round(row["value"] * 1000) for row in pv}
+
+    # Whole-record chronological training/holdout test for the strict five-word
+    # no-rejection branch. The final 53 rows are not used unless training fits.
+    train_rows, holdout_rows, train_candidates, holdout_survivors = fixed_schedule_holdout(
+        outputs, pv, q_values
+    )
+    assert (train_rows, holdout_rows, train_candidates, holdout_survivors) == (59, 53, 0, 0)
 
     # Regression control: reproduce the five high-information matches in the
     # original -2000..1038 window before extending beyond the final packet.
@@ -360,6 +457,8 @@ def main() -> None:
     print(f"post-spool stage starts: {POST_START}..{LAST_STAGE - 1}")
     print(f"eligible stages with >=12 fixed high17 bits: {eligible}")
     print(f"post-spool PV matches: {len(post_matches)} / 112")
+    print(f"fixed five-word whole-record split: train={train_rows}, holdout={holdout_rows}, "
+          f"training candidates={train_candidates}, holdout survivors={holdout_survivors}")
     print(f"fully determined PV bins: {len(fully_predicted)} stage projections, "
           f"{len(unique_bins)} distinct bins, observed intersection={sorted(matched_unique_bins)}")
     print(f"crude uniform-bin expectation for full-bin hits: {crude_uniform_bin_expectation:.3f}")
