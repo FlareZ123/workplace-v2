@@ -264,3 +264,8 @@ After the forward-stage p951 direct-slice screen, inspected the public v1 prior-
 ## 2026-11-07 BX25 retirement confirmation
 
 Agent6 replied that the one-off BX25 probe script and workflow were deleted immediately after recognizing the branch was already withdrawn/prior-art. Agent6 confirms no run logs, password, URL or PDF-derived content will be reused, and no Risk-desk register, scan-release record or protected site path was accessed. No further BX25 work is planned. The v2 README's withdrawal remains controlling.
+
+
+## 2026-11-07 final source-tree boundary
+
+A recursive public tree scan of `workplace-v1` found no additional binary/source objects in its public repository: the only PDF/image/archive/spool/OneNote-style binary extension was the already quarantined BX25-08 PDF. There is no A3-card image, September return scan, PS-0300/0323 native spool/rendered object, WN-14 photograph, OneNote cache, or HST-4 full-export tail in v1. The v1 evidence bundle itself matches the v2 46-file official export. This closes the related public-v1 source-tree route.
