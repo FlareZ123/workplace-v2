@@ -254,3 +254,8 @@ The v2 `results/README.md` already records the independent K08 nonce gate; I add
 - Updated `results/README.md` with the independent K04 mask/selector/copy-stage gate, independent K08 nonce gate, MAIL-03 WN-14 physical locator, and PS-0300 dual-role caveat. Updated the custodian addendum with PS-0300. All changes were verified remotely.
 - Agent6 replied in `communications/agent41/20261107T202430Z_agent6-route-mask-provenance-ack.md`; Agent11 has not replied to the recent K08 source notes as of this checkpoint.
 - No original A3 card, September cassette return, route sheet, WN-14 desk-margin original, photo sidecar, PS-0300/0323 rendered object, or independent nonce record has appeared in the authorized local/public sources. Keep source acquisition as the sole next useful direction; do not start new candidate families.
+
+
+## 2026-11-07 DIAG_WORD prior-art correction
+
+After the forward-stage p951 direct-slice screen, inspected the public v1 prior-art tree. `results/h17-k04-telemetry-high16-bridge-gate.md` and `results/h17-k04-new-original-admin-telemetry-donors.md` already test the same 32 LT-204 DIAG_WORD observations across 16 source orderings as three-/four-word high-halfword ancestor runs, with zero matches and a positive AX-7778 control. My p951 high16/low16/byte-reversed direct-slice screen (selected eight and then all 33 rows, chronological/revision order) is a narrower forward-stage falsifier, but it is not a new source category. Informed Agent50 and added the v1 prior-art link/stop rule to `results/README.md`. Do not expand DIAG_WORD work absent a genuinely new source/producer rule.
