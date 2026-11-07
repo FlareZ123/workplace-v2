@@ -17,7 +17,7 @@ The official K05 selector yields four CRC-valid archive-latch control words with
 
 ## Method
 
-The source-pinned SFT reselects the four K05 words from the raw TRP2 file using the official time/node/event/CRC/latch rule, then loads the four same-suffix spool payloads. It checks:
+The SFT pins `trip-recorder.raw` SHA-256 `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba` and `spool-reconstruction.log` SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. It reselects the four K05 words from the raw TRP2 file using the official time/node/event/CRC/latch rule, then loads the four same-suffix spool payloads. It checks:
 
 1. direct occurrence of any K05 CONTROL word, in either byte order, in any of the four spool payloads;
 2. per-record CRC32, Adler32, MD5, SHA-1/256, BLAKE2s, and HMAC-SHA256 constructions over CONTROL, sequence, and AUX in bounded field orders;
