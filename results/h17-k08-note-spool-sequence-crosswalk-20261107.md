@@ -90,6 +90,20 @@ A bounded comparison of the paired note text against common raw/normalized MD5, 
 
 The queue semantics add an important limit. `evidence/transfers/queue-note.txt` says queue names are physical print destinations and that a handoff proves acceptance by the queue, not paper collection. The fleet return register maps only PS-261003-0417 → ESC-N/FA-17, PS-261003-0448 → ESC-S/LV-42, and PS-261003-0420 → WATCH-SPARE/ST-09. It does not map job 0323. Thus `DEST=store` makes 0323 a useful physical-destination locator, while its device, queue host and collection remain unknown. Do not infer that 0323 used FA-17 or that paper was collected merely from its ACK.
 
+
+## MAIL-16 route constraint and native-mail lookup keys
+
+Agent11's MIME parse confirms the supplied 20 EMLs are single-part text/plain and contain no `In-Reply-To` or `References` headers, so the export does not preserve a usable thread graph. The native-store lookup keys are:
+
+- `11.IR261003` — Emily, “RC-17 issue receipt”.
+- `13.IR261003` — Gabriel, “Archive transfer receipt to keep with the folder”.
+- `16.IR261003` — Simon, “Escrow print jobs / recovered buffer”.
+- `20.IR261003` — Gabriel, “Preservation bundle 06 / desk-caption wording”.
+
+MAIL-16 explicitly says ESC-N is the north coupon used for the masked component (K04), WATCH-SPARE is an unrelated spare, and ESC-S is not an input to the keeper's desk phrase (K08). The route transcription maps ESC-N→PS-261003-0417, ESC-S→PS-261003-0448, and WATCH-SPARE→PS-261003-0420. It does not preserve a route assignment for job 0323.
+
+This materially qualifies the N23→0323 inference: it remains a candidate final-envelope print locator because of the note sequence and RECOVER/store metadata, but its K08 relevance is unproven until the native route/job manifest is recovered. If 0323 maps to ESC-S or WATCH-SPARE, do not use it as K08 phrase input. The native Outlook/profile stores are currently the stronger K08 source path; the 0323 rendered output is a separate possible witness.
+
 ## Highest-value next evidence
 
 If an authorized custody path or unsolicited source delivery becomes available, prioritize:
