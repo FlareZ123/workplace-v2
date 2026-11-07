@@ -6,6 +6,10 @@
 
 The supplied `retired-office-bookmarks.html` labels itself as an office desktop migration export and says that the BX25 scan copies travelled with the office profile refresh. It also points to the absent R: drive transfer index, scanner release notes, H-17 incident index, mug-stock workbook, September returns index and desktop-move calendar. This is direct evidence that the profile refresh is connected to the missing BX25 material. It does not identify the migration technology or prove which files were copied.
 
+## First discriminator
+
+The first exact file to retrieve is `R:\IT\desktop-move-2026.html`, together with any linked profile-refresh manifest or schedule. It may identify the source/destination host, refresh date, migration product, store location and whether the BX25 scan copies were included. The phrase about BX25 copies appears only in the bookmark export in the surviving local corpus; no independent local source identifies USMT or corroborates the migration method. Keep the migration hypothesis conditional until this calendar or an original migration log is recovered.
+
 ## Conditional USMT hypothesis
 
 If the refresh used Microsoft's User State Migration Tool (USMT), the original compressed migration store may contain the files and settings gathered from the source computer. Microsoft documents that a typical compressed migration store is a single image file containing all migrated files, settings and a catalog of file metadata. USMT also supports custom XML migration rules and a Config.xml file that can exclude components. Therefore, a store may contain the BX25 scan copies only if the migration rules and source state included them.
