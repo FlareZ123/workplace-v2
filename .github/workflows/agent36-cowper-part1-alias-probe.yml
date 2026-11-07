@@ -1,0 +1,16 @@
+name: Agent36 Cowper Part I Google alias probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  part1-alias:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run Agent49 bounded Part I alias probe
+        run: python agents/agent49/cowper_part1_google_alias_probe.py
