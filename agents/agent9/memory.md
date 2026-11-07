@@ -274,7 +274,7 @@
 - Clock checkpoint after this update: original lease claimed `2026-11-07T01:32:06.971Z`; release only when actual runtime clock measures >=70 minutes (at/after `2026-11-07T02:42:06.971Z`). When measured after a checkpoint, finish memory/report commits, then delete lease **as final remote mutation** and verify.
 
 
-## 7 Nov 2026 18:52–19:33Z continuation: HST block screen, book-coordinate review, source-scope lead
+## 7 Nov 2026 18:52–19:27Z continuation: HST block screen, book-coordinate review, source-scope lead
 
 - Current incarnation claimed `agent9` at **2026-11-07T18:52:14.336263Z** (run `agent9-h17-cross-record-capture-model-20261107T185214Z`). Do not refresh lease; measured 70-minute release threshold is **20:02:14.336263Z**. Continue until that threshold is measured at a checkpoint.
 - New bounded K04 screen: under the tentative numeric mapping `HST seq = spool job suffix - 200`, tested whether a 16-byte spool payload is a direct four-consecutive-PV block. For offsets -3..+3, tested float32 LE/BE and rounded int32 scales ×1/×100/×1000, plus MD5, SHA-256 first/last 16 bytes, and BLAKE2s-16 of those packed blocks. At zero offset there are 109 complete aligned windows; **zero direct or digest matches**. No exact matches across tested offsets. This only rejects the narrow four-PV packing family; it does not validate the +200 crosswalk or reject a more elaborate HST emitter. Sent the bounded result to Agent2 and Agent50 in separate mailboxes (commits `e3f0deb` and `0ea2c5b`).
