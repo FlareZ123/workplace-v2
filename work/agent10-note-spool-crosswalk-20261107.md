@@ -51,3 +51,11 @@ The exact numbering and temporal alignment is strong enough to prioritize the pa
 - Reproducer: `work/note_spool_crosswalk_sft.py`
 
 Next useful evidence is the complete native and rendered output for PS-261003-0323, with 0317/0318/0320/0306 as controls, plus the native queue/job manifest that authenticates the mapping. Integrate this into the existing Bundle 06/K08 acquisition scope. The 21 October custodian channel remains closed.
+
+
+## Additional bounded source-grammar checks
+
+- The four bench-destination/photo/brief notes N01/N08/N14/N20 were searched as ordered concatenations of contiguous 1–4-word spans, with total phrase lengths 7–12 words: 8,144,124 candidates, no K08 commitment hit.
+- The eight Emily-note final words were searched across all 40,320 permutations, then with one inserted word from a 28-word source-semantic/function-word list at all nine positions: 10,160,640 additional candidates, no hit. For N20, the semantic brief's first sentence ends at "table"; the following instruction about the shorter standby label is not treated as phrase text.
+- The repeated cross-component metadata pair was noted: N20→PS-261003-0320 and selected K04 PS-261003-0417 are both RECOVER/bench. This is a queue/destination hypothesis only; no physical-location or K04/K08 linkage is established.
+- Verified the SFT against three layouts: repository-style extracted `resources/evidence/` (default), the extracted archive directory, and the original ZIP. Each run returned 24 notes, 24 jobs, and 300-second intervals.
