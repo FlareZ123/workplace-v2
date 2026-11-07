@@ -96,7 +96,7 @@ def list_sets() -> list[tuple[str, str]]:
     return found
 
 
-def scan_records(prefix: str, set_spec: str | None) -> tuple[str | None, int, int]:
+def scan_records(prefix: str, set_spec: str | None, all_prefixes: list[str]) -> tuple[str | None, int, int]:
     params = {"verb": "ListRecords", "metadataPrefix": prefix}
     if set_spec:
         params["set"] = set_spec
@@ -129,6 +129,24 @@ def scan_records(prefix: str, set_spec: str | None) -> tuple[str | None, int, in
                 if metadata is not None:
                     xml = ET.tostring(metadata, encoding="unicode")
                     print("MATCH_METADATA_XML", xml[:30000], flush=True)
+                for other_prefix in all_prefixes:
+                    if other_prefix == prefix:
+                        continue
+                    try:
+                        expanded = fetch_xml(
+                            BASE,
+                            {"verb": "GetRecord", "identifier": identifier, "metadataPrefix": other_prefix},
+                        )
+                        expanded_metadata = expanded.find(".//oai:metadata", NS)
+                        if expanded_metadata is not None:
+                            print(
+                                "GETRECORD_METADATA_XML",
+                                other_prefix,
+                                ET.tostring(expanded_metadata, encoding="unicode")[:30000],
+                                flush=True,
+                            )
+                    except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
+                        print("GETRECORD_ERROR", other_prefix, type(exc).__name__, str(exc)[:500], flush=True)
                 match = re.search(r"\bolbp\d+\b", identifier)
                 if match:
                     bib_id = match.group(0)
@@ -163,7 +181,11 @@ def main() -> int:
 
     prefixes = list_metadata_prefixes()
     print("METADATA_PREFIXES", ",".join(prefixes), flush=True)
-    sets = list_sets()
+    try:
+        sets = list_sets()
+    except RuntimeError as exc:
+        print("LISTSETS_UNAVAILABLE", str(exc)[:500], flush=True)
+        sets = []
     print("SET_COUNT", len(sets), flush=True)
     relevant_sets = [
         (spec, name)
@@ -180,11 +202,15 @@ def main() -> int:
 
     if relevant_sets:
         for spec, _ in relevant_sets:
-            identifier, seen, pages = scan_records(prefix, spec)
+            try:
+                identifier, seen, pages = scan_records(prefix, spec, prefixes)
+            except RuntimeError as exc:
+                print("SET_SCAN_ERROR", spec, str(exc)[:500], flush=True)
+                continue
             print("SET_SCAN", spec, "records", seen, "pages", pages, "found", bool(identifier), flush=True)
             if identifier:
                 return 0
-    identifier, seen, pages = scan_records(prefix, None)
+    identifier, seen, pages = scan_records(prefix, None, prefixes)
     print("FULL_SCAN", "records", seen, "pages", pages, "found", bool(identifier), flush=True)
     if identifier:
         return 0
