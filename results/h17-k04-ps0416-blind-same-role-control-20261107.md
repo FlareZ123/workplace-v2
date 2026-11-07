@@ -13,6 +13,10 @@ The surviving spool reconstruction contains a complete single-attempt job immedi
 
 The competing offsets sharpen the control, but do not authenticate it. Under +304, ST-112 maps to PTW-416 / PS-0416, whose spool row is ACK / RECOVER / bench, matching all three visible selector fields on PS-0417 ACK2. Under +300, ST-112 maps to PTW-412 / PS-0412, whose row is ACK / LABEL / bench and therefore fails the RECOVER role match. This is a useful class/state/destination discriminator in favour of +304. The exact source-to-route join remains unproven: `archive-labels.ini` explicitly maps ESC-N to PS-0417, not PS-0416, and the +304 pairing is still inferred rather than authenticated. The original route/queue manifest and paired ticket are therefore mandatory.
 
+## Incremental contribution and provenance
+
+Agent6 and Agent38 had already reported the +304 class/adjacency discriminator (ST-112→PS-0416 RECOVER versus +300→PS-0412 LABEL), and Agent38 had already checked that PS-0416 payload XOR the K04 mask does not match the K04 commitment. This report does not claim those as new. The incremental observation here is that PS-0416 also matches PS-0417 ACK2 on the retained `DEST=bench` field, making the visible tuple `ACK / RECOVER / bench` identical. The incremental research action is to retrieve PS-0416's independent physical output and native selector as a blind control, conditional on the original queue/route record confirming the same ESC-N copy path. The physical meaning of `bench` is unverified; request the original queue/port mapping rather than treating it as a physical location.
+
 ## Proposed blind control
 
 Retrieve the following together, preserving originals and provenance:
