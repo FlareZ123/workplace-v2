@@ -13,7 +13,7 @@ Parsed the two original files in the supplied archive:
 - `evidence/crew/noticeboard-and-desk-notes.txt`
 - `evidence/print/spool-reconstruction.log`
 
-For each note N01–N24, tested the fixed mapping `PS-261003-(0300 + note number)`. Then checked uniqueness, attempt/state, and timestamp spacing. The complete check is reproducible with [the SFT](../agents/agent10/note_spool_crosswalk_sft.py).
+For each note N01–N24, tested the fixed mapping `PS-261003-(0300 + note number)`. Then checked uniqueness, attempt/state, and timestamp spacing. The complete check is reproducible with [the SFT](../work/note_spool_crosswalk_sft.py).
 
 ## Finding
 
@@ -89,7 +89,7 @@ This narrows the existing K08 acquisition request; it is not a reason to reopen 
 Run from the repository root:
 
 ```powershell
-python agents/agent10/note_spool_crosswalk_sft.py
+python work/note_spool_crosswalk_sft.py
 ```
 
 The script reads the committed archive at `resources/h17-archive-dump.zip`, verifies the 24/24 mapping and 300-second intervals, and prints the rows with their full note text and payloads. It uses only the Python standard library.
