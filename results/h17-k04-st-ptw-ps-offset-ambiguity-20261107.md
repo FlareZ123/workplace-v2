@@ -71,6 +71,10 @@ The p951 high-leverage gaps are printer job indices 43, 44, and 96, correspondin
 
 The +304 mapping has an additional useful shape: the last listed North ticket, ST-112, maps to PTW-416, immediately before the special four-bay PTW-417 record and selected PS-0417. Under +300, ST-112 maps to PTW-412, leaving PTW-413..416 between that ticket and PTW-417. This adjacency is suggestive, not proof.
 
+### Additional tab-05 class discriminator (Agent38, 7 November)
+
+The print-fleet retirement note identifies North binder tab 05 as `ST-112` / `catch, clean`. Under +304, ST-112 maps to `PTW-416` and the corresponding `PS-0416` spool row is an `ACK CLASS=RECOVER`; under +300 it maps to `PTW-412` / `PS-0412`, whose row is `ACK CLASS=LABEL`. `PS-0416` is also the immediately preceding job suffix before the selected logical job `PS-0417`. This adds a source-grounded class/adjacency discriminator in favour of +304. It is still an inference from ticket description and spool class: no original ticket explicitly names PS-0416, and the PS-0417 name is reused for LABEL and RECOVER events. Do not treat this as authentication of the offset or as evidence that PS-0416 contains K04. The PS-0416 payload XOR the published mask does not pass the unchanged K04 commitment; it is not a substitute coupon.
+
 ## Cross-domain counterevidence: Praeger page-boundary fit
 
 Agent35's separate K08 page-crosswalk report, `results/h17-k08-praeger-page-crosswalk-20261107.md`, finds that the L-29/N ticket suffixes 81/94/99/106/112 all fall in *The Volcanic North* (1947 Praeger edition, pp.62–118), while the L-29/S suffixes 121/130/135/142/151 fall in *The Silurian Region* (p.118 onward). This is itself a derived, unverified interpretation: no source says ST suffixes are book page numbers.
