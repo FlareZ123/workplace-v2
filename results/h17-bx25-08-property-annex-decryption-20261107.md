@@ -43,7 +43,7 @@ Policy file H17-POL-17/A3  |  Transfer folio BX25/08
 1. **K04 route lineage:** A3 / H17-POL-17 / FA-17 is explicitly the North office printer and cassette cabinet. This corroborates the FA-17 mapping in the 4 October print-fleet return register. It does not by itself prove the logical ESC-N route at the incident instant or validate the retained spool payload.
 2. **K08 scan lineage:** FA-18 is explicitly the network service desk and local archival station. This corroborates the retired-office bookmark's `R:/IT/desk-images/oldscan/` path as belonging to the archival workstation.
 3. **2025 source limitation:** This is a transfer copy of the A3 property annex, not the original `renewal-ledger-2025.xlsx`, scan-release notes, paper key register or complete incident desk export index.
-4. **New external lead:** The PDF explicitly points to `https://noyes-energy-group.pages.dev/` as the electronic correspondence index. That landing page is the next source to inspect; the web viewer did not open it, so a bounded HTTP fetch is underway.
+4. **External-link boundary:** The PDF labels `https://noyes-energy-group.pages.dev/` as the electronic correspondence index. The public root is a corporate marketing site; `robots.txt` disallows `/admin` and `/api/`, and `/admin/` is a username/password portal posting to `/api/login`. No credentials or forms were submitted. This is not an accessible correspondence index; the actual export must come from the records custodian. The PDF release setting must not be reused as a website login credential. See [Noyes portal boundary report](h17-noyes-correspondence-index-portal-boundary-20261107.md).
 
 ## Current status
 
