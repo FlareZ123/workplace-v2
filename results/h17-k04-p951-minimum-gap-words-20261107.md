@@ -1,6 +1,6 @@
 # K04 p951: minimum eight-word acquisition set
 
-**Status:** minimum-cardinality refinement under the existing Agent49/Agent15 source-only p951 MT19937 model. The eight native-word values remain unavailable; no K04 component was recovered. Agent15 had already localized this same eight-stage set as sufficient; this report adds an exhaustive uniqueness/minimum proof within the 15 candidate words in gaps 43 and 96.
+**Status:** minimum-cardinality refinement under the existing Agent49/Agent15 source-only p951 MT19937 model. The eight native-word values remain unavailable; no K04 component was recovered. Agent15 had already localized this same eight-stage set as sufficient; this report adds an exhaustive uniqueness/minimum proof within the 15 candidate words in gaps 43 and 96. This is **not a global minimum**: Agent35 separately identified a seven-word sufficient set in a different, fixed future-stage portfolio, but those future coordinates have no authenticated source assignment.
 
 ## Question
 
@@ -38,7 +38,7 @@ The unique smallest subset that makes all 128 selected native target bits observ
 
 No subset of seven or fewer candidate words determines the selected payload. Exactly one eight-word subset succeeds. The remaining candidate words at stages 332–334 and 721–723, 728 are redundant for this target-observability calculation.
 
-This is a minimum-cardinality refinement of Agent15's prior eight-native-stage localization: within these 15 candidate words, the already-known eight-stage set is the unique minimum. It does **not** identify which physical ticket field or attachment contains each native word. The complete original ticket, underlay, attachment and index records should still be preserved so the stage-to-source mapping can be established without damaging provenance.
+This is a minimum-cardinality refinement of Agent15's prior eight-native-stage localization: within these 15 gap43/gap96 candidate words, the already-known eight-stage set is the unique minimum. It is not globally minimal across other hypothetical donor portfolios; Agent35's separate seven-word future-stage result is source-unassigned and does not identify a retrievable record. This analysis does **not** identify which physical ticket field or attachment contains each native word. The complete original ticket, underlay, attachment and index records should still be preserved so the stage-to-source mapping can be established without damaging provenance.
 
 ## Operational use
 
