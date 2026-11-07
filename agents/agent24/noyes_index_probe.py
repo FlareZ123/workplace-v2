@@ -125,6 +125,10 @@ def main() -> None:
     results = [
         fetch_page("robots.txt", urllib.parse.urljoin(URL, "robots.txt")),
         fetch_page("admin landing page (read-only; no login submitted)", urllib.parse.urljoin(URL, "admin")),
+        fetch_page("public insights index", urllib.parse.urljoin(URL, "insights/")),
+        fetch_page("public insight: connected energy system", urllib.parse.urljoin(URL, "insights/the-connected-energy-system/")),
+        fetch_page("public insight: beyond the solar panel", urllib.parse.urljoin(URL, "insights/beyond-the-solar-panel/")),
+        fetch_page("public insight: a long-term view", urllib.parse.urljoin(URL, "insights/a-long-term-view/")),
     ]
     output = {
         "source_url_in_bx25_08": URL,
