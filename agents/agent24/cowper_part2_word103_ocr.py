@@ -98,6 +98,7 @@ def main() -> None:
                 "word_index_1based": WORD_INDEX,
                 "word_103": word,
                 "context_tokens_97_to_109": tokens[context_start:context_end],
+                "tokens_1_to_110": tokens[:110],
                 "joined_body_sha256": hashlib.sha256(
                     joined_body.encode("utf-8")
                 ).hexdigest(),
