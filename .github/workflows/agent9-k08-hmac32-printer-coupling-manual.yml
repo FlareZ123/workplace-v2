@@ -1,0 +1,13 @@
+name: H17 Agent9 K08 full-HMAC printer-state coupling
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-coupled:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact original-source and synthetic printer positive controls
+        run: python3 -u agents/agent9/k08_hmac32_printer_coupling_sft.py
