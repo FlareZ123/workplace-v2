@@ -27,14 +27,14 @@ WORD_PATTERN = re.compile(r"[A-Za-z0-9]+(?:[.'’/-][A-Za-z0-9]+)*")
 
 def normalize(text: str) -> str:
     """Apply the exact K08 normalization to the selected phrase only."""
-    text = re.sub(r"[^a-z0-9\\s]", " ", text.lower())
+    text = re.sub(r"[^a-z0-9\s]", " ", text.lower())
     return " ".join(text.split())
 
 
 def join_line_wrap_hyphens(text: str) -> str:
     """Join a printed word split by a line-end hyphen and newline."""
     return re.sub(
-        r"(?<=[A-Za-z0-9])-\\s*\\n\\s*(?=[A-Za-z0-9])",
+        r"(?<=[A-Za-z0-9])-\s*\n\s*(?=[A-Za-z0-9])",
         "",
         text,
     )
@@ -62,7 +62,7 @@ def main() -> None:
         image_sha = hashlib.sha256(image_bytes).hexdigest()
         if len(image_bytes) != entry["bytes"] or image_sha != entry["sha256"]:
             raise ValueError(f"Source image pin failed for printed page {page_number}")
-        if not image_bytes.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+        if not image_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
             raise ValueError(f"Expected PNG image for printed page {page_number}")
 
         image = Image.open(image_path).convert("L")
@@ -149,7 +149,7 @@ def main() -> None:
     }
 
     output = ASSET_DIR / "word103-ocr.json"
-    output.write_text(json.dumps(result, indent=2) + "\\n", encoding="utf-8")
+    output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2))
 
 
