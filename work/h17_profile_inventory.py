@@ -169,6 +169,7 @@ def build_inventory(source_root: str | os.PathLike[str]) -> dict[str, Any]:
     errors: list[dict[str, str]] = []
     skipped_sensitive = 0
     skipped_links = 0
+    skipped_link_entries: list[dict[str, Any]] = []
 
     def walk(directory: str, relative_directory: str) -> None:
         nonlocal skipped_sensitive, skipped_links
@@ -188,6 +189,11 @@ def build_inventory(source_root: str | os.PathLike[str]) -> dict[str, Any]:
                 info = entry.stat(follow_symlinks=False)
                 if _is_reparse_or_link(entry.path, info):
                     skipped_links += 1
+                    skipped_link_entries.append({
+                        "path": relative.replace("\\", "/"),
+                        "kind": "symlink" if stat.S_ISLNK(info.st_mode) else "reparse_point",
+                        "file_attributes": getattr(info, "st_file_attributes", None),
+                    })
                     continue
                 if stat.S_ISDIR(info.st_mode):
                     walk(entry.path, relative)
@@ -254,6 +260,7 @@ def build_inventory(source_root: str | os.PathLike[str]) -> dict[str, Any]:
             "errors": len(errors),
         },
         "files": files,
+        "skipped_link_entries": skipped_link_entries,
         "errors": errors,
     }
 
