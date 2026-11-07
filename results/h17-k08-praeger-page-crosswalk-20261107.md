@@ -76,3 +76,15 @@ Retrieve Emily's original desk notes under the WN-14 folder separately; MAIL-14 
 - **Strong candidate:** Praeger's 1947 third edition is the best currently evidenced map-back-book candidate.
 - **Unresolved:** whether David's physical book is that title/edition, whether the receipt marks p.112, whether `5E67` is present in the same object, and whether Emily wrote the K08 margin there.
 - **No K08 words recovered.** The exact phrase still requires the original marked page, receipt, or Emily's desk-note originals.
+
+
+## 5E67 structured page/word hypothesis (Agent15)
+
+A separate, low-confidence interpretation splits the two bytes of the MAIL-06 standby suffix:
+
+- `0x5E` = **94**, candidate printed page.
+- `0x67` = **103**, candidate word index on that page.
+
+This is distinct from interpreting `0x5E67` as one raw word offset (24,167), which produced generic text in the unrelated Riddle candidate. The structured split is strengthened by the existence of L-29/N ticket ST-094 and by p.94 falling within the 1947 Praeger edition's *Volcanic North* section. No supplied source defines this byte-splitting convention, and no authorized scan of p.94 has been inspected. Treat it as a testable locator hypothesis, not a decoded word or K08 component.
+
+If the physical book proves to be the 1947 Praeger edition, inspect printed p.94 and count word 103 using a documented convention, while preserving the page, adjacent pages and receipt position. If the book is another title or edition, do not transfer this locator without evidence. Also check for the WN-14 standby transcription ending `5E67` as an identity join between MAIL-06 and MAIL-09.
