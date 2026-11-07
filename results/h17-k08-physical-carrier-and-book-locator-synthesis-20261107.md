@@ -45,7 +45,24 @@ Public catalogue listings:
 - 1934 first-edition listing: https://www.abebooks.com/first-edition/Pilots-guide-Thames-Estuary-Norfolk-Broads/11292639200/bd
 - 1938 second-edition listing: https://www.abebooks.co.uk/Pilots-Guide-Thames-Estuary-Norfolk-Broads/19934063826/bd
 
-### D. Walter Lord's *A Night to Remember* (1955) / 1958 film
+### D. Arthur Ransome's *We Didn't Mean to Go to Sea* (1949 18th impression)
+
+This is currently the strongest **MAIL-09 map-back / MAIL-11-N20 narrative locator**, though the physical copy is not identified. The book has a rear endpaper map; the accessible 1949 18th-impression text places Chapter VII on p.94. That all-night passage has Jim absent after the overnight passage, Susan setting a place for five at the cabin table, and the children waiting in fog with the sea outside. These particulars match the local semantic brief more closely than a generic nautical-book resemblance.
+
+Sources and reproduction:
+- Academic analysis of the fictional map/endpapers: https://eprints.lancs.ac.uk/id/eprint/75836/1/REVISEDFINALParatextorImagetext.pdf
+- Accessible text/contents for the 1949 18th impression: https://www.fadedpage.com/books/20180428/html.php
+- Detailed local source and bounded-test report: [Ransome map/endpaper locator](h17-k08-ransome-map-endpaper-locator-candidate-20261107.md)
+
+This is a locator/inspiration hypothesis, not the K08 phrase. The report's page-94 body word 103 is "shelf" (including the chapter heading changes the position to "took"); 14,060 contiguous normalized spans from the available p.94 opening excerpt produce no K08 hit. The 5E67 → p.94/word-103 interpretation was proposed for the Praeger 1947 edition and must not be transferred to Ransome. The Ransome page-94 scene and the separate standby suffix are distinct observations.
+
+If the physical copy is recovered, verify the exact title/imprint/1949 18th impression, rear endpaper map, and whether the tea receipt marks p.94. Preserve the receipt in situ and image both faces, the p.94 margin/reverse/adjacent leaves, map and endpapers. The exact phrase remains in the original envelope/Emily margin and separate desk-note/photo-caption stack; do not substitute printed Ransome text for it.
+
+### E. Walter Lord's *A Night to Remember* (1955) / 1958 film — pruned false positive
+
+The 2024 Folio Society edition is 264 pages and has a folded Titanic deck plan in a separate blocked pocket at the back, and the book was adapted for film in the 1950s. This made it an attractive two-mail candidate for MAIL-09/MAIL-15, but the local export does not name the Saturday film and the thematic resemblance is weaker than Ransome's specific p.94 cabin-table / all-night-passage scene. Agent18's adversarial review prunes it as a false positive for David's map-back book. Retain the [bounded audit](h17-k08-a-night-to-remember-book-film-locator-20261107.md) to prevent rediscovery; do not continue its subtitle or literary phrase sweeps from this branch.
+
+
 
 A new competing identification for the MAIL-09 map-back book and MAIL-15 Saturday film is Walter Lord's *A Night to Remember* and its 1958 adaptation. The official Folio Society 2024 edition is 264 pages and has an original Titanic deck plan folded into a separate blocked pocket at the back. That is a notably specific fit for MAIL-09's map-in-back clue; the 1958 adaptation provides a coherent candidate for MAIL-15's unnamed film/subtitle setup.
 
