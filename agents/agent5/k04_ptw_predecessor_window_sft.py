@@ -139,6 +139,22 @@ def main() -> None:
     assert not raw_payload_hits
     assert not hash_component_hits
 
+    # Pre-job four-bay snapshot: latest singleton serial per bay before PS-n.
+    snapshot_hits = {"ABCD": [], "BDAC": []}
+    for job in range(396, 417):
+        latest = {}
+        for permit in range(390, job):
+            row = by_permit[permit][0]
+            bay = row["bay"]
+            if bay not in latest or permit > latest[bay][0]:
+                latest[bay] = (permit, row)
+        assert set(latest) == set("ABCD")
+        for order in ("ABCD", "BDAC"):
+            component = b"".join(serial_bytes(latest[bay][1]) for bay in order)
+            if matches_component(component, spool[job][0]["payload"]):
+                snapshot_hits[order].append(job)
+    assert all(not hits for hits in snapshot_hits.values())
+
     # Positive control: the comparator recognizes a planted component/payload pair.
     planted_component = serial_window(400)
     planted_payload = xor16(planted_component, mask)
@@ -186,6 +202,7 @@ def main() -> None:
     print("PREDECESSOR_CONTROLS=23; RAW_COMPONENT_XOR_MASK_HITS=0")
     print("PREDECESSOR_CONTROLS=23; RAW_UNMASKED_PAYLOAD_HITS=0")
     print("PREDECESSOR_CONTROLS=23; SHA256_PIPE_COMPONENT_XOR_MASK_HITS=0")
+    print("PREJOB_SNAPSHOT_CONTROLS=21; ABCD_HITS=0; BDAC_HITS=0")
     print("RAW_ORIENTATIONS=4; SYNTHETIC_POSITIVE_CONTROL=PASS")
     print(f"PS0417_SELECTED_ACK2={selected_payload.hex().upper()}")
     print(f"PTW413_416_RAW_COMPONENT={raw_target_component.hex().upper()}")
