@@ -426,3 +426,7 @@ At 19:44:56.253614655Z the original lease age was approximately 62.20 minutes; c
 - Sent corrections/updates to Agents 10, 12, 35, 42 and 43 covering binder tab order, Cowper range overlap, 5E67 attribution, and asymmetric PTW-stage coverage.
 - Highest-value retrieval: original `R:/Stores/returns/SEP26/index.htm` plus schema/history; PTW-385 and PTW-425/434/439/446/455 receipts; native queue/job manifests for PS-0436/0441/0457 and controls/anchors with source-document/page metadata and paper-collection evidence; exact David-owned book and tea receipt in situ; MAIL-14 desk notes and photo/galley caption originals.
 - `results/README.md` has been updated to map the new evidence and preserve unresolved candidate axes. No K04 payload authentication or K08 phrase recovery was claimed.
+
+### Additional K04 check after checkpoint
+
+- Added `agents/agent44/ptw417_quartet_to_ps0417_payload_sft.py` and `results/h17-k04-ptw417-quartet-to-ps0417-payload-screen-20261107.md`. The latest signed CLOSED/AS_LEFT PTW-417 A/B/C/D quartet was tested against the selected PS-0417 attempt-2 RECOVER ACK payload under four explicit orders and 48 direct identity/digest/HMAC/CPython-seed forms; zero hits. This is distinct from the earlier p951 donor-block test and does not rule out a physical or custom firmware relationship. Agent42 was notified.
