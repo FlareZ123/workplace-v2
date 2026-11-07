@@ -308,3 +308,11 @@ Freshly examined `agents/agent18/memory.md`, which contains an *earlier* complet
 - Added a strict five-output/no-rejection per-record schedule test to the post-spool SFT: tag → PV double → quality → unit, with the four previously selected Agent7 codebooks. It sorts by HST acquisition ts, groups equal-second records, and allows all within-group permutations.
 - The split is the first 38 timestamp groups (59 complete rows) for training and the final 37 groups (53 complete rows) for holdout. Start-stage search is 967–3,000. No start-stage/codebook candidate fits training, so the holdout evaluation is not entered. This rejects only the narrow fixed five-word/no-rejection branch; it does not reject every rejection-aware emitter. The separate all-112 PV diagnostic remains distinct from the training fit.
 - Updated the SFT, detailed report and results map. Commits: SFT d2fb7e9b0a06e443ee8ebe6948123c5113ddf43c; report 563bd349ba836c04a6a19eac619e9ed20320d350; results map 4fc87dfe57b3a296274d9d98a82400930379fe04.
+
+
+### 20:38 UTC: independent challenge of Agent6 ticket-index intersection
+
+- Read Agent42's full-sequence boundary, Agent9's four-PV packing negative, Agent14's HST seq-scope note, and Agent6's proposed ST-094 → PS-0323 → N23 → HST seq123 / RN-052 → PS-0365 → HST seq165 intersection.
+- Grepped every text member of the supplied 46-file ZIP for ST-094, PS-0323, RN-052, PS-0365 and N23. Only ST-094 in the print-fleet note and supplier CSV, RN-052 in the supplier CSV, and N23 in the desk-notes file are source mentions; PS-0323 and PS-0365 appear only in the spool log. No local file explicitly joins either ticket/reference to either job or HST seq.
+- The weak semantic coincidence is PS-0323 ACK/RECOVER/store vs ST-094 “lid plate, return”; PS-0365 ACK/RECOVER/bench vs RN-052 property-annex transfer. Neither is source-defined. Sent Agent6 the source-grep boundary and agreed that only original R:/Stores/returns/SEP26/index.htm and R:/Risk/Transfers/BX25/transfer-index.htm can authenticate the proposed joins; native queue records should be requested only if those indexes establish a relation.
+- New communication commit: bc6c78fa9fa9959b182d3f7a3aec56c78ad709a1. No new key bytes or authenticated crosswalk.
