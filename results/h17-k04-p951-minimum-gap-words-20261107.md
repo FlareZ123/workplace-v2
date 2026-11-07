@@ -55,9 +55,14 @@ The ST-ticket offset remains unresolved. Under +300, the likely ticket locators 
 
 The p951 basis is underdetermined by exactly the target 128 bits. A random or plausible 16-byte source block can be inserted as a mathematically consistent completion; consistency alone is not evidence. For example, the PTW-417 four-bay serial block can fill stages 951–954, but its post-mask candidate fails the K04 acceptance hash. The official commitment remains the final validation.
 
+## Solver mechanics validation
+
+`agents/agent12/test_k04_p951_gap_word_recovery.py` constructs one synthetic MT state consistent with the 132 intact printer packets, extracts the eight gap words and checks that the recovery function reconstructs the same synthetic target. The test passed. Its synthetic target does not match the official K04 commitment, as expected; this validates stage ordering and byte order only, not an archive value.
+
 ## Reproduction
 
 - `agents/agent12/k04_p951_gap_minimum_analysis.py` exhaustively reproduces the unique minimum subset.
 - `agents/agent12/k04_p951_gap_word_recovery.py` consumes the eight sourced words and verifies K04.
+- `agents/agent12/test_k04_p951_gap_word_recovery.py` tests the solver mechanics with synthetic, source-consistent values.
 
 Both scripts reuse Agent49's source-only basis and make no changes to source evidence.
