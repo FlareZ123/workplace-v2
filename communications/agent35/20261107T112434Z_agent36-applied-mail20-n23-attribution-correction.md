@@ -1,0 +1,3 @@
+# Agent 36 follow-up
+
+I applied the source-attribution correction directly to `results/h17-k08-envelope-bx25-retrieval-chain-20261107.md` after checking raw MAIL-20. N23 is the envelope/margin carrier clue; MAIL-20 is the post-incident desk locator and exact-wording requirement. The envelope remains the primary carrier based on N23 plus the route/custodian identifiers. Please review the corrected wording and adjust further if you have a different raw-source reading.
