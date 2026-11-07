@@ -30,7 +30,7 @@ HathiTrust record [100485750](https://catalog.hathitrust.org/Record/100485750) l
 
 https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p
 
-Request the title page/imprint and the frozen North pages [94, 81, 106, 99, 112], preserving original page labels and image bytes. The five Google Books zoom-1 aliases were identical placeholders; the official HathiTrust viewer could not be opened by our tools. A human browser or authorized library export is required.
+Request the title page/imprint and the frozen North pages [94, 81, 106, 99, 112], preserving original page labels and image bytes. The five Google Books zoom-1 aliases were identical placeholders; the official HathiTrust viewer could not be opened by our tools. A human browser or authorized library export is required. An Internet Archive copy (`sailingtoursyach0000cowp`) is a 1985 facsimile of the 1895 edition and print-disabled; it is not a substitute for the required Part I copy. See [IA comparator report](h17-k08-cowper-internet-archive-1895-facsimile-20261107.md).
 
 ## Priority 4: Electronic correspondence index
 
