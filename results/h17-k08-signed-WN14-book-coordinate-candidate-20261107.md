@@ -1,6 +1,6 @@
 # K08: signed WN-14 groups as a bounded book-coordinate candidate
 
-**Status:** unverified hypothesis only. No K08 phrase has been extracted, and no candidate has been accepted.
+**Status:** deferred, unverified hypothesis only. No K08 phrase has been extracted, and no candidate has been accepted. In accordance with the current source-first freeze, do not conduct remote book OCR, page-word extraction, or catalogue-alias probes until David's exact physical book and edition are independently identified.
 
 ## Question
 
