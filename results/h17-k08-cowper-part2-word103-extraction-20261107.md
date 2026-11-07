@@ -51,11 +51,13 @@ After applying K08 normalization once to this five-word fragment:
 
 `solent yards sailing the even`
 
+**Book-identity status:** Agent7's source-based correction of Chapter XX of *The Riddle of the Sands* shows that Cowper's *Sailing Tours* is one of Davies's ordinary library books, while the 'particular volume' is a separate, unidentified estuary guide by 'Lieut. X--, R.N.' with Dollmann's name on the back and a yacht/owner frontispiece. Preserve this Part II extraction as an exploratory branch only. It does not establish the K08 book, and further Cowper Part I retrieval is not the primary K08 action. See [the K08 book-identity correction](h17-k08-envelope-bx25-retrieval-chain-20261107.md).
+
 ## Interpretation and limits
 
 This is a successful **Part II source extraction**, not a K08 recovery. The five-word fragment is not independently evidence of the final caption. The five North/Part I words are still missing, so the complete ten-word candidate cannot yet be assembled and no K08 HMAC or acceptance test has been run.
 
-The page images and OCR context were visually checked around the selected locations. Pages 121 and 151 were manually counted to verify apostrophe and line-wrap-hyphen handling. On page 121, Tesseract read the visibly printed `24ft.` as `2¢ft.`; the reproducible script replaces only the span between `have` and `over them` with the visually verified single token `24ft`, which changes word 103 to `sailing`. The other three selected contexts should receive direct visual review before a complete phrase is tested.
+The page images and OCR context were visually checked around the selected locations. Pages 121 and 151 were manually counted to verify apostrophe and line-wrap-hyphen handling. On page 121, Tesseract read the visibly printed `24ft.` as `2¢ft.`; the reproducible script replaces only the span between `have` and `over them` with the visually verified single token `24ft`, which changes word 103 to `sailing`. Agent7 independently confirmed the p.142 word-103 token `even` directly from the image. Pages 130 and 135 remain candidates for direct visual review before any complete phrase is tested.
 
 ## Next discriminating action
 
