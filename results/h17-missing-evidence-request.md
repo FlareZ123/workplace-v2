@@ -302,3 +302,39 @@ MAIL-14 locates Emily's loose desk notes under the WN-14 folder, outside the con
 If an authorized original-paper set becomes available, preserve the WN-14 folder, loose notes, adjacent pad leaves, folder backing/inserts and envelope backing sheets **in their original order and orientation**. Photograph every surface and both faces before movement or specialist processing. Do not rub, shade, pencil over, flatten, clean or chemically process the papers. Refer the originals to a qualified forensic document examiner for assessment under the applicable document-indentation standard; the examiner should decide whether optical side-lighting and/or EDD/ESDA is appropriate. EDD can affect pencil marks, so documentation must precede any such examination. Preserve raw images, settings, any lifts, hashes and an independent verbatim transcription.
 
 A positive K08 result requires a legible inscription independently attributed by physical context and chronology to Emily's **final incident-envelope margin**. An impression of N02/N06 draft wording, N17/N18 decoy labels or unrelated notes is not K08. Apply the unchanged K08 normalization/HMAC only after source attribution. A negative examination applies only to the specific sheets examined. This is a conditional acquisition modality, not evidence that an underlay existed or that any exact words have been recovered. See [K08 underleaf-indentation acquisition path](h17-k08-underleaf-indentation-acquisition-20261107.md) and the [NIST/OSAC ANSI/ASB 044-19 standard record](https://www.nist.gov/osac/standards-library/ansiasb-standard-044-19).
+
+
+## 7 November 2026: request both competing ST↔PTW↔PS index mappings
+
+A later source-derived audit identifies two plausible numeric offsets between the five posted FA-17 L-29/N service tickets and the same-suffix PTW/PS records. **Neither is an authenticated crosswalk.** The +304 mapping has stronger controls in the surviving export (four matched North tickets land in bays A/B/C/D in binder order, and the earlier FA-17 L-28 holdout matches 2/2 rather than 1/2 for +300), but the original September index or a paired original ticket is still required. Do not retrieve only the +300 set, and do not promote +304 to fact.
+
+| Ticket / source group | +300 candidate PTW / PS | +304 candidate PTW / PS |
+|---|---|---|
+| L-29/N ST-094 | PTW-394 / PS-261003-0394 | PTW-398 / PS-261003-0398 |
+| L-29/N ST-081 | PTW-381 / PS-261003-0381 | PTW-385 / PS-261003-0385 |
+| L-29/N ST-106 | PTW-406 / PS-261003-0406 | PTW-410 / PS-261003-0410 |
+| L-29/N ST-099 | PTW-399 / PS-261003-0399 | PTW-403 / PS-261003-0403 |
+| L-29/N ST-112 (R3/A3 posted; R4/A4 held duplicate) | PTW-412 / PS-261003-0412 | PTW-416 / PS-261003-0416 |
+| L-28/N holdout ST-098 | PTW-398 / PS-261003-0398 | PTW-402 / PS-261003-0402 |
+| L-28/N holdout ST-087 | PTW-387 / PS-261003-0387 | PTW-391 / PS-261003-0391 |
+
+The candidate ticket neighbours for the spool gaps and selected job also differ:
+
+| Printer record / gap | +300 candidate ST ticket | +304 candidate ST ticket |
+|---|---|---|
+| PS-261003-0343 | ST-043 | ST-039 |
+| PS-261003-0344 | ST-044 | ST-040 |
+| PS-261003-0396 | ST-096 | ST-092 |
+| PS-261003-0417 (selected attempt 2) | ST-117 | ST-113 |
+
+**Specific records to request together if an authorized new custody path or unsolicited delivery becomes available:**
+
+1. The original R:/Stores/returns/SEP26/index.htm and its native metadata, vendor ticket list, index history, and any source/backup copies.
+2. The signed North and South cabinet binder pages, front and back, including all attachments, print strips, carbonless duplicates, underlays, corrections, voids and receipt images for both candidate PTW/PS sets above.
+3. The original North L-29/N ST-094, ST-081, ST-106, ST-099 and ST-112 work orders, including the full ST-112 R3/A3 posted packet and separate R4/A4 held duplicate; do not assume the numeric offset identifies the correct version.
+4. The original South L-28/N ST-098 and ST-087 work orders as holdout controls.
+5. The corresponding original PTW records and attempt-specific native print-job objects for both candidate sets, especially PTW/PS-412 versus PTW/PS-416 for ST-112, and PS-0417 attempt 2 itself.
+6. Any contemporaneous source that explicitly pairs a service-ticket ID with a permit/job ID, including the September vendor index, signed cabinet pages, posting/reversal register or transfer/return manifest.
+
+The +304 audit's four North matches, four distinct bays, binder-order alignment, and 2/2 South holdout are evidence for prioritizing that candidate set during retrieval. They are still a pattern inferred from the supplied records. The +300 candidate remains listed because it is a live competing explanation and the original index is absent. The shared cassette, asset and folio links establish a cohort/provenance association, not an individual ticket-to-job pair. See the reproducible offset audit (h17-k04-st-ptw-ps-offset-ambiguity-20261107.md) and the current source synthesis (results/README.md).
+
