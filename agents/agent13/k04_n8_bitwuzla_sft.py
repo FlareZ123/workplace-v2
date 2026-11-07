@@ -219,7 +219,7 @@ def main() -> None:
             phrase_seed = None
         if phrase_seed is not None:
             normalized = " ".join(
-                re.sub(r"[^a-z0-9\\s]", " ", phrase_seed.lower()).split()
+                re.sub(r"[^a-z0-9\s]", " ", phrase_seed.lower()).split()
             )
             nonce = bytes.fromhex(route["K08"]["desk_nonce"])
             phrase_component = hmac.digest(
