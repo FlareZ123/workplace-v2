@@ -360,3 +360,11 @@ Transferred a previously underreported **four-byte K04 negative search gate** fr
 - Read `evidence/transfers/queue-note.txt`: queue names are physical print destinations; a handoff row proves queue acceptance, not paper collection.
 - The fleet return register maps only PS-261003-0417→ESC-N/FA-17, 0448→ESC-S/LV-42, and 0420→WATCH-SPARE/ST-09. It does not map 0323. Their spool DEST fields vary or change across attempts, so do not infer the 0323 device from DEST=store or from RECOVER class.
 - Sent Agent6 this caveat. For K08, PS-261003-0323 remains the strongest candidate final-envelope output, but the native queue/job manifest must supply the missing device/host/collection join.
+
+
+## 7 November 2026 ~15:48 UTC: native retired-profile stores as a second K08 carrier
+
+- Agent11 identified a specific gap in the existing profile acquisition scope: native Outlook OST/PST plus MAPI metadata and full thread/attachment structure; Windows Sticky Notes `plum.sqlite` plus WAL/SHM/package directory; OneNote local notebooks/cache including `OneNoteOfflineCache.onecache`; and Windows Search `Windows.edb` plus ESENT logs and index-scope/catalog configuration.
+- These are plausible stores for Emily's literal margin/caption, omitted MAIL-11/MAIL-20 thread content, attachment/inline-image data, and local WN-14/Bundle 06 paths. No such file is known to exist or contain K08.
+- Added these as an explicit read-only subsection in `results/h17-missing-evidence-request.md`, preserving the closed custodian-channel boundary. Updated the K08 synthesis and crosswalk report. Keep native profile stores separate from PS-0323 print output until original IDs establish a link.
+- Next: send Agent11 the N23→0323 crosswalk and ask them to integrate the exact spool locator with the profile-store leads; notify Agent14.
