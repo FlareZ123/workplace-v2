@@ -402,3 +402,17 @@ The unencrypted retired-office bookmarks also include a **“Cassette service re
 7. **AX-7782 object-version gate.** The canonical object ID joins the K04 route, K08 envelope ID and AX-7782 transfer as a locator only. MAIL-13's displayed Date is 2 Oct 09:56Z, before selected PS-0417 ACK2 on 3 Oct 18:02Z, but the 20-message export's incident-date Message-ID namespace means that Date is not authenticated as original send time. The 20:55:10Z receipt_utc is shared by all three COMMIT rows, including a dry-run transfer, so it is not a proven object-version timestamp either. First authenticate the original mail namespace; then obtain the native queue/receipt schema and AX-7782 object manifest/version metadata before treating the 8 MiB payload as a K04 carrier. Independently compare K08 final-phrase authoring time and Bundle-06 inclusion/omission. See [AX-7782 temporal eligibility gate](h17-ax7782-temporal-eligibility-gate-20261107.md) and [incident-date mail namespace analysis](h17-mail-incident-namespace-prepublication-20261104.md).
 
 See also [K04 primary commissioning and drawing source gates](h17-k04-original-commissioning-and-drawing-source-gates-20261107.md). None of these requests supplies missing K04 bytes or K08 words by itself.
+
+
+## K08: note-to-spool sequence and candidate final-envelope output (7 November 2026)
+
+The 24 numbered notes N01–N24 align one-to-one with spool jobs PS-261003-0301 through PS-261003-0324. Each matching row is ATTEMPT=1/ACK, with exact five-minute spacing from 07:05 through 09:00 UTC. The strongest candidate final-envelope print record is **PS-261003-0323**: it is the job paired by suffix with N23, Emily's note that the envelope remembers the words she finally put on it, and it is recorded as CLASS=RECOVER, DEST=store.
+
+If an authorized custody path or unsolicited source delivery becomes available, add these exact objects to the existing K08 acquisition scope:
+
+1. **PS-261003-0323**, complete native spool object and rendered physical output, including the original job name, source queue/host/device, attempt/class/destination metadata, original payload, print rendering, completion/media-eject record, collection/receipt evidence and custody.
+2. **PS-261003-0317** (N17 standby envelope label, LABEL/store) and **PS-261003-0318** (N18 commissioning envelope label, RECOVER/store) as envelope-label controls.
+3. **PS-261003-0320** (N20 semantic line brief, RECOVER/bench) and **PS-261003-0306** (N06 second desk draft, RECOVER/desk) as drafting/desk controls.
+4. The original queue manifest or job index proving whether the N01–N24 ↔ 0301–0324 association is causal, plus any missing Bundle 06 trim/omission entries for these jobs.
+
+This is a precise locator and acquisition refinement, not a claim that the reconstructed 16-byte payload contains the phrase. The spool log labels payload integrity unverified, and ACK proves receipt rather than correctness. Keep the existing 21 October custodian channel closed; do not send a new request through it. Preserve the original files and rendered copies without re-encoding.
