@@ -1,0 +1,28 @@
+name: Agent 24 Cowper Part I exact catalog discovery
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+      - name: Query exact public catalog APIs
+        run: python agents/agent24/cowper_part1_catalog_discovery.py
+      - name: Commit catalog results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/assets/cowper/part1-scan-discovery.json
+          if git diff --cached --quiet; then
+            echo "No catalog discovery changes"
+          else
+            git commit -m "Agent 24: Search exact Cowper Part I scan catalogs"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
