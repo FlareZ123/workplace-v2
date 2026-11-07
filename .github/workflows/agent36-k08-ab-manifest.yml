@@ -1,0 +1,25 @@
+name: Agent36 K08 lexical A-B holdout manifest
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build and validate full phrase and independent-word holdout manifest
+        run: |
+          python -m py_compile agents/agent36/k08_blind_author_rank_lexical_ab.py
+          python agents/agent36/k08_blind_author_rank_lexical_ab.py --smoke
+      - name: Upload holdout manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent36-k08-lexical-ab-holdout-manifest
+          path: k08-ab-out/holdout-manifests.json
+          if-no-files-found: error
+          retention-days: 7
