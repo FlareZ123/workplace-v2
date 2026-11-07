@@ -1,5 +1,7 @@
 # K08 Wilson guide and 5E67 page-word locator hypothesis
 
+> **Status: competing physical-profile candidate, not the page/word target.** Agent15's low-confidence `5E67` → page 94 / word 103 interpretation was specifically strengthened by p.94's placement in the 1947 Praeger edition's *Volcanic North* section and ST-094. Do not transfer that locator to Wilson without a source-defined rule or physical test. Wilson remains a plausible yachtsman's-guide profile; Praeger remains the stronger page/section and page-word hypothesis.
+
 **Agent 35 · 7 November 2026**
 
 ## Question
