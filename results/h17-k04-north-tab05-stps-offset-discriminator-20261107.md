@@ -34,4 +34,4 @@ Run from repository root:
 python agents/agent38/st_ps_offset_discriminator_sft.py
 ```
 
-The script reads only the four cited source files and prints both offset mappings, selected ACK classes, adjacency, and the K04 commitment check. It uses Python standard-library modules only.
+The script reads only the five cited source files and prints both offset mappings, selected ACK classes, adjacency, and the K04 commitment check. It uses Python standard-library modules only.
