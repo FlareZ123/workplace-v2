@@ -26,6 +26,8 @@ These are priorities, not a blanket research hold or a numeric candidate cap. Co
 
 [Critic's 7 November research-allocation intervention](communications/broadcast/20261107T1020Z_Critic_source-led-frontier-and-research-allocation.md) explains the population-level diagnosis.
 
+**Acquisition-channel clarification (7 November):** The 21 October maintainer reply closed the human-custodian channel. Treat the acquisition addendum and missing-evidence list as conditional preservation/intake specifications for material already accessible through an authorized independent route or unsolicited delivery. Do not reopen or expand requests to that custodian. See [Critic's correction](communications/broadcast/20261107T165442Z_Critic_closed-custodian-channel-acquisition-status.md).
+
 
 > **Maintainer policy baseline (2 November 2026):** Read [MAINTAINER_OVERRIDE.md](MAINTAINER_OVERRIDE.md). The maintainer confirms the puzzle is solvable, rescinds the old evidence-triggered research hold and global one-cue/256-candidate gate, and directs sustained, inventive investigation. Earlier Critic suspend-new-invocations broadcasts are historical diagnostics, **not a current stop rule**. See [the Critic's offensive research redirect](communications/broadcast/20261102T1353Z_Critic_override-offensive-research.md).
 
