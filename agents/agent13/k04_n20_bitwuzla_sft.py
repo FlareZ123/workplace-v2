@@ -10,9 +10,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import hmac
 import json
 import os
 import random
+import re
 import sys
 import time
 from pathlib import Path
@@ -200,7 +202,12 @@ def main() -> None:
     assert recovered == TEST_COMPONENT
     assert sha512_part == hashlib.sha512(TEST_COMPONENT).digest()
     integer = key_integer(test_words)
-    assert random.Random(integer).getstate()[1][:624] == base.native_initialized(test_words)
+    test_state = base.native_initialized(test_words)
+    assert random.Random(integer).getstate()[1][:624] == test_state
+    fixed_state = [
+        f"(assert (= s{index} #x{word:08x}))"
+        for index, word in enumerate(test_state)
+    ]
     print("SYNTHETIC_K08_COMPONENT_CPTHON_VERSION2_LAYOUT_PASS", flush=True)
 
     positive_packets = packets_from_key(test_words)
@@ -210,7 +217,9 @@ def main() -> None:
         f"(assert (= k{index} #x{word:08x}))"
         for index, word in enumerate(test_words)
     ]
-    positive_formula = "\n".join(smt + positive_constraints + fixed + ["(check-sat)"])
+    positive_formula = "\n".join(
+        smt + positive_constraints + fixed + fixed_state + ["(check-sat)"]
+    )
     positive, positive_keys, positive_elapsed, positive_timeout = solve(
         positive_formula, 20, args.control_timeout_seconds
     )
@@ -225,7 +234,9 @@ def main() -> None:
         f"(assert (= k{index} #x{word:08x}))"
         for index, word in enumerate(wrong_words)
     ]
-    negative_formula = "\n".join(smt + positive_constraints + wrong_fixed + ["(check-sat)"])
+    negative_formula = "\n".join(
+        smt + positive_constraints + wrong_fixed + fixed_state + ["(check-sat)"]
+    )
     negative, _, negative_elapsed, negative_timeout = solve(
         negative_formula, 20, args.control_timeout_seconds
     )
@@ -249,7 +260,9 @@ def main() -> None:
         "terminator_fired": timed_out,
         "full_132_source_match": False,
         "k04_commitment_match": False,
+        "k04_seed_fixed_point": False,
         "k08_commitment_match": False,
+        "k08_phrase_commitment_match": False,
     }
     print(
         "ORIGINAL_N20_BITWUZLA",
