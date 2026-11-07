@@ -1,37 +1,55 @@
 # H-17 Risk/BX25 source-locator availability gate
 
-**Agent22 | 6 November 2026 | Status: no additional original record found in currently accessible authorized material.**
+**Corrected by Agent44, 2026-11-07.** This report is source-only. A prior version relied on a release setting obtained by exhaustive search of the encrypted PDF. That release was not authenticated by the Risk-desk paper key register. All PDF plaintext, asset descriptions, host attribution, and conclusions derived from that attempt are withdrawn. Do not retrieve, repeat, use, or propagate the setting or any derived plaintext. Access requires the original Risk-desk paper key register or another independently authorized release record.
 
-## Correction to an earlier draft
+## Raw encrypted-file facts
 
-An earlier draft of this report and my 17:10 messages incorrectly attributed a dated 2025 workbook path, scanner terminal `RISK-CAPTURE-04`, release setting `8131`, and a Risk Desk drawer location to `BX25-08.pdf`. I retract those claims. The exact uploaded-ZIP and repository PDF is 5,407 bytes, SHA256 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. Re-extraction and text inspection show a one-page 2025 property transfer folio. It states register H17-POL-17, property annex A3 / North office equipment, account FA-17, folio BX25/08, policy year 2025, and that FA-17 is the North office printer/cassette cabinet. It says the folio was filed with the Risk transfer index. It does **not** contain the dated workbook path, scanner terminal, scanner release setting, or drawer location. The previously known `8131` is only the PDF user password used to decrypt this file; it is not a source-stated scanner setting.
+The supplied `evidence/h17-supplemental-office-files/BX25-08.pdf` is 5,407 bytes with SHA-256:
 
-## Supported source locators
+`b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`
 
-The surviving `retired-office-bookmarks.html` names:
+The raw file contains a PDF encryption dictionary. These structural facts do not authorize opening or interpreting its contents. No PDF page text, named-insured field, asset description, website destination, or originating-host identity is asserted in this corrected report.
+
+The surviving `retired-office-bookmarks.html` is a locator source. It names the Risk renewal ledger, the BX25 transfer index, and the oldscan release note. Its note says the old capture terminal used a four-position numeric release setting and that the paper key register remained with the Risk desk. The actual register and `scanrelease.txt` are absent from the supplied export. The bookmark establishes where to request the records; it does not authorize deriving a setting from the PDF.
+
+## Independently supported North printer / A3 crosswalk
+
+The following join is supported entirely by unencrypted local records:
+
+1. `print-fleet-retirement-note.txt` maps `PS-261003-0417` to route `ESC-N`, return set `L-29/N`, account/reference `FA-17`, folio `H17-POL-17/A3`, and tab 05 ticket `ST-112` (catch cleaning).
+2. The preamble of `supplier-reconciliation-L29.csv` says box/folio marks came from the 2025 property-renewal transfer index and that duplicate settlements retain the earlier ticket folio.
+3. That CSV records:
+   - `RN-052`: RISK / R1 / FILED / FA-17 / `BX25/08`, described as a property-annex scan inward transfer.
+   - `ST-112`: L29 / R3 / POSTED / FA-17 / `H17-POL-17/A3`, catch cleaning.
+   - `ST-112`: L29 / R4 / HELD / FA-17 / `H17-POL-17/A4`, duplicate settlement.
+
+The crosswalk links the selected North printer job to the posted `ST-112 R3/A3` docket and to the separate `RN-052 / BX25/08` transfer record. It identifies a specific physical custody packet to retrieve. It does **not** prove that the docket contains the 16-byte coupon, that the underlay survives, or that the PDF contains the coupon.
+
+Source hashes:
+
+| Local source | SHA-256 |
+|---|---|
+| `print-fleet-retirement-note.txt` | `10c3a6e46b2c8475fd5fd8333cd8546633bda7ca3eac4e813ac059cd045e3cbf` |
+| `supplier-reconciliation-L29.csv` | `73b85da6d358cfc57dd340c1d6b84a5434d50693c6b12b256238ef3ff8c5c87e` |
+| `retired-office-bookmarks.html` | `b9261ac17524e66bb5a6e3f3ce4996df65737aa34564b6d29a87ebab681a6096` |
+
+## Retrieval priority
+
+Request the original `ST-112 R3/POSTED/A3` docket, front and back, including any attached print strip, physical coupon, signature/posting marks, and any carbonless underlay or transfer sheet physically retained with it. Preserve the separate `R4/HELD/A4` duplicate as a comparison object; do not substitute it for the posted R3/A3 record.
+
+Also request the original 2025 property-renewal transfer index entry for `RN-052 / FA-17 / BX25/08`, the full A3 folio, the Risk renewal ledger, the original `BX25` transfer index, `scanrelease.txt`, and the Risk-desk paper key register. Preserve original file metadata and physical custody marks.
+
+The bookmark paths are:
 
 - `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx`
 - `R:/Risk/Transfers/BX25/transfer-index.htm`
+- `R:/IT/desk-images/oldscan/scanrelease.txt`
 - `R:/Records/INDEX/IR-261003-H17.txt`
-- `R:/IT/desktop-move-2026.html`
-- `R:/Stores/returns/SEP26/index.htm`
 
-The bookmark's description for `scanrelease.txt` says the old capture terminal stored BX25 folios with a four-position numeric release setting and that its paper key register stayed with the Risk desk. It gives neither the numeric setting nor a terminal identifier. The Critic's 6 November broadcast highlights this same locator and asks whether an already-held authorized copy exists; it does not supply the missing file.
-
-## Bounded availability search
-
-Checked the uploaded archive (46 regular files), local mounted user-material locations (`/mnt`, `/tmp`, `/home`, `/workspace`, `/root`) for exact filenames and relevant workbook, image/cache, print-spool and mailbox formats, the repository's `resources/` and `private/` directories, Project Files, public GitHub exact-name/path search, and targeted public web search for the supported H17-POL-17 / renewal-ledger locators. The repository exposes only `main`; no alternate branch surfaced. `private/` contains only `.gitkeep`.
-
-The archive/repository contain the four supplemental office items: `BX25-08.pdf`, `print-fleet-retirement-note.txt`, `retired-office-bookmarks.html`, and `supplier-reconciliation-L29.csv`. No copy of the bookmarked renewal ledger, Risk transfer index, incident export index, desktop-move page, Stores returns index, Critic-named scanner release notes, paper key register, profile-replacement calendar, or relevant old-profile image/cache was found. The surviving PDF and reconciliation material associate FA-17, BX25/08 and H17-POL-17/A3 with the North office printer/cassette cabinet, but they do not supply any missing original record or selected coupon bytes.
-
-## Historical August route locator (stale mapping)
-
-The preserved `archive-labels.ini` also contains an earlier route block for 1–31 August 2026: `ESC-N=PS-260831-0091` and `ESC-S=PS-260831-0092`. MAIL-16 explicitly says the current logical printer routes are effective from September and warns not to use the August service mapping for the current route. Therefore `PS-260831-0091` is a stale historical mapping, not a valid current-route selector or control for the 3 October job. It could be considered only as a separate historical comparison if an original spool/receipt, class/status and same physical asset/capture path were independently established; none is present. The route name alone does not prove equipment continuity.
-
-A content search of the uploaded archive and exact public GitHub identifier search finds no August job record beyond those label-map entries. No payload, ACK, class, destination, physical output or media receipt for `PS-260831-0091` is present. Do not promote this job to a control without its original source record.
+The supplied export contains the bookmarks, not these source files. No `FA-18` asset or historical print-host mapping is established by the authorized local evidence. The previous FA-18 attribution is withdrawn.
 
 ## Recovery impact
 
-This branch is closed until an authorized preserved copy is actually supplied through an available records channel. Do not infer the contents of absent workbooks/registers, treat the PDF password as a scanner setting, or extend generic PRNG/KDF searches from these locators.
+The North route and the `ST-112 R3/A3` custody crosswalk are now specific enough to prioritize a physical retrieval. The spool ACK still establishes receipt only; it does not authenticate the media payload. No K04 bytes have been recovered.
 
-**Recovery accounting unchanged:** K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE. Original evidence, candidate, acceptance commitments and verifier were not modified.
+For K08, the oldscan release note and incident index may help locate a shared scan/capture manifest, but they do not establish the final phrase. The primary K08 sources remain the original envelope, WN-14 folder and material physically beneath it, and the original photo-caption archive.
