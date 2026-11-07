@@ -167,7 +167,7 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 - Scientific implications: q+4 independently consumed metadata cannot sit between these exact source-proven terminal full packets under inherited p951 chronology. Future targeted test is **peek/reuse byte/bit transformation with prospectively heldout original full-packet and metadata controls**, or alternative phase selected by a distinct historically preserved source. Existing simple lowbit/mod3 peek/reuse features failed heldout (this invocation's prior note). Do not treat conditional source exclusions as physical-target recovered bits. Original six PASS, K04/K08 still MISSING.
 
 
-### 7 Nov 2026 ~17:45 UTC: complete HST-4 DIAG_WORD revision blocks as direct K04 candidates
+### 7 Nov 2026: complete HST-4 DIAG_WORD revision blocks as direct K04 candidates
 
 - Chose a bounded cross-slot source family distinct from the earlier K02 eight-word-as-p951-donor tests: the 4 complete `LT-204 / DIAG_WORD` revision blocks (each seq0..7) naturally serialize to 16 bytes. The export explicitly defines DIAG_WORD as unsigned raw_u16 and scopes revisions to (tag,field,seq).
 - Portable source-pinned SFT `agents/agent34/k04_hst_diagword_revision_vector_sft.py` checks the original telemetry/routing/acceptance hashes, reproduces the official K02 reducer with timezone-aware exclusive-end handling, and verifies K02 as a positive control. The reducer selects revision2 for all seq0..7; BE raw vector E1A5E474BAD7E853A2E8C71D3317D507 -> truncated SHA component 0D7E3AB56FB75DA3EB0E2E06786D239E -> component SHA 987484b1cbecdc4c98e6e6c3dd03faf057be11f7719172693200a460603f1ff8, matching K02.
@@ -178,7 +178,7 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 - Extension to the same HST revision screen: added the only natural revision-delta block, per-seq XOR of the two complete GOOD/HOLD revisions 1 and 2, in BE/LE and as direct/masked candidate. This adds 4 candidates; total is now **20**, still zero K04 hits. Updated the portable SFT and result report. Do not broaden to mixed revisions or arbitrary transforms.
 
 
-### 7 Nov 2026 ~18:05 UTC: AX per-chunk retry-delta vector screen
+### 7 Nov 2026: AX per-chunk retry-delta vector screen
 
 - New finite K04 candidate family: for each of the four original AX transfers, form eight two-byte `attempt1 XOR attempt2` checkpoint deltas in seq0..7 order, concatenate to a 16-byte vector, and test it as either the K04 component or opaque payload XOR the official K04 mask. This differs from Agent48's direct attempt-vector candidates and Agent6's per-word retry-operator/rotated-delta fits.
 - Portable source-pinned SFT: `agents/agent34/k04_ax_retry_delta_sft.py`; report: `results/h17-k04-ax-retry-delta-vector-screen-20261107.md`. The SFT reproduces K07 from AX-7782 attempt2 in seq order as a positive control: raw `8947CEDCB9CC73BAB7E87BE63302C5C9`, component `93495F5E425AB8E592123DABAEB68545`, matching K07 commitment. It checks all four transfer summaries and all 8×2 attempt pairs.
@@ -186,9 +186,12 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 - Scope: excludes only direct complete-vector reuse of the per-seq retry XOR delta from the four AX transfers. No evidence says the printer coupon is derived from transfer retry deltas. Do not expand to arbitrary checkpoint permutations or XOR mosaics. Next useful evidence remains native PS-0417/coupon copy integrity or literal Emily final margin source.
 
 
-### 7 Nov 2026 ~18:10 UTC: node49 complete-snapshot XOR transition as K04
+### 7 Nov 2026: node49 complete-snapshot XOR transition as K04
 
 - Tested a new source-structured object, not another PRNG donor: the per-latch XOR transition from the earlier complete CRC-valid node49/event82 snapshot seq200–203 to the K05-selected complete snapshot seq300–303. The source-defined latch order and raw 4-byte control order are preserved.
 - Portable SFT: `agents/agent34/k04_node49_snapshot_delta_sft.py`; result: `results/h17-k04-node49-snapshot-delta-screen-20261107.md`. It parses TRP2, checks CRCs, applies the exact UTC window and greatest-valid-seq-per-latch K05 rule, and validates the selected 16-byte control block against K05 acceptance as a positive control.
 - Previous block `42BFD0538052760C6FC2B743BFB00270`; selected block `FF8B78200A56E8586DCDA00EF01E4572`; XOR transition `BD34A8738A049E54020F174D4FAE4702`; transition XOR K04 mask `386260B8EB4439ADA71D2D8A18B5A91E`. **Zero of two** direct/masked candidates match K04. The seq900 records are CRC-invalid; seq990–993 are outside the exclusive K05 window.
 - This excludes only exact reuse of that complete per-latch transition. No source establishes a recorder-to-printer relationship; do not widen into arbitrary cross-source mosaics. No PS-0417 ACK2 read and no official input modified.
+
+- Synthesized these three bounded source-vector exclusions in `results/README.md`: 20 HST-4 revision/delta candidates, 8 AX retry-delta candidates, 2 node49 snapshot-transition candidates; zero K04 matches, with K02/K07/K05 positive controls respectively. This is a stop condition for these exact objects, not evidence of a common producer. The README points to all three reproducible reports.
+- Also sent Agent6 a direct algebraic-dependency challenge on the proposed ST-ticket / PS-job / note / HST triple intersection: `seq=217-ticket` follows mechanically from the assumed `job=417-ticket` and `seq=job-200`, so the constant sum is not independent evidence. The communication is in `communications/agent6/20261107T174840Z_agent34-triple-index-algebraic-dependency.md`.
