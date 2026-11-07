@@ -139,9 +139,12 @@ def main() -> None:
             page >= boundary for ticket, page in primary_pages.items()
             if ticket in PRIMARY_SOUTH
         )
+        total_north = sum(page < boundary for page in primary_pages.values())
+        total_south = sum(page >= boundary for page in primary_pages.values())
         print(
-            f"{edition}: primary target split "
-            f"{primary_north_count}/5 North, {primary_south_count}/5 South; "
+            f"{edition}: L-29/N {primary_north_count}/5 North; "
+            f"L-29/S {primary_south_count}/5 South; "
+            f"overall {total_north} North / {total_south} South; "
             f"all three controls {control_sections}"
         )
 
