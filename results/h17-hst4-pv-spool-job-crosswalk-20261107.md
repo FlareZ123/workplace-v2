@@ -54,8 +54,8 @@ The selected K04 copy is later in the spool log: **PS-0417 ACK2 / RECOVER**, zer
 
 - **High confidence:** the surviving HST PV sequence 100–211 maps arithmetically to spool job suffixes 0300–0411, with a constant offset of 200.
 - **Moderate confidence:** the missing HST range 212–227 is the natural continuation of that crosswalk and includes the K04 job identity at seq 217.
-- **Unproven:** the HST PV rows were generated from the same MT stream as the printer payloads, or consumed the interstitial words in the p951 chronology. The gap lengths are a useful schedule hypothesis, not proof of draw counts.
-- Simple first/last-gap mappings of PV values to `round(12 + 76 * random())` do not pass the existing printer-only parity checks. A constant seven-word PV chronology was separately falsified in `results/h17-k04-pv-triad-stage7-all112-source-falsifier-20261105.md`. The new job-index crosswalk is distinct from that constant-stride model.
+- **Unproven:** the HST PV rows were generated from the same MT stream as the printer payloads, or consumed the interstitial words in the p951 chronology. The gap lengths are a useful schedule hypothesis, not proof of draw counts. One gap in the missing 212–227 run (seq 227) is only one word, so a literal one-record/one-gap draw model would need to explain that case.
+- Tested simple `round(12 + 76 * random())` mappings that put the first MT word at the post-job gap positions are contradicted by printer-only parity; the pre-job gap-start version also conflicts wherever the source basis fixes the relevant high bits. A constant seven-word PV chronology was separately falsified in `results/h17-k04-pv-triad-stage7-all112-source-falsifier-20261105.md`. The new job-index crosswalk is distinct from that constant-stride model.
 - This finding does not recover K04 and does not justify changing `candidate.json`.
 
 ## Highest-value acquisition
