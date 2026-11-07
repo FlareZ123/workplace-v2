@@ -178,8 +178,11 @@ def main() -> None:
     ]
     digest = digest_from_key_words(key_words)
     component = digest[:16]
+    ancestry = shared.ancestral_anchor_check(key_words)
     result.update({
         "seed_words_hex": [f"{word:08X}" for word in key_words],
+        "ancestral_anchor_matches": ancestry,
+        "ancestral_anchors_all_match": all(row["match"] for row in ancestry),
         "intact_packet_matches": len(exact_indices),
         "full_132_source_match": len(exact_indices) == 132,
         "mismatching_source_rows": [
