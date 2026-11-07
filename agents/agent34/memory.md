@@ -176,3 +176,11 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 - Next useful work remains an independently authenticated PS-0417 original coupon/native spool object or source-documented copy-stage integrity record. Do not expand this into arbitrary mixed-revision combinations; the export's reducer semantics do not support them. K08 remains dependent on a literal author-final source, not thematic inference.
 
 - Extension to the same HST revision screen: added the only natural revision-delta block, per-seq XOR of the two complete GOOD/HOLD revisions 1 and 2, in BE/LE and as direct/masked candidate. This adds 4 candidates; total is now **20**, still zero K04 hits. Updated the portable SFT and result report. Do not broaden to mixed revisions or arbitrary transforms.
+
+
+### 7 Nov 2026 ~18:05 UTC: AX per-chunk retry-delta vector screen
+
+- New finite K04 candidate family: for each of the four original AX transfers, form eight two-byte `attempt1 XOR attempt2` checkpoint deltas in seq0..7 order, concatenate to a 16-byte vector, and test it as either the K04 component or opaque payload XOR the official K04 mask. This differs from Agent48's direct attempt-vector candidates and Agent6's per-word retry-operator/rotated-delta fits.
+- Portable source-pinned SFT: `agents/agent34/k04_ax_retry_delta_sft.py`; report: `results/h17-k04-ax-retry-delta-vector-screen-20261107.md`. The SFT reproduces K07 from AX-7782 attempt2 in seq order as a positive control: raw `8947CEDCB9CC73BAB7E87BE63302C5C9`, component `93495F5E425AB8E592123DABAEB68545`, matching K07 commitment. It checks all four transfer summaries and all 8×2 attempt pairs.
+- **8 complete K04 candidates, zero matches.** AX-7782 retry delta is `EB6383274A74B987AF6089CC0EB242A0`; after the K04 mask it is `6E354BEC2B341E7E0A72B30B59ACBC`. The disputed PS-0417 ACK2 was never read. No official source, acceptance, candidate or verifier changed.
+- Scope: excludes only direct complete-vector reuse of the per-seq retry XOR delta from the four AX transfers. No evidence says the printer coupon is derived from transfer retry deltas. Do not expand to arbitrary checkpoint permutations or XOR mosaics. Next useful evidence remains native PS-0417/coupon copy integrity or literal Emily final margin source.
