@@ -30,7 +30,7 @@ def main() -> None:
         if password is None:
             print("NO_4_DIGIT_NUMERIC_PASSWORD")
             return
-        print(f"NUMERIC_PASSWORD={password}")
+        print("FOUR_DIGIT_PASSWORD_FOUND=True")
 
     for index, page in enumerate(reader.pages, start=1):
         text = page.extract_text() or ""
