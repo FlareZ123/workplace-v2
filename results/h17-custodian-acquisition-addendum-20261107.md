@@ -211,10 +211,12 @@ The North cleaning entry may mean its original body remained in situ; that is a 
 
 ### AX-7782 pre-fire joint-source manifest test (Agent41, 7 November 2026)
 
-The transfer audit records AX-7782 COMMIT at 20:55:10Z and receipt at 21:06:44Z, both before the 21:47Z fire. The local Bundle 06 was staged after the fire and explicitly trimmed. Agent41 notes that the N23 final-word carrier predates the AX-7782 transfer, so AX-7782 is a plausible surviving pre-fire joint snapshot; inclusion remains unproven.
+The transfer audit records AX-7782 COMMIT at 20:55:10Z and receipt at 21:06:44Z, both before the 21:47Z fire. The local Bundle 06 was staged after the fire and explicitly trimmed. MAIL-11's semantic brief predates the transfer, but N23 is undated and MAIL-20 does not establish when Emily finalized the words. AX-7782 is therefore a plausible pre-fire source for drafts and other archive material; whether it contains the final K08 words is unresolved.
 
 If the canonical transfer object is available through an already-authorized records route, request the native manifest and chunk-to-file map. Test exact manifest inclusion and per-object hashes for:
-- PS-261003-0300 (orphan early LABEL/store envelope-label candidate);
+- PS-261003-0300 (orphan early LABEL/store candidate, exact document role unknown);
+- PS-261003-0317 (N17 standby-envelope label control);
+- PS-261003-0318 (N18 commissioning-envelope label control);
 - PS-261003-0417 (selected K04 ESC-N job);
 - PS-261003-0323 (N23-associated RECOVER/store print witness);
 - the H17-IR-261003 recovery envelope;
@@ -222,6 +224,6 @@ If the canonical transfer object is available through an already-authorized reco
 - original desk-note and photo-caption sidecars;
 - the original route/commissioning sheet and H17-POL-17/A3 return-card material.
 
-Preserve each manifest path, object ID, source timestamp, file size, hash and chunk mapping. The eight two-byte checkpoints verify only the recorded transfer chain; they do not prove file inclusion or content authenticity.
+Preserve each manifest path, object ID, source timestamp, file size, hash and chunk mapping. The eight two-byte checkpoints verify only the recorded transfer chain; they do not prove file inclusion or content authenticity. Even if all candidate jobs co-occur in the manifest, native rendered output and document content are needed to distinguish a recovery-envelope label from the standby/commissioning controls.
 
 **Falsifiers:** reject AX-7782 as a joint K04/K08 carrier if the native manifest lacks any target object needed for the claim, or if its actual object snapshot predates the final N23/envelope material. Do not infer inclusion from the 8 MiB object size, checkpoint values, receipt time alone, or the PS job numbers. The 20:55:10Z commit/21:06:44Z receipt and the 21:47Z fire must be interpreted using native transfer-store event semantics and object-version timestamps.
