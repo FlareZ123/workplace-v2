@@ -215,7 +215,7 @@ The transfer audit records AX-7782 COMMIT at 20:55:10Z and receipt at 21:06:44Z,
 
 If the canonical transfer object is available through an already-authorized records route, request the native manifest and chunk-to-file map. Test exact manifest inclusion and per-object hashes for:
 - PS-261003-0300 (orphan early LABEL/store candidate, exact document role unknown);
-- R:/Stores/consumables/mug-stock.xls (bookmarked as “Tea-room stock sheets”), including version history; conditional context for MAIL-12/N11 and the possible PS-0300 shelf-card role, not a K08 target;
+- R:/Stores/consumables/mug-stock.xls (bookmarked as “Tea-room stock sheets”), including version history; conditional context for MAIL-12/N11 and the competing PS-0300/PS-0312 shelf-card control hypotheses, not a K08 target;
 - any original small card or photo of the chipped-blue-mug shelf card, with author, placement and timestamp metadata;
 - PS-261003-0317 (N17 standby-envelope label control);
 - PS-261003-0318 (N18 commissioning-envelope label control);
