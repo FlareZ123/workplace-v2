@@ -339,3 +339,33 @@ Messages with the Part II result, the corrected counting convention, the Part I 
 1. If a human-accessible Part I scan arrives, verify the printed title-page imprint and page labels, then extract the five North words under the same declared convention. Concatenate North then South and run the K08 verifier once.
 2. If Part I remains unavailable, shift to the independent K04 source-acquisition gap rather than repeating scan URL variants or broad phrase searches. The current K04 frontier still calls for source originals: \`R:/Records/INDEX/IR-261003-H17.txt\`, \`R:/IT/desk-images/oldscan/scanrelease.txt\` and its source folder, the 2025 renewal ledger, and the raw selected \`.SPL/.SHD\` spool files. Check existing reports before duplicating that work.
 3. Keep the corrected JSON as authoritative. Superseded South fragments \`outside are pleasant loveliness half\` and \`solent yards pleasant the even\` must not be used.
+
+
+## 2026-11-07 10:01Z continuation: BX25-08 release recovery and FA-18 confirmation
+
+### New source recovery
+
+- The supplied \`evidence/h17-supplemental-office-files/BX25-08.pdf\` was encrypted with AES-256 PDF encryption (V=5, R=6).
+- The source \`retired-office-bookmarks.html\` states that BX25 folios on the old capture terminal used a four-position numeric release setting. A bounded search of exactly 0000-9999 with pypdf found a valid user password. The recovered setting is stored in \`private/bx25-08-release-setting.md\`; do not assume it unlocks other files.
+- Decrypted text is documented in \`results/h17-bx25-08-property-annex-decryption-20261107.md\`. It identifies H17-POL-17/A3, BX25/08, and:
+  - FA-17 = North office printer / cassette cabinet, carry-forward maintained.
+  - FA-18 = Network service desk and local archival station, carry-forward maintained.
+  - Review recorded 18 Nov 2025.
+- This corroborates FA-17 printer lineage and identifies FA-18 as the workstation behind \`R:/IT/desk-images/oldscan/\`. It is a transfer copy, not the original 2025 renewal ledger or physical coupon.
+
+### Public website boundary
+
+- The PDF labels \`https://noyes-energy-group.pages.dev/\` as the electronic correspondence index.
+- The public root is a corporate marketing site. \`robots.txt\` disallows \`/admin\` and \`/api/\`. The public \`/admin/\` page is a username/password portal posting to \`/api/login\`.
+- No credentials or forms were submitted. Do not send the PDF release setting to the site, access disallowed paths, or guess credentials. The actual correspondence-index export must come from the custodian.
+- Evidence: \`results/assets/cowper/noyes-index-readonly-probe.json\`; report: \`results/h17-noyes-correspondence-index-portal-boundary-20261107.md\`.
+
+### Custodian acquisition handoff
+
+A concise priority list is in \`results/h17-custodian-acquisition-addendum-20261107.md\`: FA-18 oldscan folder and scanrelease file; FA-17 original 2025 ledger, paper key register, raw spool and physical coupon; HathiTrust Part I title page and frozen North pages; authorized correspondence-index export. \`results/README.md\` links the new annex and addendum.
+
+### Current research state
+
+- K04 remains missing. The reconstructed 18:02 ACK2 payload XORed with the recorded mask produces a candidate whose SHA-256 does not match the official K04 commitment; the spool log itself marks payload integrity unverified. The decrypted property annex strengthens the FA-17 mapping but does not authenticate the payload or physical coupon.
+- K08 remains missing. Part II South words are \`Solent / yards / sailing / the / even\`; the Part I HathiTrust Full view item is catalogued but inaccessible through current tools. The Noyes site is not a correspondence export.
+- A broadcast was sent with the BX25-08 result, FA-18 path and HathiTrust Part I acquisition lead. Await only source-backed replies; do not repeat arbitrary URL variants or broad phrase searches.
