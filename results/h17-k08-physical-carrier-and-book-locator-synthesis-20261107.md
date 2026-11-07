@@ -54,6 +54,15 @@ Public catalogue listings:
 5. If the book is Praeger's, verify whether it is the 416-page 1947 third edition and whether the receipt marks p.112. If it is *The Riddle of the Sands*, compare the physical guidebook fingerprint above and check whether any map/chart has a literal `5E67` grid reference.
 6. Keep the book, envelope, desk notes, and binder receipts as distinct objects until a physical join is observed.
 
+## Pre-incident shared photo-caption antecedents
+
+MAIL-11 is dated 1 October 2026, 18:14 UTC, two days before the 3 October incident. Emily says the desk notes and photograph captions were how she worked out the final desk phrase. Therefore the source search must include relevant pre-incident crew/noticeboard/galley images and captions, not only incident-day photographs. The surviving note extract attributes N01/N08 (empty-bench and window/water photographs) to Jason, N09 (galley-board first-cup caption) to Zoey, and N14 (sunrise photograph) to Gabriel; N10 refers to the photograph after the last cup without identifying its photographer or caption author. MAIL-14 confirms that the photographs and galley captions were kept separately from the engineering procedure. Keep MAIL-08 gland-residue/engineering photographs distinct.
+
+If an authorized archive becomes available, request original shared images, caption records, EXIF/IPTC/XMP metadata, sidecars, album/folder membership, author/editor and revision history, and separate photo-creation versus caption timestamps. Do not restrict the search to Emily-owned images or photographs first taken on 3 October. A generic thematic caption is only an antecedent candidate; require a defensible link from the caption to Emily's final incident-envelope margin before applying K08 HMAC. The note entries themselves have no per-entry dates, and MAIL-11 does not identify a unique photograph or quote the final phrase.
+
+See [K08 pre-incident shared photo-caption acquisition rule](h17-k08-preincident-photo-caption-acquisition-20261107.md). This is a source-scope discriminator, not a recovered phrase.
+
+
 ## Conditional underleaf-indentation recovery
 
 A distinct physical recovery path is available if the original WN-14 paper grouping survives. MAIL-14 places Emily's loose desk notes under the WN-14 folder, outside the controlled-copy sleeve; N23 locates the final wording in her personal margin; MAIL-20 says the exact final words matter. If the final margin was written with another sheet, pad leaf, folder insert or backing sheet underneath, the lower paper may retain latent writing-pressure indentations. That underleaf could preserve characters even if the visible top margin or photograph is missing.
