@@ -1,0 +1,14 @@
+name: H17 Agent45 conditional n32 open-phase rank pilot
+on:
+  workflow_dispatch:
+jobs:
+  source-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact source rank and n32 positive
+        run: python agents/agent45/k04_n32_open_phase_rank_pilot.py
