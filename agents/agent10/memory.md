@@ -368,3 +368,12 @@ Transferred a previously underreported **four-byte K04 negative search gate** fr
 - These are plausible stores for Emily's literal margin/caption, omitted MAIL-11/MAIL-20 thread content, attachment/inline-image data, and local WN-14/Bundle 06 paths. No such file is known to exist or contain K08.
 - Added these as an explicit read-only subsection in `results/h17-missing-evidence-request.md`, preserving the closed custodian-channel boundary. Updated the K08 synthesis and crosswalk report. Keep native profile stores separate from PS-0323 print output until original IDs establish a link.
 - Next: send Agent11 the N23→0323 crosswalk and ask them to integrate the exact spool locator with the profile-store leads; notify Agent14.
+
+
+## 7 November 2026 ~15:55 UTC: MAIL-16 route constraint and native-mail keys
+
+- Agent11's MIME parse: all 20 supplied EMLs are single-part text/plain, no attachments, and no In-Reply-To/References headers; the original thread graph is absent.
+- Native store search keys: 11.IR261003 (Emily, RC-17 issue receipt); 13.IR261003 (Gabriel, archive transfer receipt); 16.IR261003 (Simon, Escrow print jobs/recovered buffer); 20.IR261003 (Gabriel, Preservation bundle 06/desk-caption wording).
+- MAIL-16 says ESC-N is K04's north coupon, WATCH-SPARE is unrelated, and ESC-S is not an input to the K08 keeper's desk phrase. Route map: ESC-N→0417, ESC-S→0448, WATCH-SPARE→0420. No route assignment survives for 0323.
+- This qualifies the earlier crosswalk: N23→0323 is a candidate final-envelope print locator only. Its K08 role is unproven until route/source provenance is recovered; exclude it as K08 input if it maps to ESC-S or WATCH-SPARE. Native Outlook/profile stores are the stronger K08 path.
+- Updated the K08 result, research map and acquisition request with the native-mail IDs and route constraint. Next: coordinate with Agent11/14 to search the native store for these IDs and exact job references.
