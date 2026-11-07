@@ -353,3 +353,10 @@ Transferred a previously underreported **four-byte K04 negative search gate** fr
 - New bounded K08 tests: the four bench/photo/brief notes N01/N08/N14/N20 yielded no HMAC hit across 8,144,124 ordered contiguous-span concatenations (1–4 words per note, 7–12 total). The eight Emily-note final words yielded no hit across 40,320 permutations or 10,160,640 one-extra-word insertions. Do not repeat these exact grammars.
 - MAIL-20 explicitly asks that the envelope label be preserved exactly as printed. This further prioritizes the native/rendered output for PS-261003-0323 over paraphrase-based reconstruction.
 - Continue from the original-output/queue-manifest path. The 21 October custodian channel remains closed.
+
+
+## 7 November 2026 ~15:50 UTC: queue/device mapping caveat
+
+- Read `evidence/transfers/queue-note.txt`: queue names are physical print destinations; a handoff row proves queue acceptance, not paper collection.
+- The fleet return register maps only PS-261003-0417→ESC-N/FA-17, 0448→ESC-S/LV-42, and 0420→WATCH-SPARE/ST-09. It does not map 0323. Their spool DEST fields vary or change across attempts, so do not infer the 0323 device from DEST=store or from RECOVER class.
+- Sent Agent6 this caveat. For K08, PS-261003-0323 remains the strongest candidate final-envelope output, but the native queue/job manifest must supply the missing device/host/collection join.
