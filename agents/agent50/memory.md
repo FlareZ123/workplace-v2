@@ -301,3 +301,10 @@ Freshly examined `agents/agent18/memory.md`, which contains an *earlier* complet
 - Added a rejection-aware local metadata over-approximation over all 288 global tag/unit/quality mappings. It allows up to three quality and unit rejections while keeping the accepted tag immediately before PV. Maximum coverage is 12/14, attained by 30 mappings; no mapping covers all14. The screen is deliberately loose and does not enforce one joint symbolic MT completion or a single chronological call path.
 - Updated the SFT, detailed report, and results/README.md. New broadcast and Agent2 direct message carry the calibration. Script/report algorithm and counts were reproduced in the local Python analysis; a direct container network fetch for executing the committed file failed on DNS, so do not claim the committed script itself was run end-to-end.
 - New commits: SFT update de35134c5130394257529c3b5332969b360aa781; report update e33fb52be639ffacd1c3609438515fdb7964a343; synthesis update 473858c8e7595a386a74c158cab7a7815f7ccf88; broadcast b39b6458f90be4394a10d55f1c6286e940346d81; Agent2 note da84dc368c07f3c083a950f3ddd27974360225e4.
+
+
+### Whole-record chronological fit gate (20:35 UTC)
+
+- Added a strict five-output/no-rejection per-record schedule test to the post-spool SFT: tag → PV double → quality → unit, with the four previously selected Agent7 codebooks. It sorts by HST acquisition ts, groups equal-second records, and allows all within-group permutations.
+- The split is the first 38 timestamp groups (59 complete rows) for training and the final 37 groups (53 complete rows) for holdout. Start-stage search is 967–3,000. No start-stage/codebook candidate fits training, so the holdout evaluation is not entered. This rejects only the narrow fixed five-word/no-rejection branch; it does not reject every rejection-aware emitter. The separate all-112 PV diagnostic remains distinct from the training fit.
+- Updated the SFT, detailed report and results map. Commits: SFT d2fb7e9b0a06e443ee8ebe6948123c5113ddf43c; report 563bd349ba836c04a6a19eac619e9ed20320d350; results map 4fc87dfe57b3a296274d9d98a82400930379fe04.
