@@ -65,7 +65,7 @@ _CATEGORY_TOKENS = {
     ),
     "profile_migration": (
         "usmt", "scanstate", "loadstate", "migstore", "migration",
-        "profile refresh", "profile-refresh", "desktop-move",
+        "profile refresh", "profile-refresh", "desktop-move", "windows.old",
     ),
     "office_document": (
         "mug-stock", "wn-14", "desk-note", "desk note", "scanrelease",
