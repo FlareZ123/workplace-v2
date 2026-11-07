@@ -14,7 +14,7 @@ import hashlib
 import importlib.util
 import json
 import re
-from itertools import groupby
+from itertools import groupby, permutations
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -27,6 +27,8 @@ spec.loader.exec_module(base)
 LAST_STAGE = 10_000
 POST_START = base.STARTS[-1] + 4  # last four-word packet ends at stage 966
 MIN_FIXED_HIGH17 = 12
+FULL53 = (1 << 53) - 1
+PV_BIN_COUNT = 76_001  # round(12 + 76*r, 3), inclusive 12.000..88.000
 
 TAG_MAPS = (
     {"FT-13": 0, "LT-204": 2, "PT-118": 3, "TT-92": 1},
@@ -162,6 +164,46 @@ def longest_time_ordered_chain(records: list[dict]) -> tuple[int, list[dict]]:
     return len(chain), chain
 
 
+def call_accept_possible(
+    outputs, start: int, width: int, n: int, expected: int, max_rejects: int = 3
+) -> tuple[bool, int | None]:
+    """Necessary local test for CPython randrange rejection followed by a code."""
+    for rejects in range(max_rejects + 1):
+        if any(
+            not any(code >= n for code in possible_codes(outputs, start + j, width))
+            for j in range(rejects)
+        ):
+            continue
+        codes = possible_codes(outputs, start + rejects, width)
+        if expected in codes and expected < n:
+            return True, rejects
+    return False, None
+
+
+def rejection_aware_local_row(
+    outputs, row: dict, stage: int, tag_map: dict, unit_map: dict, quality_map: dict
+) -> bool:
+    """Loose local over-approximation; tag is accepted at s-1, PV at s/s+1."""
+    tag_code = tag_map[row["tag"]]
+    if tag_code >= 4 or tag_code not in possible_codes(outputs, stage - 1, 3):
+        return False
+
+    quality_ok, quality_rejects = call_accept_possible(
+        outputs, stage + 2, 2, 2, quality_map[row["quality"]]
+    )
+    if not quality_ok:
+        return False
+
+    unit_ok, _ = call_accept_possible(
+        outputs,
+        stage + 3 + quality_rejects,
+        2,
+        3,
+        unit_map[row["unit"]],
+    )
+    return unit_ok
+
+
 def main() -> None:
     spool = base.SPOOL.read_bytes()
     historian = base.HIST.read_bytes()
@@ -202,12 +244,23 @@ def main() -> None:
 
     eligible = 0
     post_matches: list[dict] = []
+    fully_predicted: list[tuple[int, float, int, int]] = []
     for stage in range(POST_START, LAST_STAGE):
         value, mask = pair_projection(outputs, stage)
         fixed = high17_known(mask)
         if fixed < MIN_FIXED_HIGH17:
             continue
         eligible += 1
+
+        # A rounded value is fully determined if every completion of the
+        # masked 53-bit output falls inside the same 0.001 PV bin.
+        low = value & mask
+        high = value | (FULL53 ^ mask)
+        q_low = round(12 + 76 * (low / (1 << 53)), 3)
+        q_high = round(12 + 76 * (high / (1 << 53)), 3)
+        if q_low == q_high:
+            fully_predicted.append((stage, q_low, mask.bit_count(), fixed))
+
         for row in pv:
             if base.compatible(q_values[row["seq"]], value, mask):
                 post_matches.append({
@@ -234,12 +287,22 @@ def main() -> None:
     assert len({row["seq"] for row in post_matches}) == 14
     assert eligible == 712
 
+    unique_bins = {q for _, q, _, _ in fully_predicted}
+    observed_bins = {round(row["value"], 3) for row in pv}
+    matched_unique_bins = unique_bins & observed_bins
+    assert len(fully_predicted) == 387
+    assert len(unique_bins) == 386
+    assert matched_unique_bins == {19.319}
+    assert [(stage, q) for stage, q, _, _ in fully_predicted if q in matched_unique_bins] == [
+        (1823, 19.319)
+    ]
+    crude_uniform_bin_expectation = len(unique_bins) * len(pv) / PV_BIN_COUNT
+
     chain_length, chain = longest_time_ordered_chain(post_matches)
     assert chain_length == 6
 
     # Strict adjacent-field screen for the four previously selected metadata
     # codebooks: tag at s-1, PV double at s/s+1, quality at s+2, unit at s+3.
-    # This is deliberately not a rejection-aware full-emitter model.
     field_counts = []
     for tag_map in TAG_MAPS:
         for unit_map in UNIT_MAPS:
@@ -261,14 +324,49 @@ def main() -> None:
             field_counts.append(len(passed))
     assert field_counts == [7, 6, 7, 6]
 
+    # More permissive rejection-aware local screen across all 288 global
+    # category codebooks. It remains an over-approximation, not a joint fit.
+    tag_names = sorted({row["tag"] for row in pv})
+    unit_names = sorted({row["unit"] for row in pv})
+    quality_names = sorted({row["quality"] for row in pv})
+    assert (len(tag_names), len(unit_names), len(quality_names)) == (4, 3, 2)
+    rejection_counts = []
+    for tag_codes in permutations(range(4)):
+        tag_map = dict(zip(tag_names, tag_codes))
+        for unit_codes in permutations(range(3)):
+            unit_map = dict(zip(unit_names, unit_codes))
+            for quality_codes in permutations(range(2)):
+                quality_map = dict(zip(quality_names, quality_codes))
+                passed = sum(
+                    any(
+                        rejection_aware_local_row(
+                            outputs, row, candidate["stage"],
+                            tag_map, unit_map, quality_map
+                        )
+                        for candidate in post_matches
+                        if candidate["seq"] == row["seq"]
+                    )
+                    for row in pv
+                    if row["seq"] in {candidate["seq"] for candidate in post_matches}
+                )
+                rejection_counts.append(passed)
+    assert len(rejection_counts) == 288
+    assert max(rejection_counts) == 12
+    assert rejection_counts.count(12) == 30
+
     print("source pins: PASS")
     print(f"original packets: {len(packets)}; selected row129 withheld")
     print(f"p951 source-basis rank: {basis.rank}")
     print(f"post-spool stage starts: {POST_START}..{LAST_STAGE - 1}")
     print(f"eligible stages with >=12 fixed high17 bits: {eligible}")
     print(f"post-spool PV matches: {len(post_matches)} / 112")
+    print(f"fully determined PV bins: {len(fully_predicted)} stage projections, "
+          f"{len(unique_bins)} distinct bins, observed intersection={sorted(matched_unique_bins)}")
+    print(f"crude uniform-bin expectation for full-bin hits: {crude_uniform_bin_expectation:.3f}")
     print(f"maximum acquisition-time-ordered stage chain: {chain_length} / 14")
     print("four prior adjacent-field codebook screens:", field_counts)
+    print(f"rejection-aware local codebooks: max={max(rejection_counts)}/14, "
+          f"maps attaining max={rejection_counts.count(12)}/288")
     print("post-spool matches (seq, UTC, stage, fixed53, fixed_high17):")
     for row in post_matches:
         print(
