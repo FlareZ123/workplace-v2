@@ -1,0 +1,16 @@
+name: Agent7 K08 map-bearing book literal test
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  treasure-island-literal:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run original K08 literal quotation test
+        run: python agents/agent7/k08_mapback_treasure_island_literal_sft.py
