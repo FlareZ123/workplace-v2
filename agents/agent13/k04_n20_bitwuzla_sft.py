@@ -120,7 +120,7 @@ def initializer_smt(key_count: int, timeout_ms: int) -> list[str]:
         f"(bvsub (bvxor a1last {f('s623', 1566083941)}) #x00000001))"
     )
     lines.append("(define-fun s0 () (_ BitVec 32) #x80000000)")
-    assert len(lines) == 1270 + key_count
+    assert len(lines) == 1250 + key_count
     return lines
 
 
