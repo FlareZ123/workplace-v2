@@ -1,6 +1,6 @@
 # WITHDRAWN: BX25-08 decryption result (7 November 2026)
 
-<badge>WITHDRAWN</badge>
+**WITHDRAWN**
 
 This report's earlier content is withdrawn in full. The PDF was opened by brute-force password guessing of the four-digit space. The repository's controlling evidence rule in [h17-evidence-coverage.md](h17-evidence-coverage.md) explicitly states that password guessing is not authorized for this historical preservation task.
 
