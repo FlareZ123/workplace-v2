@@ -17,7 +17,7 @@ MAIL-04 specifies the witness order B,D,A,C looking back from the access hatch. 
 
 `AD1D814B64B2EE4A7E73B4CC5CB72EE5`
 
-A fifth PTW-417 revision-1 AS_LEFT/CLOSED/signed bay-A row, SG-574A9232, lacks both asset and inspector fields. The four extended rows form a complete asset-level set; the unannotated row remains a distinct source record whose relationship is unresolved. The original signed receipt, export lineage, row IDs, revision/void history and field-sketch/closeout correspondence are needed to determine whether it is separate, duplicated, superseded or a different physical item.
+A fifth PTW-417 revision-1 AS_LEFT/CLOSED/signed bay-A row, SG-574A9232, lacks both asset and inspector fields. The four extended rows form a complete asset-level set; the unannotated row remains a distinct source record whose relationship is unresolved. The original signed receipt, export lineage, row IDs, revision/void history and field-sketch/closeout correspondence are needed to determine whether it is separate, duplicated, superseded or a different physical item. A corpus-wide text search of the supplied archive found all five PTW-417 revision-1 serial tokens only in seal-receipts.jsonl; no other local file independently corroborates either bay-A serial or the extended set.
 
 ## Corpus coverage and bounded checks
 
