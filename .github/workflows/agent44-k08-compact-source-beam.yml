@@ -1,0 +1,47 @@
+name: Agent 44 K08 compact source beam
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compact-source-beam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pinned CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.5.1+cpu
+          python -m pip install transformers==4.57.1 accelerate==1.15.0
+
+      - name: Compile and validate source-role prompt
+        run: |
+          python -m py_compile agents/agent44/k08_compact_source_beam.py
+          python agents/agent44/k08_compact_source_beam.py --smoke
+
+      - name: Generate four ranked complete candidates and test K08 commitment
+        run: |
+          python agents/agent44/k08_compact_source_beam.py --beams 4 --max-new-tokens 32 --max-time 480 --output k08-compact-source-beam.json
+
+      - name: Upload candidate and commitment results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k08-compact-source-beam-${{ github.run_id }}
+          path: k08-compact-source-beam.json
+          if-no-files-found: warn
+          retention-days: 7
