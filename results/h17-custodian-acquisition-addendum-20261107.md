@@ -194,3 +194,16 @@ If the native manifest confirms the N12→PS-0312 structural association, also r
 **Conditional photo-caption print witnesses:** the 24-note/spool crosswalk associates N01, N08, N09 and N14 with PS-261003-0301, -0308, -0309 and -0314 by suffix and five-minute sequence. No supplied source explicitly defines Nxx→0300+N or authenticates the native routes. If the original queue/job manifest confirms these pairings, retrieve each complete native spool object and rendered output, including original document bytes, .SPL/.SHD or native equivalent, job/queue/device/port metadata, attempts, completion/media-eject/collection records and custody. These are 3 October print artifacts and may be printed caption witnesses; they cannot replace the original pre-1-October photo-caption archive. Keep them distinct from PS-0323 and do not interpret their 16-byte reconstruction payloads as caption text.
 
 This is a K08 carrier locator, separate from the PS-0417/AX-7782 K04 path. The 16-byte payloads in the supplied reconstruction are retained fragments with unverified integrity; ACK proves receipt only. Direct digest/HMAC/BIP39 checks of paired note text and payloads found no identity. Do not treat PS-0323's retained 16 bytes as the phrase or a verified K08 component, and do not infer that DEST=store is a physical location without the original queue/port map. See the [K08 note-to-spool sequence crosswalk](h17-k08-note-spool-sequence-crosswalk-20261107.md).
+
+
+### Tab-05 physical discriminator: North catch body versus South retained pin (7 November 2026)
+
+The tab-05 wording distinguishes two different operations. Supplier reconciliation calls North ST-112 “catch cleaning” at €0.00; the fleet retirement note calls it “catch, clean”. South ST-142 is “catch pin” at €6.00; the fleet note calls it “catch, retain”. The matching tab number supports a side-by-side control, but the operation and physical part may differ.
+
+If the original packets or retained parts are already available through an authorized custody path, preserve and compare:
+- North L-29/N A3: the catch body, its mating pin/retainer, spring or clip, any cleaned/removed residue, return bag, labels, adhesive residue, carbonless underlay and attached work record.
+- South L-29/S CS-18/5: the retained catch pin and its mating body, spring/clip, return bag, labels, residue and attached record.
+
+The North cleaning entry may mean its original body remained in situ; that is a search hypothesis, not a fact. Do not assume the North body and South pin are identical hardware, and do not interpret either “catch” as a paper output tray without an original parts index. Preserve each packet and part separately before comparison.
+
+**Keep PTW-417 separate.** Its local work order is a seal-rack inventory/closeout record, not a demonstrated cassette-catch record. The shared “417” suffix does not establish a join to the printer job or the cassette part. The bounded PTW-417 revision-delta screen is recorded separately and produced no K04 commitment match.
