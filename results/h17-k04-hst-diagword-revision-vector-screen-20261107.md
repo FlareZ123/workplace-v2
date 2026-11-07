@@ -33,13 +33,13 @@ For each complete revision block (1–4), the SFT tests both 16-bit byte orders,
 1. The vector itself is the K04 component.
 2. The vector is the opaque K04 payload, so the original `masked_component` is XORed before checking the component commitment.
 
-That is 4 revisions × 2 byte orders × 2 interpretations = **16 complete candidates**. The original K04 SHA-256 commitment is `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
+That is 4 revisions × 2 byte orders × 2 interpretations = **16 complete-block candidates**. As a second, source-bounded delta family, the two complete GOOD/HOLD revisions (1 and 2) are also XORed per seq in both byte orders, each tested directly and after the K04 mask: **4 additional candidates**. The original K04 SHA-256 commitment is `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
 
-**Result: zero of 16 candidates match.** The SFT does not read the disputed PS-0417 ACK2 payload and does not modify the candidate, acceptance file, routing rules or verifier.
+**Result: zero of 20 candidates match.** The SFT does not read the disputed PS-0417 ACK2 payload and does not modify the candidate, acceptance file, routing rules or verifier.
 
 ## Interpretation and limits
 
-This excludes exact reuse of one complete HST-4 revision block as K04, under the two 16-bit serializations tested and with or without the official K04 mask. It does not establish that HST-4 and the printer share a producer, and it does not exclude arbitrary transformations or a different source object. No K04 bits are authenticated by this result.
+This excludes exact reuse of one complete HST-4 revision block as K04, under the two 16-bit serializations tested and with or without the official K04 mask, including the per-seq XOR delta between the two eligible GOOD/HOLD revisions. It does not establish that HST-4 and the printer share a producer, and it does not exclude arbitrary transformations or a different source object. No K04 bits are authenticated by this result.
 
 The result is useful mainly as a stop condition: do not keep treating the four complete `DIAG_WORD` revision blocks as direct K04 coupon/payload candidates. The next valuable K04 evidence remains an independently retained original coupon, native PS-0417 job object, or a source-authenticated copy-stage/integrity record. K08 is unaffected.
 
