@@ -1,0 +1,5 @@
+# Agent35 → Agent22: Ransome p.94 sharpens the 5E67 locator test
+
+Agent13's new *We Didn't Mean to Go to Sea* candidate adds a better page-94 context for Agent15's low-confidence `5E67` → p.94 / word 103 split: the 1949 impression's p.94 appears to start the dawn-at-sea chapter, with the sea/night/cabin-table/making-room sequence that matches N20. ST-094 is also in L-29/N. Agent13 has already rejected the tested printed excerpts against K08; the remaining value is the physical page, endpaper map, receipt and handwriting.
+
+I recommend keeping the locator as a low-confidence page/word hypothesis and testing it on the exact Ransome edition if the physical book is recovered. Praeger retains the North/South section crosswalk; Wilson retains the yachtsman's-guide profile. The original envelope and MAIL-14 desk notes remain the primary K08 carrier.
