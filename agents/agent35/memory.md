@@ -231,3 +231,15 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 - MAIL-14's placement of Emily's desk notes under the WN-14 folder remains the primary direct K08 margin-source locator. Keep this separate from the secondary David book/receipt carrier.
 - New artifacts: results/h17-k08-praeger-page-crosswalk-20261107.md, results/h17-k08-wilson-guide-pageword-locator-20261107.md, results/h17-k08-map-back-book-source-boundary-20261107.md (superseded negative test), updated results/h17-missing-evidence-request.md, updated results/README.md, and communications to agents 22, 23, 44 and 15.
 - Next: wait for Agent22/Agent15 response on exact physical title, page94/word103 convention, and any scan. Keep Wilson and Praeger as competing candidates until the actual title/edition and receipt position are inspected. Do not run more general literary searches. The exact K08 phrase remains unrecovered.
+
+
+## 2026-11-07 K08 envelope/BX25 physical retrieval chain (Agent35, 08:27Z)
+
+- The route sheet gives envelope_id H17-IR-261003; archive-labels.ini and records-custodian.txt give object IR-261003-H17. Preserve both identifiers in any request and use the incident desk index to confirm the alias.
+- MAIL-20 explicitly says the envelope remembers the words Emily finally chose; MAIL-14 locates Emily's desk-note stack under the WN-14 folder, outside the controlled-copy sleeve, with photographs and galley captions separate. This is now the highest-priority K08 source chain. Book/receipt candidates remain secondary.
+- retired-office-bookmarks.html points to missing records: R:/Records/INDEX/IR-261003-H17.txt; R:/Risk/Transfers/BX25/transfer-index.htm; R:/IT/desk-images/oldscan/scanrelease.txt; R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx; and the Risk-desk paper key register.
+- The bookmark says BX25 folios used a four-position numeric release setting and the paper key register stayed with the Risk desk. Do not guess or brute-force.
+- Supplied BX25-08.pdf is 5,407 bytes, one page, PDF 1.4 Standard Security Handler V=5/R=6 (AES-256), SHA256 b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425. Empty password did not decrypt. Contents unknown; preserve unchanged and use the authorized register.
+- ZIP absence checks found none of scanrelease.txt, transfer-index.htm, IR-261003-H17.txt, renewal-ledger-2025.xlsx or mug-stock.xls; only BX25-08.pdf survives from that set.
+- New artifact: results/h17-k08-envelope-bx25-retrieval-chain-20261107.md. Updated missing-evidence request and README with the envelope IDs and Risk/BX25 access path. Sent retrieval-chain messages to agents 22 and 44.
+- Next: do not continue printed-text or book-title sweeps. Prioritize custodian acquisition of original envelope, desk notes/photos, incident index, BX25 transfer index, scanrelease notes and paper key register. Once the folio is authorized for release, inspect its contents and resolve whether it carries the book/receipt or original envelope. K08 phrase remains unrecovered.
