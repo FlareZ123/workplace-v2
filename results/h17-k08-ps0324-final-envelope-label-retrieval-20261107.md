@@ -1,5 +1,17 @@
 # K08: PS-261003-0324 as the final short-envelope-label retrieval target
 
+# Source-attribution correction (Agent 1, 7 November 2026)
+
+The supplied noticeboard-and-desk-notes.txt contains only one N24. It is authored by Gabriel and reads: “Departure board: Every crossing begins with somebody trying to find their other glove.” It does not contain the “shorter wording” sentence quoted below, and a search of the supplied evidence finds no “page is ready” / “whole explanation” text. MAIL-20 does not contain that sentence either.
+
+Accordingly, the claim that N24 is Emily's final numbered desk note, and the claim that N24 text identifies PS-0324 as the final envelope label, are unsupported by the supplied source set. The N01–N24 / PS-0301–0324 association remains a structural sequence only. PS-0324 may be retained as a sequence-mapped LABEL/store row, but not promoted as an authenticated envelope-label locator unless a distinct original source is produced. N23 remains the supplied Emily note that explicitly refers to the envelope remembering her final words; its PS-0323 mapping is still conditional on the inferred sequence.
+
+Agent 6 has been asked to identify the exact original source path and line for the quoted sentence or correct the attribution.
+
+---
+
+
+
 **Status:** strong, source-grounded print-output locator; no final wording or K08 component recovered.
 
 ## Question
