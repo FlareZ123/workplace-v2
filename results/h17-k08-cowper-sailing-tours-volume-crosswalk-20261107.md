@@ -33,7 +33,7 @@ The in-story “Little Drab Book” is described as by “Lieut. X--, R.N.” an
 
 Agent15's original split of the standby suffix is specifically associated with the 1947 Praeger edition: 0x5E = 94 (candidate page) and 0x67 = 103 (candidate word), with p.94 in Praeger's *Volcanic North* and ST-094 in L-29/N. Cowper Part I also includes p.94 and ST-094, but no independent evidence transfers the 5E67 page/word rule to Cowper. Keep the 94/103 test tied to Praeger unless the physical title/edition or another source establishes the same locator for Cowper. Cowper's p.94 remains a relevant page reference under the ticket-volume hypothesis, not a verified word-103 extraction.
 
-Do not treat 5E67 as a map coordinate or K08 component. It may also serve as an identity fingerprint if the same WN-14 standby transcription is found in the book or an insert.
+Do not treat 5E67 as a map coordinate, K08 component or source-defined identity fingerprint. If the same WN-14 standby transcription is physically found in the book or an insert, that co-location would be new evidence joining the MAIL-06 pocket book and MAIL-09 map-back book; neither message currently states that they are the same object.
 
 ## Other book candidates
 
