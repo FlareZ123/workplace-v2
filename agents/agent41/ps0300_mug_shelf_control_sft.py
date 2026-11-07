@@ -118,8 +118,8 @@ def main() -> None:
     ps0312_time = datetime.fromisoformat(JOB_ROWS["PS-261003-0312"][0])
     delta_0312 = int((ps0312_time - mail_date.astimezone(timezone.utc)).total_seconds())
     assert delta_0312 == 25 * 60 * 60 + 27 * 60
-    print(f"Preserved MAIL-12 Date header to PS-0300 delta: {delta_seconds // 3600}h {delta_seconds % 3600 // 60}m")
-    print(f"Preserved MAIL-12 Date header to PS-0312 delta: {delta_0312 // 3600}h {delta_0312 % 3600 // 60}m")
+    print(f"Unauthenticated displayed MAIL-12 Date to PS-0300 interval: {delta_seconds // 3600}h {delta_seconds % 3600 // 60}m")
+    print(f"Unauthenticated displayed MAIL-12 Date to PS-0312 interval: {delta_0312 // 3600}h {delta_0312 % 3600 // 60}m")
     print("Conclusion: PS-0300 is an orphan LABEL/store candidate; PS-0312 is a conditional N12 workshop-card candidate.")
     print("Neither is directly joined to the MAIL-12 shelf card.")
 
