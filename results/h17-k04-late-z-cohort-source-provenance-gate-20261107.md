@@ -15,6 +15,8 @@
 - `PS-261003-0420` also recurs across the boundary: 17:00 `STORES/ACK/ATTEMPT=1`, then 18:25 `RECOVER/ACK/ATTEMPT=2`.
 - `archive-labels.ini` maps the 0417 job to ESC-N. The five-row tail also contains the 0448 and 0420 recovery events.
 
+A raw-byte inspection adds two constraints: all 134 physical lines use LF endings, with no blank line or explicit source marker at the 128/5 transition; and the `Z` suffix used by the five tail records also appears in `evidence/mail/INDEX.md` and the `receipt_utc` fields of `evidence/transfers/transfer-audit.jsonl`. The telemetry freeze uses numeric UTC offsets. Thus `Z` is consistent with a records-office/index serialization convention, while the earlier spool rows retain a different offset form. This may reflect a merge/export-stage boundary rather than a different printer. It cannot identify the producer by itself.
+
 The change in timestamp serialization, state/attempt shape, and reused logical job IDs is an observable cohort boundary. It does **not**, by itself, prove that the rows came from different producers. The log header calls the file a reconstruction from retained fragments, with payload integrity unverified. The custodian note independently says raw acquisition records and spool payloads have not all been validated after extraction, and that ACK proves receipt rather than payload correctness.
 
 ## Why the missing source is more specific than "the spool"
