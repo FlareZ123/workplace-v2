@@ -14,6 +14,8 @@ The decrypted BX25-08 property annex labels `https://noyes-energy-group.pages.de
 - The linked `/admin/` page is titled "Partner & employee access | Noyes Energy Group" and presents a username/password form. The form posts to `/api/login`.
 - The probe recorded only the public page structure, form field names and status. No credentials were supplied, no form was submitted, and no disallowed API path was requested.
 
+The public `/insights/` index and its three linked articles were also fetched read-only. They contain generic corporate marketing copy about energy systems, renewables and partnerships; they expose no H-17, incident, WN-14 or correspondence-index records. Similar wording about making space for perspectives is generic site copy and is not treated as the missing personal K08 caption.
+
 ## Stop rule
 
 Do not access `/api/`, submit the PDF release setting to the portal, guess credentials, or attempt to bypass the login. The four-digit setting recovered for BX25-08 is specific to that PDF and is not an authorized website credential.
