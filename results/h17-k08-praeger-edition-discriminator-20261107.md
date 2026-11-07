@@ -46,7 +46,7 @@ Under the 1947 third-edition section starts, all five North suffixes fall in *Th
 
 Under the **1997** 394-page layout, *The Silurian Region* starts at p.111. Page 112 therefore falls in the South section, leaving the North packet with four suffixes in *The Volcanic North* and one in *The Silurian Region*. The 1937 first edition is listed as 394 pages and has a rear folding map, but its exact section-start pages were not independently established. The 1939 second revised edition is listed by Google Books as 394 pages with *The Volcanic North* at p.59; the accessible contents listing does not expose the *Silurian Region* start, and rare-book listings conflict between 304 and 394 pages. The 1980 facsimile reprint is also listed as 394 pages; its section-start pages were not independently confirmed.
 
-The “map in the back” clue alone does not identify the 1947 edition: the 1937 first edition is also described as having a large folding map at the rear. The North/South page split is the more discriminating observation.
+The “map in the back” clue alone does not identify the 1947 edition: the 1937 first edition is also described as having a large folding map at the rear. The North/South page split is the more discriminating observation. An out-of-set check of ST-157, ST-164 and ST-176 found that all three suffixes fall in the South section under both the 1947 p.118 and 1997 p.111 boundaries; they do not discriminate the editions and were selected post hoc. ST-157/164 are correlated same-account rows, while ST-176 is a later pending-period record. See [Praeger ticket-suffix out-of-set controls](h17-k08-praeger-ticket-controls-20261107.md).
 
 ## Interpretation
 
