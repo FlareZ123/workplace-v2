@@ -33,16 +33,16 @@ N = 32
 
 def seed_word_coverage(witnesses, length):
     # key16 is the final raw four bytes, key31 is the first raw 1..4.
-    assembled = ["?"] * length
+    assembled = [None] * length
     for idx, rawhex, _ in witnesses:
         pad_start = 4 * (N - 1 - idx)
         raw = bytes.fromhex(rawhex)
         for j, byte in enumerate(raw):
             absolute = pad_start + j - (64 - length)
             if 0 <= absolute < length:
-                assert assembled[absolute] in ("?", chr(byte))
+                assert assembled[absolute] in (None, chr(byte))
                 assembled[absolute] = chr(byte)
-    return "".join(assembled), sum(ch != "?" for ch in assembled)
+    return "".join(ch if ch is not None else "?" for ch in assembled), sum(ch is not None for ch in assembled)
 
 
 def main():
