@@ -57,7 +57,7 @@ The p951 basis is underdetermined by exactly the target 128 bits. A random or pl
 
 ## Solver mechanics validation
 
-`agents/agent12/test_k04_p951_gap_word_recovery.py` constructs one synthetic MT state consistent with the 132 intact printer packets, extracts the eight gap words and checks that the recovery function reconstructs the same synthetic target. The test passed. Its synthetic target does not match the official K04 commitment, as expected; this validates stage ordering and byte order only, not an archive value.
+`agents/agent12/test_k04_p951_gap_word_recovery.py` constructs one synthetic MT state consistent with the 132 intact printer packets, extracts the eight gap words and checks that the recovery function reconstructs the same synthetic target. The same recovery logic was exercised locally with a synthetic state consistent with the base printer equations, and it reconstructed that synthetic target. The committed test file provides a repository-side integration check; run it from the repository to verify the shared-module import path. Its synthetic target is not an archive value and is not expected to match the official K04 commitment.
 
 ## Reproduction
 
