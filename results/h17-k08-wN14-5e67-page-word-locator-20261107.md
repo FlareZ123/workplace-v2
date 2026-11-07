@@ -2,7 +2,7 @@
 
 # WN-14 standby suffix: Cowper map-verso fingerprint and page/word locator
 
-**Status:** strongest current book candidate, still unverified. No K08 phrase has been recovered. The standby value is not a signed WN-14 component.
+**Status:** low-confidence physical-analogy candidate, not an authenticated book identification. No K08 phrase has been recovered. The 5E67 page/word link is unsupported; the standby value is not a signed WN-14 component.
 
 ## Question
 
@@ -49,7 +49,7 @@ The map-reverse owner inscription in the Part I listing adds a distinctive physi
 ## What this does and does not establish
 
 - The page/word split is a hypothesis, not a source-defined convention. MAIL-06 does not mention a book or page/word locator; the `0x5E=94 / 0x67=103` interpretation is unsourced.
-- Cowper *Sailing Tours* is the strongest current candidate for the map-bearing book and for explaining the L-29/N/S ticket pages. The physical copy has not been inspected.
+- Cowper *Sailing Tours* remains a physical-analogy candidate because the listed Part I copy has an owner's name on the reverse of its frontispiece map and the novel names the title. It is not authenticated as David's map-back book, and it does not explain the L-29/N/S ticket pages without the unsourced locator hypothesis.
 - The PBFA listing describes a previous owner's name on the reverse of a frontispiece map. It does not identify that name as Dollmann or prove that the listing's copy is David's copy.
 - The physical evidence may be one volume or a set. MAIL-09 uses the singular “book”; this must be resolved by inspection.
 - The suffix `5E67` remains a standby transcription and must not replace the signed WN-14 register or the signed desk nonce.
