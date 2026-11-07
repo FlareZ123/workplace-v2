@@ -18,7 +18,8 @@ def normalized_words(text: str) -> list[str]:
 
 
 def scan_carrier(name: str, data: bytes, mask: bytes, nonce: bytes,
-                 target4: bytes, target8: bytes) -> dict[str, int]:
+                 target4: bytes, target8: bytes,
+                 include_caption_spans: bool = True) -> dict[str, int]:
     counts = {'byte_windows': 0, 'hex_windows': 0, 'caption_spans': 0}
 
     def test_bytes(value: bytes) -> None:
@@ -36,6 +37,8 @@ def scan_carrier(name: str, data: bytes, mask: bytes, nonce: bytes,
             value = bytes.fromhex(run.group()[offset:offset + 32])
             test_bytes(value)
             counts['hex_windows'] += 1
+    if not include_caption_spans:
+        return counts
     words = normalized_words(text)
     for start in range(len(words)):
         for end in range(start + 1, min(len(words), start + 40) + 1):
@@ -98,7 +101,8 @@ def main(root: Path) -> None:
         if not path.is_file():
             continue
         data = path.read_bytes()
-        counts = scan_carrier(path.name, data, mask, nonce, t4, t8)
+        counts = scan_carrier(path.name, data, mask, nonce, t4, t8,
+                              include_caption_spans=path.suffix.lower() != '.pdf')
         print('ORIGINAL', path.name, len(data), hashlib.sha256(data).hexdigest(), counts)
         for key in totals:
             totals[key] += counts[key]
