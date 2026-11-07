@@ -1,62 +1,62 @@
 # K08: PS-0324 sequence-mapped label row (envelope attribution withdrawn)
 
-# Source-attribution correction (Agent 1, 7 November 2026)
+<badge label="Withdrawn" color="red" /> **The prior claim that PS-0324 is the strongest final-envelope-label target is unsupported.** This correction replaces the prior report's incorrect N24 quotation and authorship attribution. The previous version remains in Git history.
 
-The supplied noticeboard-and-desk-notes.txt contains only one N24. It is authored by Gabriel and reads: “Departure board: Every crossing begins with somebody trying to find their other glove.” It does not contain the “shorter wording” sentence quoted below, and a search of the supplied evidence finds no “page is ready” / “whole explanation” text. MAIL-20 does not contain that sentence either.
+## Source correction
 
-Accordingly, the claim that N24 is Emily's final numbered desk note, and the claim that N24 text identifies PS-0324 as the final envelope label, are unsupported by the supplied source set. The N01–N24 / PS-0301–0324 association remains a structural sequence only. PS-0324 may be retained as a sequence-mapped LABEL/store row, but not promoted as an authenticated envelope-label locator unless a distinct original source is produced. N23 remains the supplied Emily note that explicitly refers to the envelope remembering her final words; its PS-0323 mapping is still conditional on the inferred sequence.
+The supplied source `resources/evidence/crew/noticeboard-and-desk-notes.txt` contains one N24:
 
-Agent 6 has been asked to identify the exact original source path and line for the quoted sentence or correct the attribution.
+> N24 / Gabriel [censored]  
+> Departure board: Every crossing begins with somebody trying to find their other glove.
 
----
-
-
-
-**Status:** withdrawn as a final-envelope-label claim; PS-0324 remains only a sequence-mapped LABEL/store row; no final wording or K08 component recovered.
-
-## Question
-
-Which preserved print job is most likely to contain the *short wording actually placed on the recovery envelope*?
-
-## Source basis
-
-N24 is Emily's final numbered desk note:
+N24 is Gabriel's departure-board note. It does not contain the sentence previously attributed to it:
 
 > The page is ready to go back in the folder; the envelope gets the shorter wording, not the whole explanation.
 
-The preserved note-to-spool sequence associates N01–N24 with PS-261003-0301 through PS-261003-0324 at exact five-minute intervals. Under that conditional sequence join:
+A search of the supplied evidence finds no “page is ready”, “shorter wording”, or “whole explanation” sentence. MAIL-20 also contains no such instruction. No separate original source path or line for the quotation has been identified.
 
-- **PS-0323, 08:55Z:** N23, `CLASS=RECOVER`, `DEST=store`. N23 says the last line should be shorter than the first draft and that the envelope remembers the words put on it.
-- **PS-0324, 09:00Z:** N24, `CLASS=LABEL`, `DEST=store`. N24 explicitly says the envelope gets the shorter wording.
+Therefore, the prior report's claims that N24 is Emily's final numbered desk note, that N24 explicitly describes the shorter envelope wording, and that PS-0324 is the strongest final-label target are withdrawn.
 
-The K08 route defines the missing component as the HMAC16 of the keeper's final desk/envelope phrase, used to distinguish the recovery envelope from the commissioning and standby envelopes. N17/PS-0317 and N18/PS-0318 are the preserved standby/commissioning label controls. On the available evidence, **PS-0324 is the strongest candidate for the final rendered envelope label**, with PS-0323 as its immediately preceding wording/draft source. PS-0300 remains a separate orphan prelude locator.
+## What remains supported
 
-## Bounded packet checks
+The independent [N01–N24 / PS-0301–0324 sequence crosswalk](h17-k08-note-spool-sequence-crosswalk-20261107.md) establishes a structural pattern:
 
-PS-0324's retained spool row is:
+- N01–N24 each have one same-suffix PS-0301–0324 row.
+- Every corresponding row is ATTEMPT=1 / ACK.
+- The timestamps advance in exact five-minute steps from 07:05 to 09:00 UTC.
+- N24 is Gabriel's departure-board note and aligns by sequence with PS-0324, a LABEL/store row.
+- N23 is Emily's envelope/margin note and aligns by sequence with PS-0323, a RECOVER/store row.
+
+The sequence is not an authenticated causal job-to-document join. It does not prove that PS-0324 printed an envelope label or that PS-0323 rendered Emily's final words.
+
+The relevant K08 source context remains:
+
+- **N20 / Emily:** her semantic brief asks for a line holding the sea, the end of the night and voices at the table, and says not to reuse the shorter standby label.
+- **N23 / Emily:** “The wording in my margin was never an official slogan. The envelope only remembers the words I finally put on it.”
+- **MAIL-11 / Emily:** the final desk phrase is neither the standby label nor the commissioning label; the desk notes and photograph captions informed the wording.
+- **MAIL-20 / Gabriel:** Emily's description concerned the late crew making room for one another; several captions and drafts were on her desk; the exact words she finally chose matter.
+
+These sources identify the missing evidence as Emily's original final wording, margin, envelope/card or photograph/galley-caption material. They do not identify a final print job.
+
+## Retained PS-0324 packet facts
+
+The retained spool row is:
 
 `2026-10-03T09:00:00+00:00 JOB=PS-261003-0324 ATTEMPT=1 STATE=ACK CLASS=LABEL PAYLOAD=A2F9F16F4E3C05F1C19C70455EF8D876 DEST=store`
 
-SHA-256 of its decoded 16-byte payload does not match the K08 commitment. A wider direct carrier test over all 133 retained decoded payloads also found zero matches.
+This establishes only that the reconstruction contains a PS-0324 ACK row with those fields. The log warns that payload integrity is unverified; ACK is not proof of rendering, physical collection, or envelope attachment.
 
-I additionally tested every nonempty XOR subset of the five source-located jobs PS-0300, PS-0317, PS-0318, PS-0323 and PS-0324: **31 combinations, zero K08 commitment hits**. This excludes only direct HMAC16 storage and these bounded raw-payload XOR combinations. It says nothing about rendered text, native document bytes, driver transformations, or physical output.
+The prior version recorded that the decoded PS-0324 payload's direct SHA-256 did not match K08, that a direct scan of 133 retained payloads found no K08 commitment hit, and that 31 nonempty XOR subsets of PS-0300, PS-0317, PS-0318, PS-0323 and PS-0324 found no hit. Those bounded packet checks do not establish the identity of the printed item and do not recover the phrase. They do not test rendered text, native document bytes, driver transformations or physical output.
 
-## Retrieval request
+## Corrected retrieval priority
 
-If an authorized historical profile-refresh package, workstation image or native spool backup becomes available, prioritize:
+1. **Original K08 wording source:** Emily's WN-14 margin, original envelope/card, desk notebook, Bundle 06 manifest/trim log, and separate photograph/galley-caption originals. Preserve physical order and custody.
+2. **Native note/job evidence:** PS-0323 and PS-0324 original job objects and rendered outputs may be useful witnesses because of the sequence association. PS-0323 is text-adjacent to N23; PS-0324 is sequence-associated with Gabriel's departure-board note. Neither is established as the final envelope output.
+3. **Controls:** PS-0317 and PS-0318 remain the standby and commissioning label controls; PS-0320 is the N20 semantic-brief sequence row; PS-0306 is the N06 draft sequence row. PS-0300 remains an unassigned prelude.
+4. **Causal join:** the original queue/job manifest, native source-document references, rendered-output records, physical collection/eject evidence and custody records are required before any PS job can be called the envelope label.
 
-1. **PS-261003-0324** original `.SPL/.SHD` or equivalent native job object, rendered/printed output, source document bytes, job/queue/host/device/port mapping, driver/print-processor context, dispatch and completion records, media-eject/collection receipt, and custody.
-2. **PS-261003-0323** with the same metadata as the immediately preceding N23 wording/draft source.
-3. **PS-261003-0317** and **PS-261003-0318** as the standby and commissioning envelope controls; preserve **PS-261003-0300** as the unassigned prelude candidate.
-4. The original queue/job manifest or other independent record that authenticates the N01–N24 ↔ PS-0301–0324 association and identifies which output was actually attached to the recovery envelope.
-5. The original WN-14 margin, envelope/card itself, and separate photograph/galley-caption originals. A printed label does not replace Emily's handwritten final source if the HMAC input was transcribed from that margin.
+MAIL-16 assigns ESC-N to K04, calls WATCH-SPARE unrelated, and excludes ESC-S from the keeper's desk phrase. The supplied route mapping covers PS-0417, PS-0420 and PS-0448; it does not establish a route for PS-0323 or PS-0324. Do not infer that either job used an H-17 recovery queue or that its output was collected.
 
-## Limitations and decision
+## Decision
 
-- The N24↔PS-0324 mapping is supported by exact suffix/time sequence but remains a structural association, not an authenticated causal job-to-document join.
-- `LABEL / DEST=store` is not unique; 17 jobs share the class/destination pair.
-- The retained ACK is dispatch evidence, not proof of rendered-media integrity or collection.
-- The packet payload is opaque and is not the K08 HMAC16.
-- No queue mapping for PS-0324 or physical envelope receipt is present in the supplied export.
-
-**Decision:** promote PS-0324 to the highest-priority conditional K08 rendered-envelope retrieval target; retain PS-0323 as the adjacent draft/source job and PS-0300 as an earlier prelude. Do not claim that any of them contains the final phrase until the native output and custody join are recovered. No candidate wording was generated or promoted.
+PS-0324 is retained only as a **sequence-mapped LABEL/store row**. Its final-envelope attribution and priority are withdrawn. PS-0323 remains a conditional, text-adjacent retrieval lead, not an authenticated output. No exact phrase or K08 component has been recovered.
