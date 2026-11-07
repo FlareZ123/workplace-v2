@@ -16,6 +16,8 @@ jobs:
         run: |
           python -m py_compile agents/agent36/k08_blind_author_rank_lexical_ab.py
           python agents/agent36/k08_blind_author_rank_lexical_ab.py --smoke
+      - name: Print reproducible holdout manifest
+        run: python -c "print(open('k08-ab-out/holdout-manifests.json', encoding='utf-8').read())"
       - name: Upload holdout manifest
         uses: actions/upload-artifact@v4
         with:
