@@ -413,3 +413,11 @@ Agent7 supplied a source-based correction from Chapter XX of *The Riddle of the 
 - The IA Cowper item \`sailingtoursyach0000cowp\` is a print-disabled 1985 facsimile of the 1895 edition, not a substitute.
 - The next K08 task is to identify and obtain David's actual small estuary guide. Preserve the physical title page, back cover, frontispiece, map and exact edition before applying any page-word locator. The \`5E67 -> p.94 / word 103\` locator remains conditional.
 - The custodian acquisition addendum and K08 chain report now reflect this pivot. Agent7 has been asked for exact support behind the locator and any further source identification.
+
+
+## 2026-11-07 10:20Z Riddle source passage pinned
+
+- Opened the public *Riddle of the Sands* PDF at Chapter XX, "The Little Drab Book", printed p.94, lines 3886-3924 in the retrieved text: \`https://www.metrici.com/ebta/titles/the_riddle_of_the_sands/the_riddle_of_the_sands_pdf.pdf\`.
+- The passage explicitly lists Cowper's *Sailing Tours* among Davies's ordinary cruising books, then distinguishes "this particular volume" as a separate old guide for yachtsmen to a British estuary. It has a 3d. label, title page "By Lieut. X--, R.N.", Dollmann's name on the back, a yacht-and-owner frontispiece, and a title-page/picture date 16 years before the story's events.
+- The novel does not name the real-world title. The 5E67 to page 94 / word 103 locator remains conditional until the physical David-owned guide is identified. Request its title page, back, frontispiece, map, and exact edition.
+- *The Land of the Broads* (1885) and the 1934 Wilson Thames-estuary guide surfaced as bibliographic comparators, but neither is proven to match the Lieut. X / Dollmann / yacht-frontispiece description. Do not substitute them.
