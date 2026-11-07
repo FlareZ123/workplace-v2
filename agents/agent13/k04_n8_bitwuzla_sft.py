@@ -1,4 +1,9 @@
-"""Bitwuzla n=8 inverse for a full K08-HMAC32 integer-seeded CPython stream.
+"""RETIRED as a recovery search under p951/k2496: Agent45's 19-term
+source-only theorem excludes CPython n=8. Retained solely to document the
+pre-theorem independent Bitwuzla backend cross-check (run 42371700312);
+do not dispatch again against this source basis.
+
+Bitwuzla n=8 inverse for a full K08-HMAC32 integer-seeded CPython stream.
 
 Distinct from the n20 bytes-seed and n24 full-digest bytes-seed models: this
 tests whether the complete 32-byte K08 HMAC digest was converted to a big-endian
