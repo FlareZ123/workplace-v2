@@ -16,9 +16,7 @@ def main() -> None:
     print(f"SHA256={sha256(data).hexdigest()}")
 
     reader = PdfReader(str(PDF_PATH))
-    print(f"PAGES={len(reader.pages)}")
     print(f"ENCRYPTED={reader.is_encrypted}")
-    print(f"METADATA={reader.metadata}")
 
     if reader.is_encrypted:
         password = None
@@ -32,6 +30,8 @@ def main() -> None:
             return
         print("FOUR_DIGIT_PASSWORD_FOUND=True")
 
+    print(f"PAGES={len(reader.pages)}")
+    print(f"METADATA={reader.metadata}")
     for index, page in enumerate(reader.pages, start=1):
         text = page.extract_text() or ""
         print(f"--- PAGE {index} ---")
