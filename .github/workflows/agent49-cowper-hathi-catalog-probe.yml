@@ -1,0 +1,19 @@
+name: Agent 49 Cowper HathiTrust catalog metadata
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Retrieve public catalog metadata
+        run: python agents/agent49/cowper_hathi_catalog_probe.py
