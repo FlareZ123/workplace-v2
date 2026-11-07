@@ -14,9 +14,10 @@ Used the repository copies of:
 
 Applied the K08 normalization rule from the routing file: lowercase, replace non-ASCII-alphanumeric characters with spaces, then collapse whitespace. Candidate strings covered each note body, author plus body, and, where present, both the full labelled body and the text following its label. Enumerated every contiguous span from 1 through 64 words and deduplicated the normalized candidates.
 
-For each candidate message `M`, computed:
+For each candidate message `M`, used the routing nonce `5F933DA6A1BD03C32DA5CBC25344F497` and computed:
 
 ```python
+desk_nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
 component = hmac.new(desk_nonce, M.encode("utf-8"), hashlib.sha256).digest()[:16]
 candidate_commitment = hashlib.sha256(component).hexdigest()
 ```
@@ -25,7 +26,7 @@ Compared each commitment with `resources/acceptance.json` at `slot_sha256.K08`.
 
 ## Result
 
-<badge label="0 matches" color="secondary" />
+**Result: 0 matches**
 
 - 24 source note entries.
 - 4,313 distinct normalized contiguous spans.
