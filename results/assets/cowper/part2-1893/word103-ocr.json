@@ -1,0 +1,207 @@
+{
+  "status": "PART_II_WORDS_EXTRACTED_ONLY",
+  "frozen_candidate": {
+    "book": "Frank Cowper, Sailing Tours, Part II",
+    "edition": 1893,
+    "binder_tab_order_south_pages": [
+      130,
+      151,
+      121,
+      135,
+      142
+    ],
+    "word_index_1based": 103,
+    "part_ii_words_in_order": [
+      "outside",
+      "are",
+      "pleasant",
+      "loveliness",
+      "half"
+    ],
+    "part_ii_fragment_after_k08_normalization": "outside are pleasant loveliness half"
+  },
+  "counting_convention": "Main body only: exclude running head, printed folio and Google watermark using the recorded crop. Apply the exact K08 normalizer (lowercase; replace every non-ASCII-letter/digit/non-whitespace character with a space; collapse whitespace) to the OCR body, then select normalized token 103, one-based. No alternate offsets, tokenizations, page orders or editions were tested.",
+  "ocr": {
+    "engine": "tesseract 5.5.0",
+    "language": "eng",
+    "page_segmentation_mode": 6,
+    "manifest_sha256": "53095c33247e18913183e5174bd084e82803cb90b607ebdb2c84caecb1ffdbad"
+  },
+  "pages": [
+    {
+      "printed_page": 130,
+      "image_path": "results/assets/cowper/part2-1893/p130.img",
+      "image_bytes": 142366,
+      "image_sha256": "c3b93994564bc9ac64b98a9c5e53e587697f04d7cbe1a037db140e93bf0b785f",
+      "image_dimensions": [
+        1025,
+        1523
+      ],
+      "body_crop_pixels": {
+        "top_excluded": 150,
+        "bottom_excluded": 60
+      },
+      "normalized_body_token_count": 397,
+      "word_index_1based": 103,
+      "word_103": "outside",
+      "context_tokens_97_to_109": [
+        "comes",
+        "cliff",
+        "end",
+        "and",
+        "we",
+        "are",
+        "outside",
+        "the",
+        "solent",
+        "hurst",
+        "lights",
+        "there",
+        "are"
+      ],
+      "normalized_body_sha256": "e0ee1e52af6199fbf9ab6f7d6e6dbb57997e5d483e19ba06ed26879061246ce1",
+      "ocr_text_sha256": "931bc6c9a14429af966e4a9fe56e02eb1e0e5fab20201f15a1a3cad3c435f406"
+    },
+    {
+      "printed_page": 151,
+      "image_path": "results/assets/cowper/part2-1893/p151.img",
+      "image_bytes": 140288,
+      "image_sha256": "4735a789cf99c1018c63906054c6c4492b932d9671115806e5903be0ad2c5d11",
+      "image_dimensions": [
+        1025,
+        1521
+      ],
+      "body_crop_pixels": {
+        "top_excluded": 150,
+        "bottom_excluded": 60
+      },
+      "normalized_body_token_count": 406,
+      "word_index_1based": 103,
+      "word_103": "are",
+      "context_tokens_97_to_109": [
+        "or",
+        "southampton",
+        "or",
+        "ports",
+        "mouth",
+        "there",
+        "are",
+        "many",
+        "yards",
+        "to",
+        "choose",
+        "from",
+        "but"
+      ],
+      "normalized_body_sha256": "7de3c7ac6901291d38bb366cab41ed9c8a5b8471553f9354dd61ba3f78b90b1e",
+      "ocr_text_sha256": "bafc195e26c88522d764d2699228f856e40a774acf1e5fca6b0ce1d30b20aa1f"
+    },
+    {
+      "printed_page": 121,
+      "image_path": "results/assets/cowper/part2-1893/p121.img",
+      "image_bytes": 97450,
+      "image_sha256": "3b1e1b88244b2c0e15eeabf1f3f0d72d4cc6f0127256c55e0bc8e3978c3d0083",
+      "image_dimensions": [
+        1025,
+        1516
+      ],
+      "body_crop_pixels": {
+        "top_excluded": 150,
+        "bottom_excluded": 60
+      },
+      "normalized_body_token_count": 246,
+      "word_index_1based": 103,
+      "word_103": "pleasant",
+      "context_tokens_97_to_109": [
+        "sea",
+        "being",
+        "short",
+        "and",
+        "spiteful",
+        "for",
+        "pleasant",
+        "sailing",
+        "however",
+        "we",
+        "know",
+        "of",
+        "no"
+      ],
+      "normalized_body_sha256": "a6b143a16782969e58322e58abc789106371eb1fbfe28b045d81bfe8672a8fa8",
+      "ocr_text_sha256": "6f27adac2ba59fe3ee758298f6182a5a049a339d28dea12d6dcd886698204adb"
+    },
+    {
+      "printed_page": 135,
+      "image_path": "results/assets/cowper/part2-1893/p135.img",
+      "image_bytes": 147158,
+      "image_sha256": "ba90ab504d7d08d03796dee5ac702dd9a813859fe986a9f555e4cf99938b7e0d",
+      "image_dimensions": [
+        1025,
+        1504
+      ],
+      "body_crop_pixels": {
+        "top_excluded": 150,
+        "bottom_excluded": 60
+      },
+      "normalized_body_token_count": 424,
+      "word_index_1based": 103,
+      "word_103": "loveliness",
+      "context_tokens_97_to_109": [
+        "on",
+        "the",
+        "deck",
+        "and",
+        "admire",
+        "the",
+        "loveliness",
+        "of",
+        "the",
+        "place",
+        "on",
+        "our",
+        "south"
+      ],
+      "normalized_body_sha256": "0c7859d0dc2e20c6af4028cefe7cd5bdcf17215454afe2a205168e1039856179",
+      "ocr_text_sha256": "a2bac014d96b9ffd555ad69c77678e438561c769560ffa97423342a80a30c290"
+    },
+    {
+      "printed_page": 142,
+      "image_path": "results/assets/cowper/part2-1893/p142.img",
+      "image_bytes": 135701,
+      "image_sha256": "158e800d097e934eb79c3583527f63f333003bc15b49b26a1f9fe9fbfcace568",
+      "image_dimensions": [
+        1025,
+        1484
+      ],
+      "body_crop_pixels": {
+        "top_excluded": 150,
+        "bottom_excluded": 60
+      },
+      "normalized_body_token_count": 389,
+      "word_index_1based": 103,
+      "word_103": "half",
+      "context_tokens_97_to_109": [
+        "all",
+        "along",
+        "at",
+        "the",
+        "distance",
+        "of",
+        "half",
+        "a",
+        "mile",
+        "or",
+        "even",
+        "nearer",
+        "rocks"
+      ],
+      "normalized_body_sha256": "8524ab8b0b54bafb4fff47f84ce8d42aa09192a36f6b3e9240e44b8de8c2d42c",
+      "ocr_text_sha256": "aeb12b8ff1c893733829d71dfa41defd3f9ff2eca2eadae811fd197dc6da5301"
+    }
+  ],
+  "limitations": [
+    "OCR word positions require visual review against each captured page.",
+    "This is only the South/Part II half of the frozen ten-page candidate.",
+    "No K08 HMAC or acceptance test is performed until the five North words are available."
+  ]
+}
