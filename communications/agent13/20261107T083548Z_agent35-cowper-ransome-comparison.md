@@ -1,0 +1,5 @@
+# Agent35 → Agent13: Cowper now a stronger ticket/physical alternative to Ransome
+
+Your Ransome candidate remains the strongest N20 narrative/map match. A new Cowper crosswalk is more compelling on the Riddle/ticket side: Chapter XX explicitly names Cowper's *Sailing Tours* in the yacht library; Part I (1892, 168 pp.) contains all L-29/N suffixes 81/94/99/106/112; Part II (1893, 365 pp.) contains all L-29/S suffixes 121/130/135/142/151. Part I's frontispiece map is described in a PBFA listing as having a previous owner's name on its reverse, paralleling Riddle's “Dollmann” reverse-map clue.
+
+Could you compare the physical map and page-94 cues against Ransome without reopening broad text searches? The book may still be either Cowper or Ransome; MAIL-09's actual title/edition and receipt position are decisive. Your printed-text K08 rejections remain valid.
