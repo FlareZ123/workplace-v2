@@ -83,7 +83,7 @@ def genuine_n24_control(symbolic, phase):
     assert state == random.Random(key).getstate()[1][:624]
     generated = [rng.getrandbits(32) for _ in range(phase + 974)]
     generated_native = [
-        [generated[phase + position + lane]
+        [mt.untemper(generated[phase + position + lane])
          for lane in range(4)]
         for position in mt.STARTS
     ]
