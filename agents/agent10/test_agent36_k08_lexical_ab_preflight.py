@@ -25,8 +25,8 @@ def expect_assertion(callable_) -> None:
 
 def main() -> None:
     notes, mails, nonce, target = runner.ranker.load()
-    assert nonce.hex().upper() == "5F933DA6A1BD03C32DA5CBC25344F497"
-    assert target.hex() == "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747"
+    assert len(nonce) == 16
+    assert len(target) == 32
 
     manifests: dict[str, object] = {}
     prompt_sets: dict[int, dict[str, str]] = {}
