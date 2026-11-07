@@ -99,6 +99,8 @@ These stage numbers are internal positions in the p951 MT19937 model. They are n
 
 When the eight authentic 32-bit **native, untempered state words** are available, use `agents/agent12/k04_p951_gap_word_recovery.py` to reconstruct the selected payload by tempering the four target native words, apply the K04 route mask and verify the official slot commitment. The minimum-set proof is reproducible with `agents/agent12/k04_p951_gap_minimum_analysis.py`. This is a model-dependent acquisition refinement, not a recovered K04 value.
 
+The obvious PTW-seal shortcut has also been bounded: seven +300/+304 predecessor/current PTW quartet blocks were tested through the eight-native-word p951 bridge across 2,688 distinct order/byte/temper interpretations, with **zero K04 commitment matches**. This does not rule out other ticket fields or producer relations, but it means the listed PTW serial quartets alone should not be substituted for the eight authentic native-stage observations. See `h17-k04-ptw-bay-transition-native-donor-sft-20261107.md`.
+
 ## Preservation requirements
 
 For every returned object, preserve original bytes, source path, owner/custodian, transfer time, file metadata, hashes, page labels, sidecars and chain-of-custody records. Keep original objects distinct from export/reconstruction copies. Do not modify the acceptance files, the supplied encrypted PDF, or the recovered source evidence.
