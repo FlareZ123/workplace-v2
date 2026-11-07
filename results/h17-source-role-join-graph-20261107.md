@@ -17,14 +17,14 @@ The K04 and K08 selectors also remain independent of byte integrity and exact wo
 
 | Slot | Selected object / role | Source evidence | Result and boundary |
 |---|---|---|---|
-| K04 | `ESC-N` job `PS-261003-0417`, attempt 2, `RECOVER/ACK` | `archive-labels.ini`; `MAIL-16` ¶2; spool line 131 | Selects `2026-10-03T18:02:00Z`, ACK2. Payload is 16 bytes in the reconstruction, but its independent media integrity is unverified. |
+| K04 | `ESC-N` job `PS-261003-0417`, attempt 2, `RECOVER/ACK` | `archive-labels.ini`; `MAIL-16` ¶2; spool line 131 | Selects `2026-10-03T18:02:00Z`, ACK2. The archive ID date token `261003` is interpreted as 2026-10-03 and matched to route window `2026-09-01_to_2026-10-03`; the August route is excluded. Payload is 16 bytes in the reconstruction, but its independent media integrity is unverified. |
 | K06 | RC-17 revision C | `MAIL-11` ¶1; `document-register.log` | C is issued and retained. D-draft is a later review copy without issue authority. |
 | K07 | Transfer `AX-7782` | `MAIL-13` ¶2; `transfer-audit.jsonl`; `queue-note.txt` | AX-7782 is the explicit final custodian handoff. AX-7778 is a drill despite also having a non-dry-run COMMIT; AX-7781 is a dry run; AX-7783 stopped before handoff. |
 | K08 | Emily's final wording on the recovery-envelope margin | `MAIL-11` ¶3; notes N10/N20/N23; `MAIL-20` ¶2 | The final carrier is located, the old N17/N18 labels are excluded, and the normalization/HMAC rule is known. The exact final wording is not quoted in these source units. |
 
 ### Exact source units retained
 
-The JSON artifact records the SHA-256 of each source file and zero-based byte spans (end-exclusive) for the relevant email paragraphs and note blocks. The principal spans are:
+The script records source-file SHA-256 values and zero-based byte spans (end-exclusive) for the relevant email paragraphs and note blocks. Its K04 route selector parses the six-digit date token in archive object ID `IR-261003-H17` as 2026-10-03 and selects the unique `archive-labels.ini` route interval covering that date. The file also contains an August route; a section-order reversal leaves the October route selected. This date-token interpretation is an explicit selector inference, corroborated by MAIL-16's current-route statement. The principal spans are:
 
 - `evidence/mail/11.eml`: ¶1 bytes 496–711 (K06 issue receipt); ¶3 bytes 989–1422 (K08 author-final intent). Same file SHA-256: `f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29`.
 - `evidence/mail/13.eml`: ¶2 bytes 485–744 (AX-7782 final handoff); ¶3 bytes 746–1004 (chunk ordering); ¶4 bytes 1006–1146 (handoff print left with ordinary records folder). Same file SHA-256: `80d7b086d77fe7036a596198825dd221fec82e34cbd5a5a43edae74569e171aa`.
@@ -47,8 +47,10 @@ There is no local source unit binding the **FA-17 / ESC-N / L-29-N / H17-POL-17/
 
 ## Reproducible mutation tests
 
-`work/h17_source_role_join_sft.py` runs eight targeted tests. All passed against the uploaded archive:
+`work/h17_source_role_join_sft.py` runs ten targeted regression checks. All passed against the uploaded archive:
 
+- K04 route selection follows the archive-date interval when route sections are reversed.
+- A synthetic August archive ID selects the historical August route window.
 - K04 selector still chooses ACK2 when its payload is replaced with damaged text.
 - K04 selector still chooses ACK2 when the payload field is omitted.
 - K08 paragraph 3 remains discoverable after changing the technical email subject.
@@ -62,7 +64,7 @@ The source ZIP SHA-256 is `e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 
 ## Research consequence
 
-This audit adds no candidate key bytes. It does establish a reproducible source-role selector and closes a specific false shortcut in K07: a non-dry-run COMMIT is not enough without the final custodian receipt. It also makes the remaining K04/K08 boundaries explicit:
+This audit adds no candidate key bytes. It establishes a reproducible source-role selector, makes K04 route selection independent of INI section order, and closes a specific false shortcut in K07: a non-dry-run COMMIT is not enough without the final custodian receipt. It also makes the remaining K04/K08 boundaries explicit:
 
 - **K04:** the selected dispatch event is known; the missing item is an independently authenticated physical/media copy of the coupon or a native printer-side object that validates its 16 bytes.
 - **K08:** the selected carrier is the envelope margin; the missing item is the exact final wording or an authenticated version/attachment that contains it. The semantic brief and draft inputs are not a substitute for that text.
