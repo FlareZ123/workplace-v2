@@ -19,6 +19,8 @@ Calculated differences between the **displayed local record timestamps** (not in
 
 ## Interpretation
 
+The custodian note also states that **original mail ordering has been retained by UTC date**. Within that preserved mail-export order, MAIL-11 precedes MAIL-13 and MAIL-14. This supports a relative sequence in which the envelope phrase was already being discussed before the folder-handoff messages, if the unnamed envelope is the later K08 envelope. Treat this as a custodian-declared relative order within the mail corpus, not native authentication of the absolute Date headers or a cross-system timestamp comparison. It does not by itself place the phrase before the PS-0417 spool event or establish the AX-7782 snapshot time.
+
 MAIL-11's **text** is an existence/working-version statement: it distinguishes wording on an envelope from old cabinet labels and says desk notes and photograph captions were used to work it out. If its displayed Date header is authentic, and if the unnamed envelope is the same physical object later identified as `H17-IR-261003`, this would place an envelope phrase before the selected print event and AX-7782 receipt field.
 
 That is only a **conditional chronology inference**. The original mail namespace and export provenance are not authenticated, the AX-7782 receipt field is not an authenticated content-snapshot time, and wording stability is unknown. The text supports a plausible joint-object retrieval hypothesis; it does not yet establish a pre-commit final K08 value.
