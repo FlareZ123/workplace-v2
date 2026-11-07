@@ -4,7 +4,7 @@
 
 ## Conclusion
 
-The highest-value missing source is the **original keeper recovery envelope**, not a guessed phrase or a printed-book passage. MAIL-20 says the envelope preserves the words Emily finally chose. The route sheet identifies the recovery envelope as `H17-IR-261003`; the appliance/archive label and custodian note identify the object as `IR-261003-H17`. Treat these as likely aliases for the same archive object, but preserve both strings when requesting records.
+The highest-value missing source is the **original keeper recovery envelope**, not a guessed phrase or a printed-book passage. N23 says the envelope remembers the words Emily finally put on it; MAIL-20 separately reports that several captions and drafts were on Emily's desk and that the exact final wording matters. The route sheet identifies the recovery envelope as `H17-IR-261003`; the appliance/archive label and custodian note identify the object as `IR-261003-H17`. Treat these as likely aliases for the same archive object, but preserve both strings when requesting records.
 
 The local export also contains an encrypted one-page `BX25-08.pdf`. The retired-office bookmarks explain that BX25 scan folios use a four-position numeric release setting and that the paper key register remained at the Risk desk. This is an explicit authorized retrieval path. Do not guess or brute-force the setting.
 
@@ -13,7 +13,7 @@ The local export also contains an encrypted one-page `BX25-08.pdf`. The retired-
 - `resources/evidence/recovery-routing.json`: top-level `envelope_id = H17-IR-261003`; K08 source is the keeper's desk phrase and crew notes.
 - `resources/evidence/archive-labels.ini`: archive object is `IR-261003-H17`, mode READ_ONLY_RECORDS.
 - `resources/evidence/records-custodian.txt`: identifies the export as the working preservation export, not the full incident record; K08 is the personal caption used to distinguish the recovery envelope from commissioning and standby envelopes.
-- MAIL-20: several drafts/captions were on Emily's desk; the words she finally chose matter; “the envelope remembers those words”.
+- MAIL-20: several captions and drafts were on Emily's desk; the exact words she finally chose matter. It does not quote the phrase or state the envelope's location.
 - MAIL-14: Emily's desk notes were under the WN-14 folder, outside the controlled-copy sleeve; photos and galley captions were kept separate from the engineering procedure.
 - MAIL-11: desk notes and photograph captions were how Emily worked out the wording; N17/N18 are other-purpose envelope labels.
 - N20/N23: N20 supplies the semantic brief; N23 says Emily's margin wording was not an official slogan and the envelope remembers the words she finally put on it.
@@ -57,7 +57,7 @@ Request and preserve the following as a single provenance bundle:
 6. The original `BX25-08.pdf` folio and its release provenance; preserve the supplied encrypted file unchanged and compare its SHA-256 after any authorized acquisition.
 7. The property renewal ledger `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx` to resolve the A3/A4 property folio and any object references.
 
-Do not merge the envelope, desk notes, BX25 folio, book, or tea receipt until a physical join is observed. The book/receipt can help identify related material, but MAIL-20 and the route sheet point to the envelope as the final-word carrier.
+Do not merge the envelope, desk notes, BX25 folio, book, or tea receipt until a physical join is observed. The book/receipt can help identify related material, but N23 and the route/custodian identifiers point to the envelope as the final-word carrier; MAIL-20 independently locates captions/drafts on Emily's desk after the incident notice.
 
 ## Secondary Cowper book/page candidate (7 November)
 
