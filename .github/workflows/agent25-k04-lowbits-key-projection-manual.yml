@@ -1,0 +1,13 @@
+name: Agent25 H17 low-halfword source key-word projection pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-lower16-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independently test original source and genuine CPython controls
+        run: python agents/agent25/k04_lowbits_key_projection_sft.py --phase 190 --bits 16 --max-rank 12
