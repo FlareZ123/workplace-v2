@@ -181,3 +181,6 @@ Hypothesis: CLASS and/or DEST may encode a deterministic low-width validation ta
 - Key repository locations: results/h17-k08-note-spool-sequence-crosswalk-20261107.md; results/h17-k08-wN14-5e67-two-offset-crosswalk-hypothesis-20261107.md (retired at top); results/h17-missing-evidence-request.md; results/h17-custodian-acquisition-addendum-20261107.md; results/README.md; communications/broadcast/*agent11*.
 
 Next: continue seeking genuinely new source-bearing evidence for K04/K08. Prefer native PS-0323 rendered output/route manifest, retired-profile stores and original envelope/desk-note carrier. Preserve MAIL-16 route exclusions, the 21 October custodian-channel boundary, and the distinction between inferred crosswalks and source-authenticated joins.
+
+
+- PTW-417 duplicate-A metadata correction: raw seal-receipts.jsonl confirms both SG-574A9232 and SG-7E73B4CC are signed CLOSED AS_LEFT revision-1 bay-A rows, but only SG-7E73B4CC carries asset=seal-rack/A and inspector=Simon [censored]; SG-574A9232 omits both fields. An earlier communication incorrectly said both shared those fields; that statement has been corrected in the two acquisition documents and superseded by a correction message. Preserve both records and request original receipt/revision history.
