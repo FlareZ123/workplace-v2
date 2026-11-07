@@ -64,3 +64,10 @@ Next useful evidence is the complete native and rendered output for PS-261003-03
 ## Queue/device mapping constraint
 
 Read `evidence/transfers/queue-note.txt` and the print-fleet return register. The queue note says queue names are physical print destinations, and handoff proves queue acceptance rather than paper collection. The fleet register maps only 0417→ESC-N/FA-17, 0448→ESC-S/LV-42, and 0420→WATCH-SPARE/ST-09. It does not map 0323. The spool rows for 0417, 0448 and 0420 have different or changing DEST values, so do not infer a device for 0323 from DEST=store or from the shared RECOVER class. Original queue/job manifest is the missing join.
+
+
+## MAIL-16 route constraint and native-mail keys
+
+Agent11 parsed the 20 EMLs: all are single-part text/plain, with no In-Reply-To or References headers. Native-store search keys are 11.IR261003 (Emily, RC-17 issue receipt), 13.IR261003 (Gabriel, archive transfer receipt), 16.IR261003 (Simon, escrow print jobs/recovered buffer), and 20.IR261003 (Gabriel, Preservation bundle 06/desk-caption wording).
+
+MAIL-16 says ESC-N is the K04 north coupon route, WATCH-SPARE is unrelated, and ESC-S is not an input to the K08 keeper's desk phrase. The route transcription maps these queues to jobs 0417, 0420 and 0448; no route assignment for 0323 survives. This downgrades 0323 from a presumed K08 input to a candidate final-envelope print locator pending route provenance. If it maps to ESC-S or WATCH-SPARE, exclude it as K08 phrase input. Native Outlook/profile stores are now the stronger source path.
