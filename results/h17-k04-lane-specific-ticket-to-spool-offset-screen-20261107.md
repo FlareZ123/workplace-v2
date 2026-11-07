@@ -73,7 +73,7 @@ The retained spool payloads remain unverified fragments. ACK proves queue accept
 
 1. Original `R:/Stores/returns/SEP26/index.htm` and its source schema, revision history and attachments, to authenticate the ST→PTW and lane-specific PTW→PS joins.
 2. Native queue/job manifests and complete spool objects for the predicted South holdouts `PS-0436`, `PS-0441` and `PS-0457`, plus the retained non-anchor `PS-0427` and anchor `PS-0448`.
-3. The FA-17 L-28/A2 control jobs `PS-0392` and `PS-0403`, and the North mapped jobs `PS-0386`, `PS-0399`, `PS-0404`, `PS-0411` and `PS-0417`, with native selector, attempt, route, `.SPL/.SHD` (or equivalent), rendered output, ACK receipt and physical collection receipt.
+3. The FA-17 L-28/A2 control jobs `PS-0392` and `PS-0403`, and the North mapped jobs `PS-0386`, `PS-0399`, `PS-0404`, `PS-0411` and `PS-0417`. Preserve original source document path/hash and page/range, submitting user, print processor, queue, printer/device/port/route, native selector, attempt, class, destination/output tray, `.SPL/.SHD` (or equivalent), rendered output, ACK receipt and physical collection receipt. The source-document/page fields are the direct discriminator for the proposed shared page/job index.
 4. The original North A3 and South CS-18/5 five-tab packets, especially ST-112 and ST-142, with both faces, attachments and underlays preserved.
 
 Until those records authenticate the joins, keep `+305/+306` as a promising locator hypothesis. Do not treat it as a K04 selector, a payload producer, or proof that the physical coupon is attached to ST-112.
