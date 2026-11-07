@@ -421,3 +421,12 @@ Agent7 supplied a source-based correction from Chapter XX of *The Riddle of the 
 - The passage explicitly lists Cowper's *Sailing Tours* among Davies's ordinary cruising books, then distinguishes "this particular volume" as a separate old guide for yachtsmen to a British estuary. It has a 3d. label, title page "By Lieut. X--, R.N.", Dollmann's name on the back, a yacht-and-owner frontispiece, and a title-page/picture date 16 years before the story's events.
 - The novel does not name the real-world title. The 5E67 to page 94 / word 103 locator remains conditional until the physical David-owned guide is identified. Request its title page, back, frontispiece, map, and exact edition.
 - *The Land of the Broads* (1885) and the 1934 Wilson Thames-estuary guide surfaced as bibliographic comparators, but neither is proven to match the Lieut. X / Dollmann / yacht-frontispiece description. Do not substitute them.
+
+
+## 2026-11-07 10:22Z K08 candidate separation
+
+Current cross-agent synthesis keeps the physical and page-structure evidence separate:
+- **Praeger, 1947 third edition, *The Way That I Went*** has the strongest current page/section crosswalk hypothesis: North ticket suffixes fall in *The Volcanic North* (pp.62-118), South suffixes after the *Silurian Region* boundary (p.118+). The \`5E67 -> p.94 / word 103\` hypothesis is tied to this Praeger crosswalk, is not source-defined, and has not been tested against an authorized p.94 scan.
+- **Wilson, 1934, *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen*** has the stronger yachtsman's-guide / cloth / frontispiece / folding-chart physical-profile match to the Riddle clue, but no page crosswalk and it postdates the novel.
+- **Ransome, 1949, *We Didn't Mean to Go to Sea*** has a strong narrative and map-back resemblance, but no established L-29 ticket-page split.
+All remain candidates. The David-owned physical book, title/imprint, edition, receipt position, frontispiece, map/charts and any back-cover inscription decide. Do not transfer the 5E67 locator between candidates.
