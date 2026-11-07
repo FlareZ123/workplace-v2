@@ -323,6 +323,28 @@ def main() -> None:
                 and k08_sha == acceptance["slot_sha256"]["K08"]
             ),
         })
+        try:
+            phrase_seed = component.decode("utf-8")
+        except UnicodeDecodeError:
+            phrase_seed = None
+        if phrase_seed is not None:
+            normalized = " ".join(
+                re.sub(r"[^a-z0-9\\s]", " ", phrase_seed.lower()).split()
+            )
+            nonce = bytes.fromhex(route["K08"]["desk_nonce"])
+            phrase_component = hmac.digest(
+                nonce, normalized.encode("utf-8"), "sha256"
+            )[:16]
+            phrase_sha = hashlib.sha256(phrase_component).hexdigest()
+            result.update({
+                "seed_bytes_as_normalized_phrase": normalized,
+                "k08_phrase_sha256": phrase_sha,
+                "k08_phrase_commitment_match": (
+                    phrase_sha == acceptance["slot_sha256"]["K08"]
+                ),
+            })
+            if result["k08_phrase_commitment_match"]:
+                print("K08_PHRASE_FROM_PRINTER_SEED", normalized, flush=True)
         print(
             "FULL_SOURCE_VERIFIED",
             "K04_SHA_MATCH", result["k04_commitment_match"],
