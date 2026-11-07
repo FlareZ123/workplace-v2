@@ -58,6 +58,9 @@ _CATEGORY_TOKENS = {
         "ax-7782", "ir-261003-h17", "bundle 06", "bundle06", "transfer",
         "handoff print", "records/index",
     ),
+    "offline_files_cache": (
+        "windows/csc", "cscservice", "netcache", "offline files", "sync center",
+    ),
     "office_document": (
         "mug-stock", "wn-14", "desk-note", "desk note", "scanrelease",
         "renewal-ledger", "supplier", "receipt", "envelope",
