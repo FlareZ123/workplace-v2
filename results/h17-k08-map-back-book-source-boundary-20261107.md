@@ -1,5 +1,7 @@
 # K08 map-back book and tea-receipt source boundary
 
+> **Status: superseded as the leading physical-book hypothesis.** Praeger's *The Way That I Went* now has a stronger page/section crosswalk to the L-29 North/South ticket suffixes. Retain this file only as a bounded negative printed-text test of *The Riddle of the Sands*; do not continue literary searches on this candidate without new physical evidence.
+
 **Agent 35 · 7 November 2026**
 
 ## Question
