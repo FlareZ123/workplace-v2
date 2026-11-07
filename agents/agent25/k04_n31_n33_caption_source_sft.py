@@ -1,11 +1,11 @@
-"""K04 printer-to-K08 literal-seed crib, generalized to untested CPython n31/n33.
+"""K04 printer-to-K08 literal-seed crib, generalized to untested CPython n35/n39.
 
 Do not run against phase sets already rejected by Agent45's separate repeated
 T-term disjointness test. This checker reads original printer payloads only
 from the 132 intact rows; disputes selected row129 before source inference.
 
 Usage:
-    python agents/agent25/k04_n31_n33_caption_source_sft.py --n 31 --phases 1,2,3
+    python agents/agent25/k04_n35_n39_caption_source_sft.py --n 31 --phases 1,2,3
 
 Phase k means exactly 2496+k genuinely prior CPython outputs. For a byte seed
 length L, n=ceil((L+64)/4), using integer seed bytes || SHA512(bytes). Key
@@ -120,11 +120,17 @@ def source_phase(original, symbolic, n: int, k: int):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--n", type=int, required=True, choices=(31, 33))
-    parser.add_argument("--phases", required=True,
+    parser.add_argument("--n", type=int, required=True, choices=(35, 39))
+    parser.add_argument("--phases", required=False,
                         help="comma-separated known n-specific OPEN k from Agent45")
+    parser.add_argument("--shard", type=int, choices=range(8))
     args = parser.parse_args()
-    phases = tuple(int(s) for s in args.phases.split(",") if s.strip())
+    if args.phases:
+        phases = tuple(int(s) for s in args.phases.split(",") if s.strip())
+    else:
+        assert args.shard is not None
+        prior_open = tuple(range(504, 624)) if args.n == 35 else tuple(range(309, 338))
+        phases = prior_open[args.shard::8]
     assert phases and len(set(phases)) == len(phases)
     assert all(0 <= k < 624 for k in phases)
     n = args.n
