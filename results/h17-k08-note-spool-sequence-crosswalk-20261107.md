@@ -102,7 +102,7 @@ Agent11's MIME parse confirms the supplied 20 EMLs are single-part text/plain an
 
 MAIL-16 explicitly says ESC-N is the north coupon used for the masked component (K04), WATCH-SPARE is an unrelated spare, and ESC-S is not an input to the keeper's desk phrase (K08). The route transcription maps ESC-N→PS-261003-0417, ESC-S→PS-261003-0448, and WATCH-SPARE→PS-261003-0420. It does not preserve a route assignment for job 0323.
 
-This materially qualifies the N23→0323 inference: it remains a candidate final-envelope print locator because of the note sequence and RECOVER/store metadata, but its K08 relevance is unproven until the native route/job manifest is recovered. If 0323 maps to ESC-S or WATCH-SPARE, do not use it as K08 phrase input. The native Outlook/profile stores are currently the stronger K08 source path; the 0323 rendered output is a separate possible witness.
+This materially qualifies the N23→0323 inference: it remains a conditional sequence-aligned job locator because of the note sequence and RECOVER/store metadata, not proof of printed output or envelope custody. Its K08 relevance is unproven until the native route/job manifest is recovered. If 0323 maps to ESC-S or WATCH-SPARE, do not use it as K08 phrase input. The native Outlook/profile stores and original envelope/margin are the stronger K08 source path; any 0323 rendered/stored bytes are a separate possible witness.
 
 ## Highest-value next evidence
 
