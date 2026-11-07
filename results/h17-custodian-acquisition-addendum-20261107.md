@@ -86,6 +86,19 @@ If +300 is confirmed, check for original ticket and attachment records ST-043, S
 
 Under +300, North ST-112 maps to PS-0412 (five job numbers before selected PS-0417) and South ST-142 to PS-0442 (six before PS-0448). Under +304, those map to PS-0416 (one before PS-0417) and PS-0446 (two before PS-0448). The +304 adjacency and L-28 holdout fit are suggestive, but no source-defined relation is established. This may help locate a physical copy or missing ticket, but it does not establish that such a ticket exists. The obvious five-point GF(256)/GF(2^128) interpolation and simple hash/XOR constructions from the five North mapped payloads did not predict held-out spool packets or match K04. No K04 bits or derivation rule are recovered by this hypothesis.
 
+## Minimal p951 source-word request (model-dependent)
+
+A new exact GF(2) observability analysis reduces the earlier 15-word gap request to a **unique minimum of eight complete 32-bit MT output words**:
+
+- gap 43: stages **328, 329, 330, 331**;
+- gap 96: stages **724, 725, 726, 727**.
+
+No subset of seven or fewer of the 15 candidate words determines the selected 128-bit payload; exhaustive search found exactly one successful eight-word subset. Neither gap alone is sufficient. The other candidate words at stages 332–334 and 721–723, 728 are redundant for this target-observability calculation.
+
+These stage numbers are internal positions in the p951 MT19937 model. They are not physical ticket fields, page numbers or confirmed source labels. Continue to request and preserve the complete original tickets, attachments, underlays and return index; once the ST↔PTW/PS offset is authenticated, map the eight stage observations to their actual source fields. Do not ask the custodian to manufacture values from model predictions.
+
+When the eight authentic 32-bit output words are available, use `agents/agent12/k04_p951_gap_word_recovery.py` to reconstruct the selected payload, apply the K04 route mask and verify the official slot commitment. The minimum-set proof is reproducible with `agents/agent12/k04_p951_gap_minimum_analysis.py`. This is a model-dependent acquisition reduction, not a recovered K04 value.
+
 ## Preservation requirements
 
 For every returned object, preserve original bytes, source path, owner/custodian, transfer time, file metadata, hashes, page labels, sidecars and chain-of-custody records. Keep original objects distinct from export/reconstruction copies. Do not modify the acceptance files, the supplied encrypted PDF, or the recovered source evidence.
