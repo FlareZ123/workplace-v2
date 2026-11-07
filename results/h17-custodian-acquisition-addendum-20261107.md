@@ -17,6 +17,7 @@ Request the original directory, not only the setting file. Preserve file names, 
 The same BX25-08 annex confirms **FA-17 = North office printer / cassette cabinet**, under H17-POL-17/A3, carry-forward maintained. Request:
 
 - The original `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx`, not the BX25/08 transfer copy
+- The September cassette-return index `R:/Stores/returns/SEP26/index.htm` and both signed North/South cabinet binder pages, front/back and attachments, preserving serials, ticket references and custody marks
 - The Risk desk paper key register and original A3 folio/copy-stage attachments
 - Raw `.SPL/.SHD` files and metadata for selected job `PS-261003-0417`, including all attempts and the actual 18:02 RECOVER ACK object
 - The original physical 16-byte coupon and its custody/return-binder record
