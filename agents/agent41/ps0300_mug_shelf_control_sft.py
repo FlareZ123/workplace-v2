@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pinned source-only test of the conditional PS-0300 mug-shelf-card hypothesis.
+"""Pinned source-only test of the conditional PS-0300 / PS-0312 mug-shelf-card hypotheses.
 
 Run from the repository root:
     python agents/agent41/ps0300_mug_shelf_control_sft.py
