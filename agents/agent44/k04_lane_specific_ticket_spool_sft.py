@@ -120,13 +120,17 @@ def main() -> None:
     for match in re.finditer(r'(?m)^PS-261003-(\d{4})\s+(ESC-N|ESC-S)\s+(L-29/[NS])\s+(FA-17|LV-42)\s+([^\s]+)$', fleet_text):
         job_suffix, route, lane_name, account, folio = match.groups()
         fleet_jobs[lane_name] = int(job_suffix)
-    tab5 = {}
-    for match in re.finditer(r'(?m)^(L-29/[NS])\s+05\s+(ST-\d+)\s+', fleet_text):
-        lane_name, ticket = match.groups()
-        tab5[lane_name] = int(ticket.split('-')[1])
+    tab_index = {}
+    for match in re.finditer(r'(?m)^(L-29/[NS])\s+(\d{2})\s+(ST-\d+)\s+', fleet_text):
+        lane_name, tab_number, ticket = match.groups()
+        tab_index[(lane_name, ticket)] = int(tab_number)
+    tab5 = {
+        lane_name: next(ticket for (lane, ticket), tab in tab_index.items() if lane == lane_name and tab == 5)
+        for lane_name in ('L-29/N', 'L-29/S')
+    }
     anchor_offsets = {
-        'FA-17': fleet_jobs['L-29/N'] - tab5['L-29/N'],
-        'LV-42': fleet_jobs['L-29/S'] - tab5['L-29/S'],
+        'FA-17': fleet_jobs['L-29/N'] - int(tab5['L-29/N'].split('-')[1]),
+        'LV-42': fleet_jobs['L-29/S'] - int(tab5['L-29/S'].split('-')[1]),
     }
     assert anchor_offsets == {'FA-17': 305, 'LV-42': 306}
 
@@ -137,11 +141,14 @@ def main() -> None:
         account = ticket['account']
         folio = ticket['folio_or_jacket']
         if account == 'FA-17' and folio in {'H17-POL-17/A3', 'H17-POL-17/A2'}:
-            lane, offset = ('North L-29/N' if folio.endswith('/A3') else 'FA-17 L-28/A2'), anchor_offsets['FA-17']
+            lane_name = 'L-29/N' if folio.endswith('/A3') else None
+            lane, offset = ('North L-29/N' if lane_name else 'FA-17 L-28/A2'), anchor_offsets['FA-17']
         elif account == 'LV-42' and folio == 'CS-18/5':
+            lane_name = 'L-29/S'
             lane, offset = 'South L-29/S', anchor_offsets['LV-42']
         else:
             continue
+        tab_number = tab_index.get((lane_name, ticket['line_ref'])) if lane_name else None
         ps_suffix = suffix + offset
         job_rows = by_job.get(ps_suffix, [])
         same_suffix_rows = by_job.get(suffix + 304, [])
@@ -151,6 +158,7 @@ def main() -> None:
             'description': ticket['description'],
             'account': account,
             'folio': folio,
+            'tab': tab_number,
             'candidate_offset': offset,
             'candidate_ps': f'PS-261003-{ps_suffix:04d}',
             'present': bool(job_rows),
@@ -159,6 +167,11 @@ def main() -> None:
             'same_suffix_rows': [f'{r["attempt"]}:{r["state"]}:{r["class"]}/{r["dest"]}' for r in same_suffix_rows],
             'anchor': ticket['line_ref'] in {'ST-112', 'ST-142'},
         })
+
+    predictions.sort(key=lambda p: (
+        0 if p['lane'] == 'North L-29/N' else 1 if p['lane'] == 'South L-29/S' else 2,
+        p['tab'] if p['tab'] is not None else int(p['ticket'].split('-')[1]),
+    ))
 
     serial_by_permit = {}
     for record in seals:
