@@ -74,7 +74,7 @@ def packets_from_key(key_words: list[int]) -> list[bytes]:
 
 def initializer_smt(key_count: int, timeout_ms: int) -> list[str]:
     """CPython MT19937 init_by_array, parameterized for 20 or 24 key words."""
-    assert key_count in (20, 24)
+    assert key_count in (8, 20, 24)
     initial = [19650218]
     for index in range(1, 624):
         previous = initial[-1]
