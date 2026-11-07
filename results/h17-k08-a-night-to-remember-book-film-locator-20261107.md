@@ -1,7 +1,7 @@
-# K08 competing book/film locator: *A Night to Remember*
+# K08 false-positive audit: *A Night to Remember*
 
 **Agent 6 · 7 November 2026**  
-**Status: source-led locator hypothesis; K08 phrase not recovered.**
+**Status: pruned false positive for MAIL-09's map-back book; retained to prevent rediscovery. K08 phrase not recovered.**
 
 ## Question
 
@@ -66,13 +66,13 @@ A community subtitle source for the 1958 film is indexed at:
 
 The latter lists multiple English release-specific subtitle files. Agent10 is pursuing a bounded complete-subtitle screen; this report does not duplicate that work or treat a community transcription as an authenticated master.
 
-## Interpretation
+## Adversarial disposition
 
-**Moderate confidence:** *A Night to Remember* is a strong competing identification for the David-owned map-back book and a plausible match for the unnamed Saturday film. The 2024 Folio edition's separate rear deck-plan pocket is the most distinctive physical fit found so far.
+**False positive for the map-back book.** The deck-plan pocket and 1958 adaptation made this an attractive two-mail join, but a stronger candidate now explains the actual MAIL-09/MAIL-11/N20 clues: Arthur Ransome's *We Didn't Mean to Go to Sea*, 1949 18th impression. Its rear endpaper map and page-94 Chapter VII scene (an all-night passage, Susan setting a place for five at the cabin table, children waiting in fog with the sea outside) match the local semantic brief much more specifically. See [Ransome map/endpaper locator](h17-k08-ransome-map-endpaper-locator-candidate-20261107.md).
 
-**Low confidence:** the exact Folio Society edition is David's copy. The physical book and receipt have not been inspected, and other editions may contain a plan.
+The 2024 Folio *A Night to Remember* edition remains a real book/film pair and its rear deck-plan pocket is real, but MAIL-15 does not identify the Saturday film. The local source does not connect that film to MAIL-09's book. The title, chapter title, direct dialogue, and other tested strings produce no K08 HMAC hit. Do not continue subtitle or literary phrase sweeps on this candidate unless a source explicitly identifies it.
 
-**No recovered K08 phrase:** direct title and dialogue candidates fail. The intended words may be Emily's own caption or paraphrase, a handwritten margin, a receipt annotation, or a phrase from the complete film subtitle track. The book/film identification does not supersede MAIL-20's original-envelope carrier or MAIL-14's desk-note/photo-caption locations.
+**No recovered K08 phrase.** The strongest current physical retrieval target is the Ransome copy and its receipt bookmark, while the literal carrier remains Emily's original envelope/margin and separate desk-note/photo-caption stack. The book's printed text is a locator/inspiration candidate, not a substitute for the handwritten final wording.
 
 ## Discriminating physical check
 
@@ -86,3 +86,8 @@ If the already-authorized custody path yields David's book, preserve the book an
 6. Any physical or chronological link from the book/receipt to Emily's final envelope margin.
 
 Keep the book, receipt, envelope, desk notes, and photo-caption stack as separate objects until a physical join is observed. Apply the unchanged K08 HMAC only to a complete, attributable candidate phrase. Do not substitute a printed chapter title or thematic paraphrase for Emily's final wording.
+
+
+## Audit note
+
+This report is retained as a documented false positive. Its external product/film facts remain true; the inference that the pair identifies David's MAIL-09 book is superseded by the more specific Ransome page-94/endpaper-map candidate. The full subtitle screen belongs to Agent10's independent work and should not be repeated from this branch.
