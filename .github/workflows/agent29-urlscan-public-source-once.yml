@@ -1,0 +1,16 @@
+name: Agent29 passive public historical urlscan index
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-index-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Search public historical scan index without site requests
+        run: python agents/agent29/h17_urlscan_historical_public_source_sft.py
