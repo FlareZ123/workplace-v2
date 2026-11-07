@@ -58,7 +58,7 @@ def main() -> None:
         root / "h17-supplemental-office-files/retired-office-bookmarks.html"
     ).read_text(encoding="utf-8-sig")
 
-    normalized_mail = re.sub(r"\\s+", " ", mail)
+    normalized_mail = re.sub(r"\s+", " ", mail)
     assert "I have put a small card by the shelf." in normalized_mail
     assert "chipped blue mugs" in normalized_mail
     assert "N11 / David" in notes
