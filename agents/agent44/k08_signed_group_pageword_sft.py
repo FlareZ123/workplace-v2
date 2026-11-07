@@ -33,7 +33,7 @@ def coordinates() -> list[tuple[str, int, int]]:
 
 def normalize(text: str) -> str:
     lowered = text.lower()
-    spaced = re.sub(r"[^a-z0-9\\s]", " ", lowered)
+    spaced = re.sub(r"[^a-z0-9\s]", " ", lowered)
     return " ".join(spaced.split())
 
 
