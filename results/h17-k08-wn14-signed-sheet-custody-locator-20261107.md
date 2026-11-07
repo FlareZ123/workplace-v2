@@ -24,6 +24,7 @@ If an authorized retrieval window reopens, treat these as separate objects and p
 
 - Original ordinary duty sheet carrying the WN-14 ink groups, under its clear cover in the night-folder context. Photograph the clear cover, lifting top label, right edge, both faces, two-column layout, letter labels, fold through the second box, margins, verso and any annotations before lifting or flattening it. Record the original folder, register and custodian identifiers.
 - Both photocopies from Emily's tray, front and back, preserving order, paper orientation, toner/scan clipping, annotations and any differences from the original.
+- Native MAIL-03 and MAIL-06 records after the original mail namespace is authenticated, including full MIME structure, attachments, quoted history, delivery metadata and any scan/copy references. The supplied EMLs are text/plain exports and do not establish that no attachment existed in the native messages.
 - The WN-14 folder handed to incoming watch, the loose desk notes beneath it, and the controlled-copy sleeve as distinct layers. Record who received the folder, when, where the loose notes were found and whether any photocopy was inside or outside it.
 - The separate standby sheet with the grey diagonal line mentioned in MAIL-03, preserved in its as-found position and clearly distinguished from the ordinary duty sheet.
 - David's pocket book containing the old standby transcription ending 5E67, retained only as a clearly marked non-authoritative comparison object.
