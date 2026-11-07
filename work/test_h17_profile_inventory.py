@@ -38,6 +38,8 @@ def main() -> None:
             "Chrome/Profile/Cookies/Cookies.sqlite": b"must-not-be-opened-or-listed",
             "Chrome/Profile/Login Data": b"must-not-be-opened-or-listed",
             "Microsoft/Credentials/secret.dat": b"must-not-be-opened-or-listed",
+            "Windows/System32/config/SAM": b"must-not-be-opened-or-listed",
+            "Windows/System32/config/SECURITY": b"must-not-be-opened-or-listed",
         }
         created = {name: put(root, name, data) for name, data in files.items()}
 
@@ -54,7 +56,7 @@ def main() -> None:
         assert "Chrome/Profile/Cookies/Cookies.sqlite" not in by_path
         assert "Chrome/Profile/Login Data" not in by_path
         assert "Microsoft/Credentials/secret.dat" not in by_path
-        assert inventory["summary"]["skipped_sensitive_paths"] == 3
+        assert inventory["summary"]["skipped_sensitive_paths"] == 5
 
         expected = {
             "AppData/Local/Microsoft/Outlook/Archive.ost": ("mail", "PST_OR_OST"),
