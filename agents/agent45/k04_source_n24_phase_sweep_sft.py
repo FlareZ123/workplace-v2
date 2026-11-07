@@ -114,6 +114,7 @@ def main():
     native = original_native()
     genuine_n24_control(symbolic, OFFSET + begin)
     outcomes = Counter()
+    low68intersection = (1 << 68) - 1
     for k in range(begin, end):
         phase = OFFSET + k
         count, all_pairs, disjoint, excluded, sets = phase_scan(
@@ -121,12 +122,17 @@ def main():
         )
         status = "EXCLUDED" if 24 in excluded else "OPEN"
         outcomes[status] += 1
+        low68mask = sum(1 << (n - 1) for n in excluded if n <= 68)
+        low68intersection &= low68mask
         print(f"PHASESCAN shard={args.shard} k={k} prior={phase} "
               f"terms={count} pairs={all_pairs} disjoint={disjoint} "
               f"seed_lengths_excluded={len(excluded)} "
-              f"n24={status} n32={'EXCLUDED' if 32 in excluded else 'OPEN'}",
+              f"n24={status} n32={'EXCLUDED' if 32 in excluded else 'OPEN'} "
+              f"low68=0x{low68mask:017x}",
               flush=True)
     assert sum(outcomes.values()) == 39
+    print(f"SHARD_SHORT_SEED n68_intersection=0x{low68intersection:017x} "
+          f"guaranteed_lengths={low68intersection.bit_count()}")
     print(f"SHARD_COMPLETE id={args.shard} covered={begin}..{end - 1} "
           f"n24_excluded={outcomes['EXCLUDED']} "
           f"n24_open={outcomes['OPEN']}")
