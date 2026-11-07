@@ -1,7 +1,7 @@
 """Recover the selected K04 coupon once the eight minimal p951 gap words arrive.
 
-Call from the workplace-v2 repository root. Words are 32-bit tempered MT19937
-outputs, supplied as integers or 8-digit hexadecimal strings:
+The repository root is resolved from this module. Words are 32-bit tempered
+MT19937 outputs, supplied as integers or 8-digit hexadecimal strings:
     recover_k04(gap43_words, gap96_words)
 
 gap43_words are stages 328..331; gap96_words are stages 724..727.
