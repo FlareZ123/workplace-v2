@@ -43,7 +43,7 @@ class AnchorParser(HTMLParser):
 
     def handle_endtag(self, tag: str) -> None:
         if tag.lower() == "a" and self.current_href is not None:
-            text = re.sub(r"\\s+", " ", " ".join(self.current_text)).strip()
+            text = re.sub(r"\s+", " ", " ".join(self.current_text)).strip()
             self.anchors.append((text, self.current_href))
             self.current_href = None
             self.current_text = []
@@ -76,7 +76,7 @@ def fetch(name: str, url: str) -> tuple[bytes | None, dict[str, object]]:
             if "html" in content_type:
                 text = body.decode("utf-8", "replace")
                 title = re.search(r"<title[^>]*>(.*?)</title>", text, re.I | re.S)
-                record["title"] = html.unescape(re.sub(r"\\s+", " ", title.group(1)).strip()) if title else None
+                record["title"] = html.unescape(re.sub(r"\s+", " ", title.group(1)).strip()) if title else None
                 parser = AnchorParser()
                 parser.feed(text)
                 record["book_links"] = [
@@ -153,7 +153,7 @@ def main() -> int:
         raise SystemExit(f"Unsupported target: {target}")
 
     (OUT / "summary.json").write_text(
-        json.dumps(results, indent=2, sort_keys=True) + "\\n",
+        json.dumps(results, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     print(f"PROBE_COMPLETE target={target} endpoints={len(results)}")
