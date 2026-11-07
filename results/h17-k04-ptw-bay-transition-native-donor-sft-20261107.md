@@ -39,6 +39,16 @@ Total: **7 × 6 × 8 × 8 = 2,688** complete candidates.
 
 All 2,688 candidate components were distinct. No old/current PTW quartet pairing under either offset and the tested order/representation family matched the official K04 commitment.
 
+## PTW bay-selector side check
+
+The same p951 base basis (rank 15,365) already fully predicts the three source-matched singleton serials at native stages -964, -944 and -937; the predicted tempered words are the byte-reversed little-endian forms of the recorded SG serials. Under the additional hypothesis that the bay is selected immediately before each serial by CPython-style `randrange(4)` / `getrandbits(3)`:
+
+- PTW-414's predecessor output at stage -938 is fully source-predicted as 0x44744295; its top three bits are 2, matching recorded bay C. This is retrospective, because the serial-stage alignment was already known.
+- PTW-405's predecessor at -965 and PTW-412's at -945 have all three selector bits unknown, so their recorded D/B bays are not blind predictions.
+- Imposing the three observed bay labels as top-three-bit constraints raises basis rank only from 15,365 to 15,371 and still leaves **0/128 selected target bits known**.
+
+Thus the single PTW-414 bay match does not provide a K04 target constraint or validate the sampler across independent holdouts. It is a producer hypothesis, not a recovery route.
+
 ## Scope
 
 This is a bounded negative for these seven source-derived blocks, the two candidate ST offsets, the stated bay/ticket orders, and the eight donor interpretations. It does not establish that PTW serials are native MT words, prove either offset, or exclude a different source field, arbitrary bay permutation, different transition function, or other historical producer. The +304 crosswalk remains a retrieval hypothesis only.
