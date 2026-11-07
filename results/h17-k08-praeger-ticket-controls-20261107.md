@@ -31,8 +31,8 @@ The candidate edition metadata in [the Praeger page-crosswalk report](h17-k08-pr
 
 | Candidate edition | Initial L-29/N and L-29/S set | ST-157 | ST-164 | ST-176 |
 |---|---|---|---|---|
-| 1947 third edition, boundary p.118 | 5/5 North and 5/5 South | South | South | South |
-| 1997 reprint, boundary p.111 | 4/5 North and 6/5 South; ST-112 moves to South | South | South | South |
+| 1947 third edition, boundary p.118 | L-29/N: 5/5 North; L-29/S: 5/5 South; overall 5 North / 5 South | South | South | South |
+| 1997 reprint, boundary p.111 | L-29/N: 4/5 remain North; L-29/S: 5/5 remain South; ST-112 moves South, giving 4 North / 6 South overall | South | South | South |
 
 All three out-of-set controls fall in the South section under both editions. They therefore **do not discriminate the 1947 edition from the 1997 reprint** and add no edition-specific support to the page hypothesis.
 
