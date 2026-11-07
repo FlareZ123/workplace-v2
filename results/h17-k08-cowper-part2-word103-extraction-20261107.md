@@ -14,7 +14,7 @@ The extraction is reproducible with:
 
 - `agents/agent24/cowper_part2_word103_ocr.py`
 - `.github/workflows/agent24-cowper-part2-word103.yml`
-- Successful extraction run: [42360543412](https://github.com/FlareZ123/workplace-v2/actions/runs/42360543412)
+- Successful corrected extraction run: [42361123782](https://github.com/FlareZ123/workplace-v2/actions/runs/42361123782)
 - Machine-readable output: [word103-ocr.json](assets/cowper/part2-1893/word103-ocr.json)
 
 OCR engine: Tesseract 5.5.0, English, page segmentation mode 6. Each image was pinned against the manifest before OCR.
@@ -39,23 +39,23 @@ Frozen South binder-tab order:
 | ---: | --- | --- |
 | 130 | **Solent** | End and we are outside the Solent Hurst Lights There are two fixed |
 | 151 | **yards** | Southampton or Portsmouth There are many yards to choose from But if we |
-| 121 | **pleasant** | sea being short and spiteful For pleasant sailing however we know of no |
+| 121 | **sailing** | being short and spiteful For pleasant sailing however we know of no more |
 | 135 | **the** | deck and admire the loveliness of the place On our south side the |
 | 142 | **even** | distance of half a mile or even nearer Rocks lie out all along |
 
 The five selected words in order are:
 
-`Solent / yards / pleasant / the / even`
+`Solent / yards / sailing / the / even`
 
 After applying K08 normalization once to this five-word fragment:
 
-`solent yards pleasant the even`
+`solent yards sailing the even`
 
 ## Interpretation and limits
 
 This is a successful **Part II source extraction**, not a K08 recovery. The five-word fragment is not independently evidence of the final caption. The five North/Part I words are still missing, so the complete ten-word candidate cannot yet be assembled and no K08 HMAC or acceptance test has been run.
 
-The page images and OCR context were visually checked around the selected locations; page 121 and page 151 were manually counted to verify the apostrophe and line-wrap-hyphen handling. The remaining three positions should receive the same direct visual review before a complete phrase is tested.
+The page images and OCR context were visually checked around the selected locations. Pages 121 and 151 were manually counted to verify apostrophe and line-wrap-hyphen handling. On page 121, Tesseract read the visibly printed `24ft.` as `2¢ft.`; the reproducible script replaces only the span between `have` and `over them` with the visually verified single token `24ft`, which changes word 103 to `sailing`. The other three selected contexts should receive direct visual review before a complete phrase is tested.
 
 ## Next discriminating action
 
