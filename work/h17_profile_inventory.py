@@ -23,12 +23,14 @@ _REPARSE_POINT = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
 _SENSITIVE_COMPONENTS = {
     "cookies", "credentials", "credential store", "vault", "keychains",
     "passwords", "login data", "web data", "oneauth", "identitycache",
-    "tokenbroker", "protect", "crypto", "logins",
+    "tokenbroker", "protect", "crypto", "logins", "sam", "security",
+    "wallet", "passkeys", "autofill", "form history",
 }
 _SENSITIVE_FILENAMES = {
     "cookies.sqlite", "cookies-journal", "login data", "login data for account",
     "web data", "local state", "logins.json", "key4.db", "key3.db",
-    "signons.sqlite", "cert9.db", "cert8.db",
+    "signons.sqlite", "cert9.db", "cert8.db", "sam", "security",
+    "ntds.dit", "form history", "autofill",
 }
 _SENSITIVE_SUFFIXES = {".pfx", ".p12", ".key", ".kdbx", ".pem"}
 
