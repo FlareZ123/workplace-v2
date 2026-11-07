@@ -4,15 +4,26 @@
 
 ## Source clue
 
-The supplied `retired-office-bookmarks.html` contains Windows file URLs under `file:///R:/`, including:
+The supplied `retired-office-bookmarks.html` contains 14 Windows file URLs under `file:///R:/`:
 
-- `R:\Records\INDEX\IR-261003-H17.txt`
-- `R:\IT\desk-images\oldscan\scanrelease.txt`
-- `R:\Stores\consumables\mug-stock.xls`
-- `R:\Stores\returns\SEP26\index.htm`
-- `R:\IT\desktop-move-2026.html`
+| Bookmark target | Potential relevance |
+|---|---|
+| `R:\Stores\returns\SEP26\index.htm` | September cassette returns; vendor ticket list and North/South binder pages |
+| `R:\Stores\consumables\mug-stock.xls` | Tea-room stock sheets; possible desk/galley context |
+| `R:\Finance\PrevERP\posted-items-26.xls` | Historical posted settlement items |
+| `R:\Finance\PrevERP\reversal-register.htm` | Reversal register and possible custody/settlement trail |
+| `R:\Finance\letterheads\EG-operator-2025.pdf` | Office letterhead index |
+| `R:\Finance\PrevERP\bench-expenses-2025.xls` | Bench expense apportionments |
+| `R:\Risk\H17-POL-17\renewal-ledger-2025.xlsx` | H-17 property renewal ledger and declared items |
+| `R:\Risk\Transfers\BX25\transfer-index.htm` | 2025 risk scan transfer index |
+| `R:\IT\desk-images\oldscan\scanrelease.txt` | Desktop scanner release notes; potentially relevant to BX25/08 |
+| `R:\Risk\hired-plant\CS-18\loan-set-register.htm` | Hired-equipment certificates |
+| `R:\Records\INDEX\IR-261003-H17.txt` | Incident desk export index |
+| `R:\Records\blank-request-form.doc` | Records request form |
+| `R:\IT\staff-groups\EG.htm` | Electrical-group roster |
+| `R:\IT\desktop-move-2026.html` | Profile-replacement calendar |
 
-The incident index and the other referenced files are absent from the surviving ZIP. The current acquisition request already calls for the historical R: mapping and a retired workstation image, but does not explicitly name the Windows Client-Side Cache (CSC).
+The bookmark file's own description says the BX25 scan copies travelled with the office profile refresh. That is direct evidence of a profile-refresh connection, but it does not establish that the R: share, any particular file, or the CSC cache was copied. The incident index and the other referenced files are absent from the surviving ZIP. The current acquisition request already calls for the historical R: mapping and a retired workstation image, but does not explicitly name the Windows Client-Side Cache (CSC).
 
 ## Hypothesis and gate
 
