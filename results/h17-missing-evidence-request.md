@@ -355,3 +355,18 @@ If an authorized new custody path or unsolicited delivery becomes available, req
 5. The source system's audit trail identifying who exported the sample, the query/time window, and whether the missing seq range was excluded, never acquired, or lost during preservation.
 
 The existing crosswalk report is h17-hst4-pv-spool-job-crosswalk-20261107.md. The supplied sample's 112/112 arithmetic alignment is a useful retrieval locator; only the original HST-4 index or a paired native record can authenticate it.
+
+
+## H17-POL-17/A3 office asset card and September equipment count
+
+The surviving print-fleet retirement register provides a separate, direct source lead for the selected job: PS-261003-0417 → ESC-N → L-29/N → FA-17 → H17-POL-17/A3. It says the cassette/property references were carried forward from the September equipment count and taken from office asset cards. Neither the September 2026 equipment-count sheet nor the office asset-card set is in the supplied export or current resources tree.
+
+If an authorized new custody path or unsolicited delivery becomes available, request:
+
+1. The original **H17-POL-17/A3 office asset card**, both sides, including sleeve/folio, annotations, endorsements, attached slips, custody marks and any card-image metadata.
+2. Adjacent **A2/A4 asset cards and revision-control records**, retaining both A3 and A4 because the North ST-112 supplier record contains an A3 posted revision and a separate A4 held duplicate.
+3. The **September 2026 equipment-count sheet** covering ESC-N, ESC-S and WATCH-SPARE, with all cassette/asset identifiers, card references, location/holder fields, reconciliation marks and sign-offs.
+4. The office asset-card index, card-issue/return register, and any record explaining where A3 was filed and who reconciled it.
+5. Any original custody/transfer record or attached coupon/escrow reference associated with the A3 card or the L-29/N cassette.
+
+Do not substitute the bookmarked H17-POL-17 renewal ledger for the office asset card unless an original index proves they are the same record. The A3 card and September count are a source-defined bridge from the selected PS-0417 route to a physical property record; they may validate the asset/cassette chain or identify a coupon custody location. No coupon content or serial equivalence is inferred from the surviving register. See h17-k04-office-asset-card-source-lead-20261107.md.
