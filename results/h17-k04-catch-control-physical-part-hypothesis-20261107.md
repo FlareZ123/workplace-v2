@@ -41,7 +41,9 @@ The strongest new discriminator is the **matched tab-05 catch comparison**. The 
 
 This remains an inference. The records do not identify the North catch's exact location, prove that ST-112 and ST-142 are the same part number, or establish that paper passed through or lodged against either part. The North ticket says “clean”; the South ticket says “retain” and the supplier docket says “catch pin”. The original service sheets and physical parts must resolve the distinction.
 
-A second timing discriminator is available. The selected North RECOVER ACK2 event is timestamped **3 October 2026, 18:02 UTC**. The print-fleet return register says its cabinet-office copy was reconciled **4 October 2026, 09:18 UTC**, a difference of **15 hours 16 minutes**. This establishes that the return register was reconciled after the selected print event. It does **not** timestamp the ST-112 work itself or prove that a coupon was recovered during cleaning.
+A second timing discriminator is available. The selected North RECOVER ACK2 event is timestamped **3 October 2026, 18:02 UTC**. MAIL-18 is timestamped **3 October 2026, 21:47 UTC**; it reports that the instrument-store fire was contained, says the incident team controlled access and nobody was to re-enter for records or belongings, and confirms the archive appliance and recovery card were destroyed. The print-fleet return register says its cabinet-office copy was reconciled **4 October 2026, 09:18 UTC**. The register reconciliation is **3 hours 45 minutes after the selected job**, **11 hours 31 minutes after the MAIL-18 incident notice**, and **15 hours 16 minutes after the selected job**.
+
+These are event/notice/register timestamps, not an exact fire-onset time or the ST-112 work time. No local source says whether the ESC-N printer or L-29/N cassette was inside the restricted instrument store at 21:47, whether the incident team removed it, or who held it until the next-morning reconciliation. That missing location and custody bridge is now a key retrieval question. The register's “cabinet-office copy” label does not by itself establish where the physical cassette was.
 
 MAIL-16 independently identifies the last acknowledged attempt for the exact ESC-N job as the selector and warns that the dispatch ACK is not a media-integrity check. This analysis uses only that event's header and timestamp. The selected PAYLOAD bytes are never extracted or used.
 
@@ -49,11 +51,12 @@ MAIL-16 independently identifies the last acknowledged attempt for the exact ESC
 
 The highest-value comparison is now specific:
 
-1. Inspect the original **North ST-112 R3/POSTED/A3** ticket and tab-05 binder sheet, front and back, including serials, part number, exact physical location, work time, signatures, attachments, carbonless underlay and custody marks.
-2. Determine whether cleaning removed, exposed, retained or discarded any material. Request any found-item pouch, return bag, paper strip, label, debris sample, catch component or attached note associated with the work.
-3. Inspect the original **South ST-142 R3/POSTED/CS-18/5** ticket and retained catch pin as a physical comparator. Record its part number, geometry, location and disposition. Do not treat it as a same-role output witness.
-4. Keep Watch-Spare ST-157/ST-164 as a separate inspection control. Do not assume the three routes share a printer model, host or cassette assembly.
-5. Require a provenance bridge from any recovered material to job PS-261003-0417 and the physical/copy stage selected by MAIL-16. A ticket number, matching part category or later reconciliation date alone is insufficient.
+1. Obtain the incident team's **equipment/property removal and transfer log** for the instrument-store restriction window. Establish whether ESC-N and L-29/N were in the store at 21:47, where the cassette was held, who handled it, and how it reached the cabinet-office return process.
+2. Inspect the original **North ST-112 R3/POSTED/A3** ticket and tab-05 binder sheet, front and back, including serials, part number, exact physical location, work time, signatures, attachments, carbonless underlay and custody marks.
+3. Determine whether cleaning removed, exposed, retained or discarded any material. Request any found-item pouch, return bag, paper strip, label, debris sample, catch component or attached note associated with the work.
+4. Inspect the original **South ST-142 R3/POSTED/CS-18/5** ticket and retained catch pin as a physical comparator. Record its part number, geometry, location and disposition. Do not treat it as a same-role output witness.
+5. Keep Watch-Spare ST-157/ST-164 as a separate inspection control. Do not assume the three routes share a printer model, host or cassette assembly.
+6. Require a provenance bridge from any recovered material to job PS-261003-0417 and the physical/copy stage selected by MAIL-16. A ticket number, matching part category or later reconciliation date alone is insufficient.
 
 A positive result would be an original retained item or receipt with an independent link to the selected North print/copy stage and a complete 16-byte coupon value. A negative result would be a documented ST-112 work record showing that no relevant item was retained or that the catch is unrelated to the media path; K04 would then still require the original job object or an independent coupon witness.
 
