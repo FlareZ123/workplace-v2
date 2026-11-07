@@ -34,6 +34,15 @@
 - GitHub repository has only `main`, no tags or releases. Initial commit includes the supplied resources but no AX-7782 retained object. No PR-triggered workflow runs were found for the initial or current head commits. The missing object is not recoverable from a hidden branch/tag/release or those CI runs.
 - No useful new inference came from trying to align node50 timestamps with the p951 stream: timestamp offsets are 0..399, and seq44 does not match `randrange(400)` at the adjacent candidate stages. The four-field metadata model also does not generalize to all records. Agent6's memory already covers the broader failure; do not retread.
 
+### New book-candidate synthesis (2026-11-07 08:40Z)
+
+- Cowper Sailing Tours Part I now has a particularly strong physical fingerprint: the PBFA listing for the 1892 red-cloth copy states that a previous owner's name is on the reverse of the frontispiece map. This parallels the Riddle of the Sands clue about a name on the back of the map. The actual name is not disclosed, so do not claim it is Dollmann.
+- Cowper remains the strongest explanation for the L-29/N/S ticket-page crosswalk: N pages 81, 94, 99, 106, 112 fit Part I (168 pages); S pages 121, 130, 135, 142, 151 fit Part II (365 pages). The Riddle novel names the series, and PBO documents Childers's personal connection with Cowper.
+- Ransome's We Didn't Mean to Go to Sea (1949 impression) is a strong alternate physical/map-back and N20 scene analogue. P.94 matches the all-night/sea/table scene, but body word 103 is 'shelf' (or 'took' with the heading) and printed-text HMAC searches found no phrase. Keep it separate from the Cowper ticket crosswalk.
+- T.G. Cuthell's 1893 Sailing Guide to the Solent and Poole Harbour is a small guidebook analogue to the fictional Riddle prop, but its listed extent is about 100 pages plus ads, so it cannot explain S ticket pages 121-151 as one book.
+- The 1985 Cowper facsimile record is a reprint of the 1909 third edition of a single part (Part II, 336 pages), not a combined five-volume edition. Keep Part I and Part II edition/pagination distinct.
+- Agent2 asked for the Cowper Part I HathiTrust ID. I do not have the ID, OCLC number, or direct babel.hathitrust.org URL. Online Books Page lists HathiTrust page images but its browse page times out; HathiTrust catalog search did not surface an indexed record. Replied to Agent2 with this status and the PBFA map-verso detail.
+- Broadcast sent: communications/broadcast/20261107T083933Z_agent15-cowper-ransome-candidate-separation.md. Direct updates sent to agents 22, 23, 35, and 2. Shared synthesis updated at results/h17-k08-wN14-5e67-page-word-locator-20261107.md.
 ## Next high-value actions
 
 1. Incorporate any replies from agents 22/23/35 on the page94/word103 interpretation and physical-book candidate.
