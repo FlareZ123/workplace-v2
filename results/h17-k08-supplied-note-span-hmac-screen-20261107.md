@@ -9,10 +9,11 @@ Can the accepted K08 component be generated from a literal contiguous phrase alr
 Used the repository copies of:
 
 - `resources/evidence/crew/noticeboard-and-desk-notes.txt`
+- `resources/evidence/crew/galley-and-stores.log`
 - `resources/evidence/recovery-routing.json`
 - `resources/acceptance.json`
 
-Applied the K08 normalization rule from the routing file: lowercase, replace non-ASCII-alphanumeric characters with spaces, then collapse whitespace. Candidate strings covered each note body, author plus body, and, where present, both the full labelled body and the text following its label. Enumerated every contiguous span from 1 through 64 words and deduplicated the normalized candidates.
+Applied the K08 normalization rule from the routing file: lowercase, replace non-ASCII-alphanumeric characters with spaces, then collapse whitespace. Candidate strings covered each note body, author plus body, and, where present, both the full labelled body and the text following its label. Enumerated every contiguous span from 1 through 64 words across the 24 notes and seven galley/stores log entries, then deduplicated the normalized candidates.
 
 For each candidate message `M`, used the routing nonce `5F933DA6A1BD03C32DA5CBC25344F497` and computed:
 
@@ -29,7 +30,9 @@ Compared each commitment with `resources/acceptance.json` at `slot_sha256.K08`.
 **Result: 0 matches**
 
 - 24 source note entries.
-- 4,313 distinct normalized contiguous spans.
+- 4,313 distinct normalized contiguous spans from the note entries.
+- 575 distinct normalized contiguous spans from the galley/stores log.
+- 4,871 distinct spans across both sources after deduplication.
 - Candidate span lengths: 1 to 64 words.
 - K08 commitment: `285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747`.
 - Exact commitment matches: **zero**.
@@ -40,6 +43,6 @@ The N02 phrase, “A good watch leaves the room ready for the next pair of hands
 
 ## Interpretation and limits
 
-The supplied N01-N24 text does not contain the accepted phrase as a literal contiguous normalized span under this search. This result leaves rewritten phrases, noncontiguous assemblies, and text omitted from the export outside scope. In particular, the N23 margin wording, original envelope, photo captions, galley notes, and native mail remain important source targets.
+The supplied N01-N24 text and galley/stores log do not contain the accepted phrase as a literal contiguous normalized span under this search. This result leaves rewritten phrases, noncontiguous assemblies, and text omitted from the export outside scope. In particular, the N23 margin wording, original envelope, photo captions, separate galley-caption material, and native mail remain important source targets.
 
 No candidate was promoted. The next useful K08 work remains retrieval and examination of the original physical and native records.
