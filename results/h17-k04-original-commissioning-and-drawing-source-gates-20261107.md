@@ -12,7 +12,7 @@ This matters because the selected PS-0417 RECOVER ACK2 payload reduced with the 
 
 ## 2. MAIL-16 identifies an old supplier drawing
 
-MAIL-16 (2026-10-03 07:49Z) states that ESC-S is also shown on the **old supplier drawing**, while the September label transcription is current and an August service mapping should not be substituted. This is a direct locator to a primary hardware/route-history source. It may identify the actual printer/cassette model, ESC-N/ESC-S physical paths, the L-29/N parts and the physical meaning of the “catch” component. It does not establish any of those details until the drawing is seen.
+MAIL-16 (2026-10-03 07:49Z) states that ESC-S is also shown on the **old supplier drawing**, while the September label transcription is current and an August service mapping should not be substituted. This is a direct locator to a primary hardware/route-history source. It may identify the actual printer/cassette model, ESC-N/ESC-S physical paths, the L-29/N parts and the physical meaning of the “catch” component. Inspect any embedded sample coupon, label, barcode, serial or checksum as a distinct candidate source, preserving its location, scale and legend; it must still be tied to the selected K04 object and checked against the original commitment. The drawing does not establish any of these details until seen.
 
 **Acquisition:** obtain the old supplier drawing, all sheets/revisions/legend/part lists, issue date, model and serial references, title block, and custody. Obtain the September current label transcription and August mapping as separate version controls. Do not use the older mapping as the current route selector.
 
