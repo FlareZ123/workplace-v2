@@ -38,8 +38,17 @@ def temper(v):
  b=[a[j]^(a[j-7] if j>=7 and (0x9d2c5680>>j)&1 else 0) for j in range(32)]
  c=[b[j]^(b[j-15] if j>=15 and (0xefc60000>>j)&1 else 0) for j in range(32)]
  return [c[j]^(c[j+18] if j+18<32 else 0) for j in range(32)]
+def _repository_root(root):
+ root=Path(root)
+ # Older SFT callers pass the resources directory; normalize it before
+ # resolving both resources/evidence and the repository-level work module.
+ if not (root/'work/h17_witness_intake.py').is_file() and (root.parent/'work/h17_witness_intake.py').is_file():
+  root=root.parent
+ return root
+
 def packets(root):
- evidence=Path(root)/'resources/evidence'
+ root=_repository_root(root)
+ evidence=root/'resources/evidence'
  raw=(evidence/'print/spool-reconstruction.log').read_bytes()
  assert hashlib.sha256(raw).hexdigest()=='7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083'
  sys.path.insert(0,str(Path(root)/'work'))
