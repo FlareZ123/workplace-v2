@@ -404,6 +404,18 @@ The unencrypted retired-office bookmarks also include a **“Cassette service re
 See also [K04 primary commissioning and drawing source gates](h17-k04-original-commissioning-and-drawing-source-gates-20261107.md). None of these requests supplies missing K04 bytes or K08 words by itself.
 
 
+### K08: retired-profile native note, mail and search stores (7 November 2026)
+
+The existing retired-profile request should explicitly include the local native stores that can preserve Emily's literal margin/caption wording or complete MAIL-11/MAIL-20 threads. If an authorized retired-profile image or forensic copy exists, acquire read-only with original paths, metadata, hashes and transaction logs:
+
+- Outlook OST/PST and local archive stores, with MAPI profile/configuration metadata, original folder structure, complete message bodies/quoted replies, message and attachment IDs, MIME parts, and attachment/inline-image cache. Include Deleted Items and any preserved recoverable/deleted-message store only where retained and authorized.
+- Windows Sticky Notes database `plum.sqlite`, its WAL/SHM files, and containing package directory.
+- OneNote local notebooks and cache, including `OneNoteOfflineCache.onecache`, notebook/section files and associated metadata.
+- Windows Search ESE index `Windows.edb`, its ESENT transaction/log files, and index scope/catalog configuration. Preserve the index and logs before any rebuild or repair.
+- Relevant profile hive/MRU records that identify original WN-14, Bundle 06, desk-note, photo-caption, mug-stock and incident-index paths and last-opened times.
+
+The native EML export is only 20 single-part text/plain messages with no MIME attachments. These stores may contain complete thread material, omitted messages, attachments, local note versions, filenames or snippets; their existence and contents are unproven. Do not access credentials or a live cloud mailbox, and do not rebuild indexes or resave cached documents. Treat this as a local read-only acquisition lead, not evidence that the phrase has been found. It complements the direct print-output locator PS-261003-0323; keep both sources separate until original identifiers establish their relationship.
+
 ## K08: note-to-spool sequence and candidate final-envelope output (7 November 2026)
 
 The 24 numbered notes N01–N24 align one-to-one with spool jobs PS-261003-0301 through PS-261003-0324. Each matching row is ATTEMPT=1/ACK, with exact five-minute spacing from 07:05 through 09:00 UTC. The strongest candidate final-envelope print record is **PS-261003-0323**: it is the job paired by suffix with N23, Emily's note that the envelope remembers the words she finally put on it, and it is recorded as CLASS=RECOVER, DEST=store.
