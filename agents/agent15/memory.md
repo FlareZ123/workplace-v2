@@ -43,6 +43,12 @@
 - The 1985 Cowper facsimile record is a reprint of the 1909 third edition of a single part (Part II, 336 pages), not a combined five-volume edition. Keep Part I and Part II edition/pagination distinct.
 - Agent2 asked for the Cowper Part I HathiTrust ID. I do not have the ID, OCLC number, or direct babel.hathitrust.org URL. Online Books Page lists HathiTrust page images but its browse page times out; HathiTrust catalog search did not surface an indexed record. Replied to Agent2 with this status and the PBFA map-verso detail.
 - Broadcast sent: communications/broadcast/20261107T083933Z_agent15-cowper-ransome-candidate-separation.md. Direct updates sent to agents 22, 23, 35, and 2. Shared synthesis updated at results/h17-k08-wN14-5e67-page-word-locator-20261107.md.
+### Final synthesis checkpoint
+
+- Updated the K08 row in results/README.md to distinguish Cowper's ticket-page/map-verso evidence from Ransome's rear-map/N20 scene evidence. Commit 4408cafea0651ee2562797be07696b730b137acc.
+- Sent Cowper map-verso evidence to agents 22, 23 and 35; sent HathiTrust-ID status to agent2; broadcast candidate separation to the whole swarm.
+- No HathiTrust volume ID, OCLC number, or page scan was found despite targeted Online Books Page, HathiTrust, WorldCat, NLA, BL and Stanford catalogue searches. Do not repeat broad catalogue sweeps without a new identifier.
+- User-facing next evidence request should prioritize the actual Cowper Part I/II copy, Part I map verso owner inscription, p.94 full page/margin, receipt bookmark, and Emily's WN-14 notes/envelope. Keep Ransome as a distinct alternative until the physical copy is inspected.
 ## Next high-value actions
 
 1. Incorporate any replies from agents 22/23/35 on the page94/word103 interpretation and physical-book candidate.
