@@ -369,3 +369,11 @@ A concise priority list is in \`results/h17-custodian-acquisition-addendum-20261
 - K04 remains missing. The reconstructed 18:02 ACK2 payload XORed with the recorded mask produces a candidate whose SHA-256 does not match the official K04 commitment; the spool log itself marks payload integrity unverified. The decrypted property annex strengthens the FA-17 mapping but does not authenticate the payload or physical coupon.
 - K08 remains missing. Part II South words are \`Solent / yards / sailing / the / even\`; the Part I HathiTrust Full view item is catalogued but inaccessible through current tools. The Noyes site is not a correspondence export.
 - A broadcast was sent with the BX25-08 result, FA-18 path and HathiTrust Part I acquisition lead. Await only source-backed replies; do not repeat arbitrary URL variants or broad phrase searches.
+
+
+## 2026-11-07 10:04Z continuation: rendered annex redaction and custodian handoff
+
+- Rendered the decrypted BX25-08 PDF at 180 dpi. The Account Holder / Named Insured field is visibly blacked out. The PDF text layer retains hidden text under the black redaction. The public report now substitutes \`[REDACTED IN SOURCE IMAGE]\`; do not repeat or use the hidden text-layer value. A broadcast warning was sent. The visible FA-17/FA-18 asset rows and printed URL remain source-readable.
+- The Noyes public-site probe confirms the root is a marketing page. \`robots.txt\` disallows \`/admin\` and \`/api/\`; \`/admin\` is a username/password portal. No login was attempted. The correspondence export must come from the custodian.
+- The custodian acquisition addendum now explicitly requests the September cassette-return index \`R:/Stores/returns/SEP26/index.htm\` and both signed North/South cabinet binder pages, front/back and attachments, in addition to the FA-17 raw spool/coupon and FA-18 oldscan materials.
+- Do not infer that the PDF release setting is a web credential or that it necessarily unlocks every BX25 scan. It is confirmed for BX25-08 only.
