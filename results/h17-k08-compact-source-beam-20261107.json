@@ -1,0 +1,99 @@
+{
+  "run_id": 42406699720,
+  "artifact_id": 13587737150,
+  "artifact_zip_sha256": "3392e25dd3ad6c105234687f28d29bff4f40afdc7417329a23a09da2bfcf04da",
+  "workflow_conclusion": "success",
+  "model": "Qwen/Qwen2.5-3B-Instruct",
+  "model_revision_requested": "main",
+  "model_revision_resolved": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+  "runtime": {
+    "python": "3.11.18",
+    "torch": "2.5.1+cpu",
+    "transformers": "4.57.1",
+    "torch_threads": 2
+  },
+  "generation": {
+    "strategy": "deterministic_beam_search",
+    "num_beams": 4,
+    "num_return_sequences": 4,
+    "do_sample": false,
+    "max_new_tokens": 32,
+    "max_time_seconds": 480
+  },
+  "prompt_sha256": "f0bae650515bb9a1b80b62f598a358fa96d9e3d84d2cbf50c924bd3ea09f834b",
+  "prompt_chars": 4424,
+  "prompt_tokens": 1000,
+  "source_roles": [
+    "MAIL11_p3_intent",
+    "MAIL14_p3_folder_context",
+    "MAIL20_p2_exact_words",
+    "MAIL20_p3_bundle_context",
+    "N02_author_draft",
+    "N06_author_draft",
+    "N10_photo_reference",
+    "N13_author_reminiscence",
+    "N20_semantic_brief",
+    "N23_final_carrier_locator",
+    "photo_captions",
+    "galley_caption",
+    "custodian_K08_context",
+    "route_source",
+    "excluded_old_labels"
+  ],
+  "normalization_rule": "Lowercase; replace characters other than ASCII a-z, digits, and whitespace with spaces; collapse whitespace and trim. HMAC-SHA256 with desk_nonce as key and normalized UTF-8 phrase as message; retain first 16 bytes.",
+  "target_sha256": "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747",
+  "source_hashes": {
+    "evidence/crew/noticeboard-and-desk-notes.txt": "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb",
+    "evidence/mail/11.eml": "f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29",
+    "evidence/mail/14.eml": "9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5",
+    "evidence/mail/20.eml": "e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71",
+    "evidence/recovery-routing.json": "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5",
+    "evidence/records-custodian.txt": "786211e7be248e6ba31f017a071e038436782b8550b863f85d77a6c32e1d640a",
+    "acceptance.json": "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
+  },
+  "candidate_count": 4,
+  "target_hits": [],
+  "independent_hmac_recomputation": true,
+  "candidates": [
+    {
+      "rank": 1,
+      "beam_score": -0.10370267182588577,
+      "raw_output": "The sea looks different when you have finally finished your tea, with voices at the table and the night almost finished.",
+      "phrase_normalized": "the sea looks different when you have finally finished your tea with voices at the table and the night almost finished",
+      "source_exact_note": null,
+      "component_hex": "6254A3D208F4C86213C2200D232206AF",
+      "component_sha256": "85efb021fc4c0ad13172fb8a43c40172f0d0d8abdd6293e2dda0b1f482a68ac0",
+      "target_match": false
+    },
+    {
+      "rank": 2,
+      "beam_score": -0.18138203024864197,
+      "raw_output": "The sea looks different when you have finally finished your tea.",
+      "phrase_normalized": "the sea looks different when you have finally finished your tea",
+      "source_exact_note": 1,
+      "component_hex": "4D9BAD0C7C773568B09DD8C80795096C",
+      "component_sha256": "d3a899102cfd1598245d91f0ced97a0a111da547b439082a086e297acfa00dbb",
+      "target_match": false
+    },
+    {
+      "rank": 3,
+      "beam_score": -0.2181231826543808,
+      "raw_output": "The sea looks different when you have finally finished your tea, and the voices at the table fill the room.",
+      "phrase_normalized": "the sea looks different when you have finally finished your tea and the voices at the table fill the room",
+      "source_exact_note": null,
+      "component_hex": "FB1D1D912C927B9A444FB09D75C0947F",
+      "component_sha256": "acc9c91cf6a82dbf2583459c2f26b820ef1ba431fc0df002daadc9788bd7d688",
+      "target_match": false
+    },
+    {
+      "rank": 4,
+      "beam_score": -0.23283527791500092,
+      "raw_output": "The sea looks different when you have finally finished your tea, and the voices at the table echo the quiet corridor.",
+      "phrase_normalized": "the sea looks different when you have finally finished your tea and the voices at the table echo the quiet corridor",
+      "source_exact_note": null,
+      "component_hex": "9B9A9A4DC1D18B7BA679989CB3A4FCCC",
+      "component_sha256": "a811c28e5f8deb8a5396b0161c5f3bcae433100113fe689ce800ac4309749b41",
+      "target_match": false
+    }
+  ]
+}
