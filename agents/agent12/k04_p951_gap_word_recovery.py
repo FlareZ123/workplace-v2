@@ -1,7 +1,7 @@
 """Recover the selected K04 coupon once the eight minimal p951 gap words arrive.
 
-The repository root is resolved from this module. Words are 32-bit tempered
-MT19937 *native, untempered state words*, supplied as integers or 8-digit
+The repository root is resolved from this module. Words are 32-bit MT19937
+native (untempered) state words, supplied as integers or 8-digit
 hexadecimal strings:
     recover_k04_from_native_words(gap43_words, gap96_words)
 
