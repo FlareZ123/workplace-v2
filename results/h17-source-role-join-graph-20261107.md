@@ -44,6 +44,12 @@ A newly identified two-stage candidate can connect the supplier return tickets t
 
 The supplier CSV has no explicit PTW or PS foreign-key field, and the native SEP26 return index and queue/job manifest are absent. Therefore this is a **promising locator hypothesis**, not an authenticated join, a payload producer, or evidence that a physical coupon is attached to a ticket. A bounded six-control serial-seeded CPython/HMAC/BLAKE2 screen found no simple serial-derived payload producer; that negative does not challenge the locator itself. See [the full lane-specific offset screen and SFT](h17-k04-lane-specific-ticket-to-spool-offset-screen-20261107.md).
 
+## Cross-slot ticket / book-page / spool-job index candidate
+
+The L-29/N suffixes `81, 94, 99, 106, 112` and L-29/S suffixes `121, 130, 135, 142, 151` are the same values used in two separate hypotheses: as printed-page candidates in Praeger's 1947 third-edition North/South sections, and as inputs to the lane-specific `ST→PS +305/+306` job locator. The two FA-17 L-28/A2 controls ST-087/ST-098 also map to candidate North pages 87/98 and predicted PS-0392/0403, both retained ACK/RECOVER rows.
+
+This conjunction may be a shared index spine across K04 and K08. It remains unproven: the supplier CSV does not define ticket suffixes as page numbers or provide PTW/PS foreign keys; MAIL-09 does not identify Praeger or a page; the exact physical book and receipt position are unknown; and the two tab-05 offsets are calibrated from the known PS-0417/ST-112 and PS-0448/ST-142 anchors. Preserve the original book, receipt, return index, signed binder pages and native queue objects as separate carriers until an original source joins them. No page-word extraction or K08 phrase claim follows from this pattern. See [the cross-slot synthesis](h17-crossslot-ticket-book-page-spool-index-hypothesis-20261107.md).
+
 ## Custody edges and the unresolved join
 
 The surviving text documents these edges:
