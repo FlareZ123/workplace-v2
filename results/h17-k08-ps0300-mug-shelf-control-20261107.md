@@ -19,7 +19,7 @@ PS-0300 is an orphan early LABEL/store job with no note-body mapping. N12 is Sim
 | PS-261003-0300, 3 Oct 2026 07:00Z | First spool row; ACK, CLASS=LABEL, DEST=store, 16-byte payload; no note-body mapping in the supplied log. |
 | PS-261003-0312, 3 Oct 2026 08:00Z | ACK, CLASS=STORES, DEST=store, 16-byte payload; structurally associated with N12 by the Nxx-to-PS0300+N sequence, not by a direct foreign key. |
 
-The preserved MAIL-12 Date header precedes PS-0300 by 24h27 and PS-0312 by 25h27. These intervals are chronology observations only. The Message-ID namespace is not an authenticated send-time field, and neither MAIL-12 nor either spool row contains the other's identifier.
+The preserved MAIL-12 Date header precedes PS-0300 by 24h27 and PS-0312 by 25h27. These intervals are chronology observations only. The preserved MAIL-12 EML has no In-Reply-To or References header, and neither it nor either spool row contains the other's identifier. The Message-ID namespace is not an authenticated send-time field.
 
 ## Relevant print controls
 
