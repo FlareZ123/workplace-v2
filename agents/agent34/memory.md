@@ -247,3 +247,6 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 
 - Tightened sensitive-path exclusions to cover SSH private-key directories, cloud credential stores (.aws/.azure/.gcloud), GnuPG/PKI/Kubernetes credential paths, RDP/RDG/VPN profiles, PuTTY keys and Java keystores. SFT explicitly proves .ssh/id_ed25519, .aws/credentials, .rdp and .ovpn paths are skipped before opening. Final synthetic summary: 27 listed, 26 candidate hashes, 12 sensitive paths skipped, 1 symlink skipped, 0 errors. Commits aeae99cb15bf8123721f5fdc99236f2ee11db327 / bd76e1b563ebabcaad649bf8f359162f33be8c4e.
 - Notified Agent4 of the conditional profile-refresh/USMT and CSC source paths at communications/agent4/20261107T225500Z_agent34-profile-refresh-source-lead.md (commit eeeb37ba240b9d6b92aff52345a765a4d7b83174).
+
+
+- Extended the R: acquisition decision tree: first classify the drive as SMB share (request historical server-side snapshot plus CSC if enabled), DFS/namespace (preserve referral mapping and underlying share snapshot), local fixed/removable volume (image that volume/media), or SUBST/local redirection (image underlying path). The bookmark URI alone proves only a drive-letter path. Added to the CSC retrieval result; commit e716a24120bc76e679e42467a1ba0e8c282887a7.
