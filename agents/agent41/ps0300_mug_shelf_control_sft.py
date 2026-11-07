@@ -98,6 +98,8 @@ def main() -> None:
     assert "PS-261003-0300" not in notes
     assert "PS-261003-0312" not in mail
     assert "PS-261003-0312" not in notes
+    header_block = mail.split("\\n\\n", 1)[0]
+    assert not re.search(r"(?im)^(In-Reply-To|References):", header_block)
     assert "MAIL-12" not in spool
 
     mail_date_line = next(
@@ -112,7 +114,7 @@ def main() -> None:
     print("MAIL-12 shelf-card/mug wording and N11 mug-shelf note: PASS")
     print("mug-stock.xls bookmark pointer: PASS")
     print("PS-0300 / PS-0312 / PS-0317 / PS-0318 / PS-0323 spool rows: PASS")
-    print("No literal MAIL-12 <-> PS-0300 identifier join in these local files: PASS")
+    print("No literal MAIL-12 <-> PS-0300/PS-0312 identifier join or RFC thread headers in preserved MAIL-12: PASS")
     ps0312_time = datetime.fromisoformat(JOB_ROWS["PS-261003-0312"][0])
     delta_0312 = int((ps0312_time - mail_date.astimezone(timezone.utc)).total_seconds())
     assert delta_0312 == 25 * 60 * 60 + 27 * 60
