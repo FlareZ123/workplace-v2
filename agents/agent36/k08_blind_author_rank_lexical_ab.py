@@ -47,10 +47,10 @@ def phrase_sequence_present(text: str, phrase: str) -> bool:
 def remove_phrases(
     text: str,
     source_id: str,
-    phrase_specs: list[tuple[int, str]],
+    phrase_specs: list[tuple[int, str, str]],
     manifest: list[dict[str, object]],
 ) -> str:
-    for phrase_id, phrase in phrase_specs:
+    for phrase_id, phrase, phrase_kind in phrase_specs:
         pattern = phrase_regex(phrase)
 
         def replace(match: re.Match[str]) -> str:
@@ -60,7 +60,7 @@ def remove_phrases(
                 "matched_text": match.group(0),
                 "start": match.start(),
                 "end": match.end(),
-                "reason": "complete heldout or decoy phrase",
+                "reason": "complete target quotation" if phrase_kind == "target" else "complete decoy quotation",
             })
             return "[withheld complete phrase]"
 
@@ -74,8 +74,8 @@ def prepare_sources(
     held: int,
     excluded: frozenset[int],
 ) -> tuple[dict[int, tuple[str, str]], dict[int, str], dict[str, object]]:
-    decoy_specs = [(i, ranker.caption(notes[i][1])) for i in sorted(excluded)]
-    target_spec = [(held, ranker.caption(notes[held][1]))]
+    decoy_specs = [(i, ranker.caption(notes[i][1]), "decoy") for i in sorted(excluded)]
+    target_spec = [(held, ranker.caption(notes[held][1]), "target")]
     phrase_specs = target_spec + decoy_specs
     phrase_manifest: list[dict[str, object]] = []
 
@@ -96,18 +96,30 @@ def prepare_sources(
     target_words = sorted(set(ranker.tokens(ranker.caption(notes[held][1]))))
     retained: dict[str, dict[str, int]] = {}
     arm_a_masks: dict[str, dict[str, int]] = {}
+    independent_spans: dict[str, list[dict[str, object]]] = {}
     for source_id, text in (
         [(f"N{i:02d}", t) for i, (author, t) in source_notes.items()
          if i != held and i not in excluded]
         + [(f"MAIL{i:02d}", t) for i, t in source_mails.items()]
     ):
-        words = ranker.tokens(text)
-        retained[source_id] = {
-            word: sum(1 for item in words if item == word)
-            for word in target_words
-            if any(item == word for item in words)
-        }
-        arm_a_masks[source_id] = dict(retained[source_id])
+        spans = []
+        for match in re.finditer(r"[A-Za-z0-9]+", text):
+            word = match.group(0).lower()
+            if word in target_words:
+                spans.append({
+                    "word": word,
+                    "start": match.start(),
+                    "end": match.end(),
+                    "classification": "independent occurrence after complete-phrase removal",
+                })
+        if spans:
+            independent_spans[source_id] = spans
+            counts: dict[str, int] = {}
+            for span in spans:
+                word = str(span["word"])
+                counts[word] = counts.get(word, 0) + 1
+            retained[source_id] = counts
+            arm_a_masks[source_id] = dict(counts)
 
     manifest = {
         "case": held,
@@ -118,7 +130,10 @@ def prepare_sources(
         "decoy_phrases": {str(i): ranker.caption(notes[i][1]) for i in sorted(excluded)},
         "phrase_removals": phrase_manifest,
         "arm_a_word_mask_counts": arm_a_masks,
+        "arm_a_independent_word_mask_spans": independent_spans,
         "arm_b_independent_word_occurrences_retained": retained,
+        "arm_b_independent_word_occurrence_spans_retained": independent_spans,
+        "word_span_offset_basis": "phrase-cleaned source excerpt; target and decoy full phrases already replaced",
     }
     return source_notes, source_mails, manifest
 
