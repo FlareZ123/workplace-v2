@@ -75,6 +75,8 @@ Source SHA-256 pins:
 - `print-fleet-retirement-note.txt`: `10c3a6e46b2c8475fd5fd8333cd8546633bda7ca3eac4e813ac059cd045e3cbf`
 - `supplier-reconciliation-L29.csv`: `73b85da6d358cfc57dd340c1d6b84a5434d50693c6b12b256238ef3ff8c5c87e`
 - `spool-reconstruction.log`: `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`
+- `mail/16.eml`: `02535cc5966a9215d01ecada4a14b6a403d78ca8d09310a5c3cf1a574f817a08`
+- `mail/18.eml`: `7dc1f122f92ce23c110aa50fd78ae7a471bdf9e60a44e358e3b90e497f664cf0`
 
 The local run passed all source pins and mapping assertions. Output confirms the North/South category order, North ST-112 R3 POSTED and R4 HELD statuses, South ST-142 “catch pin”, the 15h16 interval, and `selected_payload_bytes_used=false`.
 
