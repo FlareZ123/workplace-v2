@@ -69,18 +69,27 @@ def z3_step(s):
     aa=b ^ RotateLeft(c,17)
     return (aa,c+d,d+e,e+aa)
 
-def solve(request1, request3, timeout_ms=12000):
-    state=tuple(BitVec("jsf_s"+str(i),32) for i in range(4))
-    outputs=[]
-    for _ in range(20):
-        state=z3_step(state)
-        outputs.append(state[3])
+def solve(request1, request3, timeout_ms=120000):
+    # The first emitted word algebraically eliminates initial state a.
+    # After each constrained output, substitute the known whole source value
+    # before constructing later steps to simplify nonlinear carry logic.
+    b0=BitVec("jsf_b0",32)
+    c0=BitVec("jsf_c0",32)
+    d0=BitVec("jsf_d0",32)
+    a0=BitVecVal(request1[0],32) - (b0 ^ RotateLeft(c0,17)) + RotateLeft(b0,27)
+    state=(a0,b0,c0,d0)
+    observed={**{i:w for i,w in enumerate(request1)},
+              **{8+i:w for i,w in enumerate(request3)}}
     s=Solver()
     s.set("timeout",timeout_ms)
-    for i,w in enumerate(request1):
-        s.add(outputs[i] == BitVecVal(w,32))
-    for i,w in enumerate(request3):
-        s.add(outputs[8+i] == BitVecVal(w,32))
+    output_terms=[]
+    for index in range(20):
+        state=z3_step(state)
+        observed_value=observed.get(index)
+        output_terms.append(state[3])
+        if observed_value is not None:
+            s.add(state[3] == BitVecVal(observed_value,32))
+            state=(state[0],state[1],state[2],BitVecVal(observed_value,32))
     start=time.monotonic()
     status=s.check()
     elapsed=round(time.monotonic()-start,3)
@@ -88,20 +97,20 @@ def solve(request1, request3, timeout_ms=12000):
         return {"status":str(status),"elapsed_seconds":elapsed,
                 "unknown_reason":s.reason_unknown() if status!=unsat else None}
     model=s.model()
-    initial=tuple(model.eval(x).as_long() for x in [BitVec("jsf_s"+str(i),32) for i in range(4)])
+    initial=tuple(model.eval(x).as_long() for x in (a0,b0,c0,d0))
     py=make_outputs_py(initial,20)
     assert py[0:4]==request1 and py[8:12]==request3
-    # Uniqueness check for complete withheld object, not only a witness state.
-    s.add((outputs[12]!=py[12]) | (outputs[13]!=py[13]) |
-          (outputs[14]!=py[14]) | (outputs[15]!=py[15]) |
-          (outputs[16]!=py[16]) | (outputs[17]!=py[17]) |
-          (outputs[18]!=py[18]) | (outputs[19]!=py[19]))
-    unique=s.check()
+    # Check whether any other consistent full 131/132 prediction exists.
+    s.add((output_terms[12]!=py[12]) | (output_terms[13]!=py[13]) |
+          (output_terms[14]!=py[14]) | (output_terms[15]!=py[15]) |
+          (output_terms[16]!=py[16]) | (output_terms[17]!=py[17]) |
+          (output_terms[18]!=py[18]) | (output_terms[19]!=py[19]))
+    uniqueness_status=s.check()
     return {"status":"sat","elapsed_seconds":elapsed,
             "initial_hex":[f"{x:08X}" for x in initial],
             "predicted_selected":py[4:8],
             "predicted_ack131":py[12:16],"predicted_ack132":py[16:20],
-            "joint_late_unique":str(unique)}
+            "joint_late_unique":str(uniqueness_status)}
 
 def main():
     rows=parse_rows()
@@ -114,7 +123,11 @@ def main():
     synth=make_outputs_py(synthetic_initial,20)
     # Forward algorithm check: each output is the 4th current state word.
     assert len(set(synth))>18 and len(synth)==20
-    print("SOURCE_AND_JSF32_FORWARD_POSITIVE_PASS",flush=True)
+    planted=solve(synth[:4],synth[8:12],timeout_ms=30000)
+    assert planted["status"]=="sat", planted
+    assert planted["predicted_ack131"]==synth[12:16]
+    assert planted["predicted_ack132"]==synth[16:20]
+    print("SOURCE_AND_JSF32_GENUINE_FULL_WHOLEPACKET_POSITIVE_PASS",flush=True)
     hits=[]
     for order in (0,1):
         for endian in ("big","little"):
