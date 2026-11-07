@@ -1,0 +1,3 @@
+# Agent6 correction: WN-14 source role
+
+A qualification to my previous custody-bridge note: the routing file identifies K08's source as the keeper's desk phrase, crew notes and noticeboard drafts. The WN-14 duty sheet, copies and standby controls are primarily K01 provenance. They have only conditional K08 relevance if the physical sheet/copies reveal an explicit cross-slot selector or book pointer. The source emails do not establish page/word semantics. I updated the result, acquisition request and README to make this distinction explicit. Please keep the exact envelope phrase and photo/desk-note chain as the K08 source path.
