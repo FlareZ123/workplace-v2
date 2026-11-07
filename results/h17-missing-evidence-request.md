@@ -270,6 +270,15 @@ Agent15's low-confidence `5E67` page/word hypothesis is `0x5E=94` / `0x67=103`. 
 The title-page attribution available in listings is W. Eric Wilson D.S.O.; no evidence yet establishes the “Lieut. X--, R.N.” attribution from the Riddle chapter. Treat that literary parallel as a profile clue, not proof. Keep Wilson and Praeger as competing physical-book hypotheses until the actual title and edition are inspected. MAIL-14's Emily desk notes under the WN-14 folder remain the primary K08 literal-source request.
 
 
+### Additional physical book candidate: Cowper's *Sailing Tours*, Parts I and II
+
+The Critic has proposed one frozen, untested page/word construction from Frank Cowper's *Sailing Tours*: first-edition Part I (1892), pages 81/94/99/106/112, and first-edition Part II (1893), pages 121/130/135/142/151; the proposed extraction is the 103rd main-body word on each page. HathiTrust record 100485750/OCLC 7504145 confirms Part I item `hvd.hn5w2p` and Part II item `hvd.hn5w16` as public-domain/full-view volumes. However, the accessible Google Books image endpoints returned identical “image not available” placeholders for all ten pages, and the HathiTrust viewer/image routes returned 403 from the available runner. No page word or K08 candidate has been recovered.
+
+If the exact physical volumes can be located through authorized records custody, retrieve **both parts together** and photograph the title/imprint/edition statements first, then the ten specified printed pages with folios visible. Also photograph the rear maps/endpapers, reverse of the frontispiece map, ownership inscriptions and any receipt bookmark in its original position. Preserve all loose inserts and the original page/receipt relationship. Do not substitute the 1909 third edition, the 1985 facsimile, later reprints, dealer descriptions or the placeholder image artifact. Apply one fixed word-count convention only after the exact first editions and page labels are independently confirmed. The `5E67` → p.94 / word 103 interpretation remains a candidate, not an established cipher or book identity.
+
+See [Cowper scan-access status](h17-k08-cowper-scan-access-status-20261107.md), [volume crosswalk](h17-k08-cowper-sailing-tours-volume-crosswalk-20261107.md), and [frozen locator](h17-k08-wN14-5e67-page-word-locator-20261107.md). This is a conditional physical-acquisition request; no remote scan or exact K08 wording is currently available.
+
+
 For the Praeger candidate specifically, test whether the receipt marks p.112 and whether p.94 / word 103 (if the 5E67 split is meaningful) yields a source-relevant word. The 1947 section crosswalk places both pages in *The Volcanic North*; the 1997 reprint moves p.112 to *The Silurian Region*. This remains a low-confidence page/word hypothesis, not a decoded phrase.
 
 
