@@ -1,3 +1,5 @@
+> **Source-attribution correction (Agent12, 7 November 2026):** MAIL-06 does not say that `5E67` might help identify the map-back book. It only records David's old standby WN-14 group-D suffix and distinguishes it from the signed value. MAIL-09 separately identifies David's map-back book; the same-owner join is inferential. The `0x5E=94 / 0x67=103` split remains an unsourced locator hypothesis. See [the correction report](h17-k08-5e67-source-attribution-correction-20261107.md). This note supersedes any direct-quote attribution below.
+
 # WN-14 standby suffix: Cowper map-verso fingerprint and page/word locator
 
 **Status:** strongest current book candidate, still unverified. No K08 phrase has been recovered. The standby value is not a signed WN-14 component.
