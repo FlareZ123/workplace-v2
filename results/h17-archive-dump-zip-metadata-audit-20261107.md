@@ -54,3 +54,15 @@ with ZipFile(archive) as z:
 ```
 
 **Conclusion:** no hidden source record or original Windows metadata was recovered from the ZIP container. Preserve the archive hash above as the identity of the supplied export; pursue original Bundle 06 provenance and source files separately.
+
+
+## Email MIME and threading audit
+
+The 20 EML members were parsed with Python's standard-library email parser:
+
+- 20 messages produced exactly 20 MIME parts total.
+- Every message is a single `text/plain` part. There are no multipart messages, attachment dispositions, MIME filenames, or non-text payloads.
+- Every message has an ordinal redacted Message-ID (`01.IR261003` through `20.IR261003`), but all 20 lack both `In-Reply-To` and `References` headers. This includes messages whose subjects begin with `Re:`.
+- Consequently, the supplied email set contains no hidden MIME copy of the PTW-417 field sketch, WN-14 page, native photograph, or other attachment. It also does not preserve native reply-thread linkage. The message bodies and Date headers remain useful, but the native mailbox export and attachment/thread metadata are absent.
+
+This reinforces the request for the original mailbox export and the native attachments/sidecars, especially the PTW-417 closeout correspondence and field sketch referenced by MAIL-04 and work-order-417.html. It does not establish that those attachments still exist.
