@@ -12,7 +12,7 @@ K01, K02, K03, K05, K06, K07 independently pass their original SHA-256 commitmen
 - **Relevant printer event:** 2026-10-03 18:02 UTC, `ATTEMPT=2 STATE=ACK CLASS=RECOVER`.
 - **Problem:** surviving printer reconstruction claims payload `A9A9DC5731A5E2AE879C47215C2559D5`. XOR with the supplied mask `8556C8CB6140A7F9A5123AC7571BEE1C` gives `2CFF149C50E54557228E7DE60B3EB7C9`, but the untouched K04 verifier rejects these derived bytes.
 - **Source warning:** custodian note and MAIL-16 explicitly warn that dispatch ACK confirms a job, without confirming reconstructed payload byte integrity.
-- **Needed:** an independently retained original coupon, verified 16-byte payload transcript, uncorrupted archival spool/source image, or authoritative printer-side checksum tied to this exact job and ACK attempt. Vendor/property register links `L-29/N` / `FA-17` / `H17-POL-17/A3` / scan `BX25/08` provide provenance only; the supplied scan does not contain the coupon bytes.
+- **Needed:** an independently retained original coupon, verified 16-byte payload transcript, uncorrupted archival spool/source image, or authoritative printer-side checksum tied to this exact job and ACK attempt. The unencrypted vendor/property register links `L-29/N` / `FA-17` / `H17-POL-17/A3` to the separate `BX25/08` transfer reference, providing provenance only. The encrypted BX25-08 folio's contents are unknown; make no claim about whether it contains coupon bytes.
 
 ## Missing record B: K08 keeper's final caption
 - **Owner of remembered wording:** Emily; personal late-watch desk/envelope caption distinguishing the keeper envelope.
