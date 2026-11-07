@@ -6,7 +6,7 @@ The eight observations are **32-bit native, untempered MT state words**:
 - gap 43: stages 328, 329, 330, 331;
 - gap 96: stages 724, 725, 726, 727.
 
-No subset of seven or fewer of the 15 candidate native words works; neither gap alone suffices. The physical source-field mapping remains open, and the ST offset is still ambiguous (+300 vs +304).
+No subset of seven or fewer of the 15 candidate native words works; neither gap alone suffices. This is not a global minimum: Agent35's separate seven-word future-stage portfolio is smaller, but its coordinates have no authenticated source assignment and are not the same acquisition path. The physical source-field mapping remains open, and the ST offset is still ambiguous (+300 vs +304).
 
 Artifacts:
 - `results/h17-k04-p951-minimum-gap-words-20261107.md`
