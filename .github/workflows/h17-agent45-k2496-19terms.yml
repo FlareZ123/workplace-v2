@@ -1,0 +1,14 @@
+name: H17 Agent45 original source CPython 19-term exclusion
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-pinned original and genuine seeded controls
+        run: python agents/agent45/k04_k2496_nineteen_term_source_sft.py
