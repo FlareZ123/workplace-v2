@@ -338,3 +338,20 @@ The candidate ticket neighbours for the spool gaps and selected job also differ:
 
 The +304 audit's four North matches, four distinct bays, binder-order alignment, and 2/2 South holdout are evidence for prioritizing that candidate set during retrieval. They are still a pattern inferred from the supplied records. The +300 candidate remains listed because it is a live competing explanation and the original index is absent. The shared cassette, asset and folio links establish a cohort/provenance association, not an individual ticket-to-job pair. See the reproducible offset audit (h17-k04-st-ptw-ps-offset-ambiguity-20261107.md) and the current source synthesis (results/README.md).
 
+
+
+## HST-4 historian sequence continuation and sample-to-job index
+
+The supplied HST-4 freeze sample is explicitly incomplete and says acquisition was interrupted at 21:14. It contains 145 JSONL records: 112 PV records with sequence numbers 100–211, plus 33 DIAG_WORD records (raw_u16) across sequence numbers 0–7 and multiple revisions. No record in the supplied sample has sequence 212–227.
+
+A source-derived audit finds that all 112 retained PV sequence numbers 100–211 align arithmetically with the first 112 spool jobs PS-261003-0300 through PS-261003-0411 under the candidate relation job suffix = PV seq + 200. If that relation continues, missing seq 212–227 would align with PS-261003-0412 through PS-261003-0427, including **seq 217 ↔ PS-261003-0417**. This is a promising independent index hypothesis, not an authenticated sample-to-job mapping. Simple fixed-gap PV-to-random mappings have already failed printer-only parity; do not treat the +200 alignment as proof of a shared generator or draw count.
+
+If an authorized new custody path or unsolicited delivery becomes available, request the **complete native HST-4/HST-4 historian export**, specifically preserving:
+
+1. Every record for seq 212–227, with seq 217 prioritized but the whole interval retained as a holdout-capable block.
+2. The original definition of the seq field and the source-authenticated sample-to-job cross-reference, including the rule that produced the observed 100–211 / PS-0300–0411 alignment.
+3. Original acquisition order, timestamps with their recorded UTC offsets, tag, field, unit, quality, state, revision, and any freeze/interleave metadata. Do not deduplicate revisions or discard SUSPECT/RUN/HOLD rows.
+4. All PV and DIAG_WORD records, including raw_u16 values and their revision/quality semantics, plus the native export header, interruption/restart log, and any adjacent records before/after the 21:14 interruption.
+5. The source system's audit trail identifying who exported the sample, the query/time window, and whether the missing seq range was excluded, never acquired, or lost during preservation.
+
+The existing crosswalk report is h17-hst4-pv-spool-job-crosswalk-20261107.md. The supplied sample's 112/112 arithmetic alignment is a useful retrieval locator; only the original HST-4 index or a paired native record can authenticate it.
