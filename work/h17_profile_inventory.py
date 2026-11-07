@@ -63,6 +63,10 @@ _CATEGORY_TOKENS = {
     "offline_files_cache": (
         "windows/csc", "cscservice", "netcache", "offline files", "sync center",
     ),
+    "profile_migration": (
+        "usmt", "scanstate", "loadstate", "migstore", "migration",
+        "profile refresh", "profile-refresh", "desktop-move",
+    ),
     "office_document": (
         "mug-stock", "wn-14", "desk-note", "desk note", "scanrelease",
         "renewal-ledger", "supplier", "receipt", "envelope",
@@ -75,6 +79,7 @@ _CATEGORY_EXTENSIONS = {
     "photo_caption": {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".heic", ".heif", ".webp", ".bmp", ".gif", ".psd", ".xmp", ".cr2", ".nef", ".arw", ".dng", ".orf", ".raf", ".rw2"},
     "profile_metadata": {".dat", ".edb", ".sqlite", ".db", ".reg", ".automaticdestinations-ms", ".customdestinations-ms"},
     "transfer_archive": {".zip", ".7z", ".tar", ".gz", ".vhd", ".vhdx", ".wim", ".img", ".raw"},
+    "profile_migration": {".mig", ".mig01", ".mig02", ".mig03", ".cab"},
     "office_document": {".xls", ".xlsx", ".xlsm", ".xlsb", ".doc", ".docx", ".asd", ".wbk", ".ppt", ".pptx", ".pdf", ".html", ".htm", ".mht", ".mhtml", ".rtf", ".csv", ".md", ".txt"},
 }
 
