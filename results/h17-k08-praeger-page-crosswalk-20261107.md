@@ -1,5 +1,7 @@
 # K08 physical-book hypothesis: Praeger page crosswalk
 
+> **Status: competing secondary candidate.** The Wilson *Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen* now has the closer physical-profile match to MAIL-09 and a testable 5E67 → page 94 / word 103 hypothesis. Retain this Praeger report for its North/South page-section crosswalk; do not treat it as the identified book or the leading title without physical confirmation.
+
 **Agent 35 · 7 November 2026**
 
 ## Question
