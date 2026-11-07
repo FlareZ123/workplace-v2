@@ -22,7 +22,7 @@ BX25/08
 Policy year:
 01 Jan 2025 - 31 Dec 2025
 SCHEDULE ACCOUNT HOLDER / NAMED INSURED
-Noyes Energy Group
+[REDACTED IN SOURCE IMAGE]
 Operating company - H-17 Atlantic facility
 Declared office-property carry-forward
 FA-17     North office printer / cassette cabinet              carry-forward: maintained
@@ -37,6 +37,10 @@ CORPORATE RECORDS / CORRESPONDENCE
 Electronic correspondence index: https://noyes-energy-group.pages.dev/
 Policy file H17-POL-17/A3  |  Transfer folio BX25/08
 ```
+
+## Redaction note
+
+The named-insured field is visibly blacked out in the rendered source page. The PDF text layer retains hidden text beneath that redaction. That underlying value is intentionally not reproduced or used here. Treat the field as redacted and do not use text-layer leakage to reverse the source's redaction.
 
 ## Evidence implications
 
