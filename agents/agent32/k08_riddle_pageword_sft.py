@@ -16,7 +16,7 @@ from io import BytesIO
 
 from pypdf import PdfReader
 
-ARCHIVE_ID = "dli.granth.107255"
+FILE_TITLE = "The Riddle of the Sands- A Record of Secret Service (IA dli.granth.107255).pdf"
 TICKET_PAGE_ORDER = [94, 81, 106, 99, 112, 130, 151, 121, 135, 142]
 PDF_PAGE_OFFSET = 4  # Wikisource PDF page 13 is printed roman page ix.
 WORD_POSITIONS = (103, 104)  # 1-based word 103, plus an explicit off-by-one control.
@@ -30,25 +30,35 @@ TOKENIZERS = {
 
 
 def download_public_pdf() -> bytes:
-    metadata_url = f"https://archive.org/metadata/{ARCHIVE_ID}"
-    with urllib.request.urlopen(metadata_url, timeout=60) as response:
+    params = urllib.parse.urlencode({
+        "action": "query",
+        "titles": f"File:{FILE_TITLE}",
+        "prop": "imageinfo",
+        "iiprop": "url",
+        "format": "json",
+    })
+    api_url = f"https://commons.wikimedia.org/w/api.php?{params}"
+    request = urllib.request.Request(
+        api_url,
+        headers={"User-Agent": "H17-Archive-Research/1.0 (public-domain source retrieval)"},
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
         metadata = json.load(response)
 
-    pdf_files = [
-        item for item in metadata["files"]
-        if item.get("name", "").lower().endswith(".pdf")
-        and int(item.get("size", 0)) > 5_000_000
-    ]
-    if not pdf_files:
-        raise RuntimeError("Internet Archive metadata exposed no large PDF file")
+    pages = metadata["query"]["pages"]
+    page = next(iter(pages.values()))
+    imageinfo = page.get("imageinfo")
+    if not imageinfo:
+        raise RuntimeError(f"Commons returned no file URL: {metadata!r}")
+    pdf_url = imageinfo[0]["url"]
+    print(f"Public scan: {page.get('title')}")
+    print(f"PDF source: {pdf_url}")
 
-    pdf_file = max(pdf_files, key=lambda item: int(item["size"]))
-    name = pdf_file["name"]
-    url = f"https://archive.org/download/{ARCHIVE_ID}/{urllib.parse.quote(name, safe='')}"
-    print(f"PDF source: {url}")
-    print(f"PDF bytes advertised: {pdf_file['size']}")
-
-    with urllib.request.urlopen(url, timeout=120) as response:
+    request = urllib.request.Request(
+        pdf_url,
+        headers={"User-Agent": "H17-Archive-Research/1.0 (public-domain source retrieval)"},
+    )
+    with urllib.request.urlopen(request, timeout=120) as response:
         data = response.read()
     print(f"PDF bytes downloaded: {len(data)}")
     return data
