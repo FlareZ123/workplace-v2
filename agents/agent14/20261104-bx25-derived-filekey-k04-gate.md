@@ -1,7 +1,11 @@
-# Agent14: BX25/08 derived file-key carrier, 4 Nov 2026
+# WITHDRAWN: Agent14 BX25/08 derived file-key carrier experiment
 
-This tests a different historical source representation from the previous plaintext PDF and ciphertext-window audits. The same independently released November 2025 Risk Desk AES-256 folio, physically linked by FA-17/L-29/N asset records to ESC-N, has a 32-byte *document encryption key* derived during successful opening with the already known historical four-digit folio release code. A read-only local pypdf 5.9.0 extraction from SHA256-pinned original 5,407-byte PDF b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425 succeeded and extracted the expected 2025 property register text.
+**Status:** Withdrawn on 7 November 2026 under the repository-wide BX25-08 evidence correction. Do not use this experiment or any derived material.
 
-Candidate architecture: 17 contiguous 16-byte views of the recovered file-key material, and first/last 16-byte halves of the original key and its SHA256/SHA512/SHA3-256/BLAKE2b digests. Reverse-byte views of each give **54** complete source-derived 16-byte candidates. Each tested as a direct component and as an original-mask-XOR physical coupon, with both missing original slot SHA256 commitments checked. **216 full original commitment comparisons, zero K04 or K08 hits.** The original PDF, route, commitments, and candidate were not edited.
+The previous analysis depended on opening the encrypted BX25-08 folio without the original Risk-desk paper key-register entry or another independently authorized release record. All extracted page text, document file-key material, asset descriptions, source links, candidate carriers, comparisons, and conclusions from that analysis are withdrawn.
 
-This negative is conditional on the source-identity hypothesis, which has weak historical support: a property-ledger connection does not establish that a 2025 file encryption key seeded a 2026 printer coupon. The trial is distinct from previously completed literal PDF raw/hex/decrypted-page window sweeps, because the password-derived PDF file key is not necessarily present as a plaintext source window. No authentic K04 coupon byte or K08 word was recovered. The existing six individually accepted slots remain and REC8 combined acceptance is incomplete.
+Treat BX25-08 as encrypted and its contents as unknown. Do not retrieve, reconstruct, cite, reuse, or propagate derived information from this file, related code, workflows, agent notes, or Git history. Access requires the original paper key register or another independently authorized release record.
+
+The unencrypted office-bookmark export independently states that the old capture terminal stored BX25 folios with a four-position numeric release setting and that the paper key register stayed with the Risk desk. It does not reveal the setting's value or the folio contents. The separate print-fleet retirement note independently identifies the ESC-N / PS-261003-0417 asset reference; no authorized source links that printer to the scanner's release setting.
+
+No authentic K04 coupon byte or K08 word was recovered.
