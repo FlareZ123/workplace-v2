@@ -104,74 +104,106 @@ def scan_records(prefix: str, set_spec: str | None, all_prefixes: list[str]) -> 
     params = {"verb": "ListRecords", "metadataPrefix": prefix}
     if set_spec:
         params["set"] = set_spec
+    current_root = fetch_xml(BASE, params)
     seen = 0
     for page in range(1, MAX_PAGES + 1):
-        root = fetch_xml(BASE, params)
-        container = root.find("oai:ListRecords", NS)
+        container = current_root.find("oai:ListRecords", NS)
         if container is None:
             print("NO_LISTRECORDS_CONTAINER", prefix, set_spec or "ALL", flush=True)
             return None, seen, page
-        for record in container.findall("oai:record", NS):
-            header = record.find("oai:header", NS)
-            if header is None or header.attrib.get("status") == "deleted":
-                continue
-            seen += 1
-            identifier = child_text(header, "oai:identifier")
-            datestamp = child_text(header, "oai:datestamp")
-            text = record_text(record)
-            lowered = text.lower()
-            if "cowper" in lowered and "sailing" in lowered and (
-                "essex" in lowered or "suffolk" in lowered
-            ):
-                print("COWPER_RECORD_FOUND", flush=True)
-                print("OAI_IDENTIFIER", identifier, flush=True)
-                print("DATESTAMP", datestamp, flush=True)
-                print("SET_SPEC", set_spec or "ALL", flush=True)
-                for url in record_urls(record):
-                    print("RECORD_URL", url, flush=True)
-                metadata = record.find("oai:metadata", NS)
-                if metadata is not None:
-                    xml = ET.tostring(metadata, encoding="unicode")
-                    print("MATCH_METADATA_XML", xml[:30000], flush=True)
-                for other_prefix in all_prefixes:
-                    if other_prefix == prefix:
-                        continue
-                    try:
-                        expanded = fetch_xml(
-                            BASE,
-                            {"verb": "GetRecord", "identifier": identifier, "metadataPrefix": other_prefix},
-                        )
-                        expanded_metadata = expanded.find(".//oai:metadata", NS)
-                        if expanded_metadata is not None:
+
+        token_node = container.find("oai:resumptionToken", NS)
+        token = child_text(container, "oai:resumptionToken")
+        next_root = None
+        if token:
+            print(
+                "RESUMPTION_TOKEN",
+                "page", page,
+                "length", len(token),
+                "attributes", token_node.attrib if token_node is not None else {},
+                "preview", repr(token[:160]),
+                flush=True,
+            )
+            # Fetch the next page before doing per-record work; OAI tokens may be short-lived.
+            next_root = fetch_xml(
+                BASE,
+                {"verb": "ListRecords", "resumptionToken": token},
+            )
+
+        records = container.findall("oai:record", NS)
+        page_text = " ".join(current_root.itertext()).lower()
+        if all(term in page_text for term in ("cowper", "sailing")) and (
+            "essex" in page_text or "suffolk" in page_text
+        ):
+            for record in records:
+                header = record.find("oai:header", NS)
+                if header is None or header.attrib.get("status") == "deleted":
+                    continue
+                seen += 1
+                identifier = child_text(header, "oai:identifier")
+                datestamp = child_text(header, "oai:datestamp")
+                text = record_text(record)
+                lowered = text.lower()
+                if "cowper" in lowered and "sailing" in lowered and (
+                    "essex" in lowered or "suffolk" in lowered
+                ):
+                    print("COWPER_RECORD_FOUND", flush=True)
+                    print("OAI_IDENTIFIER", identifier, flush=True)
+                    print("DATESTAMP", datestamp, flush=True)
+                    print("SET_SPEC", set_spec or "ALL", flush=True)
+                    for url in record_urls(record):
+                        print("RECORD_URL", url, flush=True)
+                    metadata = record.find("oai:metadata", NS)
+                    if metadata is not None:
+                        xml = ET.tostring(metadata, encoding="unicode")
+                        print("MATCH_METADATA_XML", xml[:30000], flush=True)
+                    for other_prefix in all_prefixes:
+                        if other_prefix == prefix:
+                            continue
+                        try:
+                            expanded = fetch_xml(
+                                BASE,
+                                {"verb": "GetRecord", "identifier": identifier, "metadataPrefix": other_prefix},
+                            )
+                            expanded_metadata = expanded.find(".//oai:metadata", NS)
+                            if expanded_metadata is not None:
+                                print(
+                                    "GETRECORD_METADATA_XML",
+                                    other_prefix,
+                                    ET.tostring(expanded_metadata, encoding="unicode")[:30000],
+                                    flush=True,
+                                )
+                        except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
+                            print("GETRECORD_ERROR", other_prefix, type(exc).__name__, str(exc)[:500], flush=True)
+                    match = re.search(r"\bolbp\d+\b", identifier)
+                    if match:
+                        bib_id = match.group(0)
+                        print("BIB_ID", bib_id, flush=True)
+                        try:
+                            availability = fetch_xml(
+                                AVAILABILITY,
+                                {"id": bib_id, "id_type": "bib"},
+                            )
                             print(
-                                "GETRECORD_METADATA_XML",
-                                other_prefix,
-                                ET.tostring(expanded_metadata, encoding="unicode")[:30000],
+                                "AVAILABILITY_XML",
+                                ET.tostring(availability, encoding="unicode")[:20000],
                                 flush=True,
                             )
-                    except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
-                        print("GETRECORD_ERROR", other_prefix, type(exc).__name__, str(exc)[:500], flush=True)
-                match = re.search(r"\bolbp\d+\b", identifier)
-                if match:
-                    bib_id = match.group(0)
-                    print("BIB_ID", bib_id, flush=True)
-                    try:
-                        availability = fetch_xml(
-                            AVAILABILITY,
-                            {"id": bib_id, "id_type": "bib"},
-                        )
-                        print(
-                            "AVAILABILITY_XML",
-                            ET.tostring(availability, encoding="unicode")[:20000],
-                            flush=True,
-                        )
-                    except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
-                        print("AVAILABILITY_ERROR", type(exc).__name__, str(exc)[:500], flush=True)
-                return identifier, seen, page
-        token = child_text(container, "oai:resumptionToken")
+                        except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
+                            print("AVAILABILITY_ERROR", type(exc).__name__, str(exc)[:500], flush=True)
+                    return identifier, seen, page
+        else:
+            seen += sum(
+                1 for record in records
+                if (header := record.find("oai:header", NS)) is not None
+                and header.attrib.get("status") != "deleted"
+            )
+
         if not token:
             return None, seen, page
-        params = {"verb": "ListRecords", "resumptionToken": token}
+        if next_root is None:
+            return None, seen, page
+        current_root = next_root
     return None, seen, MAX_PAGES
 
 
