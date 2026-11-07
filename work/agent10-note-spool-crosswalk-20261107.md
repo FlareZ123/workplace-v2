@@ -59,3 +59,8 @@ Next useful evidence is the complete native and rendered output for PS-261003-03
 - The eight Emily-note final words were searched across all 40,320 permutations, then with one inserted word from a 28-word source-semantic/function-word list at all nine positions: 10,160,640 additional candidates, no hit. For N20, the semantic brief's first sentence ends at "table"; the following instruction about the shorter standby label is not treated as phrase text.
 - The repeated cross-component metadata pair was noted: N20→PS-261003-0320 and selected K04 PS-261003-0417 are both RECOVER/bench. This is a queue/destination hypothesis only; no physical-location or K04/K08 linkage is established.
 - Verified the SFT against three layouts: repository-style extracted `resources/evidence/` (default), the extracted archive directory, and the original ZIP. Each run returned 24 notes, 24 jobs, and 300-second intervals.
+
+
+## Queue/device mapping constraint
+
+Read `evidence/transfers/queue-note.txt` and the print-fleet return register. The queue note says queue names are physical print destinations, and handoff proves queue acceptance rather than paper collection. The fleet register maps only 0417→ESC-N/FA-17, 0448→ESC-S/LV-42, and 0420→WATCH-SPARE/ST-09. It does not map 0323. The spool rows for 0417, 0448 and 0420 have different or changing DEST values, so do not infer a device for 0323 from DEST=store or from the shared RECOVER class. Original queue/job manifest is the missing join.
