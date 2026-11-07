@@ -123,8 +123,37 @@ def main() -> None:
                     "matches_K04": digest == k04_target,
                 })
 
+    # Revisions 1 and 2 are the two complete GOOD/HOLD snapshots eligible
+    # for the K02 reducer. Test their per-seq XOR delta as a revision-change
+    # object in both source byte orders, with both K04 interpretations.
+    for endian in ("big", "little"):
+        before = b"".join(
+            int(row["value"]).to_bytes(2, endian) for row in revisions[1]
+        )
+        after = b"".join(
+            int(row["value"]).to_bytes(2, endian) for row in revisions[2]
+        )
+        delta = bytes(left ^ right for left, right in zip(before, after))
+        candidates = (
+            ("revision1-xor-revision2-as-component", delta),
+            (
+                "revision1-xor-revision2-as-payload-xor-K04-mask",
+                bytes(value ^ mask_byte for value, mask_byte in zip(delta, mask)),
+            ),
+        )
+        for interpretation, component in candidates:
+            digest = sha256(component)
+            trials.append({
+                "revision_pair": "1^2",
+                "endian": endian,
+                "interpretation": interpretation,
+                "component_hex": component.hex().upper(),
+                "component_sha256": digest,
+                "matches_K04": digest == k04_target,
+            })
+
     hits = [trial for trial in trials if trial["matches_K04"]]
-    assert len(trials) == 16
+    assert len(trials) == 20
     assert not hits
 
     print(json.dumps({
@@ -147,6 +176,10 @@ def main() -> None:
             for revision in (1, 2, 3, 4)
         ],
         "candidate_count": len(trials),
+        "candidate_families": {
+            "complete_revision_blocks": 16,
+            "eligible_revision_1_xor_2_delta": 4,
+        },
         "K04_hits": hits,
         "trials": trials,
         "selected_PS0417_ACK2_read": False,
