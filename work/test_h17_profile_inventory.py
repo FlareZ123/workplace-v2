@@ -53,6 +53,11 @@ def main() -> None:
             "Windows/System32/config/SOFTWARE": b"software-driver-config-hive",
             "Windows/CSC/v2.0.6/namespace/H17/IR-261003-H17.txt": b"offline-cached-incident-index",
             "Windows/System32/config/NetCache.reg": b"offline-files-policy-export",
+            "Migration/USMT/store.mig": b"compressed-usmt-store",
+            "Migration/USMT/ScanState.log": b"source-scan-log",
+            "Migration/USMT/ListFiles.txt": b"R:\\Risk\\Transfers\\BX25\\transfer-index.htm",
+            "Migration/USMT/MigDocs.xml": b"migration-file-rules",
+            "R/IT/desktop-move-2026.html": b"profile-refresh-calendar",
         }
         created = {name: put(root, name, data) for name, data in files.items()}
 
@@ -68,8 +73,8 @@ def main() -> None:
         assert inventory["safety"]["source_writes_performed"] is False
         assert inventory["safety"]["source_must_be_mounted_read_only"] is True
         assert inventory["safety"]["ntfs_alternate_data_streams_enumerated"] is False
-        assert inventory["summary"]["files_listed"] == len(by_path) == 21
-        assert inventory["summary"]["candidate_files_hashed"] == 20
+        assert inventory["summary"]["files_listed"] == len(by_path) == 26
+        assert inventory["summary"]["candidate_files_hashed"] == 25
         assert "Chrome/Profile/Cookies/Cookies.sqlite" not in by_path
         assert "Chrome/Profile/Login Data" not in by_path
         assert "Microsoft/Credentials/secret.dat" not in by_path
@@ -100,6 +105,11 @@ def main() -> None:
             "Windows/System32/config/SOFTWARE": ("profile_metadata", "UNKNOWN"),
             "Windows/CSC/v2.0.6/namespace/H17/IR-261003-H17.txt": ("offline_files_cache", "UNKNOWN"),
             "Windows/System32/config/NetCache.reg": ("offline_files_cache", "UNKNOWN"),
+            "Migration/USMT/store.mig": ("profile_migration", "UNKNOWN"),
+            "Migration/USMT/ScanState.log": ("profile_migration", "UNKNOWN"),
+            "Migration/USMT/ListFiles.txt": ("profile_migration", "UNKNOWN"),
+            "Migration/USMT/MigDocs.xml": ("profile_migration", "UNKNOWN"),
+            "R/IT/desktop-move-2026.html": ("profile_migration", "UNKNOWN"),
             "Recent/AutomaticDestinations/example.automaticDestinations-ms": ("profile_metadata", "UNKNOWN"),
         }
         for relative, (category, magic) in expected.items():
