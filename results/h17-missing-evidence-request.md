@@ -416,6 +416,8 @@ The existing retired-profile request should explicitly include the local native 
 - OneNote local notebooks and cache, including `OneNoteOfflineCache.onecache`, notebook/section files and associated metadata.
 - Windows Search ESE index `Windows.edb`, its ESENT transaction/log files, and index scope/catalog configuration. Preserve the index and logs before any rebuild or repair.
 - Relevant profile hive/MRU records that identify original WN-14, Bundle 06, desk-note, photo-caption, mug-stock and incident-index paths and last-opened times.
+- Per-user printer configuration from `NTUSER.DAT` and `UsrClass.dat`, including printer connections, default printer/device and port settings, PrintHood shortcuts and per-user print preferences; preserve machine `SYSTEM`/`SOFTWARE` hives or equivalent original configuration for queues, ports, drivers, print processors and spooler settings.
+- The native spooler `PRINTERS` directory with `.SPL/.SHD` or equivalent objects, PrintService Admin/Operational logs, queue/port history and retained driver/port-monitor packages. Inventory PS-261003-0323 and its 0317/0318/0320/0306 controls separately from PS-0416/PS-0417, preserving job IDs, host/device/port/route, attempts, rendering, media-eject/collection and custody.
 
 The native EML export is only 20 single-part text/plain messages with no MIME attachments. These stores may contain complete thread material, omitted messages, attachments, local note versions, filenames or snippets; their existence and contents are unproven.
 
