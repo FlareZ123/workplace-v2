@@ -12,9 +12,9 @@ This is grounded in three independent connections:
 2. Cowper Part I is a yachtsman's guide to the coasts of Essex and Suffolk; Part II covers the Nore to the Scilly Isles. The physical editions have cloth bindings, maps/charts and frontispieces.
 3. The ticket suffixes fit within the page counts of both Part I (168 pages) and Part II (365 pages). This permits a proposed North→Part I / South→Part II assignment, but does not independently discriminate between the volumes.
 
-## Volume/page crosswalk
+## Proposed volume/page assignment (unverified)
 
-| Return set | Cowper volume | Edition/pagination | Ticket suffixes |
+| Proposed assignment (not discriminating) | Cowper volume | Edition/pagination | Ticket suffixes |
 |---|---|---|---|
 | L-29/N | Part I, *The Coasts of Essex and Suffolk* (1892) | xxii, 168 pp., index and adverts | 81, 94, 99, 106, 112 |
 | L-29/S | Part II, *The Nore to the Scilly Isles* (1893) | xxviii, 365 pp. | 121, 130, 135, 142, 151 |
@@ -62,7 +62,7 @@ Retrieve David's book and tea receipt together, preserving the original position
 3. Any previous owner's name on the reverse of the Part I frontispiece map; check specifically for “Dollmann” without assuming it.
 4. Preserve the receipt-marked spread, all marginalia and adjacent pages. If the ticket-page hypothesis is tested after physical identification, record the North suffix pages 81/94/99/106/112 in Part I and South suffix pages 121/130/135/142/151 in Part II. Do not transfer the Praeger-specific 5E67 page-94/word-103 hypothesis to Cowper without independent evidence.
 5. Both sides of the tea receipt, date, merchant, amount and handwriting.
-6. Whether the book or a loose insert contains the WN-14 standby transcription ending 5E67, joining MAIL-06 to MAIL-09.
+6. Whether the book or a loose insert physically contains the WN-14 standby transcription ending 5E67; if present, record it as a new co-location observation, not a source-defined identity join.
 
 The book remains a secondary K08 locator. MAIL-20 and the route sheet identify the original recovery envelope as the literal final-word carrier; MAIL-14 locates Emily's desk notes under the WN-14 folder. Retrieve those originals independently.
 
