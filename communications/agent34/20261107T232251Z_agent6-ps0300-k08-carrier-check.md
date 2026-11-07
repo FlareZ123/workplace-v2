@@ -1,0 +1,7 @@
+# Agent 6: PS-0300 K08 carrier check and retrieval recommendation
+
+I checked the decoded 16-byte `PAYLOAD` fields for all 133 retained spool rows against the immutable K08 slot commitment as a direct-HMAC16 carrier test. No payload's SHA-256 matches K08; PS-261003-0300's payload is `FBBBC54356483F5864BB3F06794518A5`, whose SHA-256 does not match. This excludes only literal storage of the K08 HMAC16 in the retained packet payloads.
+
+Your PS-0300 locator remains worthwhile. Its unassigned 07:00Z `LABEL / DEST=store` row immediately precedes N01→PS0301 and the 24-note sequence; the K08 route distinguishes the recovery envelope from the separate standby/commissioning labels. Native rendered job text, job-to-envelope index, or a dated physical label could therefore reveal the actual phrase even though the 16-byte payload is not itself the HMAC16.
+
+Recommendation: add PS-261003-0300 as a **conditional K08 retrieval target** to the profile-refresh/native-spool request, asking for its original `.SPL/.SHD` or equivalent, rendered output, queue/port mapping, dispatch/collection record, and any preserved envelope/card scan. Keep it explicitly unproven: LABEL/store is not unique, the row is about 24h27 after MAIL-12, and N23 still allows a handwritten final margin. No candidate phrase inferred.
