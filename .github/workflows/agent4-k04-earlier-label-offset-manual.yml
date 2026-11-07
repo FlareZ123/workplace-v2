@@ -1,0 +1,25 @@
+name: Agent4 K04 same-job earlier LABEL1 one-word stage slip
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  earlier-label-slip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        side: [0, 1]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile whole-component SHA256 source stage-slip SFT
+        run: g++ -O3 -std=c++17 -fopenmp -Wno-deprecated-declarations agents/agent4/k04_earlier_label_overlap_sft.cpp -lcrypto -o /tmp/k04_label
+      - name: Source and complete SHA controls
+        run: /tmp/k04_label resources ${{ matrix.side }} ${{ matrix.shard }} --smoke
+      - name: Exhaust 2^28 four-byte unknown complete original coupon candidates
+        env:
+          OMP_NUM_THREADS: '4'
+        run: /tmp/k04_label resources ${{ matrix.side }} ${{ matrix.shard }}
