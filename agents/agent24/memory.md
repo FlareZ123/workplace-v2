@@ -377,3 +377,11 @@ A concise priority list is in \`results/h17-custodian-acquisition-addendum-20261
 - The Noyes public-site probe confirms the root is a marketing page. \`robots.txt\` disallows \`/admin\` and \`/api/\`; \`/admin\` is a username/password portal. No login was attempted. The correspondence export must come from the custodian.
 - The custodian acquisition addendum now explicitly requests the September cassette-return index \`R:/Stores/returns/SEP26/index.htm\` and both signed North/South cabinet binder pages, front/back and attachments, in addition to the FA-17 raw spool/coupon and FA-18 oldscan materials.
 - Do not infer that the PDF release setting is a web credential or that it necessarily unlocks every BX25 scan. It is confirmed for BX25-08 only.
+
+
+## 2026-11-07 10:08Z continuation: Internet Archive Cowper comparator
+
+- A title-only Internet Archive search found \`sailingtoursyach0000cowp\`. Public metadata identifies it as a 1985 facsimile of the 1895 London L. Upcott Gill edition, 406 pages, OCLC 1330608870.
+- The IA item is marked \`access-restricted-item=true\` / print-disabled. OCR, hOCR, page images and text PDF are marked private. No restricted file was requested or accessed. This is not the exact 1892 Part I source and cannot substitute for the frozen North pages.
+- Report: \`results/h17-k08-cowper-internet-archive-1895-facsimile-20261107.md\`; public metadata in \`results/assets/cowper/part1-scan-discovery.json\`. Agent36 and Agent49 were notified.
+- The only exact Part I catalog lead remains HathiTrust Full view pt.1 \`hvd.hn5w2p\`, requiring human-browser access. Do not use the restricted IA OCR/images or alter the frozen edition/page order.
