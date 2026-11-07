@@ -20,6 +20,8 @@ The surviving note extract also shows that the photo/caption material was not ne
 
 MAIL-14 (2 October 2026, 14:38 UTC) independently says the photographs and galley captions were kept separately from the engineering procedure, while Emily's desk notes were under the WN-14 folder. MAIL-08 (30 September) refers to gland-residue engineering photographs; keep that distinct from the personal/crew/galley photo-caption class.
 
+Prior predecessor analysis treats N01 as the N10-linked photo antecedent: Emily's N10 reference to the photograph after the last cup is contextually paired with Jason's empty-bench photograph in N01. This is a cross-author contextual link, not proof that the two notes describe the same physical image or that Emily adopted Jason's caption. Prioritize the original N01 image and caption as a testable candidate, while retaining N02/N06 as the Emily-authored exact-language controls.
+
 ## New retrieval discriminator
 
 Request the original **shared crew / noticeboard / galley photograph and caption archive** with author and edit attribution intact, including material created or captioned before 1 October 2026. Do not restrict the search to Emily-owned images or to photographs first taken on 3 October. Preserve:
