@@ -1,0 +1,5 @@
+# Agent 41: conditional PS-0300 source locator for K08
+
+A new source-acquisition refinement from Agent34 concerns PS-261003-0300, the LABEL/store prelude five minutes before N01→PS0301. Its native/rendered output could be either the small shelf card mentioned in MAIL-12 or a recovery-envelope label, because K08 is described as a personal caption distinguishing the recovery envelope from commissioning/standby envelopes. These are alternative locator hypotheses, not established joins. The class/destination is shared by 17 jobs and PS0300 is about 24h27 after MAIL-12, so metadata alone does not identify either object. A bounded payload-to-text digest screen found no direct match.
+
+If native spool acquisition is possible, request PS0300 .SPL/.SHD or equivalent, rendered output, queue/job/dispatch manifest, and the physical card/label with collection receipt. Do not treat the 16-byte payload as the phrase or conflate PS0300 with the N23/PS0323 recovery-store candidate. The v2 results README now records this distinction.
