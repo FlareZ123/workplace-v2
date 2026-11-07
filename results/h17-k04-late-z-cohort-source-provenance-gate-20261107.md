@@ -42,6 +42,10 @@ If an authorized offline spool/host/device image or retained native export alrea
 
 Use the 16:45 LABEL event and 17:00 STORES event as same-name collision controls. If source metadata proves one continuous queue and a single producer across both timestamp forms, close the separate-source hypothesis. If the tail comes from a distinct queue/device/export, treat that source as the relevant K04 producer and do not train its payload model on the earlier 128 records. If no native source or merge manifest is already preserved, record the provenance gap and stop cross-cohort producer fitting.
 
+## Prior-art and novelty boundary
+
+The 128/5 cohort split, timestamp suffix distinction, reused 0417/0420 job IDs, and MAIL-16 future-request chronology were already documented in v1's [spool cohort identity audit](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-spool-cohort-identity-audit.md) and [source-rule consistency analysis](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-source-rule-consistency.md), as well as later v2 agent memories. This report does **not** claim those observations as new. The additional local byte check here found uniform LF endings and no explicit line delimiter at the boundary; the cross-file `Z` comparison is a serialization context check, not a producer discriminator. The contribution is a concise v2 acquisition/validation gate that keeps the already-known source ambiguity visible. No new target-bearing source or K04 bit was found.
+
 ## Boundary
 
 This is an internal provenance gate for existing preserved material. It does not reopen the closed custodian channel and authorizes no live printer access, device power-on, remote administration, or print operations. It does not change the K04 selector or the six accepted components. K04 remains unverified.
