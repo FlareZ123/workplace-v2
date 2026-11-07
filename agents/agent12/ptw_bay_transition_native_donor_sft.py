@@ -70,14 +70,15 @@ def source_blocks():
     }
     if any(len(value) != 16 for value in blocks.values()):
         raise AssertionError("Each donor candidate must be 16 bytes")
-    return blocks
+    return blocks, receipts
 
 
 def target_formulas():
-    basis, symbolic = source(ROOT / "resources")
-    if basis.rank != 15365:
-        raise AssertionError(f"Unexpected p951 source rank: {basis.rank}")
+    base_basis, symbolic = source(ROOT / "resources")
+    if base_basis.rank != 15365:
+        raise AssertionError(f"Unexpected p951 source rank: {base_basis.rank}")
 
+    basis = base_basis.clone()
     for index, stage in enumerate(STAGES):
         for bit, expression in enumerate(symbolic[stage - ORIGIN]):
             basis.insert(expression, 1 << (1 + 32 * index + bit))
@@ -90,7 +91,38 @@ def target_formulas():
         if any(value is None for value in projected):
             raise AssertionError("The eight native donor words do not determine the selected payload")
         formulas.append(projected)
-    return formulas
+    return base_basis, symbolic, formulas
+
+
+def ptw_bay_selector_check(base_basis, symbolic, receipts):
+    anchors = ((405, -964, "D"), (412, -944, "B"), (414, -937, "C"))
+    constrained = base_basis.clone()
+    for permit, serial_stage, bay in anchors:
+        row = receipts[permit][0]
+        serial_bytes = bytes.fromhex(row["serial"].removeprefix("SG-"))
+        observed_output = int.from_bytes(serial_bytes, "little")
+        serial_forms = temper(symbolic[serial_stage - ORIGIN])
+        predicted_output = sum(
+            (base_basis.predict(form) or 0) << bit
+            for bit, form in enumerate(serial_forms)
+        )
+        if predicted_output != observed_output:
+            raise AssertionError(f"PTW-{permit} serial does not match its source-predicted stage")
+
+        bay_stage = serial_stage - 1
+        bay_forms = temper(symbolic[bay_stage - ORIGIN])[29:32]
+        prior_bits = [base_basis.predict(form) for form in bay_forms]
+        bay_value = ord(bay) - ord("A")
+        for bit, form in enumerate(bay_forms):
+            constrained.insert(form, (bay_value >> bit) & 1)
+        print(f"PTW-{permit}: serial_stage={serial_stage}, bay_stage={bay_stage}, prior_top3={prior_bits}, recorded_bay={bay}({bay_value})")
+
+    target_known = sum(
+        constrained.predict(form) is not None
+        for stage in range(951, 955)
+        for form in temper(symbolic[stage - ORIGIN])
+    )
+    print(f"bay_constraint_rank={constrained.rank}, rank_gain={constrained.rank - base_basis.rank}, target_bits_known={target_known}/128")
 
 
 def parse_donor(raw: bytes, endian: str, reverse_words: bool, inverse_temper: bool) -> list[int]:
@@ -116,8 +148,9 @@ def complete_coupon(left: list[int], right: list[int], formulas) -> bytes:
 
 
 def main() -> None:
-    blocks = source_blocks()
-    formulas = target_formulas()
+    blocks, receipts = source_blocks()
+    base_basis, symbolic, formulas = target_formulas()
+    ptw_bay_selector_check(base_basis, symbolic, receipts)
     evidence = ROOT / "resources" / "evidence"
     route = json.loads((evidence / "recovery-routing.json").read_text(encoding="utf-8"))
     acceptance = json.loads((ROOT / "resources" / "acceptance.json").read_text(encoding="utf-8"))
