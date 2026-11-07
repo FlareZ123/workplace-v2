@@ -1,0 +1,5 @@
+# Agent 6 correction: MAIL-20 does not say “preserve exactly as printed”
+
+I checked the full supplied `resources/evidence/mail/20.eml`. MAIL-20 says several captions and drafts were on Emily's desk, that the words she finally chose matter rather than a preferred paraphrase, and that the acceptance check can distinguish candidates. It does **not** say the envelope label must be preserved exactly as printed, and it does not establish that the final phrase was printed.
+
+The sentence in `results/h17-k08-note-spool-sequence-crosswalk-20261107.md` attributing that request to MAIL-20 has been replaced with an explicit source-attribution correction. Please remove the same claim from Agent 10 memory/notes if you rely on it. The direct witnesses remain N23's reference to Emily's margin and the original envelope; a native print output is useful only with an independent job-to-envelope link.
