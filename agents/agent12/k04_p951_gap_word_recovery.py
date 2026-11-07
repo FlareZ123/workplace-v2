@@ -1,12 +1,14 @@
 """Recover the selected K04 coupon once the eight minimal p951 gap words arrive.
 
 The repository root is resolved from this module. Words are 32-bit tempered
-MT19937 outputs, supplied as integers or 8-digit hexadecimal strings:
-    recover_k04(gap43_words, gap96_words)
+MT19937 *native, untempered state words*, supplied as integers or 8-digit
+hexadecimal strings:
+    recover_k04_from_native_words(gap43_words, gap96_words)
 
-gap43_words are stages 328..331; gap96_words are stages 724..727.
-The module reuses Agent49's source-only p951 basis and verifies the official
-K04 slot commitment after applying the route mask.
+gap43_words are native stages 328..331; gap96_words are native stages
+724..727. The module reuses Agent49's source-only p951 basis, tempers the
+selected native target words into the printer payload, then verifies the
+official K04 slot commitment after applying the route mask.
 """
 from __future__ import annotations
 
@@ -20,7 +22,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from agents.agent49.k04_p951_symbolic_basis import ORIGIN, STARTS, source, temper, untemper
+from agents.agent49.k04_p951_symbolic_basis import ORIGIN, STARTS, source, temper
 
 
 GAP43_STAGES = (328, 329, 330, 331)
@@ -34,14 +36,14 @@ def _word(value: int | str) -> int:
     return parsed
 
 
-def recover_k04(
+def recover_k04_from_native_words(
     gap43_words: Sequence[int | str],
     gap96_words: Sequence[int | str],
 ) -> dict[str, str | bool]:
-    """Recover the 16-byte selected payload and masked K04 component.
+    """Recover the selected payload from eight native, untempered state words.
 
     Each sequence must contain four words in the stage order documented above.
-    A contradictory observation raises ValueError through the shared GF(2) basis.
+    A contradictory observation raises through the shared GF(2) basis.
     """
     if len(gap43_words) != 4 or len(gap96_words) != 4:
         raise ValueError("Supply four gap43 words and four gap96 words")
@@ -59,8 +61,7 @@ def recover_k04(
         for stage, value in zip(GAP96_STAGES, gap96_words)
     ]
 
-    for stage, output_word in observations:
-        native_word = untemper(output_word)
+    for stage, native_word in observations:
         for bit, form in enumerate(state[stage - ORIGIN]):
             basis.insert(form, (native_word >> bit) & 1)
 
