@@ -138,6 +138,8 @@ def main() -> int:
             "hathi_handle": "https://hdl.handle.net/2027/hvd.hn5w2p",
             "google_search_part1_es": "https://books.google.es/books?q=%22The+Coasts+of+Essex+and+Suffolk%22+%22Frank+Cowper%22",
             "google_search_part1_com": "https://books.google.com/books?q=Frank+Cowper+Sailing+Tours+Part+1",
+            "google_vid_oclc_7504145": "https://books.google.com/books?vid=OCLC7504145",
+            "google_vid_oclc_894082875": "https://books.google.com/books?vid=OCLC894082875",
             "google_viewer_part2": f"https://books.google.es/books?hl=en&id={PART2_ID}&pg=PA130",
             "google_part2_about": f"https://books.google.es/books?id={PART2_ID}&source=gbs_navlinks_s",
             "google_part2_plaintext_p130": f"https://books.google.es/books?pg=PA130&id={PART2_ID}&output=text",
