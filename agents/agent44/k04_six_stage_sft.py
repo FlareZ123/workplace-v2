@@ -42,18 +42,8 @@ def main():
     source = root / "resources/evidence/print/spool-reconstruction.log"
     raw = source.read_bytes()
     assert hashlib.sha256(raw).hexdigest() == original.SOURCE_SHA
-    lines = [line for line in raw.decode("ascii").splitlines()
-             if line.startswith("2026-")]
-    assert len(lines) == 133
-    rows = [
-        [original.untemper(word) for word in struct.unpack(
-            "<4I", bytes.fromhex(
-                re.search(r"PAYLOAD=([0-9A-F]{32})", line).group(1)
-            )
-        )]
-        for line in lines
-    ]
-    rows[129] = []
+    lines, rows, selected_index, selected_record = original.source_rows(raw, root)
+    assert selected_index == 129 and GEOMETRIES[951][selected_index] == 951
     routing = json.loads(
         (root / "resources/evidence/recovery-routing.json").read_text()
     )
