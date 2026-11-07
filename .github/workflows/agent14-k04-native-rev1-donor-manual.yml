@@ -1,0 +1,21 @@
+name: Agent14 K04 PTW-417 revision-1 native donor extension
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-donor-extension:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run source-pinned native donor extension
+        run: python agents/agent14/k04_native_eight_donor_rev1_sft.py
