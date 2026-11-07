@@ -25,6 +25,17 @@ The supplied `retired-office-bookmarks.html` contains 14 Windows file URLs under
 
 The bookmark file's own description says the BX25 scan copies travelled with the office profile refresh. That is direct evidence of a profile-refresh connection, but it does not establish that the R: share, any particular file, or the CSC cache was copied. The incident index and the other referenced files are absent from the surviving ZIP. The current acquisition request already calls for the historical R: mapping and a retired workstation image, but does not explicitly name the Windows Client-Side Cache (CSC). A bounded source-wide text scan of the surviving export for R: references, UNC paths, CSC, Offline Files, mapped-drive and network-share terms found no UNC target or CSC/Offline Files configuration evidence beyond the bookmark URLs. The local export therefore cannot resolve the R: mapping or this cache gate.
 
+## Resolve the R: target before selecting a cache source
+
+The file URL proves only a Windows drive-letter path. Preserve the historical mapping and classify it before pursuing CSC:
+
+- **Mapped SMB/network share:** recover the UNC target and historical server/share mapping; request the corresponding read-only server-side snapshot or backup. Then assess whether client-side CSC also holds local copies.
+- **DFS or another namespace:** preserve the historical namespace/referral mapping and identify the underlying server/share before requesting its snapshot.
+- **Local fixed or removable volume:** request a forensic image of that R: volume or original media. CSC is not the relevant source for a local volume.
+- **SUBST or another local redirection:** preserve the mapping and image the underlying path/volume.
+
+Do not connect to a live share or rehydrate a historical mapping. The current export contains no UNC target, so this decision must be made from the original profile/machine records or an independently preserved mapping log.
+
 ## Hypothesis and gate
 
 First establish from the preserved profile and machine records whether R: was a local volume or a mapped network share. If it mapped to a network share, determine whether Windows Offline Files was enabled and whether the relevant share or folders were cached or marked always available offline.
