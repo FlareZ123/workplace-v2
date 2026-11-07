@@ -33,6 +33,17 @@ The script records source-file SHA-256 values and zero-based byte spans (end-exc
 - `evidence/mail/20.eml`: ¶2 bytes 696–1183 (exact final words matter); ¶3 bytes 1185–1396 (everyday notes included with technical material).
 - `evidence/crew/noticeboard-and-desk-notes.txt`: N10 bytes 1180–1329 (photograph after the last cup); N20 bytes 2319–2483 (sea/end-of-night/voices-at-table brief); N23 bytes 2690–2826 (final wording is on the envelope margin). The graph also retains N17/N18 as excluded old labels, N09 as a galley-board caption, and N01/N03/N04/N08/N14 as photograph-caption inputs.
 
+## Candidate ticket-to-spool locator (unverified)
+
+A newly identified two-stage candidate can connect the supplier return tickets to printer-job IDs without conflating the ticket, PTW permit and spool namespaces:
+
+- Candidate first stage: `ST-xxx → PTW-(xxx+304)`, supported by the separate permit/bay-order pattern in the PTW receipt export.
+- Candidate second stage: `PTW → PS` with `+1` for FA-17/ESC-N and `+2` for LV-42/ESC-S. The print-fleet register's tab-05 anchors yield composite offsets `ST→PS +305` (ST-112→PS-0417) and `+306` (ST-142→PS-0448).
+- Independent FA-17 L-28/A2 controls ST-087→PS-0392 and ST-098→PS-0403 are both retained ACK/RECOVER rows. The South non-anchor ST-121→PS-0427 is also ACK/RECOVER/desk, matching the ST-142→PS-0448 anchor. The three other predicted South jobs PS-0436/0441/0457 are outside the retained normal spool range and need native retrieval.
+- North ST-112→PS-0417 places the tab-05 catch-cleaning ticket on the selected K04 logical job, whose selected event remains attempt 2 / RECOVER / ACK. The earlier PS-0416 ACK/RECOVER/bench record remains a useful adjacent same-role blind control; under the new candidate it is not an authenticated ST-112 destination.
+
+The supplier CSV has no explicit PTW or PS foreign-key field, and the native SEP26 return index and queue/job manifest are absent. Therefore this is a **promising locator hypothesis**, not an authenticated join, a payload producer, or evidence that a physical coupon is attached to a ticket. A bounded six-control serial-seeded CPython/HMAC/BLAKE2 screen found no simple serial-derived payload producer; that negative does not challenge the locator itself. See [the full lane-specific offset screen and SFT](h17-k04-lane-specific-ticket-to-spool-offset-screen-20261107.md).
+
 ## Custody edges and the unresolved join
 
 The surviving text documents these edges:
