@@ -58,7 +58,7 @@ def reduce_source(source):
             expression ^= (1 << prior_pivot) ^ prior_bits
             rhs ^= prior_rhs
             lower = expression & pivot_mask & ((1 << pivot) - 1)
-        assert expression & (pivot_mask ^ (1 << pivot)) == 1 << pivot
+        assert expression & (pivot_mask ^ (1 << pivot)) == 0
         reduced[pivot] = (expression ^ (1 << pivot), rhs)
     coefficients = [
         reduced[bit][0] if bit in reduced else (1 << bit)
