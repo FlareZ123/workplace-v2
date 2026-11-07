@@ -48,6 +48,10 @@ def main() -> None:
             "Windows/System32/config/SECURITY": b"must-not-be-opened-or-listed",
             "Windows/System32/config/SAM.LOG1": b"must-not-be-opened-or-listed",
             "Windows/System32/config/SECURITY.LOG1": b"must-not-be-opened-or-listed",
+            "Users/office/.ssh/id_ed25519": b"must-not-be-opened-or-listed",
+            "Users/office/.aws/credentials": b"must-not-be-opened-or-listed",
+            "Users/office/RemoteDesktop/connection.rdp": b"must-not-be-opened-or-listed",
+            "Users/office/VPN/profile.ovpn": b"must-not-be-opened-or-listed",
             "Windows/System32/config/NTDS.dit": b"must-not-be-opened-or-listed",
             "Windows/System32/config/SYSTEM": b"system-queue-config-hive",
             "Windows/System32/config/SOFTWARE": b"software-driver-config-hive",
@@ -84,7 +88,11 @@ def main() -> None:
         assert "Windows/System32/config/SAM.LOG1" not in by_path
         assert "Windows/System32/config/SECURITY.LOG1" not in by_path
         assert "Windows/System32/config/NTDS.dit" not in by_path
-        assert inventory["summary"]["skipped_sensitive_paths"] == 8
+        assert "Users/office/.ssh/id_ed25519" not in by_path
+        assert "Users/office/.aws/credentials" not in by_path
+        assert "Users/office/RemoteDesktop/connection.rdp" not in by_path
+        assert "Users/office/VPN/profile.ovpn" not in by_path
+        assert inventory["summary"]["skipped_sensitive_paths"] == 12
 
         expected = {
             "AppData/Local/Microsoft/Outlook/Archive.ost": ("mail", "PST_OR_OST"),
