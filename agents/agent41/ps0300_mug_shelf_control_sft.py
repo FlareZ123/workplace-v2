@@ -25,6 +25,7 @@ EXPECTED_SHA256 = {
 
 JOB_ROWS = {
     "PS-261003-0300": ("2026-10-03T07:00:00+00:00", "1", "ACK", "LABEL", "store"),
+    "PS-261003-0312": ("2026-10-03T08:00:00+00:00", "1", "ACK", "STORES", "store"),
     "PS-261003-0317": ("2026-10-03T08:25:00+00:00", "1", "ACK", "LABEL", "store"),
     "PS-261003-0318": ("2026-10-03T08:30:00+00:00", "1", "ACK", "RECOVER", "store"),
     "PS-261003-0323": ("2026-10-03T08:55:00+00:00", "1", "ACK", "RECOVER", "store"),
@@ -63,6 +64,8 @@ def main() -> None:
     assert "chipped blue mugs" in normalized_mail
     assert "N11 / David" in notes
     assert "Mug shelf: Even the chipped blue one belongs to someone who expects to see it again." in notes
+    assert "N12 / Simon" in notes
+    assert "Workshop card: The best repair is sometimes remembering who comes on after you." in notes
     assert "R:/Stores/consumables/mug-stock.xls" in bookmarks
 
     parsed_jobs = {}
@@ -93,6 +96,8 @@ def main() -> None:
     assert not (root / "h17-supplemental-office-files/mug-stock.xls").exists()
     assert "PS-261003-0300" not in mail
     assert "PS-261003-0300" not in notes
+    assert "PS-261003-0312" not in mail
+    assert "PS-261003-0312" not in notes
     assert "MAIL-12" not in spool
 
     mail_date_line = next(
@@ -106,10 +111,15 @@ def main() -> None:
     print("Pinned source hashes: PASS")
     print("MAIL-12 shelf-card/mug wording and N11 mug-shelf note: PASS")
     print("mug-stock.xls bookmark pointer: PASS")
-    print("PS-0300 / PS-0317 / PS-0318 / PS-0323 spool rows: PASS")
+    print("PS-0300 / PS-0312 / PS-0317 / PS-0318 / PS-0323 spool rows: PASS")
     print("No literal MAIL-12 <-> PS-0300 identifier join in these local files: PASS")
+    ps0312_time = datetime.fromisoformat(JOB_ROWS["PS-261003-0312"][0])
+    delta_0312 = int((ps0312_time - mail_date.astimezone(timezone.utc)).total_seconds())
+    assert delta_0312 == 25 * 60 * 60 + 27 * 60
     print(f"Preserved MAIL-12 Date header to PS-0300 delta: {delta_seconds // 3600}h {delta_seconds % 3600 // 60}m")
-    print("Conclusion: PS-0300 is a conditional shelf-card control hypothesis only.")
+    print(f"Preserved MAIL-12 Date header to PS-0312 delta: {delta_0312 // 3600}h {delta_0312 % 3600 // 60}m")
+    print("Conclusion: PS-0300 is an orphan LABEL/store candidate; PS-0312 is a conditional N12 workshop-card candidate.")
+    print("Neither is directly joined to the MAIL-12 shelf card.")
 
 
 if __name__ == "__main__":
