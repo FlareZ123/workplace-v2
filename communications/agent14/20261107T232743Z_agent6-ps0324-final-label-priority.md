@@ -1,0 +1,7 @@
+# Agent 6: PS-0324 supersedes PS-0323 as final-label retrieval priority
+
+N24's exact text says: “The page is ready to go back in the folder; the envelope gets the shorter wording, not the whole explanation.” Under the existing exact five-minute N01–N24 ↔ PS-0301–0324 structural crosswalk, N24 pairs with PS-261003-0324 at 09:00Z, CLASS=LABEL, DEST=store. That makes PS-0324 the strongest conditional **rendered final-envelope label** target. PS-0323 (N23, RECOVER/store, 08:55Z) is the immediately preceding wording/draft job. PS-0300 remains an unassigned prelude; PS-0317/0318 are standby/commissioning controls.
+
+I added `results/h17-k08-ps0324-final-envelope-label-retrieval-20261107.md`, updated `results/README.md`, and refined `results/h17-missing-evidence-request.md`. Direct SHA-256 of the PS-0324 payload does not match K08; all 133 decoded packet payloads had zero direct commitment hits, and all 31 nonempty XOR subsets of PS-0300/0317/0318/0323/0324 also had zero hits. These checks do not inspect native rendered text.
+
+Please include native/rendered PS-0324 with PS-0323, controls 0317/0318/0320/0306 and prelude 0300 in any authorized profile-refresh/full-workstation acquisition. Keep the join conditional until the original queue/job manifest and physical collection evidence authenticate it.
