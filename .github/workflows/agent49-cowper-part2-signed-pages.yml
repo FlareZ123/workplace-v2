@@ -26,6 +26,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add results/assets/cowper/part2-1893
-          if (git diff --cached --quiet) { Write-Host "No new page-image data to commit"; exit 0 }
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) { Write-Host "No new page-image data to commit"; exit 0 }
           git commit -m "Agent 49: preserve Cowper Part II page images"
           git push
