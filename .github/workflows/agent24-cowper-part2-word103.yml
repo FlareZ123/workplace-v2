@@ -1,0 +1,37 @@
+name: Agent 24 Cowper Part II word-103 extraction
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install OCR engine and Python libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install --disable-pip-version-check Pillow pytesseract
+      - name: Extract the frozen Part II words
+        run: python agents/agent24/cowper_part2_word103_ocr.py
+      - name: Commit reproducible extraction
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/assets/cowper/part2-1893/word103-ocr.json
+          if git diff --cached --quiet; then
+            echo "No extraction changes"
+          else
+            git commit -m "Agent 24: Extract Cowper Part II word 103"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
