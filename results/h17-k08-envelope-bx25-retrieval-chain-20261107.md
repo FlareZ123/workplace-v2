@@ -65,3 +65,8 @@ Do not merge the envelope, desk notes, BX25 folio, book, or tea receipt until a 
 - The supplied export does not contain the original envelope, incident index, scanrelease notes, BX25 transfer index, renewal ledger, or paper key register.
 - The contents of encrypted `BX25-08.pdf` are unknown.
 - `H17-IR-261003` and `IR-261003-H17` are likely identifier variants, but the original index should confirm the join.
+
+
+### Additional structural observation on BX25-08.pdf
+
+Without decrypting content, the PDF object structure shows one page with font resources, no embedded image XObject, and one URI link annotation. The page content streams, Info strings and link target are encrypted. This suggests the folio is a text/link-based record rather than a simple bitmap photograph; the link target may identify another source after authorized release. Its contents and target remain unknown. This reinforces the need for the original four-position release setting and Risk-desk paper key register.
