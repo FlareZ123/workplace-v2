@@ -262,3 +262,8 @@ The title-page attribution available in listings is W. Eric Wilson D.S.O.; no ev
 
 
 For the Praeger candidate specifically, test whether the receipt marks p.112 and whether p.94 / word 103 (if the 5E67 split is meaningful) yields a source-relevant word. The 1947 section crosswalk places both pages in *The Volcanic North*; the 1997 reprint moves p.112 to *The Silurian Region*. This remains a low-confidence page/word hypothesis, not a decoded phrase.
+
+
+### Tea-receipt bookmark cross-check
+
+MAIL-09 says the tea receipt was deliberately left in the David-owned map-back book as a bookmark. The retired-office bookmarks also point to `R:/Stores/consumables/mug-stock.xls` (“Tea-room stock sheets”), which is absent from the ZIP. Request that workbook and the original receipt or a source-backed duplicate/transaction trace. Preserve the receipt in situ first; record both sides, date, merchant, amount, and any handwritten marks before attempting a join. Use the former-system `posted-items-26.xls` or `reversal-register.htm` only if the receipt's own identifiers make those records relevant. Do not assume the unrelated RN-047 stores-float exception is this receipt.
