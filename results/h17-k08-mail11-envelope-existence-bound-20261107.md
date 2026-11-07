@@ -57,7 +57,7 @@ A separate source chain makes one specific photograph worth requesting with the 
 - MAIL-11 says desk notes and photograph captions were used to work out the envelope wording.
 - The selected printer job is PS-261003-0417, sharing the 417 identifier with PTW-417.
 
-This is a **candidate cross-source join**, not proof that the PTW-417 photograph is one of Emily's phrase-source photographs. The shared 417 identifier alone is not sufficient. The image may be a technical corrosion record unrelated to the sea/night/table caption themes.
+This is a **candidate cross-source join**, not proof that the PTW-417 photograph is one of Emily's phrase-source photographs. The shared 417 identifier alone is not sufficient. The image may be a technical corrosion record unrelated to the sea/night/table caption themes. MAIL-04 also explains that the paperwork was reopened for the photograph, leaving a later OPEN revision with an old serial. That OPEN revision must remain excluded from K04's signed as-left serial selection, but it may be the very revision carrying the K08-relevant photograph/caption. Preserve its attachment and caption rather than discarding the revision as irrelevant.
 
 Retrieve the complete PTW-417 11-page closeout, all revisions (including the later OPEN revision), field sketch, requested photograph, original caption/metadata, contact sheet and caption register. Preserve image and caption as separate source objects with authorship, date, version and original placement. Compare the caption with Emily's N23 margin and the K08 envelope only after native provenance is established. This may join the K04 PS-0417 closeout/location chain with the K08 photo-caption drafting chain, but no phrase words are currently recovered from it.
 
