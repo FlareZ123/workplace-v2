@@ -40,13 +40,13 @@ The ten L-29 ticket suffixes currently under discussion are:
 
 Under the 1947 third-edition section starts, all five North suffixes fall in *The Volcanic North* (p.62 to before p.118), and all five South suffixes fall in *The Silurian Region* (p.118 onward). This is an exact 5/5 section-side split.
 
-Under the 1937/1997 394-page layout, *The Silurian Region* starts at p.111. Page 112 therefore falls in the South section, leaving the North packet with four suffixes in *The Volcanic North* and one in *The Silurian Region*. The 1980 reprint is also 394 pages, so it cannot be substituted for the 1947 pagination without checking its own contents.
+Under the **1997** 394-page layout, *The Silurian Region* starts at p.111. Page 112 therefore falls in the South section, leaving the North packet with four suffixes in *The Volcanic North* and one in *The Silurian Region*. The 1937 first edition is also 394 pages and has a rear folding map, but the exact section-start pages were not independently established by the catalogue listing inspected. The 1980 facsimile reprint is also 394 pages; its section-start pages were not independently confirmed either.
 
 The “map in the back” clue alone does not identify the 1947 edition: the 1937 first edition is also described as having a large folding map at the rear. The North/South page split is the more discriminating observation.
 
 ## Interpretation
 
-**Conditional support:** If (1) the physical book is Praeger's *The Way That I Went*, (2) the ticket suffixes are printed page numbers, and (3) the supplier packet's North/South split is intended to follow the book's geographic sections, the 1947 third edition is substantially more consistent than the 1937/1997 394-page layout.
+**Conditional support:** If (1) the physical book is Praeger's *The Way That I Went*, (2) the ticket suffixes are printed page numbers, and (3) the supplier packet's North/South split is intended to follow the book's geographic sections, the 1947 third edition is substantially more consistent than the verified 1997 394-page layout. The 1937 first edition and 1980 facsimile remain unclassified on the section-boundary test until their contents pages are independently checked.
 
 **Unresolved:** None of those three premises is authenticated by the surviving export. MAIL-09 only describes a map-back book belonging to David and a tea receipt used as a bookmark. The physical book has not been identified. No public source inspected supplies page text or page images for the 1947 edition.
 
@@ -68,7 +68,7 @@ If an authorized custody path or unsolicited delivery provides the actual book:
 ## Confidence and consequence
 
 - **Bibliographic page-start claims:** High confidence as reported by the catalogues.
-- **1947 edition as the intended physical copy:** Moderate conditional support from the exact 5/5 section split; low absolute confidence because the facility book is not identified.
+- **1947 edition as the intended physical copy:** Moderate conditional support relative to the verified 1997 layout, which gives a 4/1 split; low absolute confidence because the facility book is not identified and the 1937/1980 section starts remain unverified.
 - **Ticket suffixes as page numbers:** Low-to-moderate conditional hypothesis.
 - **305/306 as word indices:** Low confidence; no source field defines this interpretation.
 - **K08 recovery:** No change. Zero exact words and zero component bytes recovered. Emily's final envelope/margin wording remains the primary literal carrier; the book is only a possible secondary locator.
