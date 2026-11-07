@@ -167,6 +167,17 @@ Request the original `renewal-ledger-2025.xlsx` workbook and complete folio A3, 
 Preserve the original workbook and metadata. Do not merge this request with the separate `RN-052 / BX25/08` property-annex request, and do not infer that the FA-17 ledger contains the missing coupon. The current export establishes the account reference and bookmark locator only; the workbook itself is absent.
 
 
+## Separate source request: complete L-29 route-control packets and transfer-index entries
+
+The unencrypted print-fleet retirement note and supplier-reconciliation CSV establish three distinct return sets. The selected K04 route is `PS-261003-0417 / ESC-N / L-29/N / FA-17 / H17-POL-17/A3`, with five tabs: ST-094, ST-081, ST-106, ST-099, and ST-112 (tab 05, catch cleaning). The South control is `PS-261003-0448 / ESC-S / L-29/S / LV-42 / CS-18/5`, with five tabs including ST-142 (tab 05, catch retain; the CSV describes a catch pin). The separate Watch-Spare control is `PS-261003-0420 / WATCH-SPARE / L-29/W / ST-09 / STORES/FLT`, with ST-157 and ST-164 spare-inspection records.
+
+The CSV's inward-transfer rows map RN-052 to FA-17/BX25/08 (property-annex scan), RN-053 to LV-42/BX25/12 (hired-plant certificate), and RN-047 to ST-09/BX25/03 (stores-float exception slip). These records provide a three-way control for distinguishing the selected North route from South and Watch-Spare. No authorized local source maps a route to FA-18; the South account is LV-42. The withdrawn PDF-derived FA-18 asset/host attribution must not be used.
+
+Request the complete original North R3/POSTED/A3 five-tab packet, front and back, with attachments, serials, signatures, posting marks, and any underlays. Prioritize ST-112 and any item or record removed/retained during the catch-cleaning work. Preserve the separate ST-112 R4/HELD/A4 duplicate as a comparison object, not as the selected original. Request the complete South R3/POSTED/CS-18/5 five-tab packet, especially ST-142, as the catch-work control; request the L-29/W Watch-Spare ST-157/ST-164 records as a separate control. For ST-112 and ST-142, ask the custodian to state what physical part "catch" denotes and whether any coupon or printed material was recovered; do not assume either refers to an output tray.
+
+Request the original transfer-index entries and associated source images for RN-052/BX25/08, RN-053/BX25/12, and RN-047/BX25/03, preserving original metadata and custody marks. These are distinct from the renewal ledger and from the encrypted BX25-08 PDF. The paper key register remains the only authorized route for accessing that encrypted PDF.
+
+
 ## Separate source request: complete H-17 rounds notebook (pages 1–11)
 
 The retained `maintenance/inspection-rounds.log` identifies itself as a local notebook transcription and explicitly says **page 4 of 11 retained**; the rest of the notebook is absent from this export. Request the original complete notebook, including pages 1–3 and 5–11, its cover/index, any inserts or attachments, page-order record, and any scans or transcription/UTC-conversion notes.
