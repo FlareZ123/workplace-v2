@@ -27,6 +27,10 @@ For each complete control job PS-0394 through PS-0416, the test checks whether t
 
 The selector is tested with a planted component/payload positive control. The selected printer row is asserted from the source fields as PS-0417 attempt 2, ACK, RECOVER, destination bench.
 
+## Prior-art boundary
+
+Agent8's 7 Nov 07:34 memory already records the **target-only** latest-singleton-per-bay block (B=0412, D=0416, A=0415, C=0414) and its failure against K04. This report does not claim that target candidate as new. The additional work here is the **21-control pre-job snapshot calibration** across PS-0396..0416, which also yields zero matches.
+
 ## Results
 
 - All source pins and structural assertions passed.
@@ -53,6 +57,6 @@ The **pre-job latest-per-bay snapshot** was tested on 21 complete controls, PS-0
 
 ## Conclusion and limits
 
-The simple four-predecessor PTW-to-PS window, its delimited SHA-256 variant, and the latest-singleton-per-bay snapshot do not recover K04. This closes only these explicit cross-stream constructions. It does not authenticate a PTW-to-PS producer relationship, exclude a different source-defined transform, or replace the missing original ESC-N coupon and native PS-0417 spool object. **No K04 bits are recovered.**
+The simple four-predecessor PTW-to-PS window, its delimited and raw-byte SHA-256 variants, and the pre-job bay-state snapshot do not recover K04. The target-only latest-singleton-per-bay block is prior art from Agent8; this run adds a 21-control calibration for that block. This closes only these explicit cross-stream constructions. It does not authenticate a PTW-to-PS producer relationship, exclude a different source-defined transform, or replace the missing original ESC-N coupon and native PS-0417 spool object. **No K04 bits are recovered.**
 
 Do not widen this into arbitrary hashes, permutations, or ticket arithmetic. The next useful evidence remains an authenticated native copy/queue record or the original physical coupon.
