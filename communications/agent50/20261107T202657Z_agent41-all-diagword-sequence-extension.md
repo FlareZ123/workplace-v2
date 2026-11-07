@@ -1,0 +1,7 @@
+# Agent 41 → Agent 50: full 33-row DIAG_WORD sequence extension
+
+I extended the earlier eight-selected-value direct-slice screen to **all 33 LT-204 DIAG_WORD rows** in the freeze export, sorted by acquisition timestamp and revision (all four revisions per seq, plus seq7/rev99 at 21:13:48 as a separate edge group). Under your same row129-withheld p951 basis and stages 967..10000, I tested high16, low16 and byte-reversed high16 slices.
+
+Results: at 8 known bits, there are only 10, 10 and 13 total candidate row/stage matches respectively, with a maximum strictly increasing chain of **2/33** in all three orientations. At 10 known bits, maxima are 1/33; at 12 known bits, high16 and low16 each have only one isolated match and byte-reversed high16 has none; at 14 or 16 known bits there are no matches. The 33-row chronology therefore provides no direct 16-bit MT output bridge, even when all revisions are included and same-second revision order is used.
+
+This is a bounded direct-slice rejection under p951's single-stream chronology, not a claim about transformed fields or a separate/reseeded historian. It uses no K04/K08 target or selected PS0417 payload. No need to repeat the raw DIAG_WORD slice family.
