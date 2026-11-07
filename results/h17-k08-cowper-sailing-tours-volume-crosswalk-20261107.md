@@ -6,11 +6,11 @@
 
 Frank Cowper's five-volume *Sailing Tours: The Yachtsman's Guide to the Cruising Waters of the English Coast* is a strong literary candidate because *The Riddle of the Sands* explicitly names the series. The proposed ticket-to-volume assignment is not independently supported by page ranges and does not identify MAIL-09's David-owned map-back book.
 
-This is grounded in three independent connections:
+The candidate has a direct literary connection and a physical-profile parallel; the proposed ticket-volume assignment is assessed separately below and is non-discriminating.
 
 1. Chapter XX of *The Riddle of the Sands* explicitly names Cowper's *Sailing Tours* among the yacht library books.
 2. Cowper Part I is a yachtsman's guide to the coasts of Essex and Suffolk; Part II covers the Nore to the Scilly Isles. The physical editions have cloth bindings, maps/charts and frontispieces.
-3. The ticket suffixes fit within the page counts of both Part I (168 pages) and Part II (365 pages). This permits a proposed North→Part I / South→Part II assignment, but does not independently discriminate between the volumes.
+3. All ten ticket suffixes 81–151 fit within both Part I (168 pages) and Part II (365 pages). The page ranges do not independently discriminate a North→Part I / South→Part II assignment.
 
 ## Proposed volume/page assignment (unverified)
 
