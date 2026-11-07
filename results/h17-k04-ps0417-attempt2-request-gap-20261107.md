@@ -23,7 +23,15 @@ Together, these establish:
 
 ## Bounded payload check
 
-For completeness, the attempt-1 and attempt-3 REQUESTED payloads were each tested under the recorded K04 XOR mask and the official K04 SHA-256 commitment. Neither candidate matched. This does not make either row eligible: attempt 1 is not established as the selected attempt-2 request, and MAIL-16 excludes attempt 3 as unacknowledged.
+For completeness, the attempt-1 and attempt-3 REQUESTED payloads were each tested under the recorded K04 XOR mask and the official K04 SHA-256 commitment. The selected ACK2 copied payload was checked under the same documented reduction for comparison.
+
+| Row | Candidate after XOR mask | SHA-256 | Match |
+|---|---|---|---|
+| Attempt 1 REQUESTED/RECOVER | `486887EA0B9B884825C8106E5C2819B8` | `b138a3b90d9cfab0f4994e3a38b354bf205265e2bafa2e29b01444b5dfae14ca` | No |
+| Attempt 2 ACK/RECOVER | `2CFF149C50E54557228E7DE60B3EB7C9` | `11a7f6064781a6ac7678dc6dd24759af95981c8a927f8da4436515354d34549b` | No |
+| Attempt 3 REQUESTED/RECOVER | `C183F537489733C330CAA9B68D430278` | `02402fd772d7c1dd9c62c90f66cc9b1ace9c593d6cbfa58fee96619fc5abeeaf` | No |
+
+This does not make either request row eligible: attempt 1 is not established as the selected attempt-2 request, and MAIL-16 excludes attempt 3 as unacknowledged. Reproduce the header-first selection, source assertions and three candidate checks with [the attempt-gap SFT](../agents/agent6/k04_ps0417_attempt2_request_gap_sft.py).
 
 The existing [ACK selector integrity audit](h17-ack-selector-integrity-audit.md) already establishes why dispatch selection must be independent of disputed payload bytes. This finding adds a more specific source-coverage gap: the selected ACK2 has no matching attempt-2 request row in the retained export.
 
