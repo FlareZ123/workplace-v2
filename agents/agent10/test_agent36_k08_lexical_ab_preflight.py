@@ -71,6 +71,26 @@ def main() -> None:
         runner.CASES, manifests, prompt_sets, extra_candidates
     ))
 
+    # Negative content controls: target and decoy text must never enter prompts.
+    held = runner.CASES[0]
+    target_phrase = str(manifests[str(held)]["target_phrase"])
+    leaky_target_prompts = {
+        case: dict(prompts) for case, prompts in prompt_sets.items()
+    }
+    leaky_target_prompts[held]["A_purpose"] += " " + target_phrase
+    expect_assertion(lambda: runner.validate_case_maps(
+        runner.CASES, manifests, leaky_target_prompts, candidate_sets
+    ))
+
+    decoy_phrase = str(next(iter(manifests[str(held)]["decoy_phrases"].values())))
+    leaky_decoy_prompts = {
+        case: dict(prompts) for case, prompts in prompt_sets.items()
+    }
+    leaky_decoy_prompts[held]["B_generic"] += " " + decoy_phrase
+    expect_assertion(lambda: runner.validate_case_maps(
+        runner.CASES, manifests, leaky_decoy_prompts, candidate_sets
+    ))
+
     print(
         "PREFLIGHT_OK",
         f"cases={selected}",
@@ -80,6 +100,7 @@ def main() -> None:
         "arm_a_all_target_words_masked=true",
         "single_case_matrix_controls=4/4",
         "negative_key_controls=3/3",
+        "negative_content_controls=2/2",
     )
 
 
