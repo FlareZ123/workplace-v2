@@ -1,0 +1,56 @@
+# K04 PTW predecessor-window cross-stream screen
+
+**Date:** 2026-11-07 UTC  
+**Status:** Negative; no K04 candidate recovered.  
+**Reproducer:** [`agents/agent5/k04_ptw_predecessor_window_sft.py`](../agents/agent5/k04_ptw_predecessor_window_sft.py)
+
+## Question
+
+The surviving records contain 27 singleton seal receipts, PTW-390 through PTW-416, and one same-suffix printer packet for each PS-0390 through PS-0416. Each PTW record has one signed, CLOSED, AS_LEFT revision-1 serial of four bytes. Each corresponding PS record has one 16-byte payload.
+
+This raises a narrow cross-stream hypothesis: a PS job's 16-byte component might be assembled from the four immediately preceding PTW serials. For the selected PS-0417 job, that window is PTW-413 through PTW-416. The relationship is a hypothesis; the same numeric suffixes do not establish a shared producer.
+
+## Method
+
+The test pins the exact source files:
+
+- `seal-receipts.jsonl`: `c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32`
+- `spool-reconstruction.log`: `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`
+- `recovery-routing.json`: `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5`
+- `acceptance.json`: `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f`
+
+For each complete control job PS-0394 through PS-0416, the test checks whether the observed payload equals a predicted payload under the K04 mask:
+
+1. **Raw predecessor component:** concatenate the four prior PTW serial bytes in ascending permit order, then XOR the 16-byte result with the recorded K04 mask. Four bounded order/byte-orientation variants are also checked.
+2. **Delimited-hash predecessor component:** SHA-256 the four prior printed serial strings joined by `|`, take the first 16 bytes, then XOR with the K04 mask. This reuses the archive's known 16-byte SHA-256 reduction pattern, applied to the predecessor window.
+3. **Latest-per-bay state:** select the highest-numbered singleton PTW serial before PTW-417 for each bay, assemble A/B/C/D and B/D/A/C blocks, and check each block as a K04 component against the acceptance commitment and selected payload.
+
+The selector is tested with a planted component/payload positive control. The selected printer row is asserted from the source fields as PS-0417 attempt 2, ACK, RECOVER, destination bench.
+
+## Results
+
+- All source pins and structural assertions passed.
+- 27 singleton PTW receipts and 27 one-row same-suffix PS packets were present.
+- The 23 complete predecessor-window controls produced **zero** matches for the raw component under the four tested orientations.
+- The same 23 controls produced **zero** matches for the delimited SHA-256 component.
+- The planted positive control passed.
+- Selected PS-0417 ACK2 payload: `A9A9DC5731A5E2AE879C47215C2559D5`.
+
+For the target window PTW-413..416:
+
+| Candidate component | Candidate bytes | SHA-256 of component | Predicted PS-0417 payload |
+|---|---|---|---|
+| Raw serial window | `A60B42C5645EB28CF8DD126A0C814A5E` | `c3c69ae2f9656cddbcd56301ab15e9d05450d432398783578c3ca249e22611a8` | `235D8A0E051E15755DCF28AD5B9AA442` |
+| Delimited SHA-256[:16] | `AB60E5234EB8AB75452A319840DA5CF8` | `f1213ebcb1ebb6382166ad3dc61aae54e0cf0a067ef44f42c3bcc1d794065b1b` | `2E362DE82FF80C8CE0380B5F17C1B2E4` |
+
+Neither candidate payload equals the selected ACK2 payload, and neither component digest equals the official K04 commitment:
+
+`930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
+
+The latest-per-bay A/B/C/D and B/D/A/C candidate blocks also fail both checks. Their exact serial order, bytes, predicted payloads, and component hashes are printed by the reproducer.
+
+## Conclusion and limits
+
+The simple four-predecessor PTW-to-PS window, its delimited SHA-256 variant, and the latest-singleton-per-bay snapshot do not recover K04. This closes only these explicit cross-stream constructions. It does not authenticate a PTW-to-PS producer relationship, exclude a different source-defined transform, or replace the missing original ESC-N coupon and native PS-0417 spool object. **No K04 bits are recovered.**
+
+Do not widen this into arbitrary hashes, permutations, or ticket arithmetic. The next useful evidence remains an authenticated native copy/queue record or the original physical coupon.
