@@ -34,7 +34,7 @@ def parse_rows():
         if m:
             rows.append((line, bytes.fromhex(m.group(1))))
     assert len(rows) == 133
-    assert len([v for line,v in rows if "STATE=ACK" in line]) == 130
+    assert len([v for line,v in rows if "STATE=ACK" in line]) == 131
     assert rows[129][1].hex().upper() == SELECTED_COPIED
     assert all("STATE=ACK CLASS=RECOVER" in rows[i][0] for i in (131,132))
     assert all("STATE=REQUESTED CLASS=RECOVER" in rows[i][0] for i in (128,130))
@@ -92,8 +92,7 @@ def solve(request1, request3, timeout_ms=12000):
     py=make_outputs_py(initial,20)
     assert py[0:4]==request1 and py[8:12]==request3
     # Uniqueness check for complete withheld object, not only a witness state.
-    s.add(outputs[12]!=py[12] if False else
-          (outputs[12]!=py[12]) | (outputs[13]!=py[13]) |
+    s.add((outputs[12]!=py[12]) | (outputs[13]!=py[13]) |
           (outputs[14]!=py[14]) | (outputs[15]!=py[15]) |
           (outputs[16]!=py[16]) | (outputs[17]!=py[17]) |
           (outputs[18]!=py[18]) | (outputs[19]!=py[19]))
