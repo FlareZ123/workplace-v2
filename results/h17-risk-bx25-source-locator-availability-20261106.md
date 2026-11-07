@@ -18,10 +18,9 @@ The following join is supported entirely by unencrypted local records:
 
 1. `print-fleet-retirement-note.txt` maps `PS-261003-0417` to route `ESC-N`, return set `L-29/N`, account/reference `FA-17`, folio `H17-POL-17/A3`, and tab 05 ticket `ST-112` (catch cleaning).
 2. The preamble of `supplier-reconciliation-L29.csv` says box/folio marks came from the 2025 property-renewal transfer index and that duplicate settlements retain the earlier ticket folio.
-3. That CSV records:
-   - `RN-052`: RISK / R1 / FILED / FA-17 / `BX25/08`, described as a property-annex scan inward transfer.
-   - `ST-112`: L29 / R3 / POSTED / FA-17 / `H17-POL-17/A3`, catch cleaning.
-   - `ST-112`: L29 / R4 / HELD / FA-17 / `H17-POL-17/A4`, duplicate settlement.
+3. That CSV records all five North return-set tickets as L29 / R3 / POSTED / FA-17 / `H17-POL-17/A3`: `ST-094`, `ST-081`, `ST-106`, `ST-112`, and `ST-099`. The print-fleet note orders these as tabs 01-05, with `ST-112` at tab 05 (catch cleaning).
+4. The CSV separately records `ST-112`: L29 / R4 / HELD / FA-17 / `H17-POL-17/A4`, duplicate settlement.
+5. The CSV records `RN-052`: RISK / R1 / FILED / FA-17 / `BX25/08`, described as a property-annex scan inward transfer.
 
 The crosswalk links the selected North printer job to the posted `ST-112 R3/A3` docket and to the separate `RN-052 / BX25/08` transfer record. It identifies a specific physical custody packet to retrieve. It does **not** prove that the docket contains the 16-byte coupon, that the underlay survives, or that the PDF contains the coupon.
 
