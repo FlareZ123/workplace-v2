@@ -1,0 +1,288 @@
+{
+  "purpose": "Find an alternate authorized scan or exact 1892 Part I bibliographic item.",
+  "frozen_part_i_pages": [
+    94,
+    81,
+    106,
+    99,
+    112
+  ],
+  "frozen_part_i_hathitrust_alias": "hvd.hn5w2p",
+  "queries": [
+    {
+      "label": "Google Books API: intitle:\"The Coasts of Essex and Suffolk\" inauthor:\"Frank Cowper\"",
+      "requested_url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%22The+Coasts+of+Essex+and+Suffolk%22+inauthor%3A%22Frank+Cowper%22&maxResults=40&printType=books",
+      "status": 429,
+      "error": "HTTP Error 429: Too Many Requests",
+      "content_type": "application/json",
+      "bytes": 1306,
+      "sha256": "5cd5dfd42d0762ff073b7f2796ae4af369ac341e5f2dc9144cc6db0e62b1f7ff",
+      "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
+    },
+    {
+      "label": "Google Books API: intitle:\"Sailing Tours\" inauthor:\"Frank Cowper\"",
+      "requested_url": "https://www.googleapis.com/books/v1/volumes?q=intitle%3A%22Sailing+Tours%22+inauthor%3A%22Frank+Cowper%22&maxResults=40&printType=books",
+      "status": 429,
+      "error": "HTTP Error 429: Too Many Requests",
+      "content_type": "application/json",
+      "bytes": 1306,
+      "sha256": "bdae8279217fb5d785cd5532dc415524b009b120176c3504ba8a0111b2cfc3e8",
+      "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
+    },
+    {
+      "label": "Google Books API: oclc:7504145",
+      "requested_url": "https://www.googleapis.com/books/v1/volumes?q=oclc%3A7504145&maxResults=40&printType=books",
+      "status": 429,
+      "error": "HTTP Error 429: Too Many Requests",
+      "content_type": "application/json",
+      "bytes": 1306,
+      "sha256": "61a1f641eec9958cbc54b54b0e8141be331e8d249ac7575a9768b4ae01938c42",
+      "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
+    },
+    {
+      "label": "Internet Archive Advanced Search: title:\"The Coasts of Essex and Suffolk\" AND creator:\"Frank Cowper\"",
+      "requested_url": "https://archive.org/advancedsearch.php?q=title%3A%22The+Coasts+of+Essex+and+Suffolk%22+AND+creator%3A%22Frank+Cowper%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22The+Coasts+of+Essex+and+Suffolk%22+AND+creator%3A%22Frank+Cowper%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 375,
+      "sha256": "dece5c570d2208c388e3b2d5d8ab1324d09331b83f81de73c6f9422680b1d3e5",
+      "json": {
+        "responseHeader": {
+          "status": 0,
+          "QTime": 66,
+          "params": {
+            "query": "title:&quot;The Coasts of Essex and Suffolk&quot; AND creator:&quot;Frank Cowper&quot;",
+            "qin": "title:&quot;The Coasts of Essex and Suffolk&quot; AND creator:&quot;Frank Cowper&quot;",
+            "fields": "identifier,title,creator,date,mediatype",
+            "wt": "json",
+            "rows": 100,
+            "start": 0
+          }
+        },
+        "response": {
+          "numFound": 0,
+          "start": 0,
+          "docs": []
+        }
+      },
+      "body_prefix": null
+    },
+    {
+      "label": "Internet Archive Advanced Search: title:\"Sailing Tours\" AND creator:\"Frank Cowper\"",
+      "requested_url": "https://archive.org/advancedsearch.php?q=title%3A%22Sailing+Tours%22+AND+creator%3A%22Frank+Cowper%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22Sailing+Tours%22+AND+creator%3A%22Frank+Cowper%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 340,
+      "sha256": "4b1390291a2c3ca49f3d1b707ff48f71acf6a7b86237ef707aa8deda4d4a7116",
+      "json": {
+        "responseHeader": {
+          "status": 0,
+          "QTime": 213,
+          "params": {
+            "query": "title:&quot;Sailing Tours&quot; AND creator:&quot;Frank Cowper&quot;",
+            "qin": "title:&quot;Sailing Tours&quot; AND creator:&quot;Frank Cowper&quot;",
+            "fields": "identifier,title,creator,date,mediatype",
+            "wt": "json",
+            "rows": 100,
+            "start": 0
+          }
+        },
+        "response": {
+          "numFound": 0,
+          "start": 0,
+          "docs": []
+        }
+      },
+      "body_prefix": null
+    },
+    {
+      "label": "Open Library exact title and author",
+      "requested_url": "https://openlibrary.org/search.json?title=The+Coasts+of+Essex+and+Suffolk&author=Frank+Cowper&fields=key%2Ctitle%2Cauthor_name%2Cfirst_publish_year%2Cedition_key%2Cia%2Chas_fulltext%2Cpublic_scan_b&limit=100",
+      "final_url": "https://openlibrary.org/search.json?title=The+Coasts+of+Essex+and+Suffolk&author=Frank+Cowper&fields=key%2Ctitle%2Cauthor_name%2Cfirst_publish_year%2Cedition_key%2Cia%2Chas_fulltext%2Cpublic_scan_b&limit=100",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 156,
+      "sha256": "a68a51a345fbaef76433e2dc9c3af3f7f73ee9f366a07aa6e9eec27944a0f069",
+      "json": {
+        "numFound": 0,
+        "start": 0,
+        "numFoundExact": true,
+        "num_found": 0,
+        "documentation_url": "https://openlibrary.org/dev/docs/api/search",
+        "q": "",
+        "offset": null,
+        "docs": []
+      },
+      "body_prefix": null
+    },
+    {
+      "label": "HathiTrust OCLC 7504145 catalog metadata",
+      "requested_url": "https://catalog.hathitrust.org/api/volumes/brief/oclc/7504145.json",
+      "final_url": "https://catalog.hathitrust.org/api/volumes/brief/oclc/7504145.json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 1431,
+      "sha256": "3c45278a02722295cb346335650df7d6e664dd99fd08cb8a9075ba1bd8b00e95",
+      "json": {
+        "records": {
+          "100485750": {
+            "recordURL": "https://catalog.hathitrust.org/Record/100485750",
+            "titles": [
+              "Sailing tours; the yachtsman's guide to the cruising waters of the English coast"
+            ],
+            "isbns": [],
+            "issns": [],
+            "oclcs": [
+              "7504145"
+            ],
+            "lccns": [],
+            "publishDates": [
+              "1892"
+            ]
+          }
+        },
+        "items": [
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w2p",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p",
+            "rightsCode": "pd",
+            "lastUpdate": "20260604",
+            "enumcron": "pt.1",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w16",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w16",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.2",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "University of Oxford",
+            "fromRecord": "100485750",
+            "htid": "oxu1.602111108",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=oxu1.602111108",
+            "rightsCode": "pd",
+            "lastUpdate": "20251108",
+            "enumcron": "pt.3",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w39",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w39",
+            "rightsCode": "pd",
+            "lastUpdate": "20250309",
+            "enumcron": "v.4",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w24",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w24",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.5",
+            "usRightsString": "Full view"
+          }
+        ]
+      },
+      "body_prefix": null
+    },
+    {
+      "label": "HathiTrust Part I item metadata",
+      "requested_url": "https://catalog.hathitrust.org/api/volumes/brief/htid/hvd.hn5w2p.json",
+      "final_url": "https://catalog.hathitrust.org/api/volumes/brief/htid/hvd.hn5w2p.json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 1431,
+      "sha256": "3c45278a02722295cb346335650df7d6e664dd99fd08cb8a9075ba1bd8b00e95",
+      "json": {
+        "records": {
+          "100485750": {
+            "recordURL": "https://catalog.hathitrust.org/Record/100485750",
+            "titles": [
+              "Sailing tours; the yachtsman's guide to the cruising waters of the English coast"
+            ],
+            "isbns": [],
+            "issns": [],
+            "oclcs": [
+              "7504145"
+            ],
+            "lccns": [],
+            "publishDates": [
+              "1892"
+            ]
+          }
+        },
+        "items": [
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w2p",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p",
+            "rightsCode": "pd",
+            "lastUpdate": "20260604",
+            "enumcron": "pt.1",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w16",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w16",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.2",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "University of Oxford",
+            "fromRecord": "100485750",
+            "htid": "oxu1.602111108",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=oxu1.602111108",
+            "rightsCode": "pd",
+            "lastUpdate": "20251108",
+            "enumcron": "pt.3",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w39",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w39",
+            "rightsCode": "pd",
+            "lastUpdate": "20250309",
+            "enumcron": "v.4",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w24",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w24",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.5",
+            "usRightsString": "Full view"
+          }
+        ]
+      },
+      "body_prefix": null
+    }
+  ],
+  "limits": [
+    "Public catalog metadata only; no authentication or access controls bypassed.",
+    "A metadata hit is not proof of a page scan or exact 1892 imprint.",
+    "Any candidate scan must be checked for title-page imprint and printed page labels before extraction."
+  ]
+}
