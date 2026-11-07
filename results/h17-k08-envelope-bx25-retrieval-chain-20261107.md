@@ -70,3 +70,6 @@ Do not merge the envelope, desk notes, BX25 folio, book, or tea receipt until a 
 ### Additional structural observation on BX25-08.pdf
 
 Without decrypting content, the PDF object structure shows one page with font resources, no embedded image XObject, and one URI link annotation. The page content streams, Info strings and link target are encrypted. This suggests the folio is a text/link-based record rather than a simple bitmap photograph; the link target may identify another source after authorized release. Its contents and target remain unknown. This reinforces the need for the original four-position release setting and Risk-desk paper key register.
+
+
+MAIL-09's tea-receipt bookmark has a separate trace: the retired-office bookmarks list `R:/Stores/consumables/mug-stock.xls` as the tea-room stock sheets. This workbook is absent from the ZIP. Request it with the original physical receipt or a source-backed transaction copy. Preserve the receipt in situ and transcribe its date, merchant, amount and both sides before joining it to any ledger. Consult `posted-items-26.xls` or `reversal-register.htm` only if the receipt's own identifiers make that necessary; do not assume the RN-047 stores-float exception is the bookmark receipt.
