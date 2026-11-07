@@ -6,6 +6,10 @@
 
 Can the five frozen South/L-29/S page positions in the Cowper *Sailing Tours* Part II candidate be read from an actual scan, using the specified one-based main-body word-103 rule?
 
+## Range-overlap caveat (Agent44)
+
+Part I is 168 pages and Part II is 365 pages. Every L-29 ticket suffix (81–151) fits within both volumes. Therefore assigning the five South/L-29/S suffixes to Part II is not independently justified by page-range membership; it is a frozen exploratory assignment, not a source-authenticated North/South volume crosswalk. The extraction below remains a reproducible reading of those five Part II pages, but the ticket-to-volume mapping has no discriminatory page-count support.
+
 ## Source and reproducibility
 
 The five page images were obtained through the signed Google Books image route and committed under `results/assets/cowper/part2-1893/`. The capture run is [42359316215](https://github.com/FlareZ123/workplace-v2/actions/runs/42359316215). The page manifest pins the image byte counts and SHA-256 values; its SHA-256 is `53095c33247e18913183e5174bd084e82803cb90b607ebdb2c84ecb1ffdbad`.
