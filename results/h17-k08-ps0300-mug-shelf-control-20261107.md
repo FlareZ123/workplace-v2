@@ -12,14 +12,14 @@ PS-0300 is an orphan early LABEL/store job with no note-body mapping. N12 is Sim
 
 | Source | Preserved fact |
 |---|---|
-| MAIL-12, 2 Oct 2026 06:33Z | Zoey says she placed "a small card by the shelf" and refers to chipped blue mugs belonging to two night-crew members. |
+| MAIL-12, Date header displays 2 Oct 2026 06:33Z | Zoey says she placed "a small card by the shelf" and refers to chipped blue mugs belonging to two night-crew members. |
 | N11, David | Explicit heading "Mug shelf" and a line about the chipped blue mug belonging to someone who expects to see it again. |
 | N12, Simon | Explicit heading "Workshop card" and a line about remembering who comes on after you. |
 | Retired office bookmarks | Contains the path `R:/Stores/consumables/mug-stock.xls`, titled "Tea-room stock sheets". The workbook itself is absent from the local export. |
 | PS-261003-0300, 3 Oct 2026 07:00Z | First spool row; ACK, CLASS=LABEL, DEST=store, 16-byte payload; no note-body mapping in the supplied log. |
 | PS-261003-0312, 3 Oct 2026 08:00Z | ACK, CLASS=STORES, DEST=store, 16-byte payload; structurally associated with N12 by the Nxx-to-PS0300+N sequence, not by a direct foreign key. |
 
-The preserved MAIL-12 Date header precedes PS-0300 by 24h27 and PS-0312 by 25h27. These intervals are chronology observations only. The preserved MAIL-12 EML has no In-Reply-To or References header, and neither it nor either spool row contains the other's identifier. The Message-ID namespace is not an authenticated send-time field.
+The displayed MAIL-12 Date header is 24h27 before PS-0300 and 25h27 before PS-0312. These are header-string intervals only, not authenticated event chronology. The broader mail-namespace audit finds that all 20 exported Message-IDs use the IR261003 namespace and 15/20 displayed Date headers predate 3 October; neither field is authenticated as original transmission metadata ([mail namespace/prepublication result](h17-mail-incident-namespace-prepublication-20261104.md)). The preserved MAIL-12 EML has no In-Reply-To or References header, and neither it nor either spool row contains the other's identifier. The export therefore supplies no direct thread or job join.
 
 ## Relevant print controls
 
