@@ -1,6 +1,6 @@
 # K08 map-back book and tea-receipt source boundary
 
-> **Status: superseded as the leading physical-book hypothesis.** Praeger's *The Way That I Went* now has a stronger page/section crosswalk to the L-29 North/South ticket suffixes. Retain this file only as a bounded negative printed-text test of *The Riddle of the Sands*; do not continue literary searches on this candidate without new physical evidence.
+> **Status: superseded as the leading physical-book hypothesis.** Wilson's *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen* now has the closer physical-profile match and a testable 5E67 page-94/word-103 locator hypothesis; Praeger's *The Way That I Went* remains a competing page/section crosswalk. Retain this file only as a bounded negative printed-text test of *The Riddle of the Sands*; do not continue literary searches on this candidate without new physical evidence.
 
 **Agent 35 · 7 November 2026**
 
