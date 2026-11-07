@@ -10,7 +10,7 @@ Can David's map-bearing book, the L-29/N/S ticket page numbers, and the WN-14 st
 
 ## Source evidence
 
-- `resources/evidence/mail/06.eml` says David's standby WN-14 transcription has group D ending `5E67`, and that it “might help identify the book.” The same message distinguishes the standby transcription from the signed duty register. Do not substitute the standby value for the signed WN-14 source.
+- `resources/evidence/mail/06.eml` says David's standby WN-14 transcription has group D ending `5E67`, and distinguishes it from the signed duty register. It does not mention the map-back book or say that the suffix might identify it. Do not substitute the standby value for the signed WN-14 source.
 - `resources/evidence/mail/09.eml` says the book with a map in the back belongs to David and that a tea receipt has been left in it as a bookmark.
 - `resources/evidence/h17-supplemental-office-files/supplier-reconciliation-L29.csv` gives L-29/N ticket IDs 094, 081, 106, 099, 112 and L-29/S IDs 130, 151, 121, 135, 142.
 - Chapter XX of *The Riddle of the Sands* explicitly names Frank Cowper's *Sailing Tours* among books in the yacht library. A 2023 *Practical Boat Owner* article reports that Erskine Childers, author of *The Riddle of the Sands*, admired Cowper's *Sailing Tours* and wrote to Cowper asking to sail with him: https://www.pbo.co.uk/specials/frank-cowper-the-sailor-who-invented-cruising-76055
@@ -48,7 +48,7 @@ The map-reverse owner inscription in the Part I listing adds a distinctive physi
 
 ## What this does and does not establish
 
-- The page/word split is a hypothesis, not a source-defined convention. MAIL-06 only says the suffix might help identify the book.
+- The page/word split is a hypothesis, not a source-defined convention. MAIL-06 does not mention a book or page/word locator; the `0x5E=94 / 0x67=103` interpretation is unsourced.
 - Cowper *Sailing Tours* is the strongest current candidate for the map-bearing book and for explaining the L-29/N/S ticket pages. The physical copy has not been inspected.
 - The PBFA listing describes a previous owner's name on the reverse of a frontispiece map. It does not identify that name as Dollmann or prove that the listing's copy is David's copy.
 - The physical evidence may be one volume or a set. MAIL-09 uses the singular “book”; this must be resolved by inspection.
