@@ -59,6 +59,12 @@ Request and preserve the following as a single provenance bundle:
 
 Do not merge the envelope, desk notes, BX25 folio, book, or tea receipt until a physical join is observed. The book/receipt can help identify related material, but MAIL-20 and the route sheet point to the envelope as the final-word carrier.
 
+## Secondary Cowper book/page candidate (7 November)
+
+The frozen Cowper page/word hypothesis has a partial source test. Signed Part II images for printed pages [130, 151, 121, 135, 142] are captured and pinned; the corrected word-103 sequence is \`Solent / yards / sailing / the / even\`, with final South fragment \`solent yards sailing the even\`. Page 121 includes a visually verified OCR correction for printed \`24ft.\`. See [the Part II extraction report](h17-k08-cowper-part2-word103-extraction-20261107.md).
+
+The Part I HathiTrust catalog item is identified as \`hvd.hn5w2p\`, Full view pt.1, but the official viewer is not accessible through the current tools; the five Google Books zoom-1 page requests returned identical placeholders. See [Part I catalog discovery](h17-k08-cowper-part1-catalog-discovery-20261107.md) and [Part I placeholder report](h17-k08-cowper-part1-zoom1-placeholder-20261107.md). No North words, complete ten-word phrase or K08 HMAC acceptance test have been recovered. This secondary candidate does not displace the original keeper envelope and WN-14 desk-note stack as the highest-value K08 sources.
+
 ## Limitations
 
 - No K08 phrase has been recovered.
