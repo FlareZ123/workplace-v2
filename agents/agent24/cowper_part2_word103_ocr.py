@@ -22,12 +22,22 @@ PAGE_ORDER = [130, 151, 121, 135, 142]
 WORD_INDEX = 103
 TOP_CROP_PX = 150
 BOTTOM_CROP_PX = 60
+WORD_PATTERN = re.compile(r"[A-Za-z0-9]+(?:[.'’/-][A-Za-z0-9]+)*")
 
 
 def normalize(text: str) -> str:
-    """Apply the exact K08 character and whitespace normalization."""
-    text = re.sub(r"[^a-z0-9\s]", " ", text.lower())
+    """Apply the exact K08 normalization to the selected phrase only."""
+    text = re.sub(r"[^a-z0-9\\s]", " ", text.lower())
     return " ".join(text.split())
+
+
+def join_line_wrap_hyphens(text: str) -> str:
+    """Join a printed word split by a line-end hyphen and newline."""
+    return re.sub(
+        r"(?<=[A-Za-z0-9])-\\s*\\n\\s*(?=[A-Za-z0-9])",
+        "",
+        text,
+    )
 
 
 def main() -> None:
@@ -52,7 +62,7 @@ def main() -> None:
         image_sha = hashlib.sha256(image_bytes).hexdigest()
         if len(image_bytes) != entry["bytes"] or image_sha != entry["sha256"]:
             raise ValueError(f"Source image pin failed for printed page {page_number}")
-        if not image_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
+        if not image_bytes.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
             raise ValueError(f"Expected PNG image for printed page {page_number}")
 
         image = Image.open(image_path).convert("L")
@@ -62,11 +72,11 @@ def main() -> None:
         body = image.crop((0, TOP_CROP_PX, width, height - BOTTOM_CROP_PX))
         body = ImageOps.autocontrast(body)
         raw_ocr = pytesseract.image_to_string(body, lang="eng", config="--psm 6")
-        normalized = normalize(raw_ocr)
-        tokens = normalized.split()
+        joined_body = join_line_wrap_hyphens(raw_ocr)
+        tokens = WORD_PATTERN.findall(joined_body)
         if len(tokens) < WORD_INDEX:
             raise ValueError(
-                f"Only {len(tokens)} normalized main-body tokens on page {page_number}"
+                f"Only {len(tokens)} main-body word tokens on page {page_number}"
             )
 
         word = tokens[WORD_INDEX - 1]
@@ -84,12 +94,12 @@ def main() -> None:
                     "top_excluded": TOP_CROP_PX,
                     "bottom_excluded": BOTTOM_CROP_PX,
                 },
-                "normalized_body_token_count": len(tokens),
+                "main_body_word_token_count": len(tokens),
                 "word_index_1based": WORD_INDEX,
                 "word_103": word,
                 "context_tokens_97_to_109": tokens[context_start:context_end],
-                "normalized_body_sha256": hashlib.sha256(
-                    normalized.encode("ascii")
+                "joined_body_sha256": hashlib.sha256(
+                    joined_body.encode("utf-8")
                 ).hexdigest(),
                 "ocr_text_sha256": hashlib.sha256(
                     raw_ocr.encode("utf-8")
@@ -100,21 +110,29 @@ def main() -> None:
     south_raw = " ".join(selected_words)
     result = {
         "status": "PART_II_WORDS_EXTRACTED_ONLY",
+        "supersedes": (
+            "The initial run used K08-normalized page tokens before selection. "
+            "That was not the Critic's specified order of operations and is superseded."
+        ),
         "frozen_candidate": {
             "book": "Frank Cowper, Sailing Tours, Part II",
             "edition": 1893,
             "binder_tab_order_south_pages": PAGE_ORDER,
             "word_index_1based": WORD_INDEX,
             "part_ii_words_in_order": selected_words,
-            "part_ii_fragment_after_k08_normalization": normalize(south_raw),
+            "part_ii_fragment_after_single_k08_normalization": normalize(south_raw),
         },
         "counting_convention": (
             "Main body only: exclude running head, printed folio and Google "
-            "watermark using the recorded crop. Apply the exact K08 normalizer "
-            "(lowercase; replace every non-ASCII-letter/digit/non-whitespace "
-            "character with a space; collapse whitespace) to the OCR body, "
-            "then select normalized token 103, one-based. No alternate "
-            "offsets, tokenizations, page orders or editions were tested."
+            "watermark using the recorded crop; include all visible body "
+            "headings, captions, tables and footnotes. Join line-wrap "
+            "hyphenation across a line break, retain genuine in-line "
+            "hyphenated compounds as one word, and count visual-order word "
+            "tokens (including dotted abbreviations and fractions) before "
+            "normalization. Select token 103, one-based, from each page. "
+            "Concatenate selected words in binder-tab order and apply the "
+            "unchanged K08 normalizer once to the resulting phrase. No "
+            "alternate offsets, tokenizations, page orders or editions were tested."
         ),
         "ocr": {
             "engine": version,
@@ -131,7 +149,7 @@ def main() -> None:
     }
 
     output = ASSET_DIR / "word103-ocr.json"
-    output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    output.write_text(json.dumps(result, indent=2) + "\\n", encoding="utf-8")
     print(json.dumps(result, indent=2))
 
 
