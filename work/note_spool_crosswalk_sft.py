@@ -14,15 +14,28 @@ from datetime import datetime
 from pathlib import Path
 
 
-def main() -> None:
-    if len(sys.argv) > 1:
-        archive = Path(sys.argv[1])
-    else:
-        archive = Path(__file__).resolve().parents[1] / "resources" / "h17-archive-dump.zip"
+def read_sources(source: Path | None) -> tuple[str, str]:
+    if source is None:
+        evidence = Path(__file__).resolve().parents[1] / "resources" / "evidence"
+        notes_path = evidence / "crew" / "noticeboard-and-desk-notes.txt"
+        spool_path = evidence / "print" / "spool-reconstruction.log"
+        return notes_path.read_text(encoding="utf-8"), spool_path.read_text(encoding="utf-8")
 
-    with zipfile.ZipFile(archive) as zf:
+    if source.is_dir():
+        evidence = source / "evidence" if (source / "evidence").is_dir() else source
+        notes_path = evidence / "crew" / "noticeboard-and-desk-notes.txt"
+        spool_path = evidence / "print" / "spool-reconstruction.log"
+        return notes_path.read_text(encoding="utf-8"), spool_path.read_text(encoding="utf-8")
+
+    with zipfile.ZipFile(source) as zf:
         notes_text = zf.read("evidence/crew/noticeboard-and-desk-notes.txt").decode("utf-8")
         spool_text = zf.read("evidence/print/spool-reconstruction.log").decode("utf-8")
+    return notes_text, spool_text
+
+
+def main() -> None:
+    source = Path(sys.argv[1]) if len(sys.argv) > 1 else None
+    notes_text, spool_text = read_sources(source)
 
     notes = {
         int(m.group(1)): {"author": m.group(2).strip(), "text": m.group(3).strip()}
