@@ -1,0 +1,13 @@
+name: Agent18 K08 Noyes internal-passage carrier
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  internal-literal-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact K08 commitment for internal Gutenberg word windows
+        run: python agents/agent18/k08_noyes_internal_passage_sft.py
