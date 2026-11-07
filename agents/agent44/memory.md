@@ -296,3 +296,34 @@ Six original slots remain individually PASS; K04 and K08 remain MISSING; combine
 - Updated results/h17-missing-evidence-request.md, results/h17-custodian-acquisition-addendum-20261107.md and results/README.md so the custodian-facing path includes the examiner sequence. The report still treats underlay contact as conditional: MAIL-14/N23 do not prove an underlay was present when the final margin was written.
 - Sent the operational details to Agent49 and Agent36 to avoid duplicated work and improve the physical-custody request.
 - No K08 words or K04 bytes recovered. No acceptance, route, candidate or verifier files changed. The useful next step remains authorized recovery of the original envelope, N23 page, WN-14 folder, loose notes, adjacent pad leaves, backing/inserts and any associated shelf card as one intact grouping, followed by qualified examination.
+
+
+## 2026-11-07 continuation: source-first K08 retrieval refinements and model-run audit
+
+Current incarnation: Agent44, run `agent44-h17-attempt2-custody-bridge-dfb6e68b5284`, lease claimed at `2026-11-07T16:02:56.211124Z`. Do not refresh the lease. At the last measured checkpoint (16:51:24Z), elapsed age was 48.47 minutes; continue until a checkpoint measures 70 minutes, then follow the normal release procedure.
+
+### K08 book-coordinate hypothesis: deferred
+
+I tested whether the complete signed WN-14 groups A-D could be read as eight ordered one-based `(printed page, word)` byte pairs:
+`(4,154), (171,46), (28,222), (122,130), (205,124), (96,35), (67,3), (201,26)`.
+The A→D order is supported by MAIL-03; the byte-pair/page-word interpretation is not source-defined. I created:
+- `results/h17-k08-signed-WN14-book-coordinate-candidate-20261107.md`
+- `agents/agent44/k08_signed_group_pageword_sft.py`
+
+The harness was smoke-tested with synthetic page text only; it correctly returned NO_MATCH. No book words were extracted. After reading Agent18's withdrawal and the Critic's source-first freeze, I marked this hypothesis deferred, removed it from the public research-map entry, and messaged Agents49/35/12 not to run remote OCR or page-word probes. Do not revisit unless David's exact physical book and edition are independently identified. The strongest existing profile candidate in other work is Praeger 1947, but it is not authenticated; my earlier Wilson mention was only an analogy and is superseded.
+
+### New source-led retrieval refinements
+
+1. **Tea receipt / book custody.** MAIL-09's export Date field records the map-back book and tea receipt bookmark in the television room on 1 Oct 08:03Z. MAIL-12's export Date field records the later tea order on 2 Oct 06:33Z. Native mail send times are not authenticated because the export uses rewritten incident-date Message-IDs, so this ordering is provisional until native headers confirm it. The galley/stores log independently records a 30 Sep boat manifest with two boxes of tea and generic personal mail. I updated `results/h17-missing-evidence-request.md` to request the receipt in situ, earlier receipt/delivery records, and the original 30 Sep manifest/personal-mail list as a conditional book-custody lead. Do not assume the book or bookmark was on that manifest, or that the 2 Oct order is excluded until native dates are authenticated. Messages sent to Agents49/10.
+
+2. **Conditional photo-caption print witnesses.** The existing 24-note/spool crosswalk associates N01, N08, N09 and N14 with PS-261003-0301, -0308, -0309 and -0314 by exact suffix and five-minute sequence. No source explicitly defines the mapping or supplies native routes. I added a conditional request for their complete native spool objects/rendered outputs only if the original queue/job manifest confirms the pairings and routes. These are 3 Oct print artifacts, not substitutes for the pre-1-Oct photo-caption originals. Updated `results/h17-missing-evidence-request.md` and informed Agent49.
+
+3. **Research map.** `results/README.md` now summarizes the provisional tea-receipt/30-Sep manifest chain and conditional photo-caption print witnesses. The deferred page-word hypothesis is intentionally absent from the public map.
+
+### Agent30 Qwen1.5B full-caption run audit
+
+Inspected workflow run `41772491369` and job `126385192263` through the GitHub Actions interface. The run was cancelled after roughly 59 minutes. The final job-log slice shows all reached N02/N06/N17 generation batches had `control_exact=0`; N18 was not reached and K08 was not evaluated. The mask preflight passed, but this partial run does not meet the whole-caption calibration requirement. This is a negative for that prompt/model configuration only, not for K08. It is distinct from Agent36's separate successful lexical A/B ranker. The artifact exists but I could not retrieve its bytes through the available download path; no generated candidates were inspected. Sent the run audit to Agent30 and broadcast the result; recommend no identical rerun.
+
+### Current direction
+
+Respect the Critic's source-first freeze. Prioritize original envelope and N23 margin, WN-14 underleaf/desk-note originals, pre-incident shared photo-caption archive and sidecars, native MAIL-11/MAIL-20 threads/attachments, Bundle 06 manifest/omission log, and the native PS-0323 rendered output with its route provenance. The conditional photo-caption spool jobs and book/receipt remain secondary locators. No exact K08 words or K04 bytes were recovered in this continuation.
