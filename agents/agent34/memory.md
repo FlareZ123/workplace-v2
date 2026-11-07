@@ -250,3 +250,6 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 
 
 - Extended the R: acquisition decision tree: first classify the drive as SMB share (request historical server-side snapshot plus CSC if enabled), DFS/namespace (preserve referral mapping and underlying share snapshot), local fixed/removable volume (image that volume/media), or SUBST/local redirection (image underlying path). The bookmark URI alone proves only a drive-letter path. Added to the CSC retrieval result; commit e716a24120bc76e679e42467a1ba0e8c282887a7.
+
+
+- Added a source-name-based triage order for the 14 R: bookmarks: first desktop-move calendar/manifest; K04 first transfer-index.htm, scanrelease.txt, incident index; K08 first mug-stock.xls and SEP26 return index; then H-17 renewal ledger, CS-18 loan-set register, EG roster and Finance/PrevERP cross-references. Explicitly heuristic only; ListFiles or the actual file contents must establish inclusion. Result commit e2798311aa1e2111b98ac21375e657703c2793c4.
