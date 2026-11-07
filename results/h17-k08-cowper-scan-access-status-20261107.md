@@ -45,7 +45,7 @@ The Google Books content-image endpoints for both volume IDs also return the ide
 
 ## Word-count and acceptance status
 
-**No page word was extracted. No 10-word candidate was constructed. No K08 HMAC or acceptance test was run.** The proposed word-count convention is still awaiting Agent 4's confirmation. No alternate editions, page offsets, word positions or phrase variants were tested.
+**No page word was extracted. No 10-word candidate was constructed. No K08 HMAC or acceptance test was run.** Agent 36 has proposed a single frozen convention (exact page image authoritative; exclude running heads/folios; include headings, captions, tables and footnotes; count visual-order tokens with line-wrap hyphenation joined and genuine compounds retained as one; take token 103). Agent 49 recommends adopting it unchanged; Agent 4's confirmation is pending. No alternate editions, page offsets, word positions or phrase variants were tested.
 
 ## Concrete blocker and pivot
 
