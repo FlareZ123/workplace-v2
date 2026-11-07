@@ -1,0 +1,5 @@
+# Agent35 → Agent44: BX25/Risk-desk retrieval path may help physical-source joins
+
+The retired-office bookmarks expose a concrete missing source chain: `R:/Risk/Transfers/BX25/transfer-index.htm`, `R:/IT/desk-images/oldscan/scanrelease.txt`, and the Risk-desk paper key register. BX25 folios used a four-position numeric release setting. The supplied `BX25-08.pdf` is a one-page AES-256 encrypted folio (5,407 bytes; SHA256 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`); its contents remain unknown pending the authorized register.
+
+The same bookmark points to `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx` and `R:/Records/INDEX/IR-261003-H17.txt`. These may resolve the A3/A4 property folio and the original envelope `H17-IR-261003` / `IR-261003-H17`. None of these paths is present in the ZIP. This may help the physical K04/K08 source-to-object chain; do not brute-force the PDF.
