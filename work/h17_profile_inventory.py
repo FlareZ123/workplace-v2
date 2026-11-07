@@ -1,9 +1,11 @@
-"""Read-only inventory for an authorized H-17 retired-office profile image.
+"""Inventory an authorized, read-only mounted H-17 profile/workstation image.
 
-The scanner records paths and metadata for every non-excluded file. It hashes
-only files whose path or extension is relevant to the K04/K08 source search.
-It never parses document contents, opens credential stores, follows symlinks or
-Windows reparse points, or writes inside the source tree.
+The scanner records paths and basic filesystem metadata for every non-excluded
+file. It hashes only K04/K08-relevant candidates. It never parses document
+contents, opens credential stores, follows symlinks/reparse points, or writes
+inside the source tree. This is not a forensic imager: it does not enumerate
+NTFS alternate data streams, MFT/USN records, ACLs, or registry key values.
+Preserve the original image separately.
 """
 from __future__ import annotations
 
@@ -197,6 +199,16 @@ def build_inventory(source_root: str | os.PathLike[str]) -> dict[str, Any]:
                     "path": relative.replace("\\", "/"),
                     "size": info.st_size,
                     "mtime_utc": _utc(info.st_mtime),
+                    "atime_utc": _utc(info.st_atime),
+                    "ctime_utc": _utc(info.st_ctime),
+                    "mtime_ns": info.st_mtime_ns,
+                    "atime_ns": info.st_atime_ns,
+                    "ctime_ns": info.st_ctime_ns,
+                    "mode": stat.filemode(info.st_mode),
+                    "device_id": getattr(info, "st_dev", None),
+                    "file_id": getattr(info, "st_ino", None),
+                    "hardlink_count": getattr(info, "st_nlink", None),
+                    "file_attributes": getattr(info, "st_file_attributes", None),
                     "categories": categories,
                     "matched_terms": matched,
                     "hash_status": "not_hashed_non_candidate",
@@ -221,11 +233,16 @@ def build_inventory(source_root: str | os.PathLike[str]) -> dict[str, Any]:
         "schema": "h17-profile-inventory/v1",
         "created_utc": dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z"),
         "source_root": str(root),
-        "scope": "paths and metadata for non-excluded files; SHA-256 only for K04/K08-relevant candidates",
+        "scope": "paths and basic filesystem metadata for non-excluded files; SHA-256 only for K04/K08-relevant candidates; not a forensic image or full NTFS metadata export",
         "safety": {
-            "read_only": True,
+            "source_writes_performed": False,
+            "source_must_be_mounted_read_only": True,
             "network_access": False,
             "content_parsing": False,
+            "registry_keys_parsed": False,
+            "registry_hives_hashed_as_files_only": True,
+            "ntfs_alternate_data_streams_enumerated": False,
+            "mft_usn_and_acl_metadata_preserved": False,
             "symlinks_and_reparse_points_followed": False,
             "credential_cookie_and_key_store_paths_opened": False,
         },
