@@ -47,6 +47,8 @@ Praeger's *The Way That I Went* remains a lower-priority alternative because its
 
 Cowper's *Sailing Tours* is a separate exploratory page-word experiment, not the Little Drab Book. The Part II word-103 fragment “solent yards sailing the even” is preserved as secondary research only; it is not a complete phrase and has not passed the K08 HMAC. Do not prioritize further remote Cowper scan retrieval.
 
+A further conditional page locator is worth preserving for inspection, without assuming the offset is real: if the unverified ST-n -> PS-261003-(300+n) sequence is confirmed, selected PS-261003-0417 would point to page 117, while the Watch and South control jobs 0420 and 0448 would point to pages 120 and 148. In the 1947 third-edition Praeger candidate, page 117 is the last page of The Volcanic North and page 118 begins The Silurian Region. After identifying the actual title and edition, photograph page 117 and its full margins, plus pages 120 and 148 as controls if those page numbers exist in that edition. This coordinate is unverified; do not transfer the 1947 pagination to the 1937/1939 or 1997 editions.
+
 ## Priority 4: original local index and offline profile/source files
 
 The surviving retired-office bookmarks identify these missing local paths:
