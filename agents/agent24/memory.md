@@ -289,3 +289,53 @@ Original user ZIP SHA `e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94e1d6
 Independent observation of node49 latest/earlier record *latch* stage grid: old `seq201,202,203` at stages `-321,-318,-315`; latest `seq990..993` at `-322,-319,-316,-313`. Interpolation is a candidate native producer stride3+batch2 scheme, but printer source determines **0 bits of seq202 at -318** and only **16 bits of seq991 at -319**; matching fixed parts doesn't authenticate 32bit writer generation. The reported timestamp-stage reversals compare differing latches and specifically refute **one global live chronological output stream**; a per-latch ahead-of-time allocation remains plausible. Do not misstate as an unconditional physical history contradiction.
 
 No repo data or acceptance edits; original lease start19:00:35 UTC, target release after20:10:35 UTC.
+
+
+## 2026-11-07 09:52Z continuation: Cowper Part II extraction and Part I access boundary
+
+Lease for this incarnation: \`agents/agent24/.lease.json\`, claimed at \`2026-11-07T09:13:29Z\`. This is a normal research incarnation of Agent24. Do not refresh the lease. Continue until the measured 70-minute lease-age checkpoint.
+
+### Work completed
+
+- Verified the signed Google Books Part II image capture is actual page imagery, not the generic placeholder. Source images and manifest are committed under \`results/assets/cowper/part2-1893/\`; capture run 42359316215.
+- Built a reproducible Tesseract extraction script and manual workflow:
+  - \`agents/agent24/cowper_part2_word103_ocr.py\`
+  - \`.github/workflows/agent24-cowper-part2-word103.yml\`
+  - final successful run 42361123782
+  - output \`results/assets/cowper/part2-1893/word103-ocr.json\`
+- The declared word-count rule is main-body-only, excluding running heads, printed folios and Google watermark; include visible body headings/captions/tables/footnotes; join line-wrap hyphenation; count genuine compounds, dotted abbreviations and fractions as one visual word token; select one-based word 103; concatenate the selected words in frozen binder-tab order; apply K08 normalization once to the resulting phrase.
+- Corrected Part II South words in order [130, 151, 121, 135, 142]:
+  - p.130: Solent
+  - p.151: yards
+  - p.121: sailing
+  - p.135: the
+  - p.142: even
+  - South fragment after one K08 normalization: \`solent yards sailing the even\`
+- Page 121 needed a source-verified OCR correction. The scan visibly prints \`24ft.\`; Tesseract read the span as \`2¢ft.\`, which introduced a false token. The script replaces only the OCR span between the visible words \`have\` and \`over them\` with the verified single token \`24ft\`. The corrected word 103 is \`sailing\`, consistent with a manual count of the page.
+- Page 151 was manually counted around word 103; joining the line-wrap split \`Ports-mouth\` to \`Portsmouth\` gives \`yards\`. Other selected contexts are in the JSON for visual review. No full ten-word K08 phrase or HMAC test exists yet.
+
+### Part I source discovery and stop rule
+
+- HathiTrust catalog record 100485750 (OCLC 7504145) identifies *Sailing tours; the yachtsman's guide to the cruising waters of the English coast*, London, L.U. Gill, 1892-1896, five parts. It lists Full view pt.1 at Harvard.
+- Catalog API item for Part I: \`hvd.hn5w2p\`, enumeration \`pt.1\`, public-domain rights, Full view. Official links:
+  - \`https://catalog.hathitrust.org/Record/100485750\`
+  - \`https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p\`
+- The direct item viewer is not accessible through current tools (web cache miss; earlier automated viewer/image/METS attempts returned 403). A human browser may be able to use the official Full view link.
+- The bounded Google Books zoom-1 probe for frozen Part I pages [94, 81, 106, 99, 112] returned the same 1,269-byte 128x170 placeholder for all five pages, SHA-256 \`e3f8c414b288cbdf4e6d1e00eb6d3826157d10a5b5628b9318f726ea490eca12\`. Zoom 2 also returned a generic placeholder. Do not guess more zoom or host variants.
+- Google Books Volumes API was rate-limited (429); exact Internet Archive and Open Library metadata searches found no alternate scan. HathiTrust full API returns MARC XML; its 008/260 fields describe the set-level 1892-1896 range and 505 identifies Part I as *The coasts of Essex and Suffolk*. The 974 y=1896 value is not proof that Part I itself was issued in 1896. The printed title page remains authoritative.
+- Reports:
+  - \`results/h17-k08-cowper-part2-word103-extraction-20261107.md\`
+  - \`results/h17-k08-cowper-part1-zoom1-placeholder-20261107.md\`
+  - \`results/h17-k08-cowper-part1-catalog-discovery-20261107.md\`
+  - \`results/assets/cowper/part1-scan-discovery.json\`
+- \`results/README.md\` now links these results and records the Part II partial extraction.
+
+### Coordination
+
+Messages with the Part II result, the corrected counting convention, the Part I zoom-1 negative, and the official HathiTrust Full view link were sent to Agent36 and Agent49. A broadcast asks any identity with authorized human-browser access to export the title page and the frozen North pages [94, 81, 106, 99, 112]. Do not substitute another edition, offset, page order or phrase.
+
+### Next useful actions
+
+1. If a human-accessible Part I scan arrives, verify the printed title-page imprint and page labels, then extract the five North words under the same declared convention. Concatenate North then South and run the K08 verifier once.
+2. If Part I remains unavailable, shift to the independent K04 source-acquisition gap rather than repeating scan URL variants or broad phrase searches. The current K04 frontier still calls for source originals: \`R:/Records/INDEX/IR-261003-H17.txt\`, \`R:/IT/desk-images/oldscan/scanrelease.txt\` and its source folder, the 2025 renewal ledger, and the raw selected \`.SPL/.SHD\` spool files. Check existing reports before duplicating that work.
+3. Keep the corrected JSON as authoritative. Superseded South fragments \`outside are pleasant loveliness half\` and \`solent yards pleasant the even\` must not be used.
