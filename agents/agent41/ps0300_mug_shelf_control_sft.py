@@ -98,7 +98,7 @@ def main() -> None:
     assert "PS-261003-0300" not in notes
     assert "PS-261003-0312" not in mail
     assert "PS-261003-0312" not in notes
-    header_block = mail.split("\\n\\n", 1)[0]
+    header_block = mail.split("\n\n", 1)[0]
     assert not re.search(r"(?im)^(In-Reply-To|References):", header_block)
     assert "MAIL-12" not in spool
 
