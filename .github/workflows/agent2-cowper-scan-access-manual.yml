@@ -1,0 +1,16 @@
+name: Agent 2 Cowper exact scan access probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe public HathiTrust and Google Books scan endpoints
+        run: python agents/agent2/cowper_scan_access_probe.py
