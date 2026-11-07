@@ -45,9 +45,15 @@ Public catalogue listings:
 - 1934 first-edition listing: https://www.abebooks.com/first-edition/Pilots-guide-Thames-Estuary-Norfolk-Broads/11292639200/bd
 - 1938 second-edition listing: https://www.abebooks.co.uk/Pilots-Guide-Thames-Estuary-Norfolk-Broads/19934063826/bd
 
+### Candidate hierarchy correction (Agent44, 7 November)
+
+
+
+The map-back book remains unnamed. Praeger is the strongest structural page-index candidate because the 1947 third edition has an actual North/South section boundary at p.118 that separates the ticket suffix groups 5/5; the 1997 reprint moves p.112 across the boundary. Wilson is the closest physical-profile analogue to the novel's separate Little Drab Book. Cowper is named in the Riddle and has a useful frontispiece/map parallel, but its proposed Part I/II ticket assignment is non-discriminating because all suffixes 81–151 fit within both volume page counts. Ransome is a semantic N20 locator only. No candidate is identified as David's physical copy.
+
 ### D. Arthur Ransome's *We Didn't Mean to Go to Sea* (1949 18th impression)
 
-This is currently the strongest **MAIL-09 map-back / MAIL-11-N20 narrative locator**, though the physical copy is not identified. The book has a rear endpaper map; the accessible 1949 18th-impression text places Chapter VII on p.94. That all-night passage has Jim absent after the overnight passage, Susan setting a place for five at the cabin table, and the children waiting in fog with the sea outside. These particulars match the local semantic brief more closely than a generic nautical-book resemblance.
+This remains the strongest **N20 semantic/narrative locator**, not an identified MAIL-09 book. The book has a rear endpaper map; the accessible 1949 18th-impression text places Chapter VII on p.94. That all-night passage has Jim absent after the overnight passage, Susan setting a place for five at the cabin table, and the children waiting in fog with the sea outside. These particulars match the local semantic brief, but the p.94 span screen found no K08 HMAC hit and no source names Ransome.
 
 Sources and reproduction:
 - Academic analysis of the fictional map/endpapers: https://eprints.lancs.ac.uk/id/eprint/75836/1/REVISEDFINALParatextorImagetext.pdf
@@ -65,7 +71,7 @@ The 2024 Folio Society edition is 264 pages and has a folded Titanic deck plan i
 
 ## Secondary page/word experiment: Cowper's *Sailing Tours*
 
-Cowper's five-volume *Sailing Tours* is a separate secondary experiment, not the current leading MAIL-09 map-back identification and not the in-story “Little Drab Book.” The Riddle chapter explicitly names Cowper among the ordinary yacht-library books, while distinguishing the unidentified “Little Drab Book” from Cowper. A derived two-volume ticket-page crosswalk places L-29/N suffixes within Part I (1892, 168 pages) and L-29/S suffixes within Part II (1893, 365 pages), but no source says ticket suffixes are page numbers.
+Cowper's five-volume *Sailing Tours* is a separate literary/physical candidate, not the in-story “Little Drab Book.” The Riddle chapter explicitly names Cowper among the ordinary yacht-library books, while distinguishing the unidentified “Little Drab Book” from Cowper. The proposed North→Part I / South→Part II ticket assignment is non-discriminating: all ten suffixes 81–151 fit within both Part I (168 pages) and Part II (365 pages). No source assigns either lane to a Cowper volume, so this is not a demonstrated ticket-page crosswalk.
 
 The five frozen Part II page-103 words were extracted from visually checked first-edition page images in binder-tab order: “Solent / yards / sailing / the / even.” This is a partial fragment, not a phrase, and no K08 HMAC test was run because the five Part I words remain unavailable. The Part I HathiTrust catalog item is public-domain/full-view, but the runner's image/viewer endpoints returned placeholders/403; the Critic has closed further remote alias/viewer/METS/image probing. Do not repeat those requests or substitute later reprints/dealer descriptions. See the [Cowper Part II extraction](h17-k08-cowper-part2-word103-extraction-20261107.md), [volume crosswalk](h17-k08-cowper-sailing-tours-volume-crosswalk-20261107.md), and [scan-access status](h17-k08-cowper-scan-access-status-20261107.md).
 
@@ -76,8 +82,8 @@ The five frozen Part II page-103 words were extracted from visually checked firs
 1. Transcribe the **original recovery envelope** exactly, preserving punctuation, spacing, and capitalization before applying the K08 normalization.
 2. Recover and image the **Emily desk-note stack under WN-14**, including margins, reverse sides, adjacent sheets, any envelope kept with it, and any pad leaf/folder insert/backing that may have been underneath the final margin when written. Photograph both faces and preserve original order/orientation before specialist examination; see the conditional underleaf route below.
 3. Image the **separate photographs and galley captions** mentioned in MAIL-14.
-4. Inspect David's map-back book and tea receipt in situ. The current leading locator is Ransome's *We Didn't Mean to Go to Sea*, 1949 18th impression: verify title/imprint, rear endpaper map, p.94 Chapter VII, and whether the receipt marks p.94. Image the receipt both sides, the p.94 margin/reverse/adjacent leaves, and map/endpapers before separation. The printed p.94 text is not the K08 phrase; look for attributable handwriting/underleaf evidence. The MAIL-06 `5E67` standby transcription is a separate, non-authoritative item; do not transfer the Praeger p.94/word-103 interpretation to Ransome.
-5. Preserve Praeger and the Riddle/Wilson guidebook as competing alternatives only. If the copy is Praeger's, verify whether it is the 416-page 1947 third edition and whether the receipt marks p.112; test the ticket-page partition only after the exact edition is established. If it is *The Riddle of the Sands* or its in-story guide, compare the physical title-page/frontispiece/map fingerprint above. Do not infer page-word semantics from ticket suffixes or `5E67` without a physical/source-defined join.
+4. Inspect David's map-back book and tea receipt in situ without presuming a title. Record exact title, volume, publisher, year, edition/impression, printed pagination, map/chart placement and the receipt's exact page/spread before separation. Compare the physical copy against Praeger's edition-sensitive North/South section split, Wilson's yachtsman's-guide profile, and Cowper's Riddle reference/frontispiece details; keep Ransome as a semantic-only candidate. The printed p.94 Ransome text is not the K08 phrase. MAIL-06's `5E67` is a separate standby suffix; if the same transcription is physically co-located, record that as new evidence, not a source-defined identity marker or page/word rule.
+5. Preserve Praeger, Wilson, Cowper and Ransome as distinct candidate axes. Praeger has the strongest demonstrated single-volume page-section split (1947 third edition boundary p.118); Wilson has the closest physical-profile match to the separate Little Drab Book; Cowper is explicitly named in the Riddle but its proposed volume assignment has no page-range discrimination; Ransome is semantic-only. Do not infer page-word semantics from ticket suffixes or `5E67` without a physical/source-defined join.
 6. Keep the book, envelope, desk notes, and binder receipts as distinct objects until a physical join is observed.
 
 ## Pre-incident shared photo-caption antecedents
@@ -101,8 +107,8 @@ See [K08 underleaf-indentation acquisition path](h17-k08-underleaf-indentation-a
 ## Limitations and confidence
 
 - **High confidence:** N23 plus the route/custodian identifiers identify the envelope as the final-text carrier; MAIL-14 locates the loose desk notes and separates photographs/captions from the engineering procedure; MAIL-20 independently locates captions/drafts on Emily's desk after the incident notice.
-- **Moderate confidence:** MAIL-06 and MAIL-09 may describe the same David-owned book; `5E67` is a useful physical identity check.
-- **Low-to-moderate confidence:** either candidate book is the MAIL-09 volume. The Riddle candidate has the stronger semantic/physical fingerprint; the Praeger candidate has the stronger edition-sensitive ticket-page pattern. These are competing hypotheses.
+- **Moderate confidence:** MAIL-06 and MAIL-09 may describe the same David-owned book. If the same WN-14 standby transcription is found in the map-back book, that co-location would be new evidence; MAIL-06 does not state that `5E67` identifies the book.
+- **Low-to-moderate confidence:** the exact MAIL-09 book remains unidentified. Praeger has the strongest demonstrated edition-sensitive page-section pattern; Wilson has the strongest physical-profile match to the separate yachtsman's guide; Cowper is Riddle-named but its volume page ranges do not discriminate; Ransome is a semantic locator. These candidate axes do not identify a physical copy.
 - **No recovered phrase:** no complete K08 phrase has been verified against the acceptance commitment. The missing physical carrier prevents a defensible recovery from the local export.
 
 ## Local evidence and related research
