@@ -30,7 +30,11 @@ def fetch_xml(base: str, params: dict[str, str]) -> ET.Element:
             raise RuntimeError(f"response exceeds {MAX_RESPONSE_BYTES} bytes: {url}")
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}: {url}")
-    root = ET.fromstring(payload)
+    try:
+        root = ET.fromstring(payload)
+    except ET.ParseError as exc:
+        sample = payload[:1200].decode("utf-8", errors="replace")
+        raise RuntimeError(f"XML parse error for {url}; bytes={len(payload)}; body={sample!r}") from exc
     error = root.find("oai:error", NS)
     if error is not None:
         code = error.attrib.get("code", "unknown")
@@ -195,7 +199,7 @@ def main() -> int:
     for spec, name in relevant_sets:
         print("RELEVANT_SET", spec, "|", name, flush=True)
 
-    prefix = "mods" if "mods" in prefixes else ("oai_dc" if "oai_dc" in prefixes else "")
+    prefix = "oai_dc" if "oai_dc" in prefixes else ("mods" if "mods" in prefixes else "")
     if not prefix:
         print("NO_SUPPORTED_MODS_OR_DC_PREFIX", flush=True)
         return 2
