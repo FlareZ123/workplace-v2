@@ -31,7 +31,7 @@ def phrase_regex(phrase: str) -> re.Pattern[str]:
     words = ranker.tokens(phrase)
     if not words:
         raise ValueError("empty phrase")
-    middle = r"[\\W_]+".join(re.escape(word) for word in words)
+    middle = r"[\W_]+".join(re.escape(word) for word in words)
     return re.compile(r"(?<![A-Za-z0-9])" + middle + r"(?![A-Za-z0-9])", re.IGNORECASE)
 
 
