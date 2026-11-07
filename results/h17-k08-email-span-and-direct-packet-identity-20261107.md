@@ -13,31 +13,31 @@ The first path is a direct literal retrieval from the supplied mail corpus. The 
 
 ## Frozen source and method
 
-The executable standard-library reproducer is [\`agents/agent44/k08_email_packet_identity_sft.py\`](../agents/agent44/k08_email_packet_identity_sft.py).
+The executable standard-library reproducer is [`agents/agent44/k08_email_packet_identity_sft.py`](../agents/agent44/k08_email_packet_identity_sft.py).
 
 Pinned original inputs:
 
-- \`acceptance.json\`: \`681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f\`
-- \`recovery-routing.json\`: \`f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5\`
-- \`spool-reconstruction.log\`: \`7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083\`
-- Sorted 20-message EML manifest (filename, NUL, original bytes): \`a96c73a0913e518af06afea06324dd4479e89fa41c753f9b93c81df1db89b3e1\`
+- `acceptance.json`: `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f`
+- `recovery-routing.json`: `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5`
+- `spool-reconstruction.log`: `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`
+- Sorted 20-message EML manifest (filename, NUL, original bytes): `a96c73a0913e518af06afea06324dd4479e89fa41c753f9b93c81df1db89b3e1`
 
 The original K08 normalization and HMAC-SHA256 key/nonce are read from the unmodified route file. Every candidate component is reduced to the first 16 HMAC bytes, then compared through the full unchanged K08 SHA-256 commitment.
 
 ### Email corpus
 
-- Parsed all 20 original \`evidence/mail/*.eml\` records.
-- Each is one \`text/plain\` body, with no MIME attachment or multipart alternative in the supplied export.
+- Parsed all 20 original `evidence/mail/*.eml` records.
+- Each is one `text/plain` body, with no MIME attachment or multipart alternative in the supplied export.
 - Enumerated every contiguous word span of every subject and body, from one word through the full segment length.
 - 40 subject/body segments; **153,525 span occurrences** and **151,443 distinct normalized spans**.
 - **Zero** complete K08 commitment matches.
 
 ### Printer packet corpus
 
-- Selected the disputed K04 event using header fields only: \`PS-261003-0417 / ATTEMPT=2 / ACK / RECOVER\`.
-- Excluded record index 129 (source line index 130) before reading its \`PAYLOAD\`.
+- Selected the disputed K04 event using header fields only: `PS-261003-0417 / ATTEMPT=2 / ACK / RECOVER`.
+- Excluded record index 129 (source line index 130) before reading its `PAYLOAD`.
 - Compared SHA-256 of each of the **132 intact 16-byte payloads** directly with the K08 component commitment.
-- The set contains 52 \`CLASS=LABEL\` packets and 132 distinct payloads.
+- The set contains 52 `CLASS=LABEL` packets and 132 distinct payloads.
 - **Zero** direct K08 component matches.
 
 ### Positive controls
@@ -53,7 +53,7 @@ The supplied 20-message EML corpus does not contain the final K08 phrase as any 
 
 This is a bounded negative result. It does not exclude:
 
-- quoted material omitted from the export, original \`References\`/\`In-Reply-To\` history, native mail attachments, or a different original mailbox rendition;
+- quoted material omitted from the export, original `References`/`In-Reply-To` history, native mail attachments, or a different original mailbox rendition;
 - Emily's original envelope, N23 margin, WN-14 under-folder notes, separate photographs/galley captions, or the physical shelf card;
 - an edited/noncontiguous phrase assembled from multiple source objects;
 - a printer or envelope representation that transforms the K08 component.
