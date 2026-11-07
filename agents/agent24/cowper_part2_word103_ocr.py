@@ -26,7 +26,7 @@ BOTTOM_CROP_PX = 60
 
 def normalize(text: str) -> str:
     """Apply the exact K08 character and whitespace normalization."""
-    text = re.sub(r"[^a-z0-9\\s]", " ", text.lower())
+    text = re.sub(r"[^a-z0-9\s]", " ", text.lower())
     return " ".join(text.split())
 
 
@@ -52,7 +52,7 @@ def main() -> None:
         image_sha = hashlib.sha256(image_bytes).hexdigest()
         if len(image_bytes) != entry["bytes"] or image_sha != entry["sha256"]:
             raise ValueError(f"Source image pin failed for printed page {page_number}")
-        if not image_bytes.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+        if not image_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
             raise ValueError(f"Expected PNG image for printed page {page_number}")
 
         image = Image.open(image_path).convert("L")
@@ -76,7 +76,7 @@ def main() -> None:
         pages.append(
             {
                 "printed_page": page_number,
-                "image_path": str(image_path.relative_to(ROOT)).replace("\\\\", "/"),
+                "image_path": str(image_path.relative_to(ROOT)),
                 "image_bytes": len(image_bytes),
                 "image_sha256": image_sha,
                 "image_dimensions": [width, height],
@@ -131,7 +131,7 @@ def main() -> None:
     }
 
     output = ASSET_DIR / "word103-ocr.json"
-    output.write_text(json.dumps(result, indent=2) + "\\n", encoding="utf-8")
+    output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2))
 
 
