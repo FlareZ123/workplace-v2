@@ -58,8 +58,9 @@ def main() -> None:
         root / "h17-supplemental-office-files/retired-office-bookmarks.html"
     ).read_text(encoding="utf-8-sig")
 
-    assert "I have put a small card by the shelf." in mail
-    assert "chipped blue mugs" in mail
+    normalized_mail = re.sub(r"\\s+", " ", mail)
+    assert "I have put a small card by the shelf." in normalized_mail
+    assert "chipped blue mugs" in normalized_mail
     assert "N11 / David" in notes
     assert "Mug shelf: Even the chipped blue one belongs to someone who expects to see it again." in notes
     assert "R:/Stores/consumables/mug-stock.xls" in bookmarks
@@ -85,7 +86,11 @@ def main() -> None:
     for job, expected in JOB_ROWS.items():
         actual = parsed_jobs[job][:5]
         assert actual == expected, f"{job}: expected {expected}, got {actual}"
+        payload = parsed_jobs[job][5]
+        assert len(payload) == 32, f"{job}: expected 16-byte payload"
+        bytes.fromhex(payload)
 
+    assert not (root / "h17-supplemental-office-files/mug-stock.xls").exists()
     assert "PS-261003-0300" not in mail
     assert "PS-261003-0300" not in notes
     assert "MAIL-12" not in spool
