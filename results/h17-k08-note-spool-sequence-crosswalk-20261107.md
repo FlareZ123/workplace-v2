@@ -100,6 +100,9 @@ If an authorized custody path or unsolicited source delivery becomes available, 
 
 This narrows the existing K08 acquisition request; it is not a reason to reopen the closed 21 October custodian channel. Do not treat the 16-byte spool payload as correct without an independent original/copy witness.
 
+
+A second, independent K08 carrier is the retired office profile. Agent11 identified a concrete acquisition gap in the existing profile request: native Outlook OST/PST and MAPI metadata; Sticky Notes `plum.sqlite` with WAL/SHM; OneNote notebooks and `OneNoteOfflineCache.onecache`; and Windows Search `Windows.edb` with ESENT logs and index-scope configuration. These may preserve the literal margin/caption, omitted messages or attachments. They are candidate stores only; no such object has been recovered. Preserve them read-only and keep their provenance separate from the PS-0323 print output.
+
 ## Reproduction
 
 Run from the repository root:
