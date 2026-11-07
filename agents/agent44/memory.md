@@ -400,3 +400,29 @@ Refined the route selector again: incident date comes from the K02 and K05 `star
 Eleven regression checks pass, including section-order reversal, a synthetic consistent August case, and rejection of mismatched archive/envelope/incident dates. Updated `work/h17_source_role_join_sft.py`, the source-role report, and `results/README.md`. Follow-up sent to Agent11: `communications/agent11/20261107T194444Z_agent44-k04-incident-date-crosscheck.md`.
 
 At 19:44:56.253614655Z the original lease age was approximately 62.20 minutes; continue until the 70-minute release threshold.
+
+## 2026-11-07 invocation update: lane-specific K04 locator and K08 candidate correction
+
+### K04 lane-specific ticket→spool locator
+
+- Added `agents/agent44/k04_lane_specific_ticket_spool_sft.py` and `results/h17-k04-lane-specific-ticket-to-spool-offset-screen-20261107.md`.
+- The print-fleet retirement note explicitly gives five-tab order. Preserve it: North ST-094, ST-081, ST-106, ST-099, ST-112; South ST-130, ST-151, ST-121, ST-135, ST-142. Do not sort numerically.
+- Tab-05 anchors yield composite offsets ST→PS `+305` for FA-17/ESC-N (ST-112→PS-0417) and `+306` for LV-42/ESC-S (ST-142→PS-0448). Extending predicts North PS-0399/0386/0411/0404/0417; South PS-0436/0457/0427/0441/0448; L-28/A2 controls PS-0392/0403. Retained spool has all five North jobs, two South jobs (0427/0448), and both L-28 controls; South 0436/0441/0457 are absent.
+- Candidate decomposition is ST→PTW `+304` then PTW→PS `+1` on FA-17 and `+2` on LV-42. PTW receipt coverage is asymmetric: retained export PTW-390..416 gives North 4/5 (ST-081→PTW-385 absent), L-28/A2 2/2 (PTW-391/402 present), South 0/5 (PTW-425/434/439/446/455 all outside export). Therefore FA-17 `+1` has two non-anchor PTW/PS holdouts; LV-42 `+2` is composite-only and has no PTW-stage validation. SFT now emits/asserts these counts.
+- The native spool request now asks for source document path/hash and page/range, submitter, print processor, queue, device/port/route, attempts, outputs, ACKs and physical collection. Missing PTW retrieval IDs were added to `results/h17-missing-evidence-request.md`.
+- Added a separate bounded PTW-417 quartet→PS-0417 payload SFT: `agents/agent44/ptw417_quartet_to_ps0417_payload_sft.py`; report `results/h17-k04-ptw417-quartet-to-ps0417-payload-screen-20261107.md`. Latest signed CLOSED/AS_LEFT PTW-417 A/B/C/D quartet tested under four orders and 48 identity/digest/HMAC/CPython-seed forms; zero direct hits. This is distinct from the earlier p951 donor-block test and does not exclude a physical/firmware relationship.
+
+### K08 book-candidate hierarchy correction
+
+- Added `results/h17-crossslot-ticket-book-page-spool-index-hypothesis-20261107.md`, linking ticket suffix/page candidates to the lane-specific PS locator. The book side remains conditional; no book text was extracted in this invocation.
+- Praeger's *The Way That I Went* (1947 third edition) is the strongest currently demonstrated single-volume page-section split **if** ticket suffixes are printed page numbers: North p.62–117, South from p.118, splitting the five North and five South suffixes 5/5. The 1997 reprint boundary at p.111 moves ST-112 into South. This does not identify David's book.
+- Cowper's *Sailing Tours* is explicitly named in *The Riddle of the Sands*, but the claimed North→Part I / South→Part II page-range partition is non-discriminating: every suffix 81–151 fits in both Part I (168 pages) and Part II (365 pages). Cowper remains a Riddle-named literary/physical candidate, not a validated ticket-volume crosswalk. Countercheck documented in `results/h17-k08-cowper-sailing-tours-volume-crosswalk-20261107.md` and its Part-II word-103 experiment is secondary/non-matching.
+- W. Eric Wilson's 1934 *Pilot's Guide* is the closest physical-profile analogue to the novel's separate Little Drab Book; it has no ticket-page crosswalk. Cowper's *Sailing Tours* and the Little Drab Book are distinct. Ransome remains an N20 semantic locator only.
+- MAIL-06 does not say `5E67` identifies MAIL-09's book or defines a page/word coordinate. If the same standby transcription is physically co-located with the map-back book, record that as new evidence only. Corrected the Praeger/Cowper reports, README, physical-carrier synthesis and acquisition request accordingly.
+- The K08 primary carrier remains MAIL-14's Emily desk notes under WN-14; photo/galley captions and the exact physical book/receipt are missing. Do not resume page-word extraction until title/volume/edition and receipt page are documented.
+
+### Communications and next retrieval priorities
+
+- Sent corrections/updates to Agents 10, 12, 35, 42 and 43 covering binder tab order, Cowper range overlap, 5E67 attribution, and asymmetric PTW-stage coverage.
+- Highest-value retrieval: original `R:/Stores/returns/SEP26/index.htm` plus schema/history; PTW-385 and PTW-425/434/439/446/455 receipts; native queue/job manifests for PS-0436/0441/0457 and controls/anchors with source-document/page metadata and paper-collection evidence; exact David-owned book and tea receipt in situ; MAIL-14 desk notes and photo/galley caption originals.
+- `results/README.md` has been updated to map the new evidence and preserve unresolved candidate axes. No K04 payload authentication or K08 phrase recovery was claimed.
