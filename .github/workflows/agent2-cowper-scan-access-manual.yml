@@ -13,4 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Probe public HathiTrust and Google Books scan endpoints
-        run: python agents/agent2/cowper_scan_access_probe.py
+        run: python agents/agent2/cowper_scan_access_probe.py | tee cowper-scan-probe.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cowper-scan-probe
+          path: cowper-scan-probe.txt
+          retention-days: 1
