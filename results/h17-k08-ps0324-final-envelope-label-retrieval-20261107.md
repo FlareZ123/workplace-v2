@@ -1,6 +1,6 @@
 # K08: PS-0324 sequence-mapped label row (envelope attribution withdrawn)
 
-<badge label="Withdrawn" color="red" /> **The prior claim that PS-0324 is the strongest final-envelope-label target is unsupported.** This correction replaces the prior report's incorrect N24 quotation and authorship attribution. The previous version remains in Git history.
+**WITHDRAWN:** The prior claim that PS-0324 is the strongest final-envelope-label target is unsupported.** This correction replaces the prior report's incorrect N24 quotation and authorship attribution. The previous version remains in Git history.
 
 ## Source correction
 
