@@ -29,7 +29,7 @@ SOURCE_HASHES = {
 
 
 def normalize(text: str) -> str:
-    return " ".join(re.sub(r"[^a-z0-9\\s]", " ", text.lower()).split())
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", text.lower()).split())
 
 
 def contiguous_spans(text: str):
@@ -47,7 +47,7 @@ def source_candidates() -> set[str]:
     variants: list[str] = []
     note_count = 0
     for index, line in enumerate(lines):
-        match = re.match(r"(N\\d{2}) / (.*)$", line)
+        match = re.match(r"(N\d{2}) / (.*)$", line)
         if not match:
             continue
         body = lines[index + 1].strip()
