@@ -1,0 +1,13 @@
+name: Agent36 bounded public HTML source audit
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-public-html:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect same-origin public HTML and sitemap only
+        run: python agents/agent36/h17_public_html_surface_sft.py
