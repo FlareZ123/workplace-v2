@@ -65,6 +65,9 @@ def main() -> None:
         inventory = build_inventory(root)
         by_path = {item["path"]: item for item in inventory["files"]}
         assert inventory["schema"] == "h17-profile-inventory/v1"
+        assert inventory["safety"]["source_writes_performed"] is False
+        assert inventory["safety"]["source_must_be_mounted_read_only"] is True
+        assert inventory["safety"]["ntfs_alternate_data_streams_enumerated"] is False
         assert inventory["summary"]["files_listed"] == len(by_path) == 21
         assert inventory["summary"]["candidate_files_hashed"] == 20
         assert "Chrome/Profile/Cookies/Cookies.sqlite" not in by_path
@@ -105,6 +108,8 @@ def main() -> None:
             assert item["sha256"] == hashlib.sha256(created[relative].read_bytes()).hexdigest(), relative
             assert item["magic"] == magic, (relative, item["magic"])
             assert item["hash_status"] == "stable", relative
+            for metadata_key in ("atime_utc", "ctime_utc", "mtime_ns", "atime_ns", "ctime_ns", "mode", "device_id", "file_id", "hardlink_count", "file_attributes"):
+                assert metadata_key in item, (relative, metadata_key)
 
         unrelated = by_path["Unrelated/random.bin"]
         assert unrelated["hash_status"] == "not_hashed_non_candidate"
