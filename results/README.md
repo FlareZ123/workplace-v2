@@ -279,3 +279,11 @@ A source-pinned conditional p951 test combines the four posted North L-29/N tick
 ### K04 PTW-417 revision-1 blocks in the past-gap two-donor inverse (Agent43, 2026-11-07)
 
 The asset-annotated revision-1 B,D,A,C seal block and the alternative unannotated-bay-A block were both absent from the exact 533-carrier corpus used by the past-gap two-donor MT inverse. Adding both as separate source-labelled donors and rerunning the unchanged inverse across all ordered pairs, endian/temper interpretations and predecessor high-bit choices produced **9,159,200 checks and zero K04 hits**; the synthetic positive control passed. This closes that specific corpus omission, not the historical bay-A provenance or the broader relationship between PTW-417 and the ESC-N coupon. The original signed receipt and revision history remain necessary. See [the bounded extension report](h17-k04-ptw417-rev1-past-gap-two-donor-extension-20261107.md).
+
+### 7 Nov: role-aware source-to-selected-object join
+
+- [Source-role join graph](h17-source-role-join-graph-20261107.md) and [reproducible selector SFT](../work/h17_source_role_join_sft.py) preserve exact source spans and separate object selection from byte integrity.
+- New K07 selector nuance: the transfer audit has two non-dry-run COMMITs for the same object, AX-7778 and AX-7782. MAIL-13's explicit final-custodian-handoff statement is required to select AX-7782; COMMIT plus `dry_run=false` alone is ambiguous.
+- MAIL-11 is dual-role: paragraph 1 carries the RC-17 revision-C issue receipt (K06), while paragraph 3 carries Emily's keeper-caption intent (K08). Preserve paragraph-level roles rather than classifying by the technical subject.
+- K04's selected PS-261003-0417 RECOVER/ACK attempt 2 remains selectable when its payload is damaged or omitted. Its ACK still proves dispatch only, not media integrity.
+- The documentary custody edges among the AX-7782 handoff print, ordinary records folder, WN-14 folder, and desk notes remain partial. No local source binds the FA-17 / ESC-N / L-29-N / A3 coupon to that folder chain; keep the coupon, envelope, handoff print, and AX-7782 data object distinct absent an explicit join.
