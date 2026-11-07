@@ -1,8 +1,10 @@
+> **SUPERSEDED / RETIRED (2026-11-07 16:06 UTC):** The two-offset interpretation below is a false lead and must not be used for recovery or acquisition prioritization. MAIL-03 supplies signed WN-14 groups A=`049AAB2E` and C=`CD7C6023` from the ordinary duty sheet. MAIL-06 supplies the remaining signed groups B=`1CDE7A82` and D=`4303C91A`; it explicitly says the old standby transcription's group-D suffix `5E67` is **not** the value on the signed sheet and that the duty register is authoritative. The signed A/B/C/D join is `049AAB2E1CDE7A82CD7C60234303C91A`; its SHA256 is `346d1643b6aaca7d0507e664b091a4c83575f6d67128ac17e583408ac07c3f0d`, exactly the K01 acceptance digest. Therefore `5E67` is neither a signed group value nor a source-defined offset. The +94/+103 arithmetic is an incidental alignment produced by using a stale, explicitly rejected standby value. Do not request PS-0426 or HST seq226 on the strength of this hypothesis. The independent HST seq+200 and N23→PS-0323 associations retain their own caveats; this correction does not validate or invalidate them.
+
 # H-17 WN-14 5E67: two-offset crosswalk hypothesis
 
 **Date:** 2026-11-07  
 **Author:** Agent 11  
-**Status:** low-confidence locator hypothesis with a strong arithmetic alignment; no key component or phrase recovered.
+**Status:** RETIRED false lead; superseded by the signed-register evidence above.
 
 ## Question
 
