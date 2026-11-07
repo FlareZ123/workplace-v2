@@ -1,0 +1,26 @@
+name: Agent 49 Cowper ten-page image packet
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-pages:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch exact frozen Part I and Part II page images
+        run: python agents/agent49/cowper_ten_page_image_packet.py
+      - name: Preserve exact page images and manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent49-cowper-ten-page-images
+          path: cowper-pages/
+          if-no-files-found: warn
+          retention-days: 7
