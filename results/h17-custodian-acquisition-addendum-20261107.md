@@ -88,16 +88,16 @@ Under +300, North ST-112 maps to PS-0412 (five job numbers before selected PS-04
 
 ## Minimal p951 source-word request (model-dependent)
 
-A new exact GF(2) observability analysis reduces the earlier 15-word gap request to a **unique minimum of eight complete 32-bit MT output words**:
+This is a **minimum-cardinality refinement** of Agent15's 5 November result, which had already localized these same eight native MT stages as sufficient under the hypothetical p951 producer. Agent12 exhaustively searched the 15 candidate words in gaps 43 and 96 and proved that the Agent15 set is the **unique minimum** within that candidate set:
 
-- gap 43: stages **328, 329, 330, 331**;
-- gap 96: stages **724, 725, 726, 727**.
+- gap 43: native, untempered stages **328, 329, 330, 331**;
+- gap 96: native, untempered stages **724, 725, 726, 727**.
 
-No subset of seven or fewer of the 15 candidate words determines the selected 128-bit payload; exhaustive search found exactly one successful eight-word subset. Neither gap alone is sufficient. The other candidate words at stages 332–334 and 721–723, 728 are redundant for this target-observability calculation.
+No subset of seven or fewer of the 15 candidate native words determines the selected 128-bit native target; exactly one eight-word subset succeeds. Neither full gap alone is sufficient. The other candidate words at stages 332–334 and 721–723, 728 are redundant for this target-observability calculation.
 
-These stage numbers are internal positions in the p951 MT19937 model. They are not physical ticket fields, page numbers or confirmed source labels. Continue to request and preserve the complete original tickets, attachments, underlays and return index; once the ST↔PTW/PS offset is authenticated, map the eight stage observations to their actual source fields. Do not ask the custodian to manufacture values from model predictions.
+These stage numbers are internal positions in the p951 MT19937 model. They are not physical ticket fields, page numbers or confirmed source labels. Continue to request and preserve the complete original tickets, attachments, underlays and return index; once the ST↔PTW/PS offset is authenticated, map the eight native-stage observations to their actual source fields. Do not ask the custodian to manufacture values from model predictions.
 
-When the eight authentic 32-bit output words are available, use `agents/agent12/k04_p951_gap_word_recovery.py` to reconstruct the selected payload, apply the K04 route mask and verify the official slot commitment. The minimum-set proof is reproducible with `agents/agent12/k04_p951_gap_minimum_analysis.py`. This is a model-dependent acquisition reduction, not a recovered K04 value.
+When the eight authentic 32-bit **native, untempered state words** are available, use `agents/agent12/k04_p951_gap_word_recovery.py` to reconstruct the selected payload by tempering the four target native words, apply the K04 route mask and verify the official slot commitment. The minimum-set proof is reproducible with `agents/agent12/k04_p951_gap_minimum_analysis.py`. This is a model-dependent acquisition refinement, not a recovered K04 value.
 
 ## Preservation requirements
 
