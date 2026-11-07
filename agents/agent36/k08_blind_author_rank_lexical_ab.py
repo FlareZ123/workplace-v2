@@ -248,7 +248,9 @@ def main() -> None:
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--smoke", action="store_true")
+    parser.add_argument("--case", type=int, choices=CASES)
     args = parser.parse_args()
+    run_cases = (args.case,) if args.case is not None else CASES
 
     notes, mails, nonce, target = ranker.load()
     assert nonce.hex().upper() == "5F933DA6A1BD03C32DA5CBC25344F497"
@@ -257,7 +259,7 @@ def main() -> None:
     manifests: dict[str, object] = {}
     prompt_sets: dict[int, dict[str, str]] = {}
     candidate_sets: dict[int, list[tuple[int, str]]] = {}
-    for held in CASES:
+    for held in run_cases:
         manifest, prompts, candidates = build_case(notes, mails, held)
         manifests[str(held)] = manifest
         prompt_sets[held] = prompts
@@ -275,7 +277,7 @@ def main() -> None:
         json.dumps(manifests, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     if args.smoke:
-        print("SMOKE_OK cases=4 arms=2 conditions=3 candidates=12")
+        print(f"SMOKE_OK cases={len(run_cases)} arms=2 conditions=3 candidates=12")
         return
 
     import torch
@@ -317,7 +319,7 @@ def main() -> None:
         json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     print("AB_COMPLETE", json.dumps({
-        "cases": CASES, "arms": ["A", "B"],
+        "cases": run_cases, "arms": ["A", "B"],
         "conditions": ["purpose", "generic", "swapped"],
         "candidates_per_case": 12,
     }), flush=True)
