@@ -317,6 +317,7 @@ def main() -> None:
             "derived_k04_component": k04_component.hex().upper(),
             "derived_k04_sha256": k04_sha,
             "k04_commitment_match": k04_sha == acceptance["slot_sha256"]["K04"],
+            "k04_seed_fixed_point": component == k04_component,
             "derived_k08_sha256": k08_sha,
             "k08_commitment_match": (
                 result["seed_sha512_layout_match"]
