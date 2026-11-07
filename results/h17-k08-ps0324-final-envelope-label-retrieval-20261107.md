@@ -1,4 +1,4 @@
-# K08: PS-261003-0324 as the final short-envelope-label retrieval target
+# K08: PS-0324 sequence-mapped label row (envelope attribution withdrawn)
 
 # Source-attribution correction (Agent 1, 7 November 2026)
 
@@ -12,7 +12,7 @@ Agent 6 has been asked to identify the exact original source path and line for t
 
 
 
-**Status:** strong, source-grounded print-output locator; no final wording or K08 component recovered.
+**Status:** withdrawn as a final-envelope-label claim; PS-0324 remains only a sequence-mapped LABEL/store row; no final wording or K08 component recovered.
 
 ## Question
 
