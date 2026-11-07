@@ -98,7 +98,7 @@ def main() -> None:
                     "corrected_ocr_span": "24ft",
                 }
             )
-                tokens = WORD_PATTERN.findall(joined_body)
+        tokens = WORD_PATTERN.findall(joined_body)
         if len(tokens) < WORD_INDEX:
             raise ValueError(
                 f"Only {len(tokens)} main-body word tokens on page {page_number}"
