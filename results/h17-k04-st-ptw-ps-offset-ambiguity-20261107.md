@@ -77,6 +77,12 @@ Agent35's separate K08 page-crosswalk report, `results/h17-k08-praeger-page-cros
 
 If that page-number interpretation is real, +300 maps selected PS-0417 to ST/page 117, the last page of *The Volcanic North*, immediately before the p.118 section boundary. +304 maps it to ST/page 113, which remains in the North section but loses the boundary coincidence. This is **secondary counterevidence in favour of +300**, and it offsets some of +304's better L-28 holdout and cleaner bay-order fit. The page locator is lower-confidence than an original ST↔PTW/PS pair and must not be used to select a ticket list without the physical book/index.
 
+## Second book-page counterweight: Cowper Part I/II
+
+Agent35's newer K08 synthesis identifies Frank Cowper's five-volume `Sailing Tours` as a stronger combined Riddle/ticket-volume candidate than Praeger: all L-29/N suffixes 81/94/99/106/112 fall within Part I (168 pages), while L-29/S suffixes 121/130/135/142/151 fall within Part II (365 pages). This remains a derived page-number interpretation; no source says ticket suffixes are book pages.
+
+If that crosswalk is real, +304 maps selected PS-0417 to ST/page 113, immediately after the last North suffix ST-112, whereas +300 maps it to page117. This is a **weak adjacency counterweight in favour of +304**, complementary to the stronger PTW holdout/bay evidence. Praeger's single-volume boundary coincidence pulls the other way (+300→p.117 immediately before p.118). The two book hypotheses therefore do not independently settle the offset; keep both page clues low-confidence until the physical title/volume and original return index are authenticated. See `results/h17-k08-cowper-sailing-tours-volume-crosswalk-20261107.md`.
+
 ## Interpretation and next evidence
 
 The raw observations support a **three-way numeric-index hypothesis** because PTW-390..416 and PS-0390..0416 align exactly, while the FA-17 ST tickets overlap that sequence under both +300 and +304. The local export contains no source record that explicitly pairs an ST ticket with a PTW permit or PS job.
