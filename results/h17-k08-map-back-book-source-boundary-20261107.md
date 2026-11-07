@@ -38,7 +38,7 @@ The test enumerated all contiguous windows of 3–64 normalized words that conta
 
 For each candidate, the test computed HMAC-SHA256 using the original K08 desk nonce `5F933DA6A1BD03C32DA5CBC25344F497`, retained the first 16 bytes, then SHA-256 hashed that component and compared it with the unchanged K08 commitment `285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747`.
 
-<badge color="success">Executed</badge>
+**Executed.**
 
 - Text length: 637,455 characters.
 - Normalized words: 115,122.
