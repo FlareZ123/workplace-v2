@@ -63,6 +63,442 @@
           "autocomplete": null
         }
       ]
+    },
+    {
+      "label": "public insights index",
+      "requested_url": "https://noyes-energy-group.pages.dev/insights/",
+      "status": 200,
+      "final_url": "https://noyes-energy-group.pages.dev/insights/",
+      "content_type": "text/html",
+      "bytes": 4958,
+      "sha256": "967cd65182a6434c8d27e287c96d394878fa0093570f4d6e8d7cd721b2ec136e",
+      "title": "Insights | Noyes Energy Group",
+      "text_excerpt": "Insights | Noyes Energy Group Skip to content Energy. With purpose. Partner & employee access \u2197 noyes ENERGY GROUP Our company Our expertise Our projects Insights Get in touch \u2197 Home / INSIGHTS A wider view of energy. Ideas, explanations and perspectives on the systems and partnerships behind the energy transition. PERSPECTIVES \u00b7 ENERGY SYSTEMS The future of energy is connected. Read perspective \u2197 EXPLAINED \u00b7 RENEWABLES Thinking beyond the solar panel. Read perspective \u2197 OUR APPROACH \u00b7 PARTNERSHIPS Good energy takes a long-term view. Read perspective \u2197 CLIENT & PARTNER SERVICES Your connection to Noyes. Access client services \u2197 noyes ENERGY GROUP Building a more resilient energy future. Together. Explore Our company Our expertise Our projects Insights Connect Contact & enquiries Partnerships Our responsibility Partner & employee access \u2197 \u2197 Tomorrow's energy. Today's commitment. \u00a9 2026 Noyes Energy Group. All rights reserved. Privacy & cookies Accessibility Contact & enquiries",
+      "links": [
+        {
+          "text": "Skip to content",
+          "url": "https://noyes-energy-group.pages.dev/#main"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Get in touch \u2197",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Home /",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "PERSPECTIVES \u00b7 ENERGY SYSTEMS The future of energy is connected. Read perspective \u2197",
+          "url": "https://noyes-energy-group.pages.dev/insights/the-connected-energy-system/"
+        },
+        {
+          "text": "EXPLAINED \u00b7 RENEWABLES Thinking beyond the solar panel. Read perspective \u2197",
+          "url": "https://noyes-energy-group.pages.dev/insights/beyond-the-solar-panel/"
+        },
+        {
+          "text": "OUR APPROACH \u00b7 PARTNERSHIPS Good energy takes a long-term view. Read perspective \u2197",
+          "url": "https://noyes-energy-group.pages.dev/insights/a-long-term-view/"
+        },
+        {
+          "text": "Access client services \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Partnerships",
+          "url": "https://noyes-energy-group.pages.dev/company/#partnerships"
+        },
+        {
+          "text": "Our responsibility",
+          "url": "https://noyes-energy-group.pages.dev/company/#responsibility"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "Privacy & cookies",
+          "url": "https://noyes-energy-group.pages.dev/privacy/"
+        },
+        {
+          "text": "Accessibility",
+          "url": "https://noyes-energy-group.pages.dev/accessibility/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        }
+      ],
+      "forms": [],
+      "inputs": []
+    },
+    {
+      "label": "public insight: connected energy system",
+      "requested_url": "https://noyes-energy-group.pages.dev/insights/the-connected-energy-system/",
+      "status": 200,
+      "final_url": "https://noyes-energy-group.pages.dev/insights/the-connected-energy-system/",
+      "content_type": "text/html",
+      "bytes": 5104,
+      "sha256": "8abe69b3766bcfed2e3394e4bd294281ef6e6f9102274ee688b3373d28cde9dd",
+      "title": "The future of energy is connected. | Noyes Energy Group",
+      "text_excerpt": "The future of energy is connected. | Noyes Energy Group Skip to content Energy. With purpose. Partner & employee access \u2197 noyes ENERGY GROUP Our company Our expertise Our projects Insights Get in touch \u2197 \u2190 Back to insights PERSPECTIVES / ENERGY SYSTEMS The future of energy is connected. A wider view of generation, infrastructure and the connections between them. Noyes Energy Group Perspectives Start with the system An energy project does not operate in isolation. Its relationship with the network, nearby demand and other sources of generation shapes how it can contribute. Looking at those relationships early creates a more complete view of an opportunity. Connections deserve an early conversation A promising site is a starting point. Access to the grid, connection requirements and the wider infrastructure context are also important considerations. Exploring these questions alongside land and environmental factors helps project partners understand the decisions ahead. Make room for flexibility Storage, changing demand and the way a project interacts with the network all belong in the conversation. Thinking about flexibility from the beginning helps frame questions about how an opportunity might develop over time. Keep the conversation connected Technical understanding and local knowledge offer different kinds of insight. Bringing them together is part of a considered approach to energy development. Contact our team \u2197 CLIENT & PARTNER SERVICES Your connection to Noyes. Access client services \u2197 noyes ENERGY GROUP Building a more resilient energy future. Together. Explore Our company Our expertise Our projects Insights Connect Contact & enquiries Partnerships Our responsibility Partner & employee access \u2197 \u2197 Tomorrow's energy. Today's commitment. \u00a9 2026 Noyes Energy Group. All rights reserved. Privacy & cookies Accessibility Contact & enquiries",
+      "links": [
+        {
+          "text": "Skip to content",
+          "url": "https://noyes-energy-group.pages.dev/#main"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Get in touch \u2197",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "\u2190 Back to insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Contact our team \u2197",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Access client services \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Partnerships",
+          "url": "https://noyes-energy-group.pages.dev/company/#partnerships"
+        },
+        {
+          "text": "Our responsibility",
+          "url": "https://noyes-energy-group.pages.dev/company/#responsibility"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "Privacy & cookies",
+          "url": "https://noyes-energy-group.pages.dev/privacy/"
+        },
+        {
+          "text": "Accessibility",
+          "url": "https://noyes-energy-group.pages.dev/accessibility/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        }
+      ],
+      "forms": [],
+      "inputs": []
+    },
+    {
+      "label": "public insight: beyond the solar panel",
+      "requested_url": "https://noyes-energy-group.pages.dev/insights/beyond-the-solar-panel/",
+      "status": 200,
+      "final_url": "https://noyes-energy-group.pages.dev/insights/beyond-the-solar-panel/",
+      "content_type": "text/html",
+      "bytes": 4972,
+      "sha256": "0e80e6473badb008f27e3a1631ce66962dd7161ae5eec8b23206cebc42b788a0",
+      "title": "Thinking beyond the solar panel. | Noyes Energy Group",
+      "text_excerpt": "Thinking beyond the solar panel. | Noyes Energy Group Skip to content Energy. With purpose. Partner & employee access \u2197 noyes ENERGY GROUP Our company Our expertise Our projects Insights Get in touch \u2197 \u2190 Back to insights EXPLAINED / RENEWABLES Thinking beyond the solar panel. The visible technology is one part of a much bigger project conversation. Noyes Energy Group Perspectives Understand the place Solar projects begin with a location and its context. The shape of the land, access, existing uses, landscape setting and the interests of neighbouring communities all form part of the picture. Consider the whole opportunity Generation potential matters, but so do the practical questions surrounding it. How might the site connect? What work would be needed? Which environmental considerations require further investigation? A clear set of questions is a useful foundation. Think about the life of the project Operations, maintenance and the eventual future of a site deserve attention from the early stages. A long-term view helps project partners discuss responsibilities and expectations with greater clarity. Begin with a conversation For landowners and project partners, the first step is often to gather the information already available and identify what needs to be understood next. Contact our team \u2197 CLIENT & PARTNER SERVICES Your connection to Noyes. Access client services \u2197 noyes ENERGY GROUP Building a more resilient energy future. Together. Explore Our company Our expertise Our projects Insights Connect Contact & enquiries Partnerships Our responsibility Partner & employee access \u2197 \u2197 Tomorrow's energy. Today's commitment. \u00a9 2026 Noyes Energy Group. All rights reserved. Privacy & cookies Accessibility Contact & enquiries",
+      "links": [
+        {
+          "text": "Skip to content",
+          "url": "https://noyes-energy-group.pages.dev/#main"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Get in touch \u2197",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "\u2190 Back to insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Contact our team \u2197",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Access client services \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Partnerships",
+          "url": "https://noyes-energy-group.pages.dev/company/#partnerships"
+        },
+        {
+          "text": "Our responsibility",
+          "url": "https://noyes-energy-group.pages.dev/company/#responsibility"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "Privacy & cookies",
+          "url": "https://noyes-energy-group.pages.dev/privacy/"
+        },
+        {
+          "text": "Accessibility",
+          "url": "https://noyes-energy-group.pages.dev/accessibility/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        }
+      ],
+      "forms": [],
+      "inputs": []
+    },
+    {
+      "label": "public insight: a long-term view",
+      "requested_url": "https://noyes-energy-group.pages.dev/insights/a-long-term-view/",
+      "status": 200,
+      "final_url": "https://noyes-energy-group.pages.dev/insights/a-long-term-view/",
+      "content_type": "text/html",
+      "bytes": 5070,
+      "sha256": "094c8d86055eec612b76cb15fcee55b011beb81b01729fff491ff834ecccecd6",
+      "title": "Good energy takes a long-term view. | Noyes Energy Group",
+      "text_excerpt": "Good energy takes a long-term view. | Noyes Energy Group Skip to content Energy. With purpose. Partner & employee access \u2197 noyes ENERGY GROUP Our company Our expertise Our projects Insights Get in touch \u2197 \u2190 Back to insights OUR APPROACH / PARTNERSHIPS Good energy takes a long-term view. Lasting progress starts with clarity, listening and a shared understanding of the path ahead. Noyes Energy Group Perspectives Listen before deciding Every project brings together people with different interests and experience. Making space for those perspectives at the beginning helps build a better understanding of the opportunity and its constraints. Be clear about the questions Early conversations do not need to have every answer. They do need a clear account of what is known, what remains uncertain and how the next steps can help. Being open about those distinctions supports more constructive decisions. Respect the local context Places are more than project locations. They are home to communities, working landscapes and existing relationships. Understanding that context is a central part of approaching an opportunity responsibly. Build on common ground A long-term partnership develops through clear communication, realistic expectations and consistent attention to the people involved. These are practical foundations for moving forward together. Contact our team \u2197 CLIENT & PARTNER SERVICES Your connection to Noyes. Access client services \u2197 noyes ENERGY GROUP Building a more resilient energy future. Together. Explore Our company Our expertise Our projects Insights Connect Contact & enquiries Partnerships Our responsibility Partner & employee access \u2197 \u2197 Tomorrow's energy. Today's commitment. \u00a9 2026 Noyes Energy Group. All rights reserved. Privacy & cookies Accessibility Contact & enquiries",
+      "links": [
+        {
+          "text": "Skip to content",
+          "url": "https://noyes-energy-group.pages.dev/#main"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Get in touch \u2197",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "\u2190 Back to insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Contact our team \u2197",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Access client services \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Our company",
+          "url": "https://noyes-energy-group.pages.dev/company/"
+        },
+        {
+          "text": "Our expertise",
+          "url": "https://noyes-energy-group.pages.dev/expertise/"
+        },
+        {
+          "text": "Our projects",
+          "url": "https://noyes-energy-group.pages.dev/projects/"
+        },
+        {
+          "text": "Insights",
+          "url": "https://noyes-energy-group.pages.dev/insights/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        },
+        {
+          "text": "Partnerships",
+          "url": "https://noyes-energy-group.pages.dev/company/#partnerships"
+        },
+        {
+          "text": "Our responsibility",
+          "url": "https://noyes-energy-group.pages.dev/company/#responsibility"
+        },
+        {
+          "text": "Partner & employee access \u2197",
+          "url": "https://noyes-energy-group.pages.dev/admin"
+        },
+        {
+          "text": "Privacy & cookies",
+          "url": "https://noyes-energy-group.pages.dev/privacy/"
+        },
+        {
+          "text": "Accessibility",
+          "url": "https://noyes-energy-group.pages.dev/accessibility/"
+        },
+        {
+          "text": "Contact & enquiries",
+          "url": "https://noyes-energy-group.pages.dev/contact/"
+        }
+      ],
+      "forms": [],
+      "inputs": []
     }
   ]
 }
