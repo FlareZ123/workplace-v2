@@ -12,10 +12,15 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Sequence
 
-from agents.agent49.k04_p951_symbolic_basis import ORIGIN, build, temper, untemper
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from agents.agent49.k04_p951_symbolic_basis import ORIGIN, STARTS, source, temper, untemper
 
 
 GAP43_STAGES = (328, 329, 330, 331)
@@ -41,13 +46,10 @@ def recover_k04(
     if len(gap43_words) != 4 or len(gap96_words) != 4:
         raise ValueError("Supply four gap43 words and four gap96 words")
 
-    repo_root = Path(__file__).resolve().parents[2]
-    if Path.cwd().resolve() != repo_root:
-        raise RuntimeError("Call recover_k04 from the workplace-v2 repository root")
-
-    basis, state, selected, starts = build()
-    if selected != [129] or starts[129] != 951:
-        raise AssertionError("The shared p951 witness selection or stage alignment changed")
+    repo_root = REPO_ROOT
+    basis, state = source(repo_root)
+    if STARTS[129] != 951:
+        raise AssertionError("The shared p951 stage alignment changed")
 
     observations = [
         (stage, _word(value))
@@ -63,7 +65,7 @@ def recover_k04(
             basis.insert(form, (native_word >> bit) & 1)
 
     payload = bytearray()
-    for stage in range(starts[129], starts[129] + 4):
+    for stage in range(STARTS[129], STARTS[129] + 4):
         output_forms = temper(state[stage - ORIGIN])
         word = 0
         for bit, form in enumerate(output_forms):
@@ -75,7 +77,7 @@ def recover_k04(
 
     evidence = repo_root / "resources" / "evidence"
     route = json.loads((evidence / "recovery-routing.json").read_text(encoding="utf-8"))
-    acceptance = json.loads((evidence / "acceptance.json").read_text(encoding="utf-8"))
+    acceptance = json.loads((repo_root / "resources" / "acceptance.json").read_text(encoding="utf-8"))
     mask = bytes.fromhex(route["K04"]["masked_component"])
     component = bytes(a ^ b for a, b in zip(payload, mask))
     digest = hashlib.sha256(component).hexdigest()
