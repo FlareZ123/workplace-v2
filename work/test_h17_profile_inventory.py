@@ -117,6 +117,8 @@ def main() -> None:
         if symlink_created:
             assert inventory["summary"]["skipped_links_or_reparse_points"] == 1
             assert not any(path.startswith("ExternalLink/") for path in by_path)
+            assert inventory["skipped_link_entries"][0]["path"] == "ExternalLink"
+            assert inventory["skipped_link_entries"][0]["kind"] == "symlink"
 
         try:
             write_inventory(inventory, root / "inside.json")
