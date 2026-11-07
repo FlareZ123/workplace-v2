@@ -17,6 +17,17 @@ Useful Microsoft references:
 - [Verify the condition of a compressed migration store](https://learn.microsoft.com/en-us/windows/deployment/usmt/verify-the-condition-of-a-compressed-migration-store)
 - [ScanState syntax](https://learn.microsoft.com/en-us/windows/deployment/usmt/usmt-scanstate-syntax)
 
+## What the surviving USMT records can prove
+
+- The `ListFiles` log records the files gathered into the store; Microsoft notes it is available only from `ScanState.exe`.
+- The progress log can record source/destination computer name, full command line, detected users, whether a profile/component was included, and non-fatal errors.
+- `USMTDiag.xml`, when produced, records system/user environment details and migration units with their contents; it can show which custom rules were selected and which files were actually scheduled/stored.
+- `ScanState.log` and `LoadState.log` preserve the collection and restore error trail. The XML rule files and `Config.xml` determine what was eligible for migration.
+- Microsoft specifically warns that if Outlook is open during ScanState, USMT might not migrate PST files. Therefore, a missing PST in a store is not proof that the source profile had no PST.
+- USMT can use a remote store, a local hard-link store, or local/external storage. Do not assume the store sits beside the profile image.
+
+After acquiring and hashing the original, verify a working copy with Microsoft's `UsmtUtils.exe /verify`. If the copy is corrupted, Microsoft's documentation describes `UsmtUtils.exe /extract` as a recovery option for some corrupted stores. Do not run LoadState or a migration retry against the source. If encryption is enabled, use only custodian-provided authorized key material; do not guess or bypass it.
+
 ## Acquisition request
 
 Request the original profile-refresh/migration package and its complete manifest/log set, regardless of whether USMT was used. If USMT was used, preserve:
