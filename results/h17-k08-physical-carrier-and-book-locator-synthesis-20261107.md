@@ -1,0 +1,70 @@
+# K08 physical carrier and book-locator synthesis
+
+**Date:** 2026-11-07  
+**Scope:** source provenance and physical-carrier selection for K08. This report does not recover or guess the phrase.
+
+## Conclusion
+
+The local export strongly identifies the **original recovery envelope** as the literal carrier of the K08 phrase: MAIL-20 says the envelope preserves the exact words Emily finally chose. The strongest supporting source location is **Emily's desk-note stack under the WN-14 folder**, outside the controlled-copy sleeve, with photographs and galley captions retained separately from the engineering procedure (MAIL-14). N23 refers to wording in Emily's margin; MAIL-11 says desk notes and photograph captions informed the wording.
+
+The exact phrase is absent from the surviving export. The envelope, original desk notes/margins, and separate photographs/captions are not present, so K08 remains unrecoverable from the current local files. The book clues below may identify a supporting physical source, but none is proven.
+
+## Source-derived carrier chain
+
+1. **MAIL-20:** several drafts/captions were on Emily's desk; the words she finally chose matter; the envelope remembers those words. This is the strongest evidence for the envelope as the final-text carrier.
+2. **MAIL-14:** the WN-14 folder was handed to the incoming watch; Emily's desk notes were physically under it, outside the controlled-copy sleeve; photographs and galley captions were kept separate from the engineering procedure. This is a direct physical locator for the notes and images.
+3. **MAIL-11:** Emily worked out the wording from desk notes and photograph captions; N17/N18 are other-purpose inscriptions and are not the keeper phrase.
+4. **N20/N23:** N20 gives the semantic brief (sea, end of night, voices at table); N23 points to wording in Emily's margin and distinguishes it from an official slogan.
+5. **MAIL-06 / MAIL-09:** MAIL-06 says David's pocket book contains an old WN-14 standby transcription whose group D ends `5E67`. MAIL-09, one day later, identifies a David-owned book with a map in the back and a tea receipt left as a bookmark. The same-owner/time proximity suggests a possible same-object join, but the export does not prove it. If the physical map-back book or a loose insert carries the `5E67` transcription, that is a useful object-identity fingerprint. Do not use `5E67` as a word offset or seed.
+
+## Competing physical-book hypotheses
+
+These are locator hypotheses only. Neither the title nor the edition of MAIL-09's book is identified in the export.
+
+### A. *The Riddle of the Sands* / in-story yachtsman's guide
+
+Agent35 identified a strong Chapter-XX semantic fingerprint: cabin table, sea around Scharhorn, the end of night, and discordant voices occur together. The chapter also describes an in-story small drab guide to a British estuary with a rear map, a 3d label, a title-page attribution to “Lieut. X--, R.N.”, a yacht-owner frontispiece, and “Dollmann” on the back. This is a concrete physical fingerprint to compare with the MAIL-09 book.
+
+The bounded printed-text HMAC search returned no exact K08 phrase. That result does not exclude handwritten marginalia or an author paraphrase. Do not run another printed-text or paraphrase sweep; inspect the physical book/insert if available.
+
+### B. R. Lloyd Praeger's *The Way That I Went*
+
+The rear-map clue also fits this book. The 1947 third-edition pagination places *The Volcanic North* at p.62 and *The Silurian Region* at p.118. In that edition, the L-29/N ticket suffixes 81, 94, 99, 106, 112 fall in the northern section, while L-29/S suffixes 121, 130, 135, 142, 151 fall in the southern section.
+
+The 1997/394-page pagination starts those sections at p.59 and p.111, placing p.112 in the southern section. The 1937 first edition is also 394 pages; its exact section boundary has not been independently established here. Therefore the clean North/South split is specific to the verified 1947 pagination. It is an interesting discriminating pattern, not proof that ticket IDs are page numbers or that this is David's book.
+
+**ST-112** is the sole duplicated North ticket: R3 POSTED/A3 versus R4 HELD/A4 duplicate. If the physical book is the 1947 edition and the receipt marks p.112, the alignment is unusually coherent. If the book is a 394-page edition, p.112 falls on the southern side. Do not infer that A3/A4 denote book editions.
+
+## Discriminating physical checks
+
+1. Transcribe the **original recovery envelope** exactly, preserving punctuation, spacing, and capitalization before applying the K08 normalization.
+2. Recover and image the **Emily desk-note stack under WN-14**, including margins, reverse sides, adjacent sheets, and any envelope kept with it.
+3. Image the **separate photographs and galley captions** mentioned in MAIL-14.
+4. Inspect David's map-back book and tea receipt in situ. Check for the MAIL-06 standby transcription ending `5E67`; record title, edition, page count, map, receipt position, and any marginalia.
+5. If the book is Praeger's, verify whether it is the 416-page 1947 third edition and whether the receipt marks p.112. If it is *The Riddle of the Sands*, compare the physical guidebook fingerprint above and check whether any map/chart has a literal `5E67` grid reference.
+6. Keep the book, envelope, desk notes, and binder receipts as distinct objects until a physical join is observed.
+
+## Limitations and confidence
+
+- **High confidence:** MAIL-20 identifies the envelope as the final-text carrier; MAIL-14 locates the desk notes and separates the photographs/captions from the engineering procedure.
+- **Moderate confidence:** MAIL-06 and MAIL-09 may describe the same David-owned book; `5E67` is a useful physical identity check.
+- **Low-to-moderate confidence:** either candidate book is the MAIL-09 volume. The Riddle candidate has the stronger semantic/physical fingerprint; the Praeger candidate has the stronger edition-sensitive ticket-page pattern. These are competing hypotheses.
+- **No recovered phrase:** no complete K08 phrase has been verified against the acceptance commitment. The missing physical carrier prevents a defensible recovery from the local export.
+
+## Local evidence and related research
+
+- `resources/evidence/mail/06.eml`, `09.eml`, `11.eml`, `14.eml`, `20.eml`
+- `resources/evidence/crew/noticeboard-and-desk-notes.txt` (N20, N23, N17, N18)
+- `resources/evidence/supplemental-office-files/supplier-reconciliation-L29.csv` (L-29/N and L-29/S ticket suffixes; ST-112 R3/R4)
+- `results/h17-k08-mail09-mapbook-praeger-ticket-pages-20261107.md`
+- `communications/agent22/20261107T075131Z_agent35-mail09-source-boundary.md`
+- `communications/agent22/20261107T075718Z_agent35-mail06-mail09-book-identity-check.md`
+- `communications/agent35/20261107T080800Z_agent22-praeger-page112-edition-check.md`
+- `communications/agent35/20261107T080700Z_agent22-5E67-physical-object-fingerprint.md`
+
+External bibliographic checks:
+- 1947 third edition, Google Books: https://books.google.com/books?id=uT5RAQAAIAAJ
+- 1997 reprint, Google Books: https://books.google.com/books?id=Fo0iAQAAIAAJ
+- 1937 first-edition review, *Nature*: https://www.nature.com/articles/140870a0
+- National Library of Ireland catalogue: https://catalogue.nli.ie/Record/vtls000044069
+- Rare-book catalogue with first-edition map description: https://www.deburcararebooks.com/wp-content/uploads/2021/02/Catalogue-144.pdf
