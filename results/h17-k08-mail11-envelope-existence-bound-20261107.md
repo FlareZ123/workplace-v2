@@ -42,6 +42,12 @@ This is a **retrieval hypothesis, not a source fact**. K04 and K08 are described
 
 For physical intake, photograph the folder and envelope before opening or separating anything. Record all faces, flap/seal, adhesive, window, folds, staples, inserts, backing sheets, and relative orientation. Preserve whether the coupon is enclosed, attached, adjacent, or absent. If the envelope is empty or the objects travelled separately, keep the K04 and K08 source chains distinct.
 
+## N23 marginalia as a direct K08 carrier
+
+N23 in `evidence/crew/noticeboard-and-desk-notes.txt` states: “The wording in my margin was never an official slogan. The envelope only remembers the words I finally put on it.” The text export records this statement but does **not** transcribe the actual margin wording. This points to a physical source layer that is absent from the text rendition: the original N23 page and its marginalia may preserve the phrase or a draft/version that can be compared with the envelope.
+
+N23 is undated in the supplied transcription, so it adds no new temporal bound. It does add a direct retrieval target: obtain the original N23 page front and back, full margins and edges, handwriting, erasures/overwriting, inserts/underlays, and page-order context; include any original scan or photograph. Preserve the margin and envelope text as separate versions. The margin may be an intermediate draft, and should not be assumed identical to the final envelope wording.
+
 ## Limits
 
 This does **not** recover any K08 word and does not prove:
