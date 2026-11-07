@@ -7,12 +7,15 @@ import json
 import re
 import sys
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 PINS = {
     "print-fleet-retirement-note.txt": "10c3a6e46b2c8475fd5fd8333cd8546633bda7ca3eac4e813ac059cd045e3cbf",
     "supplier-reconciliation-L29.csv": "73b85da6d358cfc57dd340c1d6b84a5434d50693c6b12b256238ef3ff8c5c87e",
     "spool-reconstruction.log": "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083",
+    "16.eml": "02535cc5966a9215d01ecada4a14b6a403d78ca8d09310a5c3cf1a574f817a08",
+    "18.eml": "7dc1f122f92ce23c110aa50fd78ae7a471bdf9e60a44e358e3b90e497f664cf0",
 }
 
 
@@ -46,6 +49,17 @@ def main():
     note = read_pinned(office / "print-fleet-retirement-note.txt")
     raw_csv = read_pinned(office / "supplier-reconciliation-L29.csv")
     spool = read_pinned(evidence / "print" / "spool-reconstruction.log")
+    mail16 = read_pinned(evidence / "mail" / "16.eml")
+    mail18 = read_pinned(evidence / "mail" / "18.eml")
+    mail16_flat, mail18_flat = " ".join(mail16.split()), " ".join(mail18.split())
+    if "Use the last acknowledged attempt for its exact job." not in mail16_flat:
+        raise ValueError("MAIL-16 selector instruction missing")
+    if "ACK field came from the dispatch log" not in mail16_flat:
+        raise ValueError("MAIL-16 media-integrity caveat missing")
+    if "nobody is to go back in for records or personal belongings." not in mail18_flat:
+        raise ValueError("MAIL-18 incident access restriction missing")
+    if "The archive appliance and the recovery card kept inside its cabinet are destroyed." not in mail18_flat:
+        raise ValueError("MAIL-18 archive-destruction statement missing")
     docket = list(csv.DictReader(io.StringIO("\n".join(
         line for line in raw_csv.splitlines() if not line.startswith("#")
     ))))
@@ -113,6 +127,14 @@ def main():
     gap = register_time - job_time
     if gap.total_seconds() <= 0:
         raise ValueError("return-register reconciliation predates selected job")
+    date_line = next((line for line in mail18.splitlines() if line.startswith("Date: ")), None)
+    if date_line is None:
+        raise ValueError("MAIL-18 incident notice date missing")
+    incident_notice_time = parsedate_to_datetime(date_line[6:])
+    job_to_notice = incident_notice_time - job_time
+    notice_to_register = register_time - incident_notice_time
+    if job_to_notice.total_seconds() <= 0 or notice_to_register.total_seconds() <= 0:
+        raise ValueError("expected print event, incident notice, register reconciliation order")
 
     output = {
         "source_sha256": PINS,
@@ -148,6 +170,10 @@ def main():
         "selected_job_time_utc": job_time.isoformat(),
         "return_register_reconciled_utc": register_time.isoformat(),
         "elapsed_between_selected_job_and_register_reconciliation": str(gap),
+        "incident_notice_time_utc": incident_notice_time.isoformat(),
+        "elapsed_between_selected_job_and_incident_notice": str(job_to_notice),
+        "elapsed_between_incident_notice_and_return_register": str(notice_to_register),
+        "incident_access_boundary": "MAIL-18 says the incident team controlled access and nobody was to re-enter for records or personal belongings; no local source identifies whether ESC-N/L-29/N was inside or outside the restricted instrument store.",
         "inference": (
             "The matched cassette-part sequence and South 'catch pin' description "
             "support a mechanical-catch hypothesis; they do not prove the North "
