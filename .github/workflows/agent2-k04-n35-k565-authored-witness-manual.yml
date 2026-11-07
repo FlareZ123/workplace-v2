@@ -1,0 +1,13 @@
+name: Agent2 H17 last authored caption seed fragment witnesses
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-k565-whole-pattern:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode all joint-correct author raw seed fragments
+        run: python agents/agent2/k04_n35_k565_authored_chunk_witness_sft.py
