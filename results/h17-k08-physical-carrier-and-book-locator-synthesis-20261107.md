@@ -5,13 +5,13 @@
 
 ## Conclusion
 
-The local export strongly identifies the **original recovery envelope** as the literal carrier of the K08 phrase: MAIL-20 says the envelope preserves the exact words Emily finally chose. The strongest supporting source location is **Emily's desk-note stack under the WN-14 folder**, outside the controlled-copy sleeve, with photographs and galley captions retained separately from the engineering procedure (MAIL-14). N23 refers to wording in Emily's margin; MAIL-11 says desk notes and photograph captions informed the wording.
+The local export identifies the **original recovery envelope** as the literal carrier through N23, which says the envelope remembers the words Emily finally put on it; the route/custodian identifiers name the envelope object. MAIL-20 is a separate post-incident locator: it reports several captions and drafts on Emily's desk and says the exact words she chose matter. The strongest supporting source location is **Emily's desk-note stack under the WN-14 folder**, outside the controlled-copy sleeve, with photographs and galley captions retained separately from the engineering procedure (MAIL-14). MAIL-11 says desk notes and photograph captions informed the wording.
 
 The exact phrase is absent from the surviving export. The envelope, original desk notes/margins, and separate photographs/captions are not present, so K08 remains unrecoverable from the current local files. The book clues below may identify a supporting physical source, but none is proven.
 
 ## Source-derived carrier chain
 
-1. **MAIL-20:** several drafts/captions were on Emily's desk; the words she finally chose matter; the envelope remembers those words. This is the strongest evidence for the envelope as the final-text carrier.
+1. **MAIL-20:** several captions and drafts were on Emily's desk after the incident notice; the exact final wording matters. It does not quote the phrase or state the envelope's location. This is the strongest evidence for the envelope as the final-text carrier.
 2. **MAIL-14:** the WN-14 folder was handed to the incoming watch; Emily's desk notes were physically under it, outside the controlled-copy sleeve; photographs and galley captions were kept separate from the engineering procedure. This is a direct physical locator for the notes and images.
 3. **MAIL-11:** Emily worked out the wording from desk notes and photograph captions; N17/N18 are other-purpose inscriptions and are not the keeper phrase.
 4. **N20/N23:** N20 gives the semantic brief (sea, end of night, voices at table); N23 points to wording in Emily's margin and distinguishes it from an official slogan.
@@ -74,7 +74,7 @@ See [K08 underleaf-indentation acquisition path](h17-k08-underleaf-indentation-a
 
 ## Limitations and confidence
 
-- **High confidence:** MAIL-20 identifies the envelope as the final-text carrier; MAIL-14 locates the desk notes and separates the photographs/captions from the engineering procedure.
+- **High confidence:** N23 plus the route/custodian identifiers identify the envelope as the final-text carrier; MAIL-14 locates the loose desk notes and separates photographs/captions from the engineering procedure; MAIL-20 independently locates captions/drafts on Emily's desk after the incident notice.
 - **Moderate confidence:** MAIL-06 and MAIL-09 may describe the same David-owned book; `5E67` is a useful physical identity check.
 - **Low-to-moderate confidence:** either candidate book is the MAIL-09 volume. The Riddle candidate has the stronger semantic/physical fingerprint; the Praeger candidate has the stronger edition-sensitive ticket-page pattern. These are competing hypotheses.
 - **No recovered phrase:** no complete K08 phrase has been verified against the acceptance commitment. The missing physical carrier prevents a defensible recovery from the local export.
