@@ -1,0 +1,68 @@
+{
+  "source_url_in_bx25_08": "https://noyes-energy-group.pages.dev/",
+  "scope": "Read-only GET of robots.txt and the linked admin landing page; no credentials or forms submitted.",
+  "pages": [
+    {
+      "label": "robots.txt",
+      "requested_url": "https://noyes-energy-group.pages.dev/robots.txt",
+      "status": 200,
+      "final_url": "https://noyes-energy-group.pages.dev/robots.txt",
+      "content_type": "text/plain",
+      "bytes": 47,
+      "sha256": "44f77b69d01773c5a3d76df61586d89b3f1e536bf08555bf763c8adab163681e",
+      "text": "User-agent: *\nDisallow: /admin\nDisallow: /api/\n"
+    },
+    {
+      "label": "admin landing page (read-only; no login submitted)",
+      "requested_url": "https://noyes-energy-group.pages.dev/admin",
+      "status": 200,
+      "final_url": "https://noyes-energy-group.pages.dev/admin/",
+      "content_type": "text/html",
+      "bytes": 2934,
+      "sha256": "7ab7012194f64c475c3083c65795617b8a9a42860d4ce3fd9c80970e479e5892",
+      "title": "Partner & employee access | Noyes Energy Group",
+      "text_excerpt": "Partner & employee access | Noyes Energy Group Skip to content noyes ENERGY GROUP Back to website \u2197 CONNECTED BY PURPOSE Good energy. Shared ambition. The people and partnerships behind our energy future. NOYES ENERGY GROUP / PARTNER SERVICES SECURE ACCESS PORTAL Welcome back. Sign in to your Noyes Energy Group account. Username Password Show Sign in \u2197 \u00a9 2026 Noyes Energy Group Privacy & cookies",
+      "links": [
+        {
+          "text": "Skip to content",
+          "url": "https://noyes-energy-group.pages.dev/#main"
+        },
+        {
+          "text": "noyes ENERGY GROUP",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Back to website \u2197",
+          "url": "https://noyes-energy-group.pages.dev/"
+        },
+        {
+          "text": "Privacy & cookies",
+          "url": "https://noyes-energy-group.pages.dev/privacy/"
+        }
+      ],
+      "forms": [
+        {
+          "action": "/api/login",
+          "method": "post"
+        }
+      ],
+      "inputs": [
+        {
+          "type": "text",
+          "name": "username",
+          "autocomplete": "username"
+        },
+        {
+          "type": "password",
+          "name": "password",
+          "autocomplete": "current-password"
+        },
+        {
+          "type": "hidden",
+          "name": "runId",
+          "autocomplete": null
+        }
+      ]
+    }
+  ]
+}
