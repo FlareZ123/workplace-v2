@@ -32,7 +32,7 @@ Computed:
 - HMAC-SHA256 first 16 bytes: `4D9BAD0C7C773568B09DD8C80795096C`
 - SHA256 of those 16 bytes: `d3a899102cfd1598245d91f0ced97a0a111da547b439082a086e297acfa00dbb`
 
-<badge color="red" label="NO MATCH" />
+**Result: NO MATCH.**
 
 ## Interpretation and limits
 
