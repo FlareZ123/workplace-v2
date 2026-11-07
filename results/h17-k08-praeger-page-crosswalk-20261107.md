@@ -55,9 +55,9 @@ The 1937 first edition is confirmed as a 394-page book with a rear map, but its 
 
 The page-number alignment is unusually specific, but no supplied source says that the ticket suffixes are book page numbers. The physical page and bookmark must validate or falsify that interpretation.
 
-## 5E67: physical identity, not map coordinate
+## 5E67: possible co-location check, not map coordinate
 
-The accessible rear-map description gives no support for `5E67` as a printed map coordinate. Treat it as the physical-object fingerprint in MAIL-06: if the recovered map-back book or a loose insert contains the old WN-14 standby transcription ending `5E67`, that would provide a source-backed join between David's pocket book and MAIL-09's map-back book. Do not treat it as a K08 component, word offset, map coordinate, or book-cipher rule without further evidence.
+The accessible rear-map description gives no support for `5E67` as a printed map coordinate. MAIL-06 records the suffix only as the end of an old WN-14 standby transcription in David's pocket book; it does not say that the suffix identifies the MAIL-09 book. If the same transcription is physically found in the map-back book or a loose insert, that co-location would be new evidence that the two objects may be the same. Do not treat `5E67` as a source-defined identity fingerprint, K08 component, word offset, map coordinate, or book-cipher rule.
 
 ## Required physical check
 
@@ -89,4 +89,4 @@ A separate, low-confidence interpretation splits the two bytes of the MAIL-06 st
 
 This is distinct from interpreting `0x5E67` as one raw word offset (24,167), which produced generic text in the unrelated Riddle candidate. The structured split is strengthened by the existence of L-29/N ticket ST-094 and by p.94 falling within the 1947 Praeger edition's *Volcanic North* section. No supplied source defines this byte-splitting convention, and no authorized scan of p.94 has been inspected. Treat it as a testable locator hypothesis, not a decoded word or K08 component.
 
-If the physical book proves to be the 1947 Praeger edition, inspect printed p.94 and count word 103 using a documented convention, while preserving the page, adjacent pages and receipt position. If the book is another title or edition, do not transfer this locator without evidence. Also check for the WN-14 standby transcription ending `5E67` as an identity join between MAIL-06 and MAIL-09.
+If the physical book proves to be the 1947 Praeger edition, inspect printed p.94 and count word 103 using a documented convention, while preserving the page, adjacent pages and receipt position. If the book is another title or edition, do not transfer this locator without evidence. Also check whether the WN-14 standby transcription ending `5E67` is physically co-located; this would be new evidence, not a source-defined identity join.
