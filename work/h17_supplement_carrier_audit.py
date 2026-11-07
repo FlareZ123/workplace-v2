@@ -1,6 +1,6 @@
 """Audit 2026 supplemental H-17 originals for literal missing REC8 carriers.
 
-Source material, original verifier and commitments are read-only. Requires pypdf.
+Source material, original verifier and commitments are read-only. Uses only the Python standard library.
 Run from any working directory: python h17_supplement_carrier_audit.py /path/to/h17-archive
 """
 from __future__ import annotations
@@ -11,8 +11,6 @@ import json
 import re
 import sys
 from pathlib import Path
-
-from pypdf import PdfReader
 
 
 def normalized_words(text: str) -> list[str]:
@@ -104,21 +102,11 @@ def main(root: Path) -> None:
         print('ORIGINAL', path.name, len(data), hashlib.sha256(data).hexdigest(), counts)
         for key in totals:
             totals[key] += counts[key]
-    pdf = office / 'BX25-08.pdf'
-    reader = PdfReader(pdf)
-    assert reader.is_encrypted and reader.decrypt('8131')
-    assert len(reader.pages) == 1
-    parsed_stream = reader.pages[0].get_contents().get_data()
-    parsed_text = reader.pages[0].extract_text().encode('utf-8')
-    for name, data in [('PDF-DECRYPTED-CONTENT-STREAM', parsed_stream),
-                       ('PDF-DECRYPTED-EXTRACTED-TEXT', parsed_text)]:
-        counts = scan_carrier(name, data, mask, nonce, t4, t8)
-        print('DERIVED', name, len(data), hashlib.sha256(data).hexdigest(), counts)
-        for key in totals:
-            totals[key] += counts[key]
+    # BX25-08.pdf is scanned above as encrypted raw bytes only.
+    # Do not decrypt without the original Risk-desk paper key register.
     print('TOTALS', totals)
     print('RESULT target_K04=NO_MATCH target_K08=NO_MATCH checked_supplemental=4 '
-          'derived_pdf_views=2 originals_preserved=YES')
+          'derived_pdf_views=0 encrypted_pdf_raw_only=YES originals_preserved=YES')
 
 
 if __name__ == '__main__':
