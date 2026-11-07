@@ -2,8 +2,12 @@
 """Read-only, bounded OAI-PMH lookup for Cowper's Sailing Tours, Part I."""
 from __future__ import annotations
 
+import calendar
 import re
 import sys
+import time
+from collections import deque
+from datetime import date, timedelta
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -80,131 +84,149 @@ def list_metadata_prefixes() -> list[str]:
     return prefixes
 
 
-def list_sets() -> list[tuple[str, str]]:
-    found: list[tuple[str, str]] = []
-    params = {"verb": "ListSets"}
-    for _ in range(50):
-        root = fetch_xml(BASE, params)
-        container = root.find("oai:ListSets", NS)
+def scan_date_windows(prefix: str, all_prefixes: list[str]) -> int:
+    first = date(2002, 1, 1)
+    last = date.today()
+    windows: deque[tuple[date, date]] = deque()
+    cursor = date(first.year, first.month, 1)
+    while cursor <= last:
+        month_end = date(cursor.year, cursor.month, calendar.monthrange(cursor.year, cursor.month)[1])
+        windows.append((cursor, min(month_end, last)))
+        cursor = date(cursor.year + (cursor.month == 12), 1 if cursor.month == 12 else cursor.month + 1, 1)
+
+    requests_made = 0
+    records_seen = 0
+    split_windows = 0
+    while windows:
+        if requests_made >= 2500:
+            print("REQUEST_LIMIT_REACHED", requests_made, "remaining_windows", len(windows), flush=True)
+            return 3
+        start, end = windows.popleft()
+        params = {
+            "verb": "ListRecords",
+            "metadataPrefix": prefix,
+            "from": start.isoformat(),
+            "until": end.isoformat(),
+        }
+        requests_made += 1
+        try:
+            root = fetch_xml(BASE, params)
+        except RuntimeError as exc:
+            if "noRecordsMatch" in str(exc):
+                continue
+            raise
+
+        container = root.find("oai:ListRecords", NS)
         if container is None:
-            break
-        for item in container.findall("oai:set", NS):
-            spec = child_text(item, "oai:setSpec")
-            name = child_text(item, "oai:setName")
-            if spec:
-                found.append((spec, name))
-        token = child_text(container, "oai:resumptionToken")
-        if not token:
-            break
-        params = {"verb": "ListSets", "resumptionToken": token}
-    return found
-
-
-def scan_records(prefix: str, set_spec: str | None, all_prefixes: list[str]) -> tuple[str | None, int, int]:
-    params = {"verb": "ListRecords", "metadataPrefix": prefix}
-    if set_spec:
-        params["set"] = set_spec
-    current_root = fetch_xml(BASE, params)
-    seen = 0
-    for page in range(1, MAX_PAGES + 1):
-        container = current_root.find("oai:ListRecords", NS)
-        if container is None:
-            print("NO_LISTRECORDS_CONTAINER", prefix, set_spec or "ALL", flush=True)
-            return None, seen, page
-
+            print("NO_LISTRECORDS_CONTAINER", start, end, flush=True)
+            continue
+        records = container.findall("oai:record", NS)
         token_node = container.find("oai:resumptionToken", NS)
         token = child_text(container, "oai:resumptionToken")
-        next_root = None
         if token:
+            complete = token_node.attrib.get("completeListSize", "unknown") if token_node is not None else "unknown"
+            if start == end:
+                print("DAY_STILL_PAGINATED", start, "completeListSize", complete, flush=True)
+                continue
+            days = (end - start).days
+            midpoint = start + timedelta(days=days // 2)
+            windows.appendleft((midpoint + timedelta(days=1), end))
+            windows.appendleft((start, midpoint))
+            split_windows += 1
+            if split_windows % 100 == 0:
+                print(
+                    "SCAN_PROGRESS",
+                    "requests", requests_made,
+                    "records", records_seen,
+                    "splits", split_windows,
+                    "queue", len(windows),
+                    "latest_split", start, end, "count", complete,
+                    flush=True,
+                )
+            time.sleep(0.02)
+            continue
+
+        for record in records:
+            header = record.find("oai:header", NS)
+            if header is None or header.attrib.get("status") == "deleted":
+                continue
+            records_seen += 1
+            identifier = child_text(header, "oai:identifier")
+            datestamp = child_text(header, "oai:datestamp")
+            text = record_text(record).lower()
+            if "cowper" not in text or "sailing" not in text:
+                continue
+            if "essex" not in text and "suffolk" not in text:
+                continue
+
+            print("COWPER_RECORD_FOUND", flush=True)
+            print("OAI_IDENTIFIER", identifier, flush=True)
+            print("DATESTAMP", datestamp, flush=True)
+            for url in record_urls(record):
+                print("RECORD_URL", url, flush=True)
+            metadata = record.find("oai:metadata", NS)
+            if metadata is not None:
+                print(
+                    "MATCH_METADATA_XML",
+                    ET.tostring(metadata, encoding="unicode")[:30000],
+                    flush=True,
+                )
+            for other_prefix in all_prefixes:
+                if other_prefix == prefix:
+                    continue
+                try:
+                    expanded = fetch_xml(
+                        BASE,
+                        {"verb": "GetRecord", "identifier": identifier, "metadataPrefix": other_prefix},
+                    )
+                    expanded_metadata = expanded.find(".//oai:metadata", NS)
+                    if expanded_metadata is not None:
+                        print(
+                            "GETRECORD_METADATA_XML",
+                            other_prefix,
+                            ET.tostring(expanded_metadata, encoding="unicode")[:30000],
+                            flush=True,
+                        )
+                except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
+                    print("GETRECORD_ERROR", other_prefix, type(exc).__name__, str(exc)[:500], flush=True)
+            match = re.search(r"\bolbp\d+\b", identifier)
+            if match:
+                bib_id = match.group(0)
+                print("BIB_ID", bib_id, flush=True)
+                try:
+                    availability = fetch_xml(
+                        AVAILABILITY,
+                        {"id": bib_id, "id_type": "bib"},
+                    )
+                    print(
+                        "AVAILABILITY_XML",
+                        ET.tostring(availability, encoding="unicode")[:20000],
+                        flush=True,
+                    )
+                except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
+                    print("AVAILABILITY_ERROR", type(exc).__name__, str(exc)[:500], flush=True)
+            return 0
+
+        if requests_made % 100 == 0:
             print(
-                "RESUMPTION_TOKEN",
-                "page", page,
-                "length", len(token),
-                "attributes", token_node.attrib if token_node is not None else {},
-                "preview", repr(token[:160]),
+                "SCAN_PROGRESS",
+                "requests", requests_made,
+                "records", records_seen,
+                "splits", split_windows,
+                "queue", len(windows),
+                "last_window", start, end,
                 flush=True,
             )
-            # Fetch the next page before doing per-record work; OAI tokens may be short-lived.
-            next_root = fetch_xml(
-                BASE,
-                {"verb": "ListRecords", "resumptionToken": token},
-            )
+        time.sleep(0.02)
 
-        records = container.findall("oai:record", NS)
-        page_text = " ".join(current_root.itertext()).lower()
-        if all(term in page_text for term in ("cowper", "sailing")) and (
-            "essex" in page_text or "suffolk" in page_text
-        ):
-            for record in records:
-                header = record.find("oai:header", NS)
-                if header is None or header.attrib.get("status") == "deleted":
-                    continue
-                seen += 1
-                identifier = child_text(header, "oai:identifier")
-                datestamp = child_text(header, "oai:datestamp")
-                text = record_text(record)
-                lowered = text.lower()
-                if "cowper" in lowered and "sailing" in lowered and (
-                    "essex" in lowered or "suffolk" in lowered
-                ):
-                    print("COWPER_RECORD_FOUND", flush=True)
-                    print("OAI_IDENTIFIER", identifier, flush=True)
-                    print("DATESTAMP", datestamp, flush=True)
-                    print("SET_SPEC", set_spec or "ALL", flush=True)
-                    for url in record_urls(record):
-                        print("RECORD_URL", url, flush=True)
-                    metadata = record.find("oai:metadata", NS)
-                    if metadata is not None:
-                        xml = ET.tostring(metadata, encoding="unicode")
-                        print("MATCH_METADATA_XML", xml[:30000], flush=True)
-                    for other_prefix in all_prefixes:
-                        if other_prefix == prefix:
-                            continue
-                        try:
-                            expanded = fetch_xml(
-                                BASE,
-                                {"verb": "GetRecord", "identifier": identifier, "metadataPrefix": other_prefix},
-                            )
-                            expanded_metadata = expanded.find(".//oai:metadata", NS)
-                            if expanded_metadata is not None:
-                                print(
-                                    "GETRECORD_METADATA_XML",
-                                    other_prefix,
-                                    ET.tostring(expanded_metadata, encoding="unicode")[:30000],
-                                    flush=True,
-                                )
-                        except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
-                            print("GETRECORD_ERROR", other_prefix, type(exc).__name__, str(exc)[:500], flush=True)
-                    match = re.search(r"\bolbp\d+\b", identifier)
-                    if match:
-                        bib_id = match.group(0)
-                        print("BIB_ID", bib_id, flush=True)
-                        try:
-                            availability = fetch_xml(
-                                AVAILABILITY,
-                                {"id": bib_id, "id_type": "bib"},
-                            )
-                            print(
-                                "AVAILABILITY_XML",
-                                ET.tostring(availability, encoding="unicode")[:20000],
-                                flush=True,
-                            )
-                        except (urllib.error.URLError, TimeoutError, ValueError, RuntimeError) as exc:
-                            print("AVAILABILITY_ERROR", type(exc).__name__, str(exc)[:500], flush=True)
-                    return identifier, seen, page
-        else:
-            seen += sum(
-                1 for record in records
-                if (header := record.find("oai:header", NS)) is not None
-                and header.attrib.get("status") != "deleted"
-            )
-
-        if not token:
-            return None, seen, page
-        if next_root is None:
-            return None, seen, page
-        current_root = next_root
-    return None, seen, MAX_PAGES
+    print(
+        "NO_COWPER_RECORD_AFTER_DATE_SCAN",
+        "requests", requests_made,
+        "records", records_seen,
+        "splits", split_windows,
+        flush=True,
+    )
+    return 1
 
 
 def main() -> int:
@@ -217,41 +239,12 @@ def main() -> int:
 
     prefixes = list_metadata_prefixes()
     print("METADATA_PREFIXES", ",".join(prefixes), flush=True)
-    try:
-        sets = list_sets()
-    except RuntimeError as exc:
-        print("LISTSETS_UNAVAILABLE", str(exc)[:500], flush=True)
-        sets = []
-    print("SET_COUNT", len(sets), flush=True)
-    relevant_sets = [
-        (spec, name)
-        for spec, name in sets
-        if any(word in (spec + " " + name).lower() for word in ("guidebook", "sailing", "nautical", "yacht"))
-    ]
-    for spec, name in relevant_sets:
-        print("RELEVANT_SET", spec, "|", name, flush=True)
-
     prefix = "oai_dc" if "oai_dc" in prefixes else ("mods" if "mods" in prefixes else "")
     if not prefix:
         print("NO_SUPPORTED_MODS_OR_DC_PREFIX", flush=True)
         return 2
-
-    if relevant_sets:
-        for spec, _ in relevant_sets:
-            try:
-                identifier, seen, pages = scan_records(prefix, spec, prefixes)
-            except RuntimeError as exc:
-                print("SET_SCAN_ERROR", spec, str(exc)[:500], flush=True)
-                continue
-            print("SET_SCAN", spec, "records", seen, "pages", pages, "found", bool(identifier), flush=True)
-            if identifier:
-                return 0
-    identifier, seen, pages = scan_records(prefix, None, prefixes)
-    print("FULL_SCAN", "records", seen, "pages", pages, "found", bool(identifier), flush=True)
-    if identifier:
-        return 0
-    print("NO_COWPER_RECORD_WITHIN_BOUNDED_SCAN", flush=True)
-    return 1
+    print("DATE_BISECTION_PREFIX", prefix, "from 2002-01-01", "until", date.today(), flush=True)
+    return scan_date_windows(prefix, prefixes)
 
 
 if __name__ == "__main__":
