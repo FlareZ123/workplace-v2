@@ -1,6 +1,19 @@
 name: Agent36 Cowper scan access probe
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: "part1-search or one frozen Part II page (p130/p151/p121/p135/p142)"
+        required: true
+        default: "part1-search"
+        type: choice
+        options:
+          - part1-search
+          - p130
+          - p151
+          - p121
+          - p135
+          - p142
 permissions:
   contents: read
 jobs:
@@ -13,12 +26,12 @@ jobs:
         with:
           python-version: '3.12'
       - name: Probe exact public Cowper scan identifiers
-        run: python agents/agent36/cowper_scan_access_probe.py
+        run: python agents/agent36/cowper_scan_access_probe.py --target "${{ inputs.target }}"
       - name: Preserve viewer responses and representative public page
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: agent36-cowper-scan-probe
+          name: agent36-cowper-scan-${{ inputs.target }}
           path: cowper-probe/
           if-no-files-found: warn
           retention-days: 7
