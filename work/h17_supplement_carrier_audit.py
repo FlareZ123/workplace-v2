@@ -31,14 +31,15 @@ def scan_carrier(name: str, data: bytes, mask: bytes, nonce: bytes,
     for offset in range(max(0, len(data) - 15)):
         test_bytes(data[offset:offset + 16])
         counts['byte_windows'] += 1
-    text = data.decode('utf-8', errors='replace')
-    for run in re.finditer(r'[0-9A-Fa-f]{32,}', text):
-        for offset in range(len(run.group()) - 31):
-            value = bytes.fromhex(run.group()[offset:offset + 32])
+    for run in re.finditer(rb'[0-9A-Fa-f]{32,}', data):
+        run_hex = run.group().decode('ascii')
+        for offset in range(len(run_hex) - 31):
+            value = bytes.fromhex(run_hex[offset:offset + 32])
             test_bytes(value)
             counts['hex_windows'] += 1
     if not include_caption_spans:
         return counts
+    text = data.decode('utf-8', errors='replace')
     words = normalized_words(text)
     for start in range(len(words)):
         for end in range(start + 1, min(len(words), start + 40) + 1):
