@@ -56,3 +56,21 @@ The possible physical-marginalia link is an inference from MAIL-09 and N23, not 
 The `RN-047` entry in `supplier-reconciliation-L29.csv` is not a supported join to this tea receipt: it is mapped to ST-09 / BX25/03 / stores-float exception, with no reference to the television room, book, tea, or Emily.
 
 **Outcome:** zero K08 words recovered. This is a bounded printed-text exclusion and a concrete physical-source locator, not a solution or a title identification.
+
+
+## Chapter XX semantic fingerprint and expanded exact test
+
+The specific candidate is now more interesting than a generic maritime book. Chapter XX of *The Riddle of the Sands* is titled “The Little Drab Book”. It opens with Davies at a cabin table amid books, then describes an old, cheap-cloth guide for yachtsmen to a British estuary. The in-story guide has a partly scratched white “3d.” label, a title-page attribution “By Lieut. X--, R.N.”, a yacht-owner frontispiece, and the name “Dollmann” on the back. The chapter closes with the protagonists too excited to sup or sleep, talking with absolute mutual confidence amid discordant voices. The sea, night, table and voices therefore appear in close narrative proximity, matching N20's three-part semantic description unusually well.
+
+This is a **semantic/source hypothesis**, not an identification. The novel does not name the guide's title or say that the guide itself has a map in the back. MAIL-09's map-back book could be the novel, the in-story guide, or another book. The GITenberg edition's map/chart assets establish only that the novel itself is a plausible map-bearing candidate. The title/page/receipt and Emily-to-book link remain absent.
+
+A second, broader exact test covered every contiguous 3–64-word window in Chapter XX, without any motif filter:
+- Chapter XX normalized words: **3,938**.
+- Candidate windows tested: **242,141**.
+- K08 commitment matches: **0**.
+
+The first whole-book test remains 55,941 motif-gated windows with zero matches. The chapter-wide test makes a direct printed quote from this chapter unlikely under the exact K08 normalization. If this source connection is real, the phrase is more likely Emily's paraphrase or a handwritten margin/receipt than a literal sentence in the printed text.
+
+MAIL-06 supplies a possible physical identity check: David says his pocket book contains an old WN-14 standby transcription whose group D ends `5E67`. MAIL-09's map-back book also belongs to David, one day later. The two items may be the same, but the records do not say so. Interpreting `5E67` as hex word offset 24,167 in the novel produced generic surrounding text; no indexing rule is established. If the book is recovered, check whether it contains that standby transcription as an identity discriminator, not as a K08 component.
+
+For physical retrieval, check the exact David-owned book against the Chapter-XX fingerprint (old drab/cheap cloth, 3d. label, yachtsman's guide to a British estuary, Lieut. X-- R.N. title page, yacht frontispiece, “Dollmann” on back), and separately check for the WN-14 standby transcription ending `5E67`. Preserve the receipt bookmark in situ, the marked page and adjacent pages, all marginalia, and both sides of the receipt. Do not infer the book's title from this candidate.
