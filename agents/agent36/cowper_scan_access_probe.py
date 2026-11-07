@@ -107,6 +107,8 @@ def fetch(name: str, url: str) -> tuple[bytes | None, dict[str, object]]:
                     record["json_parse"] = "failed"
             if content_type.startswith("image/png") and len(body) >= 24:
                 record["png_dimensions"] = struct.unpack(">II", body[16:24])
+            if content_type.startswith("image/") and name.endswith("_image"):
+                print(f"IMAGE_BASE64 name={name} data={base64.b64encode(body).decode('ascii')}")
             filename = name + (
                 ".html" if "html" in content_type else
                 ".json" if "json" in content_type else
@@ -207,6 +209,8 @@ def main() -> int:
             "google_vid_oclc_7504145": "https://books.google.com/books?vid=OCLC7504145",
             "google_vid_oclc_894082875": "https://books.google.com/books?vid=OCLC894082875",
             "google_viewer_part2": f"https://books.google.es/books?hl=en&id={PART2_ID}&pg=PA130",
+            "google_part2_title_page": f"https://books.google.es/books?hl=en&id={PART2_ID}&pg=PR3",
+            "google_part2_title_page_image": f"https://books.google.com/books/content?id={PART2_ID}&pg=PR3&img=1&zoom=2&edge=curl&source=gbs_api",
             "google_part2_about": f"https://books.google.es/books?id={PART2_ID}&source=gbs_navlinks_s",
             "google_part2_plaintext_p130": f"https://books.google.es/books?pg=PA130&id={PART2_ID}&output=text",
         }
