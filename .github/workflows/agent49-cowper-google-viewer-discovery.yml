@@ -1,0 +1,18 @@
+name: Agent 49 Cowper Google Books image URL discovery
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: windows-2022
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Inspect viewer for signed page-image references
+        run: python agents/agent49/cowper_google_viewer_image_discovery.py
