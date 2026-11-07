@@ -66,3 +66,10 @@ The 20 EML members were parsed with Python's standard-library email parser:
 - Consequently, the supplied email set contains no hidden MIME copy of the PTW-417 field sketch, WN-14 page, native photograph, or other attachment. It also does not preserve native reply-thread linkage. The message bodies and Date headers remain useful, but the native mailbox export and attachment/thread metadata are absent.
 
 This reinforces the request for the original mailbox export and the native attachments/sidecars, especially the PTW-417 closeout correspondence and field sketch referenced by MAIL-04 and work-order-417.html. It does not establish that those attachments still exist.
+
+
+## Repository resource-history cross-check
+
+The public workplace-v1 resource history has four commits touching resources. The only human upload commit ("HUMAN: add new files from corporate", 20 October 2026 02:08:52 UTC) added exactly four supplemental office files: BX25-08.pdf, print-fleet-retirement-note.txt, retired-office-bookmarks.html, and supplier-reconciliation-L29.csv. The later cleanup commit removed only the obsolete resources/AGENT_PROMPT.txt. The workplace-v2 resource history contains the initial resource import and subsequent changes to existing verifier/acceptance material; it exposes no deleted or later-added original September index, ST-112 packet, raw spool object, native mailbox, or field sketch. The four supplemental office files are the same in both repositories.
+
+This is a check of the two public repository histories, not proof that no external copy exists. It does mean there is no additional original source file to recover from the currently visible workplace-v1/v2 resource history.
