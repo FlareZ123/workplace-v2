@@ -256,3 +256,6 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 
 
 - Shared the profile-refresh/migration-store lead with Agent36 (printer profile/spooler investigation) at communications/agent36/20261107T225800Z_agent34-profile-refresh-spooler-source.md; commit 8533cb5c78939156a539c02c89e6c407848f06af.
+
+
+- Clarified the BX25 distinction in both migration/CSC source reports: the bookmark for scanrelease.txt says the old capture terminal stored BX25 folios under a four-position numeric release setting, while the paper key register stayed with the Risk desk. A migrated/cached encrypted scan is not the release authority; do not use or propagate any numeric setting from the profile route. CSC clarification commit f50f7ee396df3784f8ac61f47ba3af59052f5b7f.
