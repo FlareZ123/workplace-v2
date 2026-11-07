@@ -19,7 +19,7 @@ from agents.agent49.k04_p951_symbolic_basis import ORIGIN, source, temper
 from agents.agent12.k04_p951_gap_word_recovery import (
     GAP43_STAGES,
     GAP96_STAGES,
-    recover_k04,
+    recover_k04_from_native_words,
 )
 
 
@@ -33,6 +33,13 @@ def consistent_assignment(basis) -> int:
     return assignment
 
 
+def native_word(state, stage: int, assignment: int) -> int:
+    return sum(
+        ((form & assignment).bit_count() & 1) << bit
+        for bit, form in enumerate(state[stage - ORIGIN])
+    )
+
+
 def output_word(state, stage: int, assignment: int) -> int:
     return sum(
         ((form & assignment).bit_count() & 1) << bit
@@ -44,14 +51,14 @@ def main() -> None:
     basis, state = source(REPO_ROOT)
     assignment = consistent_assignment(basis)
 
-    gap43 = [output_word(state, stage, assignment) for stage in GAP43_STAGES]
-    gap96 = [output_word(state, stage, assignment) for stage in GAP96_STAGES]
+    gap43 = [native_word(state, stage, assignment) for stage in GAP43_STAGES]
+    gap96 = [native_word(state, stage, assignment) for stage in GAP96_STAGES]
     expected_payload = b"".join(
         output_word(state, stage, assignment).to_bytes(4, "little")
         for stage in range(951, 955)
     )
 
-    result = recover_k04(gap43, gap96)
+    result = recover_k04_from_native_words(gap43, gap96)
     actual_payload = bytes.fromhex(str(result["coupon_payload"]))
     if actual_payload != expected_payload:
         raise AssertionError(
@@ -59,8 +66,8 @@ def main() -> None:
         )
 
     print("Synthetic p951 recovery mechanics: PASS")
-    print("Gap43 words:", " ".join(f"{word:08X}" for word in gap43))
-    print("Gap96 words:", " ".join(f"{word:08X}" for word in gap96))
+    print("Gap43 native words:", " ".join(f"{word:08X}" for word in gap43))
+    print("Gap96 native words:", " ".join(f"{word:08X}" for word in gap96))
     print("Synthetic target:", expected_payload.hex().upper())
     print("K04 commitment match:", result["matches"])
     print("The synthetic target is not a recovered archive value.")
