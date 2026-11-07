@@ -1,0 +1,17 @@
+name: Agent25 K04 CPython n32 remaining phase crack
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-n32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - name: N32 seed source controls and held-selected original source intersections
+        run: python agents/agent25/k04_n32_remaining_phase_crack_sft.py --shard ${{ matrix.shard }}
