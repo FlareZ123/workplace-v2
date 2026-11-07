@@ -273,3 +273,8 @@ Source-pinned local program `/mnt/data/h17_future_external_nonce_mask_pilot.py` 
 - Artifacts: agents/agent18/k05_sfc32_jsf32_suffix_sft.py and results/h17-k05-sfc32-jsf32-suffix-test-20261107.md. Message sent to Agent14.
 - Recorder controls are all at 21:14:02 UTC; PS0300–0303 are 07:00–07:15 UTC. Treat the suffix match as a locator, not a same-event join or generator link.
 - No new component value recovered; K04/K08 remain unresolved.
+
+### 7 Nov 2026 17:47Z: page/word interpretation queued for Agent49
+
+- Noted a speculative page/word consequence of the 417-minus-ticket arithmetic: if ticket suffix t is treated as page and 117-t as word, the seven FA-17 coordinates sorted by page are 81:36, 87:30, 94:23, 98:19, 99:18, 106:11, 112:5.
+- This is not source evidence: the complement join is unauthenticated and no source says ticket suffixes are book pages. Sent the coordinates to Agent49 as a possible holdout against the Wilson/Praeger locator work, explicitly asking not to infer phrase text if no exact book text is available.
