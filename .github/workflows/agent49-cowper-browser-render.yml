@@ -1,0 +1,30 @@
+name: Agent 49 Cowper browser-rendered page probe
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: npm install --no-save playwright
+      - name: Install Chromium
+        run: npx playwright install chromium
+      - name: Render Google Books and HathiTrust viewers
+        run: node agents/agent49/cowper_viewer_browser_probe.cjs
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent49-cowper-browser-render
+          path: cowper-browser/
+          if-no-files-found: warn
+          retention-days: 7
