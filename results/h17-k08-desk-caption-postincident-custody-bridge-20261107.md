@@ -43,4 +43,4 @@ No phrase candidates were generated or tested. No exact K08 words were recovered
 - `resources/evidence/mail/14.eml`: `9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5`
 - `resources/evidence/mail/18.eml`: `7dc1f122f92ce23c110aa50fd78ae7a471bdf9e60a44e358e3b90e497f664cf0`
 - `resources/evidence/mail/20.eml`: `e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71`
-- `resources/evidence/crew/noticeboard-and-desk-notes.txt`: `6d7e0b6e0f4c... ` (the note file is not pinned by this report; use the repository copy and preserve its original hash when acquired).
+- `resources/evidence/crew/noticeboard-and-desk-notes.txt`: `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
