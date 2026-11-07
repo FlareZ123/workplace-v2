@@ -184,3 +184,5 @@ Next: continue seeking genuinely new source-bearing evidence for K04/K08. Prefer
 
 
 - PTW-417 duplicate-A metadata correction: raw seal-receipts.jsonl confirms both SG-574A9232 and SG-7E73B4CC are signed CLOSED AS_LEFT revision-1 bay-A rows, but only SG-7E73B4CC carries asset=seal-rack/A and inspector=Simon [censored]; SG-574A9232 omits both fields. An earlier communication incorrectly said both shared those fields; that statement has been corrected in the two acquisition documents and superseded by a correction message. Preserve both records and request original receipt/revision history.
+
+- Further PTW-417 schema check: all four asset/inspector-annotated revision-1 AS_LEFT/CLOSED/signed rows belong to PTW-417 and form a complete A-D set: A=7E73B4CC, B=AD1D814B, C=5CB72EE5, D=64B2EE4A. MAIL-04's B,D,A,C witness order gives AD1D814B64B2EE4A7E73B4CC5CB72EE5. The fifth bay-A revision-1 row SG-574A9232 is the unannotated row. This makes the issue a schema/provenance distinction: retain both; do not assume the unannotated row is a duplicate or choose either without the original signed receipt and field-sketch/closeout history.
