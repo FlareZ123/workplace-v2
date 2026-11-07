@@ -50,9 +50,13 @@ MAIL-13 says the AX-7782 handoff print was left with the ordinary records folder
 
 Photograph the folder closed and every layer in place before separating anything; record which items were inside, beneath, attached, or separately stored. Preserve any envelope or printed coupon/label only if the original folder arrangement or inventory shows it travelled with the folder. Keep photographs and galley captions separate if their own custody records show they were stored separately. The messages do not prove that the K04 coupon or final K08 envelope was inside this folder, and “ordinary records folder” in MAIL-13 is not explicitly equated with “the folder” in MAIL-14. If multiple folders are present, preserve each and document the relationship rather than forcing them into one object. See [the joint ordinary-folder custody hypothesis](h17-joint-ordinary-records-folder-custody-hypothesis-20261107.md).
 
-## Priority 3: David's map-back yachtsman's guide and tea-receipt bookmark
+## Priority 3: David's map-back book and tea-receipt bookmark
 
 MAIL-09 says the book with a map in the back belonged to David and that a tea receipt was deliberately left in place as a bookmark. Retrieve the exact physical book and receipt together, in situ. Before moving anything, photograph:
+
+**Current narrative/map-back locator (not an identification):** Arthur Ransome's *We Didn't Mean to Go to Sea*, 1949 18th impression, has a rear endpaper map and a p.94 Chapter VII scene involving an all-night passage, Susan setting a place for five at the cabin table, and children waiting in fog with the sea outside. This is the strongest current match to MAIL-11/N20's semantic brief and a plausible literal match for MAIL-09's map-back book. If the physical copy is Ransome, verify the exact imprint/impression, rear endpaper map, p.94 Chapter VII, and whether the tea receipt marks p.94; photograph the receipt both sides and the p.94 margin/adjacent leaves before separation. The printed p.94 text is not the K08 phrase. Do not transfer the Praeger 5E67 page/word hypothesis to Ransome, and do not conflate Ransome with the separate Riddle “Little Drab Book” clue.
+
+
 - Cover, spine, title/imprint page, edition/printing statement and copyright page.
 - Frontispiece, all charts, rear map and its reverse/verso.
 - Printed page 94 and surrounding pages, all margins, handwriting, erasures and annotations.
