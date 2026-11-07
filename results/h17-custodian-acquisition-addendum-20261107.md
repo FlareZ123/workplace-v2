@@ -109,3 +109,12 @@ The obvious PTW-seal shortcut has also been bounded: seven +300/+304 predecessor
 For every returned object, preserve original bytes, source path, owner/custodian, transfer time, file metadata, hashes, page labels, sidecars and chain-of-custody records. Keep original objects distinct from export/reconstruction copies. Do not modify the acceptance files, the supplied encrypted PDF, or the recovered source evidence.
 
 **Completion standard:** derive the missing K04 16-byte coupon and K08 normalized final phrase from authenticated historical originals, then run the unchanged verifier. Require individual PASS for all eight slots and combined PASS with accepted=true. Until then, report the recovery as INCOMPLETE.
+
+
+## HST-4 historian export and missing sequence block
+
+The supplied HST-4 freeze export contains 112 PV records with seq100–211 and 33 DIAG_WORD raw_u16 records across seq0–7/revisions. The export note says acquisition was interrupted at 21:14. No seq212–227 record is present. A source-derived audit finds an exact arithmetic alignment across the 112 retained PV rows under candidate job suffix = seq + 200, mapping them to PS-261003-0300 through PS-261003-0411. If that candidate index continues, seq212–227 would map to PS-0412–0427, including seq217 ↔ PS-0417. The index is not authenticated; the relationship must not be treated as a shared PRNG or draw-count rule.
+
+If a new authorized custody path or unsolicited delivery becomes available, request the complete native HST-4 historian export, all records for seq212–227, the original definition of seq and sample-to-job cross-reference, native export header, original acquisition order and timestamps with UTC offsets, tag/field/unit, quality/state/revision, PV and DIAG_WORD raw values, freeze/interleave metadata, and the interruption/restart/audit trail. Preserve all revisions and SUSPECT/RUN/HOLD rows. Prioritize seq217 as a locator while retaining the full 16-row interval as a holdout-capable block.
+
+The existing [HST-4 crosswalk audit](h17-hst4-pv-spool-job-crosswalk-20261107.md) and [expanded acquisition request](h17-missing-evidence-request.md) document the conditional mapping and exact retrieval fields. This is an independent source-index lead; it does not replace the original PS-0417 attempt-specific job object, the eight native p951 source words, or the physical coupon/custody record.
