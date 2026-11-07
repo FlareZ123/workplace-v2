@@ -67,6 +67,7 @@ def main() -> None:
     assert "N12 / Simon" in notes
     assert "Workshop card: The best repair is sometimes remembering who comes on after you." in notes
     assert "R:/Stores/consumables/mug-stock.xls" in bookmarks
+    assert spool.startswith("# printer buffer reconstruction; retained fragments, payload integrity unverified")
 
     parsed_jobs = {}
     for line in spool.splitlines():
