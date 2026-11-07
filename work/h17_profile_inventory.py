@@ -29,8 +29,9 @@ _SENSITIVE_COMPONENTS = {
 _SENSITIVE_FILENAMES = {
     "cookies.sqlite", "cookies-journal", "login data", "login data for account",
     "web data", "local state", "logins.json", "key4.db", "key3.db",
-    "signons.sqlite", "cert9.db", "cert8.db", "sam", "security",
-    "ntds.dit", "form history", "autofill",
+    "signons.sqlite", "cert9.db", "cert8.db", "sam", "security", "sam.log1", "sam.log2",
+    "security.log1", "security.log2", "ntds.dit", "ntds.dit.log1", "ntds.dit.log2",
+    "form history", "autofill",
 }
 _SENSITIVE_SUFFIXES = {".pfx", ".p12", ".key", ".kdbx", ".pem"}
 
