@@ -38,6 +38,7 @@ def fetch_json(label: str, url: str) -> dict:
                 "sha256": hashlib.sha256(body).hexdigest(),
                 "json": parsed,
                 "body_prefix": None if parsed is not None else body[:500].decode("utf-8", "replace"),
+                "body_text": None if parsed is not None or len(body) > 20000 else body.decode("utf-8", "replace"),
             }
     except urllib.error.HTTPError as exc:
         body = exc.read()
@@ -119,6 +120,18 @@ def main() -> None:
             (
                 "HathiTrust Part I item metadata",
                 "https://catalog.hathitrust.org/api/volumes/brief/htid/hvd.hn5w2p.json",
+            ),
+            (
+                "HathiTrust full Part I item metadata",
+                "https://catalog.hathitrust.org/api/volumes/full/htid/hvd.hn5w2p.json",
+            ),
+            (
+                "HathiTrust full OCLC 7504145 metadata",
+                "https://catalog.hathitrust.org/api/volumes/full/oclc/7504145.json",
+            ),
+            (
+                "HathiTrust MARC record 100485750",
+                "https://catalog.hathitrust.org/Record/100485750.marc",
             ),
         ]
     )
