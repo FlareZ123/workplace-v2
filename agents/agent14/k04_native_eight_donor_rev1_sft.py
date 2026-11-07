@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "agents" / "agent49"))
 import k04_p951_symbolic_basis as mt
 
-source, symbolic = mt.source(ROOT / "resources")
+source, symbolic = mt.source(ROOT)
 assert source.rank == 15365
 stages = (328, 329, 330, 331, 724, 725, 726, 727)
 
