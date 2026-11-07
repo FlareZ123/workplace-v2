@@ -22,20 +22,20 @@ The offsets can also be expressed as a two-stage hypothesis: the existing candid
 
 ## Predicted jobs and retained observations
 
-| Packet | Ticket | Description | Candidate PS | Retained spool observation |
-|---|---|---|---:|---|
-| North L-29/N | ST-094 | lid-plate labour | PS-0399 | ACK LABEL / store |
-| North L-29/N | ST-081 | guide rail | PS-0386 | ACK STORES / bench |
-| North L-29/N | ST-106 | separator fitting | PS-0411 | ACK LABEL / store |
-| North L-29/N | ST-099 | hinge realignment | PS-0404 | ACK LABEL / desk |
-| North L-29/N | ST-112 | catch cleaning | PS-0417 | LABEL ACK; RECOVER REQUESTED; RECOVER ACK2; RECOVER REQUESTED |
-| South L-29/S | ST-130 | fastener kit | PS-0436 | absent from retained spool export |
-| South L-29/S | ST-151 | guide shim credit | PS-0457 | absent from retained spool export |
-| South L-29/S | ST-121 | separator replacement | PS-0427 | ACK RECOVER / desk |
-| South L-29/S | ST-135 | hinge change | PS-0441 | absent from retained spool export |
-| South L-29/S | ST-142 | catch pin | PS-0448 | ACK RECOVER / desk |
-| L-28/A2 FA-17 holdout | ST-098 | old month seal | PS-0403 | ACK RECOVER / store |
-| L-28/A2 FA-17 holdout | ST-087 | old month cleaning | PS-0392 | ACK RECOVER / desk |
+| Packet | Binder tab | Ticket | Description | Candidate PS | Retained spool observation |
+|---|---:|---|---|---:|---|
+| North L-29/N | 01 | ST-094 | lid-plate labour | PS-0399 | ACK LABEL / store |
+| North L-29/N | 02 | ST-081 | guide rail | PS-0386 | ACK STORES / bench |
+| North L-29/N | 03 | ST-106 | separator fitting | PS-0411 | ACK LABEL / store |
+| North L-29/N | 04 | ST-099 | hinge realignment | PS-0404 | ACK LABEL / desk |
+| North L-29/N | 05 | ST-112 | catch cleaning | PS-0417 | LABEL ACK; RECOVER REQUESTED; RECOVER ACK2; RECOVER REQUESTED |
+| South L-29/S | 01 | ST-130 | fastener kit | PS-0436 | absent from retained spool export |
+| South L-29/S | 02 | ST-151 | guide shim credit | PS-0457 | absent from retained spool export |
+| South L-29/S | 03 | ST-121 | separator replacement | PS-0427 | ACK RECOVER / desk |
+| South L-29/S | 04 | ST-135 | hinge change | PS-0441 | absent from retained spool export |
+| South L-29/S | 05 | ST-142 | catch pin | PS-0448 | ACK RECOVER / desk |
+| L-28/A2 FA-17 holdout | — | ST-087 | old month cleaning | PS-0392 | ACK RECOVER / desk |
+| L-28/A2 FA-17 holdout | — | ST-098 | old month seal | PS-0403 | ACK RECOVER / store |
 
 The two L-28/A2 rows are independent of the two tab-05 anchors and support the FA-17 `+305` candidate: both predicted jobs are present as ACK/RECOVER rows. The South `+306` candidate has one non-anchor retained observation, ST-121→PS-0427, which is also ACK/RECOVER/desk like the ST-142→PS-0448 anchor. The other three predicted South jobs lie beyond the normal retained spool range, which ends at suffix 0427 apart from separately retained late rows; their absence is not a negative result.
 
