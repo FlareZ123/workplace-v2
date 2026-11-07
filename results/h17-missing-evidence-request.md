@@ -328,9 +328,9 @@ A negative finding is limited to the specific sheets and methods examined. Paper
 
 ## 7 November 2026: request both competing ST↔PTW↔PS index mappings
 
-A later source-derived audit identifies two plausible numeric offsets between the five posted FA-17 L-29/N service tickets and the same-suffix PTW/PS records. **Neither is an authenticated crosswalk.** The +304 mapping has stronger controls in the surviving export (four matched North tickets land in bays A/B/C/D in binder order, and the earlier FA-17 L-28 holdout matches 2/2 rather than 1/2 for +300), but the original September index or a paired original ticket is still required. Do not retrieve only the +300 set, and do not promote +304 to fact.
+A later source-derived audit identifies two plausible numeric offsets between the five posted FA-17 L-29/N service tickets and the same-suffix PTW/PS records. **Neither is an authenticated crosswalk.** The +304 mapping has stronger controls in the surviving export (four matched North tickets land in bays A/B/C/D in binder order, and the earlier FA-17 L-28/N holdout matches 2/2 rather than 1/2 for +300), but the original September index or a paired original ticket is still required. Do not retrieve only the +300 set, and do not promote +304 to fact.
 
-| Ticket / source group | +300 candidate PTW / PS | +304 candidate PTW / PS |
+| Ticket / source group | +300 candidate PTW / zero-offset PS | +304 candidate PTW / zero-offset PS |
 |---|---|---|
 | L-29/N ST-094 | PTW-394 / PS-261003-0394 | PTW-398 / PS-261003-0398 |
 | L-29/N ST-081 | PTW-381 / PS-261003-0381 | PTW-385 / PS-261003-0385 |
@@ -359,7 +359,28 @@ The candidate ticket neighbours for the spool gaps and selected job also differ:
 6. Any contemporaneous source that explicitly pairs a service-ticket ID with a permit/job ID, including the September vendor index, signed cabinet pages, posting/reversal register or transfer/return manifest.
 7. The original ST-092 and ST-096 packets together, including serial slips and attachments. Under +304, ST-092 maps to PTW-396; under +300, ST-096 maps to PTW-396. The retained PTW-396 receipt is bay C, revision 1, serial `SG-9929E382`, closed/AS_LEFT/signed. Check which original ticket, if either, explicitly cites that permit/serial. This is the most direct local-record discriminator for the gap-96 offset; the retained receipt alone does not choose a ticket.
 
-The +304 audit's four North matches, four distinct bays, binder-order alignment, and 2/2 South holdout are evidence for prioritizing that candidate set during retrieval. They are still a pattern inferred from the supplied records. The +300 candidate remains listed because it is a live competing explanation and the original index is absent. The shared cassette, asset and folio links establish a cohort/provenance association, not an individual ticket-to-job pair. See the reproducible offset audit (h17-k04-st-ptw-ps-offset-ambiguity-20261107.md) and the current source synthesis (results/README.md).
+The +304 audit's four North matches, four distinct bays, binder-order alignment, and 2/2 L-28/N FA-17 holdout are evidence for prioritizing that first-stage PTW candidate during retrieval. They are still a pattern inferred from the supplied records. The +300 candidate remains listed because it is a live competing explanation and the original index is absent. The shared cassette, asset and folio links establish a cohort/provenance association, not an individual ticket-to-job pair. See the reproducible offset audit (h17-k04-st-ptw-ps-offset-ambiguity-20261107.md) and the current source synthesis (results/README.md).
+## 7 November 2026: lane-specific second-stage PTW→PS locator hypothesis
+
+A separate, potentially compatible mapping now extends the candidate ST→PTW first stage. The two print-fleet tab-05 anchors yield PTW→PS `+1` on FA-17/ESC-N and `+2` on LV-42/ESC-S, giving composite ST→PS `+305/+306`. This is not the same hypothesis as assuming the PTW suffix equals the PS suffix in the preceding table.
+
+Independent checks in the retained spool export:
+
+- FA-17 L-28/N holdouts ST-087→PS-0392 and ST-098→PS-0403 are both ACK/RECOVER rows.
+- South L-29/S ST-121→PS-0427 is a non-anchor ACK/RECOVER/desk row, matching the ST-142→PS-0448 tab-05 anchor's ACK/RECOVER/desk role.
+- The three other predicted South jobs, PS-0436, PS-0441 and PS-0457, are outside the retained normal spool range; their absence is not a negative.
+- North L-29/N ST-112 maps to PS-0417, where the selected event remains attempt 2 / RECOVER / ACK. The other four North predictions are PS-0386, PS-0399, PS-0404 and PS-0411.
+
+The two tab-05 pairs used to derive the offsets are anchors, not independent validation. The L-28/N and ST-121 rows are holdouts, but no supplied source explicitly binds these tickets to the predicted PS jobs. A six-control PTW-serial producer screen found no simple CPython/HMAC/BLAKE2 payload matches; this does not falsify the locator. Treat the two-stage join as a promising retrieval hypothesis only. See [the full lane-specific ticket-to-spool screen and SFT](h17-k04-lane-specific-ticket-to-spool-offset-screen-20261107.md).
+
+**Additional records to request if an authorized path or unsolicited delivery becomes available:**
+
+1. The native SEP26 index and source schema/history, explicitly asking whether it defines a two-stage ST→PTW and PTW→PS relation or lane-specific offsets.
+2. Complete native spool/queue records and rendered physical outputs for the South holdouts PS-0427, PS-0436, PS-0441, PS-0448 and PS-0457; PS-0436/0441/0457 are the decisive missing predictions.
+3. Complete native spool/queue records for the FA-17 holdouts PS-0392 and PS-0403, and the North predicted jobs PS-0386, PS-0399, PS-0404, PS-0411 and PS-0417. Preserve all attempts, selector, class, destination, host/device/port/route, .SPL/.SHD or native equivalent, rendering, ACK, media-eject/collection receipt and deletion/retention history.
+4. The original ST-087/ST-098 L-28/N packets and ST-121/ST-130/ST-135/ST-142/ST-151 South packets, with signed pages, attachments, carbonless copies, serial slips and explicit PTW/PS references.
+
+Keep PS-0416 as a separate adjacent same-role blind control. Do not use the lane-specific locator to change the K04 selected attempt, infer coupon bytes, or collapse the PTW, spool-job and physical-coupon carriers.
 
 
 
