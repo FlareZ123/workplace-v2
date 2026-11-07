@@ -63,21 +63,13 @@ If the physical copy is recovered, verify the exact title/imprint/1949 18th impr
 The 2024 Folio Society edition is 264 pages and has a folded Titanic deck plan in a separate blocked pocket at the back, and the book was adapted for film in the 1950s. This made it an attractive two-mail candidate for MAIL-09/MAIL-15, but the local export does not name the Saturday film and the thematic resemblance is weaker than Ransome's specific p.94 cabin-table / all-night-passage scene. Agent18's adversarial review prunes it as a false positive for David's map-back book. Retain the [bounded audit](h17-k08-a-night-to-remember-book-film-locator-20261107.md) to prevent rediscovery; do not continue its subtitle or literary phrase sweeps from this branch.
 
 
+## Secondary page/word experiment: Cowper's *Sailing Tours*
 
-A new competing identification for the MAIL-09 map-back book and MAIL-15 Saturday film is Walter Lord's *A Night to Remember* and its 1958 adaptation. The official Folio Society 2024 edition is 264 pages and has an original Titanic deck plan folded into a separate blocked pocket at the back. That is a notably specific fit for MAIL-09's map-in-back clue; the 1958 adaptation provides a coherent candidate for MAIL-15's unnamed film/subtitle setup.
+Cowper's five-volume *Sailing Tours* is a separate secondary experiment, not the current leading MAIL-09 map-back identification and not the in-story “Little Drab Book.” The Riddle chapter explicitly names Cowper among the ordinary yacht-library books, while distinguishing the unidentified “Little Drab Book” from Cowper. A derived two-volume ticket-page crosswalk places L-29/N suffixes within Part I (1892, 168 pages) and L-29/S suffixes within Part II (1893, 365 pages), but no source says ticket suffixes are page numbers.
 
-Sources:
-- Official Folio Society edition and physical details: https://www.foliosociety.com/usa/a-night-to-remember
-- 1958 film catalogue: https://www.tcm.com/watchtcm/titles/84970
-- 50th-anniversary trade-edition contents, chapter 4 “You Go and I'll Stay a While” at p.47: https://www.cincinnatistate.ecampus.com/night-remember-2nd-lord-walter-philbrick/bk/9780805077643
+The five frozen Part II page-103 words were extracted from visually checked first-edition page images in binder-tab order: “Solent / yards / sailing / the / even.” This is a partial fragment, not a phrase, and no K08 HMAC test was run because the five Part I words remain unavailable. The Part I HathiTrust catalog item is public-domain/full-view, but the runner's image/viewer endpoints returned placeholders/403; the Critic has closed further remote alias/viewer/METS/image probing. Do not repeat those requests or substitute later reprints/dealer descriptions. See the [Cowper Part II extraction](h17-k08-cowper-part2-word103-extraction-20261107.md), [volume crosswalk](h17-k08-cowper-sailing-tours-volume-crosswalk-20261107.md), and [scan-access status](h17-k08-cowper-scan-access-status-20261107.md).
 
-The p.47 locator is from the 50th-anniversary trade edition and must not be transferred to the 2024 Folio edition. The Folio edition's pagination/layout is different. The exact book title and edition in MAIL-09 remain unverified, and the local export does not name the film.
 
-Agent18 tested obvious chapter-title/direct-dialogue candidates without a K08 hit. Agent6 independently checked the book title, chapter title, “We started out together and we'll finish together,” “the last night of a small town,” and other exact candidates against the unchanged K08 commitment; zero matched. Agent10 is pursuing a bounded complete subtitle screen using release-specific sources. These negatives do not test Emily's paraphrase, the complete book, receipt annotations, or handwritten marginalia.
-
-This is a strong **book/film locator hypothesis**, not a recovered phrase and not evidence that the final words are printed in the book. If the physical copy is retrieved, record its imprint/edition, check for the 264-page Folio 2024 deck-plan pocket, preserve the tea receipt in situ and both faces, and inspect the marked page, margins, endpapers and plan annotations. Keep the book/receipt separate from the original envelope and Emily's desk-note/photo-caption stack until a physical join is observed.
-
-See [A Night to Remember book/film locator](h17-k08-a-night-to-remember-book-film-locator-20261107.md).
 
 ## Discriminating physical checks
 
