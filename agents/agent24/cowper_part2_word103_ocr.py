@@ -73,6 +73,16 @@ def main() -> None:
         body = ImageOps.autocontrast(body)
         raw_ocr = pytesseract.image_to_string(body, lang="eng", config="--psm 6")
         joined_body = join_line_wrap_hyphens(raw_ocr)
+        manual_ocr_corrections = []
+        if page_number == 121:
+            # The scan visibly prints "24ft."; Tesseract drops the 4 and
+            # returns "2 ft", which would create a false extra word token.
+            joined_body, replacements = re.subn(r"\b2\s+ft\b", "24ft", joined_body, count=1)
+            if replacements != 1:
+                raise ValueError("Expected page 121 OCR split of printed 24ft. was not found")
+            manual_ocr_corrections.append(
+                "Tesseract '2 ft' corrected to the visibly printed single token '24ft'."
+            )
         tokens = WORD_PATTERN.findall(joined_body)
         if len(tokens) < WORD_INDEX:
             raise ValueError(
@@ -97,6 +107,7 @@ def main() -> None:
                 "main_body_word_token_count": len(tokens),
                 "word_index_1based": WORD_INDEX,
                 "word_103": word,
+                "manual_ocr_corrections": manual_ocr_corrections,
                 "context_tokens_97_to_109": tokens[context_start:context_end],
                 "tokens_1_to_110": tokens[:110],
                 "joined_body_sha256": hashlib.sha256(
