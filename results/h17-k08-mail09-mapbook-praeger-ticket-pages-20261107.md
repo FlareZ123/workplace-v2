@@ -18,7 +18,7 @@ A strong bibliographic match is Robert Lloyd Praeger's *The Way That I Went: An 
 - Google Books exposes edition-specific contents. The 1947 third edition starts **The Volcanic North** at p.62 and **The Silurian Region** at p.118: https://books.google.com/books?id=uT5RAQAAIAAJ
 - The 1997 reprint starts those sections at p.59 and p.111 respectively: https://books.google.com/books?id=Fo0iAQAAIAAJ
 
-The title, Irish geographic organization, and rear folding map make this a much closer physical match to MAIL-09 than the thematic maritime-fiction candidates.
+The title, Irish geographic organization and rear folding map make this a strong structural page-section candidate for the MAIL-09 book, but do not establish the physical-profile match. Cowper's *Sailing Tours* has a separate two-volume ticket-page crosswalk and is explicitly named in the Riddle's yacht-library list; Wilson's 1934 guide is the closer analogue to the novel's separate Little Drab Book. The exact David-owned title and volume remain unresolved.
 
 ## Ticket-page alignment
 
