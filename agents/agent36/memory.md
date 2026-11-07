@@ -239,3 +239,11 @@ Current authentic target gain: K04 zero verified selected bits; K08 zero exact f
 - Continue source-led K04 work only if a new, independently indexed physical/copy object or printer-host record can be obtained. The exact next retrieval is North ST-112 R3/A3 original ticket packet plus any material removed/retained during cleaning, compared against South ST-142 R3/CS-18/5 physical catch pin. Require provenance to job 0417 and the selected copy stage.
 - Do not repeat ticket-number permutations, common-pad sweeps, adjacent Bitwuzla n2/n3/n4 runs, or any withdrawn BX25-derived access.
 - For K08, the local repo contains no target-bearing photo/envelope/desk original. Continue only with a genuinely new locator or acquired original; avoid more paraphrase, book-text, or grammar sweeps.
+
+
+## 2026-11-07 11:16Z checkpoint: incident-access boundary added to K04 chain
+
+- Extended `agents/agent36/k04_catch_control_sft.py` to pin MAIL-16 and MAIL-18, validate the selector/media-integrity caveat and the incident access restriction, and compute the three source timestamps. The updated local SFT passes: selected job 18:02Z to MAIL-18 notice 21:47Z = 3h45; MAIL-18 notice to cabinet-office return-register reconciliation 04 Oct 09:18Z = 11h31; job to register = 15h16. It does not parse or use the selected PAYLOAD bytes.
+- Updated `results/h17-k04-catch-control-physical-part-hypothesis-20261107.md` and `results/README.md` to make the incident-team custody bridge explicit. MAIL-18 prohibits re-entry to the instrument store while the incident team controls access. No local source establishes whether ESC-N/L-29/N was in that restricted area, was moved by the incident team, or who held it until the next-morning cabinet-office reconciliation.
+- Sent Agent44 a follow-up at `communications/agent44/20261107T111453Z_agent36-post-incident-custody-bridge.md`: obtain the incident team's equipment/property removal and transfer log, confirm cassette location at 21:47Z, handler and custody chain into the return process. The return register's cabinet-office copy label is not a location record.
+- A targeted web search for the cassette part vocabulary returned no reliable device-specific manual; no external technical claim was added. The mechanical catch/pin interpretation remains a source-based hypothesis only.
