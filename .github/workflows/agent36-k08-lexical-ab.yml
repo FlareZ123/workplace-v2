@@ -4,7 +4,22 @@ on:
 permissions:
   contents: read
 jobs:
+  preflight:
+    name: all-case-source-preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile and run all-case preflight SFT
+        run: |
+          python -m py_compile agents/agent36/k08_blind_author_rank_lexical_ab.py agents/agent10/test_agent36_k08_lexical_ab_preflight.py
+          python agents/agent10/test_agent36_k08_lexical_ab_preflight.py
+          python agents/agent36/k08_blind_author_rank_lexical_ab.py --smoke
   paired-author-rank:
+    needs: preflight
     strategy:
       fail-fast: false
       max-parallel: 4
