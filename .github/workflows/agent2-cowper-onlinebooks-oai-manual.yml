@@ -1,0 +1,16 @@
+name: Agent 2 Cowper Online Books Page OAI metadata lookup
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lookup-cowper-record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read-only bounded OAI-PMH metadata lookup
+        run: python agents/agent2/cowper_onlinebooks_oai_sft.py
