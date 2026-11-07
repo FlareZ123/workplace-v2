@@ -1,5 +1,6 @@
 {
   "status": "PART_II_WORDS_EXTRACTED_ONLY",
+  "supersedes": "The initial run used K08-normalized page tokens before selection. That was not the Critic's specified order of operations and is superseded.",
   "frozen_candidate": {
     "book": "Frank Cowper, Sailing Tours, Part II",
     "edition": 1893,
@@ -12,15 +13,15 @@
     ],
     "word_index_1based": 103,
     "part_ii_words_in_order": [
-      "outside",
-      "are",
+      "Solent",
+      "yards",
       "pleasant",
-      "loveliness",
-      "half"
+      "the",
+      "even"
     ],
-    "part_ii_fragment_after_k08_normalization": "outside are pleasant loveliness half"
+    "part_ii_fragment_after_single_k08_normalization": "solent yards pleasant the even"
   },
-  "counting_convention": "Main body only: exclude running head, printed folio and Google watermark using the recorded crop. Apply the exact K08 normalizer (lowercase; replace every non-ASCII-letter/digit/non-whitespace character with a space; collapse whitespace) to the OCR body, then select normalized token 103, one-based. No alternate offsets, tokenizations, page orders or editions were tested.",
+  "counting_convention": "Main body only: exclude running head, printed folio and Google watermark using the recorded crop; include all visible body headings, captions, tables and footnotes. Join line-wrap hyphenation across a line break, retain genuine in-line hyphenated compounds as one word, and count visual-order word tokens (including dotted abbreviations and fractions) before normalization. Select token 103, one-based, from each page. Concatenate selected words in binder-tab order and apply the unchanged K08 normalizer once to the resulting phrase. No alternate offsets, tokenizations, page orders or editions were tested.",
   "ocr": {
     "engine": "tesseract 5.5.0",
     "language": "eng",
@@ -41,25 +42,25 @@
         "top_excluded": 150,
         "bottom_excluded": 60
       },
-      "normalized_body_token_count": 397,
+      "main_body_word_token_count": 389,
       "word_index_1based": 103,
-      "word_103": "outside",
+      "word_103": "Solent",
       "context_tokens_97_to_109": [
-        "comes",
-        "cliff",
-        "end",
+        "End",
         "and",
         "we",
         "are",
         "outside",
         "the",
-        "solent",
-        "hurst",
-        "lights",
-        "there",
-        "are"
+        "Solent",
+        "Hurst",
+        "Lights",
+        "There",
+        "are",
+        "two",
+        "fixed"
       ],
-      "normalized_body_sha256": "e0ee1e52af6199fbf9ab6f7d6e6dbb57997e5d483e19ba06ed26879061246ce1",
+      "joined_body_sha256": "347af57521ea2969ea4e6b1bf611da3dd591429484804e5db5635f191caac5a4",
       "ocr_text_sha256": "931bc6c9a14429af966e4a9fe56e02eb1e0e5fab20201f15a1a3cad3c435f406"
     },
     {
@@ -75,25 +76,25 @@
         "top_excluded": 150,
         "bottom_excluded": 60
       },
-      "normalized_body_token_count": 406,
+      "main_body_word_token_count": 393,
       "word_index_1based": 103,
-      "word_103": "are",
+      "word_103": "yards",
       "context_tokens_97_to_109": [
+        "Southampton",
         "or",
-        "southampton",
-        "or",
-        "ports",
-        "mouth",
-        "there",
+        "Portsmouth",
+        "There",
         "are",
         "many",
         "yards",
         "to",
         "choose",
         "from",
-        "but"
+        "But",
+        "if",
+        "we"
       ],
-      "normalized_body_sha256": "7de3c7ac6901291d38bb366cab41ed9c8a5b8471553f9354dd61ba3f78b90b1e",
+      "joined_body_sha256": "aa85836458ed96b98ce6b2c4536f71dfe5329d653a4bc8a3fb3eb5752fca5e47",
       "ocr_text_sha256": "bafc195e26c88522d764d2699228f856e40a774acf1e5fca6b0ce1d30b20aa1f"
     },
     {
@@ -109,7 +110,7 @@
         "top_excluded": 150,
         "bottom_excluded": 60
       },
-      "normalized_body_token_count": 246,
+      "main_body_word_token_count": 245,
       "word_index_1based": 103,
       "word_103": "pleasant",
       "context_tokens_97_to_109": [
@@ -118,7 +119,7 @@
         "short",
         "and",
         "spiteful",
-        "for",
+        "For",
         "pleasant",
         "sailing",
         "however",
@@ -127,7 +128,7 @@
         "of",
         "no"
       ],
-      "normalized_body_sha256": "a6b143a16782969e58322e58abc789106371eb1fbfe28b045d81bfe8672a8fa8",
+      "joined_body_sha256": "6f27adac2ba59fe3ee758298f6182a5a049a339d28dea12d6dcd886698204adb",
       "ocr_text_sha256": "6f27adac2ba59fe3ee758298f6182a5a049a339d28dea12d6dcd886698204adb"
     },
     {
@@ -143,12 +144,10 @@
         "top_excluded": 150,
         "bottom_excluded": 60
       },
-      "normalized_body_token_count": 424,
+      "main_body_word_token_count": 421,
       "word_index_1based": 103,
-      "word_103": "loveliness",
+      "word_103": "the",
       "context_tokens_97_to_109": [
-        "on",
-        "the",
         "deck",
         "and",
         "admire",
@@ -157,11 +156,13 @@
         "of",
         "the",
         "place",
-        "on",
+        "On",
         "our",
-        "south"
+        "south",
+        "side",
+        "the"
       ],
-      "normalized_body_sha256": "0c7859d0dc2e20c6af4028cefe7cd5bdcf17215454afe2a205168e1039856179",
+      "joined_body_sha256": "c3819edc7cc304f2ef845b1bcca7b3c3b969dee387727f21fa2f0270ea8cdc0d",
       "ocr_text_sha256": "a2bac014d96b9ffd555ad69c77678e438561c769560ffa97423342a80a30c290"
     },
     {
@@ -177,14 +178,10 @@
         "top_excluded": 150,
         "bottom_excluded": 60
       },
-      "normalized_body_token_count": 389,
+      "main_body_word_token_count": 378,
       "word_index_1based": 103,
-      "word_103": "half",
+      "word_103": "even",
       "context_tokens_97_to_109": [
-        "all",
-        "along",
-        "at",
-        "the",
         "distance",
         "of",
         "half",
@@ -193,9 +190,13 @@
         "or",
         "even",
         "nearer",
-        "rocks"
+        "Rocks",
+        "lie",
+        "out",
+        "all",
+        "along"
       ],
-      "normalized_body_sha256": "8524ab8b0b54bafb4fff47f84ce8d42aa09192a36f6b3e9240e44b8de8c2d42c",
+      "joined_body_sha256": "03b5ff47592a51d8d6483066ed5b656a23247913fdde8ad423279c5fac36b599",
       "ocr_text_sha256": "aeb12b8ff1c893733829d71dfa41defd3f9ff2eca2eadae811fd197dc6da5301"
     }
   ],
