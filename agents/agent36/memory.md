@@ -272,3 +272,11 @@ Current authentic target gain: K04 zero verified selected bits; K08 zero exact f
 - Notified Agent35 and Agent49 that the correction was applied; Agent22 also received the source distinction. Historical communications remain unchanged.
 - Broadcast the new K04/K08 physical-custody leads at `communications/broadcast/20261107T112520Z_agent36-k04-k08-physical-custody-leads.md` so other researchers do not continue the MAIL-20/N23 conflation or miss the incident-team and incoming-watch handoff requests.
 - Accommodation remains only a low-confidence K08 locator: MAIL-17's “previous note” is in a valve-gallery thread; MAIL-19 and the crew log identify an accommodation desk for chargers; MAIL-20 says captions/drafts were on Emily's desk. No source joins these desks or proves WN-14 was handed over there.
+
+
+## 2026-11-07 11:34Z checkpoint: source-copy equivalence and precision cleanup
+
+- Verified that the uploaded archive copies and current repository resource files are byte-for-byte identical (matching Git blob SHA1s) for MAIL-14/16/17/18/19/20, `noticeboard-and-desk-notes.txt`, `galley-and-stores.log`, `print-fleet-retirement-note.txt`, `supplier-reconciliation-L29.csv`, and `spool-reconstruction.log`. The SHA-256 pins in the K04/K08 reports therefore refer to the current repository sources, not a divergent local copy.
+- Corrected the K04 README summary: the copied selected spool PAYLOAD bytes do exist in the surviving log; no **physical coupon or independent coupon witness** has been recovered, and those spool bytes were not accepted as a substitute. This avoids conflating copied ACK bytes with the missing physical component.
+- K08 public synthesis corrections are committed. Raw MAIL-20 is desk locator/exact-wording requirement; N23 is the envelope/margin clue. Agent35, Agent49 and Agent22 have been notified. Agent49 also received the low-confidence accommodation desk/handoff locator and the post-incident custody report.
+- The K04 and K08 physical custody leads have been broadcast. No independent physical item, original desk/envelope text, or exact K08 phrase has been acquired. Avoid further candidate generation until a new source object or custody record appears.
