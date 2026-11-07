@@ -215,6 +215,8 @@ The transfer audit records AX-7782 COMMIT at 20:55:10Z and receipt at 21:06:44Z,
 
 If the canonical transfer object is available through an already-authorized records route, request the native manifest and chunk-to-file map. Test exact manifest inclusion and per-object hashes for:
 - PS-261003-0300 (orphan early LABEL/store candidate, exact document role unknown);
+- R:/Stores/consumables/mug-stock.xls (bookmarked as “Tea-room stock sheets”), including version history; conditional context for MAIL-12/N11 and the possible PS-0300 shelf-card role, not a K08 target;
+- any original small card or photo of the chipped-blue-mug shelf card, with author, placement and timestamp metadata;
 - PS-261003-0317 (N17 standby-envelope label control);
 - PS-261003-0318 (N18 commissioning-envelope label control);
 - PS-261003-0417 (selected K04 ESC-N job);
@@ -226,4 +228,4 @@ If the canonical transfer object is available through an already-authorized reco
 
 Preserve each manifest path, object ID, source timestamp, file size, hash and chunk mapping. The eight two-byte checkpoints verify only the recorded transfer chain; they do not prove file inclusion or content authenticity. Even if all candidate jobs co-occur in the manifest, native rendered output and document content are needed to distinguish a recovery-envelope label from the standby/commissioning controls.
 
-**Falsifiers:** reject AX-7782 as a joint K04/K08 carrier if the native manifest lacks any target object needed for the claim, or if its actual object snapshot predates the final N23/envelope material. Do not infer inclusion from the 8 MiB object size, checkpoint values, receipt time alone, or the PS job numbers. The 20:55:10Z commit/21:06:44Z receipt and the 21:47Z fire must be interpreted using native transfer-store event semantics and object-version timestamps.
+**Falsifiers:** reject AX-7782 as a joint K04/K08 carrier if the native manifest lacks any target object needed for the claim, or if its actual object snapshot predates the final N23/envelope material. Do not infer inclusion from the 8 MiB object size, checkpoint values, receipt time alone, or the PS job numbers. The 20:55:10Z commit/21:06:44Z receipt and the 21:47Z fire must be interpreted using native transfer-store event semantics and object-version timestamps. For the conditional shelf-card hypothesis, a PS-0300 document name/queue/user that points elsewhere, or a workbook with no relevant card/label content, weakens that interpretation; it does not resolve the separate K08 envelope phrase.
