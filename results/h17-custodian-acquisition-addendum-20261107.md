@@ -218,6 +218,7 @@ If the canonical transfer object is available through an already-authorized reco
 - PS-261003-0417 (selected K04 ESC-N job);
 - PS-261003-0323 (N23-associated RECOVER/store print witness);
 - the H17-IR-261003 recovery envelope;
+- any scan/photo of David's map-back book, tea-receipt bookmark, or marked page/margin;
 - original desk-note and photo-caption sidecars;
 - the original route/commissioning sheet and H17-POL-17/A3 return-card material.
 
