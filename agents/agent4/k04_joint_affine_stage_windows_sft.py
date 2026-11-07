@@ -159,11 +159,16 @@ def main():
     assert acceptance["slot_sha256"]["K04"] == TARGET
     mask = bytes.fromhex(route["K04"]["masked_component"])
     target = bytes.fromhex(TARGET)
+    if len(sys.argv) != 2 or sys.argv[1] not in {"950","951","952","953","954","955"}:
+        raise SystemExit("usage: python k04_joint_affine_stage_windows_sft.py GEOMETRY_950_TO_955")
+    selected_geometry = int(sys.argv[1])
     total = 0
     actual_hits = []
     over1 = 0
     control_ranks = {}
     for p, starts in sorted(six.GEOMETRIES.items()):
+        if p != selected_geometry:
+            continue
         assert starts[129] == p
         expressions = mt.state_expressions(starts[-1] + 3)
         basis = six.build_source_basis(expressions, rows, starts)
@@ -197,7 +202,8 @@ def main():
               "COMPLETE_ORIGINAL_CHECKS", assignments,
               "ORIGINAL_HITS_SO_FAR", len(actual_hits), flush=True)
     assert not actual_hits, "A candidate may be real; independently validate with original verifier"
-    assert total >= 2389
+    expected_min = {950:378,951:399,952:432,953:391,954:382,955:407}
+    assert total >= expected_min[selected_geometry]
     print("ALL_SIX_JOINT_RANK_COMPLETE max_rank", MAX_RANK,
           "source_stage_windows_new", over1,
           "complete_SHA256_original_checks", total,
