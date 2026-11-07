@@ -1,0 +1,57 @@
+[
+  {
+    "volume": "Part II",
+    "edition": 1893,
+    "printedPage": 121,
+    "viewerUrl": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA121",
+    "signedImageUrl": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA121&img=1&zoom=3&hl=en&sig=ACfU3U3_tdUT-UUA9BKG_Vr3b7Rbmkl8uQ&w=1025",
+    "status": 200,
+    "bytes": 97450,
+    "sha256": "3b1e1b88244b2c0e15eeabf1f3f0d72d4cc6f0127256c55e0bc8e3978c3d0083",
+    "base64File": "p121.b64"
+  },
+  {
+    "volume": "Part II",
+    "edition": 1893,
+    "printedPage": 130,
+    "viewerUrl": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA130",
+    "signedImageUrl": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA130&img=1&zoom=3&hl=en&sig=ACfU3U3jzGcrsrvAN5gHxJ9TufAEPiLu3A&w=1025",
+    "status": 200,
+    "bytes": 142366,
+    "sha256": "c3b93994564bc9ac64b98a9c5e53e587697f04d7cbe1a037db140e93bf0b785f",
+    "base64File": "p130.b64"
+  },
+  {
+    "volume": "Part II",
+    "edition": 1893,
+    "printedPage": 135,
+    "viewerUrl": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA135",
+    "signedImageUrl": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA135&img=1&zoom=3&hl=en&sig=ACfU3U3kOeAKujpLQ06o5Tc6-4Yd7k5b-Q&w=1025",
+    "status": 200,
+    "bytes": 147158,
+    "sha256": "ba90ab504d7d08d03796dee5ac702dd9a813859fe986a9f555e4cf99938b7e0d",
+    "base64File": "p135.b64"
+  },
+  {
+    "volume": "Part II",
+    "edition": 1893,
+    "printedPage": 142,
+    "viewerUrl": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA142",
+    "signedImageUrl": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA142&img=1&zoom=3&hl=en&sig=ACfU3U0zWxZarod-4JsmfqMT0DYoxqzfBw&w=1025",
+    "status": 200,
+    "bytes": 135701,
+    "sha256": "158e800d097e934eb79c3583527f63f333003bc15b49b26a1f9fe9fbfcace568",
+    "base64File": "p142.b64"
+  },
+  {
+    "volume": "Part II",
+    "edition": 1893,
+    "printedPage": 151,
+    "viewerUrl": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA151",
+    "signedImageUrl": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA151&img=1&zoom=3&hl=en&sig=ACfU3U0r3k2eWiCjUqzJhwZoaW6gHr51Cg&w=1025",
+    "status": 200,
+    "bytes": 140288,
+    "sha256": "4735a789cf99c1018c63906054c6c4492b932d9671115806e5903be0ad2c5d11",
+    "base64File": "p151.b64"
+  }
+]
