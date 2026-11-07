@@ -38,6 +38,8 @@ The run conclusion must therefore remain: **no exclusion**. Do not describe this
 
 ## Research decision
 
+This run does **not** change the candidate-construction frontier. The current v2 synthesis already records stronger exact algebraic exclusions under the same conditional p951/k2496 CPython geometry: n=2 is excluded by Agent4/Agent23 complete inversions, and n=3/n=4 are among the lengths excluded by Agent23's six-term joint-affine theorem. The Bitwuzla UNKNOWN outcomes add no independent exclusion and should not be cited as corroboration.
+
 The three intended n=2/3/4 cases have now been fully accounted for. Do not commission an adjacent n=5/n=6 sweep on the strength of these results. A further solver run would need a materially different, source-justified constraint or encoding, with a predeclared discriminating outcome. The immediate value of this run is to close the artifact-inspection gap and preserve the actual solver outcomes and exact model fingerprints.
 
 This result does not change `candidate.json`, the accepted six slots, or the K04/K08 missing status.
