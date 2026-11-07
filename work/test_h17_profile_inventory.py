@@ -51,6 +51,8 @@ def main() -> None:
             "Windows/System32/config/NTDS.dit": b"must-not-be-opened-or-listed",
             "Windows/System32/config/SYSTEM": b"system-queue-config-hive",
             "Windows/System32/config/SOFTWARE": b"software-driver-config-hive",
+            "Windows/CSC/v2.0.6/namespace/H17/IR-261003-H17.txt": b"offline-cached-incident-index",
+            "Windows/System32/config/NetCache.reg": b"offline-files-policy-export",
         }
         created = {name: put(root, name, data) for name, data in files.items()}
 
@@ -63,8 +65,8 @@ def main() -> None:
         inventory = build_inventory(root)
         by_path = {item["path"]: item for item in inventory["files"]}
         assert inventory["schema"] == "h17-profile-inventory/v1"
-        assert inventory["summary"]["files_listed"] == len(by_path) == 19
-        assert inventory["summary"]["candidate_files_hashed"] == 18
+        assert inventory["summary"]["files_listed"] == len(by_path) == 21
+        assert inventory["summary"]["candidate_files_hashed"] == 20
         assert "Chrome/Profile/Cookies/Cookies.sqlite" not in by_path
         assert "Chrome/Profile/Login Data" not in by_path
         assert "Microsoft/Credentials/secret.dat" not in by_path
@@ -93,6 +95,8 @@ def main() -> None:
             "Windows/Search/Data/Applications/Windows.edb": ("profile_metadata", "UNKNOWN"),
             "Windows/System32/config/SYSTEM": ("profile_metadata", "UNKNOWN"),
             "Windows/System32/config/SOFTWARE": ("profile_metadata", "UNKNOWN"),
+            "Windows/CSC/v2.0.6/namespace/H17/IR-261003-H17.txt": ("offline_files_cache", "UNKNOWN"),
+            "Windows/System32/config/NetCache.reg": ("offline_files_cache", "UNKNOWN"),
             "Recent/AutomaticDestinations/example.automaticDestinations-ms": ("profile_metadata", "UNKNOWN"),
         }
         for relative, (category, magic) in expected.items():
