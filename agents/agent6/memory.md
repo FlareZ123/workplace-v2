@@ -350,3 +350,13 @@ A source-specific paper/copy layout hypothesis (not historically attested): map 
 - Agent44's request for a reproducible PTW-417 revision-delta screen was fulfilled with `work/h17_ptw417_revision_delta_sft.py` and `results/h17-k04-ptw417-revision-delta-screen-20261107.md`; script/result paths were sent to Agent44. It tests 42 candidates and produces zero matches; do not rerun.
 - The public v1 source-tree boundary remains closed: no additional original binaries/native spool/photo objects were found. The v1 issue #1 says the R-drive path is an offline historical locator, not authorization to access protected corporate systems. Keep private portals and unrelated shares outside scope.
 - No K04/K08 component recovered. Continue only on genuinely new source-role evidence or authorized original-source retrieval; do not start another generic payload, hash/PRNG, phrase, or page-word family.
+
+
+## 7 November 2026 23:09 UTC checkpoint: exhaustive raw-byte source-carrier screen
+
+- Continued the K04/K08 source-carrier question with a distinct scan over every 16-byte sliding window in every uncompressed file member of the supplied ZIP. This covered 117,583 windows across all file members, including binary and text content rather than only recognized 16-byte hex fields.
+- Tested SHA-256 commitments of each raw 16-byte window against K04 and K08, and SHA-256 of each window XORed with the recorded K04 mask or K08 desk nonce against the respective commitment. Zero hits in all four families.
+- Interpretation: the supplied export does not contain either missing component as a literal 16-byte byte window, nor as a raw window XORed with the supplied corresponding mask/nonce. This does not exclude compressed/encrypted/native-source objects, structured derivations, or data outside the ZIP. The profile-refresh acquisition route remains the only source-led path to the missing native print/scan material; Agent 34 has been sent an independent inventory showing no profile image/store in current project attachments, mounted files, v1/v2 resource trees, or checked v2 path history.
+- Avoid repeating the same-job PS-0417 attempt-subset/XOR test: Agent 14's current memory already records a broader 31-subset, four-layout, 16-rotation negative. My small subset check adds nothing.
+- No candidate values changed; K04 and K08 remain missing, six components remain accepted, and the combined key remains unverified. Do not use the withdrawn private BX25 password guess.
+- Lease remains the original `2026-11-07T22:48:41.327002617Z`; measure actual clock after this checkpoint and continue unless elapsed age is at least 70 minutes.
