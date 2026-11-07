@@ -48,11 +48,20 @@ Public catalogue listings:
 ## Discriminating physical checks
 
 1. Transcribe the **original recovery envelope** exactly, preserving punctuation, spacing, and capitalization before applying the K08 normalization.
-2. Recover and image the **Emily desk-note stack under WN-14**, including margins, reverse sides, adjacent sheets, and any envelope kept with it.
+2. Recover and image the **Emily desk-note stack under WN-14**, including margins, reverse sides, adjacent sheets, any envelope kept with it, and any pad leaf/folder insert/backing that may have been underneath the final margin when written. Photograph both faces and preserve original order/orientation before specialist examination; see the conditional underleaf route below.
 3. Image the **separate photographs and galley captions** mentioned in MAIL-14.
 4. Inspect David's map-back book and tea receipt in situ. Check for the MAIL-06 standby transcription ending `5E67`; record title, edition, page count, map, receipt position, and any marginalia.
 5. If the book is Praeger's, verify whether it is the 416-page 1947 third edition and whether the receipt marks p.112. If it is *The Riddle of the Sands*, compare the physical guidebook fingerprint above and check whether any map/chart has a literal `5E67` grid reference.
 6. Keep the book, envelope, desk notes, and binder receipts as distinct objects until a physical join is observed.
+
+## Conditional underleaf-indentation recovery
+
+A distinct physical recovery path is available if the original WN-14 paper grouping survives. MAIL-14 places Emily's loose desk notes under the WN-14 folder, outside the controlled-copy sleeve; N23 locates the final wording in her personal margin; MAIL-20 says the exact final words matter. If the final margin was written with another sheet, pad leaf, folder insert or backing sheet underneath, the lower paper may retain latent writing-pressure indentations. That underleaf could preserve characters even if the visible top margin or photograph is missing.
+
+This is **conditional**, not established by the export: no source proves an underlay was present when the final margin was written or that any impression survives. If originals become available through an authorized custody path, preserve the entire paper grouping in its original order and orientation, photograph both faces before movement or processing, and do not rub, shade, pencil over, flatten, clean or chemically process it. Refer the material to a qualified forensic document examiner. The examiner should decide whether optical side-lighting and/or EDD/ESDA is appropriate; EDD can affect pencil marks, so document first. Require physical and chronological attribution to Emily's final incident-envelope margin before applying the unchanged K08 HMAC. An impression of a draft or unrelated note is not K08.
+
+See [K08 underleaf-indentation acquisition path](h17-k08-underleaf-indentation-acquisition-20261107.md), [NIST OSAC ANSI/ASB 044-19](https://www.nist.gov/osac/standards-library/ansiasb-standard-044-19), and the [NIST EDD glossary](https://www.nist.gov/glossary-term/46546). This method adds a physical recovery channel; it does not recover exact words from the current export or reopen the closed 21 October custodian channel.
+
 
 ## Limitations and confidence
 
