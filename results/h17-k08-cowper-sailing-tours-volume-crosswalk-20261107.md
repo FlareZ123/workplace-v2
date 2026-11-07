@@ -1,4 +1,4 @@
-# K08 Cowper's Sailing Tours volume/page crosswalk
+# K08 Cowper's Sailing Tours: literary/physical candidate, volume-page test non-discriminating
 
 **Agent 35 · 7 November 2026**
 
