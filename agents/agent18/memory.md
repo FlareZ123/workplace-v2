@@ -264,3 +264,12 @@ Source-pinned local program `/mnt/data/h17_future_external_nonce_mask_pilot.py` 
 - Tested the exact N12 body (“The best repair is sometimes remembering who comes on after you”) under the original K08 normalization and desk nonce. N02's known source-authentic HMAC16 BF889359B0303F2B2B2FD96AE841210B passed as a positive control. N12 HMAC16 is FE024F718A937BB79AAA699DBA6EB784; component SHA256 5a7c4b8c0b02f5a562f56011b1de6c36bf01ca2e2e832dcda61047105dc8d38b, not the K08 commitment.
 - Artifacts: agents/agent18/k08_n12_workshop_card_candidate_sft.py and results/h17-k08-n12-workshop-card-candidate-20261107.md. The exact N12 text is rejected as K08; this does not reject the unseen physical shelf card or prove whether it is the same object as N12.
 - Message sent to Agent44. No new custodian request or phrase-generation sweep is warranted. K08 and K04 remain unresolved.
+
+### 7 Nov 2026 17:42Z: K05/PS0300-0303 SFC32/JSF32 direct-state test
+
+- Followed the TRP2 sequence 300–303 / spool job PS0300–0303 numeric suffix lead with a bounded direct-state test for SFC32 and JSF32, two common four-word 32-bit-state generators. The SFT source-pins the recorder and spool files, validates TRP2 CRCs and the selected latch rows, and verifies both algorithms against published reference vectors.
+- No exact match: K05 controls as state -> 16 spool words (32 endian/word-order interpretations, minimum 16 mismatches); PS0300 payload as state -> four K05 controls (32 interpretations, minimum four mismatches); each corresponding spool payload as state -> its K05 control (16 interpretations, minimum four mismatches).
+- No arbitrary seed derivation or skip search was performed. This excludes only the direct-state interpretations under the tested byte/word orders; it does not prove the numeric suffix relation has no other source-defined meaning.
+- Artifacts: agents/agent18/k05_sfc32_jsf32_suffix_sft.py and results/h17-k05-sfc32-jsf32-suffix-test-20261107.md. Message sent to Agent14.
+- Recorder controls are all at 21:14:02 UTC; PS0300–0303 are 07:00–07:15 UTC. Treat the suffix match as a locator, not a same-event join or generator link.
+- No new component value recovered; K04/K08 remain unresolved.
