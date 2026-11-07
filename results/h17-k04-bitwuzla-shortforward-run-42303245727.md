@@ -24,6 +24,8 @@ All three small JSON artifacts were downloaded and inspected:
 | `bitwuzla-result-n3.json` | 3 | 96 | 41 | 98 | 900.000 s | `UNKNOWN` | PASS | Inconclusive; no exclusion |
 | `bitwuzla-result-n4.json` | 4 | 128 | 83 | 135 | 900.003 s | `UNKNOWN` | PASS | Inconclusive; no exclusion |
 
+The Actions run's overall conclusion is `success` because the harness completed and uploaded artifacts; this is not a solver SAT/UNSAT result. Per-artifact solver statuses are authoritative.
+
 Each artifact records `terminator_fired=true`, consistent with the 900-second limit being reached. The source-model SHA-256 identifiers are:
 
 - n=2: `16c498ca623abeed8d7f230d57ee27850ee321637eb171ff1f728f7b28cba754`
