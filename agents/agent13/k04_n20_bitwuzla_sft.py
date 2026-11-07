@@ -74,6 +74,46 @@ def packets_from_key(key_words: list[int]) -> list[bytes]:
     ]
 
 
+def ancestral_anchor_check(key_words: list[int]) -> list[dict]:
+    """Post-hoc check of the three published PTW full-word source anchors."""
+    rng = random.Random(key_integer(key_words))
+    draws = [rng.getrandbits(32) for _ in range(base.OFFSET + 974)]
+    receipts_path = ROOT / "resources/evidence/maintenance/seal-receipts.jsonl"
+    receipts = [
+        json.loads(line)
+        for line in receipts_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    targets = [
+        ("PTW-405", "D", -964),
+        ("PTW-412", "B", -944),
+        ("PTW-414", "C", -937),
+    ]
+    output = []
+    for permit, bay, stage in targets:
+        record = next(
+            row for row in receipts
+            if row["permit"] == permit
+            and row["bay"] == bay
+            and row["revision"] == 1
+            and row["state"] == "CLOSED"
+            and row["fitment"] == "AS_LEFT"
+            and row["signed"] is True
+        )
+        serial = bytes.fromhex(record["serial"].split("-", 1)[1])
+        predicted = draws[base.OFFSET + stage]
+        expected = int.from_bytes(serial, "little")
+        output.append({
+            "permit": permit,
+            "stage": stage,
+            "serial": record["serial"],
+            "predicted_word_le": f"{predicted:08X}",
+            "expected_word_le": f"{expected:08X}",
+            "match": predicted == expected,
+        })
+    return output
+
+
 def initializer_smt(key_count: int, timeout_ms: int) -> list[str]:
     """CPython MT19937 init_by_array, parameterized for 20 or 24 key words."""
     assert key_count in (8, 20, 24)
@@ -288,8 +328,11 @@ def main() -> None:
         if index != 129 and actual == expected
     ]
     component, sha512_part = component_from_key_words(key_words)
+    ancestry = ancestral_anchor_check(key_words)
     result.update({
         "seed_words_hex": [f"{word:08X}" for word in key_words],
+        "ancestral_anchor_matches": ancestry,
+        "ancestral_anchors_all_match": all(row["match"] for row in ancestry),
         "intact_packet_matches": len(exact_indices),
         "full_132_source_match": len(exact_indices) == 132,
         "mismatching_source_rows": [
