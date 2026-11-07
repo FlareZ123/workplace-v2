@@ -19,5 +19,7 @@ jobs:
           python-version: "3.11"
       - name: Verify p951 source-root compatibility
         run: python agents/agent14/p951_source_root_contract_sft.py
+      - name: Screen TRP2 sequence to spool suffix join
+        run: python agents/agent14/k05_trp2_ps_suffix_sft.py
       - name: Run source-pinned native donor extension
         run: python agents/agent14/k04_native_eight_donor_rev1_sft.py
