@@ -1,0 +1,17 @@
+name: Agent25 H17 n32 whole-state caption-seed construction
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-n32-joint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Derive original-source joint printable seed objects
+        run: python agents/agent25/k04_n32_global_joint_whole_seed_sft.py --shard ${{ matrix.shard }}
