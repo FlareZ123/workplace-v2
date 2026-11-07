@@ -100,6 +100,9 @@ def fetch(name: str, url: str) -> tuple[bytes | None, dict[str, object]]:
                         "pageCount": info.get("pageCount"),
                     }
                     record["top_keys"] = list(parsed)[:20] if isinstance(parsed, dict) else None
+                    if name.startswith("hathi_catalog_api") and isinstance(parsed, dict):
+                        record["hathi_records"] = parsed.get("records")
+                        record["hathi_items"] = parsed.get("items")
                 except (UnicodeDecodeError, json.JSONDecodeError):
                     record["json_parse"] = "failed"
             if content_type.startswith("image/png") and len(body) >= 24:
@@ -130,11 +133,14 @@ def main() -> int:
 
     if target == "part1-search":
         endpoints = {
-            "hathi_catalog_api": "https://catalog.hathitrust.org/api/volumes/brief/htid/hvd.hn5w2p.json",
+            "hathi_catalog_api_brief": "https://catalog.hathitrust.org/api/volumes/brief/htid/hvd.hn5w2p.json",
+            "hathi_catalog_api_full": "https://catalog.hathitrust.org/api/volumes/full/htid/hvd.hn5w2p.json",
             "hathi_handle": "https://hdl.handle.net/2027/hvd.hn5w2p",
             "google_search_part1_es": "https://books.google.es/books?q=%22The+Coasts+of+Essex+and+Suffolk%22+%22Frank+Cowper%22",
             "google_search_part1_com": "https://books.google.com/books?q=Frank+Cowper+Sailing+Tours+Part+1",
             "google_viewer_part2": f"https://books.google.es/books?hl=en&id={PART2_ID}&pg=PA130",
+            "google_part2_about": f"https://books.google.es/books?id={PART2_ID}&source=gbs_navlinks_s",
+            "google_part2_plaintext_p130": f"https://books.google.es/books?pg=PA130&id={PART2_ID}&output=text",
         }
         for name, url in endpoints.items():
             _, results[name] = fetch(name, url)
