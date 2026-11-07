@@ -274,3 +274,8 @@ A recursive public tree scan of `workplace-v1` found no additional binary/source
 ## 2026-11-07 acquisition-scope clarification
 
 Added the v1 public custodian-intake issue #1 boundary to `results/h17-custodian-acquisition-addendum-20261107.md`: acquisition is limited to custodian-supplied historical H-17 records and authorized public, read-only sources. Private portals, unrelated shares, credentials, live equipment and connected mailboxes are outside the request. This makes explicit why the separate private `intranet` repository remains uninspected; do not access it under the current task scope.
+
+
+## 2026-11-07 related-repository scope closure
+
+The connected GitHub account's repository listing showed `workplace-v1` and `workplace-v2` as the only related public H-17 workspaces; no additional public H-17/Noyes archive repository surfaced. Other repositories were left uninspected. The separate private `intranet` repository remains untouched because the public custodian-intake scope excludes private portals and unrelated shares. No user authorization or new source upload has arrived as of this checkpoint.
