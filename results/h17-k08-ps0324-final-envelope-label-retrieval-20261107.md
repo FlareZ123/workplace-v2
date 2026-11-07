@@ -24,7 +24,7 @@ The K08 route still requires Emily's actual final phrase under the recorded desk
 
 ## Bounded packet checks retained
 
-The earlier computation remains valid as a limited negative: SHA-256 of each of the 133 decoded 16-byte spool payloads was compared with the K08 HMAC16 commitment; no payload matched. All 31 nonempty XOR subsets of PS-0300, PS-0317, PS-0318, PS-0323 and PS-0324 also produced no K08 commitment hit. These tests exclude only literal payload storage and that bounded XOR family. They do not inspect native rendered text or prove the purpose of any job.
+A fresh read-only recheck against spool SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083` and acceptance SHA-256 `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f` confirms: SHA-256 of each of the 133 decoded 16-byte spool payloads has zero hits against the K08 HMAC16 commitment; all 31 nonempty XOR subsets of PS-0300, PS-0317, PS-0318, PS-0323 and PS-0324 also produce zero hits. These tests exclude only literal payload storage and that bounded XOR family. They do not inspect native rendered text or prove the purpose of any job.
 
 ## Required next evidence
 
