@@ -259,3 +259,6 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 
 
 - Clarified the BX25 distinction in both migration/CSC source reports: the bookmark for scanrelease.txt says the old capture terminal stored BX25 folios under a four-position numeric release setting, while the paper key register stayed with the Risk desk. A migrated/cached encrypted scan is not the release authority; do not use or propagate any numeric setting from the profile route. CSC clarification commit f50f7ee396df3784f8ac61f47ba3af59052f5b7f.
+
+
+- Reprioritized the acquisition plan: the desktop-move calendar and profile-refresh migration package/store come first because the bookmark explicitly says BX25 scan copies travelled with the refresh; CSC is secondary and only pursued if R: was a network share and Offline Files was enabled/pinned. Updated missing-evidence request and research map; commits 5fe03209e91043d6d651ff02ecb5cc07ffab9345 / 02c07f4defaa0ad4a0d5fd6b04c4219e1be980ac.
