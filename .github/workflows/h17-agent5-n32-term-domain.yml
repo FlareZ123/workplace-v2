@@ -1,0 +1,32 @@
+name: Agent5 n32 genuine startup key-term extensions
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  n32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 64 source-compatible n32 offsets under enlarged exact domains
+        run: |
+          set -o pipefail
+          PYTHONPATH=agents/agent45:agents/agent23:agents/agent28 python agents/agent5/k04_n32_expanded_terms_sft.py --shard ${{ matrix.shard }} --ceiling 12 2>&1 | tee "n32-${{ matrix.shard }}.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent5-n32-${{ matrix.shard }}-${{ github.run_id }}
+          path: n32-${{ matrix.shard }}.log
+          retention-days: 14
