@@ -12,7 +12,13 @@
 #include <thread>
 #include <vector>
 #include <chrono>
+#ifdef H17_SYNTHETIC
+// Independent NumPy RandomState(seed=12345): twisted register after one draw, ring phase17.
+constexpr uint32_t K0=0x08C742F5u,K1=0x27E2EB57u,K2=0xB06480FEu,K3=0x6196535Au;
+#else
+// Source-constrained native coordinates S[2],S[3],S[4],S[622].
 constexpr uint32_t K0=0xE32E1557u,K1=0x3152E7CBu,K2=0xBBDD46A0u,K3=0xBBD5A4ABu;
+#endif
 constexpr uint32_t A=0x9908B0DFu,UPPER=0x80000000u,LOWER=0x7fffffffu;
 using V=__m512i;
 struct Hit { uint32_t seed; unsigned phase; };
