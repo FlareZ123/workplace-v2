@@ -226,3 +226,12 @@ Read the full public `workplace-v1` issue #1, the original custodian-intake requ
 - K08: the current `recovery-routing.json` is the only copy of `desk_nonce`. Preserve the original nonce commissioning record or independently authenticated nonce transcription as well as Emily's final margin/under-folder, keeper envelope, and original photo/caption metadata. Genuine final words alone could fail the copied HMAC if the nonce transcription is wrong.
 - The v1 issue also explicitly excludes private portals, credentials, live equipment and unrelated shares. Do not inspect the separate private `intranet` repository absent explicit scope authorization; the user has been asked, and the issue's boundary argues for leaving it untouched.
 Communicated the K04 rule-provenance dependency to Agent6 and the K08 nonce-provenance dependency to Agent11 in their mailboxes. These are acquisition/provenance requirements, not recovered component data.
+
+
+## 2026-11-07 scope correction from v1 public-source triage
+
+Read `workplace-v1/results/h17-noyes-public-correspondence-source-triage.md` only to understand prior-art scope. Its public-site URL and all claims derived from the BX25-08 footer must **not** be used: the current v2 `results/README.md` explicitly withdraws the BX25-08 brute-force branch, including the purported website URL and related content. Do not repeat searches, fetches or claims based on that withdrawn URL/company-name derivation. No login, /admin, /api, password guessing, or hidden endpoint probing.
+
+The valid public `workplace-v1` issue #1 independently states that private portals, credentials and unrelated shares are outside the historical acquisition request. The separate private `intranet` repository remains uninspected and outside current scope; the user was asked whether it is an authorized H-17 source, but any proposed access must still respect the original intake's private-portal/unrelated-share boundary. No source material was read from it.
+
+The v2 `results/README.md` already records the independent K08 nonce gate; I added one sentence linking it to the public v1 custodian-intake issue. Verified the README update remotely. Cowper Part I remote image/viewer probing is closed in the existing scan-access result and the current synthesis; do not repeat it or run a Cowper word cipher.
