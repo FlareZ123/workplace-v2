@@ -41,3 +41,11 @@ I tested the exact “made room for Susan” variants and **11,100** contiguous 
 ## Map/5E67 discriminator
 
 The academic map analysis describes a pictorial Channel-route endpaper, with outward and return tracks, safe harbours, and narrative annotations. It does not describe a coordinate grid or a navigational grid reference. Thus the map-back clue fits Ransome well, while interpreting standby suffix `5E67` as a literal coordinate on this map currently lacks support. The actual physical endpaper should be inspected before ruling out any handwritten or publisher-added markings.
+
+## 5E67 → page94/word103 hypothesis
+
+A new cross-agent lead interprets the standby group-D suffix `5E67` as two hexadecimal bytes: `0x5E=94`, `0x67=103`. This may mean page94, word103 in the map-back book. The North binder's first tab is ticket `ST-094`, independently matching decimal page94.
+
+In the 1949 impression of Ransome's book, p.94 begins Chapter VII, **“He's Been an Awful Long Time …”** (the actual “Dawn at Sea” chapter is p.208). Chapter VII opens with Jim's dinghy disappearing, Susan preparing a place for five at the cabin table, and the children waiting in fog after Jim's all-night passage. It includes the table, eggs, mugs, tea, and water/sea outside. This is a particularly close thematic match to MAIL-11/N20's long-watch, table, water and making-room description.
+
+The first page's body word103 is `shelf`; if the eight-word chapter heading is counted, word103 is `took`. Neither is the final phrase. Therefore `5E67` may be a locator to handwritten marginalia on p.94 rather than a direct printed-word answer. The ST-094/page94 convergence is suggestive but does not establish a book cipher or identify the physical copy. The actual page layout, receipt bookmark and handwriting remain unverified.
