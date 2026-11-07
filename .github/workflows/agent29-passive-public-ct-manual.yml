@@ -1,0 +1,16 @@
+name: Agent29 passive public CT historical Pages preview search
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-certificate-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query public CT certificate metadata only
+        run: python agents/agent29/h17_public_ct_preview_probe.py
