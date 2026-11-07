@@ -100,3 +100,50 @@ assert forced == [(22,170,176), (23,176,182), (77,582,588)], forced
 print("CODE3_GAP6_HARD_WITNESSES", forced)
 print("SOURCE_RANK", source.rank, "selected_coupon_bits_authenticated", 0)
 print("ORIGINAL_K04_K08_UNCHANGED")
+
+
+# Distinct single-call joint CLASS×DEST issuer: CPython randbelow(9)
+# accepts a 4-bit high nibble 0..8, rejecting 9..15. Precisely the LAST
+# interpacket draw is the accepted metadata selection; earlier draws must be
+# rejections. This avoids the two separate calls excluded above.
+def nibble_compatible(bits, value):
+    return all(bit is None or bit == ((value >> j) & 1)
+               for j, bit in enumerate(bits))
+
+def joint_codes(window):
+    if any(not any(nibble_compatible(bits, rejected)
+                   for rejected in range(9, 16))
+           for bits in window[:-1]):
+        return set()
+    return {code for code in range(9) if nibble_compatible(window[-1], code)}
+
+assert joint_codes(((1,1,1,1),(0,0,1,1),(1,0,1,0))) == {5}
+assert joint_codes(((0,0,1,0),(1,0,1,0))) == set()
+
+joint_allowed = []
+for row in range(127):
+    q, next_q = mt.STARTS[row:row+2]
+    window = []
+    for stage in range(q + 4, next_q):
+        v = mt.temper(mt.get(bank, stage))
+        window.append(tuple(source.predict(v[j]) for j in (28,29,30,31)))
+    joint_allowed.append(joint_codes(window))
+unconditionally_impossible = [i for i, options in enumerate(joint_allowed)
+                              if not options]
+assert len(unconditionally_impossible) == 39, unconditionally_impossible
+assert unconditionally_impossible[:10] == [1,2,4,5,6,9,20,25,33,34]
+
+# An unknown joint nine-category codebook can be tested without enumerating
+# all 9! mappings: intersect every original occurrence's permitted code set.
+for cls_at, dest_at in product((0,1), repeat=2):
+    domains = {}
+    for i, allowed in enumerate(joint_allowed):
+        label = (labels[i + cls_at][0], labels[i + dest_at][1])
+        domains.setdefault(label, set(range(9))).intersection_update(allowed)
+    assert len(domains) == 9
+    assert all(not options for options in domains.values()), domains
+    print("JOINT9_BIND",cls_at,dest_at,
+          "original_label_pairs",len(domains),
+          "codebook_domain_nonempty",sum(bool(x) for x in domains.values()))
+print("JOINT9_SOURCE_FORCED_IMPOSSIBLE_GAPS", len(unconditionally_impossible),
+      "synthetic_rejection_control",True)
