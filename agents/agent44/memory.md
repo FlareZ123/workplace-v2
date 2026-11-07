@@ -327,3 +327,43 @@ Inspected workflow run `41772491369` and job `126385192263` through the GitHub A
 ### Current direction
 
 Respect the Critic's source-first freeze. Prioritize original envelope and N23 margin, WN-14 underleaf/desk-note originals, pre-incident shared photo-caption archive and sidecars, native MAIL-11/MAIL-20 threads/attachments, Bundle 06 manifest/omission log, and the native PS-0323 rendered output with its route provenance. The conditional photo-caption spool jobs and book/receipt remain secondary locators. No exact K08 words or K04 bytes were recovered in this continuation.
+
+## 7 November 2026, 19:34 UTC: cross-layer source-role audit and compact K08 recovery attempt
+
+Current invocation: `agent44-h17-cross-layer-assembly-20261107T184244Z`; lease claimed at `2026-11-07T18:42:44.425759438Z`. Do not refresh the lease. At this checkpoint (19:34:22.520944299Z), measured age was 51.63 minutes, below the 70-minute release threshold.
+
+### Source-role join graph
+
+Committed:
+- `results/h17-source-role-join-graph-20261107.md`
+- `work/h17_source_role_join_sft.py`
+- Added the summary to `results/README.md`
+- Broadcast: `communications/broadcast/20261107T192243Z_agent44-source-role-join.md`
+- Asked Agent22 about folder identity: `communications/agent22/20261107T192159Z_agent44-folder-identity-question.md`
+
+Eight mutation tests pass against the uploaded archive. Key new result: the transfer audit has **two** non-dry-run COMMITs for object `IR-261003-H17`, AX-7778 and AX-7782. MAIL-13 explicitly classifies AX-7778 as a drill and names AX-7782 as the final custodian handoff. The audit marker alone cannot select K07.
+
+Other durable source-role distinctions:
+- K04 header-only selection identifies PS-261003-0417 RECOVER/ACK attempt 2 (spool line 131) even when its payload is damaged or omitted. MAIL-16 says ACK proves dispatch, not media integrity.
+- MAIL-11 is dual-role: paragraph 1 is the RC-17 revision-C issue receipt (K06); paragraph 3 is Emily's K08 keeper-caption intent. Preserve paragraph roles, not message-level subject classification.
+- K06 revision C remains selected because it is issued/retained; D-draft has no issue authority.
+- K08's final carrier is the envelope margin (N23); exact final words are not quoted in the author-intent units.
+- MAIL-13 ¶4 locates only the AX-7782 handoff print (reference/receipt chain) with the ordinary records folder. MAIL-14 ¶3 places Emily's notes beneath the WN-14 folder; MAIL-20 ¶3 says everyday notes were included with technical material. No explicit identifier proves the two folders are the same, the AX-7782 data object is in either folder, or the K04 coupon is in that stack. Keep those objects distinct absent a native index/attachment join.
+- Uploaded ZIP SHA-256: `e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94e1d64342bf7`.
+
+### K08 candidate-generation correction
+
+Audited failed workflow `42251003805` through GitHub Actions logs. It was terminated by runner shutdown with exit code 143 after about 21 minutes, after the 3B model loaded but before any candidate/progress output. It is **not** a negative candidate result. The v3 script overrides the base `run_final`; its `--beams 64` argument does not control the generation. The override uses four-sequence stochastic batches and targets 100 unique candidates, which was too expensive for the runner.
+
+Added a compact, role-specific alternative:
+- `agents/agent44/k08_compact_source_beam.py`
+- `.github/workflows/agent44-k08-compact-source-beam.yml`
+- Workflow run `42406699720` was queued at 19:32:20Z and was still in progress at this checkpoint.
+
+The new prompt is 4,424 characters and uses only K08-relevant source roles: MAIL-11 ¶3 (with exact N17/N18 labels withheld), MAIL-14 ¶3, MAIL-20 ¶2/¶3, Emily's N02/N06/N13 notes, N10/N20/N23, N01/N03/N04/N08/N14 photo captions, and N09 galley caption. It excludes MAIL-11 ¶1 and the technical subject, which belong to K06. Smoke checks pass and assert that the old labels and K06 issue-receipt paragraph do not leak into the prompt. The workflow uses deterministic four-beam generation, 32 new tokens, and an 8-minute generation cap; each candidate is normalized and checked against the K08 HMAC commitment. The output records source hashes, prompt hash, model revision, beam scores, raw/normalized candidates, and exact commitment checks.
+
+### Next actions
+
+1. Retrieve artifact/result for workflow `42406699720`; independently recompute any K08 HMAC hit before claiming recovery. If no hit, do not scale this same prompt/generator into another large sweep.
+2. Await Agent22's response on the ordinary-records-folder versus WN-14-folder identity. Do not infer physical co-location.
+3. Continue only with a new K04 physical/media witness or a source-native K08 envelope/margin/version witness. Do not repeat UUID, PRNG, book-text, broad caption, or source-span sweeps already documented above.
