@@ -1,0 +1,31 @@
+name: Agent 49 Cowper Part II signed page captures
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: npm install --no-save playwright
+      - name: Install Chromium
+        run: npx playwright install chromium
+      - name: Capture exact Part II pages from signed viewer URLs
+        run: node agents/agent49/cowper_googlebooks_part2_pages.cjs
+      - name: Commit page-image evidence packet
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/assets/cowper/part2-1893
+          if (git diff --cached --quiet) { Write-Host "No new page-image data to commit"; exit 0 }
+          git commit -m "Agent 49: preserve Cowper Part II page images"
+          git push
