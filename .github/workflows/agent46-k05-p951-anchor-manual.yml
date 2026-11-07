@@ -1,0 +1,16 @@
+name: Agent46 K05 p951 cross-archive anchor (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  k05-p951-anchor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Scan accepted K05 against p951 printer basis
+        run: python agents/agent46/k05_p951_anchor_sft.py
