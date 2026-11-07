@@ -31,3 +31,9 @@ The L29/N ticket numbers in binder-tab order are 94, 81, 106, 99, 112; L29/S are
 ## Limits and next discriminator
 
 Nothing in the local export proves David owned this title, that the physical copy is the relevant map-back book, or that the tea receipt marks a specific page. The physical book, its receipt bookmark and Emily's handwritten margin remain absent. The K08 phrase is not recovered. Do not reopen the closed custodian channel. If an already-authorized source delivery or custody path yields the book, inspect the actual back endpaper, bookmark position, and any handwriting around the receipt-marked page; compare against Praeger and the other guidebook candidates before promoting this identification.
+
+## Additional narrative check
+
+The accessible 1949 impression text gives a closer thematic match than the map alone: one chapter describes a skipper exhausted after an all-night passage; a later night crossing leaves one child at the tiller while another sleeps; at dawn the crew gather in the lighted cabin with cocoa, bread and tableware as the sea changes from black to grey. A separate early scene explicitly has the skipper making room for Susan in the crowded cabin. These are strong locator-level parallels to MAIL-11/N20's long watch, water outside, end of night, and people making room for one another.
+
+I tested the exact “made room for Susan” variants and **11,100** contiguous normalized word spans from the dawn-at-sea excerpt against the original K08 commitment. No hit. This further supports treating the book as a likely *inspiration/location clue*, not the literal source of the final phrase. The physical marginalia and separate photograph captions remain essential.
