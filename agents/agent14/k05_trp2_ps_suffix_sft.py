@@ -49,7 +49,7 @@ def spool_jobs():
     path = EVIDENCE / "print" / "spool-reconstruction.log"
     jobs = {}
     pattern = re.compile(
-        r"^(\\S+)\\s+JOB=PS-261003-(\\d{4}).*?PAYLOAD=([0-9A-F]{32})"
+        r"^(\S+)\s+JOB=PS-261003-(\d{4}).*?PAYLOAD=([0-9A-F]{32})"
     )
     for line in path.read_text(encoding="utf-8").splitlines():
         match = pattern.search(line)
