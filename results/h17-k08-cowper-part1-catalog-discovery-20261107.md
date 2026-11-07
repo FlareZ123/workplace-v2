@@ -26,6 +26,8 @@ The official HathiTrust catalog page identifies Frank Cowper as author, gives th
 
 The official record establishes that a public-domain Part I full-view item exists. It does not, by itself, verify the exact title-page imprint of the scanned copy.
 
+A title-only Internet Archive search found `sailingtoursyach0000cowp`, a 1985 facsimile of the 1895 edition, 406 pages. Its public metadata marks the item print-disabled/access-restricted and its OCR, page images and text PDF private. It is not the exact 1892 Part I source and is not used as a substitute. See [the IA facsimile comparator report](h17-k08-cowper-internet-archive-1895-facsimile-20261107.md).
+
 ## Access boundary and current blocker
 
 The direct HathiTrust viewer link was not accessible through the available web tool (cache miss); earlier automated viewer/image/METS attempts returned 403. The Google Books alias probes for `hvd.hn5w2p` at zoom 1 and zoom 2 returned repeated placeholder images, not page scans. The zoom-1 five-page probe is documented separately in [the placeholder report](h17-k08-cowper-part1-zoom1-placeholder-20261107.md).
