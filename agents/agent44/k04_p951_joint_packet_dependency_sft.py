@@ -15,7 +15,7 @@ import random
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'agents/agent49'))
-from k04_p951_symbolic_basis import STARTS, ORIGIN, Basis, get, untemper, words
+from k04_p951_symbolic_basis import STARTS, ORIGIN, Basis, get, untemper, words, packets
 
 SPOOL_SHA = '7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083'
 FIVE = (12, 41, 66, 95, 125)
@@ -107,11 +107,9 @@ def synthetic_experiment(symbolic: list[list[int]]) -> None:
 
 
 def main() -> None:
-    raw = (ROOT / 'resources/evidence/print/spool-reconstruction.log').read_bytes()
-    assert hashlib.sha256(raw).hexdigest() == SPOOL_SHA
-    original = [bytes.fromhex(s.decode()) for s in re.findall(rb'PAYLOAD=([0-9A-F]{32})', raw)]
-    assert len(original) == 133
-    original[129] = b''
+    original, selected_index = packets(ROOT)
+    assert len(original) == len(STARTS) == 133
+    assert selected_index == 129 and STARTS[selected_index] == 951
     symbolic = words()
     source_experiment(rows_from_packets(original, symbolic))
     # Original and synthetic control use the same inference path, no target hash.
