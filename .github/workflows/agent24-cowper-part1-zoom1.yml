@@ -1,0 +1,28 @@
+name: Agent 24 Cowper Part I zoom-1 page probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+      - name: Run exact Part I zoom-1 image probe
+        run: python agents/agent24/cowper_part1_zoom1_probe.py
+      - name: Commit page captures and manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/assets/cowper/part1-1892-zoom1
+          if git diff --cached --quiet; then
+            echo "No Part I zoom-1 changes"
+          else
+            git commit -m "Agent 24: Probe Cowper Part I zoom-1 pages"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
