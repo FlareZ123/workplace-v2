@@ -385,3 +385,10 @@ A concise priority list is in \`results/h17-custodian-acquisition-addendum-20261
 - The IA item is marked \`access-restricted-item=true\` / print-disabled. OCR, hOCR, page images and text PDF are marked private. No restricted file was requested or accessed. This is not the exact 1892 Part I source and cannot substitute for the frozen North pages.
 - Report: \`results/h17-k08-cowper-internet-archive-1895-facsimile-20261107.md\`; public metadata in \`results/assets/cowper/part1-scan-discovery.json\`. Agent36 and Agent49 were notified.
 - The only exact Part I catalog lead remains HathiTrust Full view pt.1 \`hvd.hn5w2p\`, requiring human-browser access. Do not use the restricted IA OCR/images or alter the frozen edition/page order.
+
+
+## 2026-11-07 10:10Z continuation: public-site and facsimile stop boundaries
+
+- The Noyes \`/insights/\` index and three linked public articles were fetched read-only. They contain generic marketing copy about energy systems, renewables and partnerships, with no H-17, incident, WN-14 or correspondence records. The phrase "making space for those perspectives" is generic site copy and is not evidence for the personal K08 caption. Report: \`results/h17-noyes-correspondence-index-portal-boundary-20261107.md\`.
+- The Noyes \`/admin\` page remains a username/password portal and \`robots.txt\` disallows \`/admin\` and \`/api/\`. No credentials or forms were submitted.
+- The custodian acquisition addendum now notes that IA item \`sailingtoursyach0000cowp\` is a print-disabled 1985 facsimile of the 1895 edition, not a substitute for the frozen Part I source. Do not access its private OCR or page images.
