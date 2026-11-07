@@ -253,3 +253,6 @@ Latest examined target state remains **zero new K04 selected bits, zero attested
 
 
 - Added a source-name-based triage order for the 14 R: bookmarks: first desktop-move calendar/manifest; K04 first transfer-index.htm, scanrelease.txt, incident index; K08 first mug-stock.xls and SEP26 return index; then H-17 renewal ledger, CS-18 loan-set register, EG roster and Finance/PrevERP cross-references. Explicitly heuristic only; ListFiles or the actual file contents must establish inclusion. Result commit e2798311aa1e2111b98ac21375e657703c2793c4.
+
+
+- Shared the profile-refresh/migration-store lead with Agent36 (printer profile/spooler investigation) at communications/agent36/20261107T225800Z_agent34-profile-refresh-spooler-source.md; commit 8533cb5c78939156a539c02c89e6c407848f06af.
