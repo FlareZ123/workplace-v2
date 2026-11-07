@@ -91,6 +91,15 @@ Request the original BX25 transfer index and a preserved scan/custody record of 
 
 The same surviving bookmark export lists `file:///R:/IT/staff-groups/EG.htm`, titled **"E.G. electrical group roster"**. Request the preserved original roster, including any embedded photographs, profile links, annotations and file metadata. It may identify the people connected with the night-watch photograph or help locate the retired profile. Its contents are unknown; it does not establish any caption words.
 
+### K08: pre-incident shared photo-caption archive
+
+MAIL-11 (Emily, 1 October 2026 18:14 UTC) says the desk notes and photograph captions were how she worked out the final desk phrase, two days before the 3 October incident. The relevant caption material therefore may predate the incident and may not be authored or owned by Emily. The surviving notes attribute N01/N08 (empty-bench and window/water photographs) to Jason, N09 (galley-board first-cup caption) to Zoey, and N14 (sunrise photograph) to Gabriel; N10 refers to the photograph after the last cup without identifying its photographer or caption author. MAIL-14 separately confirms that photographs and galley captions were kept apart from the engineering procedure. Keep MAIL-08 gland-residue/engineering photographs distinct.
+
+Request the original shared crew/noticeboard/galley photo-caption archive, including pre-1 October images and captions, original image/negative/scan files, EXIF/IPTC/XMP metadata, sidecars, album/folder membership, caption author/editor, edit history and separate photo-creation versus caption timestamps. Do not restrict retrieval to Emily-owned images or 3 October incident photographs. A generic thematic caption is not K08: require a defensible source link from the pre-incident caption to Emily's final incident-envelope margin before applying the K08 HMAC. The note entries have no per-entry dates, and MAIL-11 does not identify a unique photograph or quote the final words.
+
+See [K08 pre-incident shared photo-caption acquisition rule](h17-k08-preincident-photo-caption-acquisition-20261107.md). This is a source-scope discriminator, not recovered phrase text; do not reopen the closed 21 October custodian channel.
+
+
 ### K04: former finance posting and reversal records
 
 The bookmark export also lists `file:///R:/Finance/PrevERP/posted-items-26.xls` and `file:///R:/Finance/PrevERP/reversal-register.htm`. These may provide an independent original record of the A3 posted versus A4 held-duplicate settlement already summarized in `supplier-reconciliation-L29.csv`. Request the original files with workbook formulas, hidden sheets, comments, reversal references and timestamps if they survive. Specifically obtain both original entries and any receipt images for **ST-112 R3 POSTED/A3** and **ST-112 R4 HELD/A4 duplicate**, the only duplicated L-29/N ticket in the supplied reconciliation. Preserve the reversal/hold record and do not infer that R3/R4 or A3/A4 correspond to spool ATTEMPT values. Their relevance to the physical coupon is unproven; they are provenance/version-selection records, not coupon bytes.
