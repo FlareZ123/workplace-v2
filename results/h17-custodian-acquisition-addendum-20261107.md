@@ -60,6 +60,30 @@ Request authorized preserved copies with original paths, timestamps, hashes, nat
 
 Also request the original asset-register entries and model/serial/configuration records for the three locally evidenced account references FA-17, LV-42 and ST-09. Ask the custodian to map ESC-N, ESC-S and WATCH-SPARE to the actual physical printers, cassette sets, queues and storage devices, and to state which identifiers are accounts versus physical asset IDs. This is needed to determine whether the South and Watch-Spare packets are valid hardware controls for the FA-17 device-local saved-job question; do not assume that they are the same model or host.
 
+## Conditional locator: possible ST/PS sequence offset (unverified)
+
+A separate source-index hypothesis is worth checking against the original incident desk index and September cassette-return index: a supplier ticket ST-n may correspond to printer job PS-261003-(300+n). The local supplier CSV has 15 distinct ST identifiers. Under that offset:
+
+| Ticket | Hypothesized printer job | In retained ordinary spool? |
+|---|---:|---|
+| ST-081 | PS-261003-0381 | yes |
+| ST-087 | PS-261003-0387 | yes |
+| ST-094 | PS-261003-0394 | yes |
+| ST-098 | PS-261003-0398 | yes |
+| ST-099 | PS-261003-0399 | yes |
+| ST-106 | PS-261003-0406 | yes |
+| ST-112 | PS-261003-0412 | yes |
+| ST-121 | PS-261003-0421 | yes |
+| ST-130 / ST-135 / ST-142 / ST-151 | PS-261003-0430 / -0435 / -0442 / -0451 | no |
+| ST-157 / ST-164 | PS-261003-0457 / -0464 | no |
+| ST-176 | PS-261003-0476 | no |
+
+This is a range-consistent locator hypothesis, not a proven cross-reference: the retained ordinary spool covers jobs 0300–0427, so the 8/15 in-range matches do not independently validate the offset. No supplied source explicitly states that ST and PS identifiers share this sequence. Do not treat the mapping as fact until the original index or native ticket/job cross-reference confirms it.
+
+If confirmed, check for original ticket and attachment records ST-043, ST-044 and ST-096 (hypothetically corresponding to jobs 0343, 0344 and 0396, around the two high-leverage p951 source gaps), and ST-117, ST-120 and ST-148 (hypothetically corresponding to selected jobs 0417, 0420 and 0448). Also retrieve any linked PTW-343, PTW-344, PTW-396, PTW-417, PTW-420 and PTW-448 records, where retained. PTW-396 is already represented locally by a single 4-byte seal serial; that serial alone was not a p951 donor match, so any useful ST-096 source would need to contain an additional independent field, attachment or copy record.
+
+The North packet's last tab ST-112 would map to job 0412, five job numbers before selected PS-261003-0417; South tab ST-142 would map to job 0442, six before selected PS-261003-0448. This may help locate a physical copy or missing ticket, but it does not establish that such a ticket exists. The obvious five-point GF(256)/GF(2^128) interpolation and simple hash/XOR constructions from the five North mapped payloads did not predict held-out spool packets or match K04. No K04 bits or derivation rule are recovered by this hypothesis.
+
 ## Preservation requirements
 
 For every returned object, preserve original bytes, source path, owner/custodian, transfer time, file metadata, hashes, page labels, sidecars and chain-of-custody records. Keep original objects distinct from export/reconstruction copies. Do not modify the acceptance files, the supplied encrypted PDF, or the recovered source evidence.
