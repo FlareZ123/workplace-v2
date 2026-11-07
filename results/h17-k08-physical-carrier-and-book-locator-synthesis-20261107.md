@@ -33,7 +33,7 @@ The rear-map clue also fits this book. The 1947 third-edition pagination places 
 
 The 1997/394-page pagination starts those sections at p.59 and p.111, placing p.112 in the southern section. The 1937 first edition is also 394 pages; its exact section boundary has not been independently established here. Therefore the clean North/South split is specific to the verified 1947 pagination. It is an interesting discriminating pattern, not proof that ticket IDs are page numbers or that this is David's book.
 
-**ST-112** is the sole duplicated North ticket: R3 POSTED/A3 versus R4 HELD/A4 duplicate. If the physical book is the 1947 edition and the receipt marks p.112, the alignment is unusually coherent. If the book is a 394-page edition, p.112 falls on the southern side. Do not infer that A3/A4 denote book editions.
+**ST-112** is the sole duplicated North ticket: R3 POSTED/A3 versus R4 HELD/A4 duplicate. The supplier CSV preamble defines R3/R4 as **vendor settlement batches**, not book editions; A3/A4 are folio/jacket identifiers. The POSTED-versus-HELD distinction is a settlement-record selection fact only. If the physical book is the 1947 edition and the receipt marks p.112, the alignment is unusually coherent. If the book is a 394-page edition, p.112 falls on the southern side. Do not infer that R3/R4 or A3/A4 denote book editions.
 
 ### C. W. Eric Wilson's *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen*
 
