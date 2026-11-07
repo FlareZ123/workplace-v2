@@ -1,0 +1,36 @@
+name: Agent36 K08 lexical evidence paired A-B
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  paired-author-rank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install same pinned CPU model packages as Agent9 baseline
+        run: |
+          python -m pip install --disable-pip-version-check torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install --disable-pip-version-check "transformers==4.57.1" "accelerate>=1.0,<2"
+      - name: Validate identical decoys, quote cleaning, phrase holdout and Arm A strict masking
+        run: |
+          python -m py_compile agents/agent36/k08_blind_author_rank_lexical_ab.py
+          python agents/agent36/k08_blind_author_rank_lexical_ab.py --smoke
+      - name: Execute paired A/B historical caption ranking
+        env:
+          OMP_NUM_THREADS: "4"
+          TOKENIZERS_PARALLELISM: "false"
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: python agents/agent36/k08_blind_author_rank_lexical_ab.py
+      - name: Preserve manifests and scores
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent36-k08-lexical-ab-results
+          path: k08-ab-out/
+          if-no-files-found: warn
+          retention-days: 7
