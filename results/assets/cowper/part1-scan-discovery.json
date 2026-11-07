@@ -16,7 +16,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "5cd5dfd42d0762ff073b7f2796ae4af369ac341e5f2dc9144cc6db0e62b1f7ff",
+      "sha256": "08794cb7a66a4d3289ed17a0679b60d6b2bfce2383b37d05f5397fed95bf49e8",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -26,7 +26,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "bdae8279217fb5d785cd5532dc415524b009b120176c3504ba8a0111b2cfc3e8",
+      "sha256": "368082070a287e767222351a4acf41a172b147393d5a13213b1cda3e0ddf5701",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -36,7 +36,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "61a1f641eec9958cbc54b54b0e8141be331e8d249ac7575a9768b4ae01938c42",
+      "sha256": "3affe463aa351f8c62e1cb41279e860c451418fd4986a265ed6a0a798525ed70",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -66,7 +66,8 @@
           "docs": []
         }
       },
-      "body_prefix": null
+      "body_prefix": null,
+      "body_text": null
     },
     {
       "label": "Internet Archive Advanced Search: title:\"Sailing Tours\" AND creator:\"Frank Cowper\"",
@@ -95,7 +96,8 @@
           "docs": []
         }
       },
-      "body_prefix": null
+      "body_prefix": null,
+      "body_text": null
     },
     {
       "label": "Open Library exact title and author",
@@ -115,7 +117,8 @@
         "offset": null,
         "docs": []
       },
-      "body_prefix": null
+      "body_prefix": null,
+      "body_text": null
     },
     {
       "label": "HathiTrust OCLC 7504145 catalog metadata",
@@ -196,7 +199,8 @@
           }
         ]
       },
-      "body_prefix": null
+      "body_prefix": null,
+      "body_text": null
     },
     {
       "label": "HathiTrust Part I item metadata",
@@ -277,7 +281,184 @@
           }
         ]
       },
-      "body_prefix": null
+      "body_prefix": null,
+      "body_text": null
+    },
+    {
+      "label": "HathiTrust full Part I item metadata",
+      "requested_url": "https://catalog.hathitrust.org/api/volumes/full/htid/hvd.hn5w2p.json",
+      "final_url": "https://catalog.hathitrust.org/api/volumes/full/htid/hvd.hn5w2p.json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 9021,
+      "sha256": "05100c39c4685222a4bed36fbd83c4b4100b46be6f8bbdcb1917bd729388a2b1",
+      "json": {
+        "records": {
+          "100485750": {
+            "recordURL": "https://catalog.hathitrust.org/Record/100485750",
+            "titles": [
+              "Sailing tours; the yachtsman's guide to the cruising waters of the English coast"
+            ],
+            "isbns": [],
+            "issns": [],
+            "oclcs": [
+              "7504145"
+            ],
+            "lccns": [],
+            "publishDates": [
+              "1892"
+            ],
+            "marc-xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><collection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.loc.gov/MARC21/slim\" xsi:schemaLocation=\"http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd\"><record><leader>01446nam a2200265K  4500</leader><controlfield tag=\"001\">100485750</controlfield><controlfield tag=\"003\">MiAaHDL</controlfield><controlfield tag=\"005\">20241206000000.0</controlfield><controlfield tag=\"006\">m        d        </controlfield><controlfield tag=\"007\">cr bn ---auaua</controlfield><controlfield tag=\"008\">810615m18921896enka          000 0 eng d</controlfield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">sdr-hvd.990044969860203941</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">sdr-ukoxu.990148035160107026</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">(MH)004496986HVD01-Aleph</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"z\">(MH)Aleph004496986</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">(OCoLC)7504145</subfield></datafield><datafield tag=\"040\" ind1=\" \" ind2=\" \"><subfield code=\"a\">PLF</subfield><subfield code=\"c\">PLF</subfield><subfield code=\"d\">HLS</subfield></datafield><datafield tag=\"043\" ind1=\" \" ind2=\" \"><subfield code=\"a\">e-uk---</subfield></datafield><datafield tag=\"100\" ind1=\"1\" ind2=\" \"><subfield code=\"a\">Cowper, Frank,</subfield><subfield code=\"d\">1849-1930</subfield></datafield><datafield tag=\"245\" ind1=\"1\" ind2=\"0\"><subfield code=\"a\">Sailing tours;</subfield><subfield code=\"b\">the yachtsman's guide to the cruising waters of the English coast.</subfield><subfield code=\"c\">With charts and illus. by the author.</subfield></datafield><datafield tag=\"260\" ind1=\" \" ind2=\" \"><subfield code=\"a\">London,</subfield><subfield code=\"b\">L.U. Gill,</subfield><subfield code=\"c\">1892-1896.</subfield></datafield><datafield tag=\"300\" ind1=\" \" ind2=\" \"><subfield code=\"a\">5 pts.</subfield><subfield code=\"b\">illus.</subfield></datafield><datafield tag=\"505\" ind1=\"0\" ind2=\" \"><subfield code=\"a\">Pt. 1. The coasts of Essex and Suffolk, containing descriptions of every creek from the Thames to Aldborough -- pt. 2. The coasts of Kent, Sussex, Hants, the Isle of Wight, Dorset, Devon, Cornwall, and the Scilly Isles ... -- pt. 3. The coast of Brittany, including the Departments of Finisterre, the Morbihan, and the Lower Loire ... -- pt. 4. The Irish Sea and the Bristol Channel, including the western coasts of England and Wales, ... -- pt. 5. The west coasts of Scotland, the Orkneys, and the west coast of the North Sea.</subfield></datafield><datafield tag=\"538\" ind1=\" \" ind2=\" \"><subfield code=\"a\">Mode of access: Internet.</subfield></datafield><datafield tag=\"650\" ind1=\" \" ind2=\"0\"><subfield code=\"a\">Yachting</subfield><subfield code=\"z\">Great Britain.</subfield></datafield><datafield tag=\"650\" ind1=\" \" ind2=\"0\"><subfield code=\"a\">Yachts</subfield><subfield code=\"z\">Great Britain.</subfield></datafield><datafield tag=\"651\" ind1=\" \" ind2=\"0\"><subfield code=\"a\">Great Britain</subfield><subfield code=\"x\">Guidebooks.</subfield></datafield><datafield tag=\"655\" ind1=\" \" ind2=\"7\"><subfield code=\"a\">Guidebooks</subfield><subfield code=\"2\">fast</subfield><subfield code=\"0\">(OCoLC)fst01423871</subfield></datafield><datafield tag=\"776\" ind1=\"0\" ind2=\"8\"><subfield code=\"i\">Online version:</subfield><subfield code=\"a\">Cowper, Frank, 1849-1930.</subfield><subfield code=\"t\">Sailing tours.</subfield><subfield code=\"d\">London, L.U. Gill, 1892-1896</subfield><subfield code=\"w\">(OCoLC)894082875</subfield></datafield><datafield tag=\"CID\" ind1=\" \" ind2=\" \"><subfield code=\"a\">100485750</subfield></datafield><datafield tag=\"DAT\" ind1=\"0\" ind2=\" \"><subfield code=\"a\">20020606095253.2</subfield><subfield code=\"b\">20241206000000.0</subfield></datafield><datafield tag=\"DAT\" ind1=\"1\" ind2=\" \"><subfield code=\"a\">20241207060511.0</subfield><subfield code=\"b\">2026-06-04T21:10:53Z</subfield></datafield><datafield tag=\"DAT\" ind1=\"2\" ind2=\" \"><subfield code=\"a\">2024-12-20T18:30:02Z</subfield><subfield code=\"b\">2026-06-04T20:00:03Z</subfield></datafield><datafield tag=\"CAT\" ind1=\" \" ind2=\" \"><subfield code=\"a\">SDR-HVD</subfield><subfield code=\"c\">hvd</subfield><subfield code=\"d\">ALMA</subfield><subfield code=\"l\">prepare.pl-004-008</subfield></datafield><datafield tag=\"FMT\" ind1=\" \" ind2=\" \"><subfield code=\"a\">BK</subfield></datafield><datafield tag=\"HOL\" ind1=\" \" ind2=\" \"><subfield code=\"0\">sdr-hvd.990044969860203941</subfield><subfield code=\"a\">hvd</subfield><subfield code=\"b\">SDR</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"f\">004496986</subfield><subfield code=\"p\">hvd.hn5w2p</subfield><subfield code=\"s\">HVD</subfield><subfield code=\"z\">pt.1</subfield><subfield code=\"1\">990044969860203941</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20260604</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w2p</subfield><subfield code=\"z\">pt.1</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">add</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20250309</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w39</subfield><subfield code=\"z\">v.4</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20241207</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w16</subfield><subfield code=\"z\">v.2</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20241207</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w24</subfield><subfield code=\"z\">v.5</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">UKOXU</subfield><subfield code=\"c\">UKOXU</subfield><subfield code=\"d\">20251108</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">oxu1.602111108</subfield><subfield code=\"z\">pt.3</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield></record></collection>"
+          }
+        },
+        "items": [
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w2p",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p",
+            "rightsCode": "pd",
+            "lastUpdate": "20260604",
+            "enumcron": "pt.1",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w16",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w16",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.2",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "University of Oxford",
+            "fromRecord": "100485750",
+            "htid": "oxu1.602111108",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=oxu1.602111108",
+            "rightsCode": "pd",
+            "lastUpdate": "20251108",
+            "enumcron": "pt.3",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w39",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w39",
+            "rightsCode": "pd",
+            "lastUpdate": "20250309",
+            "enumcron": "v.4",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w24",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w24",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.5",
+            "usRightsString": "Full view"
+          }
+        ]
+      },
+      "body_prefix": null,
+      "body_text": null
+    },
+    {
+      "label": "HathiTrust full OCLC 7504145 metadata",
+      "requested_url": "https://catalog.hathitrust.org/api/volumes/full/oclc/7504145.json",
+      "final_url": "https://catalog.hathitrust.org/api/volumes/full/oclc/7504145.json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 9021,
+      "sha256": "05100c39c4685222a4bed36fbd83c4b4100b46be6f8bbdcb1917bd729388a2b1",
+      "json": {
+        "records": {
+          "100485750": {
+            "recordURL": "https://catalog.hathitrust.org/Record/100485750",
+            "titles": [
+              "Sailing tours; the yachtsman's guide to the cruising waters of the English coast"
+            ],
+            "isbns": [],
+            "issns": [],
+            "oclcs": [
+              "7504145"
+            ],
+            "lccns": [],
+            "publishDates": [
+              "1892"
+            ],
+            "marc-xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><collection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.loc.gov/MARC21/slim\" xsi:schemaLocation=\"http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd\"><record><leader>01446nam a2200265K  4500</leader><controlfield tag=\"001\">100485750</controlfield><controlfield tag=\"003\">MiAaHDL</controlfield><controlfield tag=\"005\">20241206000000.0</controlfield><controlfield tag=\"006\">m        d        </controlfield><controlfield tag=\"007\">cr bn ---auaua</controlfield><controlfield tag=\"008\">810615m18921896enka          000 0 eng d</controlfield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">sdr-hvd.990044969860203941</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">sdr-ukoxu.990148035160107026</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">(MH)004496986HVD01-Aleph</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"z\">(MH)Aleph004496986</subfield></datafield><datafield tag=\"035\" ind1=\" \" ind2=\" \"><subfield code=\"a\">(OCoLC)7504145</subfield></datafield><datafield tag=\"040\" ind1=\" \" ind2=\" \"><subfield code=\"a\">PLF</subfield><subfield code=\"c\">PLF</subfield><subfield code=\"d\">HLS</subfield></datafield><datafield tag=\"043\" ind1=\" \" ind2=\" \"><subfield code=\"a\">e-uk---</subfield></datafield><datafield tag=\"100\" ind1=\"1\" ind2=\" \"><subfield code=\"a\">Cowper, Frank,</subfield><subfield code=\"d\">1849-1930</subfield></datafield><datafield tag=\"245\" ind1=\"1\" ind2=\"0\"><subfield code=\"a\">Sailing tours;</subfield><subfield code=\"b\">the yachtsman's guide to the cruising waters of the English coast.</subfield><subfield code=\"c\">With charts and illus. by the author.</subfield></datafield><datafield tag=\"260\" ind1=\" \" ind2=\" \"><subfield code=\"a\">London,</subfield><subfield code=\"b\">L.U. Gill,</subfield><subfield code=\"c\">1892-1896.</subfield></datafield><datafield tag=\"300\" ind1=\" \" ind2=\" \"><subfield code=\"a\">5 pts.</subfield><subfield code=\"b\">illus.</subfield></datafield><datafield tag=\"505\" ind1=\"0\" ind2=\" \"><subfield code=\"a\">Pt. 1. The coasts of Essex and Suffolk, containing descriptions of every creek from the Thames to Aldborough -- pt. 2. The coasts of Kent, Sussex, Hants, the Isle of Wight, Dorset, Devon, Cornwall, and the Scilly Isles ... -- pt. 3. The coast of Brittany, including the Departments of Finisterre, the Morbihan, and the Lower Loire ... -- pt. 4. The Irish Sea and the Bristol Channel, including the western coasts of England and Wales, ... -- pt. 5. The west coasts of Scotland, the Orkneys, and the west coast of the North Sea.</subfield></datafield><datafield tag=\"538\" ind1=\" \" ind2=\" \"><subfield code=\"a\">Mode of access: Internet.</subfield></datafield><datafield tag=\"650\" ind1=\" \" ind2=\"0\"><subfield code=\"a\">Yachting</subfield><subfield code=\"z\">Great Britain.</subfield></datafield><datafield tag=\"650\" ind1=\" \" ind2=\"0\"><subfield code=\"a\">Yachts</subfield><subfield code=\"z\">Great Britain.</subfield></datafield><datafield tag=\"651\" ind1=\" \" ind2=\"0\"><subfield code=\"a\">Great Britain</subfield><subfield code=\"x\">Guidebooks.</subfield></datafield><datafield tag=\"655\" ind1=\" \" ind2=\"7\"><subfield code=\"a\">Guidebooks</subfield><subfield code=\"2\">fast</subfield><subfield code=\"0\">(OCoLC)fst01423871</subfield></datafield><datafield tag=\"776\" ind1=\"0\" ind2=\"8\"><subfield code=\"i\">Online version:</subfield><subfield code=\"a\">Cowper, Frank, 1849-1930.</subfield><subfield code=\"t\">Sailing tours.</subfield><subfield code=\"d\">London, L.U. Gill, 1892-1896</subfield><subfield code=\"w\">(OCoLC)894082875</subfield></datafield><datafield tag=\"CID\" ind1=\" \" ind2=\" \"><subfield code=\"a\">100485750</subfield></datafield><datafield tag=\"DAT\" ind1=\"0\" ind2=\" \"><subfield code=\"a\">20020606095253.2</subfield><subfield code=\"b\">20241206000000.0</subfield></datafield><datafield tag=\"DAT\" ind1=\"1\" ind2=\" \"><subfield code=\"a\">20241207060511.0</subfield><subfield code=\"b\">2026-06-04T21:10:53Z</subfield></datafield><datafield tag=\"DAT\" ind1=\"2\" ind2=\" \"><subfield code=\"a\">2024-12-20T18:30:02Z</subfield><subfield code=\"b\">2026-06-04T20:00:03Z</subfield></datafield><datafield tag=\"CAT\" ind1=\" \" ind2=\" \"><subfield code=\"a\">SDR-HVD</subfield><subfield code=\"c\">hvd</subfield><subfield code=\"d\">ALMA</subfield><subfield code=\"l\">prepare.pl-004-008</subfield></datafield><datafield tag=\"FMT\" ind1=\" \" ind2=\" \"><subfield code=\"a\">BK</subfield></datafield><datafield tag=\"HOL\" ind1=\" \" ind2=\" \"><subfield code=\"0\">sdr-hvd.990044969860203941</subfield><subfield code=\"a\">hvd</subfield><subfield code=\"b\">SDR</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"f\">004496986</subfield><subfield code=\"p\">hvd.hn5w2p</subfield><subfield code=\"s\">HVD</subfield><subfield code=\"z\">pt.1</subfield><subfield code=\"1\">990044969860203941</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20260604</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w2p</subfield><subfield code=\"z\">pt.1</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">add</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20250309</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w39</subfield><subfield code=\"z\">v.4</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20241207</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w16</subfield><subfield code=\"z\">v.2</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">HVD</subfield><subfield code=\"c\">HVD</subfield><subfield code=\"d\">20241207</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">hvd.hn5w24</subfield><subfield code=\"z\">v.5</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield><datafield tag=\"974\" ind1=\" \" ind2=\" \"><subfield code=\"b\">UKOXU</subfield><subfield code=\"c\">UKOXU</subfield><subfield code=\"d\">20251108</subfield><subfield code=\"s\">google</subfield><subfield code=\"u\">oxu1.602111108</subfield><subfield code=\"z\">pt.3</subfield><subfield code=\"y\">1896</subfield><subfield code=\"r\">pd</subfield><subfield code=\"q\">bib</subfield><subfield code=\"t\">non-US bib date2, date type m &lt; 1901</subfield></datafield></record></collection>"
+          }
+        },
+        "items": [
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w2p",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p",
+            "rightsCode": "pd",
+            "lastUpdate": "20260604",
+            "enumcron": "pt.1",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w16",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w16",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.2",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "University of Oxford",
+            "fromRecord": "100485750",
+            "htid": "oxu1.602111108",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=oxu1.602111108",
+            "rightsCode": "pd",
+            "lastUpdate": "20251108",
+            "enumcron": "pt.3",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w39",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w39",
+            "rightsCode": "pd",
+            "lastUpdate": "20250309",
+            "enumcron": "v.4",
+            "usRightsString": "Full view"
+          },
+          {
+            "orig": "Harvard University",
+            "fromRecord": "100485750",
+            "htid": "hvd.hn5w24",
+            "itemURL": "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w24",
+            "rightsCode": "pd",
+            "lastUpdate": "20241207",
+            "enumcron": "v.5",
+            "usRightsString": "Full view"
+          }
+        ]
+      },
+      "body_prefix": null,
+      "body_text": null
+    },
+    {
+      "label": "HathiTrust MARC record 100485750",
+      "requested_url": "https://catalog.hathitrust.org/Record/100485750.marc",
+      "status": 403,
+      "error": "HTTP Error 403: Forbidden",
+      "content_type": "text/html",
+      "bytes": 5636,
+      "sha256": "6e3560a2f7151bb77843017c4fb2147104cb9279a222d5acfc0aec36ea9dcdbc",
+      "body_prefix": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta http-equiv=\"content-security-policy\" content=\"default-src &#39;none&#39;; script-src &#39;nonce-mvuG91vDt0Fwm3X9rNHwrk&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-s"
     }
   ],
   "limits": [
