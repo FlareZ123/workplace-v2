@@ -54,7 +54,7 @@ def strip_gutenberg_envelope(raw_text: str) -> str:
 
 def main() -> None:
     assert component(
-        "A good watch leaves the room ready for the next pair of hands."
+        normalize("A good watch leaves the room ready for the next pair of hands.")
     ).hex().upper() == "BF889359B0303F2B2B2FD96AE841210B"
     synthetic = normalize("Outside! The sea outside the room and the table inside. Home")
     planted = "the sea outside the room and the table inside"
