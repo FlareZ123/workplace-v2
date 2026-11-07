@@ -1,4 +1,9 @@
-"""Phrase-constrained n=24 CPython source inverse.
+"""RETIRED before execution: Agent45's 19-term source-only theorem excludes
+CPython n=24 under p951/k2496, including the normalized-phrase submodel.
+Its post-broadcast run 42372663933 was canceled and its workflow retired.
+Kept only as an auditable record; do not dispatch against this source basis.
+
+Phrase-constrained n=24 CPython source inverse.
 
 Tests whether the normalized 32-byte K08 phrase itself was passed as a
 CPython version-2 bytes seed, expanding to phrase || SHA512(phrase) (24 words).
