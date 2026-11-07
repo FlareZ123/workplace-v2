@@ -53,7 +53,7 @@ The candidate book page and candidate PS job are both simple functions of the sa
 
 1. Preserve David's exact map-back book and receipt together in situ. Record title, publisher, year, edition/printing, pagination, rear map, exact receipt page/spread, both receipt faces, all annotations and custody before separation. Check whether the book contains the separate MAIL-06 pocket-book standby transcription ending `5E67`, but do not treat it as a page/word rule.
 2. Retrieve the original `R:/Stores/returns/SEP26/index.htm`, its source schema/revision history, and the signed North and South binder pages. Ask for explicit ST→PTW and PTW→PS references or a written statement that none exist.
-3. Retrieve native spool/queue records and physical outputs for PS-0436, PS-0441 and PS-0457, plus PS-0427/0448 and FA-17 holdouts PS-0392/0403. Preserve every attempt, route, class, destination, spool object, ACK and paper-collection record.
+3. Retrieve native spool/queue records and physical outputs for PS-0436, PS-0441 and PS-0457, plus PS-0427/0448 and FA-17 holdouts PS-0392/0403. Preserve source document path/hash and page/range, submitting user, print processor, queue, printer/device/port/route, every attempt, class, destination/output tray, spool object, ACK and paper-collection record. A source-page field matching the candidate ticket page would directly test the shared index.
 4. Keep the physical book, the WN-14 sheet/photocopies, the North/South return pages, the spool objects and Emily's desk notes as distinct carriers until original custody records explicitly join them.
 
 ## Reproducible supporting work
