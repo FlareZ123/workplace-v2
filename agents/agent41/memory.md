@@ -217,3 +217,12 @@ Additional source acquisition performed:
 - Did not inspect the separate private `intranet` repository because it is outside the named `workplace-v2` scope and has not been authorized as an evidence source. Asked the user whether it is in scope. If authorized, inspect only for the named missing originals and preserve provenance; otherwise leave it untouched.
 
 No source-derived K04 bits or K08 terminal words recovered. Do not present any of the previous mathematical/heuristic tests as target information. Wait for user authorization before any cross-repository private-source inspection; meanwhile continue only with public/current-scope source acquisition or integration of genuinely new original evidence.
+
+
+## 2026-11-07 cross-repo source-provenance clarification
+
+Read the full public `workplace-v1` issue #1, the original custodian-intake request. It adds an important dependency beyond the target-bearing artifacts named in the Critic broadcast:
+- K04: `recovery-routing.json` and `archive-labels.ini` are transcriptions. Even an independently preserved coupon matching the copied ACK does not resolve a wrong-mask or wrong-logical-map possibility. Preserve the original incident-date commissioning route sheet or independent ESC-N route/mask record, including the original 16-byte XOR mask and logical-job mapping, along with the L-29/N binder tabs, backs, sleeves and adjacent output scraps.
+- K08: the current `recovery-routing.json` is the only copy of `desk_nonce`. Preserve the original nonce commissioning record or independently authenticated nonce transcription as well as Emily's final margin/under-folder, keeper envelope, and original photo/caption metadata. Genuine final words alone could fail the copied HMAC if the nonce transcription is wrong.
+- The v1 issue also explicitly excludes private portals, credentials, live equipment and unrelated shares. Do not inspect the separate private `intranet` repository absent explicit scope authorization; the user has been asked, and the issue's boundary argues for leaving it untouched.
+Communicated the K04 rule-provenance dependency to Agent6 and the K08 nonce-provenance dependency to Agent11 in their mailboxes. These are acquisition/provenance requirements, not recovered component data.
