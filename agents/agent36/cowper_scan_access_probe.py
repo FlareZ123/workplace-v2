@@ -125,13 +125,79 @@ def fetch(name: str, url: str) -> tuple[bytes | None, dict[str, object]]:
     return None, record
 
 
+def hathi_browser_access() -> dict[str, object]:
+    from http.cookiejar import CookieJar
+    from urllib.request import HTTPCookieProcessor, build_opener
+
+    cookie_jar = CookieJar()
+    opener = build_opener(HTTPCookieProcessor(cookie_jar))
+    base_headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+    }
+    endpoints = [
+        ("hathi_catalog_record", "https://catalog.hathitrust.org/Record/100485750", None),
+        ("hathi_viewer_ampersand", "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p&seq=7&view=1up", "https://catalog.hathitrust.org/Record/100485750"),
+        ("hathi_viewer_semicolon", "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p;seq=7;view=1up", "https://catalog.hathitrust.org/Record/100485750"),
+        ("hathi_viewer_http", "http://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p&seq=7&view=1up", "https://catalog.hathitrust.org/Record/100485750"),
+        ("hathi_image_browser_headers", "https://babel.hathitrust.org/cgi/imgsrv/image?id=hvd.hn5w2p;seq=7;width=900", "https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p&seq=7&view=1up"),
+    ]
+    results: dict[str, object] = {}
+    for name, url, referer in endpoints:
+        print(f"HATHI_BROWSER_START name={name} url={url}")
+        headers = dict(base_headers)
+        if referer:
+            headers["Referer"] = referer
+        try:
+            with opener.open(Request(url, headers=headers), timeout=30) as response:
+                content_type = response.headers.get("Content-Type", "")
+                body = response.read(MAX_BYTES + 1)
+                truncated = len(body) > MAX_BYTES
+                if truncated:
+                    body = body[:MAX_BYTES]
+                ext = ".html" if "html" in content_type else ".png" if "image/png" in content_type else ".jpg" if "image/jpeg" in content_type else ".bin"
+                filename = name + ext
+                (OUT / filename).write_bytes(body)
+                record: dict[str, object] = {
+                    "status": response.status,
+                    "final_url": response.geturl(),
+                    "content_type": content_type,
+                    "bytes_saved": len(body),
+                    "truncated": truncated,
+                    "sha256": hashlib.sha256(body).hexdigest(),
+                    "artifact_file": filename,
+                    "cookie_count": len(cookie_jar),
+                }
+                if "html" in content_type:
+                    title = re.search(r"<title[^>]*>(.*?)</title>", body.decode("utf-8", "replace"), re.I | re.S)
+                    record["title"] = html.unescape(re.sub(r"\\s+", " ", title.group(1)).strip()) if title else None
+                if content_type.startswith("image/"):
+                    print(f"HATHI_IMAGE_BASE64 name={name} data={base64.b64encode(body).decode('ascii')}")
+                results[name] = record
+                print("HATHI_BROWSER_RESULT " + json.dumps({"name": name, **record}, sort_keys=True))
+        except HTTPError as exc:
+            record = {"status": exc.code, "error": str(exc), "url": url, "cookie_count": len(cookie_jar)}
+            results[name] = record
+            print("HATHI_BROWSER_RESULT " + json.dumps({"name": name, **record}, sort_keys=True))
+        except (URLError, TimeoutError, OSError) as exc:
+            record = {"error": f"{type(exc).__name__}: {exc}", "url": url, "cookie_count": len(cookie_jar)}
+            results[name] = record
+            print("HATHI_BROWSER_RESULT " + json.dumps({"name": name, **record}, sort_keys=True))
+    return results
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", required=True)
     target = parser.parse_args().target
     results: dict[str, object] = {}
 
-    if target == "part1-search":
+    if target == "hathi-access":
+        results = hathi_browser_access()
+    elif target == "part1-search":
         endpoints = {
             "hathi_catalog_api_brief": "https://catalog.hathitrust.org/api/volumes/brief/htid/hvd.hn5w2p.json",
             "hathi_catalog_api_full": "https://catalog.hathitrust.org/api/volumes/full/htid/hvd.hn5w2p.json",
