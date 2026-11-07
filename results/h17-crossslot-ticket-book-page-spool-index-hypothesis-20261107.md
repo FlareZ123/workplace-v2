@@ -18,18 +18,18 @@ Three independent source groupings share the same North/South ticket suffixes:
 
 ## Shared-index table
 
-| Packet | Ticket suffix | Candidate book page | Praeger 1947 section | Candidate PS job | Status in retained spool |
-|---|---:|---:|---|---:|---|
-| L-29/N | 81 | 81 | Volcanic North | PS-0386 | present |
-| L-29/N | 94 | 94 | Volcanic North | PS-0399 | present |
-| L-29/N | 99 | 99 | Volcanic North | PS-0404 | present |
-| L-29/N | 106 | 106 | Volcanic North | PS-0411 | present |
-| L-29/N | 112 | 112 | Volcanic North | PS-0417 | present; selected RECOVER ACK2 exists |
-| L-29/S | 121 | 121 | Silurian Region | PS-0427 | present; ACK/RECOVER/desk |
-| L-29/S | 130 | 130 | Silurian Region | PS-0436 | absent from retained export |
-| L-29/S | 135 | 135 | Silurian Region | PS-0441 | absent from retained export |
-| L-29/S | 142 | 142 | Silurian Region | PS-0448 | present; ACK/RECOVER/desk |
-| L-29/S | 151 | 151 | Silurian Region | PS-0457 | absent from retained export |
+| Packet | Tab | Ticket suffix | Candidate book page | Praeger 1947 section | Candidate PS job | Status in retained spool |
+|---|---:|---:|---:|---|---:|---|
+| L-29/N | 01 | 94 | 94 | Volcanic North | PS-0399 | present; ACK LABEL/store |
+| L-29/N | 02 | 81 | 81 | Volcanic North | PS-0386 | present; ACK STORES/bench |
+| L-29/N | 03 | 106 | 106 | Volcanic North | PS-0411 | present; ACK LABEL/store |
+| L-29/N | 04 | 99 | 99 | Volcanic North | PS-0404 | present; ACK LABEL/desk |
+| L-29/N | 05 | 112 | 112 | Volcanic North | PS-0417 | present; selected RECOVER ACK2 exists |
+| L-29/S | 01 | 130 | 130 | Silurian Region | PS-0436 | absent from retained export |
+| L-29/S | 02 | 151 | 151 | Silurian Region | PS-0457 | absent from retained export |
+| L-29/S | 03 | 121 | 121 | Silurian Region | PS-0427 | present; ACK RECOVER/desk |
+| L-29/S | 04 | 135 | 135 | Silurian Region | PS-0441 | absent from retained export |
+| L-29/S | 05 | 142 | 142 | Silurian Region | PS-0448 | present; ACK RECOVER/desk |
 
 Two FA-17 L-28/A2 controls add an independent same-route check: ST-087 maps to candidate page 87 and PS-0392; ST-098 maps to candidate page 98 and PS-0403. Both predicted jobs are retained ACK/RECOVER rows. These controls are not among the two tab-05 anchors.
 
