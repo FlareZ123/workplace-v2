@@ -71,6 +71,12 @@ The p951 high-leverage gaps are printer job indices 43, 44, and 96, correspondin
 
 The +304 mapping has an additional useful shape: the last listed North ticket, ST-112, maps to PTW-416, immediately before the special four-bay PTW-417 record and selected PS-0417. Under +300, ST-112 maps to PTW-412, leaving PTW-413..416 between that ticket and PTW-417. This adjacency is suggestive, not proof.
 
+## Cross-domain counterevidence: Praeger page-boundary fit
+
+Agent35's separate K08 page-crosswalk report, `results/h17-k08-praeger-page-crosswalk-20261107.md`, finds that the L-29/N ticket suffixes 81/94/99/106/112 all fall in *The Volcanic North* (1947 Praeger edition, pp.62–118), while the L-29/S suffixes 121/130/135/142/151 fall in *The Silurian Region* (p.118 onward). This is itself a derived, unverified interpretation: no source says ST suffixes are book page numbers.
+
+If that page-number interpretation is real, +300 maps selected PS-0417 to ST/page 117, the last page of *The Volcanic North*, immediately before the p.118 section boundary. +304 maps it to ST/page 113, which remains in the North section but loses the boundary coincidence. This is **secondary counterevidence in favour of +300**, and it offsets some of +304's better L-28 holdout and cleaner bay-order fit. The page locator is lower-confidence than an original ST↔PTW/PS pair and must not be used to select a ticket list without the physical book/index.
+
 ## Interpretation and next evidence
 
 The raw observations support a **three-way numeric-index hypothesis** because PTW-390..416 and PS-0390..0416 align exactly, while the FA-17 ST tickets overlap that sequence under both +300 and +304. The local export contains no source record that explicitly pairs an ST ticket with a PTW permit or PS job.
