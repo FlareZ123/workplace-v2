@@ -62,3 +62,9 @@ MAIL-13 explicitly says its *handoff print* contains only the reference and rece
 ## Conclusion
 
 AX-7782 remains a high-value **conditional** joint retrieval target because of the canonical object-ID join and the K07 retained-copy selection. The timestamp conflict is a hard eligibility gate: until the original event semantics are recovered, the transfer cannot be asserted to contain the selected K04 object. K08 has a second independent inclusion-time uncertainty. The full AX-7782 object and Bundle 06 manifest/omission log are the decisive records.
+
+### Additional timestamp-quality check
+
+The `receipt_utc` value **2026-10-03T20:55:10Z is shared by all three COMMIT rows** in the retained ledger: AX-7778, AX-7781 and AX-7782. AX-7781 is explicitly `dry_run=true`; the queue note warns that a COMMIT entry can exist for a dry run and requires mode/purpose/dry_run to distinguish the actual retained transfer. Therefore the shared timestamp is not, by itself, a discriminating physical object-version timestamp. It may be a batch receipt/ledger-generation time. This further weakens any inference that AX-7782's contents were snapshotted at 20:55:10Z after PS-0417.
+
+The actual object-version time remains **unknown** until the queue/receipt schema or original object manifest explains the semantics. Treat both candidate timelines above as open; do not use the 20:55:10Z field as proof of post-PS-0417 content.
