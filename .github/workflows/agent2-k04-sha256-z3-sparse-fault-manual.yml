@@ -1,0 +1,19 @@
+name: Agent2 H17 K04 Z3 sparse SHA256 fault inversion pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-target-sat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [known3, known4, known5, real3, real4, real5, real5ticket]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install official Z3 Python bindings
+        run: python -m pip install z3-solver==4.15.3.0
+      - name: Full-64-round original target symbolic SHA256 preimage
+        run: python agents/agent2/k04_sha256_z3_sparse_fault_sft.py --case ${{ matrix.case }} --timeout 120
