@@ -1,0 +1,101 @@
+{
+  "book_id": "hvd.hn5w2p",
+  "claimed_part": "Part I",
+  "catalog_caution": "HathiTrust item-level 974 date is 1896; verify the printed title-page imprint before treating this as the exact 1892 issue.",
+  "frozen_north_page_order": [
+    94,
+    81,
+    106,
+    99,
+    112
+  ],
+  "request_rule": "Exact Google Books image endpoint, zoom=1 only.",
+  "summary": {
+    "page_count": 5,
+    "successful_png_count": 5,
+    "unique_sha256_count": 1,
+    "all_pages_same_hash": true
+  },
+  "pages": [
+    {
+      "printed_page": 94,
+      "request_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA94&img=1&zoom=1&hl=en",
+      "zoom": 1,
+      "status": 200,
+      "final_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA94&img=1&zoom=1&hl=en",
+      "content_type": "image/png",
+      "content_length_header": "1269",
+      "bytes": 1269,
+      "sha256": "e3f8c414b288cbdf4e6d1e00eb6d3826157d10a5b5628b9318f726ea490eca12",
+      "png_dimensions": [
+        128,
+        170
+      ],
+      "saved_path": "results/assets/cowper/part1-1892-zoom1/p94.png"
+    },
+    {
+      "printed_page": 81,
+      "request_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA81&img=1&zoom=1&hl=en",
+      "zoom": 1,
+      "status": 200,
+      "final_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA81&img=1&zoom=1&hl=en",
+      "content_type": "image/png",
+      "content_length_header": "1269",
+      "bytes": 1269,
+      "sha256": "e3f8c414b288cbdf4e6d1e00eb6d3826157d10a5b5628b9318f726ea490eca12",
+      "png_dimensions": [
+        128,
+        170
+      ],
+      "saved_path": "results/assets/cowper/part1-1892-zoom1/p81.png"
+    },
+    {
+      "printed_page": 106,
+      "request_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA106&img=1&zoom=1&hl=en",
+      "zoom": 1,
+      "status": 200,
+      "final_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA106&img=1&zoom=1&hl=en",
+      "content_type": "image/png",
+      "content_length_header": "1269",
+      "bytes": 1269,
+      "sha256": "e3f8c414b288cbdf4e6d1e00eb6d3826157d10a5b5628b9318f726ea490eca12",
+      "png_dimensions": [
+        128,
+        170
+      ],
+      "saved_path": "results/assets/cowper/part1-1892-zoom1/p106.png"
+    },
+    {
+      "printed_page": 99,
+      "request_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA99&img=1&zoom=1&hl=en",
+      "zoom": 1,
+      "status": 200,
+      "final_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA99&img=1&zoom=1&hl=en",
+      "content_type": "image/png",
+      "content_length_header": "1269",
+      "bytes": 1269,
+      "sha256": "e3f8c414b288cbdf4e6d1e00eb6d3826157d10a5b5628b9318f726ea490eca12",
+      "png_dimensions": [
+        128,
+        170
+      ],
+      "saved_path": "results/assets/cowper/part1-1892-zoom1/p99.png"
+    },
+    {
+      "printed_page": 112,
+      "request_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA112&img=1&zoom=1&hl=en",
+      "zoom": 1,
+      "status": 200,
+      "final_url": "https://books.google.com/books/content?id=hvd.hn5w2p&pg=PA112&img=1&zoom=1&hl=en",
+      "content_type": "image/png",
+      "content_length_header": "1269",
+      "bytes": 1269,
+      "sha256": "e3f8c414b288cbdf4e6d1e00eb6d3826157d10a5b5628b9318f726ea490eca12",
+      "png_dimensions": [
+        128,
+        170
+      ],
+      "saved_path": "results/assets/cowper/part1-1892-zoom1/p112.png"
+    }
+  ]
+}
