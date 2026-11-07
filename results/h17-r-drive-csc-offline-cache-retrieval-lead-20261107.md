@@ -23,7 +23,7 @@ The supplied `retired-office-bookmarks.html` contains 14 Windows file URLs under
 | `R:\IT\staff-groups\EG.htm` | Electrical-group roster |
 | `R:\IT\desktop-move-2026.html` | Profile-replacement calendar |
 
-The bookmark file's own description says the BX25 scan copies travelled with the office profile refresh. That is direct evidence of a profile-refresh connection, but it does not establish that the R: share, any particular file, or the CSC cache was copied. The incident index and the other referenced files are absent from the surviving ZIP. The current acquisition request already calls for the historical R: mapping and a retired workstation image, but does not explicitly name the Windows Client-Side Cache (CSC).
+The bookmark file's own description says the BX25 scan copies travelled with the office profile refresh. That is direct evidence of a profile-refresh connection, but it does not establish that the R: share, any particular file, or the CSC cache was copied. The incident index and the other referenced files are absent from the surviving ZIP. The current acquisition request already calls for the historical R: mapping and a retired workstation image, but does not explicitly name the Windows Client-Side Cache (CSC). A bounded source-wide text scan of the surviving export for R: references, UNC paths, CSC, Offline Files, mapped-drive and network-share terms found no UNC target or CSC/Offline Files configuration evidence beyond the bookmark URLs. The local export therefore cannot resolve the R: mapping or this cache gate.
 
 ## Hypothesis and gate
 
