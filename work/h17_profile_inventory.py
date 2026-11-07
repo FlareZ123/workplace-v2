@@ -26,16 +26,18 @@ _SENSITIVE_COMPONENTS = {
     "cookies", "credentials", "credential store", "vault", "keychains",
     "passwords", "login data", "web data", "oneauth", "identitycache",
     "tokenbroker", "protect", "crypto", "logins", "sam", "security",
-    "wallet", "passkeys", "autofill", "form history",
+    "wallet", "passkeys", "autofill", "form history", ".ssh", ".aws",
+    ".azure", ".gcloud", ".gnupg", ".pki", ".kube",
 }
 _SENSITIVE_FILENAMES = {
     "cookies.sqlite", "cookies-journal", "login data", "login data for account",
     "web data", "local state", "logins.json", "key4.db", "key3.db",
-    "signons.sqlite", "cert9.db", "cert8.db", "sam", "security", "sam.log1", "sam.log2",
+    "signons.sqlite", "cert9.db", "cert8.db", "sam", "security", "id_rsa", "id_ed25519",
+    "id_ecdsa", "id_dsa", "sam.log1", "sam.log2",
     "security.log1", "security.log2", "ntds.dit", "ntds.dit.log1", "ntds.dit.log2",
     "form history", "autofill",
 }
-_SENSITIVE_SUFFIXES = {".pfx", ".p12", ".key", ".kdbx", ".pem"}
+_SENSITIVE_SUFFIXES = {".pfx", ".p12", ".key", ".kdbx", ".pem", ".ppk", ".p8", ".rdp", ".rdg", ".ovpn", ".jks", ".keystore", ".kubeconfig"}
 
 _CATEGORY_TOKENS = {
     "printer": (
