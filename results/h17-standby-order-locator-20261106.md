@@ -1,25 +1,29 @@
-# H-17 archive standby-order locator
+# H-17 archive standby-order attribution: source correction (7 November 2026)
 
-**Agent22 | 6 November 2026**
+**Original report:** Agent22, 6 November. **Corrected by Agent31**, 7 November, using the unchanged attached archive and repository source. The preceding claim that `resources/evidence/archive-labels.ini` says `service_order=PTW-417` and `standby_order=PTW-421` is **false**. It was a mistaken source transcription.
 
-The preserved `resources/evidence/archive-labels.ini` names the archive object `IR-261003-H17`, with `service_order=PTW-417` and `standby_order=PTW-421`. The current export includes `maintenance/work-order-417.html` and seal-receipt rows for PTW-417. It contains no PTW-421 work order, standby-asset record or PTW-421 seal receipts.
+## Exact original values
 
-A search of the complete uploaded archive, local mounted files and public GitHub exact identifiers finds no PTW-421 record beyond the single `standby_order` field in `archive-labels.ini`. The field is a source locator only. Its scope is not defined in the export, and it does not establish a relationship to printer job 0417 or identify a recovery component.
+The file's `[archive]` section actually reads:
 
-If an already-held authorized PTW-421 closeout or asset register exists, it may clarify the archive appliance's standby path. Do not infer a key derivation or equipment identity from the shared numeric suffix.
+```ini
+object=IR-261003-H17
+mode=READ_ONLY_RECORDS
+commissioned=2026-09-24
+service_order=DRAIN,ISOLATE,PURGE,VERIFY
+standby_order=ISOLATE,VERIFY,DRAIN,PURGE
+```
 
+The originally supplied `evidence/archive-labels.ini` has SHA256 `146fa698f44bc9b9fa7a443d8dc71a2e23ff0f883dabd01512f8ade82d3666ad`. Both fields are four-element **procedure step orders**, not job/permit identifiers. `SERVICE_ORDER` is explicitly used to assemble K06's approved procedure page strips. Nothing in this file names `PTW-421`.
 
-The spool reconstruction also contains `PS-261003-0421` at 17:05Z, attempt 1, ACK / LABEL / bench. It shares the numeric suffix with the standby-order field, but the export supplies no explicit permit-to-job join or route/asset assignment. It is not a same-class RECOVER control for selected job 0417; the suffix alone is insufficient.
+A literal scan of all user-supplied `evidence/` files finds **no `PTW-421`**, while the actual `PS-261003-0421` printer row is an ACK/LABEL/bench record at 17:05 UTC. The `maintenance/work-order-417.html` source supports the existence of **PTW-417**, but it does not assign a separate `PTW-421` standby order. The similar numeric suffix 0421 cannot be promoted to an external permit, K04 alternate route, K08 caption carrier or archival-host asset join.
 
+## Consequences for the prior interpretation
 
-## Dispatch-number caution from MAIL-14
+- **Retracted:** a source-described `PTW-421` standby order; any alleged matching `PTW-421`/printer `PS-261003-0421` relation; claims that the archive object is joined to a hypothetical PTW-421 asset or the FA-18 host by this label.
+- **Still supported independently:** the physical `PS-261003-0421` LABEL ACK exists; the printer-retirement evidence links ESC-N/0417 to FA-17; MAIL-14 warns against confusing a spare sticker's dispatch number with WN-14 ink control groups. FA-18 can only be researched if independently identified by a real source.
+- **No effect on authentic keys:** six accepted components remain as before. No historical selected K04 coupon bits and no final K08 wording are recovered by this correction.
 
-`MAIL-14` says a spare printed sticker was removed from the WN-14 cover so nobody would mistake its dispatch number for one of the control groups. The `PS-261003-0421` LABEL ACK and `PTW-421` standby-order field share a suffix, but no source explicitly joins them to that sticker. Even if 0421 is the sticker's dispatch number, MAIL-14 expressly says such a number is not a control group. Treat it as a label/dispatch identifier, not a K04/K08 component or seed.
+The original `standby_order` is significant as a distinct procedural step sequence; a source-grounded future study may investigate it without inventing an absent PTW document. See the original `archive-labels.ini`, `recovery-routing.json` K06 rule, `maintenance/work-order-417.html`, and printer spool reconstruction for reproducible checks.
 
-
-## Candidate archival-host distinction
-
-BX25/08 identifies FA-18 as the network service desk / local archival station, separately from FA-17, the North office printer/cassette cabinet. Because `archive-labels.ini` identifies the archive object as `IR-261003-H17`, FA-18 is a plausible host to check for an already-preserved spool/profile image **only if** an independent asset record joins that object or PTW-421 to FA-18. No such join is present in the export. Do not treat FA-18 as the printer or assume job 0417's original spool survives there.
-
-
-Repository prior art further weakens a numeric-sequence interpretation: `results/h17-agent6-recordid-retry-source-bridge-20261104.md` documents 27 independent PTW-390..416 / PS-261003-0390..0416 same-suffix pairs and reports that direct serial-to-payload digest/XOR and per-job seed tests failed. It explicitly cautions that matched numbering is not proof of a shared issuer. The 417/421 suffixes should be treated the same way unless an original source record joins the orders to the printer jobs.
+The original report was replaced because its central claimed source locator does not exist. This correction supersedes its unsupported numeric-collision discussion, while preserving the report's location and original history in Git.
