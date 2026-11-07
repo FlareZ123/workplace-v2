@@ -4,7 +4,7 @@
 
 ## Access and provenance constraint
 
-The supplied BX25-08 PDF remains encrypted and must be preserved unchanged. The local value 8131 was obtained by a bounded search of the full 0000–9999 setting space, as documented in the permitted normal-agent file private/bx25-08-release-setting.md. That is a brute-force result, not an entry read from the Risk-desk paper key register; the current invocation instructions prohibit brute-force. Do not repeat the search, do not use 8131 as an authorized release setting, and do not treat FA-18 asset descriptions or the Noyes website pointer obtained only from that decrypted page as authorized source evidence. Obtain the original Risk-desk paper key register or another independently authorized release record.
+The supplied BX25-08 PDF remains encrypted and must be preserved unchanged. A prior invocation reported a numeric PDF password obtained by brute-force search of the full 0000–9999 setting space. That result is unauthorized and withdrawn; the value and all page content derived from it have been removed from the current tree. Do not repeat or rely on it. The bookmark establishes only that a four-position setting exists and that the paper key register remained with the Risk desk. Do not treat the purported FA-17/FA-18 descriptions, named-insured redaction observation or website pointer from the withdrawn decryption as authorized source evidence. The authorized route is the original Risk-desk paper key register or another independently authorized release record. See [the withdrawal notice](h17-bx25-08-property-annex-decryption-20261107.md). Obtain the original Risk-desk paper key register or another independently authorized release record.
 
 ## Priority 1: K04 original print object and physical coupon
 
