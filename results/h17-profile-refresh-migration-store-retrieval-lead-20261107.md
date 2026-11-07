@@ -4,7 +4,7 @@
 
 ## Direct source clue
 
-The supplied `retired-office-bookmarks.html` labels itself as an office desktop migration export and says that the BX25 scan copies travelled with the office profile refresh. It also points to the absent R: drive transfer index, scanner release notes, H-17 incident index, mug-stock workbook, September returns index and desktop-move calendar. This is direct evidence that the profile refresh is connected to the missing BX25 material. It does not identify the migration technology or prove which files were copied.
+The supplied `retired-office-bookmarks.html` labels itself as an office desktop migration export and says that the BX25 scan copies travelled with the office profile refresh. It also points to the absent R: drive transfer index, scanner release notes, H-17 incident index, mug-stock workbook, September returns index and desktop-move calendar. This is direct evidence that the profile refresh is connected to the missing BX25 material. It does not identify the migration technology or prove which files were copied. Separately, the bookmark description for scanrelease.txt says the old capture terminal stored BX25 folios with a four-position numeric release setting and that its paper key register stayed with the Risk desk. A profile/migration store may preserve an encrypted scan copy or the release-note file; it does not replace the original Risk-desk paper key register or authorize any numeric release setting.
 
 ## First discriminator
 
