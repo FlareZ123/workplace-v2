@@ -46,6 +46,17 @@ Request the original profile-refresh/migration package and its complete manifest
 
 Preserve and hash the original store and logs before any LoadState operation, migration retry, cleanup, or overwrite. Do not run ScanState or LoadState against a live system. If the store is encrypted, retain it unchanged and request the authorized key through the records custodian.
 
+## Priority order for the 14 bookmarked paths
+
+When the migration store, CSC cache or original R: volume becomes available, use this source-name-based triage order (a heuristic, not a claim about unseen file contents):
+
+1. **Migration discriminator:** `R:\IT\desktop-move-2026.html` and its linked manifest/schedule, to identify the host, migration method, date and store location.
+2. **K04 candidates:** `R:\Risk\Transfers\BX25\transfer-index.htm`, `R:\IT\desk-images\oldscan\scanrelease.txt`, then `R:\Records\INDEX\IR-261003-H17.txt` for the transfer/scan and incident-index chain.
+3. **K08 candidates:** `R:\Stores\consumables\mug-stock.xls` and `R:\Stores\returns\SEP26\index.htm`, followed by the ordinary records and profile notes.
+4. **Cross-reference:** H-17 renewal ledger, CS-18 loan-set register, EG staff roster and the Finance/PrevERP files.
+
+The complete 14-path list and conditional R: target classification are in [the CSC retrieval lead](h17-r-drive-csc-offline-cache-retrieval-lead-20261107.md). For USMT, the ListFiles log is the preferred discriminator; do not infer inclusion from a bookmark or a filename alone.
+
 ## Discriminator
 
 1. Recover the desktop-move calendar and migration manifest/logs.
