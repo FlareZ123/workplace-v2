@@ -34,6 +34,12 @@ Request the original keeper envelope H17-IR-261003 / IR-261003-H17, preserving i
 
 The four preserved historic captions are not substitutes for Emily's final wording. Do not infer the phrase from semantic paraphrases or substitute N17/N18 standby/commissioning labels. The exact normalized phrase must pass the unchanged K08 acceptance HMAC.
 
+## Cross-component custody request: ordinary records folder
+
+MAIL-13 says the AX-7782 handoff print was left with the ordinary records folder. MAIL-14 says the WN-14 folder was handed to the incoming watch and Emily's desk notes were physically beneath it, outside the controlled-copy sleeve. MAIL-20 says everyday notes were included with technical material because that was how the folder was kept. These statements support retrieving the complete ordinary records folder as found, with any immediately associated WN-14 folder, handoff print, receipt/reference chain, controlled-copy sleeve, loose notes beneath it, folder tabs/pockets and incoming-watch inventory/handoff record.
+
+Photograph the folder closed and every layer in place before separating anything; record which items were inside, beneath, attached, or separately stored. Preserve any envelope or printed coupon/label only if the original folder arrangement or inventory shows it travelled with the folder. Keep photographs and galley captions separate if their own custody records show they were stored separately. The messages do not prove that the K04 coupon or final K08 envelope was inside this folder, and “ordinary records folder” in MAIL-13 is not explicitly equated with “the folder” in MAIL-14. If multiple folders are present, preserve each and document the relationship rather than forcing them into one object. See [the joint ordinary-folder custody hypothesis](h17-joint-ordinary-records-folder-custody-hypothesis-20261107.md).
+
 ## Priority 3: David's map-back yachtsman's guide and tea-receipt bookmark
 
 MAIL-09 says the book with a map in the back belonged to David and that a tea receipt was deliberately left in place as a bookmark. Retrieve the exact physical book and receipt together, in situ. Before moving anything, photograph:
