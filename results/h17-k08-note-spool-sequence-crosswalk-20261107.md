@@ -62,7 +62,7 @@ The most useful K08 segment is:
 | N20 | Emily's semantic line brief; explicitly says not to reuse the shorter standby label | 0320 / RECOVER / bench | `9B9D8D85D48AF325FF55556CE0AE7BF3` |
 | N23 | Emily's final-margin/envelope note | 0323 / RECOVER / store | `1E51EFD2E5CA8F4E1FC8B49297B3D74F` |
 
-N23 says the envelope remembers the words Emily finally put on it. Its matched job 0323 is a `RECOVER` row with `DEST=store`. N20's preceding line brief maps to job 0320, a `RECOVER` row with `DEST=bench`. N17 and N18 provide the explicit standby and commissioning controls. This makes **PS-261003-0323 the highest-value candidate final-envelope print record** in this sequence, with 0317, 0318, 0320 and 0306 as controls.
+N23 says the envelope remembers the words Emily finally put on it. Its matched job 0323 is a `RECOVER` row with `DEST=store`. N20's preceding line brief maps to job 0320, a `RECOVER` row with `DEST=bench`. N17 and N18 provide the explicit standby and commissioning controls. This makes **PS-261003-0323 a conditional sequence-aligned job to inspect** alongside the original envelope and margin. Its RECOVER/store metadata does not establish that it printed the envelope or carries the final phrase; 0317, 0318, 0320 and 0306 remain controls.
 
 
 Source line anchors for the K08 segment:
@@ -108,7 +108,7 @@ This materially qualifies the N23→0323 inference: it remains a candidate final
 
 If an authorized custody path or unsolicited source delivery becomes available, prioritize:
 
-1. The complete original print object and rendered physical output for **PS-261003-0323**, preserving native job name, queue/host/device, attempt, class, destination, original payload, rendering, completion/media-eject record and custody.
+1. The native PS-261003-0323 job object and any associated rendered/stored document bytes, if present, preserving native job name, queue/host/device, attempt, class, destination, original payload, completion/dispatch records and custody. Do not assume the RECOVER/store job is a printed label.
 2. The corresponding original objects for **PS-261003-0317** (standby label), **PS-261003-0318** (commissioning label), **PS-261003-0320** (line brief), and **PS-261003-0306** (desk draft), as controls.
 3. The Bundle 06 manifest and trim/omission log, and the original N23 margin/envelope, WN-14 folder and separate photo/galley-caption material already identified in the existing acquisition request.
 
