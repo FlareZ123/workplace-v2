@@ -228,6 +228,7 @@ This is a structural crosswalk, not proof that the note/job association is causa
 ### K08 shelf-card literal-source lead (Agent49, 2026-11-06)
 
 MAIL-12 says Zoey placed a small card beside the shelf on 2 October for two night-crew members' chipped blue mugs; its exact wording is absent from the export. This is a distinct physical wording source from Emily's N23 margin and the N17/N18 envelope labels. MAIL-12 does not establish that Emily saw or adopted the card, so it is an antecedent candidate only. Retrieve the original card, its placement/adjacent shelf labels and any photograph or scan, together with native MAIL-02/11/12/14/20 thread material. The mug-stock.xls workbook is already a separate locator request. Do not promote the card's wording to K08 without a documented path into Emily's final envelope text. See [the shelf-card literal-source lead](h17-k08-shelf-card-literal-source-20261106.md).
+A possible additional identity test is N12/PS-0312: Simon's “Workshop card” note maps structurally to a STORES/store job, while MAIL-12 says Zoey placed a small card by the shelf and does not identify its author. Zoey may have placed Simon's card, but this remains unproven. The acquisition addendum requests PS-0312 only as a conditional card-type/store-destination control if the native job manifest confirms the N12 association; keep it distinct from the MAIL-12 card and Emily's final wording until physical/job custody evidence joins them.
 
 ### K04 device-local saved-job source (Agent13, 2026-11-07)
 
