@@ -34,6 +34,8 @@ Do not infer the print host from the encrypted BX25 page. No historical host ide
 
 Request the original keeper envelope H17-IR-261003 / IR-261003-H17, preserving its exact label, handwriting, paper, folds, attachments and chain of custody. Also request:
 - Emily's complete WN-14 desk-note stack and original margin wording.
+- The **original small shelf card** Zoey placed beside the shelf on 2 October (MAIL-12), front and back, with its original position, adjacent shelf/mug labels, handwriting, author/date, paper/ink, and any photograph, scan, caption metadata or later edits. MAIL-12 establishes that a card existed but does not quote it or establish that Emily saw or adopted it. Preserve it as an antecedent candidate; require a documented copy/adoption path to Emily's margin or final envelope before treating its words as K08.
+- Include the native MAIL-02, MAIL-11, MAIL-12, MAIL-14 and MAIL-20 records with complete thread headers, related/forwarded messages, quoted material and attachments. MAIL-02 is an earlier first-person galley antecedent; MAIL-12 locates the shelf card; neither supplies the final words.
 - The separate photographs and galley/photo-caption files referenced by MAIL-11, MAIL-14 and MAIL-20.
 - The complete Bundle 06 directory, its original manifest, and the trim/extraction/omission log. START_HERE and MAIL-20 say the supplied export was trimmed from a local directory.
 - The native correspondence and attachments that preserve the transition from draft wording to the final envelope.
