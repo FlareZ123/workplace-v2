@@ -31,18 +31,13 @@ The in-story “Little Drab Book” is described as by “Lieut. X--, R.N.” an
 
 ## 5E67 page/word hypothesis
 
-Agent15 proposed splitting the standby suffix as:
-
-- 0x5E = 94 (candidate page).
-- 0x67 = 103 (candidate word).
-
-ST-094 is in L-29/N, and page 94 exists in Cowper Part I. This is a low-confidence, source-undefined locator hypothesis, not a recovered rule. No authorized page-94 scan or physical word-103 test has been completed. The 103rd word must be counted on the exact physical impression, with a documented convention that excludes/includes headings, captions and footnotes consistently.
+Agent15's original split of the standby suffix is specifically associated with the 1947 Praeger edition: 0x5E = 94 (candidate page) and 0x67 = 103 (candidate word), with p.94 in Praeger's *Volcanic North* and ST-094 in L-29/N. Cowper Part I also includes p.94 and ST-094, but no independent evidence transfers the 5E67 page/word rule to Cowper. Keep the 94/103 test tied to Praeger unless the physical title/edition or another source establishes the same locator for Cowper. Cowper's p.94 remains a relevant page reference under the ticket-volume hypothesis, not a verified word-103 extraction.
 
 Do not treat 5E67 as a map coordinate or K08 component. It may also serve as an identity fingerprint if the same WN-14 standby transcription is found in the book or an insert.
 
 ## Other book candidates
 
-- **Ransome, *We Didn't Mean to Go to Sea* (1949 impression):** strong N20 sea/night/cabin-table semantic match and doubled endpaper map; page 94 begins the dawn-at-sea chapter. Agent13's printed excerpts tested 0/11,100 against K08. This remains a strong narrative/map-back alternative, but its ticket-page split does not form the same clean two-volume N/S structure.
+- **Ransome, *We Didn't Mean to Go to Sea* (1949 impression):** strong N20 sea/night/cabin-table semantic match and doubled endpaper map; page 94 begins Chapter VII, “He's Been an Awful Long Time …”; “Dawn at Sea” is p.208. Chapter VII's missing-Jim / breakfast-for-five scene remains a strong N20 match.. Agent13's printed excerpts tested 0/11,100 against K08. This remains a strong narrative/map-back alternative, but its ticket-page split does not form the same clean two-volume N/S structure.
 - **Praeger, *The Way That I Went* (1947 third edition):** strong single-volume page/section crosswalk (North pp.62–118, South p.118+), but weaker yacht-library connection.
 - **Wilson, *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen* (1934):** strong general yachtsman's-guide profile, but no page/volume crosswalk found.
 
