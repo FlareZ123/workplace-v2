@@ -67,6 +67,11 @@ The two tag completions, two unit mappings and fixed GOOD/SUSPECT mapping pass o
 
 A deliberately permissive local screen over all **288** global tag/unit/quality codebooks, allowing up to three quality and unit rejection attempts while keeping the accepted tag immediately before the PV pair, reaches at most **12/14** rows (30 codebooks attain that maximum). No codebook covers all 14. This remains an over-approximation: it checks each stage's allowed high-bit codes independently, so many successful rows depend on bits the basis leaves unconstrained. It does not establish one joint state or one sequential call path.
 
+### Whole-record chronological training/holdout gate
+
+The SFT also tests a strict five-output-per-record branch with the fixed order tag → PV double → quality → unit, no rejection, and the four previously selected codebooks. It groups rows by acquisition timestamp, allows every permutation within equal-second groups, and searches tag-start stages 967–3,000. The first 38 timestamp groups (59 complete rows) are the training block; the final 37 groups (53 complete rows) are reserved as holdout. **No start-stage/codebook candidate fits the training block**, so the holdout fit is never entered and there is no whole-record prediction. This only rejects that narrow no-rejection schedule; it does not test every rejection-aware sequential emitter. The later all-row PV diagnostic is separate from this training fit.
+
+
 
 ### Regression against the earlier negative-stage result
 
