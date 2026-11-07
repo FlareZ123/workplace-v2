@@ -23,7 +23,7 @@ jobs:
       - name: 64 source-compatible n32 offsets under enlarged exact domains
         run: |
           set -o pipefail
-          PYTHONPATH=agents/agent45:agents/agent23:agents/agent28 python agents/agent5/k04_n32_expanded_terms_sft.py --shard ${{ matrix.shard }} --ceiling 12 2>&1 | tee "n32-${{ matrix.shard }}.log"
+          PYTHONPATH=agents/agent45:agents/agent23:agents/agent28 python agents/agent5/k04_n32_expanded_terms_sft.py --shard ${{ matrix.shard }} --ceiling 14 2>&1 | tee "n32-${{ matrix.shard }}.log"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
