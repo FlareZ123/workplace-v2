@@ -48,6 +48,17 @@ Two direct interpretations were tested:
 
 The selected PS-0417 RECOVER ACK2 payload remains `A9A9DC5731A5E2AE879C47215C2559D5`; it is not the serial sequence. These failures rule out the two obvious direct 16-byte interpretations, not every possible relationship between the seal rack and coupon.
 
+The source also provides a separate four-bay **REMOVED** set at signed CLOSED revision 4. Following MAIL-04's instruction to keep REMOVED entries separate, I tested that set independently in the same B,D,A,C witness order:
+
+```text
+531FFABE99AE58D8885464E59BB5A10C
+```
+
+- Direct SHA256: `E07215CECC96DD5D2D9A110E518C5A611BB5F84273FCFFEDCD3B092A4E619B4` — **NO MATCH**.
+- XOR with the unchanged route mask: `D6493275F8EEFF212D465E22CCAE4F10`; SHA256: `0541AD136C883EB52A43C962DABC0912901B115449F60F8E9BE0239454579C33` — **NO MATCH**.
+
+Thus both semantically distinct four-bay sets present in the local receipt export (latest signed AS_LEFT and signed REMOVED) fail under both direct 16-byte interpretations. This closes those four exact source-grounded candidates; it does not exclude a more specific coupon operation that only the original commissioning note or physical coupon can establish.
+
 ## Conclusion and next use
 
 The PTW-417 receipt export gives a well-defined four-serial, 16-byte source object and a source-defined order. It does **not** satisfy K04's immutable commitment as either the raw component or the pre-mask payload. Do not promote it to K04 or replace the route's selected printer payload with it.
