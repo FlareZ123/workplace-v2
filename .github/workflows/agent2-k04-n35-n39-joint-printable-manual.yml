@@ -1,0 +1,18 @@
+name: Agent2 H17 n35 n39 joint printable seed test
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-joint-word:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [35, 39]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Joint original-source raw caption seed word intersection
+        run: python agents/agent2/k04_n35_n39_joint_printable_source_sft.py --n ${{ matrix.n }} --shard ${{ matrix.shard }}
