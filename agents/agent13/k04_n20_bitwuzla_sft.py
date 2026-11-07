@@ -1,4 +1,9 @@
-"""Bitwuzla n=20 inverse for a K08-component-seeded CPython MT printer model.
+"""RETIRED as a recovery search under p951/k2496: Agent45's 19-term
+source-only theorem excludes CPython n=20. Retained solely to document the
+pre-theorem independent Bitwuzla backend cross-check (run 42371616977);
+do not dispatch again against this source basis.
+
+Bitwuzla n=20 inverse for a K08-component-seeded CPython MT printer model.
 
 Tests a distinct cross-slot hypothesis: the retained 16-byte K08 HMAC component
 itself was supplied as a CPython bytes seed (version 2), so CPython expands it
