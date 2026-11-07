@@ -54,7 +54,7 @@ def main(root: Path) -> None:
     for row, line in enumerate(lines):
         if row == SELECTED_ROW:
             continue
-        match = re.search(r"(?:^|\\s)PAYLOAD=([0-9A-F]{32})(?=\\s|$)", line)
+        match = re.search(r"(?:^|\s)PAYLOAD=([0-9A-F]{32})(?=\s|$)", line)
         assert match is not None, row
         payloads.append(bytes.fromhex(match.group(1)))
     assert len(payloads) == 132 and all(len(payload) == 16 for payload in payloads)
