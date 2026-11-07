@@ -1,0 +1,25 @@
+name: Agent4 K04 same-job ATTEMPT1 class collision mixed free-word
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  same-job-dual-cache:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        case: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile complete source-causal retry cache model
+        run: g++ -O3 -std=c++17 -fopenmp -Wno-deprecated-declarations agents/agent4/k04_attempt1_collision_three_donors_onefree_sft.cpp -lcrypto -o /tmp/k04_cache
+      - name: Original source and complete SHA positive controls
+        run: /tmp/k04_cache resources ${{ matrix.case }} ${{ matrix.shard }} --smoke
+      - name: Exhaust 2^30 full SHA256 K04 original candidates per partition
+        env:
+          OMP_NUM_THREADS: '4'
+        run: /tmp/k04_cache resources ${{ matrix.case }} ${{ matrix.shard }}
