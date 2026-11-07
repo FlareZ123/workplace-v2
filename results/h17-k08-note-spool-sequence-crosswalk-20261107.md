@@ -92,4 +92,4 @@ Run from the repository root:
 python work/note_spool_crosswalk_sft.py
 ```
 
-The script reads the committed archive at `resources/h17-archive-dump.zip`, verifies the 24/24 mapping and 300-second intervals, and prints the rows with their full note text and payloads. It uses only the Python standard library.
+By default the script reads the repository's extracted files under `resources/evidence/`. It also accepts an extracted evidence directory or the original ZIP as an optional path. It verifies the 24/24 mapping and 300-second intervals and prints the rows with their full note text and payloads. It uses only the Python standard library.
