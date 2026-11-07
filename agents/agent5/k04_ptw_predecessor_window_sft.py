@@ -163,6 +163,21 @@ def main() -> None:
                 snapshot_hits[order].append(job)
     assert all(not hits for hits in snapshot_hits.values())
 
+    # Apply the source K03 pipe-joined SHA256[:16] reducer to the pre-job bay snapshot.
+    snapshot_hash_hits = []
+    for job in range(396, 417):
+        latest = {}
+        for permit in range(390, job):
+            row = by_permit[permit][0]
+            bay = row["bay"]
+            if bay not in latest or permit > latest[bay][0]:
+                latest[bay] = (permit, row)
+        serials = [latest[bay][1]["serial"] for bay in "BDAC"]
+        component = hashlib.sha256("|".join(serials).encode("ascii")).digest()[:16]
+        if matches_component(component, spool[job][0]["payload"]):
+            snapshot_hash_hits.append(job)
+    assert not snapshot_hash_hits
+
     # Positive control: the comparator recognizes a planted component/payload pair.
     planted_component = serial_window(400)
     planted_payload = xor16(planted_component, mask)
@@ -189,6 +204,13 @@ def main() -> None:
             latest_by_bay[bay] = (permit, row)
     assert set(latest_by_bay) == set("ABCD")
 
+    snapshot_hash_serials = [latest_by_bay[bay][1]["serial"] for bay in "BDAC"]
+    snapshot_hash_component = hashlib.sha256(
+        "|".join(snapshot_hash_serials).encode("ascii")
+    ).digest()[:16]
+    snapshot_hash_payload = xor16(snapshot_hash_component, mask)
+    snapshot_hash_digest = sha256(snapshot_hash_component)
+
     latest_blocks = {}
     for order in ("ABCD", "BDAC"):
         component = b"".join(serial_bytes(latest_by_bay[bay][1]) for bay in order)
@@ -209,6 +231,8 @@ def main() -> None:
     assert raw_hash_target_digest != K04_SHA256
     assert all(v["component_sha256"] != K04_SHA256
                and not v["payload_matches_selected"] for v in latest_blocks.values())
+    assert snapshot_hash_payload != selected_payload
+    assert snapshot_hash_digest != K04_SHA256
 
     print("SOURCE_PINS=PASS")
     print("PTW_SINGLETONS=27; PS_SAME_SUFFIX_SINGLETON_PACKETS=27")
@@ -217,6 +241,7 @@ def main() -> None:
     print("PREDECESSOR_CONTROLS=23; SHA256_PIPE_COMPONENT_XOR_MASK_HITS=0")
     print("PREDECESSOR_CONTROLS=23; RAW_BYTE_SHA256_COMPONENT_XOR_MASK_HITS=0")
     print("PREJOB_SNAPSHOT_CONTROLS=21; ABCD_HITS=0; BDAC_HITS=0")
+    print("PREJOB_SNAPSHOT_K03_REDUCER_CONTROLS=21; BDAC_HITS=0")
     print("RAW_ORIENTATIONS=4; SYNTHETIC_POSITIVE_CONTROL=PASS")
     print(f"PS0417_SELECTED_ACK2={selected_payload.hex().upper()}")
     print(f"PTW413_416_RAW_COMPONENT={raw_target_component.hex().upper()}")
@@ -229,6 +254,10 @@ def main() -> None:
     print(f"PTW413_416_RAW_BYTE_SHA256_PREDICTED_PAYLOAD={raw_hash_target_payload.hex().upper()}")
     print(f"PTW413_416_RAW_BYTE_SHA256_COMPONENT_SHA256={raw_hash_target_digest}")
     print(f"OFFICIAL_K04_SHA256={K04_SHA256}")
+    print("PREJOB_SNAPSHOT_K03_COMPONENT=" + snapshot_hash_component.hex().upper())
+    print("PREJOB_SNAPSHOT_K03_PREDICTED_PAYLOAD=" + snapshot_hash_payload.hex().upper())
+    print("PREJOB_SNAPSHOT_K03_COMPONENT_SHA256=" + snapshot_hash_digest)
+    print("PREJOB_SNAPSHOT_K03_SERIALS=" + json.dumps(snapshot_hash_serials))
     print("LATEST_PER_BAY_CANDIDATES=" + json.dumps(latest_blocks, sort_keys=True))
     print("K04_RECOVERY=NO_HIT")
 
