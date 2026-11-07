@@ -27,6 +27,7 @@ The surviving N01 transcription gives Jason's caption as “The sea looks differ
 Request the original **shared crew / noticeboard / galley photograph and caption archive** with author and edit attribution intact, including material created or captioned before 1 October 2026. Do not restrict the search to Emily-owned images or to photographs first taken on 3 October. Preserve:
 
 - original image files, negatives/scans where present, and all sidecars;
+- any original physical prints, both front and back, including reverse-side handwriting, lab/date stamps, crop marks, adhesive/attachment traces and the print's position in its original album/board sequence;
 - EXIF/IPTC/XMP metadata and original file timestamps;
 - album, noticeboard or galley-board membership and folder path;
 - caption text, author/editor identity, revision history and caption timestamps;
