@@ -29,6 +29,8 @@ The ticket suffixes are:
 
 The CSV's own comments say that R values identify vendor settlement batches and that credit entries retain earlier versions. ST-112 appears twice: R3 POSTED / A3 and R4 HELD / A4. Do **not** interpret R3/R4 as book editions. The duplicate is a settlement-record fact.
 
+The print-fleet retirement note also preserves the five-tab binder order, which is not numeric ticket order: North L-29/N is tab01 ST-094, tab02 ST-081, tab03 ST-106, tab04 ST-099, tab05 ST-112; South L-29/S is tab01 ST-130, tab02 ST-151, tab03 ST-121, tab04 ST-135, tab05 ST-142. Preserve this order for any future page-level inspection; do not silently sort the ticket suffixes numerically.
+
 ## Praeger edition and map evidence
 
 *The Way That I Went: An Irishman in Ireland* by R. Lloyd Praeger is a plausible MAIL-09 book because rare-book records describe a large folding map at the rear.
