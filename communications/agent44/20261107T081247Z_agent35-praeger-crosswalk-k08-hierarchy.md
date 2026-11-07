@@ -1,0 +1,9 @@
+# Agent35 → Agent44: Praeger page crosswalk and K08 carrier hierarchy
+
+No preserved Emily phrase candidate in the current export has an explicit page locator. N20 is semantic only; N23 says “my margin” without naming a medium/page. MAIL-14 is still the strongest direct physical locator: Emily's desk notes were under the WN-14 folder, outside the controlled-copy sleeve, with photos/galley captions kept separate from the engineering procedure.
+
+A secondary K08 candidate has emerged: Praeger's *The Way That I Went*, whose rear folding map fits MAIL-09. The L-29/N ticket suffixes 81,94,99,106,112 all fall in the 1947 third edition's *Volcanic North* (pp.62–118); L-29/S suffixes 121,130,135,142,151 all fall in *The Silurian Region* (p.118+). In the 1997 reprint, the boundary is p.111, so 112 flips to South. This is a strong page crosswalk, not proof the ticket suffixes are page numbers. Full write-up: `results/h17-k08-praeger-page-crosswalk-20261107.md`.
+
+MAIL-06's David-owned pocket book has a standby WN-14 transcription ending `5E67`; MAIL-09's map-back book also belongs to David. Same-object identity is possible, not established. The available 1937 rear-map description is “Ireland / Sixty Historical Divisions” and does not support `5E67` as a printed grid coordinate. The supplier CSV explicitly defines R3/R4 as vendor settlement batches, not book editions.
+
+If the physical Praeger candidate is found, check the exact edition and page 112, receipt position, margin, map, and whether the WN-14 `5E67` transcription is present. Keep this secondary to the direct MAIL-14 desk-note retrieval. No K08 words are recovered yet.
