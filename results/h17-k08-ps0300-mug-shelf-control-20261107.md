@@ -46,16 +46,16 @@ The shelf card is a contextual control. It is not the K08 target: MAIL-11 and MA
 If available through an authorized records route, retrieve together:
 
 1. The original mug-stock.xls workbook, including sheet names, hidden sheets, comments, formulas, print areas, document properties and version history.
-2. PS-0300's native spool files and queue metadata, including document name, user, host, queue, port, driver, print processor, data type and rendered output.
+2. PS-0300 and PS-0312 native spool files and queue metadata, including document name, user, host, queue, port, driver, print processor, data type and rendered output.
 3. The physical shelf card or an original photograph showing its wording, author and placement.
-4. Any manifest or source index that explicitly joins the workbook/card to PS-0300.
+4. Any manifest or source index that explicitly joins the workbook/card to PS-0300 or PS-0312.
 
 A direct document-name/content/host join would support the shelf-card interpretation. A native job showing an unrelated document, or a workbook with no shelf/card/label content and no external link, would weaken or falsify it. Do not infer the join from the 24h27 interval or the shared mug theme.
 
 ## Reproduction and confidence
 
 - Source hashes are pinned in `agents/agent41/ps0300_mug_shelf_control_sft.py`.
-- The script checks the four local source files, the exact job rows and the absence of a literal MAIL-12/PS-0300 identifier join.
+- The script checks the four local source files, the exact PS-0300/PS-0312/label-control rows, the absence of a literal MAIL-12/job identifier join, and the absence of RFC thread headers in preserved MAIL-12.
 - **Confidence:** low, conditional retrieval hypotheses. PS-0312/N12 is the more specific card candidate; PS-0300 remains an orphan control.
 - **K08 phrase recovered:** no.
 - **K04 component recovered:** no.
