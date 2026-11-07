@@ -11,6 +11,24 @@ const SOURCE_BLOB_SHA1 = 'db9b00a3564514404073964b2da0e7637f8f53ec';
 const SOURCE_URL = 'https://raw.githubusercontent.com/GITenberg/The-Riddle-of-the-Sands_2360/' + SOURCE_COMMIT + '/2360.txt';
 const ROOT = path.resolve(__dirname, '..', '..');
 
+const water = new Set([
+  'sea', 'seas', 'water', 'waters', 'tide', 'tides', 'wave', 'waves', 'ocean',
+  'shore', 'surf', 'harbour', 'harbor', 'bay', 'coast', 'coastline', 'channel',
+  'sand', 'sands', 'salt', 'brine', 'foam', 'estuary', 'estuarys',
+]);
+const time = new Set([
+  'night', 'tonight', 'evening', 'midnight', 'dawn', 'daybreak', 'dusk',
+  'darkness', 'dark', 'late', 'last', 'watch', 'morning', 'after', 'finish',
+  'finished', 'end', 'over', 'closing', 'close', 'ending',
+]);
+const social = new Set([
+  'voice', 'voices', 'table', 'supper', 'dinner', 'meal', 'tea', 'coffee',
+  'talk', 'talked', 'talking', 'conversation', 'crew', 'hands', 'room',
+  'friends', 'friend', 'together', 'welcome', 'warmth', 'company', 'circle',
+  'gathered', 'chat', 'chatted', 'speaking', 'speak', 'spoke', 'heard',
+  'murmur', 'murmured', 'song', 'sing', 'laughter', 'laugh', 'laughing',
+]);
+
 /**
  * Download the pinned public-domain source.
  * @param {string} url
@@ -51,6 +69,42 @@ function gitBlobSha1(bytes) {
 }
 
 /**
+ * Scan contiguous 3–64 word windows. If motifSets is supplied, require at least
+ * one word from each of its three sets before computing the K08 commitment.
+ * @param {string[]} words
+ * @param {Buffer} key
+ * @param {string} target
+ * @param {{water:Set<string>,time:Set<string>,social:Set<string>}|null} motifSets
+ * @returns {{testedWindows:number,hits:Array<{start:number,end:number,phrase:string,tag:string}>}}
+ */
+function scan(words, key, target, motifSets) {
+  let testedWindows = 0;
+  const hits = [];
+  for (let start = 0; start < words.length; start += 1) {
+    let motifMask = 0;
+    const stop = Math.min(words.length, start + 64);
+    for (let end = start; end < stop; end += 1) {
+      if (motifSets) {
+        const word = words[end];
+        if (motifSets.water.has(word)) motifMask |= 1;
+        if (motifSets.time.has(word)) motifMask |= 2;
+        if (motifSets.social.has(word)) motifMask |= 4;
+      }
+      if (end - start + 1 < 3 || (motifSets && motifMask !== 7)) continue;
+
+      const phrase = words.slice(start, end + 1).join(' ');
+      const tag = crypto.createHmac('sha256', key).update(phrase, 'ascii').digest().subarray(0, 16);
+      const componentDigest = crypto.createHash('sha256').update(tag).digest('hex');
+      testedWindows += 1;
+      if (componentDigest === target) {
+        hits.push({ start, end, phrase, tag: tag.toString('hex') });
+      }
+    }
+  }
+  return { testedWindows, hits };
+}
+
+/**
  * @returns {Promise<void>}
  */
 async function main() {
@@ -69,49 +123,22 @@ async function main() {
   const actualBlobSha1 = gitBlobSha1(sourceBytes);
   assert.equal(actualBlobSha1, SOURCE_BLOB_SHA1, 'Pinned GITenberg source blob changed');
 
-  const words = normalize(sourceBytes.toString('utf8')).split(' ');
+  const source = sourceBytes.toString('utf8');
+  const words = normalize(source).split(' ');
+  const chapterStart = source.toUpperCase().indexOf('XX. THE LITTLE DRAB BOOK');
+  const chapterEnd = source.toUpperCase().indexOf('XXI. BLINDFOLD TO MEMMERT', chapterStart + 1);
+  assert.ok(chapterStart >= 0 && chapterEnd > chapterStart, 'Chapter XX boundaries missing');
+  const chapterText = source.slice(chapterStart, chapterEnd);
+  const chapterWords = normalize(chapterText).split(' ');
+
   const key = Buffer.from(route.K08.desk_nonce, 'hex');
   const target = acceptance.slot_sha256.K08;
+  const motifSets = { water, time, social };
 
-  const water = new Set([
-    'sea', 'seas', 'water', 'waters', 'tide', 'tides', 'wave', 'waves', 'ocean',
-    'shore', 'surf', 'harbour', 'harbor', 'bay', 'coast', 'coastline', 'channel',
-    'sand', 'sands', 'salt', 'brine', 'foam', 'estuary', 'estuarys',
-  ]);
-  const time = new Set([
-    'night', 'tonight', 'evening', 'midnight', 'dawn', 'daybreak', 'dusk',
-    'darkness', 'dark', 'late', 'last', 'watch', 'morning', 'after', 'finish',
-    'finished', 'end', 'over', 'closing', 'close', 'ending',
-  ]);
-  const social = new Set([
-    'voice', 'voices', 'table', 'supper', 'dinner', 'meal', 'tea', 'coffee',
-    'talk', 'talked', 'talking', 'conversation', 'crew', 'hands', 'room',
-    'friends', 'friend', 'together', 'welcome', 'warmth', 'company', 'circle',
-    'gathered', 'chat', 'chatted', 'speaking', 'speak', 'spoke', 'heard',
-    'murmur', 'murmured', 'song', 'sing', 'laughter', 'laugh', 'laughing',
-  ]);
-
-  let testedWindows = 0;
-  const hits = [];
-  for (let start = 0; start < words.length; start += 1) {
-    let motifMask = 0;
-    const stop = Math.min(words.length, start + 64);
-    for (let end = start; end < stop; end += 1) {
-      const word = words[end];
-      if (water.has(word)) motifMask |= 1;
-      if (time.has(word)) motifMask |= 2;
-      if (social.has(word)) motifMask |= 4;
-      if (end - start + 1 < 3 || motifMask !== 7) continue;
-
-      const phrase = words.slice(start, end + 1).join(' ');
-      const tag = crypto.createHmac('sha256', key).update(phrase, 'ascii').digest().subarray(0, 16);
-      const componentDigest = crypto.createHash('sha256').update(tag).digest('hex');
-      testedWindows += 1;
-      if (componentDigest === target) {
-        hits.push({ start, end, phrase, tag: tag.toString('hex') });
-      }
-    }
-  }
+  const wholeBookMotifScan = scan(words, key, target, motifSets);
+  const chapterUnfilteredScan = scan(chapterWords, key, target, null);
+  const index5e67 = 0x5e67;
+  const index5e67Context = words.slice(index5e67 - 12, index5e67 + 13).join(' ');
 
   process.stdout.write(JSON.stringify({
     source: SOURCE_URL,
@@ -120,10 +147,24 @@ async function main() {
     sourceBytes: sourceBytes.length,
     sourceSha256: crypto.createHash('sha256').update(sourceBytes).digest('hex'),
     normalizedWords: words.length,
-    windowRule: '3-64 contiguous normalized words; at least one water, one night/time, and one social/table/voice term',
-    testedWindows,
+    wholeBookMotifScan: {
+      windowRule: '3-64 contiguous normalized words; at least one water, one night/time, and one social/table/voice term',
+      testedWindows: wholeBookMotifScan.testedWindows,
+      hits: wholeBookMotifScan.hits,
+    },
+    chapterXX: {
+      normalizedWords: chapterWords.length,
+      windowRule: 'all contiguous 3-64 word windows, no motif gate',
+      testedWindows: chapterUnfilteredScan.testedWindows,
+      hits: chapterUnfilteredScan.hits,
+    },
+    standbySuffixProbe: {
+      hex: '5E67',
+      decimalWordOffset: index5e67,
+      context: index5e67Context,
+      interpretation: 'raw word-offset probe only; no source-defined index rule',
+    },
     targetK08Sha256: target,
-    hits,
     controls: { sha256Abc: 'PASS', hmacRfc4231: 'PASS' },
   }, null, 2) + '\n');
 }
