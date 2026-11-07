@@ -48,6 +48,19 @@ N23 in `evidence/crew/noticeboard-and-desk-notes.txt` states: “The wording in 
 
 N23 is undated in the supplied transcription, so it adds no new temporal bound. It does add a direct retrieval target: obtain the original N23 page front and back, full margins and edges, handwriting, erasures/overwriting, inserts/underlays, and page-order context; include any original scan or photograph. Preserve the margin and envelope text as separate versions. The margin may be an intermediate draft, and should not be assumed identical to the final envelope wording.
 
+## PTW-417 photograph as a candidate K08 caption source
+
+A separate source chain makes one specific photograph worth requesting with the K08 materials:
+
+- The retained PTW-417 page says a **cosmetic corrosion photograph was requested**.
+- MAIL-04, from Simon to Emily, says the PTW-417 paperwork was reopened for a photograph.
+- MAIL-11 says desk notes and photograph captions were used to work out the envelope wording.
+- The selected printer job is PS-261003-0417, sharing the 417 identifier with PTW-417.
+
+This is a **candidate cross-source join**, not proof that the PTW-417 photograph is one of Emily's phrase-source photographs. The shared 417 identifier alone is not sufficient. The image may be a technical corrosion record unrelated to the sea/night/table caption themes.
+
+Retrieve the complete PTW-417 11-page closeout, all revisions (including the later OPEN revision), field sketch, requested photograph, original caption/metadata, contact sheet and caption register. Preserve image and caption as separate source objects with authorship, date, version and original placement. Compare the caption with Emily's N23 margin and the K08 envelope only after native provenance is established. This may join the K04 PS-0417 closeout/location chain with the K08 photo-caption drafting chain, but no phrase words are currently recovered from it.
+
 ## Limits
 
 This does **not** recover any K08 word and does not prove:
