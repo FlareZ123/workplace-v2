@@ -45,6 +45,23 @@ Public catalogue listings:
 - 1934 first-edition listing: https://www.abebooks.com/first-edition/Pilots-guide-Thames-Estuary-Norfolk-Broads/11292639200/bd
 - 1938 second-edition listing: https://www.abebooks.co.uk/Pilots-Guide-Thames-Estuary-Norfolk-Broads/19934063826/bd
 
+### D. Walter Lord's *A Night to Remember* (1955) / 1958 film
+
+A new competing identification for the MAIL-09 map-back book and MAIL-15 Saturday film is Walter Lord's *A Night to Remember* and its 1958 adaptation. The official Folio Society 2024 edition is 264 pages and has an original Titanic deck plan folded into a separate blocked pocket at the back. That is a notably specific fit for MAIL-09's map-in-back clue; the 1958 adaptation provides a coherent candidate for MAIL-15's unnamed film/subtitle setup.
+
+Sources:
+- Official Folio Society edition and physical details: https://www.foliosociety.com/usa/a-night-to-remember
+- 1958 film catalogue: https://www.tcm.com/watchtcm/titles/84970
+- 50th-anniversary trade-edition contents, chapter 4 “You Go and I'll Stay a While” at p.47: https://www.cincinnatistate.ecampus.com/night-remember-2nd-lord-walter-philbrick/bk/9780805077643
+
+The p.47 locator is from the 50th-anniversary trade edition and must not be transferred to the 2024 Folio edition. The Folio edition's pagination/layout is different. The exact book title and edition in MAIL-09 remain unverified, and the local export does not name the film.
+
+Agent18 tested obvious chapter-title/direct-dialogue candidates without a K08 hit. Agent6 independently checked the book title, chapter title, “We started out together and we'll finish together,” “the last night of a small town,” and other exact candidates against the unchanged K08 commitment; zero matched. Agent10 is pursuing a bounded complete subtitle screen using release-specific sources. These negatives do not test Emily's paraphrase, the complete book, receipt annotations, or handwritten marginalia.
+
+This is a strong **book/film locator hypothesis**, not a recovered phrase and not evidence that the final words are printed in the book. If the physical copy is retrieved, record its imprint/edition, check for the 264-page Folio 2024 deck-plan pocket, preserve the tea receipt in situ and both faces, and inspect the marked page, margins, endpapers and plan annotations. Keep the book/receipt separate from the original envelope and Emily's desk-note/photo-caption stack until a physical join is observed.
+
+See [A Night to Remember book/film locator](h17-k08-a-night-to-remember-book-film-locator-20261107.md).
+
 ## Discriminating physical checks
 
 1. Transcribe the **original recovery envelope** exactly, preserving punctuation, spacing, and capitalization before applying the K08 normalization.
