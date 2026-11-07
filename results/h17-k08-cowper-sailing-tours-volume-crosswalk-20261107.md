@@ -47,7 +47,7 @@ Do not treat 5E67 as a map coordinate, K08 component or source-defined identity 
 
 ## Other book candidates
 
-- **Ransome, *We Didn't Mean to Go to Sea* (1949 impression):** strong N20 sea/night/cabin-table semantic match and doubled endpaper map; page 94 begins Chapter VII, “He's Been an Awful Long Time …”; “Dawn at Sea” is p.208. Chapter VII's missing-Jim / breakfast-for-five scene remains a strong N20 match.. Agent13's printed excerpts tested 0/11,100 against K08. This remains a strong narrative/map-back alternative, but its ticket-page split does not form the same clean two-volume N/S structure.
+- **Ransome, *We Didn't Mean to Go to Sea* (1949 impression):** strong N20 sea/night/cabin-table semantic match and doubled endpaper map; page 94 begins Chapter VII, “He's Been an Awful Long Time …”; “Dawn at Sea” is p.208. Chapter VII's missing-Jim / breakfast-for-five scene remains a strong N20 match. Agent13's printed excerpts tested 0/11,100 against K08. Retain as a semantic locator only; it does not identify the MAIL-09 book or provide a ticket-page split.
 - **Praeger, *The Way That I Went* (1947 third edition):** strong single-volume page/section crosswalk (North pp.62–118, South p.118+), but weaker yacht-library connection.
 - **Wilson, *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen* (1934):** strong general yachtsman's-guide profile, but no page/volume crosswalk found.
 
