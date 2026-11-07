@@ -26,6 +26,12 @@ The highest-value next step is to reconstruct the **desk and folder custody chai
 4. Request the separate pre-incident crew/galley/noticeboard photograph and caption archive described by MAIL-14 and MAIL-11. Preserve image originals, reverse-side handwriting, caption authorship/revision history, timestamps and folder/album membership.
 5. Keep the engineering controlled-copy sleeve, WN-14 folder, loose desk notes, original envelope, and separate photo/caption archive as distinct objects until a physical join is documented.
 
+## Low-confidence accommodation locator
+
+MAIL-17 (3 October 17:31Z) says Emily would be in accommodation after dinner if the watch needed the previous note. Its subject is a valve-gallery concern thread, so this does not prove that the WN-14 folder or caption material was involved. MAIL-19 (4 October 06:22Z) places spare radio chargers at the accommodation desk, and the galley/stores log independently records those chargers being moved there. MAIL-20 later says captions and drafts were on Emily's desk.
+
+This makes the accommodation handover point worth checking, but it does **not** establish that Emily's desk was the accommodation desk or that the incoming watch received the WN-14 folder there. Ask whether the folder/loose notes were handed over or returned in accommodation, and whether the desk in MAIL-20 was the accommodation desk, a briefing-room desk, or a separate workspace. Keep this as a candidate locator only.
+
 ## Discriminating outcomes
 
 - **Positive:** an original envelope or margin-bearing source with exact wording and defensible attribution to Emily, linked by custody/version evidence to the final K08 selection. Transcribe the literal text before applying the supplied normalization and HMAC.
@@ -44,3 +50,6 @@ No phrase candidates were generated or tested. No exact K08 words were recovered
 - `resources/evidence/mail/18.eml`: `7dc1f122f92ce23c110aa50fd78ae7a471bdf9e60a44e358e3b90e497f664cf0`
 - `resources/evidence/mail/20.eml`: `e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71`
 - `resources/evidence/crew/noticeboard-and-desk-notes.txt`: `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
+- `resources/evidence/mail/17.eml`: `67493c660dcd08de990c2490af5718072ee9e0991476c0272bf9fff9e96e8014`
+- `resources/evidence/mail/19.eml`: `caff45f8c477f9fa6fc5fae0847c9c7f7842ba83c41319c8a47ddace00bd2fbd`
+- `resources/evidence/crew/galley-and-stores.log`: `23dfef679a125e725654b95e7d27dffc46e7c3e9980f64b8b65fbfc2f7b75d46`
