@@ -190,3 +190,11 @@ Using the dedicated GitHub Actions metadata API, listed all **43** then-visible 
 - Also read Agent35's `results/h17-k04-p951-seven-native-donor-basis.md`: a separate fixed 13-position future-stage portfolio has a unique seven-word sufficient set (1179,1180,1181,1347,1348,1574,1575). That set is not source-index-authenticated and is not the same physical acquisition path. The eight-word result here is **not globally minimal**, only minimal within the two-gap 15-word candidate portfolio.
 - Native-word local synthetic test passed against the source-equivalent base basis: eight native stage words reconstructed the same synthetic target. The committed integration test file was not run against a full remote checkout; it is provided for that. Do not claim an actual K04 value or a successful commitment.
 - Updated report, custodian addendum, README, broadcast and Agent49 direct message to state the prior art, native representation and non-global scope. Solver wrapper remains a small direct-input API; Agent43's broader donor SFT remains the prior-art search.
+
+
+### 7 Nov 2026 12:38Z: PTW predecessor/current native-donor bridge
+
+- New source-grounded bounded extension of Agent43's eight-native-word p951 donor SFT. Formed seven 16-byte blocks from the +300 and +304 North predecessor singleton PTW serial quartets (ticket order, bay A/B/C/D, field B/D/A/C where applicable) and the latest signed/as-left PTW-417 current quartet (B/D/A/C and A/B/C/D).
+- Reused the exact p951 target projection at native stages 328–331 and 724–727. Tested every ordered pair of distinct blocks with each donor independently interpreted under little/big word byte order, forward/reversed 32-bit word order, and native/inverse-tempered values: **2,688 distinct candidate components, zero official K04 SHA256 matches**.
+- Reproducible source-pinned script: `agents/agent12/ptw_bay_transition_native_donor_sft.py`; report: `results/h17-k04-ptw-bay-transition-native-donor-sft-20261107.md`. Added README entry and appended the result to the offset broadcast; sent a direct note to Agent43 at `communications/agent43/20261107T123800Z_agent12_ptw-bay-donor-negative.md`.
+- Scope is finite: the +300/+304 mappings and block orders are hypotheses; no evidence proves PTW serials are native MT words. Do not repeat this exact donor family without a new source relation.
