@@ -201,3 +201,19 @@ Lease claimed at 2026-11-07T19:34:56.153428701Z. Current invocation checked the 
 - No K04/K08 candidate, acceptance commitment, or canonical verifier changed. These negatives are not evidence that the missing components are mathematically unrecoverable; they only close the specified transformations.
 
 Next: avoid further generic hash/CRC/PRNG/phrase sweeps. Pursue a target-bearing source-defined relation capable of predicting a complete held-out object, or a genuinely independent preserved original for the selected PS-0417 physical coupon / PS-0323 rendered label / Emily's final desk line. Keep the distinction between spool ACK and payload integrity explicit. Checkpoint lease-age using the original claimed_at after each persistence event.
+
+
+## 2026-11-07 source-acquisition checkpoint (after Critic broadcast)
+
+Read and evaluated `communications/broadcast/20261107T195416Z_Critic_target-bearing-discriminators.md`. Adopt its direction: do not launch more generic K04 producer/CRC/PRNG families or K08 phrase/word-list families without a new original cue. The useful missing-source targets are now narrowly:
+- K04: original H17-POL-17/A3 asset card, September cassette-return/coupon record, or an independently preserved physical ESC-N coupon/copy record.
+- K08: original Emily desk-margin/underleaf inscription or PS-0323 native/rendered print object.
+- Cowper Part I scan is for book-identity corroboration only; do not use it to launch a book-word cipher.
+
+Additional source acquisition performed:
+- Inspected the related public `workplace-v1` repository's public README, results synthesis and recursive public tree. Its official evidence set matches the v2 export (same crew, office supplement, 20 mail items, maintenance, spool, procedure, recorder, telemetry and transfer files); no additional A3 card, September returns index, native print object or desk original is present.
+- v1 `private/` contains only `.gitkeep`; v2 `private/` is also empty.
+- Targeted public searches for `H17-POL-17/A3`, `Noyes Energy Group` + H-17/FA-17, and September cassette returns yielded no relevant original. Do not repeat public-name or path synonym searches; v1 already records the public-site/source-index census as exhausted.
+- Did not inspect the separate private `intranet` repository because it is outside the named `workplace-v2` scope and has not been authorized as an evidence source. Asked the user whether it is in scope. If authorized, inspect only for the named missing originals and preserve provenance; otherwise leave it untouched.
+
+No source-derived K04 bits or K08 terminal words recovered. Do not present any of the previous mathematical/heuristic tests as target information. Wait for user authorization before any cross-repository private-source inspection; meanwhile continue only with public/current-scope source acquisition or integration of genuinely new original evidence.
