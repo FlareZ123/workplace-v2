@@ -16,7 +16,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "08794cb7a66a4d3289ed17a0679b60d6b2bfce2383b37d05f5397fed95bf49e8",
+      "sha256": "eb0e3b605dba0036f6c23cf8cdeb431eeeecb1fc97372354248a0cc91ae8fbb8",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -26,7 +26,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "368082070a287e767222351a4acf41a172b147393d5a13213b1cda3e0ddf5701",
+      "sha256": "2baa5ff4d63dae881e703c182e8dbfcbd55416c13341cd32c71d257f7bdfcbe4",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -36,7 +36,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "3affe463aa351f8c62e1cb41279e860c451418fd4986a265ed6a0a798525ed70",
+      "sha256": "61cd492d50141b07007cf1cab938c84ab6ec27b1cca7b8e9e07f84f3f788d41a",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -45,12 +45,12 @@
       "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22The+Coasts+of+Essex+and+Suffolk%22+AND+creator%3A%22Frank+Cowper%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
       "status": 200,
       "content_type": "application/json",
-      "bytes": 375,
-      "sha256": "dece5c570d2208c388e3b2d5d8ab1324d09331b83f81de73c6f9422680b1d3e5",
+      "bytes": 376,
+      "sha256": "3296142d94b7be905d9bdc42ccc832be2002d0187c828652a3e018c495ef58bb",
       "json": {
         "responseHeader": {
           "status": 0,
-          "QTime": 66,
+          "QTime": 160,
           "params": {
             "query": "title:&quot;The Coasts of Essex and Suffolk&quot; AND creator:&quot;Frank Cowper&quot;",
             "qin": "title:&quot;The Coasts of Essex and Suffolk&quot; AND creator:&quot;Frank Cowper&quot;",
@@ -75,12 +75,12 @@
       "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22Sailing+Tours%22+AND+creator%3A%22Frank+Cowper%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
       "status": 200,
       "content_type": "application/json",
-      "bytes": 340,
-      "sha256": "4b1390291a2c3ca49f3d1b707ff48f71acf6a7b86237ef707aa8deda4d4a7116",
+      "bytes": 339,
+      "sha256": "680c829b7288ae2cc6b9c067c221d71119dee897985458cac3b293237102ed6d",
       "json": {
         "responseHeader": {
           "status": 0,
-          "QTime": 213,
+          "QTime": 56,
           "params": {
             "query": "title:&quot;Sailing Tours&quot; AND creator:&quot;Frank Cowper&quot;",
             "qin": "title:&quot;Sailing Tours&quot; AND creator:&quot;Frank Cowper&quot;",
@@ -94,6 +94,119 @@
           "numFound": 0,
           "start": 0,
           "docs": []
+        }
+      },
+      "body_prefix": null,
+      "body_text": null
+    },
+    {
+      "label": "Internet Archive Advanced Search: title:\"The Coasts of Essex and Suffolk\"",
+      "requested_url": "https://archive.org/advancedsearch.php?q=title%3A%22The+Coasts+of+Essex+and+Suffolk%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22The+Coasts+of+Essex+and+Suffolk%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 301,
+      "sha256": "fa50c7668323567a4b03058ebe2f3632a5e698005f6219d8bdceac9b24faec13",
+      "json": {
+        "responseHeader": {
+          "status": 0,
+          "QTime": 22,
+          "params": {
+            "query": "title:&quot;The Coasts of Essex and Suffolk&quot;",
+            "qin": "title:&quot;The Coasts of Essex and Suffolk&quot;",
+            "fields": "identifier,title,creator,date,mediatype",
+            "wt": "json",
+            "rows": 100,
+            "start": 0
+          }
+        },
+        "response": {
+          "numFound": 0,
+          "start": 0,
+          "docs": []
+        }
+      },
+      "body_prefix": null,
+      "body_text": null
+    },
+    {
+      "label": "Internet Archive Advanced Search: title:\"Sailing Tours\"",
+      "requested_url": "https://archive.org/advancedsearch.php?q=title%3A%22Sailing+Tours%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22Sailing+Tours%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 775,
+      "sha256": "afcca8372d262eb282fc381911f07982df5e830696f49a1ecc7138b669c15e4d",
+      "json": {
+        "responseHeader": {
+          "status": 0,
+          "QTime": 68,
+          "params": {
+            "query": "title:&quot;Sailing Tours&quot;",
+            "qin": "title:&quot;Sailing Tours&quot;",
+            "fields": "identifier,title,creator,date,mediatype",
+            "wt": "json",
+            "rows": 100,
+            "start": 0
+          }
+        },
+        "response": {
+          "numFound": 2,
+          "start": 0,
+          "docs": [
+            {
+              "creator": "Cowper, Frank, 1849-1930",
+              "date": "1985-01-01T00:00:00Z",
+              "identifier": "sailingtoursyach0000cowp",
+              "mediatype": "texts",
+              "title": "Sailing tours : the yachtsman's guide to the cruising waters of the English and adjacent coasts"
+            },
+            {
+              "creator": "NeoplanDude",
+              "date": "2016-09-25T00:00:00Z",
+              "identifier": "ytdown.com-you-tube-neoplan-dude-following-smooth-sailing-tou-media-kq-e-47-bf-lnlo-001-1080p",
+              "mediatype": "movies",
+              "title": "NeoplanDude | Following Smooth Sailing Tours 1980s MCI MC9 On The Belt Parkway!"
+            }
+          ]
+        }
+      },
+      "body_prefix": null,
+      "body_text": null
+    },
+    {
+      "label": "Internet Archive Advanced Search: creator:\"Frank Cowper\" AND mediatype:texts",
+      "requested_url": "https://archive.org/advancedsearch.php?q=creator%3A%22Frank+Cowper%22+AND+mediatype%3Atexts&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "final_url": "https://archive.org/advancedsearch.php?q=creator%3A%22Frank+Cowper%22+AND+mediatype%3Atexts&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 463,
+      "sha256": "73188e2ac8a370858d4f07f825b5352a60e4185994ff95794e495878a8fae690",
+      "json": {
+        "responseHeader": {
+          "status": 0,
+          "QTime": 273,
+          "params": {
+            "query": "creator:&quot;Frank Cowper&quot; AND mediatype:texts",
+            "qin": "creator:&quot;Frank Cowper&quot; AND mediatype:texts",
+            "fields": "identifier,title,creator,date,mediatype",
+            "wt": "json",
+            "rows": 100,
+            "start": 0
+          }
+        },
+        "response": {
+          "numFound": 1,
+          "start": 0,
+          "docs": [
+            {
+              "creator": "Frank Cowper",
+              "date": "1897-01-01T00:00:00Z",
+              "identifier": "jackallalonehis00cowpgoog",
+              "mediatype": "texts",
+              "title": "Jack-all-alone, His Cruises"
+            }
+          ]
         }
       },
       "body_prefix": null,
@@ -457,8 +570,8 @@
       "error": "HTTP Error 403: Forbidden",
       "content_type": "text/html",
       "bytes": 5636,
-      "sha256": "6e3560a2f7151bb77843017c4fb2147104cb9279a222d5acfc0aec36ea9dcdbc",
-      "body_prefix": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta http-equiv=\"content-security-policy\" content=\"default-src &#39;none&#39;; script-src &#39;nonce-mvuG91vDt0Fwm3X9rNHwrk&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-s"
+      "sha256": "bd9eba98c9d5206bd9a1ed4a985b91865d11514bf77d49758ea86c320f6f0ccb",
+      "body_prefix": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta http-equiv=\"content-security-policy\" content=\"default-src &#39;none&#39;; script-src &#39;nonce-8Z0YBKo2HZKMk96vD7hYOt&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-s"
     }
   ],
   "limits": [
