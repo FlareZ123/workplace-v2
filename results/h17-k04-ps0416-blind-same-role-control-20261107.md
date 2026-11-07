@@ -11,7 +11,7 @@ The surviving spool reconstruction contains a complete single-attempt job immedi
 - The local PTW-416 receipt is bay D, revision 1, CLOSED, AS_LEFT, signed, serial `SG-0C814A5E`.
 - The North L-29/N return register lists ST-112 as tab 05, "catch, clean". Under the *unverified* +304 ST↔PTW↔PS offset hypothesis, ST-112 maps to PTW-416 / PS-0416. The competing +300 offset does not make that same mapping.
 
-The exact source-to-route join remains unproven: `archive-labels.ini` explicitly maps ESC-N to PS-0417, not PS-0416. The +304 mapping is a candidate inferred from ticket/bay/class relationships, not an authenticated ticket pair. This is why the original route/queue manifest is part of the request.
+The competing offsets sharpen the control, but do not authenticate it. Under +304, ST-112 maps to PTW-416 / PS-0416, whose spool row is ACK / RECOVER / bench, matching all three visible selector fields on PS-0417 ACK2. Under +300, ST-112 maps to PTW-412 / PS-0412, whose row is ACK / LABEL / bench and therefore fails the RECOVER role match. This is a useful class/state/destination discriminator in favour of +304. The exact source-to-route join remains unproven: `archive-labels.ini` explicitly maps ESC-N to PS-0417, not PS-0416, and the +304 pairing is still inferred rather than authenticated. The original route/queue manifest and paired ticket are therefore mandatory.
 
 ## Proposed blind control
 
