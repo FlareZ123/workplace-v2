@@ -12,6 +12,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -78,9 +79,14 @@ def main() -> None:
     test_words = key_words_from_digest(test_digest)
     assert digest_from_key_words(test_words) == test_digest
     assert shared.key_integer(test_words) == int.from_bytes(test_digest, "big")
-    assert shared.base.native_initialized(test_words) == __import__("random").Random(
+    test_state = shared.base.native_initialized(test_words)
+    assert test_state == __import__("random").Random(
         int.from_bytes(test_digest, "big")
     ).getstate()[1][:624]
+    fixed_state = [
+        f"(assert (= s{index} #x{word:08x}))"
+        for index, word in enumerate(test_state)
+    ]
     print("SYNTHETIC_HMAC32_INTEGER_SEED_LAYOUT_PASS", flush=True)
 
     positive_packets = shared.packets_from_key(test_words)
@@ -91,7 +97,7 @@ def main() -> None:
         for index, word in enumerate(test_words)
     ]
     positive_formula = "\n".join(
-        smt + positive_constraints + fixed + ["(check-sat)"]
+        smt + positive_constraints + fixed + fixed_state + ["(check-sat)"]
     )
     positive, positive_keys, positive_elapsed, positive_timeout = shared.solve(
         positive_formula, 8, args.control_timeout_seconds
@@ -114,7 +120,7 @@ def main() -> None:
         for index, word in enumerate(wrong_words)
     ]
     negative_formula = "\n".join(
-        smt + positive_constraints + wrong_fixed + ["(check-sat)"]
+        smt + positive_constraints + wrong_fixed + fixed_state + ["(check-sat)"]
     )
     negative, _, negative_elapsed, negative_timeout = shared.solve(
         negative_formula, 8, args.control_timeout_seconds
@@ -141,7 +147,9 @@ def main() -> None:
         "terminator_fired": timed_out,
         "full_132_source_match": False,
         "k04_commitment_match": False,
+        "k04_seed_prefix_fixed_point": False,
         "k08_commitment_match": False,
+        "k08_phrase_commitment_match": False,
     }
     print(
         "ORIGINAL_N8_BITWUZLA",
@@ -201,9 +209,32 @@ def main() -> None:
             "derived_k04_component": k04_component.hex().upper(),
             "derived_k04_sha256": k04_sha,
             "k04_commitment_match": k04_sha == acceptance["slot_sha256"]["K04"],
+            "k04_seed_prefix_fixed_point": digest[:16] == k04_component,
             "derived_k08_sha256": k08_sha,
             "k08_commitment_match": k08_sha == acceptance["slot_sha256"]["K08"],
         })
+        try:
+            phrase_seed = digest.decode("utf-8")
+        except UnicodeDecodeError:
+            phrase_seed = None
+        if phrase_seed is not None:
+            normalized = " ".join(
+                re.sub(r"[^a-z0-9\\s]", " ", phrase_seed.lower()).split()
+            )
+            nonce = bytes.fromhex(route["K08"]["desk_nonce"])
+            phrase_component = hmac.digest(
+                nonce, normalized.encode("utf-8"), "sha256"
+            )[:16]
+            phrase_sha = hashlib.sha256(phrase_component).hexdigest()
+            result.update({
+                "seed_bytes_as_normalized_phrase": normalized,
+                "k08_phrase_sha256": phrase_sha,
+                "k08_phrase_commitment_match": (
+                    phrase_sha == acceptance["slot_sha256"]["K08"]
+                ),
+            })
+            if result["k08_phrase_commitment_match"]:
+                print("K08_PHRASE_FROM_PRINTER_SEED", normalized, flush=True)
         print(
             "FULL_SOURCE_VERIFIED",
             "K04_SHA_MATCH", result["k04_commitment_match"],
