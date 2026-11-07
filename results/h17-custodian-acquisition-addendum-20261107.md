@@ -4,20 +4,20 @@
 
 ## Access and provenance constraint
 
-The supplied BX25-08 PDF remains encrypted and must be preserved unchanged. A prior invocation reported a numeric PDF password obtained by brute-force search of the full 0000–9999 setting space. That result is unauthorized and withdrawn; the value and all page content derived from it have been removed from the current tree. Do not repeat or rely on it. The bookmark establishes only that a four-position setting exists and that the paper key register remained with the Risk desk. Do not treat the purported FA-17/FA-18 descriptions, named-insured redaction observation or website pointer from the withdrawn decryption as authorized source evidence. The authorized route is the original Risk-desk paper key register or another independently authorized release record. See [the withdrawal notice](h17-bx25-08-property-annex-decryption-20261107.md). Obtain the original Risk-desk paper key register or another independently authorized release record.
+The supplied BX25-08 PDF remains encrypted and must be preserved unchanged. A prior invocation reported a release setting obtained by exhaustive search; that result is unauthorized and withdrawn. Do not retrieve, repeat, use, or propagate the setting or any page content derived from it. The bookmark establishes only that a four-position setting exists and that the paper key register remained with the Risk desk. No PDF-derived asset description, host attribution, named-insured observation, or website pointer is authorized source evidence. The authorized route is the original Risk-desk paper key register or another independently authorized release record. See [the withdrawal notice](h17-bx25-08-property-annex-decryption-20261107.md). Obtain the original Risk-desk paper key register or another independently authorized release record.
 
 ## Priority 1: K04 original print object and physical coupon
 
-The unencrypted fleet-retirement note and supplier reconciliation link FA-17 to the North printer/cassette, L-29/N and the PS-261003-0417 / H17-POL-17/A3 source chain. They establish provenance, not the coupon bytes or the identity of the machine that hosted the print queue.
+The unencrypted print-fleet note maps PS-261003-0417 to ESC-N, L-29/N, account/reference FA-17, folio H17-POL-17/A3, and tab 05 ticket ST-112 (catch cleaning). The supplier-reconciliation CSV says box/folio marks came from the 2025 property-renewal transfer index and records RN-052 as RISK/R1/FILED, FA-17/BX25/08; ST-112 as L29/R3/POSTED, FA-17/H17-POL-17/A3; and the separate ST-112 L29/R4/HELD duplicate at FA-17/H17-POL-17/A4. This is a source-level account/folio join to the posted North R3/A3 docket, not proof of coupon bytes or the identity of the machine that hosted the print queue.
 
 Request, if retained:
 - The original 16-byte physical coupon and its custody/return-binder record.
-- The complete signed North L-29/N binder page for H17-POL-17/A3, front and back, including attachments, serials, ticket references, signatures and custody marks.
+- The original ST-112 R3/POSTED/A3 docket and complete signed North L-29/N binder page, front and back, including attachments, serials, ticket references, signatures and custody marks. Preserve any carbonless underlay or transfer sheet if present. Keep the separate R4/HELD/A4 duplicate as a comparison object, not the selected original.
 - The original printer-side job object for PS-261003-0417, including every attempt, raw .SPL/.SHD files, metadata, spool journal and PrintService event records around 3 October 2026 18:02 UTC.
 - The original FA-17 property/renewal ledger and the September cassette-return index, preserving native workbook formulas, hidden sheets, comments, file metadata and attachments.
 - Any independent host inventory, desktop queue record or retention/snapshot record that identifies which machine actually queued this job.
 
-Do not infer the print host from the encrypted BX25 page. FA-18 is not independently established as the service desk/local archival station in the supplied unencrypted records. If a historical workstation image exists, identify the host through original host records before prioritizing it. Do not interact with live equipment.
+Do not infer the print host from the encrypted BX25 page. No historical host identity is established by authorized local records. If a historical workstation image exists, identify the host through original host inventory and queue records before prioritizing it. Do not interact with live equipment.
 
 ## Priority 2: K08 final envelope, Emily's desk materials and photograph captions
 
@@ -53,7 +53,7 @@ The surviving retired-office bookmarks identify these missing local paths:
 - R:/Stores/consumables/mug-stock.xls (tea-room stock sheets).
 - R:/Risk/Transfers/BX25/transfer-index.htm and R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx.
 
-Request authorized preserved copies with original paths, timestamps, hashes, native metadata, sidecars and attachments. These bookmarks are source locators; they do not establish that the files contain K04/K08 values or that the old profile belonged to FA-18. If an offline 2026 workstation/profile image survives, preserve the whole image and the user-profile hives separately. Use the original desktop-move calendar and independent host records to map the profile and print queue; do not assume FA-18.
+Request authorized preserved copies with original paths, timestamps, hashes, native metadata, sidecars and attachments. These bookmarks are source locators; they do not establish that the files contain K04/K08 values or identify the historical print host. If an offline 2026 workstation/profile image survives, preserve the whole image and the user-profile hives separately. Use the original desktop-move calendar and independent host records to map the profile and print queue; do not infer a host from withdrawn PDF content.
 
 ## Preservation requirements
 
