@@ -136,6 +136,10 @@ def main() -> None:
                 "HathiTrust MARC record 100485750",
                 "https://catalog.hathitrust.org/Record/100485750.marc",
             ),
+            (
+                "Internet Archive metadata for Cowper Sailing Tours candidate",
+                "https://archive.org/metadata/sailingtoursyach0000cowp",
+            ),
         ]
     )
 
