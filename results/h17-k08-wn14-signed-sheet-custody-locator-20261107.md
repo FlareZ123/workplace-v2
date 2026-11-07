@@ -10,7 +10,7 @@ The surviving messages describe at least three distinct physical locations or ob
 2. **Two photocopies in Emily's tray.** MAIL-06 supplies the signed B and D values, says pencil alternatives were crossed out before signing, distinguishes the pocket-book standby transcription ending 5E67 from the signed group D value, and says both photocopies would be left in Emily's tray. It also says the ink sheet should be kept flat because a fold runs through the second box (MAIL-06, lines 14–24).
 3. **WN-14 folder and Emily's loose desk notes.** MAIL-14 confirms the four ink groups were signed in A/B/C/D order with no replacements. It says the pencil standby note was crossed through, a spare printed sticker was removed from the cover, the folder would be handed to incoming watch, and Emily's desk notes were under that folder outside the controlled-copy sleeve. Photographs and galley captions were kept separate from the engineering procedure (MAIL-14, lines 12–23).
 
-These statements do not establish that the original register sheet, either photocopy, the WN-14 folder and Emily's desk-note stack travelled together. The original sheet's later custody is unresolved. The folder handoff is a separate event from the photocopies being left in Emily's tray.
+MAIL-03 also explicitly distinguishes the ordinary duty sheet from a separate standby sheet bearing a grey diagonal line. Do not assume that this grey-line sheet is identical to the pocket-book standby transcription ending 5E67. These statements do not establish that the original register sheet, either photocopy, the standby sheet, the WN-14 folder and Emily's desk-note stack travelled together. The original sheet's later custody is unresolved. The folder handoff is a separate event from the photocopies being left in Emily's tray.
 
 ## Gap in the current acquisition list
 
@@ -25,6 +25,7 @@ If an authorized retrieval window reopens, treat these as separate objects and p
 - Original ordinary duty sheet carrying the WN-14 ink groups, under its clear cover in the night-folder context. Photograph the clear cover, lifting top label, right edge, both faces, two-column layout, letter labels, fold through the second box, margins, verso and any annotations before lifting or flattening it. Record the original folder, register and custodian identifiers.
 - Both photocopies from Emily's tray, front and back, preserving order, paper orientation, toner/scan clipping, annotations and any differences from the original.
 - The WN-14 folder handed to incoming watch, the loose desk notes beneath it, and the controlled-copy sleeve as distinct layers. Record who received the folder, when, where the loose notes were found and whether any photocopy was inside or outside it.
+- The separate standby sheet with the grey diagonal line mentioned in MAIL-03, preserved in its as-found position and clearly distinguished from the ordinary duty sheet.
 - David's pocket book containing the old standby transcription ending 5E67, retained only as a clearly marked non-authoritative comparison object.
 - The spare printed sticker removed from the cover, the lifting top label and the loose label pile that included a label from the previous month's drill. Preserve separately as exclusion controls; MAIL-14 says the sticker's dispatch number is not one of the control groups.
 
