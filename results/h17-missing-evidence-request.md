@@ -84,7 +84,7 @@ These three leads are grounded in the surviving bookmark, MAIL-14, and print-fle
 
 The retired-office bookmark file also points to `file:///R:/Risk/Transfers/BX25/transfer-index.htm`, labelled **"2025 risk scan transfer index"**. The supplier reconciliation independently records `RN-052` as RISK/R1/FILED, asset `FA-17`, folio `BX25/08`, described as a property-annex scan inward transfer; `RN-053` is the LV-42/BX25/12 hired-plant certificate, and `RN-047` is the ST-09/BX25/03 stores-float exception. The bookmark description says the old capture terminal stored BX25 folios with a four-position numeric release setting and that its **paper key register stayed with the Risk desk**.
 
-Request the original BX25 transfer index and a preserved scan/custody record of the Risk desk paper key register, especially the entry for FA-17 / BX25-08 / H17-POL-17/A3. Retain page order, annotations, issue/return entries and provenance. This is a new physical/source locator, **not evidence that the register contains the K04 coupon or that the PDF's release setting is the coupon**.
+Request the original BX25 transfer index and a preserved scan/custody record of the Risk desk paper key register, especially the entry for FA-17 / BX25-08 / H17-POL-17/A3. Retain page order, annotations, issue/return entries and provenance. The local PDF password `8131` is known for this exact file, but the available evidence does not establish that it is the same as the old capture-terminal setting referenced by `scanrelease.txt`. This is a physical/source locator, **not evidence that the register contains the K04 coupon or that the PDF password is a REC8 component**.
 
 
 ### K08: electrical-group roster
