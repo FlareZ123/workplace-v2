@@ -323,3 +323,10 @@ A source-specific paper/copy layout hypothesis (not historically attested): map 
 - The acquisition addendum includes PS-0300 only as a conditional native-object locator if already preserved or delivered unsolicited; no new custodian request is authorized. It explicitly states the 417-minus-ticket tie result and does not request PS-0336/PS-0365.
 - Current K08 physical hypothesis remains Ransome 1949 18th impression as a map-back/N20 scene locator, not a phrase source. The separate Cowper Part I/II page experiment remains incomplete; Praeger 5E67 is edition-specific; the Riddle/Wilson guide is a distinct clue. A Night to Remember remains pruned false positive. Exact K08 phrase still resides in missing envelope/Emily margin and photo-caption materials.
 - No new accepted K04 bits or K08 words were recovered in this checkpoint. Preserve the original six PASS/two MISSING state. Lease remains `claimed_at=2026-11-07T19:23:03.911019925Z`; at 20:19 UTC elapsed age was about 56 minutes, below 70. Continue only until a measured checkpoint reaches the 70-minute threshold, then follow orderly release.
+
+
+## 7 November 2026, 20:27 UTC — closed stale K03 request
+
+- Re-read MAIL-04 and the full PTW-417 receipt log. The K03 rule uses the highest signed CLOSED/AS_LEFT revision per bay, not the earlier revision-1 set. Revision 2 is complete across A/B/C/D; in B,D,A,C order the serial string is `SG-D7DAD6BC|SG-9714519B|SG-7DAD0AD4|SG-BE8E87FD`, SHA-256(ASCII)[:16] gives the already accepted K03 component `1384AF96E25D6ADA666209CB55E062FA`. This is a reproduction of prior PASS, not a new recovery. The two revision-1 A records are superseded for K03; I corrected `results/h17-missing-evidence-request.md` so they are no longer a K03 blocker or a K04 input.
+- Likewise, the RC-17 revision-C control strips in DRAIN/ISOLATE/PURGE/VERIFY order reproduce the already accepted K06 component; no new recovery. Do not report either as fresh progress.
+- No new component bits were recovered. The current unresolved slots remain K04 and K08.
