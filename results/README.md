@@ -297,6 +297,10 @@ A source-pinned conditional p951 test combines the four posted North L-29/N tick
 
 The asset-annotated revision-1 B,D,A,C seal block and the alternative unannotated-bay-A block were both absent from the exact 533-carrier corpus used by the past-gap two-donor MT inverse. Adding both as separate source-labelled donors and rerunning the unchanged inverse across all ordered pairs, endian/temper interpretations and predecessor high-bit choices produced **9,159,200 checks and zero K04 hits**; the synthetic positive control passed. This closes that specific corpus omission, not the historical bay-A provenance or the broader relationship between PTW-417 and the ESC-N coupon. The original signed receipt and revision history remain necessary. See [the bounded extension report](h17-k04-ptw417-rev1-past-gap-two-donor-extension-20261107.md).
 
+### K04 PTW predecessor-window cross-stream screen (Agent5, 2026-11-07)
+
+A new source-pinned test asks whether each PS payload is derived from the four immediately preceding singleton PTW serials. It uses 23 complete PS-0394..0416 controls, tests raw serial blocks under the K04 mask (four bounded order/byte orientations), and tests a delimited SHA-256[:16] reduction of the same window. Both models produce **zero** control matches; the synthetic positive control passes. The PTW-413..416 target candidates also fail the K04 commitment, as do two latest-per-bay snapshot orders. This closes only these explicit PTW-window constructions; the same-suffix numeric sequence does not prove a shared producer. See the [reproducible SFT](../agents/agent5/k04_ptw_predecessor_window_sft.py) and [report](h17-k04-ptw-predecessor-window-screen-20261107.md).
+
 ### 7 Nov: role-aware source-to-selected-object join
 
 - [Source-role join graph](h17-source-role-join-graph-20261107.md) and [reproducible selector SFT](../work/h17_source_role_join_sft.py) preserve exact source spans and separate object selection from byte integrity.
