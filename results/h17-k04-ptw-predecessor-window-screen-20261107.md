@@ -22,8 +22,8 @@ The test pins the exact source files:
 For each complete control job PS-0394 through PS-0416, the test checks whether the observed payload equals a predicted payload under the K04 mask:
 
 1. **Raw predecessor component:** concatenate the four prior PTW serial bytes in ascending permit order, then XOR the 16-byte result with the recorded K04 mask. Four bounded order/byte-orientation variants are also checked.
-2. **Delimited-hash predecessor component:** SHA-256 the four prior printed serial strings joined by `|`, take the first 16 bytes, then XOR with the K04 mask. This reuses the archive's known 16-byte SHA-256 reduction pattern, applied to the predecessor window.
-3. **Latest-per-bay state:** select the highest-numbered singleton PTW serial before PTW-417 for each bay, assemble A/B/C/D and B/D/A/C blocks, and check each block as a K04 component against the acceptance commitment and selected payload.
+2. **Hashed predecessor components:** SHA-256 the four prior printed serial strings joined by `|`, take the first 16 bytes, and separately SHA-256 the raw 16-byte concatenation and take the first 16 bytes. Each result is tested as the K04 component under the same mask.
+3. **Pre-job four-bay snapshot:** for PS-0396..0416, select the highest-numbered singleton PTW serial for each bay before the corresponding job, assemble A/B/C/D and B/D/A/C blocks, then XOR with the K04 mask.
 
 The selector is tested with a planted component/payload positive control. The selected printer row is asserted from the source fields as PS-0417 attempt 2, ACK, RECOVER, destination bench.
 
@@ -32,7 +32,8 @@ The selector is tested with a planted component/payload positive control. The se
 - All source pins and structural assertions passed.
 - 27 singleton PTW receipts and 27 one-row same-suffix PS packets were present.
 - The 23 complete predecessor-window controls produced **zero** matches for the raw component under the four tested orientations.
-- The same 23 controls produced **zero** matches for the delimited SHA-256 component.
+- The same 23 controls produced **zero** matches for the delimited SHA-256 component and **zero** for SHA-256 of the raw 16-byte window.
+- The pre-job latest-per-bay snapshot produced **zero** matches across 21 complete PS-0396..0416 controls in both A/B/C/D and B/D/A/C orders.
 - The planted positive control passed.
 - Selected PS-0417 ACK2 payload: `A9A9DC5731A5E2AE879C47215C2559D5`.
 
@@ -42,12 +43,13 @@ For the target window PTW-413..416:
 |---|---|---|---|
 | Raw serial window | `A60B42C5645EB28CF8DD126A0C814A5E` | `c3c69ae2f9656cddbcd56301ab15e9d05450d432398783578c3ca249e22611a8` | `235D8A0E051E15755DCF28AD5B9AA442` |
 | Delimited SHA-256[:16] | `AB60E5234EB8AB75452A319840DA5CF8` | `f1213ebcb1ebb6382166ad3dc61aae54e0cf0a067ef44f42c3bcc1d794065b1b` | `2E362DE82FF80C8CE0380B5F17C1B2E4` |
+| Raw-byte SHA-256[:16] | `C3C69AE2F9656CDDBCD56301AB15E9D0` | `fd91b05c3084cef071574f7cb485cc31cff3f60177b533cfbb570ce174597034` | `469052299825CB2419C759C6FC0E07CC` |
 
 Neither candidate payload equals the selected ACK2 payload, and neither component digest equals the official K04 commitment:
 
 `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
 
-The **pre-job latest-per-bay snapshot** was also tested on 21 complete controls, PS-0396..0416: the latest singleton PTW serial for each bay before the corresponding job, assembled in A/B/C/D and B/D/A/C order, then XORed with the K04 mask. Both orders produced zero matches. For PS-0417, the A/B/C/D component is `F8DD126A5AD7D397645EB28C0C814A5E` (SHA-256 `eef469494783b5278d225329f5c584e220af5387c281601de74c98288378d31e`); B/D/A/C is `5AD7D3970C814A5EF8DD126A645EB28C` (SHA-256 `fb324325f058f623ad608d328ede136568ba94d65863b65df763932679df72fe`). Their masked payload predictions are `7D8BDAA13B97746EC14C884B5B9AA442` and `DF811B5C6DC1EDA75DCF28AD33455C90`, respectively; neither equals selected ACK2. The reproducer prints the exact permit IDs for both orders.
+The **pre-job latest-per-bay snapshot** was tested on 21 complete controls, PS-0396..0416. The latest singleton PTW serial for each bay before the corresponding job was assembled in A/B/C/D and B/D/A/C order, then XORed with the K04 mask; both orders produced zero matches. For PS-0417, the A/B/C/D component is `F8DD126A5AD7D397645EB28C0C814A5E` (SHA-256 `eef469494783b5278d225329f5c584e220af5387c281601de74c98288378d31e`); B/D/A/C is `5AD7D3970C814A5EF8DD126A645EB28C` (SHA-256 `fb324325f058f623ad608d328ede136568ba94d65863b65df763932679df72fe`). Their masked payload predictions are `7D8BDAA13B97746EC14C884B5B9AA442` and `DF811B5C6DC1EDA75DCF28AD33455C90`, respectively; neither equals selected ACK2. The reproducer prints the exact permit IDs for both orders.
 
 ## Conclusion and limits
 
