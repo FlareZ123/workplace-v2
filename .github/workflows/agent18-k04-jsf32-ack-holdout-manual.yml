@@ -1,0 +1,15 @@
+name: Agent18 K04 JSF32 simultaneous late ACK source challenge
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  jsf32-late-wholepacket:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned SMT library
+        run: python -m pip install z3-solver==4.13.3.0
+      - name: Original source JSF32 hidden-state and 131/132 holdouts
+        run: python agents/agent18/k04_jsf32_dual_late_ack_sft.py
