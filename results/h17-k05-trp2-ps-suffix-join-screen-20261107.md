@@ -13,7 +13,7 @@ The official K05 selector yields four CRC-valid archive-latch control words with
 - The official `resources/work/recover_six.py` selects K05 from CRC-valid TRP2 records with node 49, event 82, timestamps in [2026-10-03 21:14:00, 21:14:08) UTC, choosing the greatest sequence per latch and concatenating latches 0–3.
 - That selector produces seq300, 301, 302, 303, all at 21:14:02 UTC with AUX=4318. The official script does not define a join to printer job IDs.
 - The spool reconstruction contains PS-261003-0300 through PS-261003-0303. Their logged job times are 07:00, 07:05, 07:10, and 07:15 UTC, approximately fourteen hours before the TRP2 latch event. The suffix overlap is therefore not a temporal join.
-- HST4 PV seq100–103 also align arithmetically with these four spool suffixes under the proposed +200 offset. The HST4 export documentation does not define that offset as a per-record foreign key, and the official six-component reproducer uses HST4 DIAG_WORD rows for K02, not PV rows for a printer selector.
+- HST4 PV seq100–103 also align arithmetically with these four spool suffixes under the proposed +200 offset. The HST4 export documentation does not define that offset as a per-record foreign key; it says `revision` is scoped to `(tag, field, seq)`, does not define `seq` as a global job identifier, and describes PV values/units as historian context rather than raw diagnostic words. The official six-component reproducer uses HST4 DIAG_WORD rows for K02, not PV rows for a printer selector.
 
 ## Method
 
