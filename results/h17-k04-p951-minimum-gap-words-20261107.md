@@ -26,7 +26,7 @@ The search checked every subset of sizes 1–7 (16,383 subsets total) and every 
 
 ## Result
 
-<badge color="success">Unique minimum: 8 full words</badge>
+**Unique minimum: 8 full words.**
 
 The unique smallest subset that makes all 128 target bits observable is:
 
