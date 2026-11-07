@@ -64,13 +64,13 @@ _CATEGORY_TOKENS = {
     ),
 }
 _CATEGORY_EXTENSIONS = {
-    "printer": {".spl", ".shd", ".evtx"},
+    "printer": {".spl", ".shd", ".prn", ".evtx"},
     "mail": {".pst", ".ost", ".nst", ".msg", ".eml", ".mbox"},
-    "notes": {".one", ".onecache"},
-    "photo_caption": {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".heic", ".webp", ".xmp"},
-    "profile_metadata": {".dat", ".edb", ".sqlite", ".db", ".automaticdestinations-ms", ".customdestinations-ms"},
+    "notes": {".one", ".onecache", ".onepkg", ".snt"},
+    "photo_caption": {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".heic", ".heif", ".webp", ".bmp", ".gif", ".psd", ".xmp", ".cr2", ".nef", ".arw", ".dng", ".orf", ".raf", ".rw2"},
+    "profile_metadata": {".dat", ".edb", ".sqlite", ".db", ".reg", ".automaticdestinations-ms", ".customdestinations-ms"},
     "transfer_archive": {".zip", ".7z", ".tar", ".gz", ".vhd", ".vhdx", ".wim", ".img", ".raw"},
-    "office_document": {".xls", ".xlsx", ".xlsm", ".doc", ".docx", ".ppt", ".pptx", ".pdf", ".html", ".htm", ".txt"},
+    "office_document": {".xls", ".xlsx", ".xlsm", ".xlsb", ".doc", ".docx", ".asd", ".wbk", ".ppt", ".pptx", ".pdf", ".html", ".htm", ".mht", ".mhtml", ".rtf", ".csv", ".md", ".txt"},
 }
 
 
