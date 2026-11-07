@@ -13,6 +13,7 @@ The unencrypted print-fleet note maps PS-261003-0417 to ESC-N, L-29/N, account/r
 Request, if retained:
 - The original 16-byte physical coupon and its custody/return-binder record.
 - The original ST-112 R3/POSTED/A3 docket and complete signed North L-29/N binder page, front and back, including attachments, serials, ticket references, signatures and custody marks. Preserve any carbonless underlay or transfer sheet if present. Keep the separate R4/HELD/A4 duplicate as a comparison object, not the selected original.
+- For the ST-112 catch-cleaning work, preserve any item or record removed/retained during the work (found-item pouch, print strip, label, catch-bin material, return bag, or attached note) and the associated work record. Ask the custodian to state what physical part "catch" denotes in this ticket and whether any coupon or printed material was recovered; do not assume that it was.
 - The original printer-side job object for PS-261003-0417, including every attempt, raw .SPL/.SHD files, metadata, spool journal and PrintService event records around 3 October 2026 18:02 UTC.
 - The original FA-17 property/renewal ledger and the September cassette-return index, preserving native workbook formulas, hidden sheets, comments, file metadata and attachments.
 - Any independent host inventory, desktop queue record or retention/snapshot record that identifies which machine actually queued this job.
