@@ -71,14 +71,20 @@ def spool_rows(text: str) -> list[dict[str, Any]]:
     return rows
 
 
-def select_printer_route(labels_text: str) -> tuple[str, str, date]:
+def select_printer_route(labels_text: str, routing_text: str) -> tuple[str, str, date]:
     labels = configparser.ConfigParser()
     labels.read_string(labels_text)
+    routing = json.loads(routing_text)
     archive_id = labels.get("archive", "object")
     id_match = re.fullmatch(r"IR-(\d{6})-H17", archive_id)
-    if not id_match:
-        raise ValueError(f"Unrecognized archive object ID: {archive_id}")
+    envelope_match = re.fullmatch(r"H17-IR-(\d{6})", routing["envelope_id"])
+    if not id_match or not envelope_match:
+        raise ValueError(f"Unrecognized archive/envelope ID: {archive_id} / {routing['envelope_id']}")
     archive_date = datetime.strptime("20" + id_match.group(1), "%Y%m%d").date()
+    envelope_date = datetime.strptime("20" + envelope_match.group(1), "%Y%m%d").date()
+    incident_dates = {datetime.fromisoformat(routing[slot]["start_utc"]).date() for slot in ("K02", "K05")}
+    if len(incident_dates) != 1 or archive_date != envelope_date or archive_date not in incident_dates:
+        raise ValueError(f"Archive/envelope IDs do not agree with incident-day windows: {archive_date}, {envelope_date}, {incident_dates}")
     matches = []
     for section in labels.sections():
         match = re.fullmatch(r"printer_routes_(\d{4}-\d{2}-\d{2})_to_(\d{4}-\d{2}-\d{2})", section)
@@ -90,10 +96,20 @@ def select_printer_route(labels_text: str) -> tuple[str, str, date]:
     return section, labels.get(section, "ESC-N"), archive_date
 
 
-def select_k04(spool: str, labels_text: str | None = None) -> dict[str, Any]:
+def route_rejected(labels_text: str, routing_text: str) -> bool:
+    try:
+        select_printer_route(labels_text, routing_text)
+    except ValueError:
+        return True
+    return False
+
+
+def select_k04(spool: str, labels_text: str | None = None, routing_text: str | None = None) -> dict[str, Any]:
     if labels_text is None:
         labels_text = (EVIDENCE / "archive-labels.ini").read_text()
-    section, job, archive_date = select_printer_route(labels_text)
+    if routing_text is None:
+        routing_text = (EVIDENCE / "recovery-routing.json").read_text()
+    section, job, archive_date = select_printer_route(labels_text, routing_text)
     candidates = [r for r in spool_rows(spool) if r["job"] == job
                   and r["class"] == "RECOVER" and r["state"] == "ACK"]
     selected = max(candidates, key=lambda r: (r["attempt"], r["timestamp"]))
@@ -164,6 +180,8 @@ def run() -> dict[str, Any]:
     register_later_draft = register.replace("2026-10-02", "2099-10-02")
     labels_path = EVIDENCE / "archive-labels.ini"
     labels_text = labels_path.read_text()
+    routing_path = EVIDENCE / "recovery-routing.json"
+    routing_text = routing_path.read_text()
     labels = configparser.ConfigParser()
     labels.read_string(labels_text)
     reordered = io.StringIO()
@@ -173,9 +191,12 @@ def run() -> dict[str, Any]:
             reordered.write(f"{key}={value}\n")
         reordered.write("\n")
     august_labels = labels_text.replace("IR-261003-H17", "IR-260831-H17")
+    august_routing = routing_text.replace("H17-IR-261003", "H17-IR-260831").replace("2026-10-03", "2026-08-31")
+    mismatch_routing = routing_text.replace("H17-IR-261003", "H17-IR-260831")
     tests = {
-        "K04_route_uses_archive_date_not_section_order": select_k04(spool, reordered.getvalue())["job"] == "PS-261003-0417",
-        "K04_archive_date_selects_matching_historical_route": select_printer_route(august_labels)[1] == "PS-260831-0091",
+        "K04_route_uses_incident_date_not_section_order": select_k04(spool, reordered.getvalue(), routing_text)["job"] == "PS-261003-0417",
+        "K04_archive_date_selects_matching_historical_route": select_printer_route(august_labels, august_routing)[1] == "PS-260831-0091",
+        "K04_archive_envelope_and_incident_dates_must_agree": route_rejected( labels_text, mismatch_routing),
         "K04_selection_survives_damaged_payload": select_k04(damaged)["attempt"] == 2,
         "K04_selection_survives_omitted_payload": select_k04(omitted)["attempt"] == 2,
         "K06_issue_authority_beats_later_draft": selected_k06 == "C",
