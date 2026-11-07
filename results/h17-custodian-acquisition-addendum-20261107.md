@@ -58,6 +58,8 @@ The surviving retired-office bookmarks identify these missing local paths:
 
 Request authorized preserved copies with original paths, timestamps, hashes, native metadata, sidecars and attachments. These bookmarks are source locators; they do not establish that the files contain K04/K08 values or identify the historical print host. If an offline 2026 workstation/profile image survives, preserve the whole image and the user-profile hives separately. Use the original desktop-move calendar and independent host records to map the profile and print queue; do not infer a host from withdrawn PDF content.
 
+Also request the original asset-register entries and model/serial/configuration records for the three locally evidenced account references FA-17, LV-42 and ST-09. Ask the custodian to map ESC-N, ESC-S and WATCH-SPARE to the actual physical printers, cassette sets, queues and storage devices, and to state which identifiers are accounts versus physical asset IDs. This is needed to determine whether the South and Watch-Spare packets are valid hardware controls for the FA-17 device-local saved-job question; do not assume that they are the same model or host.
+
 ## Preservation requirements
 
 For every returned object, preserve original bytes, source path, owner/custodian, transfer time, file metadata, hashes, page labels, sidecars and chain-of-custody records. Keep original objects distinct from export/reconstruction copies. Do not modify the acceptance files, the supplied encrypted PDF, or the recovered source evidence.
