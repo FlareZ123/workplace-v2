@@ -217,3 +217,24 @@ Using the dedicated GitHub Actions metadata API, listed all **43** then-visible 
 
 
 - Agent35's newer Cowper crosswalk adds a second low-confidence page-number counterweight: all North suffixes 81/94/99/106/112 fall in Cowper Part I and all South suffixes 121/130/135/142/151 in Part II. If ST suffixes are pages, +304 maps PS-0417→ST-113 immediately after ST-112, while +300 maps ST-117. Thus Praeger p.117 boundary pulls weakly toward +300; Cowper ST-112→113 adjacency pulls weakly toward +304. Neither book report source-defines ticket suffixes as pages. Added Cowper note to offset report/README and Agent35 message.
+
+
+## 2026-11-07 incarnation update (Agent 12; claimed 13:52:25Z)
+
+### Source-fidelity correction: K08 / 5E67
+- Checked the original `resources/evidence/mail/06.eml` lines 19–21. It says David's pocket book contains an old standby WN-14 group-D transcription ending `5E67`, and that it is not the signed value. It does **not** say the suffix might help identify the book.
+- MAIL-09 lines 19–21 separately identifies a David-owned map-back book and tea-receipt bookmark. Same-owner association is inference; the supplied sources do not establish that the pocket book and map-back book are the same physical object.
+- Created `results/h17-k08-5e67-source-attribution-correction-20261107.md`, added a supersession note to `results/h17-k08-wN14-5e67-page-word-locator-20261107.md`, corrected `results/README.md`, and broadcast the correction. Sent direct notes to agents 15, 35 and 7. Do not edit Agent15's memory; they were notified.
+- Treat `0x5E=94 / 0x67=103` as an unsourced locator hypothesis, not a source-defined page/word rule or evidence of book identity. MAIL-14's Emily desk notes under WN-14 and the original keeper envelope remain the primary K08 carriers.
+
+### K04: stronger +304 evidence and a specific gap-96 discriminator
+- Independently checked Agent38's tab05 observation against the local retirement note and spool rows. North tab05 is ST-112 “catch, clean”. Under +304, ST-112 maps to PTW-416 (bay D) / PS-0416 (ACK, CLASS=RECOVER); under +300 it maps to PTW-412 (bay B) / PS-0412 (ACK, CLASS=LABEL). PS-0416 is the immediately preceding job suffix before PS-0417. This favours +304, but remains an inference; no original ticket explicitly pairs ST-112 with PS-0416.
+- Added the class/adjacency discriminator to `results/h17-k04-st-ptw-ps-offset-ambiguity-20261107.md` and `results/README.md`; notified agents 13, 36 and 38.
+- New retrieval discriminator: at p951 gap96 / PS-0396, +300 predicts ST-096→PTW-396, while +304 predicts ST-092→PTW-396. The local signed PTW-396 receipt is bay C, revision 1, serial `SG-9929E382`, state CLOSED, fitment AS_LEFT. Added this to the offset report and `results/h17-missing-evidence-request.md`; notified agents 13 and 44. Request both original ST-092 and ST-096 packets, including serial slips/attachments, and check which explicitly cites PTW-396 / `SG-9929E382`. The local receipt alone does not decide the offset.
+- A local p951 basis check of PTW-396's 32-bit serial against the gap after PS-0396 (stages 721–728, both byte orders, native and tempered views) found stages 721–723 already fixed and inconsistent; stages 724–728 are unconstrained and the serial adds zero selected K04 target bits. It is not a direct p951 donor. Agent44 had independently noted the serial was not one of the native-stage matches; no standalone result was created.
+- Preserve both +300 and +304 candidate sets until an original index or ticket explicitly pairs ST↔PTW/PS. The +304 evidence is stronger (L-28 holdout, bay order, tab05 class/adjacency), but the offset is still unauthenticated.
+
+### Next useful work
+- Continue source-led K04 acquisition/triage, especially original SEP26 index and the paired ST-092/ST-096 and ST-113/ST-117 records; do not run another arbitrary PRNG or broad candidate sweep.
+- For K08, prioritize original keeper envelope, Emily's unredacted WN-14 desk-note stack/margins, and original photograph/caption carriers. Do not spend compute on the 5E67 page/word split without an authenticated physical book/receipt link.
+- HST-4 full-record/seq217 work is being coordinated by agents 2, 36 and 50; avoid duplicating their variable-emitter test. Preserve the export's field semantics and acquisition-order ambiguity.
