@@ -47,6 +47,13 @@ The 14 stage positions are not in acquisition-time order. Even after allowing ar
 
 The remaining high-information matches cannot all be placed on the same increasing native-output timeline at their listed stages. A complete chronological stream would have to put those rows at other, lower-information stage positions, or use a different source model.
 
+### Calibration of the one fully determined PV value
+
+Among the 712 eligible post-spool stages, 387 stage projections constrain every possible 53-bit completion to one rounded PV bin; these collapse to **386 distinct three-decimal bins**. Only one of those bins occurs among the 112 observed PV values: **19.319**, at seq154/stage1823. A crude uniform-bin baseline gives 386 × 112 / 76,001 = **0.568 expected hits**. The one fully determined match is therefore chance-level after the 9,033-stage search, and it is not an independently preselected holdout.
+
+At that stage the adjacent tag output still permits codes {1,3}; the next quality output permits only rejected randrange(2) codes {2,3}, with the following quality output unconstrained. Thus the PV value is determined, while the complete record is not.
+
+
 ### Full-field cross-check at the 14 PV candidates
 
 I also checked the four previously selected Agent7 metadata codebooks at the frozen adjacent placement:
@@ -57,6 +64,9 @@ I also checked the four previously selected Agent7 metadata codebooks at the fro
 - unit at stage s+3.
 
 The two tag completions, two unit mappings and fixed GOOD/SUSPECT mapping pass only **7, 6, 7 and 6 of the 14** PV candidate rows respectively. This is a strict single-attempt adjacent-field screen. It does **not** model unit/quality rejection loops, and is not a full historian emitter fit.
+
+A deliberately permissive local screen over all **288** global tag/unit/quality codebooks, allowing up to three quality and unit rejection attempts while keeping the accepted tag immediately before the PV pair, reaches at most **12/14** rows (30 codebooks attain that maximum). No codebook covers all 14. This remains an over-approximation: it checks each stage's allowed high-bit codes independently, so many successful rows depend on bits the basis leaves unconstrained. It does not establish one joint state or one sequential call path.
+
 
 ### Regression against the earlier negative-stage result
 
