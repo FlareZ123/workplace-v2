@@ -16,7 +16,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "eb0e3b605dba0036f6c23cf8cdeb431eeeecb1fc97372354248a0cc91ae8fbb8",
+      "sha256": "3d8d1608389c3f04cca0b83dc75f1acd8ab1c104196b7c7ba3d832a2d404adc4",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -26,7 +26,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "2baa5ff4d63dae881e703c182e8dbfcbd55416c13341cd32c71d257f7bdfcbe4",
+      "sha256": "b3860f70715c37187d3c1971addb908485a4f1d977e9989e3b5f2525a278360c",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -36,7 +36,7 @@
       "error": "HTTP Error 429: Too Many Requests",
       "content_type": "application/json",
       "bytes": 1306,
-      "sha256": "61cd492d50141b07007cf1cab938c84ab6ec27b1cca7b8e9e07f84f3f788d41a",
+      "sha256": "dc96de5758827382dd9fb4c6afb8b119e87e0121fbb247b2bc132c106a7db780",
       "body_prefix": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n    \"errors\": [\n      {\n        \"message\": \"Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'books.googleapis.com' for consumer 'project_number:624717413613'.\",\n        \"domain\": \"global\",\n        \"reason\": \"rateLimitExceeded\"\n      }\n    ],\n    \"status\": \"RESOURCE_EXH"
     },
     {
@@ -45,12 +45,12 @@
       "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22The+Coasts+of+Essex+and+Suffolk%22+AND+creator%3A%22Frank+Cowper%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
       "status": 200,
       "content_type": "application/json",
-      "bytes": 376,
-      "sha256": "3296142d94b7be905d9bdc42ccc832be2002d0187c828652a3e018c495ef58bb",
+      "bytes": 375,
+      "sha256": "57d716f2db3a2552d6384d89c195d3daa6f71529472a1de9b50c57c9c29664a4",
       "json": {
         "responseHeader": {
           "status": 0,
-          "QTime": 160,
+          "QTime": 20,
           "params": {
             "query": "title:&quot;The Coasts of Essex and Suffolk&quot; AND creator:&quot;Frank Cowper&quot;",
             "qin": "title:&quot;The Coasts of Essex and Suffolk&quot; AND creator:&quot;Frank Cowper&quot;",
@@ -76,11 +76,11 @@
       "status": 200,
       "content_type": "application/json",
       "bytes": 339,
-      "sha256": "680c829b7288ae2cc6b9c067c221d71119dee897985458cac3b293237102ed6d",
+      "sha256": "b5568b39f225015d3b98d7506f2e765c7bdbb91d529c2b216f4778f865389b30",
       "json": {
         "responseHeader": {
           "status": 0,
-          "QTime": 56,
+          "QTime": 72,
           "params": {
             "query": "title:&quot;Sailing Tours&quot; AND creator:&quot;Frank Cowper&quot;",
             "qin": "title:&quot;Sailing Tours&quot; AND creator:&quot;Frank Cowper&quot;",
@@ -105,12 +105,12 @@
       "final_url": "https://archive.org/advancedsearch.php?q=title%3A%22The+Coasts+of+Essex+and+Suffolk%22&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
       "status": 200,
       "content_type": "application/json",
-      "bytes": 301,
-      "sha256": "fa50c7668323567a4b03058ebe2f3632a5e698005f6219d8bdceac9b24faec13",
+      "bytes": 302,
+      "sha256": "88c5d1d58e9f4510d492cfeaa37d2b78f63a7fee1fd3b7894e827553f4248db5",
       "json": {
         "responseHeader": {
           "status": 0,
-          "QTime": 22,
+          "QTime": 153,
           "params": {
             "query": "title:&quot;The Coasts of Essex and Suffolk&quot;",
             "qin": "title:&quot;The Coasts of Essex and Suffolk&quot;",
@@ -136,11 +136,11 @@
       "status": 200,
       "content_type": "application/json",
       "bytes": 775,
-      "sha256": "afcca8372d262eb282fc381911f07982df5e830696f49a1ecc7138b669c15e4d",
+      "sha256": "366a23080a39854ac2544bcedf99f705451ad815cf4c8e2d78269a65293181bb",
       "json": {
         "responseHeader": {
           "status": 0,
-          "QTime": 68,
+          "QTime": 29,
           "params": {
             "query": "title:&quot;Sailing Tours&quot;",
             "qin": "title:&quot;Sailing Tours&quot;",
@@ -155,18 +155,18 @@
           "start": 0,
           "docs": [
             {
-              "creator": "Cowper, Frank, 1849-1930",
-              "date": "1985-01-01T00:00:00Z",
-              "identifier": "sailingtoursyach0000cowp",
-              "mediatype": "texts",
-              "title": "Sailing tours : the yachtsman's guide to the cruising waters of the English and adjacent coasts"
-            },
-            {
               "creator": "NeoplanDude",
               "date": "2016-09-25T00:00:00Z",
               "identifier": "ytdown.com-you-tube-neoplan-dude-following-smooth-sailing-tou-media-kq-e-47-bf-lnlo-001-1080p",
               "mediatype": "movies",
               "title": "NeoplanDude | Following Smooth Sailing Tours 1980s MCI MC9 On The Belt Parkway!"
+            },
+            {
+              "creator": "Cowper, Frank, 1849-1930",
+              "date": "1985-01-01T00:00:00Z",
+              "identifier": "sailingtoursyach0000cowp",
+              "mediatype": "texts",
+              "title": "Sailing tours : the yachtsman's guide to the cruising waters of the English and adjacent coasts"
             }
           ]
         }
@@ -180,12 +180,12 @@
       "final_url": "https://archive.org/advancedsearch.php?q=creator%3A%22Frank+Cowper%22+AND+mediatype%3Atexts&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=date&fl%5B%5D=mediatype&rows=100&page=1&output=json",
       "status": 200,
       "content_type": "application/json",
-      "bytes": 463,
-      "sha256": "73188e2ac8a370858d4f07f825b5352a60e4185994ff95794e495878a8fae690",
+      "bytes": 462,
+      "sha256": "c306692f97745538cc3638bb43b0fd36c229487c8ac49a7563c6ea3839206db7",
       "json": {
         "responseHeader": {
           "status": 0,
-          "QTime": 273,
+          "QTime": 41,
           "params": {
             "query": "creator:&quot;Frank Cowper&quot; AND mediatype:texts",
             "qin": "creator:&quot;Frank Cowper&quot; AND mediatype:texts",
@@ -570,8 +570,547 @@
       "error": "HTTP Error 403: Forbidden",
       "content_type": "text/html",
       "bytes": 5636,
-      "sha256": "bd9eba98c9d5206bd9a1ed4a985b91865d11514bf77d49758ea86c320f6f0ccb",
-      "body_prefix": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta http-equiv=\"content-security-policy\" content=\"default-src &#39;none&#39;; script-src &#39;nonce-8Z0YBKo2HZKMk96vD7hYOt&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-s"
+      "sha256": "0c9846486010bac19d4aaacce2172b70a65ab1181cd2846160f4e1da76310ceb",
+      "body_prefix": "<!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta http-equiv=\"content-security-policy\" content=\"default-src &#39;none&#39;; script-src &#39;nonce-dI7u4VDoDiPSTkOefZO86l&#39; &#39;unsafe-eval&#39; https://challenges.cloudflare.com; script-s"
+    },
+    {
+      "label": "Internet Archive metadata for Cowper Sailing Tours candidate",
+      "requested_url": "https://archive.org/metadata/sailingtoursyach0000cowp",
+      "final_url": "https://archive.org/metadata/sailingtoursyach0000cowp",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 13419,
+      "sha256": "e14297fadb335c596554b1abe46fde721452deeb8b9dc249d09c87de0a7ee4b9",
+      "json": {
+        "alternate_locations": {
+          "servers": [
+            {
+              "server": "dn720004.ca.archive.org",
+              "dir": "/0/items/sailingtoursyach0000cowp"
+            },
+            {
+              "server": "dn760105.eu.archive.org",
+              "dir": "/0/items/sailingtoursyach0000cowp"
+            }
+          ],
+          "workable": [
+            {
+              "server": "dn720004.ca.archive.org",
+              "dir": "/0/items/sailingtoursyach0000cowp"
+            },
+            {
+              "server": "dn760105.eu.archive.org",
+              "dir": "/0/items/sailingtoursyach0000cowp"
+            }
+          ]
+        },
+        "created": 1794046055,
+        "d1": "ia600503.us.archive.org",
+        "d2": "ia800503.us.archive.org",
+        "dir": "/1/items/sailingtoursyach0000cowp",
+        "files": [
+          {
+            "name": "__ia_thumb.jpg",
+            "source": "original",
+            "mtime": "1655507150",
+            "size": "13869",
+            "md5": "4fd674ebfb72a02909a98dbedd4efb8f",
+            "crc32": "ade3187c",
+            "sha1": "c8ae0eb5f6db8ff61bc361f7e8c04fe9f3fc282c",
+            "format": "Item Tile",
+            "rotation": "0"
+          },
+          {
+            "name": "history/files/sailingtoursyach0000cowp_preimage.zip.~1~",
+            "source": "original",
+            "mtime": "1645632648",
+            "size": "933010330",
+            "md5": "6d34afb82153b14d26c9b6fcba24c84f",
+            "crc32": "a8237a21",
+            "sha1": "bcaee087f94b3f2202366af52269c475313f416b",
+            "format": "TTScribe Preimage ZIP",
+            "private": "true",
+            "old_version": "true"
+          },
+          {
+            "name": "logs/sailingtoursyach0000cowp_iabdash_2022-02-2400:11:07.log",
+            "source": "original",
+            "mtime": "1645632672",
+            "size": "1357",
+            "md5": "f01344ef61749668d2ea734d5ee21087",
+            "crc32": "e21eb21a",
+            "sha1": "e6307cc4871a6c47e5355ee36de3df18ffc3aa54",
+            "format": "Log",
+            "private": "true"
+          },
+          {
+            "name": "logs/sailingtoursyach0000cowp_iabdash_2022-02-2400:11:38.log",
+            "source": "original",
+            "mtime": "1645632705",
+            "size": "1357",
+            "md5": "f01344ef61749668d2ea734d5ee21087",
+            "crc32": "e21eb21a",
+            "sha1": "e6307cc4871a6c47e5355ee36de3df18ffc3aa54",
+            "format": "Log",
+            "private": "true"
+          },
+          {
+            "name": "logs/sailingtoursyach0000cowp_scanning_2022-02-2400:11:24.log",
+            "source": "original",
+            "mtime": "1645632689",
+            "size": "2259234",
+            "md5": "0c1c1c47cd77f89385889e6afd251dde",
+            "crc32": "26a5cd09",
+            "sha1": "15498cd46204bfb92b773070c263927c5b9048b7",
+            "format": "Log",
+            "private": "true"
+          },
+          {
+            "name": "logs/sailingtoursyach0000cowp_scanning_2022-02-2400:11:58.log",
+            "source": "original",
+            "mtime": "1645632737",
+            "size": "2262130",
+            "md5": "81b7fff06e939edb244d5b20b5afafcf",
+            "crc32": "b349872f",
+            "sha1": "b9998738eac4ee98cc0b0c251c15562d6f24f32a",
+            "format": "Log",
+            "private": "true"
+          },
+          {
+            "name": "logs/sailingtoursyach0000cowp_status_history_2022-02-2400:11:18.log",
+            "source": "original",
+            "mtime": "1645632682",
+            "size": "596",
+            "md5": "195bc36e4f1102e953b6dc3813d0c5b6",
+            "crc32": "bd2e0723",
+            "sha1": "41079db820da96992f4646534cf8d6d7ff9a0a44",
+            "format": "Log",
+            "private": "true"
+          },
+          {
+            "name": "logs/sailingtoursyach0000cowp_status_history_2022-02-2400:11:49.log",
+            "source": "original",
+            "mtime": "1645632716",
+            "size": "624",
+            "md5": "7a178a53a5e00f7378829a055da1d04b",
+            "crc32": "76697394",
+            "sha1": "6602c75f359c46cabae7ead742da871633732cd4",
+            "format": "Log",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp.epub",
+            "source": "derivative",
+            "hocr_epub_module_version": "0.0.1",
+            "hocr_epub_hocr_version": "1.1.66",
+            "format": "EPUB",
+            "original": "sailingtoursyach0000cowp_hocr.html",
+            "mtime": "1753994730",
+            "size": "1665351",
+            "private": "true",
+            "md5": "6b3585907c41ff1bd8752ab3df227852",
+            "crc32": "67d3c1a0",
+            "sha1": "298410268d6c4972d27778a97fcb980896ad0093"
+          },
+          {
+            "name": "sailingtoursyach0000cowp.lcpdf",
+            "source": "derivative",
+            "format": "LCP Encrypted PDF",
+            "original": "sailingtoursyach0000cowp.pdf",
+            "mtime": "1753994578",
+            "size": "22896249",
+            "md5": "c23866f0be1e69587e8e92b87a2cdd4a",
+            "crc32": "2d104e2f",
+            "sha1": "3f09357e0433d4ba933412a577ae6bedcb44e455"
+          },
+          {
+            "name": "sailingtoursyach0000cowp.pdf",
+            "source": "derivative",
+            "format": "Text PDF",
+            "original": "sailingtoursyach0000cowp_page_numbers.json",
+            "mtime": "1722649166",
+            "size": "22367352",
+            "md5": "6ba100725e5ddf659d0ead8b9d8ccfad",
+            "crc32": "976edeef",
+            "sha1": "4ed2bdbce0055f3a64cb4f26cbc48e7cd57e90a2",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_chocr.html.gz",
+            "source": "derivative",
+            "ocr": "tesseract 5.0.0-1-g862e",
+            "ocr_parameters": "-l eng",
+            "ocr_module_version": "0.0.15",
+            "ocr_detected_script": "Latin",
+            "ocr_detected_script_conf": "0.9381",
+            "ocr_detected_lang": "en",
+            "ocr_detected_lang_conf": "1.0000",
+            "format": "chOCR",
+            "original": "sailingtoursyach0000cowp_jp2.zip",
+            "mtime": "1646318165",
+            "size": "12310337",
+            "md5": "740a5b552244d0a7a8fd6fea34a0983b",
+            "crc32": "3bf511b9",
+            "sha1": "cb7aa676be7a81fb67f2ee2da94247c8844977f1",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_cloth_detection.log",
+            "source": "derivative",
+            "cloth_cover_detection_module_version": "1.2",
+            "format": "Cloth Cover Detection Log",
+            "original": "sailingtoursyach0000cowp_scandata.xml",
+            "mtime": "1671159931",
+            "size": "789",
+            "md5": "4666f2fc1918899f9218ffcc77e8292f",
+            "crc32": "c9e2d48a",
+            "sha1": "10c1d6feafdf954f6ee4a11a6908e2fe3588dd1d",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_dc.xml",
+            "source": "original",
+            "format": "Dublin Core",
+            "mtime": "1646310609",
+            "size": "1034",
+            "md5": "4073922edaa5dc5d66a458346c30cef4",
+            "crc32": "2c469dde",
+            "sha1": "4a5bf0179b56266450868a79083c6273abba9fe3"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_djvu.txt",
+            "source": "derivative",
+            "format": "DjVuTXT",
+            "original": "sailingtoursyach0000cowp_djvu.xml",
+            "mtime": "1646318317",
+            "size": "882611",
+            "md5": "ec884d67f989a88211c3d788ea637401",
+            "crc32": "71960b98",
+            "sha1": "662c3479529290fa44430f7dc215c51b309e1dcc",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_djvu.xml",
+            "source": "derivative",
+            "format": "Djvu XML",
+            "original": "sailingtoursyach0000cowp_hocr.html",
+            "mtime": "1646318240",
+            "size": "12156285",
+            "md5": "5f8460b9f52e1749355de0f79729546a",
+            "crc32": "a8205189",
+            "sha1": "b1443276398e68dd34fa90eec4d063282ab4657e",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_encrypted.pdf",
+            "source": "derivative",
+            "format": "ACS Encrypted PDF",
+            "original": "sailingtoursyach0000cowp.pdf",
+            "mtime": "1722650221",
+            "size": "22237173",
+            "md5": "4139e5070ae0451e1c6192b971b490c5",
+            "crc32": "1c5746b9",
+            "sha1": "19ea790fd648db603595df55c1bc4a0a67da9859"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_events.json",
+            "source": "original",
+            "mtime": "1646297241",
+            "size": "58",
+            "md5": "25d7bc984d9f70c808b723eda5677fcc",
+            "crc32": "d39e2030",
+            "sha1": "a022ba05aa603e2880d6a7dcbb844b2c3ed6cf82",
+            "format": "JSON",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_files.xml",
+            "source": "original",
+            "format": "Metadata",
+            "md5": "f7ba04ac209cdc2477de97112279b746",
+            "summation": "md5"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_hocr.html",
+            "source": "derivative",
+            "hocr_char_to_word_module_version": "1.0.0",
+            "hocr_char_to_word_hocr_version": "1.1.2",
+            "ocr_parameters": "-l eng",
+            "ocr_module_version": "0.0.15",
+            "ocr_detected_script": "Latin",
+            "ocr_detected_script_conf": "0.9381",
+            "ocr_detected_lang": "en",
+            "ocr_detected_lang_conf": "1.0000",
+            "format": "hOCR",
+            "original": "sailingtoursyach0000cowp_chocr.html.gz",
+            "mtime": "1646318215",
+            "size": "22710330",
+            "md5": "da655d2bf0ec4805dc4c697c9be6b91c",
+            "crc32": "40cc4daa",
+            "sha1": "366a986954827b3a83246b2f52392742b2c6ae97",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_hocr_pageindex.json.gz",
+            "source": "derivative",
+            "hocr_pageindex_module_version": "1.0.0",
+            "hocr_pageindex_hocr_version": "1.1.15",
+            "format": "OCR Page Index",
+            "original": "sailingtoursyach0000cowp_hocr.html",
+            "mtime": "1646318261",
+            "size": "6122",
+            "md5": "f420f496af0ee90e3b9779b111fe966e",
+            "crc32": "4b9df6c0",
+            "sha1": "9c225b8948c7d53241177fd726d8254185abdb80",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_hocr_searchtext.txt.gz",
+            "source": "derivative",
+            "hocr_fts_text_module_version": "1.1.0",
+            "hocr_fts_text_hocr_version": "1.1.15",
+            "word_conf_0_10": "1376",
+            "word_conf_11_20": "629",
+            "word_conf_21_30": "722",
+            "word_conf_31_40": "847",
+            "word_conf_41_50": "707",
+            "word_conf_51_60": "730",
+            "word_conf_61_70": "759",
+            "word_conf_71_80": "1250",
+            "word_conf_81_90": "5777",
+            "word_conf_91_100": "143196",
+            "format": "OCR Search Text",
+            "original": "sailingtoursyach0000cowp_hocr.html",
+            "mtime": "1646318298",
+            "size": "311330",
+            "md5": "c61fd3d3f024b1320f14674b8c0267de",
+            "crc32": "caa21cd3",
+            "sha1": "f692ea9d0a016d3e68b59556dcccb0bb4bada118",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_jp2.zip",
+            "source": "derivative",
+            "format": "Single Page Processed JP2 ZIP",
+            "original": "sailingtoursyach0000cowp_orig_jp2.tar",
+            "mtime": "1646316126",
+            "size": "197542946",
+            "md5": "b2d38fac0097915068cce9a541a1fa53",
+            "crc32": "51104f2c",
+            "sha1": "b5abf72e68f311a6f970ea6a65c0c3ae3766e245",
+            "private": "true",
+            "filecount": "518"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_lcp.epub",
+            "source": "derivative",
+            "format": "LCP Encrypted EPUB",
+            "original": "sailingtoursyach0000cowp.epub",
+            "mtime": "1753994921",
+            "size": "1693195",
+            "md5": "257011b431a7dee950d0070d16b92a30",
+            "crc32": "75d88436",
+            "sha1": "030cb2e2d0b0ff987472c572bebdb39a4ed15d71"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_marc.xml",
+            "source": "original",
+            "mtime": "1645632693",
+            "size": "5326",
+            "md5": "88893045652916561fe074cf0af8335f",
+            "crc32": "b343d8b8",
+            "sha1": "9451226a04630ec3e1f77d1dc8cb2efac79694ae",
+            "format": "MARC"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_meta.mrc",
+            "source": "original",
+            "mtime": "1645632687",
+            "size": "1742",
+            "md5": "d1211aab77202e2057e0c43b53e24f6f",
+            "crc32": "d0c81a38",
+            "sha1": "2efcb1cf31a8f4cb585d929cfade59caa09955b9",
+            "format": "MARC Binary"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_meta.sqlite",
+            "source": "original",
+            "mtime": "1646310533",
+            "size": "49152",
+            "md5": "2652fce0c6c073b72786bc4a54bfe439",
+            "crc32": "ae69909c",
+            "sha1": "5943cdbf527574b524a9f3e2cb20f7c71a88dffd",
+            "format": "Metadata"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_meta.xml",
+            "source": "original",
+            "mtime": "1753994921",
+            "size": "3267",
+            "md5": "0f3910ccce5bf2df00540ae384038708",
+            "crc32": "367cf5bf",
+            "sha1": "429560fbcf6c71a8d73ffc5796e50c2692eaded4",
+            "format": "Metadata"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_orig_jp2.tar",
+            "source": "original",
+            "mtime": "1646310531",
+            "size": "933201920",
+            "md5": "1b79067e9ac67509fdd55629d3030683",
+            "crc32": "0b98a227",
+            "sha1": "7a354d871bf84366a9dd33d43e072cd3836fd566",
+            "format": "Single Page Original JP2 Tar",
+            "private": "true",
+            "filecount": "518"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_page_numbers.json",
+            "source": "derivative",
+            "hocr_pagenumber_module_version": "1.0.5",
+            "hocr_pagenumber_hocr_version": "1.1.54",
+            "hocr_pagenumber_confidence": "92",
+            "format": "Page Numbers JSON",
+            "original": "sailingtoursyach0000cowp_hocr.html",
+            "mtime": "1722649148",
+            "size": "86927",
+            "md5": "885d8d3487c0ca42435564ba9f23ed54",
+            "crc32": "dd967595",
+            "sha1": "1d75b3d9c656bbc1a17ea8811b03f6131fcdc758",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_scandata.xml",
+            "source": "original",
+            "mtime": "1671159930",
+            "size": "566556",
+            "md5": "a2a69e0fe62f61434bfa7a00b48f0b71",
+            "crc32": "59c5c30e",
+            "sha1": "dbb770b48cec706b645bf6f0b0b5da6c7fb409d9",
+            "format": "Scandata"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_slip.png",
+            "source": "original",
+            "mtime": "1645582120",
+            "size": "46032",
+            "md5": "a03ceaae79df32fdfa689260dd1db0ac",
+            "crc32": "0fca4c3a",
+            "sha1": "eac8d428f12bcead0eacbd3b966205a416f1b501",
+            "format": "PNG",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_slip_thumb.jpg",
+            "source": "derivative",
+            "format": "JPEG Thumb",
+            "original": "sailingtoursyach0000cowp_slip.png",
+            "mtime": "1646310611",
+            "size": "8692",
+            "md5": "976852a861d5214d535aae09e736b50a",
+            "crc32": "a8eb3b90",
+            "sha1": "b9ef2ebff9f26a637a9cfe71ecd8724636655360",
+            "private": "true"
+          },
+          {
+            "name": "sailingtoursyach0000cowp_title_detection.log",
+            "source": "derivative",
+            "format": "Title Page Detection Log",
+            "original": "sailingtoursyach0000cowp_djvu.xml",
+            "mtime": "1671159770",
+            "size": "735",
+            "md5": "1c2cb450c756d1238570a5cb6f1dd617",
+            "crc32": "7036f08c",
+            "sha1": "af713abf6c264f99c78c60f736cbcfa87d8e9823",
+            "private": "true"
+          }
+        ],
+        "files_count": 34,
+        "item_last_updated": 1753994949,
+        "item_size": 2188301008,
+        "metadata": {
+          "identifier": "sailingtoursyach0000cowp",
+          "boxid": "IA40367707",
+          "camera": "Sony Alpha-A6300 (Control)",
+          "collection_set": "printdisabled",
+          "contributor": "Internet Archive",
+          "creator": "Cowper, Frank, 1849-1930",
+          "date": "1985",
+          "description": [
+            "xxxv, 406 pages : 23 cm",
+            "Facsim. of: ed. published London : L. Upcott Gill, 1895",
+            "Includes index"
+          ],
+          "isbn": [
+            "0907069207",
+            "9780907069201"
+          ],
+          "language": "eng",
+          "mediatype": "texts",
+          "old_pallet": "IA-NS-2000562",
+          "operator": "associate-marycris-avenido@archive.org",
+          "publisher": "Southampton : Ashford",
+          "rcs_key": "24143",
+          "repub_state": "19",
+          "scanner": "station26.cebu.archive.org",
+          "scanningcenter": "cebu",
+          "scribe3_search_catalog": "isbn",
+          "scribe3_search_id": "0907069207",
+          "subject": [
+            "Yachts and yachting -- Great Britain -- History -- 19th century",
+            "Great Britain",
+            "Great Britain Coastal waters Yachts Cruising ca 1890"
+          ],
+          "title": "Sailing tours : the yachtsman's guide to the cruising waters of the English and adjacent coasts",
+          "tts_version": "4.5-initial-80-gce32ee1e",
+          "uploader": "station26.cebu@archive.org",
+          "publicdate": "2022-02-23 02:09:15",
+          "access-restricted-item": "true",
+          "imagecount": "518",
+          "scandate": "20220223204009",
+          "ppi": "360",
+          "republisher_operator": "associate-jhelynmae-gabate@archive.org",
+          "republisher_date": "20220303164708",
+          "republisher_time": "889",
+          "foldoutcount": "0",
+          "identifier-access": "http://archive.org/details/sailingtoursyach0000cowp",
+          "identifier-ark": "ark:/13960/s2m02rcdwcs",
+          "bookplateleaf": "0004",
+          "ocr": "tesseract 5.0.0-1-g862e",
+          "ocr_parameters": "-l eng",
+          "ocr_module_version": "0.0.15",
+          "ocr_detected_script": "Latin",
+          "ocr_detected_script_conf": "0.9381",
+          "ocr_detected_lang": "en",
+          "ocr_detected_lang_conf": "1.0000",
+          "page_number_confidence": "92",
+          "pdf_module_version": "0.0.18",
+          "external-identifier": [
+            "urn:acs6:sailingtoursyach0000cowp:pdf:4a85fb17-e861-4a78-9c48-e571dce75ce6",
+            "urn:oclc:record:1330608870",
+            "urn:lcp:sailingtoursyach0000cowp:lcpdf:9ed4290c-cdfc-477a-9b84-a739b9d6f6f1",
+            "urn:lcp:sailingtoursyach0000cowp:epub:1d4b027d-4e0c-4687-925b-946d50d5a91b"
+          ],
+          "addeddate": "2022-03-03 16:12:32",
+          "scanfee": "0;1.00;200",
+          "invoice": "1652",
+          "sponsordate": "20220228",
+          "collection": [
+            "internetarchivebooks",
+            "inlibrary",
+            "printdisabled"
+          ],
+          "page_number_module_version": "1.0.5"
+        },
+        "server": "ia800503.us.archive.org",
+        "uniq": 1084832479,
+        "workable_servers": [
+          "ia800503.us.archive.org",
+          "ia600503.us.archive.org"
+        ]
+      },
+      "body_prefix": null,
+      "body_text": null
     }
   ],
   "limits": [
