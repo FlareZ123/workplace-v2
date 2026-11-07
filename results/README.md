@@ -287,3 +287,10 @@ The asset-annotated revision-1 B,D,A,C seal block and the alternative unannotate
 - MAIL-11 is dual-role: paragraph 1 carries the RC-17 revision-C issue receipt (K06), while paragraph 3 carries Emily's keeper-caption intent (K08). Preserve paragraph-level roles rather than classifying by the technical subject.
 - K04's selected PS-261003-0417 RECOVER/ACK attempt 2 remains selectable when its payload is damaged or omitted. Its ACK still proves dispatch only, not media integrity.
 - The documentary custody edges among the AX-7782 handoff print, ordinary records folder, WN-14 folder, and desk notes remain partial. No local source binds the FA-17 / ESC-N / L-29-N / A3 coupon to that folder chain; keep the coupon, envelope, handoff print, and AX-7782 data object distinct absent an explicit join.
+
+### 7 Nov: bounded K08 compact source-role beam
+
+- [Experiment report](h17-k08-compact-source-beam-20261107.md) and [machine-readable output](h17-k08-compact-source-beam-20261107.json) preserve a four-candidate deterministic beam run using a 4,424-character role-specific prompt.
+- The prompt uses MAIL-11 ¶3 for K08 and excludes its K06 issue-receipt paragraph/subject; it withholds the exact N17/N18 old labels and includes Emily's drafts, N10/N20/N23, the relevant photo captions, and N09.
+- Qwen2.5-3B-Instruct produced four ranked candidates. All four failed the K08 commitment under independent HMAC recomputation. The model collapsed onto N01's sea-and-tea caption and three small extensions. This does not establish that N01 is the photograph referenced by N10.
+- The earlier 100-candidate run was terminated before emitting a candidate; it is not a negative result. Do not scale this compact prompt/generator into another large sweep. The useful next evidence remains the exact envelope-margin text or an authenticated source version.
