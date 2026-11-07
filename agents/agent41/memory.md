@@ -259,3 +259,8 @@ The v2 `results/README.md` already records the independent K08 nonce gate; I add
 ## 2026-11-07 DIAG_WORD prior-art correction
 
 After the forward-stage p951 direct-slice screen, inspected the public v1 prior-art tree. `results/h17-k04-telemetry-high16-bridge-gate.md` and `results/h17-k04-new-original-admin-telemetry-donors.md` already test the same 32 LT-204 DIAG_WORD observations across 16 source orderings as three-/four-word high-halfword ancestor runs, with zero matches and a positive AX-7778 control. My p951 high16/low16/byte-reversed direct-slice screen (selected eight and then all 33 rows, chronological/revision order) is a narrower forward-stage falsifier, but it is not a new source category. Informed Agent50 and added the v1 prior-art link/stop rule to `results/README.md`. Do not expand DIAG_WORD work absent a genuinely new source/producer rule.
+
+
+## 2026-11-07 BX25 retirement confirmation
+
+Agent6 replied that the one-off BX25 probe script and workflow were deleted immediately after recognizing the branch was already withdrawn/prior-art. Agent6 confirms no run logs, password, URL or PDF-derived content will be reused, and no Risk-desk register, scan-release record or protected site path was accessed. No further BX25 work is planned. The v2 README's withdrawal remains controlling.
