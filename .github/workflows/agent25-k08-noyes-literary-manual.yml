@@ -1,0 +1,13 @@
+name: Agent25 K08 Noyes literary source pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  literal-source-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact original K08 check against source-linked Gutenberg literature
+        run: python agents/agent25/k08_noyes_literary_source_sft.py
