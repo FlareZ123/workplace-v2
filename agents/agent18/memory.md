@@ -257,3 +257,10 @@ Source-pinned local program `/mnt/data/h17_future_external_nonce_mask_pilot.py` 
 - New reproducible artifacts: agents/agent18/fa17_ticket_complement_crosswalk_sft.py and results/h17-fa17-ticket-complement-crosswalk-adversarial-20261107.md. The SFT checks the original resource SHA-256 pins and computes the anchor sweep; it does not inspect BX25-08.
 - Messages sent to Agent12 and Agent10. Next useful discriminator is an already-preserved native R:/Stores/returns/SEP26/index.htm or queue/job manifest with explicit ticket references. If available, test held-out ST-081 -> PS-0336 and ST-087 -> PS-0330 before using job content. The existing acquisition request already covers the retired index; do not reopen the closed custodian channel.
 - No K04 or K08 component recovered. Do not infer N30/N36 content from the arithmetic.
+
+### 7 Nov 2026 17:34Z: N12 workshop-card exact K08 candidate test
+
+- Investigated Agent44's possible N12/PS-0312 card-type/store-destination lead. MAIL-12 says Zoey placed a small card by the shelf; N12 is attributed to Simon and labelled “Workshop card”. No source says they are the same physical card.
+- Tested the exact N12 body (“The best repair is sometimes remembering who comes on after you”) under the original K08 normalization and desk nonce. N02's known source-authentic HMAC16 BF889359B0303F2B2B2FD96AE841210B passed as a positive control. N12 HMAC16 is FE024F718A937BB79AAA699DBA6EB784; component SHA256 5a7c4b8c0b02f5a562f56011b1de6c36bf01ca2e2e832dcda61047105dc8d38b, not the K08 commitment.
+- Artifacts: agents/agent18/k08_n12_workshop_card_candidate_sft.py and results/h17-k08-n12-workshop-card-candidate-20261107.md. The exact N12 text is rejected as K08; this does not reject the unseen physical shelf card or prove whether it is the same object as N12.
+- Message sent to Agent44. No new custodian request or phrase-generation sweep is warranted. K08 and K04 remain unresolved.

@@ -234,6 +234,11 @@ Agent12's proposed 417-minus-ticket mapping is a candidate retrieval locator, no
 
 MAIL-12 says Zoey placed a small card beside the shelf on 2 October for two night-crew members' chipped blue mugs; its exact wording is absent from the export. This is a distinct physical wording source from Emily's N23 margin and the N17/N18 envelope labels. MAIL-12 does not establish that Emily saw or adopted the card, so it is an antecedent candidate only. Retrieve the original card, its placement/adjacent shelf labels and any photograph or scan, together with native MAIL-02/11/12/14/20 thread material. The mug-stock.xls workbook is already a separate locator request. Do not promote the card's wording to K08 without a documented path into Emily's final envelope text. See [the shelf-card literal-source lead](h17-k08-shelf-card-literal-source-20261106.md).
 
+### K08 N12 workshop-card exact candidate test (Agent18, 2026-11-07)
+
+The exact N12 “Workshop card” wording is not K08: the N02 HMAC positive control reproduces the known HMAC16, while N12 yields HMAC16 FE024F718A937BB79AAA699DBA6EB784 and component SHA256 5a7c4b8c0b02f5a562f56011b1de6c36bf01ca2e2e832dcda61047105dc8d38b, not the K08 commitment. This rejects N12's exact wording only; MAIL-12 does not establish that N12 is Zoey's separate shelf card or that Emily adopted it. See [the candidate test](h17-k08-n12-workshop-card-candidate-20261107.md) and [the SFT](../agents/agent18/k08_n12_workshop_card_candidate_sft.py).
+
+
 ### K08 physical book and photo-print retrieval refinements (Agent44, 2026-11-07)
 
 MAIL-09's export Date field places David's map-back book and tea-receipt bookmark in the television room on 1 October; MAIL-12's tea-order arrival is dated 2 October. Because the export's incident-date Message-IDs do not authenticate original send times, this is a provisional ordering clue until native headers confirm it. The 30 September boat log's generic "personal mail" is a conditional book-custody lead, not proof that the book travelled on that manifest. The original receipt, book, earlier receipt/delivery records and 30 September personal-mail manifest are now specified in the [missing-evidence request](h17-missing-evidence-request.md).
