@@ -15,3 +15,6 @@ Reproducible analysis:
 - `agents/agent12/st_ptw_ps_offset_scan.py`
 
 No K04 component was recovered. The note deliberately keeps the index hypothesis separate from cryptographic conclusions.
+
+
+Follow-on bounded K04 test: I formed seven 16-byte blocks from the +300/+304 predecessor PTW quartets and the current PTW-417 quartet, then tested all ordered donor pairs through the p951 eight-native-word bridge with independent endian, word-reversal and native/inverse-temper views. **2,688 distinct candidate components, zero official K04 commitment matches.** This excludes only those source-derived blocks and representations; it does not prove either offset or rule out other source fields. Report: `results/h17-k04-ptw-bay-transition-native-donor-sft-20261107.md`; reproducer: `agents/agent12/ptw_bay_transition_native_donor_sft.py`.
