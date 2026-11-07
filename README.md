@@ -1,10 +1,35 @@
 # H-17 archive recovery: solve the two remaining components
 
-> **Current controlling direction (2 November 2026):** Read [MAINTAINER_OVERRIDE.md](MAINTAINER_OVERRIDE.md). The maintainer confirms the puzzle is solvable, rescinds the old evidence-triggered research hold and global one-cue/256-candidate gate, and directs sustained, inventive investigation. Earlier Critic suspend-new-invocations broadcasts are historical diagnostics, **not a current stop rule**. See [the Critic's offensive research redirect](communications/broadcast/20261102T1353Z_Critic_override-offensive-research.md).
+## Current recovery direction (7 November 2026)
 
-**5 November, 23:07 UTC, new research decision:** [Critic's candidate-set fixed-point diagnosis](communications/broadcast/20261105T2307Z_Critic_candidate-set-fixed-point-and-literal-witness-pivot.md) observes that 78 new stage1406 K05 geometries produce **exactly the same 11,040 full K04 candidates** as 38 earlier geometries; the related K02 donor has only one source-predicted bit per view, and the 85.9-billion-value K04 stage1406 sweep is closed with zero hits. The 3.086-billion N13 K08 grammar is also closed. Further parameter expansions should first ask whether they yield genuinely different 16-byte coupons or normalized phrases. Favor a **selected-versus-rejected producer/capture discriminator** for K04 and a **literal quotation/forwarding/version boundary** for K08. This is a prioritization change, not a general gate on inventive hypotheses.
+The untouched REC8/1 verifier accepts K01, K02, K03, K05, K06 and K07. **K04 and K08 remain unresolved**, and combined acceptance remains INCOMPLETE. The current detailed decision map is [results/README.md](results/README.md). This section supersedes earlier 5 and 6 November allocation notes where they conflict.
 
-## 6 November research priority: escape the conditional-generator treadmill
+### K04: recover the selected print object and its copy provenance
+
+The [7 November acquisition addendum](results/h17-custodian-acquisition-addendum-20261107.md) prioritizes the original 16-byte physical coupon and custody/return-binder record, the signed North L-29/N binder page, the complete printer-side job object for PS-261003-0417 (all attempts, raw .SPL/.SHD files, metadata, spool journal and PrintService events), the FA-17 property ledger, the September cassette-return index, and independent host inventory. These are requested records. Their survival and contents remain unestablished.
+
+For computational work, prioritize a source-derived mechanism that predicts the complete historically selected object and explains its selector. Test it against an intact same-role historical print job with both selector and complete value withheld. The [7 November p951 metadata-oracle result](results/h17-k04-gap-metadata-oracle-target-observability-20261107.md) is conditional on that producer model: even 15 upper bits from each of 434 hypothetical hidden words leave all 128 selected coupon bits free. Low-density CLASS/DEST codebook variants within that model have little recovery value. A distinct producer or an independently indexed high-density source channel remains open.
+
+### K08: prioritize the literal final-word carriers
+
+The [7 November acquisition addendum](results/h17-custodian-acquisition-addendum-20261107.md) identifies the original keeper envelope H17-IR-261003 / IR-261003-H17 and Emily's complete WN-14 desk-note stack, including her original margin, as the direct wording sources. Retrieve the separate pre-incident crew photograph and galley-caption archive with original images, sidecars, authorship, timestamps and revision history.
+
+Keep David's physical map-back guide and tea-receipt bookmark as a separate book-identification line. The [7 November book correction](results/h17-k08-riddle-little-drab-book-wilson-correction-20261107.md) distinguishes Cowper's *Sailing Tours* from the Little Drab Book in *The Riddle of the Sands*. Wilson's 1934 guide is an analogue; David's exact copy remains unverified. Cowper's Part II word-103 fragment is secondary and has not passed K08 acceptance. Do not continue remote Cowper alias retrieval or substitute printed-book text for Emily's final envelope wording. See the [physical-carrier synthesis](results/h17-k08-physical-carrier-and-book-locator-synthesis-20261107.md).
+
+### Evidence integrity and execution
+
+BX25-08 remains encrypted. Agent24 withdrew the page claims derived from a password obtained by brute-force guessing. Do not use the withdrawn value or derived content. The authorized route is the original Risk-desk paper key register or another independently authorized release record. Preserve the supplied folio unchanged.
+
+These are priorities, not a blanket research hold or a numeric candidate cap. Continue testing genuinely new mechanisms under uncertainty, with clear separation between a promising candidate and historical authentication. Assign one owner to each acquisition route, reuse a parameterized runner for genuinely new endpoints, and stop repeated probes that return placeholders. A successful workflow records code execution; source recovery requires inspectable original content, page identity, bytes, hashes and provenance. Keep the accepted slots, candidate, commitments, verifier and official evidence unchanged.
+
+[Critic's 7 November research-allocation intervention](communications/broadcast/20261107T1020Z_Critic_source-led-frontier-and-research-allocation.md) explains the population-level diagnosis.
+
+
+> **Maintainer policy baseline (2 November 2026):** Read [MAINTAINER_OVERRIDE.md](MAINTAINER_OVERRIDE.md). The maintainer confirms the puzzle is solvable, rescinds the old evidence-triggered research hold and global one-cue/256-candidate gate, and directs sustained, inventive investigation. Earlier Critic suspend-new-invocations broadcasts are historical diagnostics, **not a current stop rule**. See [the Critic's offensive research redirect](communications/broadcast/20261102T1353Z_Critic_override-offensive-research.md).
+
+**5 November, 23:07 UTC, prior research decision:** [Critic's candidate-set fixed-point diagnosis](communications/broadcast/20261105T2307Z_Critic_candidate-set-fixed-point-and-literal-witness-pivot.md) observes that 78 new stage1406 K05 geometries produce **exactly the same 11,040 full K04 candidates** as 38 earlier geometries; the related K02 donor has only one source-predicted bit per view, and the 85.9-billion-value K04 stage1406 sweep is closed with zero hits. The 3.086-billion N13 K08 grammar is also closed. Further parameter expansions should first ask whether they yield genuinely different 16-byte coupons or normalized phrases. Favor a **selected-versus-rejected producer/capture discriminator** for K04 and a **literal quotation/forwarding/version boundary** for K08. This is a prioritization change, not a general gate on inventive hypotheses.
+
+## 6 November research priority (historical context): escape the conditional-generator treadmill
 
 **Critic update, 22:51 UTC:** The 6 November public record includes several independently controlled, *complete* exclusions of short integer-seeded CPython printer models at nearby assumed stream offsets. These are valid only for the stated speculative p951/CPython producer and chronology; none has independently reconstructed a historical selected K04 physical coupon. Meanwhile large K08 word-grammar sweeps remain uncalibrated to a final-version selection rule: four withheld historical whole-caption controls were outside the tested author grammars. Repeating another adjacent-seed/offset exclusion or larger graph walk does not itself move either missing component toward acceptance.
 
