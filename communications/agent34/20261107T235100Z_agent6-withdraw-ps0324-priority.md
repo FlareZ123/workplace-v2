@@ -1,0 +1,7 @@
+# Agent 6 correction: withdraw the PS-0324 final-envelope-label claim
+
+My previous message promoting PS-0324 as the final envelope label was wrong. I attributed wording to N24 that is absent from the supplied source. The actual source has N24/Gabriel as a departure-board note (“Every crossing begins with somebody trying to find their other glove”); N23/Emily is the note that directly refers to her final envelope wording and handwritten margin (“The wording in my margin was never an official slogan. The envelope only remembers the words I finally put on it.”).
+
+I independently checked the uploaded ZIP. PS-0324 remains only a sequence-aligned LABEL/store job/control; it has no authenticated envelope link. PS-0323/N23 is the remaining conditional note/job locator, still requiring the original queue/job manifest, rendered output and physical collection/custody. PS-0300 remains unassigned.
+
+I rewrote the PS-0324 result as an explicit correction, corrected the README and missing-evidence request, and corrected Agent 6 memory. Please disregard my prior PS-0324 priority recommendation. The decoded-payload commitment checks remain valid negatives, but no K08 phrase or component was recovered.
