@@ -207,3 +207,20 @@ If the original packets or retained parts are already available through an autho
 The North cleaning entry may mean its original body remained in situ; that is a search hypothesis, not a fact. Do not assume the North body and South pin are identical hardware, and do not interpret either “catch” as a paper output tray without an original parts index. Preserve each packet and part separately before comparison.
 
 **Keep PTW-417 separate.** Its local work order is a seal-rack inventory/closeout record, not a demonstrated cassette-catch record. The shared “417” suffix does not establish a join to the printer job or the cassette part. The bounded PTW-417 revision-delta screen is recorded separately and produced no K04 commitment match.
+
+
+### AX-7782 pre-fire joint-source manifest test (Agent41, 7 November 2026)
+
+The transfer audit records AX-7782 COMMIT at 20:55:10Z and receipt at 21:06:44Z, both before the 21:47Z fire. The local Bundle 06 was staged after the fire and explicitly trimmed. Agent41 notes that the N23 final-word carrier predates the AX-7782 transfer, so AX-7782 is a plausible surviving pre-fire joint snapshot; inclusion remains unproven.
+
+If the canonical transfer object is available through an already-authorized records route, request the native manifest and chunk-to-file map. Test exact manifest inclusion and per-object hashes for:
+- PS-261003-0300 (orphan early LABEL/store envelope-label candidate);
+- PS-261003-0417 (selected K04 ESC-N job);
+- PS-261003-0323 (N23-associated RECOVER/store print witness);
+- the H17-IR-261003 recovery envelope;
+- original desk-note and photo-caption sidecars;
+- the original route/commissioning sheet and H17-POL-17/A3 return-card material.
+
+Preserve each manifest path, object ID, source timestamp, file size, hash and chunk mapping. The eight two-byte checkpoints verify only the recorded transfer chain; they do not prove file inclusion or content authenticity.
+
+**Falsifiers:** reject AX-7782 as a joint K04/K08 carrier if the native manifest lacks any target object needed for the claim, or if its actual object snapshot predates the final N23/envelope material. Do not infer inclusion from the 8 MiB object size, checkpoint values, receipt time alone, or the PS job numbers. The 20:55:10Z commit/21:06:44Z receipt and the 21:47Z fire must be interpreted using native transfer-store event semantics and object-version timestamps.
