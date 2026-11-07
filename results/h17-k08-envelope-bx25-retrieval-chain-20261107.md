@@ -65,6 +65,12 @@ The frozen Cowper page/word hypothesis has a partial source test. Signed Part II
 
 The Part I HathiTrust catalog item is identified as \`hvd.hn5w2p\`, Full view pt.1, but the official viewer is not accessible through the current tools; the five Google Books zoom-1 page requests returned identical placeholders. See [Part I catalog discovery](h17-k08-cowper-part1-catalog-discovery-20261107.md) and [Part I placeholder report](h17-k08-cowper-part1-zoom1-placeholder-20261107.md). No North words, complete ten-word phrase or K08 HMAC acceptance test have been recovered. This secondary candidate does not displace the original keeper envelope and WN-14 desk-note stack as the highest-value K08 sources.
 
+## Book-identity correction: the Cowper volume is not established (7 November)
+
+Chapter XX of [*The Riddle of the Sands*](https://www.fulltextarchive.com/book/Riddle-of-the-Sands/4/) distinguishes Cowper's *Sailing Tours* as one of Davies's ordinary library titles from "this particular volume". The particular volume is described separately as an old guide for yachtsmen to a British estuary, with title page "By Lieut. X--, R.N.", Dollmann's name on the back, and a frontispiece showing a yacht and its owner. The novel does not identify a verifiable real-world title.
+
+Therefore the Cowper Part II extraction above is preserved as an exploratory branch only. It does not identify the K08 book or establish the 5E67 to page 94 / word 103 locator. The exact David-owned physical copy, its title page, back, frontispiece and map must be identified before any page-word sequence is treated as the K08 source. The 1934 Wilson guide and 1985 Cowper facsimile are comparators, not accepted substitutes.
+
 ## Limitations
 
 - No K08 phrase has been recovered.
