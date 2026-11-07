@@ -8,6 +8,7 @@ claim that PTW serials are MT state words or that either ST offset is true.
 """
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import sys
@@ -78,7 +79,7 @@ def target_formulas():
     if base_basis.rank != 15365:
         raise AssertionError(f"Unexpected p951 source rank: {base_basis.rank}")
 
-    basis = base_basis.clone()
+    basis = copy.deepcopy(base_basis)
     for index, stage in enumerate(STAGES):
         for bit, expression in enumerate(symbolic[stage - ORIGIN]):
             basis.insert(expression, 1 << (1 + 32 * index + bit))
@@ -96,16 +97,16 @@ def target_formulas():
 
 def ptw_bay_selector_check(base_basis, symbolic, receipts):
     anchors = ((405, -964, "D"), (412, -944, "B"), (414, -937, "C"))
-    constrained = base_basis.clone()
+    constrained = copy.deepcopy(base_basis)
     for permit, serial_stage, bay in anchors:
         row = receipts[permit][0]
         serial_bytes = bytes.fromhex(row["serial"].removeprefix("SG-"))
         observed_output = int.from_bytes(serial_bytes, "little")
         serial_forms = temper(symbolic[serial_stage - ORIGIN])
-        predicted_output = sum(
-            (base_basis.predict(form) or 0) << bit
-            for bit, form in enumerate(serial_forms)
-        )
+        predicted_bits = [base_basis.predict(form) for form in serial_forms]
+        if any(value is None for value in predicted_bits):
+            raise AssertionError(f"PTW-{permit} serial stage is not fully source-predicted")
+        predicted_output = sum(value << bit for bit, value in enumerate(predicted_bits))
         if predicted_output != observed_output:
             raise AssertionError(f"PTW-{permit} serial does not match its source-predicted stage")
 
