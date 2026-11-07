@@ -64,6 +64,19 @@ The most useful K08 segment is:
 
 N23 says the envelope remembers the words Emily finally put on it. Its matched job 0323 is a `RECOVER` row with `DEST=store`. N20's preceding line brief maps to job 0320, a `RECOVER` row with `DEST=bench`. N17 and N18 provide the explicit standby and commissioning controls. This makes **PS-261003-0323 the highest-value candidate final-envelope print record** in this sequence, with 0317, 0318, 0320 and 0306 as controls.
 
+
+Source line anchors for the K08 segment:
+
+| Note | Notes file line | Spool log line |
+|---|---:|---:|
+| N06 | 19 | 8 |
+| N17 | 52 | 19 |
+| N18 | 55 | 20 |
+| N20 | 61 | 22 |
+| N23 | 70 | 25 |
+
+MAIL-20 also asks that the envelope label be preserved exactly as printed. That makes the original rendered output a materially stronger authority for the wording than a paraphrase or reconstruction from the semantic brief.
+
 ## What this does and does not establish
 
 **Directly observed:** the exact 24-entry numbering and time alignment above.
