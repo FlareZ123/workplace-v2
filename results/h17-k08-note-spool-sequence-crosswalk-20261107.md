@@ -75,7 +75,7 @@ Source line anchors for the K08 segment:
 | N20 | 61 | 22 |
 | N23 | 70 | 25 |
 
-MAIL-20 also asks that the envelope label be preserved exactly as printed. That makes the original rendered output a materially stronger authority for the wording than a paraphrase or reconstruction from the semantic brief.
+**Source-attribution correction:** MAIL-20 does not ask that an envelope label be preserved exactly as printed. It says several captions and drafts were on Emily's desk, that her finally chosen words matter rather than a preferred paraphrase, and that the acceptance check can distinguish candidates. It does not establish that the final phrase was printed or identify a print job. N23 and the original envelope/margin remain the direct wording witnesses; native rendered output is useful only if an independent queue/job-to-envelope link is recovered.
 
 ## What this does and does not establish
 
