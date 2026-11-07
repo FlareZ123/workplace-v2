@@ -377,7 +377,7 @@ The two tab-05 pairs used to derive the offsets are anchors, not independent val
 
 1. The native SEP26 index and source schema/history, explicitly asking whether it defines a two-stage ST→PTW and PTW→PS relation or lane-specific offsets.
 2. Complete native spool/queue records and rendered physical outputs for the South holdouts PS-0427, PS-0436, PS-0441, PS-0448 and PS-0457; PS-0436/0441/0457 are the decisive missing predictions.
-3. Complete native spool/queue records for the FA-17 holdouts PS-0392 and PS-0403, and the North predicted jobs PS-0386, PS-0399, PS-0404, PS-0411 and PS-0417. Preserve all attempts, selector, class, destination, host/device/port/route, .SPL/.SHD or native equivalent, rendering, ACK, media-eject/collection receipt and deletion/retention history.
+3. Complete native spool/queue records for the FA-17 holdouts PS-0392 and PS-0403, and the North predicted jobs PS-0386, PS-0399, PS-0404, PS-0411 and PS-0417. Preserve the original source document path/hash and source page/range, submitting user, print processor, queue, host/device/port/route, every attempt, selector, class, destination/output tray, .SPL/.SHD or native equivalent, rendering, ACK, media-eject/collection receipt and deletion/retention history. The source-document/page fields are the direct discriminator for the proposed shared ticket/page/job index.
 4. The original ST-087/ST-098 L-28/N packets and ST-121/ST-130/ST-135/ST-142/ST-151 South packets, with signed pages, attachments, carbonless copies, serial slips and explicit PTW/PS references.
 
 Keep PS-0416 as a separate adjacent same-role blind control. Do not use the lane-specific locator to change the K04 selected attempt, infer coupon bytes, or collapse the PTW, spool-job and physical-coupon carriers.
