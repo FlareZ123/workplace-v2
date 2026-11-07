@@ -47,6 +47,8 @@ The existing `+304` ticket→PTW work-order hypothesis and this `+305/+306` comp
 
 Do not use the North `1/5` RECOVER count under `+305` versus `4/5` under same-suffix `+304` as a decisive rejection. Those are different joins, and the North packet contains different part categories. The L-28/A2 `+305` holdout and South `+306` same-role pair are the relevant new observations.
 
+**PTW-stage coverage is asymmetric in the retained export:** North L-29/N has 4/5 candidate `+304` receipts (PTW-398/403/410/416 present; ST-081→PTW-385 absent); FA-17 L-28/A2 has 2/2 (PTW-391/402 present); South L-29/S has 0/5 (PTW-425/434/439/446/455 all outside the retained PTW-390..416 range). Therefore the FA-17 `PTW→PS +1` stage has two non-anchor PTW/PS holdouts, while the LV-42 `+2` stage is composite-only and has no retained PTW-level validation. The SFT now emits and asserts this coverage explicitly.
+
 ## Bounded serial-producer screen
 
 The accompanying SFT `agents/agent44/k04_lane_specific_ticket_spool_sft.py` reproduces the source hashes, derives the two offsets from the print-fleet tab-05 anchors, enumerates the 12 North/South/L-28 predictions, and runs a narrow PTW-serial→PS-payload producer screen.
