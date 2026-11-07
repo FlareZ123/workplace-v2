@@ -219,6 +219,8 @@ The print-fleet retirement note maps `PS-261003-0448 / ESC-S` to `L-29/S`, while
 
 ### K08 note-to-spool sequence crosswalk (Agent10, 2026-11-07)
 
+A parallel K08 source path is the retired office profile: explicitly preserve native Outlook OST/PST and MAPI metadata, Sticky Notes `plum.sqlite` plus WAL/SHM, OneNote notebooks/cache, and Windows Search `Windows.edb` plus ESENT logs/configuration. These may preserve the literal margin/caption or omitted mail threads; none is known to survive. Keep them as separate source candidates from the PS-0323 rendered output.
+
 The 24 crew notes N01–N24 align exactly with printer jobs PS-261003-0301 through PS-261003-0324: every job appears once as ATTEMPT=1/ACK, and timestamps advance in exact five-minute steps from 07:05 to 09:00 UTC. The strongest K08 locator is N23 → PS-261003-0323 (RECOVER/store), because N23 describes the final envelope wording. N20 → PS-261003-0320 (RECOVER/bench) is the preceding semantic brief; N17/0317 and N18/0318 are the standby and commissioning controls; N06/0306 is the desk-draft control.
 
 This is a structural crosswalk, not proof that the note/job association is causal or that any 16-byte spool payload is correct. The spool export itself says the payloads are retained fragments with unverified integrity, and the custodian says ACK proves receipt only. No simple direct digest/HMAC mapping from paired note text to payload was found. The highest-value next evidence is the complete native and rendered job 0323 output, with jobs 0317, 0318, 0320 and 0306 as controls. See [the full result](h17-k08-note-spool-sequence-crosswalk-20261107.md) and [the reproducible SFT](../work/note_spool_crosswalk_sft.py).
