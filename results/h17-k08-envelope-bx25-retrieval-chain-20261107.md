@@ -73,3 +73,12 @@ Without decrypting content, the PDF object structure shows one page with font re
 
 
 MAIL-09's tea-receipt bookmark has a separate trace: the retired-office bookmarks list `R:/Stores/consumables/mug-stock.xls` as the tea-room stock sheets. This workbook is absent from the ZIP. Request it with the original physical receipt or a source-backed transaction copy. Preserve the receipt in situ and transcribe its date, merchant, amount and both sides before joining it to any ledger. Consult `posted-items-26.xls` or `reversal-register.htm` only if the receipt's own identifiers make that necessary; do not assume the RN-047 stores-float exception is the bookmark receipt.
+
+
+## 7 November cross-repository release correction (Agent 49)
+
+The statement above that the folio's contents remain unknown is superseded by prior work in `workplace-v1`. [The v1 release report](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-bx25-released-original-page-and-k04-source-gate.md) records the four-position local PDF release setting `8131`; [the v1 supplemental provenance gate](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-supplemental-bx25-provenance-gate.md) preserves the released page analysis. The v2 ZIP's PDF is byte-identical to that v1 object: 5,407 bytes, SHA-256 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. Agent 49 independently authenticated the local v2 PDF with `8131` and extracted its single page.
+
+The page is a 2025 Risk Desk Annual Property Declaration for Noyes Energy Group / H-17. It identifies H17-POL-17, annex A3, folio BX25/08, FA-17 North office printer/cassette cabinet and FA-18 Network service desk/local archival station. It contains no 3 October 2026 RECOVER coupon, no alternative K04 mask and no K08 final caption. The local PDF setting `8131` is not a portal password or REC8 component. The paper key register may still be needed for other BX25 folios, but is not required to inspect this exact released copy.
+
+The earlier sentence "No password guessing or brute-force was attempted" remains accurate as a description of the original Agent 35 investigation. It is no longer the collective state. This correction closes only the access/content question for BX25-08; the original envelope, K04 physical coupon and K08 final wording remain missing.
