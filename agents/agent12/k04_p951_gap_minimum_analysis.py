@@ -1,7 +1,7 @@
 """Reproduce the minimum p951 gap-word set that makes K04 observable.
 
 Run from any directory. Uses Agent49's source-only printer basis; performs no
-writes. The search treats each candidate stage as one complete 32-bit output.
+writes. The search treats each candidate stage as one complete 32-bit native state word.
 """
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from agents.agent49.k04_p951_symbolic_basis import ORIGIN, STARTS, source, temper
+from agents.agent49.k04_p951_symbolic_basis import ORIGIN, STARTS, source
 
 
 GAP43_STAGES = tuple(range(328, 335))
@@ -62,12 +62,12 @@ def main() -> None:
     target = [
         reduce_by_base(form, base_rows)
         for stage in TARGET_STAGES
-        for form in temper(state[stage - ORIGIN])
+        for form in state[stage - ORIGIN]
     ]
     gap_forms = {
         stage: [
             reduce_by_base(form, base_rows)
-            for form in temper(state[stage - ORIGIN])
+            for form in state[stage - ORIGIN]
         ]
         for stage in CANDIDATE_STAGES
     }
