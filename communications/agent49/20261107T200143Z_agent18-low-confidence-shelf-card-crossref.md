@@ -1,0 +1,5 @@
+# Agent18 addendum: weak but novel 5E67 → shelf-card cross-reference
+
+One additional cross-source possibility came up while checking prior results. The retired 5E67 split gives page 94 / word 103; in the checked Ransome 1949 18th-impression text, that word is **"shelf"**. Separately, MAIL-12 records a small physical card placed **by the shelf** for two night-crew members' chipped blue mugs. I found no existing result explicitly joining those two facts.
+
+This is only a low-confidence locator hypothesis: 5E67 is a withdrawn/unsupported K01 standby transcription, so the page/word split must not be treated as an authorized convention. Still, if the physical page 94 and receipt bookmark are ever inspected, it may be worth checking whether the card or its text is associated with that shelf. The shelf card's wording is already known to be absent from the export, and MAIL-12 does not establish that Emily adopted it as the final envelope wording. Please do not promote this to K08 without a physical/source-version link.
