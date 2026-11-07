@@ -225,6 +225,57 @@ def build_case(
     return manifest, prompts, candidates
 
 
+def validate_case_maps(
+    run_cases: tuple[int, ...],
+    manifests: dict[str, dict[str, object]],
+    prompt_sets: dict[int, dict[str, str]],
+    candidate_sets: dict[int, list[tuple[int, str]]],
+) -> tuple[int, ...]:
+    """Validate the exact requested holdouts before smoke or model scoring."""
+    requested = tuple(run_cases)
+    expected = set(requested)
+    assert len(requested) == len(expected), ("duplicate requested holdout", requested)
+    assert set(manifests) == {str(held) for held in requested}
+    assert set(prompt_sets) == expected
+    assert set(candidate_sets) == expected
+
+    expected_prompt_keys = {
+        "A_purpose", "A_generic", "A_swapped",
+        "B_purpose", "B_generic", "B_swapped",
+    }
+    for held in requested:
+        manifest = manifests[str(held)]
+        assert manifest["case"] == held
+        prompts = prompt_sets[held]
+        assert set(prompts) == expected_prompt_keys
+
+        target_phrase = str(manifest["target_phrase"])
+        target_words = set(ranker.tokens(target_phrase))
+        decoy_phrases = [str(value) for value in manifest["decoy_phrases"].values()]
+        for prompt_key, prompt in prompts.items():
+            assert not phrase_sequence_present(prompt, target_phrase), (
+                held, prompt_key, "target phrase leaked into prompt"
+            )
+            for decoy_phrase in decoy_phrases:
+                assert not phrase_sequence_present(prompt, decoy_phrase), (
+                    held, prompt_key, "decoy phrase leaked into prompt"
+                )
+            if prompt_key.startswith("A_"):
+                assert not (set(ranker.tokens(prompt)) & target_words), (
+                    held, prompt_key, "strict Arm A target-word mask failed"
+                )
+
+        candidates = candidate_sets[held]
+        assert len(candidates) == 12
+        assert candidates[0] == (held, str(manifest["target_normalized"]))
+        assert len({note_id for note_id, _ in candidates}) == 12
+        assert {note_id for note_id, _ in candidates[1:]} == set(
+            int(note_id) for note_id in manifest["decoy_note_ids"]
+        )
+
+    return requested
+
+
 def rank_scores(model, tokenizer, torch, prefix: str, candidates: list[tuple[int, str]]) -> dict[str, object]:
     scores = [
         {"note": note_id, "text": text,
@@ -272,6 +323,8 @@ def main() -> None:
             "prompt_sha256": manifest["prompt_sha256"],
         }, sort_keys=True), flush=True)
 
+    score_cases = validate_case_maps(run_cases, manifests, prompt_sets, candidate_sets)
+
     OUT.mkdir(exist_ok=True)
     (OUT / "holdout-manifests.json").write_text(
         json.dumps(manifests, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -297,7 +350,7 @@ def main() -> None:
     }), flush=True)
 
     results: dict[str, object] = {}
-    for held in CASES:
+    for held in score_cases:
         case_result: dict[str, object] = {}
         candidates = candidate_sets[held]
         for arm in ("A", "B"):
