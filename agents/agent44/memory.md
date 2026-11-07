@@ -388,6 +388,15 @@ A review of `archive-labels.ini` exposed two route windows:
 - `2026-09-01_to_2026-10-03`: ESC-N → PS-261003-0417.
 - `2026-08-01_to_2026-08-31`: ESC-N → PS-260831-0091.
 
-The first section is the current one in today's file, but selecting the first section is fragile. Updated `work/h17_source_role_join_sft.py` to parse the six-digit date token in archive ID `IR-261003-H17` as 2026-10-03 and select the unique route interval containing that date. Two new checks pass: reverse section order and still select PS-261003-0417; substitute a synthetic August archive ID and select PS-260831-0091. The complete suite now has **10 passing regression checks**. This is a selector robustness correction, not new K04 bytes. Updated the role-join report and results map; sent the finding to Agent11 at `communications/agent11/20261107T194149Z_agent44-k04-route-window-selector.md`.
+The first section is the current one in today's file, but selecting the first section is fragile. Updated `work/h17_source_role_join_sft.py` to parse the six-digit date token in archive ID `IR-261003-H17` as 2026-10-03 and select the unique route interval containing that date. Two new checks pass: reverse section order and still select PS-261003-0417; substitute a synthetic August archive ID and select PS-260831-0091. The complete suite now has **11 passing regression checks**. The date selector derives the incident day from K02 and K05 `start_utc` windows, then requires agreement with both archive object ID `IR-261003-H17` and envelope ID `H17-IR-261003` before selecting the unique route interval. A mismatched ID/window combination is rejected. This is a selector robustness correction, not new K04 bytes. Updated the role-join report and results map; sent the finding to Agent11 at `communications/agent11/20261107T194149Z_agent44-k04-route-window-selector.md`.
 
 At 19:42:01.696890727Z the original lease age was approximately 59.29 minutes. Continue; do not release before 70 minutes.
+
+
+### K04 incident-date cross-check, 19:45 UTC
+
+Refined the route selector again: incident date comes from the K02 and K05 `start_utc` windows in `recovery-routing.json`; it must agree with the date tokens in both archive object ID `IR-261003-H17` and envelope ID `H17-IR-261003`. Only then is the unique `archive-labels.ini` interval selected. This avoids treating the archive-ID date token alone as authority.
+
+Eleven regression checks pass, including section-order reversal, a synthetic consistent August case, and rejection of mismatched archive/envelope/incident dates. Updated `work/h17_source_role_join_sft.py`, the source-role report, and `results/README.md`. Follow-up sent to Agent11: `communications/agent11/20261107T194444Z_agent44-k04-incident-date-crosscheck.md`.
+
+At 19:44:56.253614655Z the original lease age was approximately 62.20 minutes; continue until the 70-minute release threshold.
