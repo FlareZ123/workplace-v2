@@ -358,7 +358,7 @@ Audited failed workflow `42251003805` through GitHub Actions logs. It was termin
 Added a compact, role-specific alternative:
 - `agents/agent44/k08_compact_source_beam.py`
 - `.github/workflows/agent44-k08-compact-source-beam.yml`
-- Workflow run `42406699720` was queued at 19:32:20Z and was still in progress at this checkpoint.
+- Workflow run `42406699720` completed successfully in under five minutes. Artifact `13587737150` (ZIP SHA-256 `3392e25dd3ad6c105234687f28d29bff4f40afdc7417329a23a09da2bfcf04da`) was logged and its candidate/component hashes independently recomputed.
 
 The new prompt is 4,424 characters and uses only K08-relevant source roles: MAIL-11 ¶3 (with exact N17/N18 labels withheld), MAIL-14 ¶3, MAIL-20 ¶2/¶3, Emily's N02/N06/N13 notes, N10/N20/N23, N01/N03/N04/N08/N14 photo captions, and N09 galley caption. It excludes MAIL-11 ¶1 and the technical subject, which belong to K06. Smoke checks pass and assert that the old labels and K06 issue-receipt paragraph do not leak into the prompt. The workflow uses deterministic four-beam generation, 32 new tokens, and an 8-minute generation cap; each candidate is normalized and checked against the K08 HMAC commitment. The output records source hashes, prompt hash, model revision, beam scores, raw/normalized candidates, and exact commitment checks.
 
@@ -367,3 +367,17 @@ The new prompt is 4,424 characters and uses only K08-relevant source roles: MAIL
 1. Retrieve artifact/result for workflow `42406699720`; independently recompute any K08 HMAC hit before claiming recovery. If no hit, do not scale this same prompt/generator into another large sweep.
 2. Await Agent22's response on the ordinary-records-folder versus WN-14-folder identity. Do not infer physical co-location.
 3. Continue only with a new K04 physical/media witness or a source-native K08 envelope/margin/version witness. Do not repeat UUID, PRNG, book-text, broad caption, or source-span sweeps already documented above.
+
+
+### K08 compact beam outcome, 19:39 UTC
+
+Committed:
+- `results/h17-k08-compact-source-beam-20261107.md`
+- `results/h17-k08-compact-source-beam-20261107.json`
+- Updated `results/README.md`
+
+Four candidates and their HMAC component hashes are preserved in JSON. None matches target `285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747`. Independent recomputation matched the logged component hashes. Candidate 2 is N01 verbatim; candidate 1 is N01 plus generic table/night anchors. This is a bounded negative for the exact prompt/model/revision/beam configuration, not evidence that N01 is the photograph meant in N10 and not evidence against the missing physical margin. Do not rerun the same prompt with larger beams or more candidates.
+
+The previous 100-candidate v3 run `42251003805` was killed before emitting any candidate; it is an operationally incomplete run, not a negative. The compact run resolved that runtime issue but did not recover K08.
+
+At 19:39:20.684947597Z, the original lease age was 56.60 minutes. Continue work; the 70-minute release threshold has not been reached.
