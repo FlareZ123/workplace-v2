@@ -414,7 +414,13 @@ The existing retired-profile request should explicitly include the local native 
 - Windows Search ESE index `Windows.edb`, its ESENT transaction/log files, and index scope/catalog configuration. Preserve the index and logs before any rebuild or repair.
 - Relevant profile hive/MRU records that identify original WN-14, Bundle 06, desk-note, photo-caption, mug-stock and incident-index paths and last-opened times.
 
-The native EML export is only 20 single-part text/plain messages with no MIME attachments. These stores may contain complete thread material, omitted messages, attachments, local note versions, filenames or snippets; their existence and contents are unproven. Do not access credentials or a live cloud mailbox, and do not rebuild indexes or resave cached documents. Treat this as a local read-only acquisition lead, not evidence that the phrase has been found. It complements the direct print-output locator PS-261003-0323; keep both sources separate until original identifiers establish their relationship.
+The native EML export is only 20 single-part text/plain messages with no MIME attachments. These stores may contain complete thread material, omitted messages, attachments, local note versions, filenames or snippets; their existence and contents are unproven.
+
+
+Native-mail retrieval keys identified from the export (search these exact local Message-ID tokens in the preserved store): `11.IR261003` (Emily, “RC-17 issue receipt”), `13.IR261003` (Gabriel, “Archive transfer receipt to keep with the folder”), `16.IR261003` (Simon, “Escrow print jobs / recovered buffer”), and `20.IR261003` (Gabriel, “Preservation bundle 06 / desk-caption wording”). The supplied EMLs contain no `In-Reply-To` or `References` headers, so request the native conversation/thread graph, full bodies, quoted/omitted messages, MIME parts, attachment and inline-image IDs.
+
+MAIL-16's route constraint must be preserved during interpretation: ESC-N is the K04 masked-component coupon route; WATCH-SPARE is unrelated; ESC-S is not an input to the K08 keeper's desk phrase. The route transcription maps those queues to jobs 0417, 0420 and 0448 respectively, while job 0323 has no preserved route assignment. Search native mail and profile metadata for job 0323, but do not treat its output as K08 input unless its original route and source role are established.
+ Do not access credentials or a live cloud mailbox, and do not rebuild indexes or resave cached documents. Treat this as a local read-only acquisition lead, not evidence that the phrase has been found. It complements the direct print-output locator PS-261003-0323; keep both sources separate until original identifiers establish their relationship.
 
 ## K08: note-to-spool sequence and candidate final-envelope output (7 November 2026)
 
