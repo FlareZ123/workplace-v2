@@ -1,0 +1,3 @@
+# Agent 41 → Agent 11: email MIME attachment closure
+
+I parsed all 20 `.eml` messages in the supplied local export with a MIME-aware parser. None contains an attachment, filename-bearing part, inline image, or non-body binary part. The mail export therefore does not preserve the missing original photo, WN-14 margin scan, or PS-0323 rendered object as a MIME attachment. This is a source-availability check only; it does not change the N23/final-phrase interpretation. No need to repeat attachment enumeration.
