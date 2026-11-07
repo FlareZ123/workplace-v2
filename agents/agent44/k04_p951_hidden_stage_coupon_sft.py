@@ -10,6 +10,7 @@ From the workplace-v2 repository root, no extra packages.
 """
 from __future__ import annotations
 
+import configparser
 import hashlib
 import json
 import re
@@ -130,19 +131,100 @@ def coupons_for_stage(values: list[tuple[int, int]], stage: int):
         yield coupon
 
 
+
+def select_escrow_ack(lines: list[str], route_job: str):
+    """Select the latest acknowledged RECOVER attempt from header fields only."""
+    entries = []
+    for index, line in enumerate(lines):
+        matched = re.match(
+            r"(\S+) JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+)(?=\s|$)",
+            line,
+        )
+        if matched is None:
+            continue
+        timestamp, job, attempt, state, job_class = matched.groups()
+        if job == route_job and state == "ACK" and job_class == "RECOVER":
+            entries.append((int(attempt), timestamp, index))
+    if not entries:
+        raise ValueError("No historical ESC-N RECOVER ACK found")
+    attempt, timestamp, index = max(entries, key=lambda item: (item[0], item[1]))
+    return index, {"job": route_job, "attempt": attempt, "state": "ACK",
+                   "class": "RECOVER", "timestamp": timestamp}
+
+
+def source_rows(raw: bytes, root: Path):
+    """Parse training payloads only after retaining the payload-independent selector."""
+    lines = [line for line in raw.decode("ascii").splitlines()
+             if line.startswith("2026-")]
+    assert len(lines) == len(STARTS) == 133
+    label = configparser.ConfigParser()
+    label.read(root / "resources/evidence/archive-labels.ini", encoding="utf-8")
+    route_job = label["printer_routes_2026-09-01_to_2026-10-03"]["ESC-N"]
+    selected_index, selected = select_escrow_ack(lines, route_job)
+    assert selected_index == 129, selected
+    assert (selected["attempt"], selected["timestamp"], STARTS[selected_index]) == (
+        2, "2026-10-03T18:02:00Z", 951
+    )
+    rows = []
+    for index, line in enumerate(lines):
+        if index == selected_index:
+            rows.append([])
+            continue
+        match = re.search(r"(?:^|\s)PAYLOAD=([0-9A-F]{32})(?=\s|$)", line)
+        assert match is not None, ("missing intact training payload", index)
+        rows.append([
+            untemper(word)
+            for word in struct.unpack("<4I", bytes.fromhex(match.group(1)))
+        ])
+    return lines, rows, selected_index, selected
+
+
+def selector_adversarial_controls(raw: bytes, root: Path) -> None:
+    lines = [line for line in raw.decode("ascii").splitlines()
+             if line.startswith("2026-")]
+    label = configparser.ConfigParser()
+    label.read(root / "resources/evidence/archive-labels.ini", encoding="utf-8")
+    route_job = label["printer_routes_2026-09-01_to_2026-10-03"]["ESC-N"]
+    selected_index, _ = select_escrow_ack(lines, route_job)
+    assert selected_index == 129
+    original = lines[selected_index]
+    payload_match = re.search(r"\sPAYLOAD=[^ ]+", original)
+    dest_match = re.search(r"\sDEST=[^ ]+", original)
+    assert payload_match and dest_match
+
+    variants = {
+        "payload corrupted": original.replace(payload_match.group(0), " PAYLOAD=CORRUPT"),
+        "payload absent": original.replace(payload_match.group(0), ""),
+        "destination absent": original.replace(dest_match.group(0), ""),
+        "payload and destination absent": original.replace(payload_match.group(0), "").replace(dest_match.group(0), ""),
+        "destination changed": original.replace(dest_match.group(0), " DEST=desk"),
+    }
+    for name, changed in variants.items():
+        altered = list(lines)
+        altered[selected_index] = changed
+        assert select_escrow_ack(altered, route_job)[0] == selected_index, name
+
+    altered = list(lines)
+    altered[selected_index] = original.replace("STATE=ACK", "STATE=REQUESTED")
+    try:
+        select_escrow_ack(altered, route_job)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("A REQUESTED event must not be selected as an ACK")
+
+    # If a later attempt becomes ACK, the selector must follow that new ACK.
+    altered = list(lines)
+    altered[130] = altered[130].replace("STATE=REQUESTED", "STATE=ACK")
+    assert select_escrow_ack(altered, route_job)[0] == 130
+
 def main():
     root = Path(__file__).resolve().parents[2]
     raw = (root / "resources/evidence/print/spool-reconstruction.log").read_bytes()
     assert hashlib.sha256(raw).hexdigest() == SOURCE_SHA
-    logs = [line for line in raw.decode("ascii").splitlines()
-            if line.startswith("2026-")]
-    assert len(logs) == len(STARTS) == 133
-    rows = [
-        [untemper(word) for word in struct.unpack("<4I", bytes.fromhex(
-            re.search(r"PAYLOAD=([0-9A-F]{32})", line).group(1)))]
-        for line in logs
-    ]
-    rows[129] = []  # Original disputed selected ACK2 is excluded before inference.
+    selector_adversarial_controls(raw, root)
+    logs, rows, selected_index, selected_record = source_rows(raw, root)
+    assert selected_index == 129 and STARTS[selected_index] == 951
     for value in (0, 1, 0xDEADBEEF, 0xFFFFFFFF):
         assert untemper(temper(value)) == value
 
@@ -192,6 +274,8 @@ def main():
     assert sum(hashlib.sha256(c).hexdigest() == planted for _, cs in candidate_windows
                for c in cs) == 1
 
+    print("SELECTED_HEADER_ONLY", selected_index, selected_record)
+    print("SELECTOR_ADVERSARIAL_CONTROLS", "PASS: payload corrupt/absent, destination absent/changed, ACK status and attempt controls")
     print("SOURCE_SHA", SOURCE_SHA)
     print("MT_SOURCE_RANK", len(basis))
     print("HIDDEN_697", hidden[0].hex().upper(), "DEST_reject,reject,bench CLASS_label PASS")
