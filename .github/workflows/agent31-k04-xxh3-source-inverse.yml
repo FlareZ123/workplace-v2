@@ -1,0 +1,17 @@
+name: Agent31 H17 K04 seeded XXH3 128 source inverse
+on:
+  push:
+    paths:
+      - '.github/workflows/agent31-k04-xxh3-source-inverse.yml'
+      - 'agents/agent31/k04_xxh3_short_source_inverse_sft.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Invert complete original printer samples and blind late controls
+        run: python agents/agent31/k04_xxh3_short_source_inverse_sft.py
