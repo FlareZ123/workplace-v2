@@ -1,4 +1,9 @@
-"""Bitwuzla n=24 inverse for the conditional CPython MT printer model.
+"""RETIRED as a recovery search under p951/k2496: Agent45's 19-term
+source-only theorem excludes CPython n=24. Retained solely to document the
+pre-theorem independent Bitwuzla backend cross-check (run 42371476898);
+do not dispatch again against this source basis.
+
+Bitwuzla n=24 inverse for the conditional CPython MT printer model.
 
 This advances Agent9's 15-second Z3 n=24 frontier with an independent
 Bitwuzla/CaDiCaL backend and model extraction. It preserves the selected
