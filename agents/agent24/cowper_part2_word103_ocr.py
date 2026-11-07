@@ -75,8 +75,8 @@ def main() -> None:
         joined_body = join_line_wrap_hyphens(raw_ocr)
         manual_ocr_corrections = []
         if page_number == 121:
-            # The scan visibly prints "and have 24ft. over them". Tesseract
-            # misreads the numeral/unit span, so correct only that pinned span.
+            # The scan visibly prints "and have 24ft. over them". Replace only
+            # the OCR span bounded by those two source-verified words.
             match = re.search(
                 r"\bhave\b(?P<middle>.{0,40}?)\bover\s+them\b",
                 joined_body,
@@ -85,27 +85,19 @@ def main() -> None:
             if match is None:
                 raise ValueError("Could not locate the page 121 'have ... over them' span")
             original_span = " ".join(match.group("middle").split())
-            corrected_span = re.sub(
-                r"24\s*ft",
-                "24ft",
-                match.group("middle"),
-                flags=re.IGNORECASE,
+            corrected_span = " 24ft "
+            joined_body = (
+                joined_body[:match.start("middle")]
+                + corrected_span
+                + joined_body[match.end("middle"):]
             )
-            if not re.search(r"24ft", corrected_span, flags=re.IGNORECASE):
-                corrected_span = " 24ft "
-            if corrected_span != match.group("middle"):
-                joined_body = (
-                    joined_body[:match.start("middle")]
-                    + corrected_span
-                    + joined_body[match.end("middle"):]
-                )
-                manual_ocr_corrections.append(
-                    {
-                        "original_ocr_span": original_span,
-                        "visually_verified_print": "24ft.",
-                        "corrected_ocr_span": "24ft",
-                    }
-                )
+            manual_ocr_corrections.append(
+                {
+                    "original_ocr_span": original_span,
+                    "visually_verified_print": "24ft.",
+                    "corrected_ocr_span": "24ft",
+                }
+            )
                 tokens = WORD_PATTERN.findall(joined_body)
         if len(tokens) < WORD_INDEX:
             raise ValueError(
