@@ -197,7 +197,7 @@ def main() -> None:
     phrase, sha512_part = phrase_from_key_words(key_words)
     phrase_text = phrase.decode("ascii")
     normalized = " ".join(
-        re.sub(r"[^a-z0-9\\s]", " ", phrase_text.lower()).split()
+        re.sub(r"[^a-z0-9\s]", " ", phrase_text.lower()).split()
     )
     generated = shared.packets_from_key(key_words)
     exact_indices = [
