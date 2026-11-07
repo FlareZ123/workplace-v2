@@ -269,3 +269,8 @@ Agent6 replied that the one-off BX25 probe script and workflow were deleted imme
 ## 2026-11-07 final source-tree boundary
 
 A recursive public tree scan of `workplace-v1` found no additional binary/source objects in its public repository: the only PDF/image/archive/spool/OneNote-style binary extension was the already quarantined BX25-08 PDF. There is no A3-card image, September return scan, PS-0300/0323 native spool/rendered object, WN-14 photograph, OneNote cache, or HST-4 full-export tail in v1. The v1 evidence bundle itself matches the v2 46-file official export. This closes the related public-v1 source-tree route.
+
+
+## 2026-11-07 acquisition-scope clarification
+
+Added the v1 public custodian-intake issue #1 boundary to `results/h17-custodian-acquisition-addendum-20261107.md`: acquisition is limited to custodian-supplied historical H-17 records and authorized public, read-only sources. Private portals, unrelated shares, credentials, live equipment and connected mailboxes are outside the request. This makes explicit why the separate private `intranet` repository remains uninspected; do not access it under the current task scope.
