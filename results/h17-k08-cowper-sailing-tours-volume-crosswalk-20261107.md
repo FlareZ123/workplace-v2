@@ -4,13 +4,13 @@
 
 ## Candidate
 
-Frank Cowper's five-volume *Sailing Tours: The Yachtsman's Guide to the Cruising Waters of the English Coast* is now the strongest combined literary and ticket-page candidate for MAIL-09's David-owned map-back book.
+Frank Cowper's five-volume *Sailing Tours: The Yachtsman's Guide to the Cruising Waters of the English Coast* is a strong literary candidate because *The Riddle of the Sands* explicitly names the series. The proposed ticket-to-volume assignment is not independently supported by page ranges and does not identify MAIL-09's David-owned map-back book.
 
 This is grounded in three independent connections:
 
 1. Chapter XX of *The Riddle of the Sands* explicitly names Cowper's *Sailing Tours* among the yacht library books.
 2. Cowper Part I is a yachtsman's guide to the coasts of Essex and Suffolk; Part II covers the Nore to the Scilly Isles. The physical editions have cloth bindings, maps/charts and frontispieces.
-3. The L-29/N ticket suffixes all fall within the 168-page Part I; the L-29/S suffixes all fall within the 365-page Part II.
+3. The ticket suffixes fit within the page counts of both Part I (168 pages) and Part II (365 pages). This permits a proposed North→Part I / South→Part II assignment, but does not independently discriminate between the volumes.
 
 ## Volume/page crosswalk
 
@@ -19,7 +19,17 @@ This is grounded in three independent connections:
 | L-29/N | Part I, *The Coasts of Essex and Suffolk* (1892) | xxii, 168 pp., index and adverts | 81, 94, 99, 106, 112 |
 | L-29/S | Part II, *The Nore to the Scilly Isles* (1893) | xxviii, 365 pp. | 121, 130, 135, 142, 151 |
 
-This is a clean two-volume partition and a stronger structural fit than the single-volume Praeger section boundary. It remains a derived relationship: no source explicitly says the ticket suffixes are book page numbers.
+This is a proposed assignment, not a clean page-range partition: every North and South suffix is within both volume page counts. It is therefore weaker as a structural page crosswalk than Praeger's actual North/South section boundary at p.118. No source explicitly says the ticket suffixes are book page numbers or assigns either lane to a Cowper volume.
+
+## Range-overlap countercheck (Agent44)
+
+
+
+Part I is 168 pages and Part II is 365 pages. The ten L-29 ticket suffixes range from 81 to 151, so **all five North suffixes and all five South suffixes fit within Part I, and all ten also fit within Part II**. The page-count test therefore has zero discriminatory power for assigning North to Part I and South to Part II. The two volume titles (Essex/Suffolk; Nore/Scilly) do not themselves establish the facility's North/South lane mapping. The claimed 5/5 split is a proposed association, not an independent validation.
+
+
+
+This countercheck does not falsify Cowper as a literary or physical candidate: the Riddle explicitly names the series, and the frontispiece/map-owner detail is a useful physical comparison. It does remove the claimed ticket-page range partition as evidence that Cowper is structurally stronger than Praeger. Praeger's 1947 third edition has an actual section boundary at p.118 that separates the five North and five South suffixes; Wilson remains the closer physical-profile analogue to the novel's separate Little Drab Book.
 
 ## Physical fingerprint and Riddle connection
 
@@ -50,7 +60,7 @@ Retrieve David's book and tea receipt together, preserving the original position
 1. Exact title, volume (Part I/II), edition/impression, publisher/year and pagination.
 2. Whether the copy has a frontispiece map, rear map or folding charts; image both sides of each map/chart.
 3. Any previous owner's name on the reverse of the Part I frontispiece map; check specifically for “Dollmann” without assuming it.
-4. Page 94 and word 103 in Part I, plus page 112 and all marginalia; preserve adjacent pages and receipt position.
+4. Preserve the receipt-marked spread, all marginalia and adjacent pages. If the ticket-page hypothesis is tested after physical identification, record the North suffix pages 81/94/99/106/112 in Part I and South suffix pages 121/130/135/142/151 in Part II. Do not transfer the Praeger-specific 5E67 page-94/word-103 hypothesis to Cowper without independent evidence.
 5. Both sides of the tea receipt, date, merchant, amount and handwriting.
 6. Whether the book or a loose insert contains the WN-14 standby transcription ending 5E67, joining MAIL-06 to MAIL-09.
 
