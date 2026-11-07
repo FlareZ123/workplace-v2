@@ -5,8 +5,10 @@ from __future__ import annotations
 import argparse
 import configparser
 import hashlib
+import io
 import json
 import re
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -69,16 +71,35 @@ def spool_rows(text: str) -> list[dict[str, Any]]:
     return rows
 
 
-def select_k04(spool: str) -> dict[str, Any]:
+def select_printer_route(labels_text: str) -> tuple[str, str, date]:
     labels = configparser.ConfigParser()
-    labels.read(EVIDENCE / "archive-labels.ini")
-    section = next(s for s in labels.sections() if s.startswith("printer_routes_"))
-    job = labels.get(section, "ESC-N")
+    labels.read_string(labels_text)
+    archive_id = labels.get("archive", "object")
+    id_match = re.fullmatch(r"IR-(\d{6})-H17", archive_id)
+    if not id_match:
+        raise ValueError(f"Unrecognized archive object ID: {archive_id}")
+    archive_date = datetime.strptime("20" + id_match.group(1), "%Y%m%d").date()
+    matches = []
+    for section in labels.sections():
+        match = re.fullmatch(r"printer_routes_(\d{4}-\d{2}-\d{2})_to_(\d{4}-\d{2}-\d{2})", section)
+        if match and date.fromisoformat(match.group(1)) <= archive_date <= date.fromisoformat(match.group(2)):
+            matches.append(section)
+    if len(matches) != 1:
+        raise ValueError(f"Expected one printer route for {archive_date}; found {matches}")
+    section = matches[0]
+    return section, labels.get(section, "ESC-N"), archive_date
+
+
+def select_k04(spool: str, labels_text: str | None = None) -> dict[str, Any]:
+    if labels_text is None:
+        labels_text = (EVIDENCE / "archive-labels.ini").read_text()
+    section, job, archive_date = select_printer_route(labels_text)
     candidates = [r for r in spool_rows(spool) if r["job"] == job
                   and r["class"] == "RECOVER" and r["state"] == "ACK"]
     selected = max(candidates, key=lambda r: (r["attempt"], r["timestamp"]))
-    return {k: selected[k] for k in ("line", "byte_start", "byte_end_exclusive", "timestamp",
-                                     "job", "attempt", "state", "class", "dest")} | {
+    return {"route_section": section, "archive_date": archive_date.isoformat(),
+            **{k: selected[k] for k in ("line", "byte_start", "byte_end_exclusive", "timestamp",
+                                        "job", "attempt", "state", "class", "dest")}} | {
         "payload_is_16_bytes": bool(re.fullmatch(r"[0-9A-Fa-f]{32}", (selected.get("payload") or ""))),
         "payload_integrity": "unverified_by_source_export",
     }
@@ -141,7 +162,20 @@ def run() -> dict[str, Any]:
     changed_subject = re.sub(rb"Subject:.*", b"Subject: technical-only metadata",
                              (EVIDENCE / "mail" / "11.eml").read_bytes(), count=1)
     register_later_draft = register.replace("2026-10-02", "2099-10-02")
+    labels_path = EVIDENCE / "archive-labels.ini"
+    labels_text = labels_path.read_text()
+    labels = configparser.ConfigParser()
+    labels.read_string(labels_text)
+    reordered = io.StringIO()
+    for section in reversed(labels.sections()):
+        reordered.write(f"[{section}]\n")
+        for key, value in labels.items(section):
+            reordered.write(f"{key}={value}\n")
+        reordered.write("\n")
+    august_labels = labels_text.replace("IR-261003-H17", "IR-260831-H17")
     tests = {
+        "K04_route_uses_archive_date_not_section_order": select_k04(spool, reordered.getvalue())["job"] == "PS-261003-0417",
+        "K04_archive_date_selects_matching_historical_route": select_printer_route(august_labels)[1] == "PS-260831-0091",
         "K04_selection_survives_damaged_payload": select_k04(damaged)["attempt"] == 2,
         "K04_selection_survives_omitted_payload": select_k04(omitted)["attempt"] == 2,
         "K06_issue_authority_beats_later_draft": selected_k06 == "C",
