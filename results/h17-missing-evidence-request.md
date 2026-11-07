@@ -93,7 +93,7 @@ The same surviving bookmark export lists `file:///R:/IT/staff-groups/EG.htm`, ti
 
 ### K04: former finance posting and reversal records
 
-The bookmark export also lists `file:///R:/Finance/PrevERP/posted-items-26.xls` and `file:///R:/Finance/PrevERP/reversal-register.htm`. These may provide an independent original record of the A3 posted versus A4 held-duplicate settlement already summarized in `supplier-reconciliation-L29.csv`. Request the original files with workbook formulas, hidden sheets, comments, reversal references and timestamps if they survive. Their relevance to the physical coupon is unproven; they are provenance/version-selection records, not coupon bytes.
+The bookmark export also lists `file:///R:/Finance/PrevERP/posted-items-26.xls` and `file:///R:/Finance/PrevERP/reversal-register.htm`. These may provide an independent original record of the A3 posted versus A4 held-duplicate settlement already summarized in `supplier-reconciliation-L29.csv`. Request the original files with workbook formulas, hidden sheets, comments, reversal references and timestamps if they survive. Specifically obtain both original entries and any receipt images for **ST-112 R3 POSTED/A3** and **ST-112 R4 HELD/A4 duplicate**, the only duplicated L-29/N ticket in the supplied reconciliation. Preserve the reversal/hold record and do not infer that R3/R4 or A3/A4 correspond to spool ATTEMPT values. Their relevance to the physical coupon is unproven; they are provenance/version-selection records, not coupon bytes.
 
 
 
