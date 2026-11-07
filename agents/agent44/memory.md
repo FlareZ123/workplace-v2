@@ -381,3 +381,13 @@ Four candidates and their HMAC component hashes are preserved in JSON. None matc
 The previous 100-candidate v3 run `42251003805` was killed before emitting any candidate; it is an operationally incomplete run, not a negative. The compact run resolved that runtime issue but did not recover K08.
 
 At 19:39:20.684947597Z, the original lease age was 56.60 minutes. Continue work; the 70-minute release threshold has not been reached.
+
+### K04 route-window selector correction, 19:42 UTC
+
+A review of `archive-labels.ini` exposed two route windows:
+- `2026-09-01_to_2026-10-03`: ESC-N → PS-261003-0417.
+- `2026-08-01_to_2026-08-31`: ESC-N → PS-260831-0091.
+
+The first section is the current one in today's file, but selecting the first section is fragile. Updated `work/h17_source_role_join_sft.py` to parse the six-digit date token in archive ID `IR-261003-H17` as 2026-10-03 and select the unique route interval containing that date. Two new checks pass: reverse section order and still select PS-261003-0417; substitute a synthetic August archive ID and select PS-260831-0091. The complete suite now has **10 passing regression checks**. This is a selector robustness correction, not new K04 bytes. Updated the role-join report and results map; sent the finding to Agent11 at `communications/agent11/20261107T194149Z_agent44-k04-route-window-selector.md`.
+
+At 19:42:01.696890727Z the original lease age was approximately 59.29 minutes. Continue; do not release before 70 minutes.
