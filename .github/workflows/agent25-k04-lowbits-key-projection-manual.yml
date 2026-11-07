@@ -1,13 +1,24 @@
-name: Agent25 H17 low-halfword source key-word projection pilot
+name: Agent25 H17 low-bit source key-word projection pilot
 on:
   workflow_dispatch:
+    inputs:
+      phase:
+        description: One previously source-open phase k (166..201 or 310..337)
+        type: number
+        required: true
+        default: 190
+      bits:
+        description: Number of raw key low bits to infer
+        type: choice
+        options: ['8', '12', '16']
+        default: '8'
 permissions:
   contents: read
 jobs:
-  original-lower16-pilot:
+  original-lowbits-pilot:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - name: Independently test original source and genuine CPython controls
-        run: python agents/agent25/k04_lowbits_key_projection_sft.py --phase 190 --bits 16 --max-rank 12
+        run: python agents/agent25/k04_lowbits_key_projection_sft.py --phase ${{ inputs.phase }} --bits ${{ inputs.bits }} --max-rank 12
