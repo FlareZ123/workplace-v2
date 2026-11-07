@@ -21,10 +21,13 @@ END = START + 8
 U32 = 0xFFFFFFFF
 U64 = 0xFFFFFFFFFFFFFFFF
 PCG_MULT = 6364136223846793005
+TRP2_SHA256 = "5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba"
+SPOOL_SHA256 = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 
 
 def selected_k05_records():
     raw = (EVIDENCE / "recorder" / "trip-recorder.raw").read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == TRP2_SHA256
     magic, version, record_size, count = struct.unpack_from("<8sHHI", raw)
     assert (magic, version, record_size) == (b"TRP2DUMP", 2, 24)
     by_latch = {}
@@ -51,7 +54,9 @@ def spool_jobs():
     pattern = re.compile(
         r"^(\S+)\s+JOB=PS-261003-(\d{4}).*?PAYLOAD=([0-9A-F]{32})"
     )
-    for line in path.read_text(encoding="utf-8").splitlines():
+    raw = path.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == SPOOL_SHA256
+    for line in raw.decode("utf-8").splitlines():
         match = pattern.search(line)
         if not match:
             continue
