@@ -34,7 +34,7 @@ Request the original **shared crew / noticeboard / galley photograph and caption
 - links between a photo, its caption, the WN-14 folder and any later envelope/margin record;
 - custody, export and profile-migration provenance.
 
-The FA-18 local archival-station/profile route and the MAIL-14 separate-photo/caption locator are possible custody paths; neither proves that a particular image or caption is the one Emily used.
+The MAIL-14 separate-photo/caption locator is independently supported. Any retired-profile or workstation path must be established through an authorized preserved image and independent host/profile inventory; no encrypted-folio-derived host attribution is a valid custody lead.
 
 ## Predeclared positive and negative outcomes
 
