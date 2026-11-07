@@ -219,3 +219,12 @@ The work-order also lists a **cosmetic-corrosion photograph** as requested/outst
 
 
 **Scoped native-mail addition:** Include the original native `MAIL-04` (Simon to Emily and David, 29 Sep 2026) and only its directly related thread/attachments. It is the retained closeout email that states the B/D/A/C witness walk and is referred to by the PTW-417 work-order; the current text-only export carries no attachment or native thread metadata. Preserve original headers, quoted replies, MIME parts, attachments and any field-sketch/photo link. This is a specific closeout-thread request, not a mailbox-wide search.
+
+
+## K08: television-room map-back book and tea-receipt bookmark
+
+MAIL-09 (Jason to Zoey, 1 October 2026, 08:03 UTC) records that the library books were in the television room, that the book with a map in the back belonged to David, and that a tea receipt was being used as a bookmark and was deliberately left in place. N23 separately attributes a margin wording to Emily, but does not identify the medium, page, or book. The chronology and shared “margin/bookmark” vocabulary do not prove that Emily wrote in David's book or that the receipt carries her words.
+
+If the physical items survive, request the exact David-owned book and bookmark **together and in situ**. Preserve the title and edition, original position of the bookmark, marked page and adjacent pages, all marginalia, both sides of the receipt, any date/merchant/amount or recipe text, and custody or movement history. Keep “receipt” open to the physical item's actual form; do not infer whether it is a purchase slip or an older recipe/receipt card before inspection.
+
+The *Riddle of the Sands* was tested only as a candidate because its public edition contains maps and maritime/night-time motifs. Its pinned printed text yielded zero K08 matches in 55,941 frozen 3–64-word motif-gated windows. MAIL-09 does not name that title. Do not treat it as the identified book or launch another literary-text sweep. The physical book, marked page and receipt are the relevant evidence; no exact K08 words are established by the current export.
