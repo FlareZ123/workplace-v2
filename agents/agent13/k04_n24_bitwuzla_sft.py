@@ -17,6 +17,7 @@ import hmac
 import json
 import os
 import random
+import re
 import sys
 import time
 from pathlib import Path
@@ -162,7 +163,12 @@ def main() -> None:
     assert recovered_digest == test_digest
     assert recovered_sha == hashlib.sha512(test_digest).digest()
     test_integer = key_integer(test_words)
-    assert random.Random(test_integer).getstate()[1][:624] == base.native_initialized(test_words)
+    test_state = base.native_initialized(test_words)
+    assert random.Random(test_integer).getstate()[1][:624] == test_state
+    fixed_state = [
+        f"(assert (= s{index} #x{word:08x}))"
+        for index, word in enumerate(test_state)
+    ]
     print("SYNTHETIC_HMAC32_CPTHON_VERSION2_LAYOUT_PASS", flush=True)
 
     # Positive and negative controls validate Bitwuzla model extraction.
@@ -173,7 +179,9 @@ def main() -> None:
         f"(assert (= k{index} #x{word:08x}))"
         for index, word in enumerate(test_words)
     ]
-    positive_formula = "\n".join(smt + positive_constraints + fixed + ["(check-sat)"])
+    positive_formula = "\n".join(
+        smt + positive_constraints + fixed + fixed_state + ["(check-sat)"]
+    )
     positive, positive_keys, positive_elapsed, positive_timeout = solve(
         positive_formula, args.control_timeout_seconds
     )
@@ -194,7 +202,9 @@ def main() -> None:
         f"(assert (= k{index} #x{word:08x}))"
         for index, word in enumerate(wrong_words)
     ]
-    negative_formula = "\n".join(smt + positive_constraints + wrong_fixed + ["(check-sat)"])
+    negative_formula = "\n".join(
+        smt + positive_constraints + wrong_fixed + fixed_state + ["(check-sat)"]
+    )
     negative, _, negative_elapsed, negative_timeout = solve(
         negative_formula, args.control_timeout_seconds
     )
@@ -226,6 +236,7 @@ def main() -> None:
         "k04_commitment_match": False,
         "hmac32_seed_layout_match": False,
         "k08_commitment_match": False,
+        "k08_phrase_commitment_match": False,
     }
 
     print(
@@ -295,6 +306,28 @@ def main() -> None:
                 layout_match and k08_sha == acceptance["slot_sha256"]["K08"]
             ),
         })
+        try:
+            phrase_seed = digest.decode("utf-8")
+        except UnicodeDecodeError:
+            phrase_seed = None
+        if phrase_seed is not None:
+            normalized = " ".join(
+                re.sub(r"[^a-z0-9\\s]", " ", phrase_seed.lower()).split()
+            )
+            nonce = bytes.fromhex(route["K08"]["desk_nonce"])
+            phrase_component = hmac.digest(
+                nonce, normalized.encode("utf-8"), "sha256"
+            )[:16]
+            phrase_sha = hashlib.sha256(phrase_component).hexdigest()
+            result.update({
+                "seed_bytes_as_normalized_phrase": normalized,
+                "k08_phrase_sha256": phrase_sha,
+                "k08_phrase_commitment_match": (
+                    phrase_sha == acceptance["slot_sha256"]["K08"]
+                ),
+            })
+            if result["k08_phrase_commitment_match"]:
+                print("K08_PHRASE_FROM_PRINTER_SEED", normalized, flush=True)
         print(
             "FULL_SOURCE_VERIFIED",
             "K04_SHA_MATCH", result["k04_commitment_match"],
