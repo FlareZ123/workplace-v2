@@ -35,6 +35,16 @@ The 1997/394-page pagination starts those sections at p.59 and p.111, placing p.
 
 **ST-112** is the sole duplicated North ticket: R3 POSTED/A3 versus R4 HELD/A4 duplicate. If the physical book is the 1947 edition and the receipt marks p.112, the alignment is unusually coherent. If the book is a 394-page edition, p.112 falls on the southern side. Do not infer that A3/A4 denote book editions.
 
+### C. W. Eric Wilson's *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen*
+
+Agent15 identified a real-world guidebook candidate for the in-story Chapter-XX “little drab book” and MAIL-09's map-back volume: W. Eric Wilson, *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen* (Imray, 1934), listed as 411 pages, clothbound, with a frontispiece and 18 folding charts. A 1938 second edition is listed at 404 pages. This matches the broad physical profile of a yachtsmen's guide to a British estuary with a frontispiece and substantial chart material.
+
+The specific in-story details “By Lieut. X--, R.N.” and “Dollmann” on the back have **not** been verified against Wilson's guide. No table of contents/page map was found, so the L-29 ticket numbers merely fit within its page count; there is no demonstrated North/South page partition. Treat this as a plausible physical candidate, not an identification. On retrieval, compare title/imprint, edition, cloth, frontispiece, folding charts/map, back-cover label and receipt position.
+
+Public catalogue listings:
+- 1934 first-edition listing: https://www.abebooks.com/first-edition/Pilots-guide-Thames-Estuary-Norfolk-Broads/11292639200/bd
+- 1938 second-edition listing: https://www.abebooks.co.uk/Pilots-Guide-Thames-Estuary-Norfolk-Broads/19934063826/bd
+
 ## Discriminating physical checks
 
 1. Transcribe the **original recovery envelope** exactly, preserving punctuation, spacing, and capitalization before applying the K08 normalization.
