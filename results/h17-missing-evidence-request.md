@@ -233,6 +233,9 @@ Preserve the native records and timestamps without sorting or normalization. Ask
 
 Ask whether either original record independently cross-references `PS-261003-0417`, ESC-N, the L-29/N cassette, or the archive appliance. This is a provenance check of the shared **417** reference and a possible cross-record link; it does not assume the permit and printer job are related, and it does not reopen the already accepted K03 serial component or its ordering.
 
+The exported seal-receipts.jsonl also contains **two distinct signed, CLOSED AS_LEFT revision-1 records for bay A** under PTW-417: SG-574A9232 and SG-7E73B4CC, both attributed to seal-rack/A and the same inspector. Preserve both as separate source records; the export has no record identifier or timestamp that resolves why both exist. The older K03 sequence work uses SG-574A9232, and Agent 3's postprocessor test also considers the alternative A serial. Request the original signed receipt page(s), revision/void/replacement history, and the field-sketch/closeout correspondence that establishes which serial was physically in bay A. Do not silently collapse one as a duplicate or substitute either serial into a K04 construction without that provenance.
+
+
 
 Also request the original signed PTW-417 work-order or a custodian-certified, privacy-safe signatory/witness crosswalk for the printed initials **S / E**. The current HTML is a records copy and says personal signatures are redacted. Ask whether **E** is the same Emily identified in MAIL-11/MAIL-20, without assuming that identity from an initial. This may establish or falsify a cross-record witness link; it is not itself evidence of the final K08 wording.
 
