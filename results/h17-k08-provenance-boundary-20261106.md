@@ -4,7 +4,7 @@
 **Owner:** Agent 5  
 **Status:** Source-derived object classification; exact wording still MISSING.
 
-> **Correction to the first draft:** MAIL-11 is the RC-17 revision-C issue receipt, not a K08 message. The earlier draft incorrectly attributed the old-label distinction to MAIL-11. This corrected version removes that claim and relies on the actual K08 sources below.
+> **Source-coverage correction (7 November):** MAIL-11 is titled *RC-17 issue receipt*, and its first two paragraphs concern revision C. Its **third paragraph is first-person K08 evidence from Emily**: it explicitly rejects the two obsolete quoted labels and describes the intended late-watch, water and hospitality imagery. Earlier dismissal of this entire mail based on the subject line was incorrect. It does not quote the final keeper caption.
 
 ## Finding
 
@@ -16,6 +16,7 @@ This does **not** prove whether the final caption was a revision of an earlier s
 
 - **Records-custodian note, lines 4–8 and 10–22:** This is a working preservation export, not the full incident record; repeated quoted reply material is omitted, and the absence of a gap marker is not a completeness certificate. It defines K08 as the keeper's desk phrase: a personal caption distinguishing the recovery envelope from similarly named commissioning and standby envelopes, intentionally memorable rather than a cabinet number. It also warns that a source reference does not make every byte in that record part of the recovery envelope.
 - **K08 route entry:** The source is explicitly “keeper's desk phrase, crew notes and noticeboard drafts.” Its rule says to recover the keeper's caption for the spirit of the late watch rather than the technical incident title, then apply the specified normalization and HMAC check.
+- **MAIL-11, final paragraph:** Emily distinguishes both obsolete labels, “Back before the first boat” and “Leave the light on for the next watch,” from the final keeper wording. She describes people making room for one another after a long watch, water outside and a night nearly finished; she worked with desk notes and photograph captions. This is direct author intent and version-exclusion evidence, though no exact final phrase is quoted.
 - **MAIL-20, lines 12–22:** The bundle is trimmed and has no mailbox search or live facility connection. Gabriel says Emily's description concerned the late crew making room for one another, rather than an accurate description of a valve or the fire. There were several captions and drafts on her desk; the exact words she finally chose matter more than a paraphrase. The acceptance check distinguishes candidates, and the route sheet supplies normalization and desk nonce.
 - **MAIL-14, lines 12–23:** WN-14 was signed using four ink groups A–D. The pencil note was a standby transcription and was crossed through; the spare dispatch sticker was removed so it would not be mistaken for a control group. Emily's desk notes were under the folder, outside the controlled-copy sleeve. David explicitly says the photographs and galley captions should not be filed as part of the engineering procedure.
 - **N20, line 62:** Emily's stated semantic brief is the sea, the end of the night, and voices at the table. She explicitly says not to use the shorter standby label.
@@ -35,7 +36,7 @@ This does **not** prove whether the final caption was a revision of an earlier s
 ## Source pins
 
 - `evidence/records-custodian.txt`: SHA-256 `786211e7be248e6ba31f017a071e038436782b8550b863f85d77a6c32e1d640a`
-- `evidence/mail/20.eml`: SHA-256 `e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71`
+- `evidence/mail/11.eml`: SHA-256 `f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29`\n- `evidence/mail/20.eml`: SHA-256 `e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71`
 - `evidence/mail/14.eml`: SHA-256 `9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5`
 - `evidence/crew/noticeboard-and-desk-notes.txt`: SHA-256 `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
 - `evidence/recovery-routing.json`: SHA-256 `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5`
