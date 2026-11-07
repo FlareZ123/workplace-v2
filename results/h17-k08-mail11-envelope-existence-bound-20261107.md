@@ -23,6 +23,25 @@ MAIL-11 is an **existence/working-version statement**: by 1 October, the author 
 
 If MAIL-11 refers to the same physical envelope later identified as `H17-IR-261003`, and if its wording remained unchanged, then K08 was temporally eligible to be present in an AX-7782 object captured after 3 October 20:55Z. This strengthens the joint-object retrieval hypothesis.
 
+## Joint physical assembly hypothesis
+
+The surrounding chronology makes a **single-folder / envelope-plus-coupon** assembly worth testing:
+
+| UTC time | Source event | What it establishes |
+|---|---|---|
+| 2026-10-01 18:14 | MAIL-11 | An envelope phrase was already being treated as the relevant wording; desk notes and photo captions had informed it. |
+| 2026-10-02 09:56 | MAIL-13 | A handoff print was left with the ordinary records folder; AX-7782 was identified as the actual retained copy, distinct from drill/dry-run transfers. |
+| 2026-10-02 14:38 | MAIL-14 | WN-14 was signed; Emily's desk notes were under the folder, outside the controlled-copy sleeve; the folder was to go to incoming watch after dinner. |
+| 2026-10-03 18:02 | PS-0417 RECOVER ACK2 | The selected ESC-N spool event occurred; the local 16-byte payload remains unverified against K04's commitment. |
+| 2026-10-03 20:55:10 | AX-7782 receipt ledger | The AX-7782 receipt field postdates the selected print event by 2h 53m 10s. |
+| 2026-10-04 11:06 | MAIL-20 | Bundle 06 was described as staged/trimmed; the envelope wording was distinguished from old labels and desk notes were said to be kept with technical material. |
+
+A plausible physical arrangement is that the K08 phrase is on the recovery envelope and the K04 escrow coupon travelled inside, attached to, or alongside that envelope in the ordinary/WN-14 folder. The timing is compatible with this: the phrase was being discussed by 1 October, the selected coupon print occurred on 3 October, and the AX-7782 receipt field followed later that evening.
+
+This is a **retrieval hypothesis, not a source fact**. K04 and K08 are described as separate source objects; the shared incident identifier does not prove nesting. The AX-7782 receipt is not yet an authenticated content-snapshot time, and MAIL-13/14 do not prove that the two folder descriptions refer to one physical folder.
+
+For physical intake, photograph the folder and envelope before opening or separating anything. Record all faces, flap/seal, adhesive, window, folds, staples, inserts, backing sheets, and relative orientation. Preserve whether the coupon is enclosed, attached, adjacent, or absent. If the envelope is empty or the objects travelled separately, keep the K04 and K08 source chains distinct.
+
 ## Limits
 
 This does **not** recover any K08 word and does not prove:
