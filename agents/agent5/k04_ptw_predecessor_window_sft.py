@@ -110,6 +110,9 @@ def main() -> None:
         serials = [by_permit[p][0]["serial"] for p in range(job - 4, job)]
         return hashlib.sha256("|".join(serials).encode("ascii")).digest()[:16]
 
+    def raw_hash_window(job: int) -> bytes:
+        return hashlib.sha256(serial_window(job)).digest()[:16]
+
     def matches_component(candidate_component: bytes, observed_payload: bytes) -> bool:
         return xor16(candidate_component, mask) == observed_payload
 
@@ -123,6 +126,7 @@ def main() -> None:
     raw_component_hits = []
     raw_payload_hits = []
     hash_component_hits = []
+    raw_hash_component_hits = []
     for job in range(394, 417):
         observed = spool[job][0]["payload"]
         for name, (reverse_permits, reverse_each) in orientations.items():
@@ -134,10 +138,14 @@ def main() -> None:
         hashed_component = pipe_hash_window(job)
         if matches_component(hashed_component, observed):
             hash_component_hits.append(job)
+        raw_hashed_component = raw_hash_window(job)
+        if matches_component(raw_hashed_component, observed):
+            raw_hash_component_hits.append(job)
 
     assert not raw_component_hits
     assert not raw_payload_hits
     assert not hash_component_hits
+    assert not raw_hash_component_hits
 
     # Pre-job four-bay snapshot: latest singleton serial per bay before PS-n.
     snapshot_hits = {"ABCD": [], "BDAC": []}
@@ -168,6 +176,9 @@ def main() -> None:
     hash_target_component = pipe_hash_window(417)
     hash_target_payload = xor16(hash_target_component, mask)
     hash_target_digest = sha256(hash_target_component)
+    raw_hash_target_component = raw_hash_window(417)
+    raw_hash_target_payload = xor16(raw_hash_target_component, mask)
+    raw_hash_target_digest = sha256(raw_hash_target_component)
 
     # Secondary candidate: latest singleton serial for each bay before PTW-417.
     latest_by_bay = {}
@@ -194,6 +205,8 @@ def main() -> None:
     assert raw_target_digest != K04_SHA256
     assert hash_target_payload != selected_payload
     assert hash_target_digest != K04_SHA256
+    assert raw_hash_target_payload != selected_payload
+    assert raw_hash_target_digest != K04_SHA256
     assert all(v["component_sha256"] != K04_SHA256
                and not v["payload_matches_selected"] for v in latest_blocks.values())
 
@@ -202,6 +215,7 @@ def main() -> None:
     print("PREDECESSOR_CONTROLS=23; RAW_COMPONENT_XOR_MASK_HITS=0")
     print("PREDECESSOR_CONTROLS=23; RAW_UNMASKED_PAYLOAD_HITS=0")
     print("PREDECESSOR_CONTROLS=23; SHA256_PIPE_COMPONENT_XOR_MASK_HITS=0")
+    print("PREDECESSOR_CONTROLS=23; RAW_BYTE_SHA256_COMPONENT_XOR_MASK_HITS=0")
     print("PREJOB_SNAPSHOT_CONTROLS=21; ABCD_HITS=0; BDAC_HITS=0")
     print("RAW_ORIENTATIONS=4; SYNTHETIC_POSITIVE_CONTROL=PASS")
     print(f"PS0417_SELECTED_ACK2={selected_payload.hex().upper()}")
@@ -211,6 +225,9 @@ def main() -> None:
     print(f"PTW413_416_SHA256_PIPE_COMPONENT={hash_target_component.hex().upper()}")
     print(f"PTW413_416_SHA256_PIPE_PREDICTED_PAYLOAD={hash_target_payload.hex().upper()}")
     print(f"PTW413_416_SHA256_PIPE_COMPONENT_SHA256={hash_target_digest}")
+    print(f"PTW413_416_RAW_BYTE_SHA256_COMPONENT={raw_hash_target_component.hex().upper()}")
+    print(f"PTW413_416_RAW_BYTE_SHA256_PREDICTED_PAYLOAD={raw_hash_target_payload.hex().upper()}")
+    print(f"PTW413_416_RAW_BYTE_SHA256_COMPONENT_SHA256={raw_hash_target_digest}")
     print(f"OFFICIAL_K04_SHA256={K04_SHA256}")
     print("LATEST_PER_BAY_CANDIDATES=" + json.dumps(latest_blocks, sort_keys=True))
     print("K04_RECOVERY=NO_HIT")
