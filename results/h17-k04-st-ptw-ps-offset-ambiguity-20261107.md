@@ -87,6 +87,12 @@ Agent35's newer K08 synthesis identifies Frank Cowper's five-volume `Sailing Tou
 
 If that crosswalk is real, +304 maps selected PS-0417 to ST/page 113, immediately after the last North suffix ST-112, whereas +300 maps it to page117. This is a **weak adjacency counterweight in favour of +304**, complementary to the stronger PTW holdout/bay evidence. Praeger's single-volume boundary coincidence pulls the other way (+300→p.117 immediately before p.118). The two book hypotheses therefore do not independently settle the offset; keep both page clues low-confidence until the physical title/volume and original return index are authenticated. See `results/h17-k08-cowper-sailing-tours-volume-crosswalk-20261107.md`.
 
+## Shared PTW-396 anchor for the gap-96 ticket
+
+The p951 gap after PS-261003-0396 has two competing ticket labels: +300 gives ST-096; +304 gives ST-092. Both hypotheses point to the same permit, PTW-396. The retained `seal-receipts.jsonl` has a signed, closed, AS_LEFT PTW-396 receipt for bay C with serial `SG-9929E382` (revision 1).
+
+This creates a precise discriminator for the missing original source: retrieve **both ST-092 and ST-096 packets**, including front/back, attachments and serial slips, and check which one explicitly references PTW-396 / `SG-9929E382`. A direct match would authenticate the gap-96 ticket↔permit join for that candidate. The local PTW-396 receipt alone cannot choose between the offsets, and this serial is not evidence of K04 bytes or a native p951 donor.
+
 ## Interpretation and next evidence
 
 The raw observations support a **three-way numeric-index hypothesis** because PTW-390..416 and PS-0390..0416 align exactly, while the FA-17 ST tickets overlap that sequence under both +300 and +304. The local export contains no source record that explicitly pairs an ST ticket with a PTW permit or PS job.
