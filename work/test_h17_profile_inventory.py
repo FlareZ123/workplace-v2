@@ -26,12 +26,18 @@ def main() -> None:
         files = {
             "AppData/Local/Microsoft/Outlook/Archive.ost": b"!BDN" + b"outlook-cache",
             "AppData/Local/Microsoft/OneNote/OneNoteOfflineCache.onecache": b"onenote-cache",
+            "AppData/Local/Microsoft/OneNote/Exports/FieldNotes.onepkg": b"PK\x03\x04onepkg",
+            "AppData/Roaming/Microsoft/Sticky Notes/StickyNotes.snt": b"legacy-sticky-notes",
             "AppData/Local/Packages/Microsoft.MicrosoftStickyNotes/LocalState/plum.sqlite": b"SQLite format 3\x00notes",
             "Windows/System32/spool/PRINTERS/00017.SPL": b"printer-spool-object",
             "Windows/System32/winevt/Logs/Microsoft-Windows-PrintService%4Operational.evtx": b"ElfFile\x00print-log",
             "Pictures/crew-caption.jpg": b"\xff\xd8\xffphoto-bytes",
+            "Pictures/crew-scan.cr2": b"raw-photo-bytes",
             "Stores/mug-stock.xls": b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1workbook",
             "Downloads/scanrelease.txt": b"scan-release-note",
+            "Downloads/scanrelease.mht": b"mime-html-note",
+            "Windows/System32/config/printer-queue.reg": b"Windows Registry Editor Version 5.00",
+            "Windows/System32/spool/PRINTERS/00018.PRN": b"raw-print-job",
             "Windows/Search/Data/Applications/Windows.edb": b"search-index",
             "Recent/AutomaticDestinations/example.automaticDestinations-ms": b"jump-list",
             "Unrelated/random.bin": b"unclassified",
@@ -55,7 +61,8 @@ def main() -> None:
         inventory = build_inventory(root)
         by_path = {item["path"]: item for item in inventory["files"]}
         assert inventory["schema"] == "h17-profile-inventory/v1"
-        assert inventory["summary"]["files_listed"] == len(by_path)
+        assert inventory["summary"]["files_listed"] == len(by_path) == 17
+        assert inventory["summary"]["candidate_files_hashed"] == 16
         assert "Chrome/Profile/Cookies/Cookies.sqlite" not in by_path
         assert "Chrome/Profile/Login Data" not in by_path
         assert "Microsoft/Credentials/secret.dat" not in by_path
@@ -69,12 +76,18 @@ def main() -> None:
         expected = {
             "AppData/Local/Microsoft/Outlook/Archive.ost": ("mail", "PST_OR_OST"),
             "AppData/Local/Microsoft/OneNote/OneNoteOfflineCache.onecache": ("notes", "UNKNOWN"),
+            "AppData/Local/Microsoft/OneNote/Exports/FieldNotes.onepkg": ("notes", "ZIP"),
+            "AppData/Roaming/Microsoft/Sticky Notes/StickyNotes.snt": ("notes", "UNKNOWN"),
             "AppData/Local/Packages/Microsoft.MicrosoftStickyNotes/LocalState/plum.sqlite": ("notes", "SQLITE3"),
             "Windows/System32/spool/PRINTERS/00017.SPL": ("printer", "UNKNOWN"),
             "Windows/System32/winevt/Logs/Microsoft-Windows-PrintService%4Operational.evtx": ("printer", "EVTX"),
             "Pictures/crew-caption.jpg": ("photo_caption", "JPEG"),
+            "Pictures/crew-scan.cr2": ("photo_caption", "UNKNOWN"),
             "Stores/mug-stock.xls": ("office_document", "OLE_COMPOUND"),
             "Downloads/scanrelease.txt": ("office_document", "UNKNOWN"),
+            "Downloads/scanrelease.mht": ("office_document", "UNKNOWN"),
+            "Windows/System32/config/printer-queue.reg": ("printer", "UNKNOWN"),
+            "Windows/System32/spool/PRINTERS/00018.PRN": ("printer", "UNKNOWN"),
             "Windows/Search/Data/Applications/Windows.edb": ("profile_metadata", "UNKNOWN"),
             "Recent/AutomaticDestinations/example.automaticDestinations-ms": ("profile_metadata", "UNKNOWN"),
         }
