@@ -9,6 +9,7 @@ on:
         type: choice
         options:
           - part1-search
+          - hathi-access
           - p130
           - p151
           - p121
