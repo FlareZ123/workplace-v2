@@ -1,0 +1,21 @@
+name: Agent4 K04 joint-affine complete printer stage candidates
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-affine-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        geometry: [950, 951, 952, 953, 954, 955]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Discover low joint-rank full 16-byte original source coupons
+        run: python agents/agent4/k04_joint_affine_stage_windows_sft.py ${{ matrix.geometry }}
