@@ -250,3 +250,12 @@ If David's book survives, retrieve the exact copy and receipt together in situ. 
 The 1937 first edition is confirmed as a 394-page volume with a rear folding map, but its section-start pagination was not independently recovered; the 1939 second revised edition pagination also remains unresolved. The 1947 third edition is the strongest checked fit, not a proven unique identification across all editions. The CSV preamble defines R3/R4 as vendor settlement batches, so the ST-112 R3/R4 duplicate is not an edition marker.
 
 This is a secondary physical-carrier request. MAIL-14's placement of Emily's original desk notes under the WN-14 folder remains the primary direct K08 margin-source request. Do not assume Praeger is the title until the physical book is inspected.
+
+
+### Higher-priority K08 profile candidate: Wilson's yachtsman's guide
+
+A more direct physical-profile candidate has emerged: W. Eric Wilson's *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen* (Imray, 1934). Bibliographic listings describe a clothbound 411-page first edition with a frontispiece, 18 folding charts and 20 photo illustrations; a 1938 second edition is listed at 404 pages. This matches MAIL-09's map-back book more directly than the Praeger natural-history travelogue, though no local record names Wilson's title.
+
+MAIL-06's standby suffix `5E67` may split as `0x5E=94` and `0x67=103`, suggesting printed page 94, word 103. ST-094 is present in the L-29/N ticket set. This is a specific hypothesis only; the source does not define a byte-splitting rule and no authorized page-94 scan has been inspected. If the physical book is Wilson, test page 94 / word 103 against its exact printed pagination and a documented word-count convention. Also inspect page 112 because ST-112 is duplicated and the earlier Praeger crosswalk identified it as a possible bookmark/page discriminator. Preserve the receipt in situ and inspect both sides, all marginalia, the frontispiece, all charts, and any WN-14 standby transcription ending `5E67`.
+
+The title-page attribution available in listings is W. Eric Wilson D.S.O.; no evidence yet establishes the “Lieut. X--, R.N.” attribution from the Riddle chapter. Treat that literary parallel as a profile clue, not proof. Keep Wilson and Praeger as competing physical-book hypotheses until the actual title and edition are inspected. MAIL-14's Emily desk notes under the WN-14 folder remain the primary K08 literal-source request.
