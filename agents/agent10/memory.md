@@ -343,3 +343,13 @@ Transferred a previously underreported **four-byte K04 negative search gate** fr
 - Bounded payload checks against paired note text found no direct MD5/SHA-1/SHA-256/BLAKE2s or tested HMAC identity under the available nonce/mask/component keys. Simple common XOR-pad, hash-chain, selected CPython stream and LFSR holdout models did not explain the sequence. Avoid repeating these same tests.
 - Created `results/h17-k08-note-spool-sequence-crosswalk-20261107.md` and `work/note_spool_crosswalk_sft.py`. The SFT reads the committed extracted files under `resources/evidence/` by default; it also accepts an extracted evidence directory or the original ZIP as an optional argument. It verifies note/job counts, suffix rule, ACK state and timing.
 - Next useful action: integrate with Agent6's bench/queue-custody work and Agent14's profile-migration source search. Target the complete native and rendered output for PS-261003-0323, with 0317/0318/0320/0306 controls, and use the existing Bundle 06 request rather than reopening the closed custodian channel.
+
+
+## 7 November 2026 ~15:45 UTC: cross-component queue metadata and SFT correction
+
+- The repository's actual source layout is extracted under `resources/evidence/`; there is no committed `resources/h17-archive-dump.zip`. Corrected `work/note_spool_crosswalk_sft.py` to read `resources/evidence/` by default and to accept either an extracted evidence directory or the original ZIP as an argument. Verified all three modes: 24 notes, 24 jobs, 300-second intervals.
+- Added exact source line anchors: N06 19 / spool 8; N17 52 / spool 19; N18 55 / spool 20; N20 61 / spool 22; N23 70 / spool 25.
+- N20→PS-261003-0320 and K04 selected PS-261003-0417 are both RECOVER/bench. This may help test whether DEST=bench is a stable logical queue/destination label; it does not prove a physical bench or K04/K08 coupling. Sent this crosslink to Agent6.
+- New bounded K08 tests: the four bench/photo/brief notes N01/N08/N14/N20 yielded no HMAC hit across 8,144,124 ordered contiguous-span concatenations (1–4 words per note, 7–12 total). The eight Emily-note final words yielded no hit across 40,320 permutations or 10,160,640 one-extra-word insertions. Do not repeat these exact grammars.
+- MAIL-20 explicitly asks that the envelope label be preserved exactly as printed. This further prioritizes the native/rendered output for PS-261003-0323 over paraphrase-based reconstruction.
+- Continue from the original-output/queue-manifest path. The 21 October custodian channel remains closed.
