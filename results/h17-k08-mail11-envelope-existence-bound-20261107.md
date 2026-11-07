@@ -1,6 +1,6 @@
-# K08 envelope phrase: MAIL-11 pre-commit existence bound
+# K08 envelope phrase: MAIL-11 text lead and conditional chronology
 
-**Question.** Does the local email chronology place the keeper's envelope wording before the 3 October AX-7782 receipt, making the retained object a plausible joint K04/K08 carrier?
+**Question.** Does MAIL-11's text, together with its displayed but unauthenticated Date header, support a conditional chronology in which the K08 envelope phrase could predate the AX-7782 receipt field?
 
 ## Source facts
 
@@ -63,11 +63,12 @@ The mail export is a single-part text rendition without native threading headers
 ## Next discriminating retrieval
 
 Acquire, in this order:
-1. Native MAIL-11 and its full thread/attachments, with Message-ID, In-Reply-To, References, received/delivery timestamps, attachment names and hashes.
-2. The original supplier commissioning note and all annexes/worked examples that define K08.
-3. The physical envelope `H17-IR-261003`, Emily's WN-14 desk-note stack, and separate photo/galley-caption originals, preserving their original placement and version provenance.
-4. The AX-7782 original manifest, object-version/snapshot event, and all eight attempt-2 chunk payloads, not only the receipt ledger.
+1. Authenticate the original mail namespace and export provenance using the custodian, mailbox inventory, archive index or source manifest. Do not query by the local synthetic-looking Message-IDs.
+2. After that gate passes, retrieve native MAIL-11 and its full thread/attachments, with Message-ID, In-Reply-To, References, received/delivery timestamps, attachment names and hashes.
+3. The original supplier commissioning note and all annexes/worked examples that define K08.
+4. The physical envelope `H17-IR-261003`, Emily's WN-14 desk-note stack, and separate photo/galley-caption originals, preserving their original placement and version provenance.
+5. The AX-7782 original manifest, object-version/snapshot event, and all eight attempt-2 chunk payloads, not only the receipt ledger.
 
 **Confidence:** High that the supplied MAIL-11 text refers to an envelope phrase and desk/photo-caption drafting; low-to-medium that the displayed 1 October Date header is the authentic original transmission time; medium that the unnamed envelope is the later K08 envelope; low that the final wording remained unchanged or was included in AX-7782. No K08 component or combined recovery key was recovered.
 
-**Reproducibility:** Source file `evidence/mail/11.eml`; `evidence/recovery-routing.json`; `evidence/transfers/transfer-audit.jsonl`. Time intervals were computed from the three UTC timestamps above.
+**Reproducibility:** Source files `evidence/mail/11.eml`, `evidence/mail/13.eml`, `evidence/mail/14.eml`, `evidence/mail/20.eml`, `evidence/recovery-routing.json`, `evidence/transfers/transfer-audit.jsonl`, and the spool reconstruction log. Time differences were computed from displayed Date/receipt fields and the spool-log timestamp; they are not native-authenticated event times.
