@@ -19,7 +19,7 @@ Results:
 - Open Library exact-title/author search returned no matching edition.
 - HathiTrust Catalog API returned the authoritative record `100485750`, OCLC `7504145`, for *Sailing tours; the yachtsman's guide to the cruising waters of the English coast*.
 
-The official HathiTrust catalog page identifies Frank Cowper as author, gives the publication range London, L.U. Gill, 1892–1896, and describes five parts. Its viewability list includes **Full view pt.1** at Harvard and **Full view v.2** at Harvard. The Catalog API identifies the Part I item as `hvd.hn5w2p`, enumeration `pt.1`, rights code `pd`, and `Full view`.
+The official HathiTrust catalog page identifies Frank Cowper as author, gives the publication range London, L.U. Gill, 1892–1896, and describes five parts. Its viewability list includes **Full view pt.1** at Harvard and **Full view v.2** at Harvard. The Catalog API identifies the Part I item as `hvd.hn5w2p`, enumeration `pt.1`, rights code `pd`, and `Full view`. The HathiTrust full-record API embeds the MARC XML: field 008 encodes the set's 1892–1896 range, field 260 gives London, L.U. Gill, 1892–1896, and field 505 identifies Part I as *The coasts of Essex and Suffolk*. These are set-level bibliographic facts; the item-level title-page imprint remains unverified. The 974 item field's `y=1896` should not be treated as proof that Part I itself was issued in 1896.
 
 - [Official HathiTrust catalog record](https://catalog.hathitrust.org/Record/100485750)
 - [HathiTrust Full view Part I item](https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p)
