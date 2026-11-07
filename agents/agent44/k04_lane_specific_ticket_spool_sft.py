@@ -160,6 +160,7 @@ def main() -> None:
             'folio': folio,
             'tab': tab_number,
             'candidate_offset': offset,
+            'candidate_ptw': f'PTW-{suffix + 304}',
             'candidate_ps': f'PS-261003-{ps_suffix:04d}',
             'present': bool(job_rows),
             'rows': [f'{r["attempt"]}:{r["state"]}:{r["class"]}/{r["dest"]}' for r in job_rows],
@@ -176,6 +177,17 @@ def main() -> None:
     serial_by_permit = {}
     for record in seals:
         serial_by_permit.setdefault(record['permit'], []).append(record['serial'])
+
+    for prediction in predictions:
+        prediction['ptw_present'] = len(serial_by_permit.get(prediction['candidate_ptw'], [])) == 1
+    ptw_coverage = {}
+    for lane in sorted({p['lane'] for p in predictions}):
+        lane_rows = [p for p in predictions if p['lane'] == lane]
+        ptw_coverage[lane] = {
+            'predicted': len(lane_rows),
+            'retained_unique_receipts': sum(1 for p in lane_rows if p['ptw_present']),
+            'missing': [p['candidate_ptw'] for p in lane_rows if not p['ptw_present']],
+        }
 
     controls = []
     for ticket in selected_rows:
@@ -220,6 +232,7 @@ def main() -> None:
         'prediction_count': len(predictions),
         'lane_counts': {lane: sum(1 for p in predictions if p['lane'] == lane) for lane in sorted({p['lane'] for p in predictions})},
         'predictions': predictions,
+        'ptw_coverage': ptw_coverage,
         'serial_control_count': len(controls),
         'serial_seed_checks': seed_checks,
         'serial_seed_hits': seed_hits,
@@ -231,6 +244,9 @@ def main() -> None:
     assert len(predictions) == 12
     assert anchor_offsets == {'FA-17': 305, 'LV-42': 306}
     assert len(controls) == 6
+    assert ptw_coverage['North L-29/N']['retained_unique_receipts'] == 4
+    assert ptw_coverage['South L-29/S']['retained_unique_receipts'] == 0
+    assert ptw_coverage['FA-17 L-28/A2']['retained_unique_receipts'] == 2
     assert seed_checks == 576 and not seed_hits
     assert mac_checks == 216 and not mac_hits
     assert all(not (ptw == 416 and row['class'] == 'RECOVER') for ptw, ps, serial, row in controls)
