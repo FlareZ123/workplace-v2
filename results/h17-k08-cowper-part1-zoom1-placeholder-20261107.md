@@ -33,7 +33,7 @@ The five identical hashes across distinct page labels establish that these are a
 
 This closes the bounded Part I `zoom=1` route. The earlier `zoom=2` alias probe returned the generic “image not available” placeholder (SHA-256 `3efa8c43e5b4348f303a528c81adf435f0111ea752fe9f0f6241478b60987fa6`). The ordinary Google Books viewer for `hvd.hn5w2p` returned 404; HathiTrust viewer/image/METS routes returned 403 in the existing probes. Do not launch arbitrary zoom, language, host or page-label variants without a new source-backed reason.
 
-The HathiTrust catalog identifies the item as Part I / PD / Full view, but its item-level 974 date is 1896. The exact printed title-page imprint therefore remains unverified against the required 1892 issue. No North word has been read or extracted.
+The official HathiTrust catalog record [100485750](https://catalog.hathitrust.org/Record/100485750) identifies the work as published London, L.U. Gill, 1892–1896, in five parts, and lists **Full view pt.1** at Harvard. The Catalog API identifies that Part I item as `hvd.hn5w2p`, enumeration `pt.1`, public-domain rights, and Full view. A separate item-level 974 field previously surfaced 1896, so the exact title-page imprint of the scanned copy still needs visual confirmation. The direct [HathiTrust Full view pt.1 link](https://babel.hathitrust.org/cgi/pt?id=hvd.hn5w2p) is official, but it was not accessible through the available web tool (cache miss) and earlier automated viewer/image/METS requests returned 403. The catalog discovery and API results are documented in [Part I catalog discovery](h17-k08-cowper-part1-catalog-discovery-20261107.md). No North word has been read or extracted.
 
 ## Next source required
 
