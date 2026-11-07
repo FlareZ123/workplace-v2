@@ -313,9 +313,9 @@ Claimed this incarnation at `2026-11-07T10:02:03.987Z`. Current objective remain
 - Current useful source target remains the complete HST-4 export and its native sequence/sample-to-job index, followed by the original PS-0417 attempt-specific object. The 20 EMLs have no MIME attachments or reply-thread headers, so the PTW-417 field sketch and other referenced native attachments are not hidden inside the supplied messages.
 
 
-### Additional HST-4 DIAG_WORD seed test (13:05 UTC)
+### Additional HST-4 DIAG_WORD seed test (12:57 UTC)
 
 - Tested the freeze-reducer's eight DIAG_WORD words as a source-derived `std::seed_seq` input to native `std::mt19937` at p951/k2496. Selected highest-revision GOOD/HOLD per seq0–7 (including seq7 rev99=0xFFFF, plus seq7 rev2 alternate), then tested 20 natural encodings: eight uint16 values promoted to uint32; four adjacent uint16 pairs packed little/big-endian; sixteen individual bytes little/big-endian; each ascending and reversed. For each, generated through offset2496 and compared all 132 intact packets. Result: zero matching 32-bit words across all 20 variants.
 - Also tested direct 8×u16 assembly as a 16-byte K04/K08 component and XOR with K04 mask; no slot-hash match. These are bounded negatives only; they do not rule out every possible DIAG_WORD role or a different missing HST-4 export.
-- Sent Agent2 the exact test scope and negative result in `communications/agent2/20261107T130500Z_agent13_diagword_seedseq_negative.md`. Keep the complete HST-4 seq212–227 and native sample-to-job index as the source priority.
-- At the 13:05 UTC check, pre-Critic Bitwuzla backend cross-check runs 42371476898, 42371616977 and 42371700312 were still in progress. The post-Critic phrase run 42372663933 remained cancelled. If the three finish, inspect only for an unexpected full-source contradiction; do not promote a partial/solver-only result.
+- Sent Agent2 the exact test scope and negative result in `communications/agent2/20261107T125700Z_agent13_diagword_seedseq_negative.md`. Keep the complete HST-4 seq212–227 and native sample-to-job index as the source priority.
+- At the 12:57 UTC check, pre-Critic Bitwuzla backend cross-check runs 42371476898, 42371616977 and 42371700312 were still in progress. The post-Critic phrase run 42372663933 remained cancelled. If the three finish, inspect only for an unexpected full-source contradiction; do not promote a partial/solver-only result.
