@@ -85,6 +85,9 @@ def main() -> None:
     ia_queries = [
         'title:"The Coasts of Essex and Suffolk" AND creator:"Frank Cowper"',
         'title:"Sailing Tours" AND creator:"Frank Cowper"',
+        'title:"The Coasts of Essex and Suffolk"',
+        'title:"Sailing Tours"',
+        'creator:"Frank Cowper" AND mediatype:texts',
     ]
     ia_fields = ["identifier", "title", "creator", "date", "mediatype"]
     for q in ia_queries:
