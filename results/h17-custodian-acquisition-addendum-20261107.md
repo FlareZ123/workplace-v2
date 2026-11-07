@@ -30,6 +30,7 @@ Request the original keeper envelope H17-IR-261003 / IR-261003-H17, preserving i
 - The separate photographs and galley/photo-caption files referenced by MAIL-11, MAIL-14 and MAIL-20.
 - The complete Bundle 06 directory, its original manifest, and the trim/extraction/omission log. START_HERE and MAIL-20 say the supplied export was trimmed from a local directory.
 - The native correspondence and attachments that preserve the transition from draft wording to the final envelope.
+- The original `R:/IT/staff-groups/EG.htm` staff-groups index and any linked files/version history, to help identify Emily's assigned office/desk and the correct retiring profile. Treat this strictly as a locator; MAIL-17's accommodation note does not establish desk location.
 
 The four preserved historic captions are not substitutes for Emily's final wording. Do not infer the phrase from semantic paraphrases or substitute N17/N18 standby/commissioning labels. The exact normalized phrase must pass the unchanged K08 acceptance HMAC.
 
@@ -41,6 +42,7 @@ MAIL-09 says the book with a map in the back belonged to David and that a tea re
 - Printed page 94 and surrounding pages, all margins, handwriting, erasures and annotations.
 - Receipt in its original position, both sides, folds, date, merchant, amount and any handwriting.
 - Any WN-14 standby transcription or loose insert with group D ending 5E67 (MAIL-06). This is an identity discriminator only, not a recovered K08 value.
+- If the bookmark receipt cannot be identified from the original slip, request `R:/Finance/PrevERP/bench-expenses-2025.xls`, `posted-items-26.xls` and `reversal-register.htm` to locate its transaction. Preserve native formulas, hidden sheets, comments, receipt IDs, reversals and linked attachments. Use these records only as locators; do not substitute a ledger row for the physical bookmark or infer a page/word key from it.
 
 The *Riddle of the Sands* clue distinguishes Cowper's *Sailing Tours* (one of several books in Davies's library) from a separate “Little Drab Book”: an old guide for yachtsmen to a British estuary, attributed to “Lieut. X--, R.N.”, with Dollmann's name on the back and a yacht-owner frontispiece. W. Eric Wilson's 1934 *The Pilot's Guide to the Thames Estuary and the Norfolk Broads for Yachtsmen* is the strongest real-world guidebook analogue identified so far (411 pages, 18 folding charts, 20 photo illustrations), but it postdates the novel and is not proof of David's exact copy. Inspect the actual title and edition before treating Wilson as identified.
 
