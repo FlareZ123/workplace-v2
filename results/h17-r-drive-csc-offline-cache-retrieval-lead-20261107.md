@@ -35,6 +35,19 @@ If, and only if, both conditions are supported, the historical workstation image
 - [Microsoft: move the CSC folder](https://learn.microsoft.com/en-us/troubleshoot/windows-client/networking/move-client-side-caching-folder)
 - [Microsoft: ADMX Offline Files policy](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-offlinefiles)
 
+## Historical configuration checks
+
+Preserve and inspect these values in the historical hives, without changing them:
+
+- The user's R: drive mapping and its remote UNC target.
+- Computer and user policy under `Software\Policies\Microsoft\Windows\NetCache`: `Enabled`, `AssignedOfflineFiles`, and (for the computer policy) `AlwaysPinSubFolders`. An explicit UNC entry matching the R: share is strong evidence that the share or folder was assigned for offline use.
+- `PurgeAtLogoff`: when enabled, Windows deletes local copies of cached offline files at logoff without synchronizing them first. Its presence can explain why a cache is empty.
+- `EncryptCache`: if enabled, Offline Files cache contents are encrypted. Preserve the original cache and machine/profile image intact; do not attempt to bypass encryption or acquire credentials.
+- `HKLM\SYSTEM\CurrentControlSet\Services\CSC\Parameters\CacheLocation`: the CSC cache may have been moved from the usual location.
+- The Offline Files feature policy `Enabled`: Microsoft documents that an unconfigured policy leaves Offline Files enabled by default on Windows client computers, and disabled on Windows Server unless changed by the user. Confirm the historical host type and policy rather than assuming either state.
+
+Microsoft's Windows 11 policy documentation also states that automatic caching can retain a local copy when a user opens a file on an automatic-caching network share, and that AssignedOfflineFiles/AlwaysPinSubFolders can designate files or folders for offline use. This makes the 14 bookmarks useful search targets, while leaving actual cache coverage unproven. See [Microsoft Learn: ADMX Offline Files policy](https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-offlinefiles), especially Pol_Enabled, Pol_AssignedOfflineFiles, Pol_AlwaysPinSubFolders, Pol_EncryptOfflineFiles and Pol_PurgeAtLogoff.
+
 ## Acquisition instruction
 
 If the gate is met, acquire the complete historical workstation image and preserve the entire configured CSC tree, CSC database and associated logs, together with the relevant SYSTEM/SOFTWARE and user-profile registry hives. Check the R: mapping and Offline Files policy/configuration before interpreting the cache. Preserve the original cache before any synchronization, purge-at-logoff, reinitialization, migration, or cache rebuild; those operations can remove or change the only surviving local copies.
