@@ -286,7 +286,7 @@ If David's book survives, record its title, edition, publisher/year, pagination 
 
 
 
-The Cowper set is explicitly named among Davies's books in *The Riddle of the Sands*, but the novel then describes a separate Little Drab Book; do not conflate them. The checked Cowper crosswalk places all five L-29/N ticket suffixes (81/94/99/106/112) within Part I, *The Coasts of Essex and Suffolk* (1892, 168 pages), and all five L-29/S suffixes (121/130/135/142/151) within Part II, *The Nore to the Scilly Isles* (1893, 365 pages). This is a strong literary/ticket-volume candidate, not proof that David owned the set or that the ticket suffixes are page numbers.
+The Cowper set is explicitly named among Davies's books in *The Riddle of the Sands*, but the novel then describes a separate Little Drab Book; do not conflate them. The proposed North→Part I / South→Part II ticket assignment is non-discriminating: every suffix 81–151 fits within both Part I, *The Coasts of Essex and Suffolk* (1892, 168 pages), and Part II, *The Nore to the Scilly Isles* (1893, 365 pages). No source assigns either lane to a Cowper volume. Cowper remains a Riddle-named literary/physical candidate, but the page counts do not establish a ticket-volume crosswalk or identify MAIL-09's book.
 
 
 
