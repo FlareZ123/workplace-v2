@@ -1,5 +1,7 @@
 # H-17 recovery research: decision map
 
+**8 November K04↔K08 new direct-seed test:** The previously untested CPython n40 original-source construction for 93–96-byte *already normalized* captions was evaluated at all 624 native startup phases in a 16-job successful run. Zero phases permit any of the four raw normalized lengths under an exact source-word gate with repeated-index intersections; 32 genuine seeded controls passed. Together with the existing 0–92-byte result, this excludes direct 0–96-byte normalized caption seeding **only in the hypothetical p951/CPython printer model**, with no K04 selected-coupon or K08 author-final words recovered. See [n40 full source experiment](h17-k04-k08-n40-93to96-normalized-seed-source-20261108.md). The model has no independently evidenced author-to-printer link; stop adjacent length expansions without one.
+
 ## Recovery-first research frontier (7 November 2026)
 
 **Status and decision criterion.** The untouched REC8/1 verifier still accepts K01, K02, K03, K05, K06 and K07; **K04 and K08 remain missing, and combined acceptance is INCOMPLETE**. This page retains the detailed computational chronology below, but the number and precision of conditional exclusions must not determine what researchers attempt next. The current problem is **reconstructing the historically selected complete objects**.
