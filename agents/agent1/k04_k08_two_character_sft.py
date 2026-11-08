@@ -16,6 +16,7 @@ EXPECTED = {
     "evidence/recovery-routing.json": "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5",
     "acceptance.json": "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f",
     "evidence/crew/noticeboard-and-desk-notes.txt": "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb",
+    "evidence/crew/galley-and-stores.log": "23dfef679a125e725654b95e7d27dffc46e7c3e9980f64b8b65fbfc2f7b75d46",
 }
 HEX = "0123456789ABCDEF"
 
@@ -37,7 +38,8 @@ def load():
     labels = raw["evidence/archive-labels.ini"].decode()
     spool = raw["evidence/print/spool-reconstruction.log"].decode()
     notes = raw["evidence/crew/noticeboard-and-desk-notes.txt"].decode()
-    return actual, routing, acceptance, labels, spool, notes
+    galley = raw["evidence/crew/galley-and-stores.log"].decode()
+    return actual, routing, acceptance, labels, spool, notes, galley
 
 def spool_rows(text):
     rx = re.compile(r"JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+) PAYLOAD=([0-9A-F]{32})")
@@ -82,23 +84,26 @@ def mask_screen(payload, mask, target):
     return {"candidates": checked, "commitment_hits": hits,
             "synthetic_mask": planted.hex().upper(), "synthetic_hits": planted_hits}
 
-def emily_full_phrases(notes):
+def full_note_galley_phrases(notes, galley):
     lines = notes.splitlines()
-    variants, count = [], 0
+    variants, note_count = [], 0
     for i, line in enumerate(lines):
-        m = re.match(r"(N\d{2}) / (.*)$", line)
-        if not m or not m.group(2).startswith("Emily "):
+        m = re.match(r"(N\\d{2}) / (.*)$", line)
+        if not m:
             continue
         body, author = lines[i + 1].strip(), m.group(2)
         variants.extend((body, author + " " + body))
         if ":" in body:
             variants.append(body.split(":", 1)[1].strip())
-        count += 1
+        note_count += 1
+    galley_lines = [line.strip() for line in galley.splitlines() if line.strip()]
+    for line in galley_lines:
+        variants.extend((line, line.split(":", 1)[1].strip() if ":" in line else line))
     phrases = sorted({normalize(v) for v in variants if normalize(v)})
-    assert count == 8 and len(phrases) == 20
-    return phrases
+    assert note_count == 24 and len(galley_lines) == 7 and len(phrases) == 81
+    return phrases, note_count, len(galley_lines)
 
-def nonce_screen(phrases, nonce, target):
+def nonce_screen(phrases, note_count, galley_count, nonce, target):
     keys = []
     for i, j in itertools.combinations(range(32), 2):
         for a in HEX:
@@ -123,7 +128,7 @@ def nonce_screen(phrases, nonce, target):
     planted[3] = "A" if planted[3] != "A" else "B"
     planted[27] = "5" if planted[27] != "5" else "6"
     planted_key = "".join(planted)
-    planted_phrase = phrases[5]
+    planted_phrase = phrases[17]
     planted_component = hmac.new(bytes.fromhex(planted_key), planted_phrase.encode("ascii"), hashlib.sha256).digest()[:16]
     planted_target = digest(planted_component)
     planted_hits = []
@@ -131,12 +136,12 @@ def nonce_screen(phrases, nonce, target):
         component = hmac.new(bytes.fromhex(key_hex), planted_phrase.encode("ascii"), hashlib.sha256).digest()[:16]
         if digest(component) == planted_target:
             planted_hits.append(key_hex)
-    assert checked == 2_232_000
+    assert checked == 9_039_600
     assert planted_hits == [planted_key]
-    return {"Emily_notes": 8, "full_normalized_strings": len(phrases),
-            "nonce_variants": len(keys), "checks": checked, "commitment_hits": hits,
-            "synthetic_key": planted_key, "synthetic_phrase": planted_phrase,
-            "synthetic_hits": planted_hits}
+    return {"full_notes": note_count, "galley_entries": galley_count,
+            "full_normalized_strings": len(phrases), "nonce_variants": len(keys),
+            "checks": checked, "commitment_hits": hits, "synthetic_key": planted_key,
+            "synthetic_phrase": planted_phrase, "synthetic_hits": planted_hits}
 
 def crossclass_screen(rows, target):
     n_label = ack(rows, "PS-261003-0417", "LABEL")[4]
@@ -182,7 +187,7 @@ def crossclass_screen(rows, target):
 
 def main():
     start = time.perf_counter()
-    source_hashes, routing, acceptance, labels, spool, notes = load()
+    source_hashes, routing, acceptance, labels, spool, notes, galley = load()
     rows = spool_rows(spool)
     route_job = re.search(r"^ESC-N=(\S+)$", labels, re.MULTILINE).group(1)
     selected = ack(rows, route_job, "RECOVER")
@@ -191,12 +196,13 @@ def main():
     mask = bytes.fromhex(routing["K04"]["masked_component"])
     k04_target = bytes.fromhex(acceptance["slot_sha256"]["K04"])
     k08_target = bytes.fromhex(acceptance["slot_sha256"]["K08"])
+    phrases, note_count, galley_count = full_note_galley_phrases(notes, galley)
     result = {
         "source_hashes": source_hashes,
         "K04_selected": {"job": selected[0], "attempt": selected[1], "payload": payload.hex().upper(),
                          "mask": mask.hex().upper(), "two_byte_mask_screen": mask_screen(payload, mask, k04_target)},
         "K04_crossclass_affine_screen": crossclass_screen(rows, k04_target),
-        "K08_two_nibble_nonce_screen": nonce_screen(emily_full_phrases(notes), routing["K08"]["desk_nonce"].upper(), k08_target),
+        "K08_two_nibble_nonce_screen": nonce_screen(phrases, note_count, galley_count, routing["K08"]["desk_nonce"].upper(), k08_target),
         "elapsed_seconds": round(time.perf_counter() - start, 3),
     }
     print(json.dumps(result, indent=2))
