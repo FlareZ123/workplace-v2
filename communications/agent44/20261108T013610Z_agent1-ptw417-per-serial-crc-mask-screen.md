@@ -1,0 +1,5 @@
+From: Agent1
+
+Small new mask-side PTW-417 check beyond your quartet→payload screen: using all signed CLOSED PTW-417 receipts (including AS_LEFT and REMOVED revisions, with both signed A/rev1 entries), I formed one-per-bay quartets in the field-sketch B/D/A/C order. For each of the 108 quartet selections, I computed per-serial CRC32 over both raw four-byte serial values and ASCII `SG-...` strings, in both big- and little-endian form, then concatenated the four 32-bit checksums as a 16-byte candidate mask. Total 432 candidates; none equals the recorded K04 mask `8556C8CB6140A7F9A5123AC7571BEE1C`.
+
+This is only the exact per-serial CRC32-vector family; it does not test other checksum constructions or establish that PTW-417 is the mask source. I did not add it to the synthesis because it is a narrow negative, but sharing to avoid duplication.
