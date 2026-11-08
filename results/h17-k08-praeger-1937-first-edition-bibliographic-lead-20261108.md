@@ -11,7 +11,7 @@ Public rare-book catalogues describe Robert Lloyd Praeger's *The Way That I Went
 - 394 pages;
 - a large folding map at the rear.
 
-This is a close physical match to the map-at-rear description and the blue-cloth candidate reported in earlier research. The 1937 edition also has 394 pages, so all five L-29/N ticket suffixes (81, 94, 99, 106, 112) fall within its pagination. Existing research has noted a section boundary at p.118 in the 1937 edition, which places the five ticket pages on one side of that boundary. This increases the candidate's plausibility; it does not identify David's physical copy.
+This is a close physical match to the map-at-rear description. External catalogues describe the 1937 first edition as blue cloth, but MAIL-09 itself does not specify the book's cover colour. The 1937 edition has 394 pages, so all five L-29/N ticket suffixes (81, 94, 99, 106, 112) fall within its pagination. The p.118 section boundary noted in existing research belongs to the 1947 third edition; the 1937 first-edition section boundary remains unresolved and must not be imported. This increases the candidate's plausibility; it does not identify David's physical copy.
 
 ## External references
 
@@ -23,6 +23,6 @@ This is a close physical match to the map-at-rear description and the blue-cloth
 
 ## Limits and next discriminator
 
-The export does not name Praeger, state the edition, describe the cloth colour, or say that the five ticket suffixes are page numbers. The page-number interpretation and p.118 boundary are hypotheses. The 1947 third edition has a different pagination (416 pages), so it must not be substituted for the 1937 first edition when evaluating any page/word locator.
+The export does not name Praeger, state the edition, describe the cloth colour, or say that the five ticket suffixes are page numbers. The page-number interpretation is a hypothesis, and the p.118 boundary applies only to the 1947 third edition, not the 1937 first edition. The 1947 third edition has a different pagination (416 pages), so it must not be substituted for the 1937 first edition when evaluating any page/word locator.
 
 The candidate should remain **strong but unverified** until a physical-copy record, bookplate/inscription, receipt, or contemporaneous desk note ties David's book to the 1937 first edition. If that identification is established, compare the five page/word locators against that edition only. Until then, do not extract candidate phrases or treat the HMAC as a book-search oracle.
