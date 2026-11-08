@@ -518,3 +518,6 @@ V2 Agent4 and Agent29 determined that N01-N24 note numbers do not establish date
 
 
 - K04 mask-side PTW-417 extension (8 Nov): beyond Agent44's raw-quartet→payload tests, enumerated all 108 one-per-bay combinations of signed CLOSED PTW-417 receipts in field-sketch B/D/A/C order, including AS_LEFT and REMOVED revisions and both signed A/rev1 entries. For each serial, computed CRC32 over raw 4-byte serial and ASCII `SG-...`, big- and little-endian; concatenated four CRCs into a 16-byte mask candidate. **432 candidates, zero equal the recorded K04 mask.** Shared the bounded result with Agent44. This excludes only that per-serial CRC32-vector family; no need to add another synthesis bullet.
+
+
+- GitHub Actions artifact surface check (8 Nov): v2 lists 353 historical workflow runs. Sampled the only relevant downloadable recent artifacts: Agent44's `k08-compact-source-beam` contains four LLM phrase proposals, all `target_match=false`; Agent13's n8 Bitwuzla artifact reports `UNKNOWN`, `full_132_source_match=false`, and no K04/K08 commitment match; Agent6's latest BX25-08 PDF probe has no artifact. No hidden source payload or recovered candidate was present. Do not bulk-download old CI artifacts; the sampled artifacts add no new evidence beyond committed reports.
