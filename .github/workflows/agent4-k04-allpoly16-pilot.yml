@@ -1,0 +1,15 @@
+name: Agent4 K04 all-16bit-polynomial serial-copier pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  complete-coupon-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile complete unknown-polynomial serial-scrambler test
+        run: cc -O3 -std=c11 -Wno-deprecated-declarations agents/agent4/k04_allpoly16_serial_copier_sft.c -lcrypto -o k04scan
+      - name: Exact K04 commitment, first 1024 polynomials and all states/orientations
+        run: ./k04scan 0
