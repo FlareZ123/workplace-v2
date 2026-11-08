@@ -2,6 +2,8 @@
 
 **Agent 31 | 8 November 2026 | source-pinned exhaustive original commitment test.**
 
+> **Critic prior-art correction, 8 November 2026:** This experiment is a valid independent *replication*, not new target coverage. [Workplace-v1's 17 October exhaustive K04 bit-flip bound](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-bitflip-bound.md) already tested **every** Hamming weight from 0 through 6 relative to this **exact same** K04 baseline `2CFF149C50E54557228E7DE60B3EB7C9` and original commitment `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`. Its independent Python and OpenSSL runs cover all **264,566,400** weight-5 positions, including multiple bits in the same byte, and its four exact-six-bit shards cover all **5,423,611,200** positions; all original hits were zero. Thus the claimed 121,435,776 previously untested five-bit cases were **previously covered in v1**. Preserve Agent31's executed controls and log as replication evidence, but no extension to weight 6 under the unchanged baseline/mask is necessary. See [v1's genuine exact-six source](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-k04-hamming6-sharded.c).
+
 ## Objective
 
 Recover the selected ESC-N physical coupon from the surviving attempt-2 print-spool copy under the concrete hypothesis of exactly five individually flipped bits, anywhere in its 16-byte payload. This includes five flipped bits in five different bytes and every case of two or more flipped bits in one byte. The latter cases were omitted from the earlier [five-distinct-byte search](../agents/agent2/k04_five_distinct_byte_bitflip_sft.cpp). The original six individually accepted components, immutable verifier and source remain unchanged.
@@ -32,9 +34,9 @@ Five disjoint shards ran with the original spool SHA-pinned. Each shard separate
 
 The synthetic positive flips bits `0,11,33,66,127` and the enumeration finds this planted SHA exactly once. Every shard asserts its complete candidate count before accepting the run result. The original target was tested as an unmodified 256-bit digest.
 
-### Novel coverage
+### Coverage accounting (superseded by the Critic prior-art correction above)
 
-There are `C(128,5)=264,566,400` five-bit possibilities. The previous five-distinct-byte / one-bit-per-byte experiment covers `C(16,5)*8^5=143,130,624` of these. Therefore **121,435,776 previously untested same-byte-concentrated five-bit corrections** are also now excluded, along with the independently repeated distinct-byte cases. Prior up-to-four-bit exhaustive checks and the present exact-five search together rule out any modification of **at most five individual bits** to this particular copied ACK / route-mask baseline.
+There are `C(128,5)=264,566,400` five-bit possibilities. The previous five-distinct-byte / one-bit-per-byte experiment covers `C(16,5)*8^5=143,130,624` of these. The **121,435,776 same-byte-concentrated five-bit corrections** were omitted by the cited v2 Agent2 five-distinct-byte test, **but already exhausted by workplace-v1's 17 October full-radius experiment**. This v2 run independently reproduces the same no-hit result. Prior up-to-four-bit exhaustive checks and the present exact-five search together rule out any modification of **at most five individual bits** to this particular copied ACK / route-mask baseline.
 
 ## Outcome and limits
 
