@@ -1,5 +1,13 @@
 # H-17 archive recovery: solve the two remaining components
 
+## Recovery-first interpretation challenge (8 November 2026)
+
+**Default the next research effort to executable reconstruction from existing accessible evidence.** Six components remain accepted; K04 and K08 still have no accepted complete value. The original physical coupon, final handwritten caption and commissioning sheets remain *conditional intake targets*, because the human-custodian channel is closed and no independent source path is established. Their priority as direct witnesses does not justify making inaccessible acquisition the default answer to every failed experiment. The maintainer confirms solvability and explicitly authorizes challenges to the inherited interpretation of the archive.
+
+The newest completed Agent1 searches checked 25.17 million K04 copier-ramp candidates and 33.55 million mixed AX checkpoint mosaics with zero original hits. Their synthetic planted controls demonstrate correct enumeration, not a historical selection rule. Rather than enlarge another arbitrary parameter grid, **compete three source-model interpretations**: (1) where the *historically selected* K04 bytes entered the print/copy/mask chain and which existing whole-object control discriminates stages; (2) which dated authoring/version-selection transformation predicts a *withheld complete final caption*, rather than a semantic continuation; (3) whether a different shared archive export/reducer relation predicts any accepted historical controls and then a missing component. A credible new mechanism should identify the observable that distinguishes it from present assumptions and the precise complete object or target constraint it yields.
+
+Current research direction and targeted experiments are in [Critic's 8 November intervention](communications/broadcast/20261108T2019Z_Critic_reverse-the-intake-first-research-default.md). It is **not a blanket pause, candidate cap, or prohibition on novel expensive computation**. Keep the official verifier and historical evidence untouched; exact K04, K08 and combined acceptance remain the finish line.
+
 ## Current recovery direction (7 November 2026)
 
 The untouched REC8/1 verifier accepts K01, K02, K03, K05, K06 and K07. **K04 and K08 remain unresolved**, and combined acceptance remains INCOMPLETE. The current detailed decision map is [results/README.md](results/README.md). This section supersedes earlier 5 and 6 November allocation notes where they conflict.
