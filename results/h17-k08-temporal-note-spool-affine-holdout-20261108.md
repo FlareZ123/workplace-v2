@@ -39,3 +39,24 @@ Reproduce using [the single-file source-pinned test](../agents/agent29/k08_note_
 ## Conclusion
 
 This particular **pair-calibrated temporal transport** cannot reconstruct the conditional PS-0323 final HMAC from the five preserved Emily texts. It is an original-source calibration failure, more discriminating than a free-text sentence sweep, and it does not claim any real physical spool-to-caption relationship. Alternative source-bearing versions, a native rendered PS-0323 label, or Emily's original final margin remain open. The canonical candidate and immutable acceptance files were untouched.
+
+## 8 Nov extension: keyed, nonlinear per-job transport and blinded complete-source controls
+
+The first counter-affine model is now challenged by a mathematically distinct non-linear indexed pseudorandom-function (PRF) transport:
+
+`spool16(Nxx) = view(HMAC16(note_Nxx)) XOR PRF(key, job_label_Nxx) XOR common_secret_pad`.
+
+Under the already conditional Nxx→PS-0300+xx association, the model can be calibrated from **one known entire note/packet pair** without choosing the 16-byte common pad. Each hypothesized model must then predict the **other four original complete 128-bit note-HMAC values**, entirely withholding their contents during calibration; a survivor would decode the existing PS-0323 packet as a full hypothetical K08 HMAC16, before consulting the original K08 SHA256 acceptance.
+
+The finite source-key and issuer family uses:
+- 11 concrete existing keys: six previously accepted REC8 components, the original route mask, desk nonce, SHA256 of all six known components (first16), their nonce-mask XOR and nonce-mask SHA256 (first16);
+- 12 natural ASCII per-note job labels (canonical PS job ID, integer / zero-padded number, Nxx ID, conditional incident/slot prefixes);
+- four keyed/digest primitive rules: SHA256(key||label), SHA256(label||key), HMAC-SHA256(key,label), keyed BLAKE2s(label), each truncated to 16 bytes;
+- four fixed HMAC16 word views and four fixed packet word views;
+- each of five possible original calibrators N02,N06,N13,N17,N18.
+
+**Original whole-source result:** 4 × 11 × 12 × 4 × 4 × 5 × 4 = **168,960 independent full 16-byte historical heldout comparisons**; zero matches, **including zero isolated successes**. No calibrated original source model survives, so no PS-0323 K08 output is issued. One synthetic genuinely issued complete 16byte HMAC system (unknown common 16byte pad, indexed HMAC-SHA256 PRF, nonidentity independent source/packet views) passed all five synthetic calibrators and every historical-role holdout, including exact recovery of a blinded synthetic N23 full HMAC16. The original K08 commitment is checked only after a full original-source survivor; none existed.
+
+[SFT source](../agents/agent29/k08_note_spool_prf_transport_sft.py), runnable from repository root with `python agents/agent29/k08_note_spool_prf_transport_sft.py`. Original source, candidate, route, acceptance and verifier are unchanged. The test is a source-conditioned *mechanism* falsifier, not evidence that any publisher actually encrypted note captions into the printed 16byte opaque field. It closes the enumerated small key+label+PRF cohort, with one entire historical calibration and four full historical holdouts per model, and leaves any independently source-identified alternative issuer open.
+
+No K08 final author words or original K04 coupon bits were recovered.
