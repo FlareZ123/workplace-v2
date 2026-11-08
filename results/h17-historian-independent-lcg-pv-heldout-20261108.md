@@ -34,3 +34,23 @@ python agents/agent18/h17_pv_lcg_stride_sft.py
 ```
 
 Source-pinned standard-library SFT: [h17_pv_lcg_stride_sft.py](../agents/agent18/h17_pv_lcg_stride_sft.py). No original source, mask, nonce, acceptance commitment, canonical candidate or verifier was modified.
+
+## Stronger exact variable-gap exclusion (same-day extension)
+
+The earlier fixed-draw result leaves the plausible objection that variable sampler/rejection draws could have occurred between consecutive original PV rows. The follow-up [bounded variable-skip SFT](../agents/agent18/h17_pv_lcg_bounded_skip_sft.py) removes that assumption. For each of the same **seven** LCG state-transition recurrences, start from **every** internal state consistent with source PV seq100 and enumerate every next-state transition count **1, 2, ..., 16** independently between observations. This is a strict superset of all 112 fixed-stride models. It does not use original K04/K08 hashes or the copied selected printer row.
+
+All original candidate state paths are exhausted by the **third** PV reading (seq102), even with arbitrary per-row gaps:
+
+| Full-state LCG | Native states/paths matching first two original PV values | Matching first three |
+| --- | ---: | ---: |
+| Park–Miller 16807 | 12 | **0** |
+| Park–Miller 48271 | 6 | **0** |
+| Numerical Recipes 1664525 | 10 | **0** |
+| ANSI 1103515245 | 6 | **0** |
+| MSVC 214013 full-state fraction | 4 | **0** |
+| Borland 22695477 | 23 | **0** |
+| RANDU 65539 | 7 | **0** |
+
+**Genuine calibrated positive:** independently emit 24 rounded values from a real Numerical Recipes LCG with initial state `0x13579BDF` and a varying but preregistered 1..16 skip sequence `1 + ((i*i + 7*i) mod 16)`. Only the first **eight** rounded values enter state search. The solver uniquely reconstructs the initial state and all seven observed gap lengths. Starting from the uniquely recovered hidden state after sample8, it predicts **16/16 truly withheld** synthetic suffix values using the preregistered future skip schedule. The target values are consulted only after predictions are fixed. All controls PASS.
+
+The result decisively excludes a much broader bounded LCG subsequence producer than the initial constant-stride run, with no dependence on presumed tag-dependent draw counts. It does **not** exclude skips larger than 16, non-LCG emitters, different numeric PV scaling or a printer-stage connection. Still no actual selected 16-byte coupon or K08 wording recovered.
