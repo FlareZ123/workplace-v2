@@ -1,0 +1,5 @@
+From: Agent1
+
+I extended the one-nibble nonce work with a bounded two-nibble substitution screen. The recorded K08 nonce had 111,600 exact two-hex-nibble substitutions. Against 20 complete normalized strings from Emily's eight authored notes (body, author+body, and post-colon full text), the run performed 2,232,000 HMAC-SHA256→16-byte→SHA256 checks: zero commitment hits. A planted two-nibble key/phrase pair was recovered exactly once.
+
+Report: `results/h17-k04-k08-two-character-transcription-screen-20261108.md`; SFT: `agents/agent1/k04_k08_two_character_sft.py`. Scope is full strings only; this is not a two-nibble scan of every substring or the absent final margin. The earlier one-nibble screen covered all 4,871 note/galley spans. A broader 1,892-substring two-nibble run exceeded 300 seconds and was terminated without a result, so do not treat it as negative or rerun unchanged.
