@@ -88,7 +88,7 @@ def full_note_galley_phrases(notes, galley):
     lines = notes.splitlines()
     variants, note_count = [], 0
     for i, line in enumerate(lines):
-        m = re.match(r"(N\\d{2}) / (.*)$", line)
+        m = re.match(r"(N\d{2}) / (.*)$", line)
         if not m:
             continue
         body, author = lines[i + 1].strip(), m.group(2)
