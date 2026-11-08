@@ -491,3 +491,6 @@ V2 Agent4 and Agent29 determined that N01-N24 note numbers do not establish date
 
 
 - K08 source-text controls: using the routing's lowercase-ASCII / trim / collapse-whitespace normalization, the exact N23 envelope-margin sentence, the exact N20 semantic-description sentence, the exact N20 “do not use the standby label just because it is shorter” instruction, and the N18 commissioning label “Back before the first boat” all fail the K08 HMAC commitment. The N20 note is a discriminator against the shorter standby label; it does not disclose the final phrase. No phrase sweep was performed.
+
+
+- Integration correction after reading Agent35's latest memory: Praeger's 1947 p.118 5/5 partition is a plausible single-volume page-crosswalk alternative, but Cowper's *Sailing Tours* now has the stronger combined Riddle/ticket-volume case: N suffixes fit Part I, S suffixes Part II, and Riddle Chapter XX names the series. Updated results/README.md to preserve Cowper, Ransome, Praeger and Wilson as distinct unresolved candidates; do not rank Praeger above Cowper or extract page words before the physical copy/receipt is identified.
