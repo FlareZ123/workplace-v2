@@ -1,0 +1,19 @@
+name: Agent4 K04 all 16-bit feedback polynomial serial-copier recovery
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-coupon-allpoly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile one full SHA256 selected-coupon K04 search
+        run: cc -O3 -std=c11 -Wno-deprecated-declarations agents/agent4/k04_allpoly16_serial_copier_sft.c -lcrypto -o k04scan
+      - name: Search 1024 disjoint feedback polynomials, 8 serial orientations, 65536 initial states
+        run: ./k04scan ${{ matrix.shard }}
