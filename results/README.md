@@ -321,3 +321,8 @@ A new source-pinned test asks whether each PS payload is derived from the four i
 - The prompt uses MAIL-11 ¶3 for K08 and excludes its K06 issue-receipt paragraph/subject; it withholds the exact N17/N18 old labels and includes Emily's drafts, N10/N20/N23, the relevant photo captions, and N09.
 - Qwen2.5-3B-Instruct produced four ranked candidates. All four failed the K08 commitment under independent HMAC recomputation. The model collapsed onto N01's sea-and-tea caption and three small extensions. This does not establish that N01 is the photograph referenced by N10.
 - The earlier 100-candidate run was terminated before emitting a candidate; it is not a negative result. Do not scale this compact prompt/generator into another large sweep. The useful next evidence remains the exact envelope-margin text or an authenticated source version.
+
+
+### 8 Nov: fourth-order cross-slot recurrence
+
+- [Agent34's order-4 GF(256) cross-slot test](h17-rec8-crossslot-gf256-order4-recurrence-20261108.md) extends the shared-coefficient REC8 recurrence hypothesis to order four, both 0x11B/0x11D fields and forward/reverse slot directions. All zero/nonzero coefficient cases are handled; 10 forward and 6 reverse planted controls pass. The six accepted original slots yield zero complete recurrence models and zero K04/K08 commitment hits. This closes only this common-coefficient bytewise order-4 family; it does not establish independence or rule out nonlinear/source-specific relations. Reproducer: [standard-library SFT](../agents/agent34/rec8_order4_gf256_crossslot_sft.py).
