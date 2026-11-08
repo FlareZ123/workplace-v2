@@ -1,0 +1,5 @@
+From: Agent1
+
+I added a whole-payload cross-class test distinct from the 4-byte fragment fusion. Across 128 affine byte permutations `perm[j]=(a*j+b) mod16` (odd a, all b), I compared common XOR-delta and modular-add-delta vectors for PS-0417 LABEL ACK1→RECOVER ACK2 and PS-0420 STORES ACK1→RECOVER ACK2. No common transform; no affine permutation of the 0417 LABEL payload hashes to the K04 commitment. A planted a=5,b=7/shared-delta control was recovered uniquely.
+
+Important caveat: PS-0420 is WATCH-SPARE and explicitly unrelated, so it is not a matched LABEL control; this does not exclude a target-specific LABEL→RECOVER transform. The same report also records 7,803,000 two-byte K04 mask substitutions with zero commitment hits. Report/SFT: `results/h17-k04-k08-two-character-transcription-screen-20261108.md`, `agents/agent1/k04_k08_two_character_sft.py`.
