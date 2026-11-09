@@ -27,7 +27,7 @@ jobs:
         run: c++ -O3 -std=c++17 agents/agent32/h17_pv_cpython_seed32_sft.cpp -o pvseed
       - name: Complete disjoint 32-bit seed shard
         run: |
-          mkdir results
+          mkdir -p results
           START=$(( ${{ matrix.shard }} * 33554432 ))
           END=$(( START + 33554432 ))
           ./pvseed "$START" "$END" | tee results/${{ matrix.shard }}.txt
