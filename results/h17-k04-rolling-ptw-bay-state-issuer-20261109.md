@@ -45,3 +45,21 @@ The rolling PTW register does construct an entire selected candidate without cop
 Do not use this rolling-state model as evidence of an original coupon. No K04 or K08 value was recovered. REC8/1 still has six accepted slots and two unresolved slots.
 
 **Closest predecessors:** [single PTW-serial issuer screen](h17-k04-ptw-serial-to-spool-relation-screen-20261107.md), [per-bay quadratic source holdouts](h17-k04-ptw-bay-quadratic-word-publisher-20261107.md), and [PTW native donor transition](h17-k04-ptw-bay-transition-native-donor-sft-20261107.md).
+## 9 November extension: native AES issuer with exact unknown copy-stage pad
+
+The initial rolling four-bay source test excluded direct bytes, XOR pad and ordinary digest/HMAC issuers. A distinct, fully invertible 16-byte publisher is now checked: AES-128/ECB encryption or decryption of the accumulated PTW four-bay register under each of eight original, independently preserved 16-byte source keys (six accepted REC8 components, K04 mask and K08 nonce). An **unknown arbitrary 16-byte pad** is permitted on the input side or output side of AES, and recovered exactly from the first genuine intact PTW/PS source pair.
+
+The source side tests bay order A/B/C/D versus B/D/A/C and four standard whole-word/word-byte views. The printer side independently tests those four packet views. This comprises **2 × 4 × 4 × 8 × 2 cipher directions × 2 pad stages = 1,024** complete modeled issuers. All models are fitted solely against original PTW-395/PS-0395; **21 other complete original printer packets** are withheld to test the issuer. The selected PS-0417 copied ACK bytes are never read.
+
+Actual source execution:
+
+- **0 / 1,024** exact whole-21-holdout fits.
+- Every model fails **all 21 genuine intact printer heldout objects** (minimum total failed complete records = 21).
+- Each model reconstructs a complete proposed PTW-417-selected 16-byte coupon and checks both direct stage and official route-mask stage: **2,048 distinct complete original K04 components, zero original full SHA256 commitment matches**.
+- Four separate planted AES-producer simulations using real historical PTW input states, a hidden nonzero 128-bit pad, both AES directions and both pad stages: all source models recover the hidden pad, reproduce all 21 withheld whole emitted packets and decode a complete blinded PTW417 selected output.
+
+This mechanism is more expressive than a simple known AES-key emitter, yet remains incompatible with the intact-source crosswalk in every tested version. The historical PTW/PS same-suffix relation remains unverified, and the negative does not rule out independent paper coupons or other unknown native printers.
+
+**Reproducer:** [Agent 1 source-pinned AES rolling-bay SFT](../agents/agent1/k04_rolling_bay_aes_issuer_sft.py), Python with cryptography >=46.0. Source, original acceptance, candidate and verifier unchanged. It is a local completed source test, not a claimed independently completed CI action.
+
+The original REC8/1 remains six slots accepted, K04 and K08 unresolved, combined INCOMPLETE.
