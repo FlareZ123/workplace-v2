@@ -32,3 +32,18 @@ The data reject these explicitly specified upstream polynomial boundaries, inclu
 [Standalone read-only source-pinned SFT](../agents/agent17/rec8_rawstage_rs_sft.py). It uses only original `resources/evidence`, original route, and original acceptance; source data, commitments, copied selected ACK2 and canonical candidate remain untouched.
 
 **Recovery status**: six PASS; K04/K08 missing; combined INCOMPLETE. A credible alternative needs a different explicitly inferable source-to-target relation, since changing only the location of simple bytewise polynomial interpolation has no historical holdout support.
+
+
+## Further complete source-stage field-width extension (same date)
+
+The first original source-stage test used GF(256). To cover the standard larger-symbol polynomial code variants separately from Agent48's final-accepted-stage test, the independently executed [all-fields original SFT](../agents/agent17/rec8_rawstage_rs_allfields_sft.py) evaluates the identical six historical source blocks across:
+
+- GF(2^8) with two polynomial choices and two bit views (192 complete assignments)
+- GF(2^16), GF(2^32), GF(2^64), each with two polynomial choices and sixteen reversible packet views (**1,536 assignments per field width**)
+- GF(2^128), polynomial x^128+x^7+x^2+x+1, sixteen packet views (**768 assignments**)
+
+Each uses three evaluation-coordinate systems, both slot directions, and the same eight source raw-versus-final stage choices. A degree-five fit predicts full K04 and K08, while six independent degree-four five-source fits attempt to predict each withheld whole original historical source, with no target candidate used for fitting.
+
+**All 5,568 complete assignments give zero K04 commitment matches, zero K08 commitment matches, and zero historical 128-bit holdout reproductions across 33,408 withheld whole-source predictions.** Nine separately generated true-coded two-erasure source examples (one per specified polynomial) reconstruct both wholly missing synthetic original slots exactly. The tester ran on the original attached ZIP locally and is now committed as an independent standard-library reproducer. The GF(2^8) assignments are the same 192 as the initial section; the additional field widths are **5,376 new models**. Historical selection, commitments, masks, and target records remain unmodified.
+
+This closes the named *conventional polynomial over either final or pre-reducer 16-byte controls* alternative in the tested field/serializer portfolio. It cannot exclude an undocumented nonlinear encoder, alternative unknown mixing matrix, or a real external source for either missing original.
