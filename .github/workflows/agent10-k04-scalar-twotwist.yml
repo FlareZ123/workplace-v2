@@ -1,0 +1,43 @@
+name: Agent10 K04 native scalar MT19937 exactly two twists, complete seed-phase screen
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  all-seeds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify CPU supports AVX512
+        run: grep -qm1 avx512f /proc/cpuinfo
+      - name: Compile exact two-twist source and independent planted control
+        run: |
+          g++ -O3 -mavx512f -mavx512dq -std=c++17 -pthread agents/agent10/k04_scalar_twotwist_allseed_sft.cpp -o scan
+          g++ -O3 -DH17_SYNTHETIC -mavx512f -mavx512dq -std=c++17 -pthread agents/agent10/k04_scalar_twotwist_allseed_sft.cpp -o planted
+      - name: Full generator control, real NumPy seeded 625-output fixture
+        run: |
+          ./planted 12336 12352 1 | tee planted.log
+          grep -q 'seed=12345 phase=17' planted.log
+          grep -q 'complete=1' planted.log
+          grep -q 'checked=16' planted.log
+      - name: Enumerate entire assigned original 2^28 seed partition
+        shell: bash
+        run: |
+          lo=$((268435456 * ${{ matrix.shard }}))
+          hi=$((268435456 * (${{ matrix.shard }} + 1)))
+          ./scan "$lo" "$hi" 2 | tee scan.log
+          grep -q "SUMMARY start=$lo end=$hi" scan.log
+          grep -q 'checked=268435456' scan.log
+          if grep -q 'complete=1' scan.log; then
+            echo 'COMPLETE_SOURCE_MATCH_FOUND, inspect seed and phase'
+            exit 3
+          fi
