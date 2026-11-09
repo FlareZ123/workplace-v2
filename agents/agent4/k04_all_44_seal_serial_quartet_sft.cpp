@@ -1,6 +1,7 @@
 // Agent 4: source-pinned exhaustive four-receipt K04 coupon assembly SFT.
 // Build with C++17 and OpenSSL libcrypto. Original input is resources/evidence/maintenance/seal-receipts.jsonl.
 #include <openssl/sha.h>
+#include <algorithm>
 #include <array>
 #include <chrono>
 #include <cstdint>
