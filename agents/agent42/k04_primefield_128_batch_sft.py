@@ -134,5 +134,63 @@ def main(path):
         print('ORIGINAL_K04_HIT',entry)
 
 
+
+def ack_only_branch(path):
+    """Issue-stage alternative: REQUESTED events consume no coupon positions."""
+    spool, routing, acceptance = source(path)
+    assert hashlib.sha256(spool).hexdigest() == SPOOL_SHA
+    rows = [r for r in spool.splitlines() if r.startswith(b"2026-")]
+    assert len(rows) == 133
+    assert b"ATTEMPT=1 STATE=REQUESTED" in rows[128]
+    assert b"ATTEMPT=2 STATE=ACK CLASS=RECOVER" in rows[129]
+    assert b"ATTEMPT=3 STATE=REQUESTED" in rows[130]
+    assert b"ATTEMPT=1 STATE=ACK CLASS=RECOVER" in rows[131]
+    assert b"ATTEMPT=2 STATE=ACK CLASS=RECOVER" in rows[132]
+    packets = [bytes.fromhex(re.search(rb"PAYLOAD=([0-9A-F]{32})", row).group(1).decode()) for row in rows]
+    assert bytes.fromhex(json.loads(routing)["K04"]["masked_component"]) == MASK
+    assert json.loads(acceptance)["slot_sha256"]["K04"] == K04_SHA
+    models, printable, holdouts, original_hits, synthetic = 0, 0, 0, [], 0
+    for p in PRIMES:
+        for grid in ("ACKordinal", "ACKminute"):
+            known = list(range(128)) if grid == "ACKordinal" else list(range(0, 640, 5))
+            later = (128, 129, 130) if grid == "ACKordinal" else (662, 684, 685)
+            # True synthetic source polynomial; withhold all three issued ACK positions.
+            rng = random.Random(20261109 + (p % 1000) + len(known))
+            coeffs = [rng.randrange(1 << 32) for _ in range(9)]
+            def planted(x):
+                result = 0
+                for coefficient in reversed(coeffs):
+                    result = (result * x + coefficient) % p
+                return result
+            training = [planted(x) for x in known]
+            for x in later:
+                assert interpolate(known, training, x, p) == planted(x)
+                synthetic += 1
+            for endian in ("big", "little"):
+                for direction in ("forward", "reverse"):
+                    train = packets[:128] if direction == "forward" else packets[:128][::-1]
+                    values = [int.from_bytes(value, endian) for value in train]
+                    assert all(value < p for value in values)
+                    predicted = [interpolate(known, values, x, p) for x in later]
+                    for j, original_index in ((1, 131), (2, 132)):
+                        if predicted[j] < MAX_VALUE and predicted[j].to_bytes(16, endian) == packets[original_index]:
+                            holdouts += 1
+                    if predicted[0] < MAX_VALUE:
+                        printable += 1
+                        physical = predicted[0].to_bytes(16, endian)
+                        component = bytes(a ^ b for a, b in zip(physical, MASK))
+                        if hashlib.sha256(component).hexdigest() == K04_SHA:
+                            original_hits.append((p, grid, endian, direction, component.hex().upper()))
+                    models += 1
+    assert (models, printable, holdouts, len(original_hits), synthetic) == (24, 16, 0, 0, 18)
+    print("ACK_ONLY source_models", models)
+    print("ACK_ONLY canonical_16B_selected_predictions", printable)
+    print("ACK_ONLY original_whole_ACK_holdouts", holdouts, "/ 48")
+    print("ACK_ONLY complete_K04_hash_matches", len(original_hits))
+    print("ACK_ONLY planted_true_primefield_controls", synthetic, "/ 18 PASS")
+
+
 if __name__ == '__main__':
-    main(Path(sys.argv[1]) if len(sys.argv)>1 else Path(__file__).resolve().parents[2]/'resources')
+    original_path = Path(sys.argv[1]) if len(sys.argv)>1 else Path(__file__).resolve().parents[2]/'resources'
+    main(original_path)
+    ack_only_branch(original_path)
