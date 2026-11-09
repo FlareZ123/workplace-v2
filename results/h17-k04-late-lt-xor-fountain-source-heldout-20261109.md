@@ -6,6 +6,8 @@
 
 The original spool contains exactly 128 ordinary ACK attempt-1 packets at job IDs PS-261003-0300..0427, followed by three different late acknowledged RECOVER-route objects. This motivates a speculative *fountain* copier rather than an unknown stream-state or arbitrary correction of the suspect north ACK: each late 16-byte coupon is an XOR subset of the prior 128 complete 16-byte ordinary payloads. Metadata for that late job selects the subset. A single unknown 16-byte fixed XOR relay/copy pad is eliminated using a complete physical-route source anchor.
 
+MAIL-16 expressly calls WATCH-SPARE an unrelated spare. The tested shared-pad/issuer bridge between its buffer, ESC-S, and ESC-N is therefore a falsifiable **exploratory coupling assumption**, with no claimed physical common-issuer authentication. A whole-packet WATCH mismatch rejects the shared-issuer model under faithful copied buffers, while remaining compatible with genuinely independent route producers or additional copy damage.
+
 The proposed issuer is not historically specified. It is a source-to-complete-object alternative to the already failed systematic RS(128+5) and keyed three-route HMAC producer families. It does not depend on the disputed north copied ACK bytes.
 
 ## Freeze, calibration and test
