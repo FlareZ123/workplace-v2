@@ -1,0 +1,24 @@
+name: Agent11 K08 N13 two original N20 cue insertions
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-two-cue-condensation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile exact original-source HMAC and full commitment checker
+        run: c++ -std=c++17 -O3 -Wno-deprecated-declarations agents/agent11/k08_n13_two_cue_condensation_sft.cpp -lcrypto -o "$RUNNER_TEMP/k08_checker"
+      - name: Search one of 32 disjoint N13 source masks
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          LO=$(( SHARD * 131072 ))
+          HI=$(( (SHARD + 1) * 131072 ))
+          "$RUNNER_TEMP/k08_checker" resources "$LO" "$HI"
