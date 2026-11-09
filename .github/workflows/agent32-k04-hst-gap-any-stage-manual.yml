@@ -1,0 +1,13 @@
+name: Agent32 K04 HST index any-gap source-only test
+on:
+  workflow_dispatch:
+jobs:
+  source-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check original 112 PV values and synthetic control
+        run: python agents/agent32/k04_hst_gap_any_stage_sft.py
