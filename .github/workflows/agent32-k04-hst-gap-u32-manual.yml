@@ -11,3 +11,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test quantized one-word PV source and planted MT producer
         run: python agents/agent32/k04_hst_gap_uint32_sft.py
+      - name: Test physical 16- and 32-bit source byte orders
+        run: python agents/agent32/k04_hst_gap_byteorder_sft.py
