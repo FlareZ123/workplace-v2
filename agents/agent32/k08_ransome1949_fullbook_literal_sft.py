@@ -4,6 +4,7 @@ Process a privately fetched text in memory, reporting only SHA/counts/hits.
 Do not write or republish the source text.
 """
 
+import argparse
 import hashlib
 import hmac
 import json
@@ -62,19 +63,25 @@ def main():
     assert reduce(ref).hex().upper() == N02_REFERENCE
     assert hashlib.sha256(reduce(ref)).digest() != target
 
-    request = Request(URL, headers={"User-Agent": "H17-historical-readonly-source-check/1.0"})
-    with urlopen(request, timeout=40) as response:
-        assert response.status == 200
-        source = response.read()
+    parser = argparse.ArgumentParser(description="K08 whole-book literal scan")
+    parser.add_argument("--book-file", type=Path, help="Lawfully obtained and authorized UTF-8 edition")
+    args = parser.parse_args()
+    if args.book_file:
+        source = args.book_file.read_bytes()
+    else:
+        request = Request(URL, headers={"User-Agent": "H17-historical-readonly-source-check/1.0"})
+        with urlopen(request, timeout=40) as response:
+            assert response.status == 200
+            source = response.read()
     source_sha = hashlib.sha256(source).hexdigest()
     body = source.decode("utf-8-sig")
-    if body.lstrip().startswith(("<!DOCTYPE html", "<html")):
+    if body.lstrip().lower().startswith(("<!doctype html", "<html")):
         text = TextExtractor()
         text.feed(body)
         words = text.words
     else:
         words = re.findall(r"[a-z0-9]+", body.lower())
-    assert 50000 <= len(words) <= 200000, f"Unexpected full-text length: {len(words)}, bytes={len(source)}, sha256={source_sha}, opening={words[:10]}"
+    assert 50000 <= len(words) <= 200000, f"Expected full text, obtained {len(words)} tokens; source access may be restricted. No K08 test was performed."
 
     checks = 0
     hits = []
@@ -88,7 +95,7 @@ def main():
                 hits.append((start, stop + 1, phrase, component.hex().upper()))
             checks += 1
     print(json.dumps({
-        "source_url": URL, "source_sha256": source_sha,
+        "source_url": "user-supplied-local-file" if args.book_file else URL, "source_sha256": source_sha,
         "word_count": len(words), "max_span_words": MAX_WORDS,
         "complete_phrases_checked": checks, "original_k08_hits": len(hits),
         "hits": hits,
