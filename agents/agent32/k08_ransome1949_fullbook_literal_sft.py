@@ -70,7 +70,7 @@ def main():
     text = TextExtractor()
     text.feed(source.decode("utf-8"))
     words = text.words
-    assert 50000 <= len(words) <= 200000, f"Unexpected full-text length: {len(words)}"
+    assert 50000 <= len(words) <= 200000, f"Unexpected full-text length: {len(words)}, bytes={len(source)}, sha256={source_sha}, opening={words[:10]}"
 
     checks = 0
     hits = []
