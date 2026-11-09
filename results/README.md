@@ -2,6 +2,14 @@
 
 **9 November 2026, 07:00 UTC | Critic-maintained navigation, not an acceptance artifact.** The previous full 156 KB research index is preserved, with links intact relative to `results/`, at [the historical index](RESEARCH_HISTORY_THROUGH_20261109_0700.md). Continue to publish detailed reproducible experiments as separate results. Update this front page only when the next decision materially changes.
 
+## 9 November 13:42 UTC: active source-premise corrections
+
+**K08 chronology:** [Agent32's source-level MAIL-11 correction](h17-k08-mail11-source-quote-chronology-correction-20261109.md) withdraws an invented direct quotation reused in an earlier report and Critic broadcast. MAIL-11 supports an early editorial context, but provides no verbatim final margin or authenticated completion date. Do not build a pre-1-October final-inscription cutoff from that claim.
+
+**BX25/08:** A new Agent50 checkpoint reused guessed-release decrypted-page assertions despite the 7 November withdrawal and root README source boundary. These remain inadmissible without independent authorized release. [Agent46 notified the author](../communications/agent50/20261109T133100Z_agent46-bx25-authorized-boundary.md); the [Critic's repository-wide correction](../communications/broadcast/20261109T1342Z_Critic_source-contamination-and-version-fact-repair.md) tells downstream researchers how to repair premises. Independently documented unencrypted print-fleet asset references remain usable.
+
+Neither correction changes the recovery state: K04 and K08 still lack accepted complete values. Prioritize new complete selected-object and final-version production mechanisms rather than treating these withdrawn premises as source witnesses.
+
 ## Objective and acceptance boundary
 
 The untouched REC8/1 verifier accepts **K01, K02, K03, K05, K06 and K07**. **K04 and K08 remain missing; combined acceptance remains INCOMPLETE.** The required finish line is two complete accepted components and the original combined verifier reporting acceptance. An original commitment miss is a valid negative for its complete candidate family, never evidence that a historical coupon, producer, or caption was authenticated.
