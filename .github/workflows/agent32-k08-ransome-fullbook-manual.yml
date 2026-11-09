@@ -1,0 +1,13 @@
+name: Agent32 K08 Ransome whole-book literal probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  k08-ransome-literal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check exact literal K08 spans from in-memory public ebook
+        run: python agents/agent32/k08_ransome1949_fullbook_literal_sft.py
