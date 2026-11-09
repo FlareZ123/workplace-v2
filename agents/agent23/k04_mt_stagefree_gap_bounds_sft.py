@@ -96,6 +96,25 @@ def run() -> None:
     raw=SOURCE.read_bytes()
     assert hashlib.sha256(raw).hexdigest()==SHA
     graph=relations(raw)
+    # Minimal four-relation certificate, independent of any upper start gap.
+    adjacency=defaultdict(list)
+    for a,b,shift in graph:
+        adjacency[a].append((b,shift))
+        adjacency[b].append((a,-shift))
+    def exact_offset(source: int, destination: int) -> int:
+        queue=[(source,0)]
+        visited={source}
+        for node,shift in queue:
+            if node==destination:
+                return shift
+            for nxt,delta in adjacency[node]:
+                if nxt not in visited:
+                    visited.add(nxt)
+                    queue.append((nxt,shift+delta))
+        raise AssertionError("source nodes disconnected")
+    assert [(a,b,exact_offset(a,b)) for a,b in
+            ((43,128),(44,130),(96,128),(97,130))] == [
+            (43,128,623),(44,130,620),(96,128,230),(97,130,226)]
     assert all(bounds(graph,D) is None for D in range(4,13))
     for ceiling in (13,14,17,1000):
         d=bounds(graph,ceiling)
