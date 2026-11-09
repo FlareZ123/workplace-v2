@@ -26,7 +26,7 @@ def interval(m):
 
 def advance_symbolic(state):
     x,y,z,w = state
-    t = [a ^ (b<<0 if False else b) for a,b in zip(x,[0]*11+x[:21])]
+    t = [a ^ b for a,b in zip(x,[0]*11+x[:21])]
     nxt = [w[i] ^ (w[i+19] if i+19<32 else 0)
            ^ t[i] ^ (t[i+8] if i+8<32 else 0) for i in range(32)]
     return (y,z,w,nxt),nxt
