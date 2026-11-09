@@ -56,7 +56,7 @@ def retained_native_327(root: Path) -> int:
     assert len(lines) == 133
     line = lines[43]
     assert "JOB=PS-261003-0343" in line
-    match = re.search(r"(?:^|\\s)PAYLOAD=([0-9A-F]{32})(?=\\s|$)", line)
+    match = re.search(r"(?:^|\s)PAYLOAD=([0-9A-F]{32})(?=\s|$)", line)
     assert match is not None
     packet = bytes.fromhex(match.group(1))
     return untemper(int.from_bytes(packet[12:16], "little"))
