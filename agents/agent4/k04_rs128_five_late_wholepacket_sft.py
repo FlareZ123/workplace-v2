@@ -209,5 +209,171 @@ def main() -> None:
     }, indent=2))
 
 
+
+# Whole 128-bit symbol extension. Unlike the byte-lane RS code above, each
+# printer PAYLOAD is one GF(2^128) symbol in x^128+x^7+x^2+x+1.
+def _mul128(a: int, b: int) -> int:
+    out = 0
+    while b:
+        if b & 1:
+            out ^= a
+        b >>= 1
+        a <<= 1
+        if a >> 128:
+            a ^= (1 << 128) | 0x87
+    return out
+
+
+def _pow128(a: int, n: int) -> int:
+    out = 1
+    while n:
+        if n & 1:
+            out = _mul128(out, a)
+        a = _mul128(a, a)
+        n >>= 1
+    return out
+
+
+def _batch_inverse128(values: list[int]) -> list[int]:
+    prefixes = [1]
+    for value in values:
+        assert value
+        prefixes.append(_mul128(prefixes[-1], value))
+    inverse = _pow128(prefixes[-1], (1 << 128) - 2)
+    out = [0] * len(values)
+    for i in range(len(values) - 1, -1, -1):
+        out[i] = _mul128(inverse, prefixes[i])
+        inverse = _mul128(inverse, values[i])
+    return out
+
+
+def _gf128_weights(xs: list[int], target_x: int) -> list[int]:
+    assert len(xs) == 128 and len(set(xs)) == 128 and target_x not in xs
+    # Lagrange basis: P(t) / ((t+x_i) P'(x_i)), addition is XOR.
+    denominators = [1] * 128
+    for i in range(128):
+        for j in range(i):
+            term = xs[i] ^ xs[j]
+            denominators[i] = _mul128(denominators[i], term)
+            denominators[j] = _mul128(denominators[j], term)
+    inverse_denom = _batch_inverse128(denominators)
+    deltas = [target_x ^ x for x in xs]
+    inverse_deltas = _batch_inverse128(deltas)
+    product = 1
+    for term in deltas:
+        product = _mul128(product, term)
+    return [
+        _mul128(product, _mul128(a, b))
+        for a, b in zip(inverse_denom, inverse_deltas)
+    ]
+
+
+def run_gf128_extension() -> None:
+    import datetime
+
+    raw = SPOOL.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == SPOOL_SHA
+    lines = [
+        line for line in raw.decode("ascii").splitlines()
+        if PATTERN.search(line)
+    ]
+    assert len(lines) == 133
+    rows = [PATTERN.search(line) for line in lines]
+    assert all(m is not None for m in rows)
+    assert rows[129].group(1) == "PS-261003-0417"
+    assert rows[129].group(2) == "2"
+    assert rows[129].group(3) == "ACK"
+    assert rows[129].group(4) == "RECOVER"
+
+    # Selected row 129's copied payload is never decoded or consulted.
+    ordinary = [bytes.fromhex(m.group(5)) for m in rows[:128]]
+    ack_controls = {
+        3: bytes.fromhex(rows[131].group(5)),
+        4: bytes.fromhex(rows[132].group(5)),
+    }
+    times = [
+        datetime.datetime.fromisoformat(
+            line.split(" ", 1)[0].replace("Z", "+00:00")
+        )
+        for line in lines
+    ]
+    clock_mins = [
+        int((stamp - times[0]).total_seconds() // 60)
+        for stamp in times
+    ]
+    assert clock_mins[:128] == [i * 5 for i in range(128)]
+    assert clock_mins[128:] == [661, 662, 663, 684, 685]
+
+    families = [
+        ("sequential", list(range(128)), list(range(128, 133))),
+        ("clock_minutes", clock_mins[:128], clock_mins[128:]),
+    ]
+    original_matches = []
+    synthetic_checks = 0
+    complete_source_holdout_hits = 0
+    max_joint_holdout_bytes = 0
+    cases = 0
+    rng = random.Random(20261109)
+    synthetic_coeff = [rng.getrandbits(128) for _ in range(12)]
+
+    def eval_synthetic(t: int) -> int:
+        accum = 0
+        for coefficient in reversed(synthetic_coeff):
+            accum = _mul128(accum, t) ^ coefficient
+        return accum
+
+    for label, xs, targets in families:
+        projections = [_gf128_weights(xs, t) for t in targets]
+        planted_source = [eval_synthetic(x) for x in xs]
+        for target_x, coeff in zip(targets, projections):
+            planted_target = 0
+            for weight, datum in zip(coeff, planted_source):
+                planted_target ^= _mul128(weight, datum)
+            assert planted_target == eval_synthetic(target_x)
+            synthetic_checks += 1
+
+        for backward in (False, True):
+            inputs = ordinary[::-1] if backward else ordinary
+            for endian in ("big", "little"):
+                packed = [int.from_bytes(p, endian) for p in inputs]
+                predicted = []
+                for coefficients in projections:
+                    value = 0
+                    for weight, datum in zip(coefficients, packed):
+                        value ^= _mul128(weight, datum)
+                    predicted.append(value.to_bytes(16, endian))
+                source_byte_score = 0
+                for idx, control in ack_controls.items():
+                    source_byte_score += sum(
+                        a == b for a, b in zip(predicted[idx], control)
+                    )
+                    complete_source_holdout_hits += predicted[idx] == control
+                max_joint_holdout_bytes = max(
+                    max_joint_holdout_bytes, source_byte_score
+                )
+                coupon = predicted[1]
+                component = bytes(a ^ b for a, b in zip(coupon, MASK))
+                if hashlib.sha256(component).hexdigest() == TARGET:
+                    original_matches.append({
+                        "family": label,
+                        "reverse_source": backward,
+                        "endian": endian,
+                        "coupon": coupon.hex().upper(),
+                        "component": component.hex().upper(),
+                    })
+                cases += 1
+
+    assert synthetic_checks == 10 and cases == 8
+    print(json.dumps({
+        "extension": "whole128_GF2_power128_original_clock_or_sequential",
+        "full_original_K04_comparisons": cases,
+        "source_ACK_comparisons": 2 * cases,
+        "source_full_ACK_hits": complete_source_holdout_hits,
+        "max_matching_bytes_combined_two_ACK_controls": max_joint_holdout_bytes,
+        "original_K04_hits": original_matches,
+        "synthetic_polynomial_extrapolation_controls": synthetic_checks,
+    }, indent=2))
+
 if __name__ == "__main__":
     main()
+    run_gf128_extension()
