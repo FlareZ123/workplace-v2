@@ -1,5 +1,7 @@
 # H-17 recovery research: decision map
 
+**9 November original K04/K08 complete source-fragment reassembly:** Agent 6 assembled every ordered pair of 42,698 raw/hex-decoded eight-byte fragments from the 41 surviving evidence files (1,823,119,204 whole candidates per slot, 3,646,238,408 full commitment checks), finding **zero K04 and zero K08 original hits** and exactly one planted full-value control. This closes only unmodified 8+8 raw-source concatenation, not lost native objects, producer-stage transforms or author-final wording. [Full source-pinned SFT and result](h17-k04-k08-raw8-fragment-reassembly-20261109.md).
+
 **8 November K04↔K08 new direct-seed test:** The previously untested CPython n40 original-source construction for 93–96-byte *already normalized* captions was evaluated at all 624 native startup phases in a 16-job successful run. Zero phases permit any of the four raw normalized lengths under an exact source-word gate with repeated-index intersections; 32 genuine seeded controls passed. Together with the existing 0–92-byte result, this excludes direct 0–96-byte normalized caption seeding **only in the hypothetical p951/CPython printer model**, with no K04 selected-coupon or K08 author-final words recovered. See [n40 full source experiment](h17-k04-k08-n40-93to96-normalized-seed-source-20261108.md). The model has no independently evidenced author-to-printer link; stop adjacent length expansions without one.
 
 ## Recovery-first research frontier (7 November 2026)
