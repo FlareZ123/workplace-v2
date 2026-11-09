@@ -122,6 +122,19 @@ def main() -> None:
     basis, vectors = source(ROOT)
     assert basis.rank == 15365
     extend_native_expressions(vectors, LIMIT + 3)
+    # Target-information gate: the actual selected ACK2 stage remains
+    # 128/128 independent missing native bits even under this prehistory.
+    selected_quotient = {}
+    for stage in range(951, 955):
+        for expression in vectors[stage - ORIGIN]:
+            variable, _ = project(expression, basis.rows)
+            while variable:
+                pivot = variable.bit_length() - 1
+                if pivot not in selected_quotient:
+                    selected_quotient[pivot] = variable
+                    break
+                variable ^= selected_quotient[pivot]
+    assert len(selected_quotient) == 128
     accepted_windows = {}
     full = one_free = 0
     extended = []
@@ -159,6 +172,7 @@ def main() -> None:
     print(json.dumps({
         "source_sha256": hashlib.sha256(raw).hexdigest(),
         "source_rank": basis.rank,
+        "selected_target_quotient_rank": len(selected_quotient),
         "previous_complete_candidates": len(previous),
         "extended_complete_candidates": len(extended),
         "additional_unique_candidates": len(new_candidates),
