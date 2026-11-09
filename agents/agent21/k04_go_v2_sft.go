@@ -177,5 +177,34 @@ func main() {
    })
   }
  }
+ perJobCheck(spool)
  fmt.Printf("source-only: seeds=%d streams=%d windows=%d controls=%d matches=%d planted_chacha=PASS planted_pcg=PASS\n",len(seeds),streams,samples,controls,hits)
+}
+
+
+// An independent per-job source/issuer test: the printed job's own fields,
+// rather than a shared archive field, initialize a newly seeded generator.
+func perJobCheck(spool []byte) {
+ re:=regexp.MustCompile(`(?m)^([^ ]+) JOB=([^ ]+) ATTEMPT=([^ ]+) STATE=([^ ]+) CLASS=([^ ]+) PAYLOAD=([A-F0-9]{32}) DEST=([^\s]+)`)
+ rows:=re.FindAllSubmatch(spool,-1)
+ if len(rows)!=133 {panic("perjob record count")}
+ prefixes:=[]string{"","H17|","PS-261003|","REC8/1|","CEG-ARCHIVE-RECOVERY/v1\n"}
+ tested,hits,controls:=0,0,0
+ for _,m:=range rows {
+  ts,job,a,state,class,dest:=string(m[1]),string(m[2]),string(m[3]),string(m[4]),string(m[5]),string(m[7])
+  if job=="PS-261003-0417" && a=="2" {continue}
+  controls++
+  target:=decode(string(m[6]))
+  tsNorm:=strings.ReplaceAll(ts,"+00:00","Z")
+  forms:=[]string{job,ts,tsNorm,job+"|"+ts,job+"|"+tsNorm,job+"|"+a,job+"|"+class,job+"|"+class+"|"+dest,job+"|"+a+"|"+class,job+"|"+a+"|"+state+"|"+class+"|"+dest,job+" "+ts,tsNorm+"|"+job,fmt.Sprintf("JOB=%s ATTEMPT=%s STATE=%s CLASS=%s DEST=%s",job,a,state,class,dest),strings.TrimPrefix(job,"PS-261003-")}
+  for i,form:=range forms {for j,pre:=range prefixes{
+   seed:=sha256.Sum256([]byte(pre+form))
+   for typ:=0;typ<3;typ++{
+    var emit func() block
+    if typ==0 {g:=rand.NewChaCha8(seed);emit=func()block{var b block;_,e:=g.Read(b[:]);if e!=nil{panic(e)};return b}} else {var u,v uint64;if typ==1 {u=binary.LittleEndian.Uint64(seed[:8]);v=binary.LittleEndian.Uint64(seed[8:16])} else {u=binary.BigEndian.Uint64(seed[:8]);v=binary.BigEndian.Uint64(seed[8:16])};g:=rand.NewPCG(u,v);emit=func()block{var b block;binary.LittleEndian.PutUint64(b[:8],g.Uint64());binary.LittleEndian.PutUint64(b[8:],g.Uint64());return b}}
+    for offset:=0;offset<12;offset++{p:=emit();tested++;for view:=0;view<8;view++{if packet(p,view)==target{fmt.Printf("HISTORICAL_PERJOB_WHOLE_MATCH job=%s form=%d prefix=%d type=%d offset=%d wireview=%d\n",job,i,j,typ,offset,view);hits++}}}
+   }
+  }}
+ }
+ fmt.Printf("source-only-per-job: controls=%d forms=14 prefixes=5 generator_types=3 windows=12 wireviews=8 candidate_blocks=%d whole_matches=%d\n",controls,tested,hits)
 }
