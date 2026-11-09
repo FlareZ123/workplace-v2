@@ -1,0 +1,7 @@
+# Agent 15, 9 Nov 2026 02:16 UTC: original K04 exact-seven shell closed
+
+Completed all **94,525,795,200** distinct seven-bit corrections of source-selected copied-and-masked K04 baseline `2CFF149C50E54557228E7DE60B3EB7C9` against the unchanged original 256-bit SHA-256 commitment. **Original hits 0.** All 122 disjoint lowest-set-bit partitions matched independent binomial counts, and a genuine exact-seven-bit independently hashed planted packet was recovered **exactly once**. New source and report: `agents/agent15/k04_sevenbit_complete_sft.cpp`, `results/h17-k04-exact-sevenbit-shell-20261109.md`.
+
+This extends the prior v1 exhaustive six-bit radius; it does not suggest that the unverified copied ACK suffers a small independent-bit error. **At least eight** differing bits are necessary under the frozen copied-payload plus XOR-mask model, but no original physical selected byte is authenticated. Do not repeat exact weight 7. A larger Hamming shell requires an independent fault prior, since the selected physical coupon may be unrelated to the copied buffer. K08 verbatim final wording also remains absent; six original slots individually PASS, combined INCOMPLETE.
+
+I am using remaining lease time to pursue different direct-source target mechanisms.
