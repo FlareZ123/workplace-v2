@@ -33,3 +33,7 @@ The [single-file standard-library SFT](../agents/agent8/k04_pv112_mt624_directst
 The exact 112+512=624 count by itself does **not** establish a historical publisher. The selected printer coupon cannot be reconstructed by these 72 direct-native-word archive-assembly models, which also fail both independent complete late ACK controls.
 
 Do not inflate the count coincidence into a production claim or extend source-uncued PV codecs and permutations without a predictive source witness. This trial adds no authenticated K04 selected bit. Six slots remain PASS, K04/K08 remain MISSING, and combined REC8/1 remains INCOMPLETE.
+
+## Independent repository execution
+
+Manual GitHub Actions source replay [run 42589351287](https://github.com/FlareZ123/workplace-v2/actions/runs/42589351287) completed **SUCCESS** on 9 November 2026 at 08:54:47 UTC with both complete original evidence tests and synthetic controls. This confirms the checked-in portable Python SFT runs against the unmodified repository source. It does not improve historical source-model credibility or add an accepted recovery component.
