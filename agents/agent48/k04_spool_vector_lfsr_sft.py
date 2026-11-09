@@ -113,7 +113,52 @@ def main(zip_path: str) -> None:
                     if good == total and total:
                         print("SOURCE PREDICTION: investigate selected-target stage")
 
+
+def conditional_role_sources(zip_path: str) -> None:
+    """Test independent linear emitters selected by original CLASS/DEST labels."""
+    import collections
+    with zipfile.ZipFile(zip_path) as z:
+        raw = z.read(SPOOL)
+    assert hashlib.sha256(raw).hexdigest() == SHA
+    groups = collections.defaultdict(list)
+    for line in raw.decode().splitlines():
+        job = re.search(r"JOB=PS-261003-(\\d+)", line)
+        payload = re.search(r"PAYLOAD=([A-F0-9]{32})", line)
+        cls = re.search(r"CLASS=(\\w+)", line)
+        dest = re.search(r"DEST=(\\w+)", line)
+        if not all((job, payload, cls, dest)):
+            continue
+        if not (300 <= int(job.group(1)) <= 427 and "STATE=ACK" in line and "ATTEMPT=1" in line):
+            continue
+        p = bytes.fromhex(payload.group(1))
+        c, d = cls.group(1), dest.group(1)
+        for key in [("CLASS", c), ("DEST", d), ("CLASS_DEST", c + "|" + d)]:
+            groups[key].append(p)
+    evaluated, compatible = 0, 0
+    for key, packets in groups.items():
+        assert len(packets) >= 11
+        fits = []
+        for endian in ("big", "little"):
+            for reverse in (False, True):
+                ws = word_stream(packets, endian, reverse)
+                train = len(ws) - 8
+                for degree in (8, 16, 24, 32, 48, 64, 96, 128):
+                    if degree >= train:
+                        continue
+                    evaluated += 1
+                    coeff, rank, first_failure = fit(ws, degree, train)
+                    if coeff is not None:
+                        good, total = check_holdout(ws, degree, coeff, train)
+                        fits.append((endian, reverse, degree, good, total))
+                        if good == total:
+                            compatible += 1
+        print(f"CONDITIONAL {key} packets={len(packets)} fitted={fits}")
+    assert len(groups) == 15
+    print(f"CONDITIONAL tested={evaluated} full_source_holdout_passes={compatible}")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("archive_zip")
-    main(parser.parse_args().archive_zip)
+    archive_zip = parser.parse_args().archive_zip
+    main(archive_zip)
+    conditional_role_sources(archive_zip)
