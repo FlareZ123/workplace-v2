@@ -30,3 +30,22 @@ Reusable read-only [standalone SFT](../agents/agent4/k04_rs128_five_late_wholepa
 The superficially suggestive 128+5 shape does not carry the selected coupon via these ordinary standard or evaluation RS conventions, and neither authentic copied late ACK can be reconstructed whole. Do not expand to arbitrary nonsource-defined generator matrices: 128 fully random-looking 16-byte rows can fit any desired missing 128-bit target with a free parity operator, which only restates preimage search. A distinct historical encoder or physical integrity witness would be needed before investing in more parity transforms.
 
 **Official result remains K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE.**
+
+
+## 9 November continuation: native whole-packet GF(2^128) interpolation
+
+The first 58 checks treat each byte lane as its own GF256 symbol. A substantially different code treats each entire original **16-byte printer packet as a single GF(2^128) symbol** under the conventional polynomial x^128+x^7+x^2+x+1. The 128 ordinary packets are the data evaluations of an unknown degree-at-most-127 field polynomial. Two possible original-coordinate assignments were tested:
+
+- **Sequential symbols:** evaluate at x=0..127; late exceptional records at x=128..132.
+- **Recorded UTC minutes from 07:00:** evaluate at x=0,5,...,635; exceptional records at x=661,662,663,684,685 (18:01, 18:02, 18:03, 18:24 and 18:25 UTC).
+
+Each geometry was tested with source records in forward or reverse order and whole-packet big/little-endian field encoding. **Eight complete selected-coupon candidates** were generated, each XORed with the unchanged official route mask and checked against the full original K04 SHA256 commitment. The copied selected ACK2 payload was excluded from construction. Both preserved late ACK source packets provided independent complete 16-byte holdout objects per model.
+
+The local original-source computation returned:
+
+- **0 / 8** original K04 acceptance matches.
+- **0 / 16** whole ACK holdout matches.
+- Best agreement across the two 16-byte ACKs: **1 / 32 byte positions**.
+- **10 / 10 synthetic polynomial-extrapolation controls** passed: fresh degree-11 random 128-bit field-coefficient polynomials were evaluated at each of the two original-shaped 128-point grids and exactly reproduced all five unseen targets using the same Lagrange weights.
+
+The [updated standalone SFT](../agents/agent4/k04_rs128_five_late_wholepacket_sft.py) includes these field128 trials in addition to the original 58 byte-lane trials, with explicit source SHA and correct original selected-event metadata checks. The separately executed local field128 pilots gave original no-match for all eight assignments and seeded synthetic extrapolation positives. This extension adds a genuinely different **whole-coupon field algebra and real-time coordinate** while still finding no evidence of any original printed data-plus-parity issuer. Eight speculative complete predictions supply zero source-supported selected-coupon bits. The official six PASS / two missing / combined incomplete status is unchanged.
