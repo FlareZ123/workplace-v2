@@ -49,8 +49,8 @@ def tokens_from_html(data: bytes) -> list[str]:
     parser = VisibleText()
     parser.feed(data.decode("utf-8-sig"))
     text = " ".join(parser.parts)
-    normalized = re.sub(r"[^a-z0-9\\s]", " ", text.lower())
-    return re.sub(r"\\s+", " ", normalized).split()
+    normalized = re.sub(r"[^a-z0-9\s]", " ", text.lower())
+    return re.sub(r"\s+", " ", normalized).split()
 
 
 def component(phrase: str) -> bytes:
@@ -85,9 +85,7 @@ def run(data: bytes, target: str = TARGET) -> tuple[int, str | None]:
 def main() -> None:
     phrase = "a good watch leaves the room ready for the next pair of hands"
     assert component(phrase).hex().upper() == N02_HMAC16
-    synthetic = hashlib.sha256(component("a good watch")).hexdigest()
-    assert hashlib.sha256(component("a good watch")).hexdigest() == synthetic
-    print("N02_HMAC_POSITIVE PASS; planted candidate HASH positive PASS", flush=True)
+    print("N02_HMAC_POSITIVE PASS", flush=True)
     if len(sys.argv) == 2:
         data = Path(sys.argv[1]).read_bytes()
     else:
