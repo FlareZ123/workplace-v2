@@ -35,6 +35,10 @@ A real planted **128-word** shared vector recurrence, with five nonzero feedback
 
 Reproducer: [single-file standard-library SFT](../agents/agent48/k04_spool_vector_lfsr_sft.py), invoked with the unchanged local archive ZIP as its argument. It only reads the original ZIP and prints source-model results.
 
+## Stronger source-generation consequence (Cayley–Hamilton)
+
+The 496-word contradiction also excludes a **much broader class** than an ordinary shift-register emitter. Suppose one 32-bit observable is emitted at each fixed step of a hidden GF(2)-linear state, with hidden state `s[t]` of dimension `n` bits, arbitrary transition matrix `A`, and arbitrary 32-bit projection `B`: `s[t+1]=A s[t]`, `W[t]=B s[t]`. The characteristic polynomial of `A` has degree `n`; by Cayley–Hamilton it annihilates every projected word lane at once. Thus **every hidden-state linear source with n <= 496 bits, one update per observed 32-bit word, no omission, and a listed serialization would satisfy some 496-word common-feedback recurrence**. The original contradicts all such recurrences. An affine state update can be augmented with a constant coordinate, yielding the same conclusion for at most 495 bits of affine state. This is a mathematical implication of the exact source inconsistency, not historical identification of any printer firmware. Nonlinear output, skipped draws, variable rate, independent reseeding, or a different word chronology evade its premise.
+
 ## Interpretation and next action
 
 In the tested packet sequence and serializers, any stationary shared word-vector XOR recurrence with memory no greater than **496 words** is incompatible with the complete original 512-word source. Testing shorter degrees independently is a check, because a shorter recurrence can always be embedded in a longer one if it obeys the same chronology.
