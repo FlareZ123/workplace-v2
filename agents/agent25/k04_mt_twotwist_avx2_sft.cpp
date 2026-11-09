@@ -34,7 +34,7 @@ std::vector<Hit> scan(uint64_t start,uint64_t stop,int worker) {
   alignas(32) uint32_t seeds[8];
   for(uint64_t n=start;n<stop;n+=8) {
     for(unsigned lane=0;lane<8;lane++) seeds[lane]=uint32_t(n+lane);
-    s[0]=_mm256_load_si512((const V*)seeds);
+    s[0]=_mm256_load_si256((const V*)seeds);
     for(int i=1;i<624;i++) {
       V prev=s[i-1];
       s[i]=_mm256_add_epi32(_mm256_mullo_epi32(_mm256_xor_si512(prev,shr(prev,30)),mul),_mm256_set1_epi32(i));
