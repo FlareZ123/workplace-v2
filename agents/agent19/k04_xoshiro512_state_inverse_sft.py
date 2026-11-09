@@ -207,7 +207,7 @@ def main():
                                       generate(seed, full_positions) == words))
     assert counts == {"fixed": 127, "class": 729, "dest": 648, "add01": 12}
     assert not survivors, f"unexpected source-consistent model(s): {survivors!r}"
-    print("original source: 132? no; 128 unselected regular ACK packets = 256 "
+    print("original source: 128 ordinary ACK1 packets = 256 "
           "whole 64-bit outputs, four serializers")
     print("source-only stage hypotheses:", counts,
           "tested serializer assignments:", 4 * sum(counts.values()))
