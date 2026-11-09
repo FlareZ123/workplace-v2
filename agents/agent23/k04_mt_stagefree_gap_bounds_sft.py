@@ -97,7 +97,7 @@ def run() -> None:
     assert hashlib.sha256(raw).hexdigest()==SHA
     graph=relations(raw)
     assert all(bounds(graph,D) is None for D in range(4,13))
-    for ceiling in (13,14,17):
+    for ceiling in (13,14,17,1000):
         d=bounds(graph,ceiling)
         assert d is not None
         neighbors=[span(d,i,i+1) for i in (128,129,130)]
@@ -112,6 +112,13 @@ def run() -> None:
         if ceiling==17:
             assert neighbors==[(4,8),(4,8),(4,4)]
             assert near==[(43,(627,631)),(44,(612,616)),(96,(234,238)),(97,(218,222))]
+        if ceiling==1000:
+            # Effective no finite maximum: original 42 links and min-4 chronology
+            # already force both target-causal donor windows into printed gaps.
+            assert neighbors==[(4,58),(4,58),(4,4)]
+            assert near==[(43,(627,681)),(44,(562,616)),(96,(234,288)),(97,(168,222))]
+            assert near[0][1][0]-623>=4 and near[1][1][1]-620<0
+            assert near[2][1][0]-227>=4 and near[3][1][1]-224<0
         assert target==(917,971)
         print("GAP_CEILING",ceiling,"TARGET_STAGE",target,
               "LATE_GAPS",neighbors,"ANTECEDENT_NEIGHBORS",near,
