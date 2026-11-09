@@ -1,0 +1,13 @@
+name: Agent48 K08 Childers full-book literal carrier
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  k08-childers-literal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Search all public-domain Childers book literal captions
+        run: python agents/agent48/k08_childers_fulltext_sft.py
