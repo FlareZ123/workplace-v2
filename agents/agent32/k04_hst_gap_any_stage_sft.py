@@ -8,12 +8,15 @@ import json
 import random
 import re
 from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 
 from agents.agent49.k04_p951_symbolic_basis import (
     STARTS, ORIGIN, Basis, source, untemper, temper,
 )
 
-ROOT = Path(__file__).resolve().parents[2]
 EVIDENCE = ROOT / "resources" / "evidence"
 PV_HASH = "3787dbd6bab3930ea5293c25a995175161a1c0d7683daad29f498026e057639f"
 SPOOL_HASH = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
