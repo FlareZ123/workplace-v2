@@ -1,0 +1,17 @@
+name: Agent22 K04 K08 n43 direct authored phrase seed (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-phrase-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Genuine seeded controls, original n43 source intersections, literal ASCII feasibility
+        run: python agents/agent22/k04_n43_authored_seed_source_sft.py --shard ${{ matrix.shard }}
