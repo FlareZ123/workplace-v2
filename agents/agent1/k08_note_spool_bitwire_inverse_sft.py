@@ -122,4 +122,6 @@ for view in ("full_body", "after_colon"):
           "full K08 component candidate", predicted.hex().upper(),
           "original acceptance PASS", accepted,
           "synthetic 3-whole-source + full-target positive PASS")
-    assert not accepted
+    if accepted:
+        print("RECOVERED_K08", predicted.hex().upper())
+        raise SystemExit(0)
