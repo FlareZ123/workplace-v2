@@ -24,7 +24,7 @@ jobs:
           assert len(a)==112 and [v for _,v in a[:8]]==[18727,34411,59877,40783,14615,64141,56116,66108];
           print('Original HST source pin and first eight historical PV readings PASS')"
       - name: Compile independently calibrated CPython MT19937 emitter
-        run: c++ -O3 -std=c++17 -DNDEBUG agents/agent32/h17_pv_cpython_seed32_sft.cpp -o pvseed
+        run: c++ -O3 -std=c++17 agents/agent32/h17_pv_cpython_seed32_sft.cpp -o pvseed
       - name: Complete disjoint 32-bit seed shard
         run: |
           mkdir results
