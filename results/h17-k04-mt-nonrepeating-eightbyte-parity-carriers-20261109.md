@@ -24,7 +24,7 @@ Read all original evidence files except the encrypted PDF and, for candidate sea
 
 The 286 models have between 29 and 35 independent source-fixed equations; many are dominated by `word_a XOR word_b = 0`, so the search **does not treat identical halves as a discovered hidden state witness**. Only nineteen models have fewer than 24 explicit zero-equality halfword-pair constraints in their derived elimination basis. The no-match conclusion applies to the exact defined nonrepeating consecutive-eightbyte carrier geometry.
 
-A separate **synthetic exact-syndrome positive** constructs a nonrepeating 64-bit pair satisfying the same source equations for original stage -1005, tempered view, and a deliberate one-bit mutation fails the original equations. This verifies the code's candidate/parity reduction, without presenting a synthetic candidate as an original witness.
+A separate **synthetic exact-syndrome positive** constructs a nonrepeating 64-bit pair satisfying the same source equations for original stage -1099, tempered view, and a deliberate one-bit mutation fails the original equations. This verifies the code's candidate/parity reduction, without presenting a synthetic candidate as an original witness.
 
 ## Interpretation and next source requirement
 
@@ -35,3 +35,9 @@ The major practical lesson is that the abundant 227-step pair parity relations c
 Original source, acceptance, canonical candidate and verifier were not edited. Genuine REC8 status remains K01/K02/K03/K05/K06/K07 individually PASS, **K04 and K08 MISSING**, combined INCOMPLETE.
 
 **Reproducer:** [source-pinned standalone original-export SFT](../agents/agent33/h17_mt_nonrepeating_pair_source_sft.py). Invoke from repo root with Python 3; optional first argument is the folder containing `evidence/` when using the separately supplied unchanged ZIP export. No third-party packages.
+
+### Reproducer correction (9 November, 06:58 UTC)
+
+A self-review found that the first committed SFT accidentally discarded original measurement bits when inserting source equations into its GF(2) basis. It retained the same coefficient rank but incorrectly treated the reduced right-hand sides as zero, so its initial zero-match run was **invalid for the genuine source values**. The SFT was corrected to XOR the reduced source RHS with each original observed bit, and a new control checks 20 complete original fourbyte source words, including nonzero bits, against the fully reduced basis.
+
+The corrected original-source SFT was **rerun end to end** on the unchanged supplied export, completing all 39,716,248 parity comparisons in 17.373 seconds with **zero exact matches**, and passed the nonrepeating planted pair/one-bit negative. The corrected synthetic stage -1099 pair is `7f3ce135635050ae`, differing from the earlier invalid control because the actual source RHS is now retained. All source counts, pair selection, zero genuine matches, and substantive conclusion survive the correction. This correction is mandatory context for anyone using the earlier Git history.
