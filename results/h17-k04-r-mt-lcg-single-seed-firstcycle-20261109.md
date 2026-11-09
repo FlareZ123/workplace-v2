@@ -26,3 +26,14 @@ The [standalone Python reproducer](../agents/agent33/h17_r_mt_lcg_firstcycle_sft
 This excludes the specified **direct R RNG_Init one-word-LCG MT first-cycle model** under the fixed p951 row chronology and little-endian 32-bit output interpretation. It does not exclude arbitrary later-cycle origins, different serializers, altered LCGs, multiword initializers, a distinct printer producer, or the actual selected physical coupon. The result reduces no historically authenticated K04 bits; K08's author-final wording remains unobserved. No new REC8 component passes. Current state is six PASS and two MISSING, combined **INCOMPLETE**.
 
 **Consequence:** A 32-bit seed model can be constructively inverted rather than brute-forced; to justify another initializer family, first identify a source/implementation-specific reason to test that family and require held-out entire printer packets. Avoid treating another narrow generator exclusion as physical coupon recovery.
+
+
+## Generalization: any unknown 32-bit affine native initializer (same conditional chronology)
+
+The same corrected source basis determines four **consecutive complete pre-twist native words** at stage -685..-682 (`D045FC16 373998D4 606FB254 57E650E4`) and -622..-619 (`E32E1557 3152E7CB BBDD46A0 9027419F`). The first run belongs to the hypothetical 624-word initial-state window for phase61..623; the second for phase0..618. Their union covers **every** initial cycle position 0..623.
+
+For an unknown initializer `P[n+1]=a*P[n]+c mod 2^32`, let successive differences be `d0=P1-P0`, `d1=P2-P1`, `d2=P3-P2`. Every possible constant pair `a,c` must solve **both** congruences `a*d0=d1` and `a*d1=d2 mod 2^32`. They can be solved exhaustively by taking the gcd power of two, modular inversion on the remaining odd factor and intersecting the two residues; no arbitrary coefficient dictionary or 2^64 search is required.
+
+Both source-fixed four-word runs are inconsistent with **every** `a,c` in this family. **100/100** synthetic arbitrary-coefficient positives pass the same solver, including even or noninvertible multipliers. Reproducer: [unknown-affine source SFT](../agents/agent33/h17_mt_unknown_affine_four_state_sft.py), which reuses the exact original-source and nonzero-RHS controls from the two-pair [1998 initializer SFT](../agents/agent33/h17_mt1998_two_pair_source_sft.py).
+
+This is a source-conditioned exclusion of the entire *single constant affine step per native initialization word* class under p951 first-cycle alignment, subsuming the R `RNG_Init` state-recurrence premise. It does not apply to nonlinear or mixed-halfword initialization, arbitrary subsequent cycles or altered spool chronology. It does not add a missing coupon bit, and should discourage further arbitrary coefficient/seed enumeration in this exact family.
