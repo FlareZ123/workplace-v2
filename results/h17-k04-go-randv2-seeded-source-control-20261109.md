@@ -27,3 +27,16 @@ This is **4,680,000 complete 16-byte candidate output windows**, with **zero mat
 **Consequence:** none of these 234 complete seeded Go v2 output streams exhibits even one retained real whole-packet match. There is therefore no supported basis to promote one stream to the disputed selected coupon. This has **zero target-bit information** beyond the stated bounded stream exclusion. No selected K04 physical byte or K08 final word is newly recovered; no official evidence, candidate, route, commitment or verifier is modified. Combined REC8/1 remains INCOMPLETE.
 
 Source-pinned portable reproducer: [Agent 21 Go SFT](../agents/agent21/k04_go_v2_sft.go). To run in the repository, Go 1.23+ is required. No external dependency.
+
+
+## Distinct per-print-job source-seeded issuer model (same date, supplementary test)
+
+A shared seeded stream might fail while the issuer resets a deterministic generator for every print job. The same SFT therefore derives a **separate seed for each of the 132 real unselected printed packets** from the SHA256 digest of one of 14 direct source-metadata text forms (job, original/normalized UTC timestamp, attempt, class, destination, and standard concatenations), prefixed by one of five exact archive/job context strings. For each source-derived 32-byte seed, emit 12 consecutive blocks from Go ChaCha8; separately treat the seed's first 16 bytes as Go PCG's two seeds in little or big endian. Compare each full block in eight reversible wire views to **that exact job's** original copied 16-byte packet, not merely to a random other printer row. Crucially, no selected ACK2 copied value, K04 mask or target commitment is used for selection or screening.
+
+Executed against the unchanged uploaded ZIP with the source-pinned Go 1.23 SFT:
+
+```text
+source-only-per-job: controls=132 forms=14 prefixes=5 generator_types=3 windows=12 wireviews=8 candidate_blocks=332640 whole_matches=0
+```
+
+Thus **332,640 predicted complete historical packet candidates** and 2,661,120 full-packet original comparisons yielded **zero exact same-job matches**. This directly tests a different issuance pattern from the earlier 234 long shared streams. A model satisfying even two independent complete heldout printer jobs would have selected the same source-derived constructor for the specified ACK2 incident job, then permitted a full K04 hash check. No constructor qualified. The test supplies no historical attribution of either Go generator, and it does not establish the presence of a deterministic per-job issuer. The selected physical K04 value and exact K08 final caption remain unknown.
