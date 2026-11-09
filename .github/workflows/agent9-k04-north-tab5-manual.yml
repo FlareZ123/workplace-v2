@@ -1,0 +1,11 @@
+name: Agent9 North five-tab K04 original-source validation
+on:
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce source-pinned complete-packet holdouts and original K04 checks
+        run: python agents/agent9/k04_north_tab5_selected_stage_sft.py
