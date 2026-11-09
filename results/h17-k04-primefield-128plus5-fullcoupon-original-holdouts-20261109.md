@@ -43,3 +43,30 @@ The whole-packet holdouts are post-dispatch copied source evidence, not independ
 **Decision:** This specifically closes integer-prime interpolation of the 128 original ordinary full packets into five exceptional packets for the three standard large primes and two natural coordinate grids. Moving from GF(2^128) to standard prime fields does not expose K04 here. Future experiments require a different source-to-object structure or new actual original media; increasing arbitrary polynomial moduli absent an issuing rule is not a meaningful recovery advance.
 
 No original evidence, commitments, route, candidate or verifier was modified. K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; original combined REC8/1 INCOMPLETE.
+
+
+## Source-stage correction: only three late records were acknowledged (9 November continuation)
+
+The five exceptional printer *log entries* are not five unquestionably issued physical coupons. Exact original headers distinguish:
+
+- `row128`: PS-0417 attempt1 **REQUESTED** (18:01);
+- `row129`: PS-0417 attempt2 **ACK** (18:02), the actual selected K04 object;
+- `row130`: PS-0417 attempt3 **REQUESTED** (18:03);
+- `row131`: PS-0448 attempt1 **ACK** (18:24);
+- `row132`: PS-0420 attempt2 **ACK** (18:25).
+
+The primary 128+5 branch explicitly models **every logged event** as an issued field sample. This is a conditional premise, not something attested by an ACK. A separate, potentially more physical alternative is **ACK-only issuance**: only the 128 original regular ACK jobs and three exceptional ACK events consume field positions. That places the selected K04 prediction at position128, with the independent complete late ACK controls at positions129 and130. The minute-coordinate model instead uses the actual three ACK minutes from 07:00, `662,684,685`; source ordinary minutes remain `0,5,...,635`.
+
+The exact same three verified prime fields, two source directions and two whole-packet endian views yield **24 new complete ACK-only interpolators**. The selected copied ACK2 bytes are withheld. Real historical tests on both original ZIP and extracted source:
+
+| ACK-only result | Original |
+|---|---:|
+| Complete 128+3 prime-field producer assignments | **24** |
+| Canonical-width selected 16-byte K04 predictions | **16** |
+| K04 commitment matches | **0 / 16** |
+| Complete independently preserved late ACK holdout predictions | **0 / 48** |
+| New true prime-field 128-source-to-3-ACK synthetic whole-object predictions | **18 / 18 PASS** |
+
+The extension is implemented in the same [source-pinned SFT](../agents/agent42/k04_primefield_128_batch_sft.py), `ack_only_branch`. Unlike the 128+5 branch, it respects the difference between a requested-but-unacknowledged job and an acknowledged print. The original finite prime-field issuer models **still do not reconstruct a genuine withheld 16-byte ACK** and yield no selected coupon. Neither branch establishes whether a REQUESTED event consumed generator state in real printer firmware; the source does not include that specification.
+
+**Decision:** Retain the two stage models as separate, fully tested and falsified source-packet predictors. The ACK-only correction prevents accidentally excluding a producer merely because a proposed chronology assumed REQUESTED rows were physical output. Do not extend arbitrary moduli without independently attested encoding/capture machinery.
