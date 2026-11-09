@@ -32,7 +32,7 @@ Concrete original GOOD contradictions include PV102 = 59.877, whose only permitt
 
 The synthetic control generates a continuous genuine CPython MT sequence, writes 132 source-format printer words at the same frozen 133 positions, excludes row129, and synthesizes all 112 rounded PVs at the first valid post-packet word pair. All 112 sampled values agree with the recovered printer-only fixed bits, including 42 independently informative rows. This validates the necessary-condition test without fitting historian values.
 
-**Reproducer:** [single-file original-source SFT](../agents/agent32/k04_hst_gap_any_stage_sft.py). The numerical original/synthetic results above were independently executed in the local runtime with the same original hashes and exact Agent49 MT recurrence. The checked-in SFT uses Agent49's common source module and asserts the original count.
+**Reproducer:** [single-file original-source SFT](../agents/agent32/k04_hst_gap_any_stage_sft.py). The numerical original/synthetic results above were independently executed in the local runtime with the same original hashes and exact Agent49 MT recurrence. The checked-in SFT uses Agent49's common source module and asserts the original count. **Original repository GitHub Actions run [42596576429](https://github.com/FlareZ123/workplace-v2/actions/runs/42596576429) completed SUCCESS** after an initial invocation required a module-path correction; the successful run executed all original-source assertions and the synthetic 112-row positive.
 
 ## Meaning for recovery
 
