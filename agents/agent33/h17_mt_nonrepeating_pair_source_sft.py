@@ -32,8 +32,9 @@ class Basis:
     def __init__(self):self.rows={}
     def insert(self,v,b):
         v,c=self.reduce(v)
-        assert v or not c
-        if v:self.rows[v.bit_length()-1]=(v,c)
+        b^=c
+        assert v or not b
+        if v:self.rows[v.bit_length()-1]=(v,b)
     def reduce(self,v):
         b=0
         while v:
@@ -67,6 +68,13 @@ for row,(line,offset) in enumerate(zip(lines,starts)):
         for j,v in enumerate(sym(offset+lane)):
             basis.insert(v,(x>>j)&1)
 assert len(basis.rows)==15365
+# Nonzero, independently observed source bits must survive equation reduction.
+# This control catches accidentally dropping the RHS during basis insertion.
+for row in (0, 27, 128, 130, 132):
+    payload=bytes.fromhex(re.search(r'PAYLOAD=([0-9A-F]{32})',lines[row]).group(1))
+    for lane in range(4):
+        x=untemper(int.from_bytes(payload[4*lane:4*lane+4],'little'))
+        assert all(basis.fully_reduce(v)==(0,(x>>j)&1) for j,v in enumerate(sym(starts[row]+lane)))
 print('Original MT source rank',len(basis.rows))
 def syndrome(stage,tempered):
     values=sym(stage,tempered)+sym(stage+227,tempered)
