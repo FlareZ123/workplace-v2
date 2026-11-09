@@ -1,0 +1,22 @@
+name: Agent8 original-source MT624 and caption trials
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-source-sfts:
+    name: Original H17 source-model SFTs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check Masefield quotation hypotheses
+        run: python agents/agent8/k08_seafever_literal_sft.py
+      - name: Check HST PV and printer MT624 assembly
+        run: python agents/agent8/k04_pv112_mt624_directstate_sft.py
