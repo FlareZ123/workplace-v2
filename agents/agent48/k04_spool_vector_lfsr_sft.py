@@ -122,10 +122,10 @@ def conditional_role_sources(zip_path: str) -> None:
     assert hashlib.sha256(raw).hexdigest() == SHA
     groups = collections.defaultdict(list)
     for line in raw.decode().splitlines():
-        job = re.search(r"JOB=PS-261003-(\\d+)", line)
+        job = re.search(r"JOB=PS-261003-(\d+)", line)
         payload = re.search(r"PAYLOAD=([A-F0-9]{32})", line)
-        cls = re.search(r"CLASS=(\\w+)", line)
-        dest = re.search(r"DEST=(\\w+)", line)
+        cls = re.search(r"CLASS=(\w+)", line)
+        dest = re.search(r"DEST=(\w+)", line)
         if not all((job, payload, cls, dest)):
             continue
         if not (300 <= int(job.group(1)) <= 427 and "STATE=ACK" in line and "ATTEMPT=1" in line):
