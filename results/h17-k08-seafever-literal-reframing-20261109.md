@@ -35,3 +35,7 @@ Execution was local against the original attached archive with source-byte hashe
 This closes the specific literal *Sea Fever* quote and small frozen source/scene reframing hypothesis. It supplies **zero independently attested final caption words** and does not change the six-PASS / K04-and-K08-MISSING / combined-INCOMPLETE state.
 
 Do not widen this into arbitrary poetry, new rhyme vocabularies or large unsourced paraphrase grids. A future K08 attempt needs a newly identifiable literal final-version carrier or genuinely predictive authoring-stage operator. The poem is a failed conditional source hypothesis, not historical H-17 evidence.
+
+## Independent repository execution
+
+Manual GitHub Actions source replay [run 42589351287](https://github.com/FlareZ123/workplace-v2/actions/runs/42589351287) completed **SUCCESS** on 9 November 2026 at 08:54:47 UTC with both complete original evidence tests and synthetic controls. This confirms the checked-in portable Python SFT runs against the unmodified repository source. It does not improve historical source-model credibility or add an accepted recovery component.
