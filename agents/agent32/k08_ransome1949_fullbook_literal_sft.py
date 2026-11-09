@@ -13,7 +13,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-URL = "https://www.fadedpage.com/books/20180428/html.php"
+URL = "https://www.fadedpage.com/link.php?file=20180428.txt"
 NOTES_SHA = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
 ROUTE_SHA = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
 ACCEPTANCE_SHA = "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
@@ -67,9 +67,13 @@ def main():
         assert response.status == 200
         source = response.read()
     source_sha = hashlib.sha256(source).hexdigest()
-    text = TextExtractor()
-    text.feed(source.decode("utf-8"))
-    words = text.words
+    body = source.decode("utf-8-sig")
+    if body.lstrip().startswith(("<!DOCTYPE html", "<html")):
+        text = TextExtractor()
+        text.feed(body)
+        words = text.words
+    else:
+        words = re.findall(r"[a-z0-9]+", body.lower())
     assert 50000 <= len(words) <= 200000, f"Unexpected full-text length: {len(words)}, bytes={len(source)}, sha256={source_sha}, opening={words[:10]}"
 
     checks = 0
