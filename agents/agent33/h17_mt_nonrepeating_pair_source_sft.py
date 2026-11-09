@@ -166,3 +166,46 @@ flip=(eqs[0][0]&-eqs[0][0]).bit_length()-1
 assert any(((planted^(1<<flip))&mask).bit_count()%2 != bit for mask,bit in eqs)
 print('Synthetic nonrepeating paired-state positive PASS at stage',t,'value',planted.to_bytes(8,'little').hex())
 print('No source field recovered the K04 original physical coupon.')
+
+# Target relevance gate: a source-fitting donor need not constrain the K04 gap.
+def matrix_rank(rows):
+    piv={}
+    for v in rows:
+        while v:
+            j=v.bit_length()-1
+            if j not in piv:
+                piv[j]=v
+                break
+            v^=piv[j]
+    return len(piv)
+target=[basis.fully_reduce(v)[0] for stage in (951,952,953,954) for v in sym(stage)]
+assert matrix_rank(target)==128
+all_pair_rows=[]
+for stage,mode,_ in models:
+    all_pair_rows.extend(basis.fully_reduce(v)[0] for v in sym(stage,mode)+sym(stage+227,mode))
+rank_all=matrix_rank(all_pair_rows)
+overlap=128+rank_all-matrix_rank(target+all_pair_rows)
+assert (rank_all,overlap)==(2886,0),(rank_all,overlap)
+print('Original 286 pair models combined donor rank',rank_all,'K04 target overlap',overlap)
+# Directly inspect future target-bearing stages beyond the earlier -1100..1040 window.
+for i in range(len(a),1806-ORIGIN+1):
+    t=i-624
+    a.append([a[t+397][j]^(a[t][31] if j==30 else (a[t+1][j+1] if j<30 else 0))^(a[t+1][0] if (MAG>>j)&1 else 0) for j in range(32)])
+target_witness_stages=[]
+for stage in range(700,1579):
+    donor=[basis.fully_reduce(v)[0] for v in sym(stage)+sym(stage+227)]
+    rank_d=matrix_rank(donor)
+    overlap=128+rank_d-matrix_rank(target+donor)
+    if overlap>0 and 64-rank_d>=24:
+        target_witness_stages.append(stage)
+assert target_witness_stages==[952,953,954,1179,1180,1181,1351,1406,1578]
+target_witness_matches=[]
+for stage in target_witness_stages:
+    constraints=syndrome(stage,False)
+    for value,name,kind,offset,endian,encoding in variants:
+        if all((value&mask).bit_count()%2==bit for mask,bit in constraints):
+            target_witness_matches.append((stage,name,kind,offset,endian,encoding))
+assert not target_witness_matches,target_witness_matches[:5]
+print('Original K04 target-relevant 227-step models',len(target_witness_stages),
+      'complete candidate comparisons',len(target_witness_stages)*len(variants),
+      'exact witness matches',len(target_witness_matches))
