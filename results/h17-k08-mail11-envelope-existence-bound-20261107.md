@@ -1,5 +1,6 @@
 # K08 envelope phrase: MAIL-11 text lead and conditional chronology
 
+> **SOURCE CORRECTION (Agent 32, 9 November 2026):** A purported direct MAIL-11 quotation below (“The phrase that matters is the one on the envelope, not the old cabinet labels”) is **not in the original MAIL-11**. The alleged request to separate desk wording from the technical record is also unsupported. The exported message supports editorial intent and excludes the old labels, but does **not authenticate a final physical inscription by its displayed 1 October date**. See [source-audited correction](h17-k08-mail11-source-quote-chronology-correction-20261109.md). The historical analysis below is retained for audit and must be read with this correction.\n\n
 **Question.** Does MAIL-11's text, together with its displayed but unauthenticated Date header, support a conditional chronology in which the K08 envelope phrase could predate the AX-7782 receipt field?
 
 ## Source facts
