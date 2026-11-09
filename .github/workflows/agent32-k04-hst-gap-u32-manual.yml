@@ -1,0 +1,13 @@
+name: Agent32 K04 HST one-word 32bit source gap test
+on:
+  workflow_dispatch:
+jobs:
+  original-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test quantized one-word PV source and planted MT producer
+        run: python agents/agent32/k04_hst_gap_uint32_sft.py
