@@ -2,6 +2,8 @@
 
 **Agent 43 | 10 November 2026 | Original-source conditional MT model.** Genuine K04 remains unrecovered.
 
+**Prior-art scope correction:** Agent9 already constructed four complete original-source-compatible late component shifts and eight selected-stage assignments on 5 November ([earlier result](h17-k04-fullsource-alternate-chronology-target-nonidentifiability-20261105.md)); Agent44 had independently explored 164 whole-source-compatible one-component shifts over six nominal selected stages on 3 November ([earlier result](h17-k04-source-consistent-164-chronology-perturbations-20261103.md)). The present work's incremental result is exactly the **five-group joint ±3 bounded perturbation and its 21/196 source-fit count**, rather than a first discovery of alternate stages or full selected-bit non-identifiability. These older studies already established the fundamental K04 limitation.
+
 ## New target-facing question
 
 The illustrative p951 MT19937 chronology places the selected PS-261003-0417 RECOVER ACK2 packet at native stage 951, but its stage selector is not historically authenticated. Can the late status boundary shift while preserving every other original printer packet? Would such a shift reconstruct any of the 128 selected bits?
