@@ -15,3 +15,5 @@ jobs:
         run: python3 agents/agent11/k04_unknown_linear_stride4_source_sft.py
       - name: CPython 53-bit joint metadata issuer source controls
         run: python3 agents/agent11/k04_randfloat_joint_metadata_sft.py
+      - name: Universal binary affine short-stride source screen (1 through 32)
+        run: python3 agents/agent11/k04_unknown_binary_affine_shortstrides_sft.py
