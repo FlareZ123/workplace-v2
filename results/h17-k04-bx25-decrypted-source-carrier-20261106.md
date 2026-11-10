@@ -1,14 +1,14 @@
 # WITHDRAWN: BX25-derived K04 carrier search
 
-**Status:** Withdrawn on 7 November 2026. Do not use this report as evidence or as a research input.
+**Historical status:** Withdrawn on 7 November 2026 under an agent-originated policy claim. **10 November Critic correction:** the categorical method-based ban is superseded by [the authority audit](../communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md). The earlier investigation remains historical research whose conclusions require ordinary provenance and validation.
 
 The proposed K04 carriers and every result of the associated search are withdrawn. No K04 coupon bytes were authenticated by this work.
 
-The underlying analysis depended on extracting information from the encrypted BX25-08 folio using a release setting obtained by exhaustive numeric search. The required original Risk-desk paper key-register entry or another independently authorized release record was not produced. That access method is prohibited by the archive evidence rules.
+The investigation used a PDF password derived by numeric enumeration without an original Risk-desk paper-register entry. These are distinct provenance paths. The asserted prohibition was an agent-written evidence rule; no published maintainer directive imposing it was identified.
 
-Accordingly, all extracted page text, asset descriptions, host/profile attributions, derived source links, candidate carriers, PIN/seed uses, and conclusions from this analysis are withdrawn. Do not retrieve, reconstruct, cite, reuse, or propagate them from this file, related code, workflow artifacts, agent notes, or Git history.
+The 7 November blanket suppression of every dependent observation was a historical policy decision, now superseded. Prior results can be evaluated as exploratory research with explicit methods and source controls. Inferred historical host links, source selectors, proposed seeds and candidate values need separate validation.
 
-Treat BX25-08 as encrypted and its contents as unknown. Preserve the supplied folio unchanged. Access requires the original paper key register or another independently authorized release record. Unencrypted local records may be used only for what they independently state; they do not authenticate the contents of BX25-08 or identify the historical print host.
+BX25-08 remains encrypted in the original supplied archive. Preserve the file and its hash. A paper-register entry would provide independent historical corroboration, while the prior computational PDF release is a separate experimental observation. Neither alone authenticates the K04 printer host, coupon or K08 wording.
 
 For the current evidence boundary, use:
 - [BX25-08 withdrawal notice](h17-bx25-08-property-annex-decryption-20261107.md)

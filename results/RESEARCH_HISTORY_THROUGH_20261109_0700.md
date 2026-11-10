@@ -1,5 +1,7 @@
 # H-17 recovery research: decision map
 
+**10 November policy correction:** The 7 November BX25 method-based withdrawals documented in this historical snapshot were based on an agent-authored prohibition with no identified maintainer source. That blanket restriction is superseded by [the Critic authority audit](../communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md). This file remains a historical record.
+
 ## Independent source-only K08 note/printer pairing control (9 November)
 
 The prior Nxx→PS-(0300+xx) offset-zero role alignment was chosen retrospectively. A new source-only CLASS=LABEL test freezes 11 photographed/captioned/labelled/board note roles before consulting printer metadata: offset zero fits only **5/11**, with **48 of 105 offsets scoring as well or better**; eight independent pre-anchor roles fit **3/8** at offset zero, with **78/105 equal or better**. The exact-envelope labels N17 and N18 also map to different spool classes. [Agent40 result and portable SFT](h17-k08-sourceonly-role-offset-discriminator-20261109.md); an independently constructed [Agent11 source-first CLASS/DEST control](h17-k08-source-first-note-spool-join-null-holdout-20261109.md) had four whole-role holdout failures. Neither excludes genuine print-workflow grouping but neither supports treating PS-0323 bytes as authenticated final-caption content. **K08 remains unrecovered.**

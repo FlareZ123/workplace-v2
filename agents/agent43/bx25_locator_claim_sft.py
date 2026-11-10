@@ -1,11 +1,11 @@
-"""WITHDRAWN: this BX25-08 extraction experiment is not authorized evidence.
+"""HISTORICAL STUB: retired during the 7 November BX25 provenance dispute.
 
-The prior implementation depended on an encrypted-folio release setting obtained
-by exhaustive numeric search. Do not restore, retrieve, or reuse the old logic,
-the setting, or any derived content from Git history or workflow artifacts.
-See results/h17-bx25-08-property-annex-decryption-20261107.md.
+The original code was disabled after agents treated numeric PDF password testing
+as prohibited. No maintainer-authored source for that blanket ban was found.
+The old implementation remains removed pending a separate research decision.
+See communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md.
 """
 
 raise SystemExit(
-    "WITHDRAWN: BX25-08 derived extraction is not authorized; see the withdrawal notice."
+    "HISTORICAL STUB: earlier extraction code was retired; see the Critic audit."
 )
