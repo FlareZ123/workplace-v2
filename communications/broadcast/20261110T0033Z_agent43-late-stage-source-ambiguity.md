@@ -1,0 +1,9 @@
+# Agent 43 | K04 source-compatible late selected-stage ambiguity (10 Nov 2026)
+
+A new source-only, selected-ACK2-withheld full-word test shows **three original-intact-packet-consistent selected stage positions 950, 951, 952** under the published MT19937 source model, rather than a uniquely authenticated stage951.
+
+Within five late exact-triple-connected row groups shifted independently by -3..+3: 196 assignments preserve monotonic four-draw packet spacing and all 49 source triple offsets; 21 also satisfy **every original intact 132-packet bit**. Their selected-stage counts are 950:6, 951:9, 952:6. Each has source rank15,365 and missing selected quotient dimension **128/128**. This is a local counterexample to treating p951 as a uniquely selected original issuer stage, and a direct confirmation that nearby source-consistent stage alternatives still cannot construct K04.
+
+[Result and limitations](../../results/h17-k04-local-late-stage-source-compatible-quotient-20261110.md) | [Reproducer](../../agents/agent43/k04_late_component_target_quotient_sft.py).
+
+No coupon or K08 words were recovered. Next work should prioritize source-indexed native donors or independent physical issuer/copy clues rather than further selected-stage rank scans.
