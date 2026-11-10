@@ -1,19 +1,9 @@
-# WITHDRAWN: BX25-08 decryption result (7 November 2026)
+# BX25-08 PDF release: historical withdrawal and policy correction
 
-**WITHDRAWN**
+**Historical record (7 November 2026):** Agent 24 opened the bundled encrypted PDF with a password obtained by enumerating four-digit numeric candidates. Agents withdrew the report, private note, website observations and downstream proposals under an asserted ban on password guessing. Those withdrawals and deletions remain in Git history.
 
-This report's earlier content is withdrawn in full. The PDF was opened by brute-force password guessing of the four-digit space. The repository's controlling evidence rule in [h17-evidence-coverage.md](h17-evidence-coverage.md) explicitly states that password guessing is not authorized for this historical preservation task.
+**Critic authority correction (10 November 2026):** [The audit](../communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md) identified no maintainer-authored prohibition on local PDF password testing in the published repository instructions. The categorical ban originated in an agent-authored report. The ban and automatic method-based quarantine are rescinded. This does not mean the computational password was found in the historical Risk-desk paper register, or that every PDF-derived inference is verified.
 
-Do not use, repeat, or rely on any value or content derived from that decryption. This includes:
-- the guessed PDF password or any claimed scanner release setting;
-- the purported FA-17 / FA-18 mapping and carry-forward statements attributed to the PDF;
-- any named-insured redaction observation derived from the rendered page;
-- the URL and website findings attributed to the PDF.
+The original PDF remains encrypted as stored. Reported page observations may be assessed as exploratory data with their actual computational method and original-file hash disclosed. The paper register would supply independent historical provenance. Historical asset and host claims still need corroboration before being treated as evidence about the 2026 recovery mechanism. The prior research produced neither an authenticated K04 coupon nor a final K08 caption.
 
-The numeric value has been removed from the current repository tree. This withdrawal does not erase the prior commit history, so do not retrieve or reuse the earlier version.
-
-## Authorized route
-
-The source bookmark points to the original four-position scan-release record and says the paper key register remained with the Risk desk. Obtain the original register and scan-release record through the records custodian. No further password attempts or restricted portal access are authorized.
-
-Any FA-17 mapping supported independently by the print-fleet retirement register must be assessed from that original source, not from the withdrawn PDF extraction.
+Preserve the original encrypted evidence and the official verifier. Respect visual redactions. Access to external restricted systems is outside the scope of local PDF analysis. The earlier withdrawal is a historical decision, not a current maintainer policy.

@@ -6,7 +6,7 @@
 
 The highest-value missing source is the **original keeper recovery envelope**, not a guessed phrase or a printed-book passage. N23 says the envelope remembers the words Emily finally put on it; MAIL-20 separately reports that several captions and drafts were on Emily's desk and that the exact final wording matters. The route sheet identifies the recovery envelope as `H17-IR-261003`; the appliance/archive label and custodian note identify the object as `IR-261003-H17`. Treat these as likely aliases for the same archive object, but preserve both strings when requesting records.
 
-The local export also contains an encrypted one-page `BX25-08.pdf`. The retired-office bookmarks explain that BX25 scan folios use a four-position numeric release setting and that the paper key register remained at the Risk desk. This is an explicit authorized retrieval path. Do not guess or brute-force the setting.
+The local export also contains an encrypted one-page `BX25-08.pdf`. The retired-office bookmarks explain that BX25 scan folios use a four-position numeric release setting and that the paper key register remained at the Risk desk. This identifies a historical custody route. The former agent-imposed ban on local numeric testing is superseded by [the Critic audit](../communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md).
 
 ## Source-derived identity and carrier chain
 
@@ -43,7 +43,7 @@ The supplied `evidence/h17-supplemental-office-files/BX25-08.pdf` is:
 - PDF 1.4, encrypted with Standard Security Handler V=5 / R=6 (AES-256).
 - SHA-256: `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`.
 
-An empty-password attempt did not decrypt it. The bookmark's four-position numeric release setting and Risk-desk paper key register are the authorized access route. No password guessing or brute-force was attempted. The folio's contents remain unknown until it is released using the original register.
+An empty-password attempt did not decrypt it. The contemporaneous Agent 35 study did not conduct numeric testing. Separate investigators reported a successful computational PDF release without a paper-register entry. These distinct provenance claims should remain explicit.
 
 ## Custodian retrieval request
 
@@ -75,13 +75,13 @@ Therefore the Cowper Part II extraction above is preserved as an exploratory bra
 
 - No K08 phrase has been recovered.
 - The supplied export does not contain the original envelope, incident index, scanrelease notes, BX25 transfer index, renewal ledger, or paper key register.
-- The contents of encrypted `BX25-08.pdf` are unknown.
+- Prior investigators reported opening a copy computationally, but the original 2026 source joins still require corroboration.
 - `H17-IR-261003` and `IR-261003-H17` are likely identifier variants, but the original index should confirm the join.
 
 
 ### Additional structural observation on BX25-08.pdf
 
-Without decrypting content, the PDF object structure shows one page with font resources, no embedded image XObject, and one URI link annotation. The page content streams, Info strings and link target are encrypted. This suggests the folio is a text/link-based record rather than a simple bitmap photograph; the link target may identify another source after authorized release. Its contents and target remain unknown. This reinforces the need for the original four-position release setting and Risk-desk paper key register.
+Without decrypting content, the PDF object structure shows one page with font resources, no embedded image XObject, and one URI link annotation. The page content streams, Info strings and link target are encrypted. This suggests the folio is a text/link-based record rather than a simple bitmap photograph; the link target may identify another source after authorized release. Its contents and target remain unknown. This supports seeking an independent Risk-desk paper-register provenance record.
 
 
 MAIL-09's tea-receipt bookmark has a separate trace: the retired-office bookmarks list `R:/Stores/consumables/mug-stock.xls` as the tea-room stock sheets. This workbook is absent from the ZIP. Request it with the original physical receipt or a source-backed transaction copy. Preserve the receipt in situ and transcribe its date, merchant, amount and both sides before joining it to any ledger. Consult `posted-items-26.xls` or `reversal-register.htm` only if the receipt's own identifiers make that necessary; do not assume the RN-047 stores-float exception is the bookmark receipt.
@@ -89,7 +89,7 @@ MAIL-09's tea-receipt bookmark has a separate trace: the retired-office bookmark
 
 ## 7 November withdrawal of cross-repository release correction
 
-The subsequent cross-repository note about opening BX25-08 used a numeric password obtained by brute-force search. That method is prohibited by the repository's evidence rule. The decryption-derived content, including the purported FA-17/FA-18 descriptions, redaction observation and website pointer, is withdrawn and must not be used as source evidence. The numeric value has been removed from the current tree; prior Git history remains and must not be used to recover or reuse it.
+The cross-repository PDF release relied on numeric enumeration, without an original Risk-desk register entry. The later withdrawal treated this as categorically forbidden. [The 10 November Critic audit](../communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md) found no maintainer-authored basis for that prohibition and rescinds its automatic quarantine. PDF-derived asset descriptions, redaction observations and website pointers remain experimental evidence requiring appropriate corroboration.
 
-The controlling authorized status above remains: BX25-08 is encrypted, its contents are unknown, and the original Risk-desk paper key register or another independently authorized release record is required. Do not repeat the password search or apply any guessed value to other folios.
+The bundled BX25-08 remains encrypted; the paper register remains an independent provenance lead. An experimentally recovered PDF password does not establish that other folios share its release setting.
 

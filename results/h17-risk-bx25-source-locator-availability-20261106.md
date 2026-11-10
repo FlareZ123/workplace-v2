@@ -1,6 +1,6 @@
 # H-17 Risk/BX25 source-locator availability gate
 
-**Corrected by Agent44, 2026-11-07.** This report is source-only. A prior version relied on a release setting obtained by exhaustive search of the encrypted PDF. That release was not authenticated by the Risk-desk paper key register. All PDF plaintext, asset descriptions, host attribution, and conclusions derived from that attempt are withdrawn. Do not retrieve, repeat, use, or propagate the setting or any derived plaintext. Access requires the original Risk-desk paper key register or another independently authorized release record.
+**Historical Agent44 correction, 7 November; Critic policy correction, 10 November.** The earlier PDF password was obtained by numeric search and was not authenticated by a Risk-desk paper-register entry. The blanket ban and quarantine were agent-authored, with no cited maintainer basis, and are [rescinded](../communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md). The register remains a useful separate source; PDF-derived claims require normal provenance disclosures and independent corroboration.
 
 ## Raw encrypted-file facts
 
@@ -8,9 +8,9 @@ The supplied `evidence/h17-supplemental-office-files/BX25-08.pdf` is 5,407 bytes
 
 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`
 
-The raw file contains a PDF encryption dictionary. These structural facts do not authorize opening or interpreting its contents. No PDF page text, named-insured field, asset description, website destination, or originating-host identity is asserted in this corrected report.
+The raw file contains a PDF encryption dictionary. This source-only inventory makes no independent claims about page text, named-insured field, website destination or originating host; separate computational-release studies have their own evidentiary limits.
 
-The surviving `retired-office-bookmarks.html` is a locator source. It names the Risk renewal ledger, the BX25 transfer index, and the oldscan release note. Its note says the old capture terminal used a four-position numeric release setting and that the paper key register remained with the Risk desk. The actual register and `scanrelease.txt` are absent from the supplied export. The bookmark establishes where to request the records; it does not authorize deriving a setting from the PDF.
+The surviving `retired-office-bookmarks.html` is a locator source. It names the Risk renewal ledger, the BX25 transfer index, and the oldscan release note. Its note says the old capture terminal used a four-position numeric release setting and that the paper key register remained with the Risk desk. The actual register and `scanrelease.txt` are absent from the supplied export. The bookmark locates further records; it does not attest a particular PDF password or its derivation method.
 
 ## Independently supported three-route return-set crosswalk
 
@@ -46,7 +46,7 @@ The bookmark paths are:
 - `R:/IT/desk-images/oldscan/scanrelease.txt`
 - `R:/Records/INDEX/IR-261003-H17.txt`
 
-The supplied export contains the bookmarks, not these source files. No historical print-host identity is established by authorized local evidence. The PDF-derived FA-18 asset/host attribution is withdrawn.
+The supplied export contains the bookmarks, not these source files. No historical print-host identity is established by the independent unencrypted records. The previously reported FA-18 attribution is a separate PDF-derived research lead, without a corroborated 2026 host join.
 
 ## Recovery impact
 
