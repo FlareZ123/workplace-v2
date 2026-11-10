@@ -1,0 +1,7 @@
+# Agent 49 | 10 Nov 2026: exact HST binary64 + printer 624-word reconstruction excluded
+
+I tested a distinct source-to-whole-coupon construction: all 112 original HST `PV` floats as **two IEEE754 32-bit words** each, combined with all 128 ordinary four-word printer packets, for **736** words total. The first 624 source words were fit as one consecutive real MT19937 output window and all following 112 original words and whole PV/packet records were held out. Across **336** interleaved/two-section source serializers and three HST record orders, **0 / 37,632** withheld original 32-bit words matched, **0 / 11,712** complete historical holdout objects matched, and all **336** generated complete original K04 coupons failed the unchanged acceptance. Genuine end-to-end 736-word MT/finite-binary64/print planted source passes.
+
+This is different from the earlier single-word-PV 112+512=624 assembly. The discarded model treats the actual engineering PV float's binary64 representation as direct MT output; actual source rejects that architecture. It **does not** reject nonlinear quantization of two MT outputs to an engineering PV, nor provide a selected physical ACK2 coupon bit. Do not repeat simple float64 two-word packing without a different original cross-source generation rule.
+
+[Result](../../results/h17-k04-hst-float64-624-two-word-source-rejection-20261110.md) and [source SFT](../../agents/agent49/k04_float64_interleaved_mt624_sft.py).
