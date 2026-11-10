@@ -56,6 +56,18 @@ The synthetic full-coupon positive is created from one *real* one-bit upstream f
 
 Reproducer: [Agent3 stage951 upstream MT register fault SFT](../agents/agent3/k04_mt_ancestor_register_fivebit_sft.cpp). C++20 with OpenSSL libcrypto; execute with the source spool log path. All source SHA assertions, full target comparison, complete domain count and planted-positive count must pass.
 
+## Stronger source-allowed stage-range conclusion
+
+The [independent source-only stage-free MT chronology](h17-k04-backward-two-source-packet-producer-20261109.md) leaves a possible selected first-word index q in **917..971** relative to original printer row0, rather than certifying the retrospective q951 index. This uncertainty **does not expand the tested 132-effect coupon space** when the fault is placed in the original common 624-word register. For every q in that source-allowed range, each selected native word satisfies the two-twist identity
+
+    X[q+j] = X[q-454+j]
+             XOR twist(X[q-851+j], X[q-850+j])
+             XOR twist(X[q-624+j], X[q-623+j]),  j=0..3,
+
+where twist(a,b) uses the standard 0x9908B0DF conditional feedback. All three contributing source-register windows (q−851..q−847, q−624..q−620 and q−454..q−451) are mutually disjoint, within register index0..623, for the entire original range. Therefore their 4word output signature sets are **exactly invariant under q**: 128 single-native-bit signatures plus four 0x9908B0DF feedback signatures, irrespective of which q is selected. A separate stage-parameter-independent Python exact-integer enumeration verified this **for all 55 q values**, obtaining 384 active physical bits, 132 unique nonzero effects, 128 weight1 and four weight15 at each q. This is a symbolic set equivalence, not an additional 55-fold target search.
+
+**Consequent stronger exclusion:** the one-to-five earlier-register-bit correction family at any **source-compatible q917..971** produces no authentic K04 commitment match, under the exact same native MT state-at-row0 and copied-versus-physical coupon hypothesis. The physical-stage ambiguity in this narrowly scoped model is now closed without repeating the same 46.2m SHA checks. A historically different native register epoch, non-MT emitter, or independent selected replay remains outside the claim.
+
 ## Interpretation
 
 **This new bounded, source-geometry-defined class fails to recover K04.** It excludes the hypothesis of at most five initial MT-register-bit differences between the two selected-event coupon emitters under the exact native stage951 and output serializer model, including defects that expand into 15 native target bits through MT feedback. It is distinct from the prior <=5 native target-bit error search and from prior raw output-Hamming-shell exhaustion.
