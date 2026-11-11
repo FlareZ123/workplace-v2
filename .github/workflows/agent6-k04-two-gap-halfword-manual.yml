@@ -1,0 +1,17 @@
+name: Agent 6 K04 two-gap checkpoint halfword construction
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  k04-halfword:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test complete original K04 candidates
+        run: |
+          g++ -std=c++17 -O3 -Wall -Wextra -o /tmp/agent6-k04-k02-k07 agents/agent6/k04_k02_k07_gap_halfword_sft.cpp -lcrypto
+          /tmp/agent6-k04-k02-k07
