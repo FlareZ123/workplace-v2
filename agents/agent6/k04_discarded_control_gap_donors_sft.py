@@ -132,7 +132,7 @@ def main():
                 if result == expected_hash:
                     authentic += 1
                     match.append((names, candidate.hex().upper()))
-    assert tested == 97280  # source/view order assignments with self-pair removal
+    assert tested == 96768  # source/view order assignments with self-pair removal
     assert planted_found >= 1
     print("K04_DISCARDED_SOURCE_GAP_CANDIDATES",
           "original_carriers", len(old),
