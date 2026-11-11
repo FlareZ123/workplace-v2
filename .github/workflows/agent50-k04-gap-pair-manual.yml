@@ -1,0 +1,15 @@
+name: Agent50 K04 complete-gap pair unique source SFT
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gap-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test every distinct original four-word gap pair and synthetic full coupon
+        run: python3 agents/agent50/k04_printer_gap_pair_unique_sft.py
