@@ -35,7 +35,7 @@ int main(int argc,char**argv){try{
  std::string joined;for(const auto&x:vocab){joined+=x;joined+='\n';}
  if(hex(hash(joined.data(),joined.size()).data(),32)!="399ddef7c8cce60aa1e78d3ec85683b0188c08b4346ad0bd824d4068d8dc29ba")throw std::runtime_error("Vocab SHA mismatch");
  std::vector<std::string>w(vocab.begin(),vocab.end());size_t lo=std::stoull(argv[3]),hi=std::stoull(argv[4]);if(!(lo<hi&&hi<=w.size()))throw std::runtime_error("Bad shard");
-Reducer r;unsigned char component[16];r.component("a good watch leaves the room ready for the next pair of hands",component);
+ Reducer r;unsigned char component[16];r.component("a good watch leaves the room ready for the next pair of hands",component);
  if(hex(component,16)!="bf889359b0303f2b2b2fd96ae841210b")throw std::runtime_error("Historical N02 HMAC control failed");
  const D target={0x28,0x5e,0xb6,0xb4,0x19,0x6d,0x21,0xea,0xf4,0x7e,0x25,0x14,0x49,0xe6,0x1e,0x0b,0xce,0x28,0x74,0x98,0x81,0xcc,0xc5,0xa0,0x65,0xca,0x73,0x3b,0x0c,0x3f,0xd7,0x47};
  const std::string plant=w[lo]+" night voices table";
