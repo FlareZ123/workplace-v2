@@ -1,0 +1,15 @@
+name: Agent 6 K04 discarded-source two-gap candidates
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discarded-gap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct original complete selected K04 under discarded-source donor assignments
+        run: python agents/agent6/k04_discarded_control_gap_donors_sft.py
