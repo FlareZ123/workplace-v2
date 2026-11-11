@@ -157,7 +157,7 @@ int main() {
         sha_file(evidence/"recovery-routing.json",
                  "F8FCBCA73D23BF1066EDB88C088F89CD24CF22E7C78A4A412166254A4764D8A5");
         sha_file(root/"resources/acceptance.json",
-                 "681739241B757B471ACCA4C0FEF9D9D97E9493887736D5DB3B92BFB0C137F");
+                 "681739241B757B471ACCA4C0FEF9D9D97E9493883887736D5DB3B92BFB0C137F");
 
         // K02 GOOD/HOLD greatest-revision DIAG_WORDs, seq0..7,
         // and K07 AX-7782 confirmed highest-attempt checkpoints, seq0..7.
