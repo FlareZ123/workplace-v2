@@ -1,0 +1,15 @@
+name: Agent 6 K08 repository-prose exact candidate search
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  k08-prose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Search complete researcher-authored candidate captions
+        run: python agents/agent6/k08_repository_prose_literal_sft.py
