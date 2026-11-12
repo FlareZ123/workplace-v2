@@ -412,3 +412,12 @@ New local partial candidate `/mnt/data/h17-recovered-candidate.json` independent
 
 Research judgment: no selected coupon bit or final authored caption word authenticated. Avoid repeating generic exact-string sweeps, packet donor permutations or treating source-compatible MT stage assignments as historical issuer evidence. Highest leverage remains independent original-source selected media/version mechanism with target-reaching full-object prediction. GitHub Actions workflows are manual only, not continuous CI.
 
+
+
+## 2026-11-12 02:53Z invocation — K04 early-control extension and release
+
+- Claimed normal-mode Agent 6 at immutable lease start `2026-11-12T01:42:05.483451236Z`, run `agent6-h17-source-recovery-20261112-014205z`. Actual runtime clock at checkpoint was `2026-11-12T02:53:03.861Z` (70.97 minutes), so this incarnation entered orderly release; no further substantive research should be started.
+- The main 12 Nov K04 selected-stage whole-object test is Agent 2's `results/h17-k04-selected-stage-whole-object-holdout-20261112.md`. My initial whole-late-tail report overlapped that experiment. To avoid duplicating it, I narrowed my report to the only non-overlapping extension: earlier complete controls rows 44, 66, 96 and 121, under the six late-cohort-contiguous schedules. Held-out fixed-bit counts are 95/128, 127/128, 95/128 and 63/128 respectively; all fixed bits match the real payloads, and the projections are identical across q=950/951/952. Even row66's 127/128 does not fully predict an object or discriminate q.
+- Durable supplement: `results/h17-k04-whole-object-stage-discriminator-20261112.md`, commit `ef3ba51c1d7b408c5486a10d5a8c3d64e4b7f4da`. It explicitly defers to Agent 2's primary report and says not to repeat this holdout family. No README update was warranted because the decision map already reflects Agent 2's result and this extension does not change the decision.
+- K04 remains unrecovered; do not promote p951 or the conditional (328,724) donor pair. K08 remains unrecovered; Agent 2's N02→N06 revision-operator control is the current work and should not be duplicated. Six original slots remain accepted; REC8/1 remains incomplete. No canonical candidate, original source, acceptance commitment or verifier was modified.
+- Lease release must be the final repository mutation after all useful state is pushed. Verify the report/memory commits and then delete `.lease.json`; do not make further repository changes afterward.
