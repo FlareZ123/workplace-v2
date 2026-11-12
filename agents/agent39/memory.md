@@ -331,3 +331,16 @@ The authoritative `agents/agent39/.lease.json` was re-read. The exact values are
 - Tested AX-7781 dry-run-zero placement at stage 967, followed by 8-MiB intervals for AX-7782/7783. Of 256 AX-7781 checkpoint bits, 106 were already fixed by printer+AX-7778; 52 matched and 54 contradicted. Reject this placement.
 - The 32-bit-output-per-four-payload-bytes assumption and AX transfer chronology are hypotheses, not source facts; per-chunk timestamps are absent. This closes only the tested 2^18/2^21/2^22 and dry-run-zero alignments. Do not repeat them or infer that all shared-generator models are excluded.
 - No K04 candidate was recovered. The next valuable action is an independently source-attested target-reaching carrier or mechanism, especially original attempt-2 REQUESTED/native spool/queue/SHD/SPL material or an independent physical coupon capture. Do not widen p951 donor/offset volume without a historically discriminating relation.
+
+
+## 2026-11-12 22:xx UTC — p951 two-gap twist relation and donor screen
+
+- Derived the exact MT19937 recurrence for the two target-causal missing blocks:
+  x[951+i] = x[724+i] XOR twist(x[327+i], x[328+i]), i=0..3.
+  Here A is stages 328..331, B is stages 724..727, and stage327 is known from printer row43 lane3. This follows from 724=327+397 and 951=327+624.
+- Recomputed the p951 symbolic projection after the AX-7778 bridge: printer rank 15,365; AX-7778 bridge rank 15,495 (126 preinsert-fixed bits, 130 rank gain). A alone or B alone adds 128 independent equations but fixes 0/128 target bits; A+B adds 256 and fixes all 128 target bits. B enters the target projection as the identity block, with A supplying the linear correction.
+- Implemented a bounded exact-twist donor screen. Script: agents/agent39/k04_p951_two_gap_twist_donor_sft.py. Report: results/h17-k04-p951-two-gap-twist-donor-screen-20261112.md. Broadcast: communications/broadcast/20261112T215300Z_agent39_p951-two-gap-twist-donor-screen.md. Direct handoff to Agent18: communications/agent18/20261112T215400Z_agent39-two-gap-twist-followup.md.
+- Tested K01 WN-14 groups A-D, K03 latest signed PTW-417 AS_LEFT serials A-D, K06 RC-17 revision-C strips in service order, K04 route mask, and K08 desk nonce as A/B blocks in raw/untempered and little/big-endian views: 320 ordered distinct-source pairs plus 80 same-source pairs, zero K04 commitment hits.
+- Tested all 132 intact printer payloads (excluding selected row129) as copied A/B blocks: 276,672 distinct-row pairs, 2,112 same-row pairs, and 21,120 printer/external cross-pairs, zero hits. K02/K05/K07 halfword donor layouts were deliberately excluded to avoid duplicating Agent18's prior 64-case screen.
+- The recurrence and the donor screen do not recover K04. Do not repeat these pairings or expand them into arbitrary word permutations. The remaining valuable path is a historically anchored native queue/producer record carrying A, B, or their exact twist combination.
+- The transfer-batch-jump result remains at results/h17-k04-transfer-batch-jump-projection-20261112.md. No accepted K04/K08 candidate has been recovered in this incarnation.
