@@ -231,46 +231,52 @@ def direct_post_target_sequence():
                 value ^= 1 << pivot
         return remainder, rhs
 
-    stage_high16 = {}
-    for stage in range(first_start, last_start + len(values)):
-        tempered = p951.temper(p951.get(symbolic, stage))
-        stage_high16[stage] = [
-            reduce_source(tempered[16 + bit]) for bit in range(16)
-        ]
-
-    consistent_starts = []
-    for start in range(first_start, last_start + 1):
-        small = {}
-        consistent = True
-        for index, value in enumerate(values):
-            for bit in range(16):
-                residual, offset = stage_high16[start + index][bit]
-                rhs = ((value >> bit) & 1) ^ offset
-                while residual:
-                    pivot = residual.bit_length() - 1
-                    if pivot not in small:
-                        small[pivot] = (residual, rhs)
+    consistent_alignments = []
+    encodings = (
+        ("tempered", "low", 0),
+        ("tempered", "high", 16),
+        ("native", "low", 0),
+        ("native", "high", 16),
+    )
+    for kind, half, bitbase in encodings:
+        stage_map = {}
+        for stage in range(first_start, last_start + len(values)):
+            word = p951.temper(p951.get(symbolic, stage)) if kind == "tempered" else p951.get(symbolic, stage)
+            stage_map[stage] = [
+                reduce_source(word[bitbase + bit]) for bit in range(16)
+            ]
+        for start in range(first_start, last_start + 1):
+            small = {}
+            consistent = True
+            for index, value in enumerate(values):
+                for bit in range(16):
+                    residual, offset = stage_map[start + index][bit]
+                    rhs = ((value >> bit) & 1) ^ offset
+                    while residual:
+                        pivot = residual.bit_length() - 1
+                        if pivot not in small:
+                            small[pivot] = (residual, rhs)
+                            break
+                        vector, known = small[pivot]
+                        residual ^= vector
+                        rhs ^= known
+                    if not residual and rhs:
+                        consistent = False
                         break
-                    vector, known = small[pivot]
-                    residual ^= vector
-                    rhs ^= known
-                if not residual and rhs:
-                    consistent = False
+                if not consistent:
                     break
-            if not consistent:
-                break
-        if consistent:
-            consistent_starts.append(start)
+            if consistent:
+                consistent_alignments.append((kind, half, start))
 
-    assert len(consistent_starts) == 0, consistent_starts
+    assert len(consistent_alignments) == 0, consistent_alignments
     return {
         "transfer_receipt_utc": commit["receipt_utc"],
         "last_spool_packet_utc": packet_lines[-1].split()[0],
         "checkpoint_order": "seq ascending, attempt ascending",
         "checkpoint_count": len(values),
-        "post_target_start_positions_tested": last_start - first_start + 1,
-        "consistent_start_positions": consistent_starts,
-        "encoding": "little-endian stored halfword = high 16 bits of tempered MT output",
+        "post_target_encoding_start_pairs_tested": len(encodings) * (last_start - first_start + 1),
+        "encodings": ["tempered-low16", "tempered-high16", "native-low16", "native-high16"],
+        "consistent_alignments": consistent_alignments,
     }
 
 

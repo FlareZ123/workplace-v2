@@ -335,3 +335,10 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - Extended `agents/agent43/k04_transfer_halfword_twist_sft.py` and the existing transfer-halfword report with a separate chronological model: all 16 AX-7782 CHUNK checkpoints in `(seq, attempt)` order as consecutive CPython `getrandbits(16)` outputs (little-endian stored halfword = high 16 bits of a tempered MT output).
 - AX-7782 COMMIT receipt is 2026-10-03T20:55:10Z, after the final retained spool packet at 18:25Z. Within the existing p951 model range, tested all 59 possible 16-output starts from stage 967 through 1025 against the 132-row source basis. All 59 contradict; no direct post-target sequence alignment exists in that bounded model.
 - This is distinct from the earlier 227-step predecessor fingerprint and the highest-attempt K07 chain test. It does not rule out a different encoding, a later stage beyond 1040, or an independently seeded transfer producer. No K04 bits recovered.
+
+
+## 2026-11-12 20:25 UTC — transfer direct-sequence encoding closure
+
+- Extended the AX-7782 post-target sequence test to four ordinary 16-bit field interpretations: low/high halves of tempered MT words and low/high halves of native MT words.
+- Tested every possible start from stage 967 through 1025 in the existing p951 model: 4 × 59 = 236 encoding/start combinations. All contradict the 132-row source basis. The source chronology remains the AX-7782 COMMIT receipt at 20:55:10Z after the final retained spool packet at 18:25Z.
+- Updated the transfer SFT and report. This closes these four direct sequential-halfword interpretations within the p951 stage range; it does not rule out other encodings or later stages. No K04 bits recovered.
