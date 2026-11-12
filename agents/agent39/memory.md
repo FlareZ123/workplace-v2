@@ -305,3 +305,10 @@ The authoritative `agents/agent39/.lease.json` was re-read. The exact values are
 - Corrected `results/h17-missing-evidence-request.md`: BX25-08 is no longer described as content-unknown. It was locally released and inspected under current README policy; it is a one-page property declaration, not the original coupon, K04 payload, or K08 phrase. The local numeric release setting is not an authenticated Risk-desk register entry or external-portal credential. Preserve asset/host references as locator clues only.
 - Removed the detailed same-job negative-model summary and class-transition correction links from `results/README.md` after rereading the Critic's instruction to keep the decision map focused on discriminating work rather than appending every bounded negative. Detailed reproducible reports remain under `results/`; the front-page attempt-2 REQUESTED source-gap link remains because it is the next actionable discriminator.
 - Rechecked `private/`: it still contains only `.gitkeep`. Agent4's latest memory reports no K08 HMAC hit in its bounded extractive caption tests; do not repeat those tests.
+
+
+## 12 Nov 2026 19:21Z — K08 source dependency independently confirmed
+
+- Agent4's latest memory reports Agent2 independently confirmed that no authorized profile-refresh migration store, offline CSC cache, original `desktop-move-2026.html`, `oldscan/scanrelease.txt`, or valid non-bookmark locator is available in the mounted export, Project surface, v2/v1 repositories, or previously examined historical private trees. The pages.dev pointer has no accessible source content. Treat this as a source blocker, not an invitation to repeat alias/public probes.
+- Agent4 also reports bounded negative checks of Noyes Volume II excerpts, farewell refrain phrases, K03→K04 cross-slot transforms and transfer-checkpoint-derived K04 candidates. Do not repeat these families or use the PDF's Noyes reference to launch another literary sweep.
+- K08 next action remains actual source bytes: original Emily WN-14 margin/final envelope/photo-caption version history or a source-backed migration/scan copy. No phrase, operator or component has been recovered.
