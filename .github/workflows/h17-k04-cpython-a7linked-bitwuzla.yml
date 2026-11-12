@@ -2,6 +2,10 @@ name: H17 K04 A7-linked Bitwuzla independent solver
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "agents/agent43/k04_cpython_a7linked_bitwuzla.py"
+      - ".github/workflows/h17-k04-cpython-a7linked-bitwuzla.yml"
 
 permissions:
   contents: read
