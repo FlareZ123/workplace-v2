@@ -4,12 +4,12 @@
 
 ## Result
 
-The final K08 document is the **recovery-envelope margin**. The source explicitly excludes Emily's two retained envelope labels (N17 standby and N18 commissioning), and N23 independently locates the final wording in her margin. No retained source node is identified as the final-margin inscription or quotes its exact wording.
+The final K08 carrier is the **recovery envelope**. MAIL-11 explicitly excludes Emily's two retained envelope labels (N17 standby and N18 commissioning). N23 refers to wording in her margin and says the envelope preserves the words she finally put on it; it does not establish whether that margin is on the envelope or on a separate desk note. No retained source node quotes the exact final-envelope wording.
 
 This separates two questions that earlier phrase searches tended to conflate:
 
-1. **Which document/version is final?** The recovery-envelope margin, not N17 or N18.
-2. **How was its text generated?** The surviving export does not identify the particular caption/draft Emily selected, the edits she made, or a complete final-text exemplar. No source-grounded revision operator can currently be calibrated against an eligible whole-caption holdout.
+1. **Which document/version is final?** The personal caption on the recovery envelope, not N17 or N18. N23's margin is a reference/draft location; its physical relation to the envelope is not established.
+2. **How was its text generated?** The surviving export does not identify the particular caption/draft Emily selected, the edits she made, or a complete final-envelope-caption exemplar. No source-grounded revision operator can currently be calibrated against an eligible same-operation final-envelope-caption holdout.
 
 The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It builds the dated/undated node graph, pins the original source files, and asserts the explicit exclusions, custody statements, and absence of a complete final-margin text node. It does not generate phrase candidates or query the K08 commitment.
 
@@ -39,16 +39,16 @@ The note entries N01–N24 have no per-entry timestamps. Their numbering is not 
 | N18 | Emily / commissioning-envelope label | Complete text, explicitly excluded by MAIL-11. |
 | N10 | Emily / desk-copy and photo reference | Identifies an unnumbered photograph after the last cup; does not quote the caption or identify the image. |
 | N20 | Emily / authorial intent brief | Specifies sea, end of night, and voices at the table; not the final words. |
-| N23 | Emily / final-margin reference | Says the wording was in her margin and the envelope remembers the words she finally put on it; does not transcribe them. |
+| N23 | Emily / margin reference | Says wording in her margin was not an official slogan and the envelope remembers the words she finally put on it; does not locate the margin or transcribe the inscription. |
 | N01, N08, N09, N14 | Jason, Jason, Zoey, Gabriel / photo or galley captions | Potential source inputs, but not Emily-authored final text and not uniquely joined to the margin. |
 
-**Eligible complete final-margin controls in the local export: 0.** N02/N06/N13 are complete but role-ineligible; N17/N18 are explicitly excluded; the third-party photo captions are possible antecedents only; N10/N20/N23 are context or carrier references rather than complete final wording. This is an evidence limitation, not a negative score for any text-generation model.
+**Eligible complete final-envelope-caption controls in the local export: 0.** N02/N06/N13 are complete but role-ineligible; N17/N18 are explicitly excluded; the third-party photo captions are possible antecedents only; N10/N20/N23 are context or carrier references rather than complete final wording. This is an evidence limitation, not a negative score for any text-generation model.
 
 ## The missing relation
 
 The source gives a class-level statement—Emily worked from desk notes and photograph captions—but not the required individual edge:
 
-`source caption/draft ID → Emily's specific edit/version action → exact recovery-envelope margin text`
+`source caption/draft/margin-note ID → Emily's edit/version action → exact recovery-envelope inscription`
 
 N10's “photograph after the last cup” does not uniquely identify N01, N08, N09, N14, or an omitted image. The separate retired-office-bookmarks file also lists R:/IT/desktop-move-2026.html (the first migration discriminator), R:/IT/desk-images/oldscan/scanrelease.txt, R:/Records/INDEX/IR-261003-H17.txt, R:/Stores/consumables/mug-stock.xls, and R:/Stores/returns/SEP26/index.htm. The mug-stock workbook and September returns index are the specific K08 profile-refresh candidates identified by the existing migration retrieval lead; these are historical retrieval pointers only, not file contents or proof that either contains the phrase. A previously circulated `desk-note-04` pointer was explicitly retracted: the original MAIL-20 header is `X-Records-Reference: MAIL-20`, and the supplied ZIP/repository contain no separate `desk-note-04` record. Do not confuse it with N04, which is David's numbered note. MAIL-14 confirms that the photo/caption archive was separate from the engineering procedure, but no surviving file supplies the caption revision history or its link to Emily's margin. MAIL-20 observes several drafts/captions on the desk without naming them. N23 identifies the final carrier but omits the words.
 
@@ -75,7 +75,7 @@ From the repository root:
 python agents/agent4/k08_version_graph_sft.py --root resources
 ```
 
-The script checks source SHA-256 pins, the six mail timestamps, note roles, explicit N17/N18 exclusions, the WN-14 custody statement, the post-incident desk observation, and the absence of a complete Emily-authored final-margin node. It reports zero eligible complete final controls and does not calculate speculative HMAC candidates.
+The script checks source SHA-256 pins, the six mail timestamps, note roles, explicit N17/N18 exclusions, the WN-14 custody statement, the post-incident desk observation, the historical profile-refresh bookmark targets, and the absence of a complete Emily-authored final-envelope-caption node. It reports zero eligible complete final controls and does not calculate speculative HMAC candidates.
 
 **Outcome:** final carrier and exclusions are source-supported; text-generation ancestry is not. **K08 remains MISSING; no candidate was promoted.** K01/K02/K03/K05/K06/K07 remain accepted, K04 remains independently unresolved, and combined REC8/1 remains INCOMPLETE. Original evidence, route, acceptance commitments, verifier, and canonical candidate were not modified.
 
