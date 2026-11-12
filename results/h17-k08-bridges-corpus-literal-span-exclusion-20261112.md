@@ -10,7 +10,7 @@ The existing physical-book hypothesis identifies Robert Lloyd Praeger's *The Way
 
 ## Construction and acceptance test
 
-For each text, the Gutenberg header/footer was excluded, then the body was normalized using the K08 rule: lowercase; replace every character outside ASCII letters, digits, and whitespace with a space; collapse whitespace; trim. Every contiguous word span in the stated length range was tested as UTF-8:
+For each text, scanning began at the Gutenberg START marker and stopped before the END marker (the preamble and trailing footer were excluded; the marker and title/metadata lines after START remain in the scan slice). The scan slice was normalized using the K08 rule: lowercase; replace every character outside ASCII letters, digits, and whitespace with a space; collapse whitespace; trim. Every contiguous word span in the stated length range was tested as UTF-8:
 
 `mac = HMAC-SHA256(desk_nonce, normalized_span)[:16]`
 
