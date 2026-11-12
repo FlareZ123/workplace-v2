@@ -57,9 +57,9 @@ def with_constraints(smt: str, n: int, blockers: list[list[int]]) -> str:
 
 def parse_word(output: str, name: str) -> int:
     patterns = [
-        rf"\\({name}\\s+#x([0-9a-fA-F]{{8}})\\)",
-        rf"\\({name}\\s+#b([01]{{32}})\\)",
-        rf"\\({name}\\s+\\(_ bv([0-9]+) 32\\)\\)",
+        rf"\({name}\s+#x([0-9a-fA-F]{{8}})\)",
+        rf"\({name}\s+#b([01]{{32}})\)",
+        rf"\({name}\s+\(_ bv([0-9]+) 32\)\)",
     ]
     for pattern in patterns:
         m = re.search(pattern, output)
@@ -93,11 +93,11 @@ def invoke_cvc5(smt: str, timeout_ms: int) -> tuple[str, str]:
             break
     joined = "".join(output)
     for candidate in ("sat", "unsat", "unknown"):
-        if re.search(rf"(?m)^\\s*{candidate}\\s*$", joined):
+        if re.search(rf"(?m)^\s*{candidate}\s*$", joined):
             status = candidate.upper()
             break
     version = getattr(cvc5, "__version__", "unknown")
-    return status, f"cvc5_version={version}\\n{joined}"
+    return status, f"cvc5_version={version}\n{joined}"
 
 
 def validate_seed(keys: list[int], packets: list[bytes]) -> tuple[int, bytes, list[int]]:
@@ -138,7 +138,7 @@ def main() -> int:
     blockers: list[list[int]] = []
     summary = {
         "n": args.n, "stop": args.stop, "offset": OFFSET,
-        "target_row_excluded": TARGET_ROW, "controls": 0,
+        "target_row_excluded": TARGET_ROW, "controls": 132,
         "status": None, "candidate_count": 0, "result": None,
     }
 
@@ -189,7 +189,7 @@ def main() -> int:
         summary["status"] = "CANDIDATE_LIMIT_REACHED"
 
     summary["elapsed_seconds"] = round(time.monotonic() - started, 3)
-    (OUTDIR / "summary.json").write_text(json.dumps(summary, indent=2) + "\\n")
+    (OUTDIR / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print("SUMMARY=" + json.dumps(summary, sort_keys=True))
     return 0
 
