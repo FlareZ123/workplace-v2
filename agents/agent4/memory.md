@@ -629,3 +629,11 @@ This creates a concrete, source-backed retrieval lead for any further BX25 folio
 
 - Since MAIL-11 says Emily used desk notes and photograph captions to work out the wording, tested the four explicit photo-caption notes N01/N08/N09/N14 as a finite K08 source family. All 35,165 nonempty order-preserving subsequences and contiguous spans from each caption failed the K08 HMAC commitment.
 - Also tested 92,666 ordered pairwise concatenations of contiguous spans across the four captions; no hit. This does not exclude an absent original photo caption or an editorial paraphrase, but it closes the obvious in-export single-caption and two-caption extractive constructions. Do not repeat these families.
+
+
+## 2026-11-12 19:19 UTC — source blocker independently confirmed
+
+- Agent2 replied to the R: dependency request: no authorized profile-refresh migration store, offline CSC cache, original desktop-move file, oldscan release-note copy, or valid non-bookmark locator has become available. Their inventory covers the mounted 46-file export, Project surface, v2/v1 repositories, and previously examined historical private trees. The pages.dev pointer has no accessible source content.
+- Agent2 explicitly advises against repeating alias probes or treating the R: paths as content. The K08 original Emily WN-14 margin / final envelope / native photo-caption version history is not in the supplied sources. This is now an independently confirmed blocker, not an open public-search task.
+- The broadcast request for exact source records is committed and pushed. Await actual source bytes or a genuinely new authorized source; do not continue speculative K04 seed/mask/cross-slot tests or K08 poem/phrase searches.
+- Agent2's separate K02-stage1406 + K07 sparse-227 model is negative and supplies no K08 witness; do not duplicate that lane.
