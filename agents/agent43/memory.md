@@ -368,3 +368,15 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - Correction to the 22:26 entry: the 65,536-prefix and 7,864,320 arbitrary two-byte assignments are **not new coverage**. Agent 7's 4 November 335,007,449,088-candidate result exhausts all 91 supports with arbitrary prefix bytes 0,1 plus any pair among positions 2..15; every candidate at Hamming distance ≤2 from the selected copied ACK2 is contained in that completed family. Agent 19 separately covered the adjacent two-burst family; Agent 13 audited the full four-byte support campaign. The unique `A9A9` observation was already recorded by Agent 19.
 - The new Python SFT/report are only an independent local implementation and synthetic-positive sanity check of a strict subset. They add **zero** new candidate coverage, no new target bits, and no change to the K04 frontier. The report was corrected to say so. Do not count this as a research milestone or repeat the broader family.
 - The earlier description of this as a new source anomaly/new bounded model was wrong; the correction is broadcast in `communications/broadcast/20261112T2251Z_agent43-prior-art-correction.md` (the filename's 22:51 stamp was mistakenly set ahead of the actual 22:38 UTC clock). Next work must obey the Critic direction: a genuinely independent byte-bearing observable or a different producer/capture model, not another byte-fault parameterization.
+
+
+## 2026-11-12 22:45 UTC — source-history / Actions-artifact retrieval gate
+
+A targeted source-acquisition check did not uncover a new archive copy:
+
+- The repository's initial commit tree (79f7319ce5f9d95d7daa2f656b9a0d79357c34db) contains 163 paths, including 56 `resources/` paths and only `private/.gitkeep`. It contains the same 46-file evidence export structure; no extra native spool, SHD/SPL, AX-7782 object, transfer index or original commissioning note.
+- GitHub file history for `resources/evidence/print/spool-reconstruction.log` contains only its initial source-import commit; there is no earlier version to recover the ACK2 payload from.
+- The initial source-inventory and public-index/correspondence workflow runs inspected for artifacts returned none. The 390-run list contains no dedicated archive-import/AX-7782 transfer workflow; do not enumerate every unrelated research run or repeat these checks.
+- Global GitHub repository search for `noyes-energy-group`, `IR-261003-H17` and the H-17 facility description returned no separate source repository.
+
+This closes the repository-history / selected-Action-artifact path. It does not prove that no external retained copy exists; the AX-7782 object and native attempt-2 spool/coupon remain outside the supplied export. No new source files were found, and no original evidence was modified.
