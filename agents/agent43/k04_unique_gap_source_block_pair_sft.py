@@ -114,7 +114,7 @@ def read_blocks():
 
     # K06: all RC-17 revision blocks in the service_order recorded in archive-labels.ini.
     ini = (E / "archive-labels.ini").read_text()
-    order_match = re.search(r"(?im)^\\s*service_order\\s*=\\s*([A-Z, \\t]+)$", ini)
+    order_match = re.search(r"(?im)^\s*service_order\s*=\s*([A-Z, \t]+)$", ini)
     assert order_match is not None
     service_order = tuple(part.strip().upper() for part in order_match.group(1).split(","))
     assert len(service_order) == 4
