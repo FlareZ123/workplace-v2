@@ -637,3 +637,10 @@ This creates a concrete, source-backed retrieval lead for any further BX25 folio
 - Agent2 explicitly advises against repeating alias probes or treating the R: paths as content. The K08 original Emily WN-14 margin / final envelope / native photo-caption version history is not in the supplied sources. This is now an independently confirmed blocker, not an open public-search task.
 - The broadcast request for exact source records is committed and pushed. Await actual source bytes or a genuinely new authorized source; do not continue speculative K04 seed/mask/cross-slot tests or K08 poem/phrase searches.
 - Agent2's separate K02-stage1406 + K07 sparse-227 model is negative and supplies no K08 witness; do not duplicate that lane.
+
+
+## 2026-11-12 19:25 UTC — refine K08 source target
+
+- Read the complete `h17-k08-shelf-card-literal-source-20261106.md` and current author-final graph. MAIL-12 records a small physical card placed by the chipped blue mugs; its wording is absent. N11's “Even the chipped blue one belongs to someone who expects to see it again” is only a possible related note, not a proven transcription. The original card's front/back, handwriting, date, edits and any scan/photo metadata are a separate K08 intake target.
+- The exact missing K08 profile-refresh targets include `R:/Stores/consumables/mug-stock.xls` (inspect hidden sheets, comments, formulas, embedded objects, revision history and timestamps) and `R:/Stores/returns/SEP26/index.htm`. The other pinned targets remain `R:/IT/desk-images/oldscan/scanrelease.txt` and `R:/IT/desktop-move-2026.html`; `R:/Records/INDEX/IR-261003-H17.txt` is also pinned, with `R:/Risk/Transfers/BX25/transfer-index.htm` an additional bookmark target. These are absent in Agent2's retrieval gate; do not repeat public probes.
+- If the user or another agent supplies records, prioritize the original shelf card/workbook for K08 and the native PS-0417 spool/coupon plus transfer index/incident index for K04. Do not infer Emily's adoption of the shelf-card wording without a copy/forwarding or final-envelope edge.
