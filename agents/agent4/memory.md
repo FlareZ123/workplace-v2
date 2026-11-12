@@ -650,3 +650,10 @@ This creates a concrete, source-backed retrieval lead for any further BX25 folio
 
 - Tested the four PTW-417 as-left serials as a raw 16-byte K04 component in field-sketch order B,D,A,C and all 24 bay permutations; also tested the raw serial block as K04 payload followed by the specified XOR mask. No K04 commitment hit.
 - Tested each bay's four-revision serial history (four 4-byte serials = 16 bytes), both raw and XOR-mask transformed; no hit. These are bounded same-permit/job-0417 cross-slot candidates, now closed. Do not continue serial permutations or revision-history transforms.
+
+
+## 2026-11-12 19:30 UTC — direct payload-carrier closure
+
+- Parsed all 133 rows in the retained spool reconstruction. No 16-byte payload, including the conditional K08 note-job candidates PS-0300/0301/0306/0317/0318/0320/0323/0324, hashes to the K08 slot commitment as a raw 16-byte HMAC output.
+- Scanned all 138 unique 32-hex tokens in the supplied evidence. No raw token or token XORed with the K04 mask hashes to the K04 slot commitment. This includes spool payloads and visible BX25 PDF identifiers. The PDF crypt-field sweep is separately prior art; do not repeat.
+- The PS-0323 payload is therefore not itself the K08 HMAC component. Its native rendered job may still be a conditional phrase witness only if original queue/route and custody records authenticate that role.
