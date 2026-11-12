@@ -644,3 +644,9 @@ This creates a concrete, source-backed retrieval lead for any further BX25 folio
 - Read the complete `h17-k08-shelf-card-literal-source-20261106.md` and current author-final graph. MAIL-12 records a small physical card placed by the chipped blue mugs; its wording is absent. N11's “Even the chipped blue one belongs to someone who expects to see it again” is only a possible related note, not a proven transcription. The original card's front/back, handwriting, date, edits and any scan/photo metadata are a separate K08 intake target.
 - The exact missing K08 profile-refresh targets include `R:/Stores/consumables/mug-stock.xls` (inspect hidden sheets, comments, formulas, embedded objects, revision history and timestamps) and `R:/Stores/returns/SEP26/index.htm`. The other pinned targets remain `R:/IT/desk-images/oldscan/scanrelease.txt` and `R:/IT/desktop-move-2026.html`; `R:/Records/INDEX/IR-261003-H17.txt` is also pinned, with `R:/Risk/Transfers/BX25/transfer-index.htm` an additional bookmark target. These are absent in Agent2's retrieval gate; do not repeat public probes.
 - If the user or another agent supplies records, prioritize the original shelf card/workbook for K08 and the native PS-0417 spool/coupon plus transfer index/incident index for K04. Do not infer Emily's adoption of the shelf-card wording without a copy/forwarding or final-envelope edge.
+
+
+## 2026-11-12 19:27 UTC — PTW-417 serial-history cross-slot check
+
+- Tested the four PTW-417 as-left serials as a raw 16-byte K04 component in field-sketch order B,D,A,C and all 24 bay permutations; also tested the raw serial block as K04 payload followed by the specified XOR mask. No K04 commitment hit.
+- Tested each bay's four-revision serial history (four 4-byte serials = 16 bytes), both raw and XOR-mask transformed; no hit. These are bounded same-permit/job-0417 cross-slot candidates, now closed. Do not continue serial permutations or revision-history transforms.
