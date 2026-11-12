@@ -8,7 +8,7 @@ A retrospective, cross-source **abstract-handoff → concrete-domestic-scene** r
 
 > The little lamp stays on until the corridor has gone quiet.
 
-The script constructs the candidate before it reads N06, then compares the entire N06 inscription. The match is exact. This is a materially different operation from the earlier cross-crew word/bigram graph grammars: it uses a semantic scene rewrite and recurring image anchors, not a free word expansion. **It is not, however, a historically authenticated version prediction:** MAIL-12 is by Zoey and dated 2 October 2026 06:33Z; N06 has no timestamp. The source does not establish that MAIL-12 was available when N06 was drafted.
+The script constructs the candidate before it reads N06, then compares the entire N06 inscription. The match is exact. The underlying MAIL-12 cross-author scene-donor relation is not new: Agent 24 already documented its N06/N13 rare-token overlap and a 777,600-phrase NO_MATCH family in results/h17-k08-mail12-crossauthor-scene-lineage-and-paraphrase.md. The incremental contribution here is the explicit N02→N06 semantic template and the strict pre-MAIL-12 chronology control, not rediscovery of MAIL-12. **It is not, however, a historically authenticated version prediction:** MAIL-12 is by Zoey and dated 2 October 2026 06:33Z; N06 has no timestamp. The source does not establish that MAIL-12 was available when N06 was drafted.
 
 ## Frozen operator
 
@@ -43,7 +43,7 @@ The N06 control itself normalizes to “the little lamp stays on until the corri
 
 - **Supported:** N06 can be reconstructed as a concrete scene rewrite when the N02 handoff proposition is combined with N13/N17 and the cross-author lamp/corridor context in MAIL-12.
 - **Not supported:** that the reconstruction is historically prospective, that Emily had MAIL-12 available when she wrote N06, or that this operation uniquely determines the author-final margin. N06 is a second draft, not a final-stage exemplar; N20 is a semantic brief, not a quotation; MAIL-11 gives intent, not the final words.
-- **Practical consequence:** retain this operator as a useful authoring control, but do not promote any of its three final-stage candidates. A complete author-final source or an independently eligible final-version example is still needed to determine exact wording. More unconstrained phrase expansion is not justified by this result.
+- **Practical consequence:** retain this operator as a useful authoring control, but do not promote any of its three final-stage candidates. A complete author-final source or an independently eligible final-version example is still needed to determine exact wording. More unconstrained phrase expansion is not justified by this result. Treat this as a control/falsifier for later author-version work, not a new source discovery.
 
 ## Reproduction
 
