@@ -397,6 +397,12 @@ def main() -> None:
     )
     assert positive_control
 
+    assert external_tested == 320
+    assert same_external_tested == 80
+    assert printer_tested == 276672
+    assert same_row_tested == 2112
+    assert cross_tested == 21120
+
     summary = {
         "target_relation": (
             "x[951+i] = x[724+i] XOR twist(x[327+i], x[328+i]), i=0..3"
