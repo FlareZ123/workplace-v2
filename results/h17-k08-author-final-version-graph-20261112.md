@@ -50,7 +50,7 @@ The source gives a class-level statement—Emily worked from desk notes and phot
 
 `source caption/draft ID → Emily's specific edit/version action → exact recovery-envelope margin text`
 
-N10's “photograph after the last cup” does not uniquely identify N01, N08, N09, N14, or an omitted image. A previously circulated `desk-note-04` pointer was explicitly retracted: the original MAIL-20 header is `X-Records-Reference: MAIL-20`, and the supplied ZIP/repository contain no separate `desk-note-04` record. Do not confuse it with N04, which is David's numbered note. MAIL-14 confirms that the photo/caption archive was separate from the engineering procedure, but no surviving file supplies the caption revision history or its link to Emily's margin. MAIL-20 observes several drafts/captions on the desk without naming them. N23 identifies the final carrier but omits the words.
+N10's “photograph after the last cup” does not uniquely identify N01, N08, N09, N14, or an omitted image. The separate retired-office-bookmarks file also lists R:/IT/desk-images/oldscan/scanrelease.txt and R:/Records/INDEX/IR-261003-H17.txt; these are historical retrieval pointers only, not file contents or a proven link to a specific caption. A previously circulated `desk-note-04` pointer was explicitly retracted: the original MAIL-20 header is `X-Records-Reference: MAIL-20`, and the supplied ZIP/repository contain no separate `desk-note-04` record. Do not confuse it with N04, which is David's numbered note. MAIL-14 confirms that the photo/caption archive was separate from the engineering procedure, but no surviving file supplies the caption revision history or its link to Emily's margin. MAIL-20 observes several drafts/captions on the desk without naming them. N23 identifies the final carrier but omits the words.
 
 The K06 revision-C/D example in MAIL-11 is a useful contrast: its issue receipt explicitly distinguishes an issued revision from a later D-draft. That does not transfer a K06 procedure rule to K08; for K08 the source selects the envelope margin but supplies no equivalent complete version record.
 
@@ -61,7 +61,8 @@ The only source-faithful route to exact K08 words is to recover one of the missi
 1. Original recovery envelope, including both faces and the exact margin.
 2. Original WN-14 folder and Emily's loose desk-note stack in original order, including reverse sides, adjacent sheets, pad leaf, insert, or backing that may preserve pressure indentations.
 3. Separate pre-incident crew/noticeboard/galley photographs and caption records, with image originals, sidecars, author/editor identity, revision history, timestamps, and album/folder membership.
-4. Incoming-watch WN-14 handoff and incident/property inventory records sufficient to link those physical items to the final envelope.
+4. Historical office-profile/cache artifacts behind R:/IT/desk-images/oldscan/scanrelease.txt and the incident desk index R:/Records/INDEX/IR-261003-H17.txt, if an authorized preserved copy exists. The bookmark itself does not establish their contents or a K08 link.
+5. Incoming-watch WN-14 handoff and incident/property inventory records sufficient to link those physical items to the final envelope.
 
 The existing [desk-caption custody bridge](h17-k08-desk-caption-postincident-custody-bridge-20261107.md), [pre-incident photo-caption acquisition rule](h17-k08-preincident-photo-caption-acquisition-20261107.md), and [physical-carrier synthesis](h17-k08-physical-carrier-and-book-locator-synthesis-20261107.md) provide the detailed acquisition boundaries. The custodian intake channel is closed; this result does not reopen it.
 
@@ -87,3 +88,4 @@ The script checks source SHA-256 pins, the six mail timestamps, note roles, expl
 - `evidence/mail/20.eml`: `e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71`
 - `evidence/crew/noticeboard-and-desk-notes.txt`: `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
 - `evidence/crew/galley-and-stores.log`: `23dfef679a125e725654b95e7d27dffc46e7c3e9980f64b8b65fbfc2f7b75d46`
+- `evidence/h17-supplemental-office-files/retired-office-bookmarks.html`: `b9261ac17524e66bb5a6e3f3ce4996df65737aa34564b6d29a87ebab681a6096`
