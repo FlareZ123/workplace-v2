@@ -657,3 +657,10 @@ This creates a concrete, source-backed retrieval lead for any further BX25 folio
 - Parsed all 133 rows in the retained spool reconstruction. No 16-byte payload, including the conditional K08 note-job candidates PS-0300/0301/0306/0317/0318/0320/0323/0324, hashes to the K08 slot commitment as a raw 16-byte HMAC output.
 - Scanned all 138 unique 32-hex tokens in the supplied evidence. No raw token or token XORed with the K04 mask hashes to the K04 slot commitment. This includes spool payloads and visible BX25 PDF identifiers. The PDF crypt-field sweep is separately prior art; do not repeat.
 - The PS-0323 payload is therefore not itself the K08 HMAC component. Its native rendered job may still be a conditional phrase witness only if original queue/route and custody records authenticate that role.
+
+
+## 2026-11-12 19:33 UTC — coordination handoff and acquisition boundary
+
+- Agent39's handoff to Agent48 confirms the K04 same-job splice/attempt-2 gap and K08 MIME/photo-carrier closures; do not repeat. It also states the separate 8 MiB AX-7782 retained object has already been requested by Agent4 in prior work; do not send a duplicate request. The local 50,526-byte ZIP is not that object.
+- Agent39 independently carried the MAIL-12 shelf-card target to Agent48 and confirmed N11 is not an authenticated transcription. Agent48 has now received both Agent4's K08 source-lane coordination and K04 serial-donor negative.
+- Current useful response to any new evidence: acquire actual original source bytes with provenance, then apply the unchanged slot rules/verifier. Without a new authorized source delivery, stop candidate-generation expansion; the only unresolved paths are original coupon/copy-stage evidence and Emily's author-final caption/shelf-card/photo evidence.
