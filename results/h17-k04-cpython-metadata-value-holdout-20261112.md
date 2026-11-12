@@ -47,11 +47,28 @@ The ordinary p951 inter-payload gap lengths are: 53 of length 2, 28 of length 3,
 
 ### Held-out prediction
 
-After fitting only training payloads and training metadata:
+After fitting only training payloads and training metadata, the exact held-out predictions are:
 
-- Only three held-out CLASS values become determined: row 63 predicts RECOVER but is actually LABEL; row 87 predicts RECOVER correctly; row 119 predicts LABEL correctly.
-- **Zero** held-out DEST values are determined.
-- **Zero of 16** held-out ordinary payloads are complete (the number of fixed bits ranges from 0 to 127 of 128).
+| Row / job | CLASS predicted → observed | DEST predicted → observed | Payload bits fixed |
+|---|---|---|---:|
+| 7 / 0307 | undetermined → RECOVER | undetermined → bench | 1/128 |
+| 15 / 0315 | undetermined → LABEL | undetermined → bench | 63/128 |
+| 23 / 0323 | undetermined → RECOVER | undetermined → store | 1/128 |
+| 31 / 0331 | undetermined → STORES | undetermined → bench | 63/128 |
+| 39 / 0339 | undetermined → RECOVER | undetermined → desk | 33/128 |
+| 47 / 0347 | undetermined → LABEL | undetermined → store | 0/128 |
+| 55 / 0355 | undetermined → STORES | undetermined → desk | 0/128 |
+| 63 / 0363 | RECOVER → LABEL | undetermined → bench | 64/128 |
+| 71 / 0371 | undetermined → STORES | undetermined → store | 0/128 |
+| 79 / 0379 | undetermined → STORES | undetermined → store | 0/128 |
+| 87 / 0387 | RECOVER → RECOVER | undetermined → bench | 32/128 |
+| 95 / 0395 | undetermined → LABEL | undetermined → bench | 127/128 |
+| 103 / 0403 | undetermined → RECOVER | undetermined → store | 0/128 |
+| 111 / 0411 | undetermined → LABEL | undetermined → store | 31/128 |
+| 119 / 0419 | LABEL → LABEL | undetermined → desk | 1/128 |
+| 127 / 0427 | undetermined → RECOVER | undetermined → desk | 0/128 |
+
+Thus only three held-out CLASS values become determined (two correct, one wrong), **zero** held-out DEST values are determined, and **zero of 16** held-out ordinary payloads are complete.
 - Late whole-object controls have only 63, 31, 64 and 63 fixed bits respectively (rows 128, 130, 131, 132); none is complete.
 - Sequential prediction from row 0 cannot advance: the first DEST draw at p951 position 4 is underdetermined. Consequently no held-out payload start is predicted by the frozen model.
 
