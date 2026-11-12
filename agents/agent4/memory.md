@@ -555,3 +555,10 @@ Persisted: results/h17-k04-128-plus-five-systematic-rs-original-holdouts-2026110
 
 - Added one bounded alternative source to the K08 report after reading Agent39's control note: if an authorized print-host/spooler image exists, preserve the native PS-261003-0323 job, dispatch/receipt metadata, and rendered output. The present spool fragment is only opaque 16-byte payload; sequence/class similarity is not a text link, and no note→job mapping is promoted.
 - This is a conditional source-acquisition path, not a new candidate or another fingerprint sweep. The report links Agent39's control note and the existing note/spool holdout report.
+
+
+### 12 Nov 2026 06:10 UTC: additional source-visible antecedents
+
+- Integrated the existing shelf-card literal-source result into the K08 version graph. MAIL-02 (28 Sep, Emily) gives early late-arrival/bowl context. MAIL-12 (2 Oct, Zoey) confirms a physical shelf card beside two night-crew members' chipped blue mugs; its little-lamp/corridor context overlaps N06, but there is no forwarding/copy edge and the card text is absent. The shelf card is a possible antecedent, not a same-author final-caption holdout.
+- MAIL-09 already places a tea receipt in David's map-back book on 1 Oct; the tea order arriving in MAIL-12 on 2 Oct cannot be that earlier receipt. Do not join them.
+- Added the shelf-card source result link and original-card acquisition target to the K08 report. The exact final-envelope caption remains absent; no candidate promotion.
