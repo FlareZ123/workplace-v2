@@ -318,7 +318,7 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - Current recovery state remains K01/K02/K03/K05/K06/K07 accepted; K04 and K08 unresolved. Next useful work requires a materially different complete-candidate mechanism or new original PS-0417 attempt-2 request/native spool/coupon/copy-stage evidence, and for K08 the original final-margin/envelope/shelf-card/photo-caption witness. Do not repeat the source inventories or speculative phrase/seed sweeps.
 
 
-## 2026-11-12 20:48 UTC — unique-gap source-block candidate construction
+## 2026-11-12 20:19 UTC — unique-gap source-block candidate construction
 
 - Followed the new Agent50 result identifying the unique p951 gap pair at native stages 328–331 and 724–727, which fully determines the withheld K04 payload at stages 951–954 when supplied with two four-word donor blocks.
 - Added `agents/agent43/k04_unique_gap_source_block_pair_sft.py` and `results/h17-k04-unique-gap-source-block-pair-20261112.md`. The SFT uses the existing p951 source builder, which omits selected printer row129 before parsing its payload.
@@ -326,3 +326,5 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - Tested every distinct block pair, both gap assignments, little/big word endianness and native/tempered interpretation: 1,760 complete candidate constructions. All fully determined the K04 payload; none matched the K04 acceptance commitment. No inconsistent or underdetermined candidate in this finite family.
 - This closes direct substitution of the 11 tested source blocks at the unique gap pair; it does not exclude other blocks or transformations. Do not repeat this screen. No K04 bits recovered.
 - K04 still requires the original PS-0417 native spool/coupon/copy-stage record or a genuinely different source-supported mechanism. K08 still requires Emily's original final-margin/envelope/shelf-card/photo-caption witness.
+
+- Timestamp correction: the runtime clock at the follow-up checkpoint was 2026-11-12T20:20:35.779Z; the prior 20:48Z heading/filename was an erroneous future timestamp label, not the actual checkpoint time.

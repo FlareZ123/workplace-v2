@@ -33,7 +33,6 @@ spec.loader.exec_module(mt)
 GAP_STARTS = (328, 724)
 TARGET_START = 951
 BAY_ORDER = ("B", "D", "A", "C")
-SERVICE_ORDER = ("DRAIN", "ISOLATE", "PURGE", "VERIFY")
 
 
 def read_blocks():
@@ -113,7 +112,12 @@ def read_blocks():
     assert set(controls) == set(range(4))
     blocks["K05_TRP2_LATCH0123"] = b"".join(controls[i][1] for i in range(4))
 
-    # K06: all RC-17 revision blocks in the source-defined service order.
+    # K06: all RC-17 revision blocks in the service_order recorded in archive-labels.ini.
+    ini = (E / "archive-labels.ini").read_text()
+    order_match = re.search(r"(?im)^\\s*service_order\\s*=\\s*([A-Z, \\t]+)$", ini)
+    assert order_match is not None
+    service_order = tuple(part.strip().upper() for part in order_match.group(1).split(","))
+    assert len(service_order) == 4
     rc = (E / "procedures" / "RC-17-scans.txt").read_text()
     strips = {}
     pattern = (
@@ -123,9 +127,9 @@ def read_blocks():
     for match in re.finditer(pattern, rc, re.S):
         strips[(match.group(1), match.group(2))] = match.group(3)
     for revision in ("B", "C", "D-draft"):
-        assert all((revision, section) in strips for section in SERVICE_ORDER)
+        assert all((revision, section) in strips for section in service_order)
         blocks[f"RC17_{revision}_SERVICE"] = b"".join(
-            bytes.fromhex(strips[(revision, section)]) for section in SERVICE_ORDER
+            bytes.fromhex(strips[(revision, section)]) for section in service_order
         )
 
     # K07: committed AX-7782 chain, greatest attempt per chunk sequence.
