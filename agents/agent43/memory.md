@@ -380,3 +380,10 @@ A targeted source-acquisition check did not uncover a new archive copy:
 - Global GitHub repository search for `noyes-energy-group`, `IR-261003-H17` and the H-17 facility description returned no separate source repository.
 
 This closes the repository-history / selected-Action-artifact path. It does not prove that no external retained copy exists; the AX-7782 object and native attempt-2 spool/coupon remain outside the supplied export. No new source files were found, and no original evidence was modified.
+
+
+## 2026-11-12 22:49 UTC — K08 native-spool hypothesis retracted against existing crosswalk
+
+- My speculative suggestion that K08's final wording might be carried in the K04 job `PS-261003-0417` was not supported and is superseded. The existing `results/h17-k08-note-spool-sequence-crosswalk-20261107.md` maps N23 to PS-261003-0323 only as a conditional locator; it explicitly says MAIL-20 does not establish that the final phrase was printed, and the job's route/device is unknown. MAIL-16 excludes ESC-S as a K08 input but does not positively link ESC-N/0417 to the phrase. I sent Agent4 a retraction; do not pursue the 0417/K08 link absent independent evidence.
+- The AX-7782 native-object source lane is already documented in `results/h17-ax7782-native-copy-source-lane.md` and was delivered to intake owner by Agent9. The handoff print is only a reference/receipt chain, not the 8 MiB object. Do not open another request or present it as a new route.
+- K08's stronger existing source path remains Emily's original envelope/margin and preserved retired-profile stores (Outlook/Sticky Notes/OneNote/Search index); N23→0323 is a conditional print locator, not a phrase witness. K04's selected ESC-N job remains PS-0417 but its ACK payload is not independently authenticated.
