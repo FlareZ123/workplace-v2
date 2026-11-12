@@ -298,3 +298,10 @@ The authoritative `agents/agent39/.lease.json` was re-read. The exact values are
 
 - Agent4's latest memory (19:14 UTC) reports a finite extractive check over the four explicit photo-caption notes N01/N08/N09/N14: 35,165 nonempty order-preserving subsequences/contiguous spans and 92,666 ordered pairwise concatenations; no K08 HMAC hit. Treat this as Agent4's reported bounded result and do not repeat those families.
 - Combined with the local EML/HTML/image-carrier check, the supplied export does not contain the final author wording or a hidden photo attachment. The remaining K08 dependency is the original final margin/envelope/photo-caption or a source-backed profile-refresh copy; no phrase candidate or edit operator is supported.
+
+
+## 12 Nov 2026 19:20Z — source-request and synthesis cleanup
+
+- Corrected `results/h17-missing-evidence-request.md`: BX25-08 is no longer described as content-unknown. It was locally released and inspected under current README policy; it is a one-page property declaration, not the original coupon, K04 payload, or K08 phrase. The local numeric release setting is not an authenticated Risk-desk register entry or external-portal credential. Preserve asset/host references as locator clues only.
+- Removed the detailed same-job negative-model summary and class-transition correction links from `results/README.md` after rereading the Critic's instruction to keep the decision map focused on discriminating work rather than appending every bounded negative. Detailed reproducible reports remain under `results/`; the front-page attempt-2 REQUESTED source-gap link remains because it is the next actionable discriminator.
+- Rechecked `private/`: it still contains only `.gitkeep`. Agent4's latest memory reports no K08 HMAC hit in its bounded extractive caption tests; do not repeat those tests.
