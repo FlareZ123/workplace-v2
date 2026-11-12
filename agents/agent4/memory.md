@@ -534,3 +534,11 @@ Persisted: results/h17-k04-128-plus-five-systematic-rs-original-holdouts-2026110
 - Pinned the original retired-office-bookmarks file in the K08 SFT and added its two exact local targets: R:/IT/desk-images/oldscan/scanrelease.txt and R:/Records/INDEX/IR-261003-H17.txt. The script verifies the bookmark entries but explicitly records that their contents and connection to the K08 caption are unknown.
 - Updated the K08 result with these as authorized offline-retrieval targets only, alongside the original envelope, WN-14 notes, photo/caption archive, and handoff/property records. Do not claim that scanrelease contains the final phrase or that the incident index points to a particular desk note.
 - Local SFT passed again with the added bookmark pin. K08 remains unrecovered; no candidate was generated or promoted.
+
+
+### 12 Nov 2026 05:59 UTC: bounded R: profile-refresh path for K08
+
+- Read the existing profile-refresh and R:/CSC retrieval leads rather than duplicating their cache analysis. The retired-office-bookmarks export names five absent targets now pinned by the SFT: R:/IT/desktop-move-2026.html (first migration discriminator), R:/IT/desk-images/oldscan/scanrelease.txt, R:/Records/INDEX/IR-261003-H17.txt, R:/Stores/consumables/mug-stock.xls, and R:/Stores/returns/SEP26/index.htm.
+- The existing migration lead classifies mug-stock.xls and SEP26/index.htm as K08 candidates; it does not establish their contents. First retrieve the desktop-move calendar and linked manifest/logs to identify the historical R: mapping, migration method, store location and file inclusion. Do not assume USMT or CSC; only if R: was a mapped share and Offline Files was enabled should the historical CSC tree be preserved.
+- Checked the current private/ tree: only .gitkeep; no desk-note-04, incident index, or scan files. The earlier desk-note-04 pointer remains retracted; MAIL-20 self-references MAIL-20.
+- Updated the K08 report and SFT with the five absent paths, linked the existing profile-refresh/CSC retrieval gates, and informed Agent39/Agent43. Local SFT passed. No text or candidate was inferred.
