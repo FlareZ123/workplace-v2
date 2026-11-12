@@ -11,7 +11,7 @@ This separates two questions that earlier phrase searches tended to conflate:
 1. **Which document/version is final?** The personal caption on the recovery envelope, not N17 or N18. N23's margin is a reference/draft location; its physical relation to the envelope is not established.
 2. **How was its text generated?** The surviving export does not identify the particular caption/draft Emily selected, the edits she made, or a complete final-envelope-caption exemplar. No source-grounded revision operator can currently be calibrated against an eligible same-operation final-envelope-caption holdout.
 
-The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It builds the dated/undated node graph, pins the original source files, and asserts the explicit exclusions, custody statements, and absence of a complete final-envelope-caption text node. It does not generate phrase candidates or query the K08 commitment.
+The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It pins the core MAIL-11/14/17/18/19/20, note-board, galley-log and bookmark inputs, and asserts the explicit exclusions, custody statements, MAIL-20 self-reference, and absence of a complete final-envelope-caption text node. MAIL-02/12 and the shelf-card antecedent are integrated by reference from the existing [shelf-card literal-source result](h17-k08-shelf-card-literal-source-20261106.md); they are not SFT inputs. The SFT does not generate phrase candidates or query the K08 commitment.
 
 ## Dated source graph
 
