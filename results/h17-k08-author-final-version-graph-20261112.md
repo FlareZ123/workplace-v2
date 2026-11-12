@@ -11,7 +11,7 @@ This separates two questions that earlier phrase searches tended to conflate:
 1. **Which document/version is final?** The recovery-envelope margin, not N17 or N18.
 2. **How was its text generated?** The surviving export does not identify the particular caption/draft Emily selected, the edits she made, or a complete final-text exemplar. No source-grounded revision operator can currently be calibrated against an eligible whole-caption holdout.
 
-The source-pinned SFT is \`agents/agent4/k08_version_graph_sft.py\`. It builds the dated/undated node graph, pins the original source files, and asserts the explicit exclusions, custody statements, and absence of a complete final-margin text node. It does not generate phrase candidates or query the K08 commitment.
+The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It builds the dated/undated node graph, pins the original source files, and asserts the explicit exclusions, custody statements, and absence of a complete final-margin text node. It does not generate phrase candidates or query the K08 commitment.
 
 ## Dated source graph
 
@@ -48,7 +48,7 @@ The note entries N01–N24 have no per-entry timestamps. Their numbering is not 
 
 The source gives a class-level statement—Emily worked from desk notes and photograph captions—but not the required individual edge:
 
-\`source caption/draft ID → Emily's specific edit/version action → exact recovery-envelope margin text\`
+`source caption/draft ID → Emily's specific edit/version action → exact recovery-envelope margin text`
 
 N10's “photograph after the last cup” does not uniquely identify N01, N08, N09, N14, or an omitted image. MAIL-14 confirms that the photo/caption archive was separate from the engineering procedure, but no surviving file supplies the caption revision history or its link to Emily's margin. MAIL-20 observes several drafts/captions on the desk without naming them. N23 identifies the final carrier but omits the words.
 
@@ -69,9 +69,9 @@ The existing [desk-caption custody bridge](h17-k08-desk-caption-postincident-cus
 
 From the repository root:
 
-\`\`\`bash
+```bash
 python agents/agent4/k08_version_graph_sft.py --root resources
-\`\`\`
+```
 
 The script checks source SHA-256 pins, the six mail timestamps, note roles, explicit N17/N18 exclusions, the WN-14 custody statement, the post-incident desk observation, and the absence of a complete Emily-authored final-margin node. It reports zero eligible complete final controls and does not calculate speculative HMAC candidates.
 
@@ -79,11 +79,11 @@ The script checks source SHA-256 pins, the six mail timestamps, note roles, expl
 
 ### Source SHA-256 pins
 
-- \`evidence/mail/11.eml\`: \`f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29\`
-- \`evidence/mail/14.eml\`: \`9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5\`
-- \`evidence/mail/17.eml\`: \`67493c660dcd08de990c2490af5718072ee9e0991476c0272bf9fff9e96e8014\`
-- \`evidence/mail/18.eml\`: \`7dc1f122f92ce23c110aa50fd78ae7a471bdf9e60a44e358e3b90e497f664cf0\`
-- \`evidence/mail/19.eml\`: \`caff45f8c477f9fa6fc5fae0847c9c7f7842ba83c41319c8a47ddace00bd2fbd\`
-- \`evidence/mail/20.eml\`: \`e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71\`
-- \`evidence/crew/noticeboard-and-desk-notes.txt\`: \`13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb\`
-- \`evidence/crew/galley-and-stores.log\`: \`23dfef679a125e725654b95e7d27dffc46e7c3e9980f64b8b65fbfc2f7b75d46\`
+- `evidence/mail/11.eml`: `f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29`
+- `evidence/mail/14.eml`: `9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5`
+- `evidence/mail/17.eml`: `67493c660dcd08de990c2490af5718072ee9e0991476c0272bf9fff9e96e8014`
+- `evidence/mail/18.eml`: `7dc1f122f92ce23c110aa50fd78ae7a471bdf9e60a44e358e3b90e497f664cf0`
+- `evidence/mail/19.eml`: `caff45f8c477f9fa6fc5fae0847c9c7f7842ba83c41319c8a47ddace00bd2fbd`
+- `evidence/mail/20.eml`: `e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71`
+- `evidence/crew/noticeboard-and-desk-notes.txt`: `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
+- `evidence/crew/galley-and-stores.log`: `23dfef679a125e725654b95e7d27dffc46e7c3e9980f64b8b65fbfc2f7b75d46`
