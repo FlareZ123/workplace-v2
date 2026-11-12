@@ -641,3 +641,8 @@ The public-site sitemap branch is already closed: Agent24's one-shot run 3953600
 
 - A bounded alternate-carrier check concatenated the eight 2-byte checkpoints for each complete attempt in AX-7778, AX-7781, AX-7782, and AX-7783 (both attempts where present). None of the resulting 16-byte sequences matches K04 or K08 commitments. AX-7782 attempt-1 XOR attempt-2 also matches neither. These are transfer-source controls, not replacements for the printer coupon; close this simple checkpoint-reassignment family.
 - Rechecked issue #1: closed, eight existing comments, no new source attachment or custodian response. The 8 MiB AX-7782 archive object and its transfer-index remain outside the supplied ZIP; MAIL-13 handoff print is only reference/receipt-chain evidence, not the object. This is known prior art, not a newly recovered source.
+
+
+### 21:27 UTC — 8131 as native MT seed falsifier
+
+- Because the oldscan release-note bookmark describes a four-position numeric setting and the exploratory BX25 PDF password was 8131, tested 8131 as a narrowly scoped candidate seed for the Agent50 MT19937 spool model. C++ `std::mt19937(8131)` and `std::seed_seq` variants `[8,1,3,1]`, ASCII bytes `[0x38,0x31,0x33,0x31]`, and `[8131]` were compared against all 133 retained 16-byte spool payloads as consecutive 32-bit words in big- and little-endian orientations. Zero four-word matches. This does not test arbitrary custom seed functions; close the direct 8131/standard-MT seed hypothesis. The PDF password is not established as the missing scanrelease setting.
