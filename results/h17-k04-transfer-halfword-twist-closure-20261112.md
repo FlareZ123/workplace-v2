@@ -27,13 +27,15 @@ The **only** complete four-halfword match is the already-known AX-7778 window at
 
 No other transfer stream or window produced a complete match. There were also **zero 2-of-4 or 3-of-4 partial matches** across the other windows.
 
+A separate post-target sequence test used all 16 AX-7782 checkpoint values in `(seq, attempt)` order as a hypothetical stream of consecutive CPython `getrandbits(16)` outputs (the high 16 bits of each tempered MT word). The COMMIT receipt is `2026-10-03T20:55:10Z`, after the final retained spool packet at `2026-10-03T18:25:00Z`. Within the existing p951 range, every possible 16-output start from 967 through 1025 was tested against the 132-row source basis: **59 starts, zero consistent alignments**. The model is conditional on the same p951 MT source and does not rule out a different encoding or outputs beyond the model's stage range.
+
 The AX-7782 highest-attempt K07 chain, in the same little-endian integer view, is:
 
 `4789 DCCE CCB9 BA73 E8B7 E67B 0233 C9C5`
 
 None of its five four-value windows matched any of the 12 p951 227-step row pairs. The highest-attempt chains for AX-7778, AX-7781 and AX-7783 likewise produced no full or 2-of-4+ match.
 
-The SFT reports 52 all-attempt windows and 20 highest-attempt windows. Its positive and negative controls both pass.
+The SFT reports 52 all-attempt predecessor windows, 20 highest-attempt predecessor windows, and 59 post-target direct-sequence start positions. Its positive and negative controls both pass.
 
 ## Interpretation and limits
 

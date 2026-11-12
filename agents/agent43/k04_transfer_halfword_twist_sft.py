@@ -10,9 +10,12 @@ printer-stage vector and its 227-step predecessor identity.
 """
 from pathlib import Path
 from collections import defaultdict
+from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import json
 import re
+import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 EVIDENCE = ROOT / "resources" / "evidence"
@@ -34,6 +37,13 @@ STARTS = [
     912,918,924,930,936,942,947,951,955,959,963
 ]
 SELECTED_ROW = 129
+
+sys.path.insert(0, str(ROOT))
+_p951_spec = importlib.util.spec_from_file_location(
+    "p951_source", ROOT / "agents" / "agent49" / "k04_p951_symbolic_basis.py"
+)
+p951 = importlib.util.module_from_spec(_p951_spec)
+_p951_spec.loader.exec_module(p951)
 
 
 def untemper(value):
@@ -166,6 +176,104 @@ def scan_windows(streams, allowed):
     return full, partial
 
 
+
+def direct_post_target_sequence():
+    """Test AX-7782 as 16 consecutive CPython getrandbits(16) outputs after the spool."""
+    basis, symbolic = p951.source(ROOT)
+    assert basis.rank == 15365
+    assert p951.ORIGIN == -1100 and p951.LAST == 1040
+
+    audit = [
+        json.loads(line)
+        for line in (EVIDENCE / "transfers" / "transfer-audit.jsonl").read_text().splitlines()
+    ]
+    commit = next(
+        row for row in audit
+        if row["kind"] == "COMMIT" and row["transfer"] == "AX-7782"
+        and row.get("dry_run") is False
+    )
+    receipt = datetime.fromisoformat(commit["receipt_utc"].replace("Z", "+00:00"))
+    items = sorted(
+        (row for row in audit if row["kind"] == "CHUNK" and row["transfer"] == "AX-7782"),
+        key=lambda row: (row["seq"], row["attempt"]),
+    )
+    assert len(items) == 16
+    values = [
+        int.from_bytes(bytes.fromhex(row["checkpoint"]), "little")
+        for row in items
+    ]
+
+    packet_lines = [
+        line for line in (EVIDENCE / "print" / "spool-reconstruction.log").read_text().splitlines()
+        if "PAYLOAD=" in line
+    ]
+    last_packet_time = datetime.fromisoformat(
+        packet_lines[-1].split()[0].replace("Z", "+00:00")
+    )
+    assert receipt > last_packet_time
+    # Row 132 starts at 963 and contains four words; the first possible
+    # post-spool output is 967. Search every 16-word placement still inside
+    # the existing p951 model's declared range.
+    first_start = 967
+    last_start = p951.LAST - len(values) + 1
+    assert first_start == 967 and last_start == 1025
+
+    def reduce_source(value, rhs=0):
+        remainder = 0
+        while value:
+            pivot = value.bit_length() - 1
+            if pivot in basis.rows:
+                vector, bit = basis.rows[pivot]
+                value ^= vector
+                rhs ^= bit
+            else:
+                remainder |= 1 << pivot
+                value ^= 1 << pivot
+        return remainder, rhs
+
+    stage_high16 = {}
+    for stage in range(first_start, last_start + len(values)):
+        tempered = p951.temper(p951.get(symbolic, stage))
+        stage_high16[stage] = [
+            reduce_source(tempered[16 + bit]) for bit in range(16)
+        ]
+
+    consistent_starts = []
+    for start in range(first_start, last_start + 1):
+        small = {}
+        consistent = True
+        for index, value in enumerate(values):
+            for bit in range(16):
+                residual, offset = stage_high16[start + index][bit]
+                rhs = ((value >> bit) & 1) ^ offset
+                while residual:
+                    pivot = residual.bit_length() - 1
+                    if pivot not in small:
+                        small[pivot] = (residual, rhs)
+                        break
+                    vector, known = small[pivot]
+                    residual ^= vector
+                    rhs ^= known
+                if not residual and rhs:
+                    consistent = False
+                    break
+            if not consistent:
+                break
+        if consistent:
+            consistent_starts.append(start)
+
+    assert len(consistent_starts) == 0, consistent_starts
+    return {
+        "transfer_receipt_utc": commit["receipt_utc"],
+        "last_spool_packet_utc": packet_lines[-1].split()[0],
+        "checkpoint_order": "seq ascending, attempt ascending",
+        "checkpoint_count": len(values),
+        "post_target_start_positions_tested": last_start - first_start + 1,
+        "consistent_start_positions": consistent_starts,
+        "encoding": "little-endian stored halfword = high 16 bits of tempered MT output",
+    }
+
+
 def main():
     words = printer_words()
     streams, selected = checkpoint_streams()
@@ -180,6 +288,7 @@ def main():
     assert partial == [], partial
     assert selected_full == [], selected_full
     assert selected_partial == [], selected_partial
+    direct_sequence = direct_post_target_sequence()
 
     # Positive control: the known AX-7778 group is found exactly.
     control = [0x35AE, 0x78FE, 0x42DD, 0xFD35]
@@ -198,6 +307,7 @@ def main():
         "highest_attempt_windows_tested": sum(len(v)-3 for v in selected.values()),
         "highest_attempt_full_matches": selected_full,
         "highest_attempt_partial_matches_ge_2": len(selected_partial),
+        "direct_post_target_sequence": direct_sequence,
         "AX_7782_highest_attempt_chain": [
             f"{value:04X}" for value in selected["AX-7782"]
         ],

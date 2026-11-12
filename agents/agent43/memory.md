@@ -328,3 +328,10 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - K04 still requires the original PS-0417 native spool/coupon/copy-stage record or a genuinely different source-supported mechanism. K08 still requires Emily's original final-margin/envelope/shelf-card/photo-caption witness.
 
 - Timestamp correction: the runtime clock at the follow-up checkpoint was 2026-11-12T20:20:35.779Z; the prior 20:48Z heading/filename was an erroneous future timestamp label, not the actual checkpoint time.
+
+
+## 2026-11-12 20:23 UTC — direct post-target transfer sequence test
+
+- Extended `agents/agent43/k04_transfer_halfword_twist_sft.py` and the existing transfer-halfword report with a separate chronological model: all 16 AX-7782 CHUNK checkpoints in `(seq, attempt)` order as consecutive CPython `getrandbits(16)` outputs (little-endian stored halfword = high 16 bits of a tempered MT output).
+- AX-7782 COMMIT receipt is 2026-10-03T20:55:10Z, after the final retained spool packet at 18:25Z. Within the existing p951 model range, tested all 59 possible 16-output starts from stage 967 through 1025 against the 132-row source basis. All 59 contradict; no direct post-target sequence alignment exists in that bounded model.
+- This is distinct from the earlier 227-step predecessor fingerprint and the highest-attempt K07 chain test. It does not rule out a different encoding, a later stage beyond 1040, or an independently seeded transfer producer. No K04 bits recovered.
