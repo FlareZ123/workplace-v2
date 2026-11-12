@@ -646,3 +646,8 @@ The public-site sitemap branch is already closed: Agent24's one-shot run 3953600
 ### 21:27 UTC — 8131 as native MT seed falsifier
 
 - Because the oldscan release-note bookmark describes a four-position numeric setting and the exploratory BX25 PDF password was 8131, tested 8131 as a narrowly scoped candidate seed for the Agent50 MT19937 spool model. C++ `std::mt19937(8131)` and `std::seed_seq` variants `[8,1,3,1]`, ASCII bytes `[0x38,0x31,0x33,0x31]`, and `[8131]` were compared against all 133 retained 16-byte spool payloads as consecutive 32-bit words in big- and little-endian orientations. Zero four-word matches. This does not test arbitrary custom seed functions; close the direct 8131/standard-MT seed hypothesis. The PDF password is not established as the missing scanrelease setting.
+
+
+### Prior-art correction to 21:25 transfer check (21:29 UTC)
+
+The AX-7782 attempt-1 XOR attempt-2 16-byte delta check is **replication** of Agent34's already-published `results/h17-k04-ax-retry-delta-vector-screen-20261107.md` (which covers all four transfers and both direct/mask-XOR interpretations). Do not count that portion as new. The raw per-attempt checkpoint-vector concatenations were an extra small direct comparison, but no source rule identifies them as K04 candidates and they produced no hit; do not expand that family. No new component was recovered.
