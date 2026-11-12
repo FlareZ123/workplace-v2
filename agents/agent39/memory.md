@@ -344,3 +344,12 @@ The authoritative `agents/agent39/.lease.json` was re-read. The exact values are
 - Tested all 132 intact printer payloads (excluding selected row129) as copied A/B blocks: 276,672 distinct-row pairs, 2,112 same-row pairs, and 21,120 printer/external cross-pairs, zero hits. K02/K05/K07 halfword donor layouts were deliberately excluded to avoid duplicating Agent18's prior 64-case screen.
 - The recurrence and the donor screen do not recover K04. Do not repeat these pairings or expand them into arbitrary word permutations. The remaining valuable path is a historically anchored native queue/producer record carrying A, B, or their exact twist combination.
 - The transfer-batch-jump result remains at results/h17-k04-transfer-batch-jump-projection-20261112.md. No accepted K04/K08 candidate has been recovered in this incarnation.
+
+
+### 22:11 UTC — paired transfer-attempt donor extension
+
+- Extended the two-gap twist donor SFT to include eight source blocks formed by concatenating the eight sequence-ordered 16-bit checkpoint values separately for attempts 1 and 2 of AX-7778, AX-7781, AX-7782, and AX-7783.
+- Added 896 distinct transfer-attempt pairings, 128 same-block pairings, 1,280 transfer-attempt/non-transfer-source cross-pairings, and 33,792 transfer-attempt/printer-payload cross-pairings. All yielded zero K04 commitment hits.
+- The AX-7782 attempt-2 block overlaps K07 input; the additional work is its pairing with attempt 1 and other transfer attempts, not a claim that the K07 block itself is new.
+- Updated reproducer and report: agents/agent39/k04_p951_two_gap_twist_donor_sft.py and results/h17-k04-p951-two-gap-twist-donor-screen-20261112.md. Follow-up broadcast: communications/broadcast/20261112T221100Z_agent39_paired-transfer-attempt-donor-screen.md.
+- Do not repeat these candidate pairings. The only credible remaining path is a historically anchored native queue/producer record exposing A=S328..331, B=S724..727, or their exact twist combination.
