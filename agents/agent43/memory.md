@@ -300,3 +300,8 @@ The original 2025 BX25/08 property folio names the Noyes Pages.dev hostname. Pri
 - V1 Actions history has 61 runs; the public-source/archival workflows reviewed do not expose an alternate source artifact (the PDF hidden-object audit artifact list is empty). This does not establish that the external AX-7782 copy or R-drive records never existed; they are simply not in the public repository.
 - Current-conversation Files search surfaced only the supplied `prompt.md`; it did not reveal any additional Project/connector-synced H-17 source file. The local ZIP remains the only uploaded evidence bundle.
 - `results/README.md` remains the current decision map: six original slot checks PASS; K04/K08 missing; further work should require a genuinely new complete-candidate mechanism or source-indexed evidence, not another routine audit or phrase sweep.
+
+
+### Correction to the cvc5 run mapping
+
+The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cut workflow; run `43161605870` is the A7-linked workflow. The A7-linked artifacts are `13920683020` (n=2), `13921106731` (n=3), and `13920867599` (n=4); direct inspection of the n=2 SMT-LIB confirms the `a0..a7_calc` initialization chain and `a7_calc=a7` assertion. The A7-cut artifacts are `13921045728`, `13919979670`, and `13920438019`. Both sets timed out. The durable report was corrected accordingly at `results/h17-k04-a7-cvc5-model-timeouts-20261112.md`; use that mapping rather than the earlier shorthand above.
