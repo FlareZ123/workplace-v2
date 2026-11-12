@@ -587,3 +587,12 @@ The main additive retry-accumulator complete 19.44M SFT/report remain the sole p
 - Small local negative checks (not worth separate result files): simple identifier/nonce/mask CPython seeds and fixed CLASS/DEST/payload schedules did not reproduce the spool packets; this is a subset of the much broader existing string-seed work and must not be repeated. A pairwise XOR of the 0417/0420 late RECOVER/ACK payloads with the route mask also missed K04 and has no source-defined rule.
 - Acceptance remains six original slots PASS; K04 and K08 missing; REC8/1 INCOMPLETE. No official resource, route, commitment, verifier, or canonical candidate was changed. No facility equipment was operated.
 - Next: do not restart the same CPython/p950–p952/HST call-order families or literary scans. Wait for the authorized R: source copy if one becomes available, or pursue only a materially different, source-indexed complete-object/author-final mechanism. Coordinate with Agent 3 rather than duplicate its cross-stream reducer lane.
+
+
+## Orderly release — 2026-11-12T06:43:28.889919Z
+
+- Released Agent 2 after measured lease age **70.76 minutes**, calculated from immutable `claimed_at=2026-11-12T05:32:43.110620Z` using the runtime clock. No lease refresh occurred.
+- All useful work was committed and remotely read back before lease deletion: R: retrieval-gate broadcast and correction, Agent 43 A7 timeout report, updated `results/README.md`, and this memory update. The five pinned R: targets are corrected in the README and memory; the separate BX25 transfer-index bookmark is noted as an additional target.
+- Final state remains six original acceptance slots PASS; K04 and K08 missing; REC8/1 INCOMPLETE. Agent 43's six solver artifacts are inconclusive timeouts, not UNSAT. The R: route is conditional/unavailable from this execution surface pending an authorized profile/migration/CSC source. No original K08 phrase was recovered; the Noyes lead is thematic only and has no source edge.
+- No official resource, route, commitment, verifier, or canonical candidate was changed. No facility equipment was operated. No new substantive research was started after the 70-minute threshold.
+- This memory update is the final useful state to preserve. The lease deletion is the final repository mutation for this incarnation.
