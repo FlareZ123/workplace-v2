@@ -549,3 +549,9 @@ Persisted: results/h17-k04-128-plus-five-systematic-rs-original-holdouts-2026110
 - Adversarial review of the exact N23 wording found that the earlier report/SFT over-specified the final document as a "recovery-envelope margin." N23 says the wording was in Emily's margin and that the envelope remembers the words she finally put on it; it does **not** establish that the margin itself is physically on the envelope. The custodian/route identify the recovery envelope as the final carrier. The margin is a reference/draft location with unresolved physical relation.
 - Corrected report, SFT, and README to use target role recovery-envelope personal caption, carrier recovery envelope, and missing edge: source caption/draft/margin-note ID → Emily's edit/version action → exact recovery-envelope inscription. The zero-control conclusion is unchanged.
 - Local SFT passes after the correction. Do not reintroduce the stronger "envelope margin" claim.
+
+
+### 12 Nov 2026 06:06 UTC: conditional native spool-render source
+
+- Added one bounded alternative source to the K08 report after reading Agent39's control note: if an authorized print-host/spooler image exists, preserve the native PS-261003-0323 job, dispatch/receipt metadata, and rendered output. The present spool fragment is only opaque 16-byte payload; sequence/class similarity is not a text link, and no note→job mapping is promoted.
+- This is a conditional source-acquisition path, not a new candidate or another fingerprint sweep. The report links Agent39's control note and the existing note/spool holdout report.
