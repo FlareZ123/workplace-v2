@@ -1,14 +1,15 @@
-"""Bounded K04 same-job LABEL/RECOVER byte-splice construction test.
+"""Bounded K04 same-job cross-version byte/word-splice construction test.
 
-The two same-job ACK versions both target DEST=bench. This tests whether a
-16-byte coupon could be a per-byte splice of those two retained versions.
-It is exploratory only: the source does not attest that a splice occurred.
+The two same-job ACK versions both target DEST=bench. Test per-byte splices
+between them and 32-bit word assembly across all four same-job records. These
+are exploratory models; the source does not attest that a splice occurred.
 Run from repository root: python agents/agent39/k04_same_job_label_recover_byte_splice_sft.py
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -27,23 +28,35 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def source_ack_rows() -> tuple[bytes, bytes]:
+def source_job_rows():
     rows = []
     for line in SPOOL.read_text(encoding="utf-8").splitlines():
-        if "JOB=PS-261003-0417" not in line or "STATE=ACK" not in line:
+        if "JOB=PS-261003-0417" not in line:
             continue
         fields = dict(token.split("=", 1) for token in line.split() if "=" in token)
         rows.append((
-            int(fields["ATTEMPT"]), fields["CLASS"], fields["DEST"],
+            int(fields["ATTEMPT"]), fields["STATE"], fields["CLASS"], fields["DEST"],
             bytes.fromhex(fields["PAYLOAD"]),
         ))
-    assert len(rows) == 2, rows
-    rows.sort()
-    assert [(a, c, d) for a, c, d, _ in rows] == [
-        (1, "LABEL", "bench"), (2, "RECOVER", "bench")
-    ], rows
+    expected = [
+        (1, "ACK", "LABEL", "bench"),
+        (1, "REQUESTED", "RECOVER", "bench"),
+        (2, "ACK", "RECOVER", "bench"),
+        (3, "REQUESTED", "RECOVER", "bench"),
+    ]
+    assert [(a, s, c, d) for a, s, c, d, _ in rows] == expected, rows
     assert all(len(payload) == 16 for *_, payload in rows)
-    return rows[0][3], rows[1][3]
+    return rows
+
+
+def wordwise_candidates(versions):
+    assert len(versions) == 4 and all(len(p) == 16 for p in versions)
+    # Each 32-bit word position is selected from one of the four same-job records.
+    import itertools
+    for choice in itertools.product(range(4), repeat=4):
+        yield choice, b"".join(
+            versions[choice[i]][4 * i:4 * i + 4] for i in range(4)
+        )
 
 
 def candidates(label: bytes, recover: bytes):
@@ -80,7 +93,9 @@ def main() -> None:
     commitment = acceptance["slot_sha256"]["K04"]
     assert len(mask) == 16
 
-    label, recover = source_ack_rows()
+    rows = source_job_rows()
+    versions = [row[4] for row in rows]
+    label, recover = versions[0], versions[2]
     unique, original_hits = matches(label, recover, mask, commitment)
 
     contiguous = set()
@@ -95,6 +110,14 @@ def main() -> None:
         component = bytes(a ^ b for a, b in zip(payload, mask))
         if sha256(component) == commitment:
             contiguous_hits.append((payload.hex().upper(), component.hex().upper()))
+
+    wordwise_seen = set()
+    wordwise_hits = []
+    for choice, payload in wordwise_candidates(versions):
+        wordwise_seen.add(payload)
+        component = bytes(a ^ b for a, b in zip(payload, mask))
+        if sha256(component) == commitment:
+            wordwise_hits.append((choice, payload.hex().upper(), component.hex().upper()))
 
     # Verify the exhaustive selector logic against a planted complete target.
     planted_selector = 0xA53C
@@ -112,15 +135,32 @@ def main() -> None:
 
     print("SOURCE_LABEL_ACK", label.hex().upper())
     print("SOURCE_RECOVER_ACK", recover.hex().upper())
+    print("SOURCE_REQUESTED1", versions[1].hex().upper())
+    print("SOURCE_REQUESTED3", versions[3].hex().upper())
     print("DESTINATION_PAIR", "bench -> bench")
     print("BYTEWISE_SPLICE_ASSIGNMENTS", 1 << 16)
     print("BYTEWISE_UNIQUE_PAYLOADS", unique)
     print("ORIGINAL_K04_COMMITMENT_HITS", original_hits)
     print("CONTIGUOUS_INTERVAL_UNIQUE_PAYLOADS", len(contiguous))
     print("CONTIGUOUS_INTERVAL_K04_HITS", contiguous_hits)
+    print("WORDWISE_ASSIGNMENTS", 4 ** 4)
+    print("WORDWISE_UNIQUE_PAYLOADS", len(wordwise_seen))
+    print("WORDWISE_K04_HITS", wordwise_hits)
+    planted_choice = (3, 1, 2, 0)
+    planted_wordwise = next(
+        payload for choice, payload in wordwise_candidates(versions)
+        if choice == planted_choice
+    )
+    planted_wordwise_commitment = sha256(bytes(a ^ b for a, b in zip(planted_wordwise, mask)))
+    planted_wordwise_hits = [
+        choice for choice, payload in wordwise_candidates(versions)
+        if sha256(bytes(a ^ b for a, b in zip(payload, mask))) == planted_wordwise_commitment
+    ]
+    assert planted_wordwise_hits == [planted_choice], planted_wordwise_hits
+    print("WORDWISE_SYNTHETIC_POSITIVE", planted_choice, planted_wordwise_hits)
     print("SYNTHETIC_POSITIVE_SELECTOR", hex(planted_selector))
     print("SYNTHETIC_POSITIVE_HITS", len(planted_hits))
-    print("RESULT", "NO_SAME_JOB_BYTE_SPLICE_CANDIDATE")
+    print("RESULT", "NO_SAME_JOB_BYTE_OR_WORD_SPLICE_CANDIDATE")
 
 
 if __name__ == "__main__":
