@@ -43,7 +43,7 @@ ROLE = {
     20: ("authorial_intent_brief", "Emily", "semantic constraints; not the final words"),
     21: ("freezer_notice", "Zoey", "contextual notice; not Emily-authored"),
     22: ("stores_note", "Simon", "contextual note; not Emily-authored"),
-    23: ("final_margin_reference", "Emily", "locates final wording on margin; does not quote it"),
+    23: ("margin_reference", "Emily", "references wording in her margin and final words on envelope; does not locate margin or quote it"),
     24: ("departure_board_note", "Gabriel", "contextual note; not Emily-authored"),
 }
 
@@ -144,7 +144,7 @@ def build(root: Path) -> dict:
     # No complete text node has the exact author+role of the selected final margin.
     complete_eligible = [n for n in notes.values()
                          if n["author"] == "Emily"
-                         and n["role"] == "recovery_envelope_final_margin"
+                         and n["role"] == "recovery_envelope_personal_caption"
                          and n["text"]]
     assert complete_eligible == []
 
@@ -160,9 +160,9 @@ def build(root: Path) -> dict:
         "source_files": files,
         "target": {
             "slot": "K08", "author": "Emily",
-            "role": "recovery_envelope_final_margin",
+            "role": "recovery_envelope_personal_caption",
             "complete_text_present": False,
-            "carrier": "recovery-envelope margin",
+            "carrier": "recovery envelope; exact inscription text absent",
             "component": "HMAC-SHA256(normalized UTF-8 phrase, desk_nonce)[:16]"
         },
         "dated_documents": [
@@ -227,8 +227,8 @@ def build(root: Path) -> dict:
              "type": "EXACT_WORDS_ARE_AUTHORITATIVE", "note": "no transcription supplied"},
         ],
         "complete_caption_controls": controls,
-        "eligible_complete_final_controls": complete_eligible,
-        "missing_relation": "source caption/draft ID -> Emily's specific edit/version action -> exact recovery-envelope margin text",
+        "eligible_complete_final_envelope_caption_controls": complete_eligible,
+        "missing_relation": "source caption/draft/margin-note ID -> Emily's edit/version action -> exact recovery-envelope inscription",
         "mail20_record_reference": "MAIL-20 self-reference; the prior desk-note-04 claim was retracted after checking the original header; do not conflate with N04",
         "profile_refresh_retrieval_targets": bookmark_targets,
         "missing_from_local_export": missing_bookmark_targets,
@@ -245,7 +245,7 @@ def main() -> None:
     result = build(args.root)
     print(json.dumps(result, indent=2, ensure_ascii=False))
     print("K08 version graph: PASS (source pins, roles, dates, exclusions, and missing-edge assertions)")
-    print("Eligible complete final-margin controls: 0")
+    print("Eligible complete final-envelope-caption controls: 0")
     print("K08 component recovered: NO")
 
 
