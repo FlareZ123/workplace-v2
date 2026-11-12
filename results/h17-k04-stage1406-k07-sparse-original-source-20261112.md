@@ -18,6 +18,10 @@ At each of the seven best placements, test all ten source-compatible K02 views, 
 
 A separate local standalone source-equivalent test computed the exact 17-dimensional inverse formula and planted a genuine full hidden 16-byte coupon in a source-compatible synthetic MT state. Enumerating all `2^17` complete synthetic coupons recovered the planted SHA256 commitment **exactly once**, validating the conditional full-coupon inversion. That positive is about the constructed synthetic producer; it does not establish a historical producer or restore authentic selected bytes.
 
+## Crucial target-space prior-art boundary
+
+**The 17-bit conditional candidate sets are strict subsets of the previously fully exhausted K02-stage1406 33-bit affine cosets.** Agent48/18 had already tested **all 85,899,345,920 complete K04 components** from the ten K02-compatible source interpretations against the original K04 SHA256, with zero matches ([prior exhaustive result](h17-k04-new-k02-stage1406-ten-complete-cosets-20261105.md)). The K07 rank reduction introduces **no new possible original K04 solution** under that same K02/MT state model, even if an original K07 byte order had been source-compatible. The only incremental observation here is rejection of a proposed cross-source producer at seven compact stages, and the synthetic 17-bit inversion control. It would be incorrect to describe this as a newly opened original-K04 target search or justify further SHA256 sweeps in its subset. 
+
 ## Decision
 
 This closes the **K02 stage1406 + K07 halfword stride227** improvement over the older stage1178 source gate. There is no reason to enlarge arbitrary K07 byte permutations around these source-incompatible stages. Different historical media-copy paths, a different source-selected generator/chronology, or independently preserved actual coupon objects remain open. The six genuine accepted slots remain PASS; **K04/K08 remain MISSING and combined REC8/1 INCOMPLETE**.
