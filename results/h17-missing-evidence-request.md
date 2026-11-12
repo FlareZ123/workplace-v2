@@ -14,6 +14,8 @@ K01, K02, K03, K05, K06, K07 independently pass their original SHA-256 commitmen
 - **Source warning:** custodian note and MAIL-16 explicitly warn that dispatch ACK confirms a job, without confirming reconstructed payload byte integrity.
 - **Needed:** an independently retained original coupon, verified 16-byte payload transcript, uncorrupted archival spool/source image, or authoritative printer-side checksum tied to this exact job and ACK attempt. The unencrypted vendor/property register links `L-29/N` / `FA-17` / `H17-POL-17/A3` to the separate `BX25/08` transfer reference, providing provenance only. The encrypted BX25-08 folio's contents are unknown; make no claim about whether it contains coupon bytes.
 
+**Specific missing printer-side event:** the retained text export has no `ATTEMPT=2 STATE=REQUESTED` row for `PS-261003-0417`. Its attempt-1 RECOVER REQUESTED row is not source-confirmed as the request associated with the 18:02 attempt-2 ACK, and attempt 3 REQUESTED is explicitly unacknowledged. Request the native queue/journal entry for attempt 2 and the record that binds it to ACK2, together with the original `.SPL/.SHD` object, driver-level job image, PrintService/dispatch events, and device-side saved job or physical coupon. Do not pair attempt 1 with ACK2 by timestamp or infer the missing request payload from the ACK.
+
 ## Missing record B: K08 keeper's final caption
 - **Owner of remembered wording:** Emily; personal late-watch desk/envelope caption distinguishing the keeper envelope.
 - **Problem:** source N02/N06 are marked drafts and N17/N18 are explicitly older standby and commissioning envelope labels. MAIL-11, MAIL-20 and N23 distinguish a final wording that the surviving export does not reproduce.
