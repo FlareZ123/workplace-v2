@@ -272,16 +272,46 @@ def main() -> None:
     assert set(strips) == set(service_order)
     k06_block = bytes.fromhex("".join(strips[name] for name in service_order))
 
+    transfer_attempt_blocks = {}
+    for transfer in ("AX-7778", "AX-7781", "AX-7782", "AX-7783"):
+        for attempt in (1, 2):
+            attempt_rows = sorted(
+                (row for row in audit_rows
+                 if row.get("kind") == "CHUNK"
+                 and row.get("transfer") == transfer
+                 and row.get("attempt") == attempt),
+                key=lambda row: row["seq"],
+            )
+            assert len(attempt_rows) == 8
+            assert [row["seq"] for row in attempt_rows] == list(range(8))
+            packed = b"".join(
+                int(row["checkpoint"], 16).to_bytes(2, "little")
+                for row in attempt_rows
+            )
+            transfer_attempt_blocks[f"{transfer}_attempt{attempt}"] = packed
+
     external_blocks = {
         "K01_WN14_ABCD": k01_block,
         "K03_PTW417_ASLEFT_ABCD": k03_block,
         "K06_RC17_REV_C_SERVICE": k06_block,
         "K04_ROUTE_MASK": mask,
         "K08_DESK_NONCE": nonce,
+        **transfer_attempt_blocks,
     }
     external_variants = [
         variant
         for name, block in external_blocks.items()
+        for variant in source_block_variants(name, block)
+    ]
+    transfer_variants = [
+        variant
+        for name, block in transfer_attempt_blocks.items()
+        for variant in source_block_variants(name, block)
+    ]
+    nontransfer_variants = [
+        variant
+        for name, block in external_blocks.items()
+        if name not in transfer_attempt_blocks
         for variant in source_block_variants(name, block)
     ]
 
@@ -314,6 +344,72 @@ def main() -> None:
                     same_external_hits.append((
                         variant_a[0], variant_b[0], component.hex()
                     ))
+
+    transfer_distinct_tested = 0
+    transfer_distinct_hits = []
+    for name_a, block_a in transfer_attempt_blocks.items():
+        for name_b, block_b in transfer_attempt_blocks.items():
+            if name_a == name_b:
+                continue
+            for label_a, words_a in source_block_variants(name_a, block_a):
+                for label_b, words_b in source_block_variants(name_b, block_b):
+                    transfer_distinct_tested += 1
+                    component, digest, payload = candidate_from_gap_blocks(
+                        words_a, words_b, predecessor, mask
+                    )
+                    if digest == K04_HASH:
+                        transfer_distinct_hits.append(
+                            (label_a, label_b, component.hex())
+                        )
+
+    transfer_same_tested = 0
+    transfer_same_hits = []
+    for name, block in transfer_attempt_blocks.items():
+        variants = source_block_variants(name, block)
+        for variant_a in variants:
+            for variant_b in variants:
+                transfer_same_tested += 1
+                component, digest, payload = candidate_from_gap_blocks(
+                    variant_a[1], variant_b[1], predecessor, mask
+                )
+                if digest == K04_HASH:
+                    transfer_same_hits.append(
+                        (variant_a[0], variant_b[0], component.hex())
+                    )
+
+    transfer_external_tested = 0
+    transfer_external_hits = []
+    for transfer_variant in transfer_variants:
+        for other_variant in nontransfer_variants:
+            for words_a, words_b in (
+                (transfer_variant[1], other_variant[1]),
+                (other_variant[1], transfer_variant[1]),
+            ):
+                transfer_external_tested += 1
+                component, digest, payload = candidate_from_gap_blocks(
+                    words_a, words_b, predecessor, mask
+                )
+                if digest == K04_HASH:
+                    transfer_external_hits.append(
+                        (transfer_variant[0], other_variant[0], component.hex())
+                    )
+
+    transfer_printer_tested = 0
+    transfer_printer_hits = []
+    for transfer_variant in transfer_variants:
+        for printer_variant in printer_variants:
+            for words_a, words_b in (
+                (transfer_variant[1], printer_variant[3]),
+                (printer_variant[3], transfer_variant[1]),
+            ):
+                transfer_printer_tested += 1
+                component, digest, payload = candidate_from_gap_blocks(
+                    words_a, words_b, predecessor, mask
+                )
+                if digest == K04_HASH:
+                    transfer_printer_hits.append(
+                        (transfer_variant[0], printer_variant[:3], component.hex())
+                    )
 
     # All intact printer payloads except selected row 129 are also candidate
     # copied blocks. Try both per-word endiannesses and raw/untempered views.
@@ -397,11 +493,15 @@ def main() -> None:
     )
     assert positive_control
 
-    assert external_tested == 320
-    assert same_external_tested == 80
+    assert external_tested == 2496
+    assert same_external_tested == 208
     assert printer_tested == 276672
     assert same_row_tested == 2112
-    assert cross_tested == 21120
+    assert cross_tested == 54912
+    assert transfer_distinct_tested == 896
+    assert transfer_same_tested == 128
+    assert transfer_external_tested == 1280
+    assert transfer_printer_tested == 33792
 
     summary = {
         "target_relation": (
@@ -415,6 +515,14 @@ def main() -> None:
         "external_ordered_pair_candidates": external_tested,
         "external_hits": len(external_hits),
         "same_external_block_pair_candidates": same_external_tested,
+        "transfer_attempt_pair_candidates": transfer_distinct_tested,
+        "transfer_attempt_pair_hits": len(transfer_distinct_hits),
+        "transfer_same_attempt_block_pair_candidates": transfer_same_tested,
+        "transfer_same_attempt_block_pair_hits": len(transfer_same_hits),
+        "transfer_external_cross_pair_candidates": transfer_external_tested,
+        "transfer_external_cross_pair_hits": len(transfer_external_hits),
+        "transfer_printer_cross_pair_candidates": transfer_printer_tested,
+        "transfer_printer_cross_pair_hits": len(transfer_printer_hits),
         "same_external_block_pair_hits": len(same_external_hits),
         "distinct_printer_row_pair_candidates": printer_tested,
         "distinct_printer_row_pair_hits": len(printer_hits),
@@ -432,6 +540,10 @@ def main() -> None:
     }
     assert not external_hits
     assert not same_external_hits
+    assert not transfer_distinct_hits
+    assert not transfer_same_hits
+    assert not transfer_external_hits
+    assert not transfer_printer_hits
     assert not printer_hits
     assert not same_row_hits
     assert not cross_hits
