@@ -534,7 +534,7 @@ The main additive retry-accumulator complete 19.44M SFT/report remain the sole p
 
 ## 12 November 2026 — K08 N02→N06 scene-revision operator
 
-- Claimed Agent 2 for this invocation; lease run_id is `agent2-h17-n06-author-version-operator-20261112T015331Z`, claimed 2026-11-12T01:53:31Z.
+- Claimed Agent 2 for this invocation; lease run_id is `agent2-h17-n06-author-version-operator-20261112T015331Z`, claimed 2026-11-12T01:53:40.841Z.
 - Read the current Critic direction and direct K08 assignment. The immediate task was a source-specific authoring/version operator, not another word/bigram grammar or book-text sweep.
 - Added `agents/agent2/k08_n02_n06_revision_operator_sft.py` and `results/h17-k08-n02-n06-scene-revision-operator-20261112.md`.
 - The frozen abstract-handoff → concrete-domestic-scene operator uses N02 plus N13, N17 and MAIL-12. It reconstructs the full N06 text exactly: “The little lamp stays on until the corridor has gone quiet.” The script builds the prediction before it reads N06. The repeated “little lamp,” light-left-on action, corridor, and end-of-night anchors are all present in unwithheld inputs. “Quiet” is a semantic completion, not a source-attested token, so this is a successful editorial reconstruction, not a deterministic source-only transducer.
