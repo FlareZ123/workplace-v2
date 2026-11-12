@@ -132,6 +132,86 @@ def main() -> None:
         (evidence / "print" / "spool-reconstruction.log").read_text().splitlines()
         if line.startswith("2026-")
     ]
+
+    # Reproduce the two-gap information projection in the p951 source basis.
+    audit_path = evidence / "transfers" / "transfer-audit.jsonl"
+    audit_bytes = audit_path.read_bytes()
+    assert hashlib.sha256(audit_bytes).hexdigest() == (
+        "32970ad4431a9d610cc12dcca2813f39dd8fd2e396f9e748dc94b5932cb69adf"
+    )
+    audit_rows = [
+        json.loads(line) for line in audit_bytes.splitlines() if line.strip()
+    ]
+    ax_rows = sorted(
+        (row for row in audit_rows
+         if row.get("kind") == "CHUNK" and row.get("transfer") == "AX-7778"),
+        key=lambda row: (row["seq"], row["attempt"]),
+    )
+    assert len(ax_rows) == 16
+    printer_basis, symbols = mt.source(ROOT)
+    assert printer_basis.rank == 15365
+    ax_preinsert_fixed = 0
+    for index, row in enumerate(ax_rows):
+        checkpoint = int.from_bytes(
+            bytes.fromhex(row["checkpoint"]), "little"
+        )
+        forms = mt.temper(mt.get(symbols, -157 + index))
+        for bit in range(16):
+            form = forms[16 + bit]
+            if printer_basis.predict(form) is not None:
+                ax_preinsert_fixed += 1
+            printer_basis.insert(form, (checkpoint >> bit) & 1)
+    assert printer_basis.rank == 15495
+    assert ax_preinsert_fixed == 126
+
+    target_forms = [
+        form for stage in range(951, 955)
+        for form in mt.temper(mt.get(symbols, stage))
+    ]
+    block_a_forms = [
+        form for stage in range(328, 332)
+        for form in mt.temper(mt.get(symbols, stage))
+    ]
+    block_b_forms = [
+        form for stage in range(724, 728)
+        for form in mt.temper(mt.get(symbols, stage))
+    ]
+
+    def project_block_forms(forms):
+        projected = mt.Basis()
+        projected.rows = dict(printer_basis.rows)
+        projected.rank = printer_basis.rank
+        for form in forms:
+            projected.insert(form, 0)
+        return projected
+
+    projected_a = project_block_forms(block_a_forms)
+    projected_b = project_block_forms(block_b_forms)
+    projected_ab = project_block_forms(block_a_forms + block_b_forms)
+    two_gap_projection = {
+        "printer_rank": 15365,
+        "rank_after_AX7778": printer_basis.rank,
+        "AX7778_preinsert_fixed_bits": ax_preinsert_fixed,
+        "A_only_rank_gain": projected_a.rank - printer_basis.rank,
+        "A_only_target_bits_fixed": sum(
+            projected_a.predict(form) is not None for form in target_forms
+        ),
+        "B_only_rank_gain": projected_b.rank - printer_basis.rank,
+        "B_only_target_bits_fixed": sum(
+            projected_b.predict(form) is not None for form in target_forms
+        ),
+        "A_and_B_rank_gain": projected_ab.rank - printer_basis.rank,
+        "A_and_B_target_bits_fixed": sum(
+            projected_ab.predict(form) is not None for form in target_forms
+        ),
+    }
+    assert two_gap_projection["A_only_rank_gain"] == 128
+    assert two_gap_projection["A_only_target_bits_fixed"] == 0
+    assert two_gap_projection["B_only_rank_gain"] == 128
+    assert two_gap_projection["B_only_target_bits_fixed"] == 0
+    assert two_gap_projection["A_and_B_rank_gain"] == 256
+    assert two_gap_projection["A_and_B_target_bits_fixed"] == 128
+    del symbols
     assert len(spool) == 133
     payload_match = re.search(r"PAYLOAD=([0-9A-F]{32})", spool[43])
     assert payload_match
@@ -325,6 +405,7 @@ def main() -> None:
         "missing_A_block_stages": [328, 329, 330, 331],
         "missing_B_block_stages": [724, 725, 726, 727],
         "positive_control": positive_control,
+        "two_gap_projection": two_gap_projection,
         "external_ordered_pair_candidates": external_tested,
         "external_hits": len(external_hits),
         "same_external_block_pair_candidates": same_external_tested,
