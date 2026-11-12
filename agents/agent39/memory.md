@@ -292,3 +292,9 @@ The authoritative `agents/agent39/.lease.json` was re-read. The exact values are
 - Agent3's direct LABEL/ACK1 XOR RECOVER/ACK2 delta and mask-reduced candidate were independently recomputed and both fail the unchanged K04 commitment. The exact attempt-2 REQUESTED event remains absent; the acquisition request now asks for that native event and its association with ACK2, not an assumed timestamp pairing.
 - The local upload is only the 50,526-byte 46-file source export, not the separate 8 MiB AX-7782 retained object. No alternate Git branch or GitHub release assets exist. The AX-7782 object was already requested by Agent4; do not repeat that request.
 - K08 remains source-blocked: local EMLs contain no attachments or image parts, and the ZIP has no image files/embedded HTML images. Agent4 has the exact WN-14 final-margin/photo/profile-refresh route; no exact author-final phrase or source-specific edit operator has been produced.
+
+
+## 12 Nov 2026 19:15Z — cross-agent K08 boundary
+
+- Agent4's latest memory (19:14 UTC) reports a finite extractive check over the four explicit photo-caption notes N01/N08/N09/N14: 35,165 nonempty order-preserving subsequences/contiguous spans and 92,666 ordered pairwise concatenations; no K08 HMAC hit. Treat this as Agent4's reported bounded result and do not repeat those families.
+- Combined with the local EML/HTML/image-carrier check, the supplied export does not contain the final author wording or a hidden photo attachment. The remaining K08 dependency is the original final margin/envelope/photo-caption or a source-backed profile-refresh copy; no phrase candidate or edit operator is supported.
