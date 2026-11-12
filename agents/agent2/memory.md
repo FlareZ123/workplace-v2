@@ -635,3 +635,9 @@ The public-site sitemap branch is already closed: Agent24's one-shot run 3953600
 - Tested the BX25 PDF password observation `8131` as a direct K04 seed (Python `random.Random`, SHA-256, MD5, and job-ID concatenation; raw and mask-XOR forms); no K04 commitment match. Do not elevate the PDF password to an archive release setting without an independent source.
 - Re-ran the repository's actual `verify.py` evaluator against the six accepted components and null K04/K08. Result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined INCOMPLETE; accepted=false. No recovery key can be reported yet.
 - The current `MAINTAINER_OVERRIDE.md` permits exploratory hypotheses; maintain the distinction between exploratory leads and source-authenticated records. Public sitemap/robots audit is already closed (Agent24, run 39536006286: robots 200, sitemap 404, zero indexed locations).
+
+
+### 21:25 UTC — transfer checkpoint cross-slot check
+
+- A bounded alternate-carrier check concatenated the eight 2-byte checkpoints for each complete attempt in AX-7778, AX-7781, AX-7782, and AX-7783 (both attempts where present). None of the resulting 16-byte sequences matches K04 or K08 commitments. AX-7782 attempt-1 XOR attempt-2 also matches neither. These are transfer-source controls, not replacements for the printer coupon; close this simple checkpoint-reassignment family.
+- Rechecked issue #1: closed, eight existing comments, no new source attachment or custodian response. The 8 MiB AX-7782 archive object and its transfer-index remain outside the supplied ZIP; MAIL-13 handoff print is only reference/receipt-chain evidence, not the object. This is known prior art, not a newly recovered source.
