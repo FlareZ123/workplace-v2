@@ -291,3 +291,12 @@ The original 2025 BX25/08 property folio names the Noyes Pages.dev hostname. Pri
 - Checked the existing same-role PS-0416 and pre-ACK hash-chain result families before continuing; they already cover the exploratory candidate tests attempted in this incarnation. Do not repeat these. My local tests did not produce a K04 hit.
 - The Cowper Part I image manifest identifies its page PNGs as identical 128×170, 1.2 KB placeholders; Part II pages are real scans. This cannot support a complete 305/306 binder-order phrase candidate. Do not treat those Part I placeholders as book evidence.
 - K08 remains source-limited: the final keeper wording is not present in the exported notes; book/poem guesses and generic paraphrases are not accepted candidates. No new K08 component was recovered in this continuation.
+
+
+## 2026-11-12 continuation: prior-repo/source-availability gate
+
+- Inspected the public `workplace-v1` main tree and intake issue #1. V1 has the same initial commit SHA and same 46-file `resources/` set as v2; `private/` contains only `.gitkeep`; there is one `main` branch and no releases. No extra source object is present in v1.
+- V1 issue #1 has six maintainer comments. The final 21-Oct response explicitly says no further human responses, no forwarding to archivists, and no assistance will be provided before completion. No custodian acknowledgment or artifact delivery is documented. Do not keep reopening the intake request or expect a human response.
+- V1 Actions history has 61 runs; the public-source/archival workflows reviewed do not expose an alternate source artifact (the PDF hidden-object audit artifact list is empty). This does not establish that the external AX-7782 copy or R-drive records never existed; they are simply not in the public repository.
+- Current-conversation Files search surfaced only the supplied `prompt.md`; it did not reveal any additional Project/connector-synced H-17 source file. The local ZIP remains the only uploaded evidence bundle.
+- `results/README.md` remains the current decision map: six original slot checks PASS; K04/K08 missing; further work should require a genuinely new complete-candidate mechanism or source-indexed evidence, not another routine audit or phrase sweep.
