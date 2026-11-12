@@ -11,7 +11,7 @@ This separates two questions that earlier phrase searches tended to conflate:
 1. **Which document/version is final?** The personal caption on the recovery envelope, not N17 or N18. N23's margin is a reference/draft location; its physical relation to the envelope is not established.
 2. **How was its text generated?** The surviving export does not identify the particular caption/draft Emily selected, the edits she made, or a complete final-envelope-caption exemplar. No source-grounded revision operator can currently be calibrated against an eligible same-operation final-envelope-caption holdout.
 
-The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It builds the dated/undated node graph, pins the original source files, and asserts the explicit exclusions, custody statements, and absence of a complete final-margin text node. It does not generate phrase candidates or query the K08 commitment.
+The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It builds the dated/undated node graph, pins the original source files, and asserts the explicit exclusions, custody statements, and absence of a complete final-envelope-caption text node. It does not generate phrase candidates or query the K08 commitment.
 
 ## Dated source graph
 
@@ -32,7 +32,7 @@ The note entries N01–N24 have no per-entry timestamps. Their numbering is not 
 
 | Node | Author / role | Version status for K08 |
 |---|---|---|
-| N02 | Emily / first crew-board draft | Complete text, but a board draft rather than the final recovery-envelope margin. |
+| N02 | Emily / first crew-board draft | Complete text, but a board draft rather than the final recovery-envelope caption. |
 | N06 | Emily / second desk draft | Complete text, but still a draft; no authenticated word-for-word edit edge from N02. |
 | N13 | Emily / reminiscence | Complete narrative, not a labelled final caption or envelope inscription. |
 | N17 | Emily / standby-envelope label | Complete text, explicitly excluded by MAIL-11. |
