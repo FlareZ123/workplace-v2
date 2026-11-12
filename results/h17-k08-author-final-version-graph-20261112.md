@@ -22,7 +22,7 @@ The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It builds the
 | 3 Oct 2026 17:31 | MAIL-17 / Emily | Emily would be in accommodation after dinner if the watch needed the previous note. | That the final envelope or her desk was in accommodation. |
 | 3 Oct 2026 21:47 | MAIL-18 / David | Fire contained; incident team controlled access; no re-entry for records or personal belongings. | Where Emily's desk was, or whether it was inside the instrument store. |
 | 4 Oct 2026 06:22 | MAIL-19 / Zoey | Spare radio chargers were at the accommodation desk. | That this was Emily's desk or that caption/envelope material was there. |
-| 4 Oct 2026 11:06 | MAIL-20 ¶2 / Gabriel | Several captions and drafts were on Emily's desk; the exact words she chose matter. | Exact phrase, desk location, caption IDs, or custody path after MAIL-18. |
+| 4 Oct 2026 11:06 | MAIL-20 ¶2 / Gabriel | Several captions and drafts were on Emily's desk; the exact words she chose matter. Header self-reference is `X-Records-Reference: MAIL-20`. | Exact phrase, desk location, caption IDs, or custody path after MAIL-18; no separate desk-note record. |
 
 The galley log says chargers moved from the briefing room to the accommodation desk on 4 October. Together with MAIL-17/19 this makes accommodation a possible physical locator, but it still does not identify the desk in MAIL-20 as the accommodation desk. Do not promote that join to fact.
 
@@ -50,7 +50,7 @@ The source gives a class-level statement—Emily worked from desk notes and phot
 
 `source caption/draft ID → Emily's specific edit/version action → exact recovery-envelope margin text`
 
-N10's “photograph after the last cup” does not uniquely identify N01, N08, N09, N14, or an omitted image. MAIL-14 confirms that the photo/caption archive was separate from the engineering procedure, but no surviving file supplies the caption revision history or its link to Emily's margin. MAIL-20 observes several drafts/captions on the desk without naming them. N23 identifies the final carrier but omits the words.
+N10's “photograph after the last cup” does not uniquely identify N01, N08, N09, N14, or an omitted image. A previously circulated `desk-note-04` pointer was explicitly retracted: the original MAIL-20 header is `X-Records-Reference: MAIL-20`, and the supplied ZIP/repository contain no separate `desk-note-04` record. Do not confuse it with N04, which is David's numbered note. MAIL-14 confirms that the photo/caption archive was separate from the engineering procedure, but no surviving file supplies the caption revision history or its link to Emily's margin. MAIL-20 observes several drafts/captions on the desk without naming them. N23 identifies the final carrier but omits the words.
 
 The K06 revision-C/D example in MAIL-11 is a useful contrast: its issue receipt explicitly distinguishes an issued revision from a later D-draft. That does not transfer a K06 procedure rule to K08; for K08 the source selects the envelope margin but supplies no equivalent complete version record.
 
