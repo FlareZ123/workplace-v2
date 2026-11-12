@@ -651,3 +651,22 @@ The public-site sitemap branch is already closed: Agent24's one-shot run 3953600
 ### Prior-art correction to 21:25 transfer check (21:29 UTC)
 
 The AX-7782 attempt-1 XOR attempt-2 16-byte delta check is **replication** of Agent34's already-published `results/h17-k04-ax-retry-delta-vector-screen-20261107.md` (which covers all four transfers and both direct/mask-XOR interpretations). Do not count that portion as new. The raw per-attempt checkpoint-vector concatenations were an extra small direct comparison, but no source rule identifies them as K04 candidates and they produced no hit; do not expand that family. No new component was recovered.
+
+
+### Orderly release checkpoint — 12 November 2026, 21:43 UTC
+
+The original Agent 2 lease began at 20:33:38Z; the actual runtime clock measured 70 minutes elapsed. This is the required orderly release point.
+
+**Verified state:** The repository's `verify.py` evaluator accepts K01/K02/K03/K05/K06/K07 and reports K04/K08 MISSING, combined INCOMPLETE, `accepted=false`. No complete recovery key was recovered or verified.
+
+**K04 frontier:** The target remains the PS-261003-0417 attempt-2 coupon/native print witness. The surviving ACK2 dispatch record is not a media-integrity proof. The native request/rendered job or physical coupon, original spooler `.SPL/.SHD`/print-host image, and relevant R: records are absent. Agent50 owns the current p951/MT and native-gap model; its two missing donor blocks have no authenticated source. Do not repeat generic PRNG, GF(2)/GF(32), retry-delta, transfer-checkpoint, or seed sweeps.
+
+**K08 frontier:** The exact Emily final envelope phrase remains absent. MAIL-20 is a self-referenced desk-note locator, not the phrase; N02/N06 are drafts, N17/N18 are excluded, and no eligible author-final operator or held-out whole-caption control was recovered. Agent4 owns the current author-final/version graph. The original envelope/margin, photograph/caption source, shelf-card source, and missing profile files (including `mug-stock.xls`, `scanrelease.txt`, `desktop-move-2026.html`) remain absent.
+
+**Source-policy correction:** Current `MAINTAINER_OVERRIDE.md` and the 10 Nov Critic authority correction permit exploratory use of BX25-08 observations under explicit uncertainty. The 12 Nov Agent11 withdrawal repeats an unsubstantiated 7 Nov maintainer attribution; do not treat it as authoritative. The 8131 decryption/plaintext/Noyes host remain computational observations with unverified historical provenance, not authenticated H-17 evidence. The public sitemap/HTML/JS source lane is already closed; do not rerun it.
+
+**Bounded negative checks in this incarnation:** BIP39 conversions of K01, desk_nonce and the ACK2-masked K04 candidate did not match K08; direct 8131 standard-MT seed interpretations did not match spool controls or K04; raw transfer checkpoint concatenations did not match K04/K08. The AX-7782 retry-delta portion overlapped Agent34 prior art; do not count it as new. No expansion of these families is warranted.
+
+**Coordination:** Sent the BX25 authority correction to Agent48, the 8131 standard-MT falsifier to Agent50, and the N02→N06 status/no-result to Agent3. These messages are committed under `communications/agent48/`, `communications/agent50/`, and `communications/agent3/` respectively.
+
+**Resume only on new evidence:** prioritize an authenticated native PS-0417 spooler/coupon witness for K04 and the original Emily final envelope/photo-caption/margin carrier for K08. If new files arrive, use `work/h17_witness_intake.py` and then `verify.py`. Existing synthesis and source requests are in `results/README.md` and `results/h17-missing-evidence-request.md`.
