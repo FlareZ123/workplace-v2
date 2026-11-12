@@ -1,31 +1,22 @@
-# K04 whole-object stage-discriminator test (2026-11-12)
+# K04 early whole-object control extension (2026-11-12)
 
-**Owner:** Agent 6  
-**Question:** Can a retained, complete non-target spool object—with its selector and 16-byte payload—distinguish the candidate native-MT stage for the selected PS-261003-0417 ACK2 record (950, 951, or 952)?
+**Agent 6 | Extension to Agent 2's 12 November selected-stage holdout.** Agent 2's result, [K04 selected-stage whole-object holdout](h17-k04-selected-stage-whole-object-holdout-20261112.md), already tests the late-Z controls (rows 128–132) and establishes that none selects p950/p951/p952. This note records only the additional earlier whole-object controls; it is not a second report of the late-tail experiment.
 
 ## Method
 
-Reused the source-derived MT19937 symbolic model and stage-shift groups in `agents/agent49/k04_p951_symbolic_basis.py` and the late-component quotient work. The target is spool row 129 (zero-based): `PS-261003-0417 / ATTEMPT=2 / STATE=ACK / CLASS=RECOVER / DEST=bench`.
+Using the same Agent 49 MT19937 symbolic basis and the six late-cohort-contiguous schedules that survive the source equations with target row 129 withheld, I withheld one earlier complete 16-byte packet at a time and reduced its four native words against the remaining affine basis. A bit is counted as fixed only when its form reduces to a constant. The tested schedules include q=950 (one), q=951 (two), and q=952 (three).
 
-The late-Z tail is rows 128–132. Tested the strongest simple cohort hypothesis: these five 16-byte records are consecutive four-word MT blocks, so their starts are `q-4, q, q+4, q+8, q+12`, with `q ∈ {950,951,952}`. For each candidate geometry, rebuilt the affine source basis while withholding the target and then withholding whole non-target records. A withheld word bit counts as fixed only when its linear form reduces to a constant under the remaining source equations. Fixed bits were checked against the actual withheld payload.
+## Additional controls
 
-This is a holdout test of whole objects, not a claim that cohort contiguity is historically proven.
+| Zero-based row | Selector | Fixed bits of held-out 128-bit payload | Result |
+|---:|---|---:|---|
+| 44 | PS-261003-0344, STORES / ACK / attempt 1 / desk | 95 | All fixed bits match; no q discrimination |
+| 66 | PS-261003-0366, STORES / ACK / attempt 1 / bench | 127 | All fixed bits match; no q discrimination |
+| 96 | PS-261003-0396, RECOVER / ACK / attempt 1 / store | 95 | All fixed bits match; no q discrimination |
+| 121 | PS-261003-0421, LABEL / ACK / attempt 1 / bench | 63 | All fixed bits match; no q discrimination |
 
-## Results
+None of these whole objects is fully predicted, and the fixed projections are the same across the surviving q schedules. Row 66 is the strongest partial control (127/128), but its final bit remains free and does not choose a stage.
 
-- With all five late-Z payloads withheld, six source-consistent schedules survive: one with `q=950`, two with `q=951`, and three with `q=952`. All three candidate stages remain.
-- The closest selector peer is row 132, `PS-261003-0420 / WATCH-SPARE / ATTEMPT=2 / STATE=ACK / CLASS=RECOVER / DEST=bench`. With row 132 and target row 129 both withheld, the remaining source fixes **63/128 bits** of row 132 in every surviving schedule. Every fixed bit matches the retained payload; the fixed projection is the same for all three q values. It does not select a stage.
-- The adjacent ESC-S object (row 131, `PS-261003-0448 / ATTEMPT=1 / STATE=ACK / CLASS=RECOVER / DEST=desk`) yields **64/128** fixed bits, all matching, with no q discrimination.
-- The same-job REQUESTED controls yield **63/128** fixed bits for row 128 (attempt 1) and **31/128** for row 130 (attempt 3), again matching but not distinguishing q.
-- Earlier whole-object controls near the two-gap donor locations also fail to discriminate: row 44 and row 96 each give 95/128 fixed bits; row 66 gives 127/128; the physically referenced spare-label row 121 gives 63/128. The fixed projections match across the surviving q schedules.
-- The selected row 129 remains **0/128 fixed bits** under the source equations. Excluding the two REQUESTED payloads from the equations does not change that result.
+## Decision
 
-## Conclusion
-
-The retained whole-object controls tested here do **not** distinguish stages 950, 951, and 952. In particular, the only other record with the target's `RECOVER/ACK/2/bench` selector is the explicitly unrelated WATCH-SPARE job; its payload supplies a useful partial control, not an absolute phase anchor.
-
-Do not promote p951 or the conditional two-gap pair (328, 724) to a recovered component. The remaining ambiguity is an absolute one-word phase across the late cohort, while the selected 128-bit block remains unconstrained. A source-backed discriminator would need an independently anchored native word/buffer offset, an authenticated original coupon payload, or an equally direct printer-side record. Further permutations of the same retained payloads cannot supply that missing anchor.
-
-## Reproduction notes
-
-The source equations are the 32-bit untemper equations for each intact 16-byte payload at its candidate four-word start. For each schedule, insert all four lane equations for every included row into the existing GF(2) basis; reduce each held-out lane's 32 bit forms against that basis; count constant forms and compare their constants to the untempered held-out word. The cohort constraint and row identities above fully specify the finite test. Existing basis and stage definitions are linked above; no new PRNG or seed assumption is introduced.
+This extension adds no selected-stage discriminator and does not change Agent 2's conclusion. Do not repeat the same late-tail or early-packet holdout family. The target row 129 remains underdetermined; p951 and the (328, 724) two-gap pair remain conditional, not recovered historical values. A genuinely new result requires an absolute phase anchor, authenticated selected-coupon bytes, or a source-backed copy-stage relation not present in these retained packets.
