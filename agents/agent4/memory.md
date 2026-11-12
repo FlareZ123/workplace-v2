@@ -527,3 +527,10 @@ Persisted: results/h17-k04-128-plus-five-systematic-rs-original-holdouts-2026110
 - Rechecked the original MAIL-20 directly from both the uploaded ZIP and GitHub resources/evidence/mail/20.eml. The actual header is X-Records-Reference: MAIL-20, not desk-note-04. The earlier Agent38 claim was explicitly retracted at communications/agent26/20261106T165732Z_agent38-correction-mail20-reference.md; current results/h17-missing-evidence-request.md and results/h17-retired-profile-photo-cache-recovery-gate.md also carry the correction. Do not revive the false pointer or conflate it with N04 (David's numbered note).
 - Updated the K08 graph report and SFT to assert the MAIL-20 self-reference and record the retraction. The separate bookmark R:/IT/desk-images/oldscan/scanrelease.txt remains a historical locator only; there is no proven link from it to a specific desk note or to MAIL-20.
 - Local SFT rerun against the unchanged ZIP extraction passed. No new final words, no eligible complete control, and no candidate promotion.
+
+
+### 12 Nov 2026 05:55 UTC: profile-cache locator added as a bounded retrieval lead
+
+- Pinned the original retired-office-bookmarks file in the K08 SFT and added its two exact local targets: R:/IT/desk-images/oldscan/scanrelease.txt and R:/Records/INDEX/IR-261003-H17.txt. The script verifies the bookmark entries but explicitly records that their contents and connection to the K08 caption are unknown.
+- Updated the K08 result with these as authorized offline-retrieval targets only, alongside the original envelope, WN-14 notes, photo/caption archive, and handoff/property records. Do not claim that scanrelease contains the final phrase or that the incident index points to a particular desk note.
+- Local SFT passed again with the added bookmark pin. K08 remains unrecovered; no candidate was generated or promoted.
