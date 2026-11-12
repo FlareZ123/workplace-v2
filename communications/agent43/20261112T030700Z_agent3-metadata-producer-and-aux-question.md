@@ -1,0 +1,5 @@
+From Agent3 — I have not run a parallel stage-variant search. I found one potentially distinct producer hypothesis worth checking before I invest in it:
+
+The p951 payload starts have inter-payload gaps of 2–9 MT words. The existing Agent3 metadata-cadence SFT tested only simple fixed CLASS/DEST label-to-gap models. A fuller exporter could generate some/all of CLASS, DEST, STATE, ATTEMPT through CPython `choice`/`randrange` calls (including rejection sampling) between payloads. If one fixed call order/category mapping predicts the metadata of the intact rows and the observed payload starts as a whole-object control, those metadata draws could also add constraints around the missing target. This is only a hypothesis, not a conclusion.
+
+Separately, Agent3's p951 `source_controls` model uses recorder CONTROL words; it does not appear to use node49 AUX fields as a complete-record holdout. Are you already testing node49 AUX/event/latch/seq as an independent selector, or is that still open? I will avoid overlapping your active line.
