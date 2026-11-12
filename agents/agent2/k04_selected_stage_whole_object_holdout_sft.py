@@ -2,10 +2,9 @@
 """Predeclared K04 selected-stage test using whole-object leave-outs.
 
 The test compares p950/p951/p952 as one-word shifts of the selected ESC-N
-four-word capture block. It withholds the target and two downstream whole
-RECOVER/ACK route controls; it also withholds the later same-job REQUESTED
-retry in the conservative fit because MAIL-16 says it never returned ACK.
-Standard library only.
+four-word capture block. It withholds the target, both same-job REQUESTED
+attempts, and two downstream whole RECOVER/ACK route controls in the strict
+fit. Standard library only.
 """
 from __future__ import annotations
 import hashlib, json, re
@@ -110,7 +109,6 @@ def last_ack_recover(rows, job):
 
 
 def run(root):
-    # Pin every source that determines selection, bytes, mask, or acceptance.
     raw={rel:(root/rel).read_bytes() for rel in PINS}
     actual={rel:hashlib.sha256(data).hexdigest() for rel,data in raw.items()}
     if actual!=PINS: raise ValueError(f"source pin mismatch: {actual}")
@@ -125,17 +123,21 @@ def run(root):
     target_i=last_ack_recover(rows,routes["ESC-N"])
     esc_s_i=last_ack_recover(rows,routes["ESC-S"])
     spare_i=last_ack_recover(rows,routes["WATCH-SPARE"])
-    same_job_requested=max(r["i"] for r in rows if r["job"]==routes["ESC-N"] and r["state"]=="REQUESTED" and r["i"]>target_i)
-    assert (target_i,same_job_requested,esc_s_i,spare_i)==(129,130,131,132)
-    assert STARTS[target_i]==951 and STARTS[130]==955 and STARTS[131]==959 and STARTS[132]==963
+    same_job_requested=sorted(r["i"] for r in rows if r["job"]==routes["ESC-N"] and r["state"]=="REQUESTED")
+    assert (target_i,same_job_requested,esc_s_i,spare_i)==(129,[128,130],131,132)
+    assert STARTS[128]==947 and STARTS[target_i]==951 and STARTS[130]==955 and STARTS[131]==959 and STARTS[132]==963
 
     mask=bytes.fromhex(routing["K04"]["masked_component"])
     target_commit=acceptance["slot_sha256"]["K04"]
     variants=[
-        {"name":"conservative_ack_only_fit", "withheld":{target_i,same_job_requested,esc_s_i,spare_i}, "controls":(same_job_requested,esc_s_i,spare_i),
-         "reason":"MAIL-16 says the later REQUESTED attempt was a button press that never returned ACK; exclude it from training."},
-        {"name":"diagnostic_fit_including_requested_retry", "withheld":{target_i,esc_s_i,spare_i}, "controls":(esc_s_i,spare_i),
-         "reason":"Sensitivity only: include the unacknowledged same-job REQUESTED row as an intact four-word training packet."},
+        {"name":"strict_nonack_withheld", "withheld":{target_i,*same_job_requested,esc_s_i,spare_i}, "controls":tuple([*same_job_requested,esc_s_i,spare_i]),
+         "reason":"Withhold both same-job REQUESTED attempts plus target and route controls; do not assume a non-ACK request consumed a valid four-word packet."},
+        {"name":"include_earlier_requested_only", "withheld":{target_i,same_job_requested[1],esc_s_i,spare_i}, "controls":(same_job_requested[1],esc_s_i,spare_i),
+         "reason":"Sensitivity only: include the earlier REQUESTED attempt1 but exclude later REQUESTED attempt3."},
+        {"name":"include_later_requested_only", "withheld":{target_i,same_job_requested[0],esc_s_i,spare_i}, "controls":(same_job_requested[0],esc_s_i,spare_i),
+         "reason":"Sensitivity only: include the later REQUESTED attempt3 but exclude earlier REQUESTED attempt1."},
+        {"name":"include_both_requested_attempts", "withheld":{target_i,esc_s_i,spare_i}, "controls":(esc_s_i,spare_i),
+         "reason":"Diagnostic only: include both non-ACK REQUESTED rows as intact four-word training packets."},
     ]
     all_results=[]
     for variant in variants:
@@ -185,13 +187,14 @@ def run(root):
         "base_model":"Agent49 agents/agent49/k04_p951_symbolic_basis.py STARTS schedule and GF(2) MT19937 state representation; selected target row omitted.",
         "target_selector":{"route":"ESC-N","job":routes["ESC-N"],"selected_last_ACK_RECOVER_row":target_i,"attempt":rows[target_i]["attempt"],"payload_class":rows[target_i]["class"]},
         "predeclared_controls":[
-            {"row":same_job_requested,"job":rows[same_job_requested]["job"],"attempt":rows[same_job_requested]["attempt"],"state":"REQUESTED","role":"same-job later retry; MAIL-16 says it never returned ACK"},
+            {"row":same_job_requested[0],"job":rows[same_job_requested[0]]["job"],"attempt":rows[same_job_requested[0]]["attempt"],"state":"REQUESTED","role":"same-job earlier non-ACK attempt1; held out in strict fit"},
+            {"row":same_job_requested[1],"job":rows[same_job_requested[1]]["job"],"attempt":rows[same_job_requested[1]]["attempt"],"state":"REQUESTED","role":"same-job later retry; MAIL-16 says it never returned ACK"},
             {"row":esc_s_i,"route":"ESC-S","job":routes["ESC-S"],"role":"last ACK RECOVER whole object; held out"},
             {"row":spare_i,"route":"WATCH-SPARE","job":routes["WATCH-SPARE"],"role":"last ACK RECOVER whole object; explicitly unrelated spare, held out as a control only"}],
         "hypotheses":"p950/p951/p952 are modeled as one-word shifts of the selected four-word block, with every downstream row shifted by the same delta. A local-only capture-pointer shift leaves downstream records unchanged, so non-target controls are observationally equivalent and cannot discriminate it.",
         "K04_target_commitment":target_commit,
         "variants":all_results,
-        "conclusion":"Under the conservative ACK-only fit, all three propagated-shift hypotheses fit and no withheld whole-object control is fully predicted; the target payload remains underdetermined. The diagnostic rejection of p952 occurs only when the non-ACK REQUESTED retry is used as training. Existing evidence therefore does not identify a selected stage or justify treating p950/p951/p952 support as a real selection rule.",
+        "conclusion":"Under the strict fit with both non-ACK same-job REQUESTED attempts withheld, all three propagated-shift hypotheses fit and no withheld whole-object control is fully predicted; the target payload remains underdetermined. Any diagnostic stage rejection that appears only when REQUESTED rows are used as training is conditional on those unacknowledged rows consuming valid four-word packets. Existing evidence therefore does not identify a selected stage or justify treating p950/p951/p952 support as a real selection rule.",
     }
 
 
