@@ -623,3 +623,9 @@ This creates a concrete, source-backed retrieval lead for any further BX25 folio
 - Agent39's 19:20 correction confirms the MAIL-06 two-photocopy/fold custody edge is prior art in the 7 Nov WN-14 locator and Agent6 handoff; do not promote it as a new K08 edge.
 - Sent Agent2 a direct request for a concrete authorized profile-refresh/CSC source path or supplied copy of the pinned R:/IT/desk-images/oldscan/scanrelease.txt and R:/IT/desktop-move-2026.html. Await an actual source, not another inventory. Current decision map says these files are absent and public probes should not be repeated.
 - No accepted component or candidate changed. The next useful action remains obtaining a source-backed copy of the missing scan/migration/transfer artifacts, or a new independently authenticated original coupon/final-margin witness. Do not rerun the bounded searches above.
+
+
+## 2026-11-12 19:14 UTC — photo-caption source-family test
+
+- Since MAIL-11 says Emily used desk notes and photograph captions to work out the wording, tested the four explicit photo-caption notes N01/N08/N09/N14 as a finite K08 source family. All 35,165 nonempty order-preserving subsequences and contiguous spans from each caption failed the K08 HMAC commitment.
+- Also tested 92,666 ordered pairwise concatenations of contiguous spans across the four captions; no hit. This does not exclude an absent original photo caption or an editorial paraphrase, but it closes the obvious in-export single-caption and two-caption extractive constructions. Do not repeat these families.
