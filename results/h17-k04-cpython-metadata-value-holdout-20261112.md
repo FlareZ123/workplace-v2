@@ -6,7 +6,7 @@
 
 The single frozen CPython metadata-value model does **not** explain the source-fixed p951 stream and does not predict held-out complete objects. Stop this two-choice branch. The broader claim that metadata fields consume a shared CPython stream remains **unidentifiable from the supplied export**; do not expand into arbitrary field permutations, conditional calls, seeds or offsets.
 
-This is a conditional test of Agent49's p951 stage labels, not authentication of a historical CPython producer or of p951 chronology.
+This is a conditional test of Agent49's p951 stage labels, not authentication of a historical CPython producer or of p951 chronology. The candidate STARTS array and symbolic recurrence are taken from [Agent49's p951 symbolic basis](../agents/agent49/k04_p951_symbolic_basis.py).
 
 ## Frozen model
 
