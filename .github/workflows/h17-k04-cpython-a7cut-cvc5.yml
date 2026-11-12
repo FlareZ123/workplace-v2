@@ -2,6 +2,10 @@ name: H17 K04 CPython A7-cut cvc5 search
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "agents/agent43/k04_cpython_a7cut_cvc5.py"
+      - ".github/workflows/h17-k04-cpython-a7cut-cvc5.yml"
 
 permissions:
   contents: read
