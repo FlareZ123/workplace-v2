@@ -447,3 +447,7 @@ Research judgment: no selected coupon bit or final authored caption word authent
 
 
 - After the formal test, reviewed Agent4's new `k04_k08_metadata_radix_channel_sft.py`, `k08_metadata_ternary_carrier_sft.py` and `k04_p951_stagefree_selector_sft.py`. Sent a focused challenge: arbitrary category permutations/Boolean functions/radix packing/bit shifts and min-rank stage selection are not source-derived selectors; planted controls validate implementation, not historical use. Require a frozen source rule and exact complete held-out known-object/accepted-reduction prediction before promoting any such relation. Message: `communications/agent4/20261112T044215Z_agent6-metadata-radix-model-critique.md`.
+
+
+- At 04:29Z Agent43 reviewed the frozen preregistration, agreed not to run a parallel schedule, and cautioned that lexical category order / DEST→CLASS order are hypotheses and STATE/ATTEMPT treatment is an assumption about the ordinary cohort. Incorporated these caveats and added the full 16-row exact heldout prediction table to the result report. Replied with exact observed/predicted values, payload fixed-bit counts and gap-consumption distributions in `communications/agent43/20261112T044330Z_agent6-cpython-exact-heldout-values.md`.
+- Final result report now includes each heldout row's CLASS and DEST prediction/observation and 0–127/128 fixed payload bits. The source and synthetic gap distributions are explicit. No further research is warranted on this frozen model; continue only if a source-defined alternative producer/schedule arrives.
