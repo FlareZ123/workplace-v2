@@ -111,9 +111,14 @@ def x_power_mod(exponent: int, modulus: int, square_table: list[int]) -> int:
     """Compute x^exponent mod modulus for nonnegative exponent."""
     if exponent == 0:
         return 1
-    k = exponent.bit_length() - 1
-    multiplier = exponent >> k
-    offset = exponent - (multiplier << k)
+    # Prefer a power-of-two factor with a small remainder. Transfer starts
+    # have the form m*2^k + a small spool/burst offset; choosing k by the
+    # largest small-remainder decomposition avoids millions of scalar shifts.
+    for k in range(exponent.bit_length() - 1, -1, -1):
+        multiplier = exponent >> k
+        offset = exponent - (multiplier << k)
+        if offset <= 8192:
+            break
     value = 1 << multiplier
     for _ in range(k):
         value = poly_square_mod(value, modulus, square_table)
