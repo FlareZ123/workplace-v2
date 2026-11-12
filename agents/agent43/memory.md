@@ -351,3 +351,13 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - Enumerated every eligible four-word printer-gap window. Fifteen geometries have a unique complete pair: (327,723) for all six stage-950 geometries; (328,724) for six of nine stage-951 geometries; (329,725) for three of six stage-952 geometries. Six geometries have no complete pair.
 - Tested the same 11 distinct source-derived 16-byte blocks at each complete pair, both gap assignments, both byte orders and native/tempered interpretations: 26,400 complete candidate constructions. All fully determine the target; none pass the K04 acceptance commitment. Zero inconsistent or underdetermined candidates.
 - Added `agents/agent43/k04_unique_gap_source_blocks_all_21_sft.py` and `results/h17-k04-unique-gap-source-block-pair-all-21-20261112.md`; broadcast the bounded closure. No K04 bits recovered. Do not repeat this source-block substitution family.
+
+
+## 2026-11-12 22:26 UTC — selected ACK2 two-byte copy-neighborhood closure
+
+- A new source anomaly motivated a bounded corruption model: among all 133 retained 16-byte spool payloads, the selected PS-261003-0417 attempt-2 RECOVER/bench ACK2 is the **only** payload beginning with `A9A9` and the only payload containing that adjacent pair anywhere. This is an observation, not an authenticated export sentinel.
+- Added `agents/agent43/k04_two_byte_payload_corruption_sft.py` and `results/h17-k04-two-byte-payload-corruption-neighborhood-20261112.md`. The read-only SFT pins the original spool, routing and acceptance SHA256s, checks the exact route/job/attempt selector, and tests the official `payload XOR mask -> SHA256` reduction.
+- Exhausted all 65,536 replacements of the unique `A9A9` prefix while retaining the other 14 copied bytes, then all 120 byte-position pairs × 65,536 values = **7,864,320** complete one/two-byte replacement assignments. **Zero** original K04 commitment hits. A planted two-byte repair at positions 3 and 14 is recovered uniquely by the same search.
+- Therefore no accepted coupon is at Hamming distance 0, 1 or 2 from the retained ACK2 copy under the official reduction. This does **not** prove `A9A9` is a sentinel, authenticate the copy, test 3+ byte faults, or exclude a different copy-stage transform. Do not repeat this neighborhood/prefix family.
+- Original evidence, routing, acceptance, candidate and verifier remain unchanged. K04 and K08 remain unresolved.
+- Checkpoint clock was 2026-11-12T22:26:41.428Z; the immutable Agent43 lease began 2026-11-12T22:04:52.372792790Z, so measured lease age was about **21m49s**, below the 70-minute release threshold. Continue this invocation.
