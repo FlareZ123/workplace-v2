@@ -105,6 +105,8 @@ def build(root: Path) -> dict:
     assert "nobody is to go back in for records or personal belongings" in m18
     assert "There were several captions and drafts on her desk." in m20
     assert "The words she finally chose matter" in m20
+    assert "X-Records-Reference: MAIL-20" in m20
+    assert "X-Records-Reference: desk-note-04" not in m20
     assert "spare radio chargers moved from briefing room to accommodation desk" in galley
     assert notes[17]["text"].endswith("Leave the light on for the next watch.")
     assert notes[18]["text"].endswith("Back before the first boat.")
@@ -202,6 +204,7 @@ def build(root: Path) -> dict:
         "complete_caption_controls": controls,
         "eligible_complete_final_controls": complete_eligible,
         "missing_relation": "source caption/draft ID -> Emily's specific edit/version action -> exact recovery-envelope margin text",
+        "mail20_record_reference": "MAIL-20 self-reference; the prior desk-note-04 claim was retracted after checking the original header; do not conflate with N04",
         "accommodation_desk_join": "UNRESOLVED: MAIL-17, MAIL-19 and the galley log do not identify the MAIL-20 desk as the accommodation desk or locate the envelope there",
         "status": "UNRECOVERED_NO_ELIGIBLE_COMPLETE_FINAL_CONTROL",
     }
