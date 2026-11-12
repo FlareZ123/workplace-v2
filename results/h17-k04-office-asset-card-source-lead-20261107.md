@@ -24,6 +24,12 @@ Request the original:
 
 Preserve original bytes or scans, front/back images, revision marks, timestamps, signatures, folio/sleeve labels and custody metadata. Historical record acquisition only; no facility or printer operation.
 
+## 12 November addendum: SEP26 north-cabinet binder locator
+
+The unencrypted bookmark export adds a more precise retrieval path: `R:/Stores/returns/SEP26/index.htm` is titled **September cassette returns** and its bookmark description says it is a vendor ticket list, with binder pages signed at the north and south cabinets. The selected print-fleet route is `PS-261003-0417 → ESC-N → L-29/N → FA-17 → H17-POL-17/A3`; the local reconciliation has an `ST-112 R3 / POSTED / A3` row. Together these make the missing SEP26 index and the **north-cabinet L-29/N signed binder page for the relevant ticket** a targeted source-acquisition lead. This may locate the original coupon or an independently checked copy-stage record.
+
+This is a locator hypothesis, not proof that the coupon is on that page. Preserve adjacent revisions and any A3/A4 duplicate distinction; do not treat the index description or CSV settlement row as the physical coupon itself.
+
 ## Why it matters
 
 This is a source-defined bridge between the selected PS-0417/ESC-N print route and the property record FA-17 / H17-POL-17/A3. The asset card or equipment count may independently validate the route, identify the physical cassette/card custody, or point to the escrow-coupon record. It may also explain the A3/A4 duplicate. It does **not** establish that the coupon is an asset-card serial, that the card contains the 16-byte coupon, or that the +300/+304 ticket crosswalk is correct.
