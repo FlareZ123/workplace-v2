@@ -91,6 +91,17 @@ def candidates(label: bytes, recover: bytes):
         )
 
 
+def pairwise_bytewise_candidates(versions):
+    assert len(versions) == 4 and all(len(p) == 16 for p in versions)
+    import itertools
+    for left, right in itertools.combinations(range(4), 2):
+        for selector in range(1 << 16):
+            yield left, right, selector, bytes(
+                versions[left][i] if (selector >> i) & 1 else versions[right][i]
+                for i in range(16)
+            )
+
+
 def matches(label: bytes, recover: bytes, mask: bytes, commitment: str):
     hits = []
     unique = set()
@@ -119,6 +130,14 @@ def main() -> None:
     versions = [row[4] for row in rows]
     label, recover = versions[0], versions[2]
     unique, original_hits = matches(label, recover, mask, commitment)
+
+    pairwise_seen = set()
+    pairwise_hits = []
+    for left, right, selector, payload in pairwise_bytewise_candidates(versions):
+        pairwise_seen.add(payload)
+        component = bytes(a ^ b for a, b in zip(payload, mask))
+        if sha256(component) == commitment:
+            pairwise_hits.append((left, right, selector, payload.hex().upper(), component.hex().upper()))
 
     contiguous = set()
     for start in range(17):
@@ -157,6 +176,20 @@ def main() -> None:
         if sha256(component) == commitment:
             xor_hits.append((subset, payload.hex().upper(), component.hex().upper()))
 
+    planted_pair = (1, 3)
+    planted_pair_selector = 0xA53C
+    planted_pair_payload = next(
+        payload for left, right, selector, payload in pairwise_bytewise_candidates(versions)
+        if (left, right, selector) == (planted_pair[0], planted_pair[1], planted_pair_selector)
+    )
+    planted_pair_commitment = sha256(bytes(a ^ b for a, b in zip(planted_pair_payload, mask)))
+    planted_pair_hits = [
+        (left, right, selector) for left, right, selector, payload in pairwise_bytewise_candidates(versions)
+        if sha256(bytes(a ^ b for a, b in zip(payload, mask))) == planted_pair_commitment
+    ]
+    assert planted_pair_hits == [(planted_pair[0], planted_pair[1], planted_pair_selector)], planted_pair_hits
+    print("PAIRWISE_BYTEWISE_SYNTHETIC_POSITIVE", planted_pair, hex(planted_pair_selector), planted_pair_hits)
+
     # Verify the exhaustive selector logic against a planted complete target.
     planted_selector = 0xA53C
     planted_payload = next(
@@ -179,6 +212,9 @@ def main() -> None:
     print("BYTEWISE_SPLICE_ASSIGNMENTS", 1 << 16)
     print("BYTEWISE_UNIQUE_PAYLOADS", unique)
     print("ORIGINAL_K04_COMMITMENT_HITS", original_hits)
+    print("PAIRWISE_BYTEWISE_ASSIGNMENTS", 6 * (1 << 16))
+    print("PAIRWISE_BYTEWISE_UNIQUE_PAYLOADS", len(pairwise_seen))
+    print("PAIRWISE_BYTEWISE_K04_HITS", pairwise_hits)
     print("CONTIGUOUS_INTERVAL_UNIQUE_PAYLOADS", len(contiguous))
     print("CONTIGUOUS_INTERVAL_K04_HITS", contiguous_hits)
     print("WORDWISE_ASSIGNMENTS", 4 ** 4)
@@ -227,7 +263,7 @@ def main() -> None:
     print("XOR_SUBSET_SYNTHETIC_POSITIVE", planted_subset, planted_xor_hits)
     print("SYNTHETIC_POSITIVE_SELECTOR", hex(planted_selector))
     print("SYNTHETIC_POSITIVE_HITS", len(planted_hits))
-    print("RESULT", "NO_SAME_JOB_BYTE_WORD_OR_XOR_CANDIDATE")
+    print("RESULT", "NO_SAME_JOB_PAIRWISE_BYTE_WORD_OR_XOR_CANDIDATE")
 
 
 if __name__ == "__main__":
