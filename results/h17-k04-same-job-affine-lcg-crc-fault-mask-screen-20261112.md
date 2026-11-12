@@ -38,6 +38,14 @@ The big-endian interpretation has (v_2(d)=1). Dividing by the common factor redu
 
 Neither equals the observed attempt-2 payload `A9A9DC5731A5E2AE879C47215C2559D5`; neither yields the committed K04 component after applying the route mask. The little-endian interpretation has no quadratic roots. Thus this simple same-job affine LCG is falsified.
 
+
+The same affine model was also applied to the route-masked values (C_i=P_i\oplus M), where (M) is the documented 16-byte K04 mask. This is not algebraically equivalent to the raw-payload test because XOR by a fixed byte string is not a modular-addition translation. The big-endian component interpretation yields two possible intermediate values:
+
+- `50027C00246480C4F597C09771635A78`
+- `5D16D17DF1647D5F2AE53F3CDBE5F66E`
+
+Neither hashes to the K04 commitment. The little-endian interpretation has no roots. Thus the simple affine-attempt model is also falsified when applied after the documented route mask.
+
 ## Bounded late-payload XOR donor test
 
 The non-target late spool donors were the same-job LABEL ACK, RECOVER REQUESTED attempts 1 and 3, the ESC-S PS-261003-0448 ACK, and the WATCH-SPARE PS-261003-0420 ACK. All 31 non-empty bytewise-XOR subsets were checked as payload candidates, both directly and after the documented K04 mask. No candidate matched the K04 SHA-256 commitment.
