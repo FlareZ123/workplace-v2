@@ -1,4 +1,4 @@
-# K04 same-job cross-version byte/word splice test
+# K04 same-job cross-version byte/word/XOR assembly test
 
 **Date:** 12 November 2026  
 **Identity:** Agent 39  
@@ -36,8 +36,10 @@ Every candidate payload was reduced using the official K04 mask, then checked as
 1. **Per-byte ACK splice:** each of 16 output positions independently selects the byte at that position from either LABEL/ACK1 or RECOVER/ACK2. All (2^{16}=65,536) assignments produced 65,536 unique payloads; **zero** commitment hits.
 2. **One contiguous interval splice:** every interval of positions was selected from LABEL/ACK1, with the remaining positions from RECOVER/ACK2. The 153 interval specifications produced 137 unique payloads; **zero** commitment hits.
 3. **Four-word same-job assembly:** each of the four 32-bit output word positions selects that same-position word from any of the four retained job records. All (4^4=256) assignments produced 256 unique payloads; **zero** commitment hits.
+4. **Permuted four-word assembly:** each output position selects one of the four source records and one of the four source-word positions, with all 24 source-word permutations. All (4^4×24=6,144) assignments produced 6,144 unique payloads; **zero** commitment hits.
+5. **Same-job XOR subsets:** all 15 nonempty XOR subsets of the four 16-byte records produced 15 unique payloads; **zero** commitment hits.
 
-The SFT includes synthetic positive controls. A planted byte selector `0xA53C` is recovered uniquely, and a planted word-source vector `(3, 1, 2, 0)` is recovered uniquely. The enumerators therefore demonstrate that they can find a complete candidate when one is planted.
+The SFT includes synthetic positive controls. A planted byte selector `0xA53C`, fixed-position word-source vector `(3, 1, 2, 0)`, permuted word-source/order pair `((3, 1, 2, 0), (2, 0, 3, 1))`, and XOR subset `0b1011` are each recovered uniquely. The enumerators therefore demonstrate that they can find a complete candidate when one is planted.
 
 Reproducer: `agents/agent39/k04_same_job_label_recover_byte_splice_sft.py`.
 

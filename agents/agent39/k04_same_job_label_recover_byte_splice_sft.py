@@ -1,8 +1,9 @@
-"""Bounded K04 same-job cross-version byte/word-splice construction test.
+"""Bounded K04 same-job cross-version byte/word/XOR assembly test.
 
 The two same-job ACK versions both target DEST=bench. Test per-byte splices
-between them and 32-bit word assembly across all four same-job records. These
-are exploratory models; the source does not attest that a splice occurred.
+between them, 32-bit word assembly/permutations, and XOR subsets across all four
+same-job records. These are exploratory models; the source does not attest that
+a splice or combination occurred.
 Run from repository root: python agents/agent39/k04_same_job_label_recover_byte_splice_sft.py
 """
 from __future__ import annotations
@@ -56,6 +57,27 @@ def wordwise_candidates(versions):
     for choice in itertools.product(range(4), repeat=4):
         yield choice, b"".join(
             versions[choice[i]][4 * i:4 * i + 4] for i in range(4)
+        )
+
+
+def permuted_wordwise_candidates(versions):
+    assert len(versions) == 4 and all(len(p) == 16 for p in versions)
+    import itertools
+    for choice in itertools.product(range(4), repeat=4):
+        for order in itertools.permutations(range(4)):
+            yield choice, order, b"".join(
+                versions[choice[i]][4 * order[i]:4 * order[i] + 4]
+                for i in range(4)
+            )
+
+
+def xor_subset_candidates(versions):
+    assert len(versions) == 4 and all(len(p) == 16 for p in versions)
+    from functools import reduce
+    for subset in range(1, 1 << 4):
+        yield subset, bytes(
+            reduce(int.__xor__, (version[i] for j, version in enumerate(versions) if (subset >> j) & 1), 0)
+            for i in range(16)
         )
 
 
@@ -119,6 +141,22 @@ def main() -> None:
         if sha256(component) == commitment:
             wordwise_hits.append((choice, payload.hex().upper(), component.hex().upper()))
 
+    permuted_seen = set()
+    permuted_hits = []
+    for choice, order, payload in permuted_wordwise_candidates(versions):
+        permuted_seen.add(payload)
+        component = bytes(a ^ b for a, b in zip(payload, mask))
+        if sha256(component) == commitment:
+            permuted_hits.append((choice, order, payload.hex().upper(), component.hex().upper()))
+
+    xor_seen = set()
+    xor_hits = []
+    for subset, payload in xor_subset_candidates(versions):
+        xor_seen.add(payload)
+        component = bytes(a ^ b for a, b in zip(payload, mask))
+        if sha256(component) == commitment:
+            xor_hits.append((subset, payload.hex().upper(), component.hex().upper()))
+
     # Verify the exhaustive selector logic against a planted complete target.
     planted_selector = 0xA53C
     planted_payload = next(
@@ -146,6 +184,12 @@ def main() -> None:
     print("WORDWISE_ASSIGNMENTS", 4 ** 4)
     print("WORDWISE_UNIQUE_PAYLOADS", len(wordwise_seen))
     print("WORDWISE_K04_HITS", wordwise_hits)
+    print("PERMUTED_WORDWISE_ASSIGNMENTS", 4 ** 4 * 24)
+    print("PERMUTED_WORDWISE_UNIQUE_PAYLOADS", len(permuted_seen))
+    print("PERMUTED_WORDWISE_K04_HITS", permuted_hits)
+    print("NONEMPTY_XOR_SUBSETS", (1 << 4) - 1)
+    print("XOR_SUBSET_UNIQUE_PAYLOADS", len(xor_seen))
+    print("XOR_SUBSET_K04_HITS", xor_hits)
     planted_choice = (3, 1, 2, 0)
     planted_wordwise = next(
         payload for choice, payload in wordwise_candidates(versions)
@@ -158,9 +202,32 @@ def main() -> None:
     ]
     assert planted_wordwise_hits == [planted_choice], planted_wordwise_hits
     print("WORDWISE_SYNTHETIC_POSITIVE", planted_choice, planted_wordwise_hits)
+    planted_permuted_choice = (3, 1, 2, 0)
+    planted_permuted_order = (2, 0, 3, 1)
+    planted_permuted = next(
+        payload for choice, order, payload in permuted_wordwise_candidates(versions)
+        if choice == planted_permuted_choice and order == planted_permuted_order
+    )
+    planted_permuted_commitment = sha256(bytes(a ^ b for a, b in zip(planted_permuted, mask)))
+    planted_permuted_hits = [
+        (choice, order) for choice, order, payload in permuted_wordwise_candidates(versions)
+        if sha256(bytes(a ^ b for a, b in zip(payload, mask))) == planted_permuted_commitment
+    ]
+    assert planted_permuted_hits == [(planted_permuted_choice, planted_permuted_order)], planted_permuted_hits
+    print("PERMUTED_WORDWISE_SYNTHETIC_POSITIVE", planted_permuted_choice, planted_permuted_order, planted_permuted_hits)
+
+    planted_subset = 0b1011
+    planted_xor = next(payload for subset, payload in xor_subset_candidates(versions) if subset == planted_subset)
+    planted_xor_commitment = sha256(bytes(a ^ b for a, b in zip(planted_xor, mask)))
+    planted_xor_hits = [
+        subset for subset, payload in xor_subset_candidates(versions)
+        if sha256(bytes(a ^ b for a, b in zip(payload, mask))) == planted_xor_commitment
+    ]
+    assert planted_xor_hits == [planted_subset], planted_xor_hits
+    print("XOR_SUBSET_SYNTHETIC_POSITIVE", planted_subset, planted_xor_hits)
     print("SYNTHETIC_POSITIVE_SELECTOR", hex(planted_selector))
     print("SYNTHETIC_POSITIVE_HITS", len(planted_hits))
-    print("RESULT", "NO_SAME_JOB_BYTE_OR_WORD_SPLICE_CANDIDATE")
+    print("RESULT", "NO_SAME_JOB_BYTE_WORD_OR_XOR_CANDIDATE")
 
 
 if __name__ == "__main__":
