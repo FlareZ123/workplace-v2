@@ -316,3 +316,13 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - This closes the specific source-ordered 2-byte checkpoint/high16/227-step family. It does not authenticate a common printer/transfer producer, rule out different encodings or stage assignments, or recover any K04 bit. Do not repeat this window family.
 - A ZIP-container audit of the uploaded export found 56 ordinary entries (46 files plus directory entries), no archive comment, no trailing bytes, and no nonstandard per-entry payload beyond ordinary timestamp/Unix metadata; no hidden extra archive entry was present.
 - Current recovery state remains K01/K02/K03/K05/K06/K07 accepted; K04 and K08 unresolved. Next useful work requires a materially different complete-candidate mechanism or new original PS-0417 attempt-2 request/native spool/coupon/copy-stage evidence, and for K08 the original final-margin/envelope/shelf-card/photo-caption witness. Do not repeat the source inventories or speculative phrase/seed sweeps.
+
+
+## 2026-11-12 20:48 UTC — unique-gap source-block candidate construction
+
+- Followed the new Agent50 result identifying the unique p951 gap pair at native stages 328–331 and 724–727, which fully determines the withheld K04 payload at stages 951–954 when supplied with two four-word donor blocks.
+- Added `agents/agent43/k04_unique_gap_source_block_pair_sft.py` and `results/h17-k04-unique-gap-source-block-pair-20261112.md`. The SFT uses the existing p951 source builder, which omits selected printer row129 before parsing its payload.
+- Built 11 distinct source-ordered 16-byte blocks: K01 WN-14 groups; K02 LT-204 DIAG_WORD sequence; K03 PTW-417 as-left serial suffixes; K05 TRP2 selected control words; RC-17 B/C/D-draft service-order footer blocks; K07 AX-7782 committed checkpoint chain; and PTW-417 revision 1/3/4 serial blocks. The K03 block and PTW revision 2 are duplicates; the repeated constant TRP2 AUX field was excluded.
+- Tested every distinct block pair, both gap assignments, little/big word endianness and native/tempered interpretation: 1,760 complete candidate constructions. All fully determined the K04 payload; none matched the K04 acceptance commitment. No inconsistent or underdetermined candidate in this finite family.
+- This closes direct substitution of the 11 tested source blocks at the unique gap pair; it does not exclude other blocks or transformations. Do not repeat this screen. No K04 bits recovered.
+- K04 still requires the original PS-0417 native spool/coupon/copy-stage record or a genuinely different source-supported mechanism. K08 still requires Emily's original final-margin/envelope/shelf-card/photo-caption witness.
