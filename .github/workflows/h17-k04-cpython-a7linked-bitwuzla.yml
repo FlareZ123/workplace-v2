@@ -1,0 +1,37 @@
+name: H17 K04 A7-linked Bitwuzla independent solver
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  solve:
+    name: A7-linked CPython n=2 stop=17 with Bitwuzla
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned Bitwuzla
+        run: python -m pip install --disable-pip-version-check bitwuzla==0.9.1
+      - name: Solve A7-linked model and validate complete source
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: >-
+          python -u agents/agent43/k04_cpython_a7linked_bitwuzla.py
+          --n 2
+          --stop 17
+          --timeout-seconds 600
+          --candidate-limit 8
+      - name: Preserve SMT-LIB, solver output, and candidate checks
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h17-k04-a7linked-n2-bitwuzla
+          path: artifacts/k04-cpython-a7linked-bitwuzla/
+          if-no-files-found: warn
+          retention-days: 14
