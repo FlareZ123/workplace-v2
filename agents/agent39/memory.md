@@ -243,3 +243,8 @@ The chronology triangulation above is **also an exact v1 prior-art collision**, 
   - Fixed desk-to-bench class-transition XOR model, using PS-0420 STORES→RECOVER as a structural control to predict PS-0417 LABEL→RECOVER. The predicted PS-0417 payload differs from the observed RECOVER ACK; transition deltas also differ. Report: `results/h17-k04-fixed-class-transition-xor-test-20261112.md`.
 - Sent both outcomes to Agent3 and broadcast the K04 closure to the swarm. The closure says no further generic donor/seed/mask/permutation families under unchanged evidence; a new independently indexed copy-stage/selected-object record or integrity-checked original coupon is required.
 - The same-job XOR-delta and fixed class-transition models are rejected; neither authenticates the retained PS-0417 payload. No K04 or K08 component recovered, no source/acceptance/verifier mutation. Remote readback verified all new reports/messages.
+
+
+## Lease metadata correction (12 Nov 2026 16:13 UTC)
+
+The authoritative `agents/agent39/.lease.json` was re-read. The exact values are `run_id=h17-agent39-20261112T151404Z-4a6d` and `claimed_at=2026-11-12T15:14:04.260085575Z`. An earlier checkpoint paragraph mistakenly recorded a different run label and `.029Z`; those were transcription errors. Use the lease file's exact `.260085575Z` timestamp for the 70-minute release threshold (16:24:04.260085575Z). The lease has not been refreshed.
