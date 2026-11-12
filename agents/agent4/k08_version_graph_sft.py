@@ -96,6 +96,15 @@ def build(root: Path) -> dict:
     notes = parse_notes(base / "crew/noticeboard-and-desk-notes.txt")
     galley = (base / "crew/galley-and-stores.log").read_text(encoding="utf-8")
     bookmarks = (base / "h17-supplemental-office-files/retired-office-bookmarks.html").read_text(encoding="utf-8")
+    bookmark_targets = [
+        "R:/IT/desktop-move-2026.html",
+        "R:/IT/desk-images/oldscan/scanrelease.txt",
+        "R:/Records/INDEX/IR-261003-H17.txt",
+        "R:/Stores/consumables/mug-stock.xls",
+        "R:/Stores/returns/SEP26/index.htm",
+    ]
+    present_basenames = {p.name.lower() for p in base.rglob("*") if p.is_file()}
+    missing_bookmark_targets = [p for p in bookmark_targets if Path(p).name.lower() not in present_basenames]
     assert len(notes) == 24, f"expected 24 numbered notes, got {len(notes)}"
 
     m11, m14, m18, m20 = (mails[n]["text"] for n in (11, 14, 18, 20))
@@ -112,6 +121,9 @@ def build(root: Path) -> dict:
     assert "spare radio chargers moved from briefing room to accommodation desk" in galley
     assert "file:///R:/IT/desk-images/oldscan/scanrelease.txt" in bookmarks
     assert "file:///R:/Records/INDEX/IR-261003-H17.txt" in bookmarks
+    assert "file:///R:/IT/desktop-move-2026.html" in bookmarks
+    assert "file:///R:/Stores/consumables/mug-stock.xls" in bookmarks
+    assert "file:///R:/Stores/returns/SEP26/index.htm" in bookmarks
     assert notes[17]["text"].endswith("Leave the light on for the next watch.")
     assert notes[18]["text"].endswith("Back before the first boat.")
     assert "The wording in my margin was never an official slogan." in notes[23]["text"]
@@ -184,8 +196,11 @@ def build(root: Path) -> dict:
              "does_not_supply": ["Emily's desk identity", "caption or envelope custody"]},
             {"id": "retired-office-bookmarks", "timestamp_utc": "September 2026 (cache label only)",
              "author": "office profile export", "role": "historical file locator",
-             "supports": ["R:/IT/desk-images/oldscan/scanrelease.txt locator",
-                          "R:/Records/INDEX/IR-261003-H17.txt locator"],
+             "supports": ["R:/IT/desktop-move-2026.html migration discriminator",
+                          "R:/IT/desk-images/oldscan/scanrelease.txt locator",
+                          "R:/Records/INDEX/IR-261003-H17.txt locator",
+                          "R:/Stores/consumables/mug-stock.xls K08 candidate",
+                          "R:/Stores/returns/SEP26/index.htm K08 candidate"],
              "does_not_supply": ["contents of either target", "desk-note-04 record",
                                  "link from scanrelease to MAIL-20 or a specific caption"]},
             {"id": "MAIL-20.p2", "timestamp_utc": mails[20]["timestamp_utc"],
@@ -215,6 +230,8 @@ def build(root: Path) -> dict:
         "eligible_complete_final_controls": complete_eligible,
         "missing_relation": "source caption/draft ID -> Emily's specific edit/version action -> exact recovery-envelope margin text",
         "mail20_record_reference": "MAIL-20 self-reference; the prior desk-note-04 claim was retracted after checking the original header; do not conflate with N04",
+        "profile_refresh_retrieval_targets": bookmark_targets,
+        "missing_from_local_export": missing_bookmark_targets,
         "accommodation_desk_join": "UNRESOLVED: MAIL-17, MAIL-19 and the galley log do not identify the MAIL-20 desk as the accommodation desk or locate the envelope there",
         "status": "UNRECOVERED_NO_ELIGIBLE_COMPLETE_FINAL_CONTROL",
     }
