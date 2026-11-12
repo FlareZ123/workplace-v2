@@ -19,7 +19,7 @@ K01, K02, K03, K05, K06, K07 independently pass their original SHA-256 commitmen
 ## Missing record B: K08 keeper's final caption
 - **Owner of remembered wording:** Emily; personal late-watch desk/envelope caption distinguishing the keeper envelope.
 - **Problem:** source N02/N06 are marked drafts and N17/N18 are explicitly older standby and commissioning envelope labels. MAIL-11, MAIL-20 and N23 distinguish a final wording that the surviving export does not reproduce.
-- **Needed:** the final keeper-envelope label, photograph with legible signed caption, original desk notebook margin, or complete correspondence that records Emily's exact final wording. A thematic paraphrase of the sea, night, lamp, cups or room at the table cannot independently establish the HMAC input.
+- **Needed:** the final keeper-envelope label, photograph with legible signed caption, original desk notebook margin, complete correspondence that records Emily's exact final wording, **or the small physical card Zoey says she placed by the shelf beside the chipped blue mugs (MAIL-12)**. If recovered, preserve both sides, handwriting, date, edits and scan/photo metadata. N11's chipped-blue-mug line is only a possible related note, not an authenticated transcription or proof that Emily adopted the card's wording. A thematic paraphrase of the sea, night, lamp, cups or room at the table cannot independently establish the HMAC input.
 - **Available check:** the original normalization and HMAC procedure is in `resources/evidence/recovery-routing.json`; the immutable acceptance is `resources/acceptance.json`.
 
 ## Source retrieval boundaries
