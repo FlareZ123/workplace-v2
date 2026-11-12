@@ -19,6 +19,8 @@ For the propagated-shift interpretation, every downstream row moves by the same 
 3. **ESC-S control, row 131:** PS-261003-0448, last ACK RECOVER object for that route.
 4. **WATCH-SPARE control, row 132:** PS-261003-0420, last ACK RECOVER object for that route. MAIL-16 calls it unrelated to K04; it is used only as a same-length printer control, never as a K04 donor.
 
+These are complete 16-byte payload fields in the retained spool export, not independently authenticated media. MAIL-16 explicitly says the buffer is a retained-fragment export, no independent payload checksum exists for every line, and ACK comes from the dispatch log rather than media-integrity validation. The holdout therefore tests whether the retained bytes contain a stage discriminator; it cannot certify the physical integrity of those bytes.
+
 ## Results
 
 ### Strict non-ACK-withheld fit
@@ -47,7 +49,7 @@ The p952 contradiction is therefore conditional on treating row 130—a REQUESTE
 
 ## Interpretation
 
-- **No predeclared whole-object discriminator was found in the retained downstream controls.** The two complete ACK/RECOVER control payloads are not fully predictable from the other retained objects under any of the three propagated-shift hypotheses.
+- **No predeclared whole-object discriminator was found in the retained downstream controls.** The two complete 16-byte ACK/RECOVER spool fields are not fully predictable from the other retained objects under any of the three propagated-shift hypotheses. MAIL-16 also denies independent media-integrity checks for every line, so these are retained observations, not authenticated physical controls.
 - **p950/p951/p952 remain unidentifiable under the strict evidence model.** The apparent p952 rejection depends on the later REQUESTED row; the partial p950 target bits depend on the earlier REQUESTED row.
 - **A local-only capture-pointer shift is observationally equivalent on all non-target rows.** If the capture point moves but the printer's downstream state consumption does not, the non-target controls retain the same positions under p950/p951/p952 and cannot distinguish them. Only the missing target bytes or an independent media-integrity observation could resolve that case.
 - The result is conditional on Agent 49's p951 STARTS schedule and linear MT model; it does not independently prove that schedule. It does, however, falsify the claim that the currently retained whole-object controls validate a unique selected stage.
