@@ -37,17 +37,21 @@ The reproducer tests source-attested 16-byte blocks as candidates for A and B, e
 | K04 route mask | 8556C8CB6140A7F9A5123AC7571BEE1C |
 | K08 desk nonce | 5F933DA6A1BD03C32DA5CBC25344F497 |
 
-The search also treats each of the 132 intact printer payloads (excluding selected row 129) as a possible copied A/B block, with the same four interpretations. It tests distinct-row pairs, same-row reuse, and cross-pairs between intact printer payloads and the five external blocks.
+The search also forms eight 16-byte transfer-attempt blocks: for each of AX-7778, AX-7781, AX-7782, and AX-7783, it concatenates the eight sequence-ordered 16-bit checkpoint values separately for attempt 1 and attempt 2. These are tested under the same four interpretations. The AX-7782 attempt-2 block overlaps the K07 input; the additional test is the paired attempt-1/attempt-2 and cross-transfer use, not a claim that this individual block is new.
+
+The search also treats each of the 132 intact printer payloads (excluding selected row 129) as a possible copied A/B block, with the same four interpretations. It tests distinct-row pairs, same-row reuse, and cross-pairs between intact printer payloads and all 13 external blocks.
 
 | Candidate family | Tested ordered pairs | Acceptance hits |
 |---|---:|---:|
-| Five external blocks, distinct sources | 320 | 0 |
-| Five external blocks, same source in both gaps | 80 | 0 |
+| Thirteen external blocks, distinct sources | 2,496 | 0 |
+| Thirteen external blocks, same source in both gaps | 208 | 0 |
 | Intact printer payloads, distinct source rows | 276,672 | 0 |
 | Intact printer payloads, same source row | 2,112 | 0 |
-| Printer payload × external block, both orientations | 21,120 | 0 |
+| Printer payload × external block, both orientations | 54,912 | 0 |
 
-K02/K05/K07 halfword donor layouts are deliberately excluded because Agent 18 has already run the corresponding 64-case screen. This result does not duplicate that work.
+The transfer-attempt subset was also isolated: 896 ordered pairs across distinct transfer-attempt blocks, 128 same-block pairs, 1,280 transfer-attempt × non-transfer-external pairs, and 33,792 transfer-attempt × printer-payload pairs. All had zero acceptance hits.
+
+K02/K05 halfword donor layouts remain excluded because Agent 18 has already run the corresponding 64-case screen. AX-7782 attempt 2 is present here only as part of the explicit attempt-pair and cross-transfer screen; its overlap with K07 is acknowledged.
 
 ## Interpretation and limits
 
