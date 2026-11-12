@@ -26,7 +26,7 @@ The source-pinned SFT is `agents/agent4/k08_version_graph_sft.py`. It builds the
 
 The galley log says chargers moved from the briefing room to the accommodation desk on 4 October. Together with MAIL-17/19 this makes accommodation a possible physical locator, but it still does not identify the desk in MAIL-20 as the accommodation desk. Do not promote that join to fact.
 
-The note entries N01–N24 have no per-entry timestamps. Their numbering is not a source-authenticated chronology.
+The note entries N01–N24 have no per-entry timestamps. Their numbering is not a source-authenticated chronology. MAIL-02 (28 September) is earlier first-person context about reserving bowls for late arrivals who had previously eaten from mugs. MAIL-12 (2 October) establishes a separate physical shelf card for two night-crew members' chipped blue mugs; its little-lamp/corridor context overlaps N06, but no forwarding/copy edge proves descent. The card is a possible antecedent, not an eligible same-author final-caption holdout. MAIL-09 already mentions a tea receipt used as a bookmark on 1 October, so the tea order arriving in MAIL-12 on 2 October cannot be that earlier receipt. See the [shelf-card literal-source result](h17-k08-shelf-card-literal-source-20261106.md) for the bounded acquisition lead.
 
 ## Typed text nodes and eligibility
 
@@ -59,6 +59,7 @@ The K06 revision-C/D example in MAIL-11 is a useful contrast: its issue receipt 
 The only source-faithful route to exact K08 words is to recover one of the missing native carriers or an authenticated version copy:
 
 1. Original recovery envelope, including both faces and the exact margin.
+2. Original physical shelf card by the chipped blue mugs, front and back, preserving handwriting, placement, date, later edits and any scan/photo metadata. Do not infer its wording from MAIL-12 or N11.
 2. Original WN-14 folder and Emily's loose desk-note stack in original order, including reverse sides, adjacent sheets, pad leaf, insert, or backing that may preserve pressure indentations.
 3. Separate pre-incident crew/noticeboard/galley photographs and caption records, with image originals, sidecars, author/editor identity, revision history, timestamps, and album/folder membership.
 4. R:/IT/desktop-move-2026.html and its linked profile-refresh manifest/logs, to establish the historical R: mapping, migration method, store location, and file inclusion before selecting a cache source. Do not assume USMT or CSC; if R: was a mapped share and Offline Files was enabled, preserve the historical CSC tree before any synchronization or rebuild.
