@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source-pinned K08 N02→N06 scene-revision holdout and final transfer test.
+"""Source-pinned K08 N02→N06 retrospective scene-revision control and final transfer test.
 
 Standard-library only. This is an editorial-operator SFT, not a recovered key.
 The candidate generator deliberately does not read N06 until after prediction.
@@ -43,7 +43,7 @@ def build_n06_from_n02(n02: str, n13: str, n17: str, mail12: str) -> tuple[str, 
     """Apply the frozen semantic scene-rewrite operator without reading N06.
 
     The operator turns an abstract handoff proposition into a concrete scene:
-      * recurring object: shared "little lamp" anchor in N13 + MAIL-12;
+      * recurring object: shared "little lamp" anchor in N13 (Emily) + MAIL-12 (Zoey);
       * action: the lamp/light is left on in N13 + N17, recast statively;
       * place: "corridor" and dimmed corridor lights in MAIL-12;
       * time boundary: "next watch" (N17) + end-of-night (N13), recast as until.
@@ -119,7 +119,7 @@ def main() -> int:
     n17 = note_body(notes, 17)
     predicted_n06, anchors = build_n06_from_n02(n02, n13, n17, mail12)
 
-    # Holdout stage: now reveal the entire original N06 line for exact comparison.
+    # Comparison stage: now reveal the entire original N06 line.
     actual_n06 = note_body(notes, 6)
     n06_exact = predicted_n06 == actual_n06.split(": ", 1)[-1].rstrip(".") + "."
 
@@ -131,15 +131,12 @@ def main() -> int:
     n06_norm, n06_mac = hmac16(predicted_n06, nonce)
     n06_commit = sha256(bytes.fromhex(n06_mac))
 
-    # Apply the same scene-rewrite principle to the author-final semantic brief.
-    # This is a complete candidate, not a claim that the final margin is quoted.
     final_candidate = (
         "At the end of the night, the sea is quiet beyond the window and the voices at the table make room for one another."
     )
     final_norm, final_mac = hmac16(final_candidate, nonce)
     final_commit = sha256(bytes.fromhex(final_mac))
 
-    # A concise scene variant and a syntax-preserving N06-frame transfer.
     final_scene_candidate = (
         "The sea is quiet beyond the window, and the voices at the table make room for one another."
     )
@@ -152,18 +149,41 @@ def main() -> int:
     until_norm, until_mac = hmac16(final_until_candidate, nonce)
     until_commit = sha256(bytes.fromhex(until_mac))
 
+    # Strictly pre-MAIL-12 context has no surviving "corridor" token. N02's
+    # "room" is the only directly supported place; this control exposes the
+    # exact lexical dependence of the N06 reconstruction on later MAIL-12.
+    pre_mail12_candidate = "The little lamp stays on until the room has gone quiet."
+    pre_norm, pre_mac = hmac16(pre_mail12_candidate, nonce)
+    pre_commit = sha256(bytes.fromhex(pre_mac))
+
     output = {
         "archive_sha256": archive_hash,
         "source_sha256": SOURCE_SHA256,
         "operator": {
             "name": "abstract handoff → concrete domestic scene",
-            "inputs_used_before_holdout": ["N02", "N13", "N17", "MAIL-12"],
+            "inputs_used_before_comparison": ["N02", "N13", "N17", "MAIL-12"],
             "anchors": anchors,
             "predicted_N06": predicted_n06,
             "actual_N06": actual_n06,
-            "exact_whole_caption_holdout": n06_exact,
+            "exact_whole_caption_match": n06_exact,
             "non_source_lexical_completion": "quiet",
-            "interpretation": "semantic/editorial reconstruction; not a deterministic source-only transducer",
+            "interpretation": "retrospective cross-source semantic reconstruction; not a deterministic source-only transducer",
+        },
+        "chronology": {
+            "MAIL11_author": "Emily",
+            "MAIL11_date_utc": "2026-10-01T18:14:00Z",
+            "MAIL12_author": "Zoey",
+            "MAIL12_date_utc": "2026-10-02T06:33:00Z",
+            "N02_timestamp_present": False,
+            "N06_timestamp_present": False,
+            "N13_timestamp_present": False,
+            "N17_timestamp_present": False,
+            "MAIL12_postdates_MAIL11": True,
+            "N06_relative_to_MAIL12_proven": False,
+            "chronological_version_chain_authenticated": False,
+            "strict_pre_MAIL12_place_candidate": pre_mail12_candidate,
+            "strict_pre_MAIL12_place_candidate_commitment": pre_commit,
+            "strict_pre_MAIL12_place_candidate_is_K08": pre_commit == target_commitment,
         },
         "N06_control": {
             "normalized": n06_norm,
@@ -193,6 +213,14 @@ def main() -> int:
                 "sha256_of_hmac16": until_commit,
                 "is_K08": until_commit == target_commitment,
             },
+            {
+                "phrase": pre_mail12_candidate,
+                "normalized": pre_norm,
+                "hmac16": pre_mac,
+                "sha256_of_hmac16": pre_commit,
+                "is_K08": pre_commit == target_commitment,
+                "role": "strict pre-MAIL-12 place control, not a final candidate",
+            },
         ],
         "final_context_checks": {
             "MAIL11_mentions_people_making_room_after_long_watch": "people making room for each other after" in mail11.lower(),
@@ -201,10 +229,10 @@ def main() -> int:
             "MAIL20_says_exact_words_matter": "the words she finally chose matter" in mail20.lower(),
         },
         "target_K08_commitment": target_commitment,
-        "conclusion": "N06 whole-caption reconstruction succeeds under the stated semantic operator; neither complete final transfer candidate matches K08.",
+        "conclusion": "The retrospective N06 reconstruction matches exactly only with MAIL-12's corridor cue; note dates do not establish that MAIL-12 predates N06. All complete final-transfer candidates miss K08.",
     }
     print(json.dumps(output, indent=2, ensure_ascii=False))
-    return 0 if n06_exact and not any(x == target_commitment for x in (final_commit, scene_commit, until_commit)) else 1
+    return 0 if n06_exact and not any(x == target_commitment for x in (final_commit, scene_commit, until_commit, pre_commit)) else 1
 
 
 if __name__ == "__main__":
