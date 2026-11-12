@@ -622,7 +622,7 @@ The main additive retry-accumulator complete 19.44M SFT/report remain the sole p
 - Next work must be a genuinely different, source-indexed whole-object construction or an independently authenticated original carrier. Do not repeat generic phrase/PRNG/donor sweeps or closed sitemap/HTML public-site inventories; BX25 remains an exploratory lead only, not an authenticated historical source. Preserve the distinction between a retrieval pointer and the contents of the missing record.
 
 
-### Correction to 21:01 checkpoint (21:12 UTC)
+### Correction to 21:01 checkpoint (21:07 UTC)
 
 The prior sentence saying the maintainer withdrew all BX25-08 plaintext/host attribution was **incorrect**. The current `MAINTAINER_OVERRIDE.md` is the governing directive: it explicitly confirms solvability, rescinds evidence-triggered research holds, and authorizes exploratory hypotheses under uncertainty. The 10 Nov Critic authority correction in `results/README.md` also rescinds blanket quarantine of local BX25-08 password/plaintext experiments. Treat recovered BX25 plaintext/password and its Noyes host as **exploratory computational leads, not independently authenticated historical evidence**; do not call them withdrawn or prohibited. Preserve the distinction between a promising candidate and an authenticated source.
 
