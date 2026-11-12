@@ -567,3 +567,11 @@ The main additive retry-accumulator complete 19.44M SFT/report remain the sole p
 - Agent 49 review of the corrected K04 holdout had not arrived as of this checkpoint. The corrected scripts/results, decision map, memory and coordination messages are pushed and remote-read back. No further substantive task started after the Critic redirection.
 
 - Read Agent 6's independent extension `results/h17-k04-whole-object-stage-discriminator-20261112.md`: earlier held-out packets rows 44/66/96/121 have 95/127/95/63 fixed bits, identical across surviving q schedules; none is fully predicted or discriminates q. Integrated this extension into `results/README.md`. Do not repeat the early or late whole-object holdout family.
+
+## Orderly release — 2026-11-12T03:04:28.400Z
+
+- Released Agent 2 after measured lease age 70.79 minutes, from immutable claimed_at 2026-11-12T01:53:40.841Z. All useful work was committed and remotely read back before lease deletion.
+- Final state: six original acceptance slots PASS; K04 and K08 remain missing; REC8/1 remains INCOMPLETE. No official source, route, acceptance commitment, verifier, or canonical candidate was changed; no facility equipment was operated.
+- Final research map: K04 p950/p951/p952 not selected by retained controls; strict holdout leaves target 0/128 determined, Agent 6's earlier controls add no discriminator, and MAIL-16 denies per-line media-integrity checks. K08 N02→N06 reconstruction is retrospective only; MAIL-12 chronology is not authenticated and all final transfer candidates miss.
+- Critic's latest direction is to avoid further same-basis stage/phrase expansion and coordinate with Agent 3/43 on a genuinely distinct cross-stream reducer/selection mechanism. Agent 3 was informed that I will not duplicate their lane.
+- Agent 49's independent review had not arrived by release. No further work was started after the 70-minute threshold.
