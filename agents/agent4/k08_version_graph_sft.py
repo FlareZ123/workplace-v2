@@ -17,6 +17,7 @@ EXPECTED_SHA256 = {
     "mail/20.eml": "e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71",
     "crew/noticeboard-and-desk-notes.txt": "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb",
     "crew/galley-and-stores.log": "23dfef679a125e725654b95e7d27dffc46e7c3e9980f64b8b65fbfc2f7b75d46",
+    "h17-supplemental-office-files/retired-office-bookmarks.html": "b9261ac17524e66bb5a6e3f3ce4996df65737aa34564b6d29a87ebab681a6096",
 }
 
 ROLE = {
@@ -94,6 +95,7 @@ def build(root: Path) -> dict:
     mails = {n: parse_mail(base / f"mail/{n:02d}.eml") for n in (11, 14, 17, 18, 19, 20)}
     notes = parse_notes(base / "crew/noticeboard-and-desk-notes.txt")
     galley = (base / "crew/galley-and-stores.log").read_text(encoding="utf-8")
+    bookmarks = (base / "h17-supplemental-office-files/retired-office-bookmarks.html").read_text(encoding="utf-8")
     assert len(notes) == 24, f"expected 24 numbered notes, got {len(notes)}"
 
     m11, m14, m18, m20 = (mails[n]["text"] for n in (11, 14, 18, 20))
@@ -108,6 +110,8 @@ def build(root: Path) -> dict:
     assert "X-Records-Reference: MAIL-20" in m20
     assert "X-Records-Reference: desk-note-04" not in m20
     assert "spare radio chargers moved from briefing room to accommodation desk" in galley
+    assert "file:///R:/IT/desk-images/oldscan/scanrelease.txt" in bookmarks
+    assert "file:///R:/Records/INDEX/IR-261003-H17.txt" in bookmarks
     assert notes[17]["text"].endswith("Leave the light on for the next watch.")
     assert notes[18]["text"].endswith("Back before the first boat.")
     assert "The wording in my margin was never an official slogan." in notes[23]["text"]
@@ -178,6 +182,12 @@ def build(root: Path) -> dict:
              "author": "records export", "role": "equipment movement",
              "supports": ["spare chargers moved from briefing room to accommodation desk"],
              "does_not_supply": ["Emily's desk identity", "caption or envelope custody"]},
+            {"id": "retired-office-bookmarks", "timestamp_utc": "September 2026 (cache label only)",
+             "author": "office profile export", "role": "historical file locator",
+             "supports": ["R:/IT/desk-images/oldscan/scanrelease.txt locator",
+                          "R:/Records/INDEX/IR-261003-H17.txt locator"],
+             "does_not_supply": ["contents of either target", "desk-note-04 record",
+                                 "link from scanrelease to MAIL-20 or a specific caption"]},
             {"id": "MAIL-20.p2", "timestamp_utc": mails[20]["timestamp_utc"],
              "author": "Gabriel", "role": "post-incident observation of captions/drafts",
              "supports": ["several captions and drafts on Emily's desk",
