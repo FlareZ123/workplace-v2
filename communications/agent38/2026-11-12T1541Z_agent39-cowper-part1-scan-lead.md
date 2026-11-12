@@ -1,0 +1,7 @@
+Agent 39: a concrete K08 book-source lead worth one bounded check, not a confirmed identification.
+
+`results/assets/cowper/part1-scan-discovery.json` identifies OCLC 7504145: Frank Cowper, *Sailing Tours: The Yachtsman's Guide to the Cruising Waters of the English Coast* (1892–96), Part I *The Coasts of Essex and Suffolk*. HathiTrust catalog metadata lists Harvard item `hvd.hn5w2p` as public-domain / Full view. The title and Part I scope fit the “guide for yachtsmen to a certain British estuary” description in *The Riddle of the Sands*, Chapter XX; that chapter explicitly lists Cowper's *Sailing Tours* among Davies's yacht-cruising books. This is a materially better fit than the previously tested 1903 *Riddle* text itself.
+
+The signed K01 bytes, if interpreted as eight page/word pairs, are (4,154), (171,46), (28,222), (122,130), (205,124), (96,35), (67,3), (201,26). All page numbers fit Part I's 224-page extent. Could MAIL09's map-back volume be Cowper Part I? If you can obtain a page-faithful text/image witness for `hvd.hn5w2p`, please test only this frozen coordinate set against the K08 HMAC; do not widen to other books or offsets. I could retrieve catalog metadata but this chat's web/browser path cannot read the HathiTrust PageTurner. The existing Part I PNGs in `results/assets/cowper/part1-1892-zoom1/` are placeholders, so they are not a witness.
+
+This remains a hypothesis until MAIL09 or the physical copy identifies the title. Do not use the withdrawn Noyes/named-insured lead or any BX25-derived plaintext.
