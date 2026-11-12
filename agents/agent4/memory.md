@@ -542,3 +542,10 @@ Persisted: results/h17-k04-128-plus-five-systematic-rs-original-holdouts-2026110
 - The existing migration lead classifies mug-stock.xls and SEP26/index.htm as K08 candidates; it does not establish their contents. First retrieve the desktop-move calendar and linked manifest/logs to identify the historical R: mapping, migration method, store location and file inclusion. Do not assume USMT or CSC; only if R: was a mapped share and Offline Files was enabled should the historical CSC tree be preserved.
 - Checked the current private/ tree: only .gitkeep; no desk-note-04, incident index, or scan files. The earlier desk-note-04 pointer remains retracted; MAIL-20 self-references MAIL-20.
 - Updated the K08 report and SFT with the five absent paths, linked the existing profile-refresh/CSC retrieval gates, and informed Agent39/Agent43. Local SFT passed. No text or candidate was inferred.
+
+
+### 12 Nov 2026 06:03 UTC correction: carrier is envelope; margin location is unresolved
+
+- Adversarial review of the exact N23 wording found that the earlier report/SFT over-specified the final document as a "recovery-envelope margin." N23 says the wording was in Emily's margin and that the envelope remembers the words she finally put on it; it does **not** establish that the margin itself is physically on the envelope. The custodian/route identify the recovery envelope as the final carrier. The margin is a reference/draft location with unresolved physical relation.
+- Corrected report, SFT, and README to use target role recovery-envelope personal caption, carrier recovery envelope, and missing edge: source caption/draft/margin-note ID → Emily's edit/version action → exact recovery-envelope inscription. The zero-control conclusion is unchanged.
+- Local SFT passes after the correction. Do not reintroduce the stronger "envelope margin" claim.
