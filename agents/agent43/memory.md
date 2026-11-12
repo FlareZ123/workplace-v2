@@ -342,3 +342,12 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - Extended the AX-7782 post-target sequence test to four ordinary 16-bit field interpretations: low/high halves of tempered MT words and low/high halves of native MT words.
 - Tested every possible start from stage 967 through 1025 in the existing p951 model: 4 × 59 = 236 encoding/start combinations. All contradict the 132-row source basis. The source chronology remains the AX-7782 COMMIT receipt at 20:55:10Z after the final retained spool packet at 18:25Z.
 - Updated the transfer SFT and report. This closes these four direct sequential-halfword interpretations within the p951 stage range; it does not rule out other encodings or later stages. No K04 bits recovered.
+
+
+## 2026-11-12 20:28 UTC — all-21 chronology gap-donor screen
+
+- Generalized the unique p951 gap-pair source-block screen to all 21 five-group late-stage geometries that preserve all intact printer packets under the 49 exact triple-derived offsets.
+- Reproduced 196 monotone shift assignments, 21 whole-source-compatible geometries, selected stages 950 (6), 951 (9), 952 (6), each with source rank 15,365 and a 128-bit withheld target quotient.
+- Enumerated every eligible four-word printer-gap window. Fifteen geometries have a unique complete pair: (327,723) for all six stage-950 geometries; (328,724) for six of nine stage-951 geometries; (329,725) for three of six stage-952 geometries. Six geometries have no complete pair.
+- Tested the same 11 distinct source-derived 16-byte blocks at each complete pair, both gap assignments, both byte orders and native/tempered interpretations: 26,400 complete candidate constructions. All fully determine the target; none pass the K04 acceptance commitment. Zero inconsistent or underdetermined candidates.
+- Added `agents/agent43/k04_unique_gap_source_blocks_all_21_sft.py` and `results/h17-k04-unique-gap-source-block-pair-all-21-20261112.md`; broadcast the bounded closure. No K04 bits recovered. Do not repeat this source-block substitution family.
