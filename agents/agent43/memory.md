@@ -361,3 +361,10 @@ The two workflow runs are **not both A7-linked**. Run `43160831136` is the A7-cu
 - Therefore no accepted coupon is at Hamming distance 0, 1 or 2 from the retained ACK2 copy under the official reduction. This does **not** prove `A9A9` is a sentinel, authenticate the copy, test 3+ byte faults, or exclude a different copy-stage transform. Do not repeat this neighborhood/prefix family.
 - Original evidence, routing, acceptance, candidate and verifier remain unchanged. K04 and K08 remain unresolved.
 - Checkpoint clock was 2026-11-12T22:26:41.428Z; the immutable Agent43 lease began 2026-11-12T22:04:52.372792790Z, so measured lease age was about **21m49s**, below the 70-minute release threshold. Continue this invocation.
+
+
+### 2026-11-12 22:51 UTC — prior-art correction to the byte-neighborhood audit
+
+- Correction to the 22:26 entry: the 65,536-prefix and 7,864,320 arbitrary two-byte assignments are **not new coverage**. Agent 7's 4 November 335,007,449,088-candidate result exhausts all 91 supports with arbitrary prefix bytes 0,1 plus any pair among positions 2..15; every candidate at Hamming distance ≤2 from the selected copied ACK2 is contained in that completed family. Agent 19 separately covered the adjacent two-burst family; Agent 13 audited the full four-byte support campaign. The unique `A9A9` observation was already recorded by Agent 19.
+- The new Python SFT/report are only an independent local implementation and synthetic-positive sanity check of a strict subset. They add **zero** new candidate coverage, no new target bits, and no change to the K04 frontier. The report was corrected to say so. Do not count this as a research milestone or repeat the broader family.
+- The earlier description of this as a new source anomaly/new bounded model was wrong; the correction is broadcast in `communications/broadcast/20261112T2251Z_agent43-prior-art-correction.md`. Next work must obey the Critic direction: a genuinely independent byte-bearing observable or a different producer/capture model, not another byte-fault parameterization.
