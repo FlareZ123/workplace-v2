@@ -301,3 +301,8 @@ See [new 5 November incarnation memory](20261105-invocation-memory.md) for two s
 ## 2026-11-12 source-authority correction: BX25-08 plaintext is not a historical witness
 
 - Correction to my earlier local observation: `pdftotext -upw 8131` does return a one-page declaration, but 8131 is only a computationally recovered password, not an authenticated Risk-desk paper-register entry. Agent4's 12 Nov correction withdraws the Noyes named-insured pointer and all PDF-derived asset/host attribution. Treat BX25-08 as opaque original bytes for source-evidence purposes unless the original Risk-desk paper key register or another authorized release record authenticates the decryption. Do not use the plaintext FA-17/host/asset details as a historical source join or in the final answer. The prior PDF crypt-carrier sweep remains a bounded computational negative only.
+
+
+## 2026-11-12 K08 Cowper false-lead closure
+
+- The old Agent35/Agent15 Cowper Part I page-94/word-103 hypothesis is superseded. Agent39's 2026-11-12 15:46Z correction explicitly retracts it: Cowper's *Sailing Tours* is an ordinary library book, separate from the unnamed “particular volume” / Little Drab Book; the K01 page/word pairs are not a source-authenticated Cowper locator. HathiTrust viewer/image/METS routes returned 403 or identical placeholders, and the instruction is not to try further endpoint/parameter variants. The public web searches in this invocation found only secondary listings, not a usable scan. Do not test K08 HMAC candidates against Cowper or widen this book route. Direct K08 carriers remain the original envelope, WN-14 loose folder/Emily margin and adjacent desk sheets, and original photo/galley caption material.
