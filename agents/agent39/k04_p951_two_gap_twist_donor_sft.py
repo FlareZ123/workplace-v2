@@ -220,6 +220,21 @@ def main() -> None:
                     if digest == K04_HASH:
                         external_hits.append((label_a, label_b, component.hex()))
 
+    same_external_tested = 0
+    same_external_hits = []
+    for name, block in external_blocks.items():
+        block_variants = source_block_variants(name, block)
+        for variant_a in block_variants:
+            for variant_b in block_variants:
+                same_external_tested += 1
+                component, digest, payload = candidate_from_gap_blocks(
+                    variant_a[1], variant_b[1], predecessor, mask
+                )
+                if digest == K04_HASH:
+                    same_external_hits.append((
+                        variant_a[0], variant_b[0], component.hex()
+                    ))
+
     # All intact printer payloads except selected row 129 are also candidate
     # copied blocks. Try both per-word endiannesses and raw/untempered views.
     printer_blocks = []
@@ -312,6 +327,8 @@ def main() -> None:
         "positive_control": positive_control,
         "external_ordered_pair_candidates": external_tested,
         "external_hits": len(external_hits),
+        "same_external_block_pair_candidates": same_external_tested,
+        "same_external_block_pair_hits": len(same_external_hits),
         "distinct_printer_row_pair_candidates": printer_tested,
         "distinct_printer_row_pair_hits": len(printer_hits),
         "same_printer_row_pair_candidates": same_row_tested,
@@ -327,6 +344,7 @@ def main() -> None:
         ),
     }
     assert not external_hits
+    assert not same_external_hits
     assert not printer_hits
     assert not same_row_hits
     assert not cross_hits
