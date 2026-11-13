@@ -1,0 +1,53 @@
+name: H17 K04 CPython genuine mid-warmup n1-24 sieve
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sieve:
+    name: Genuine offsets ${{ matrix.start }}-${{ matrix.stop }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include:
+          - start: 624
+            stop: 858
+          - start: 858
+            stop: 1092
+          - start: 1092
+            stop: 1326
+          - start: 1326
+            stop: 1560
+          - start: 1560
+            stop: 1794
+          - start: 1794
+            stop: 2028
+          - start: 2028
+            stop: 2262
+          - start: 2262
+            stop: 2496
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Sieve real startup offsets against retained whole packets
+        run: >-
+          python agents/agent40/k04_cpython_midwarmup_n1to24_sft.py
+          --start ${{ matrix.start }}
+          --stop ${{ matrix.stop }}
+          --max-words 24
+          --controls
+      - name: Preserve partition result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent40-midwarmup-${{ matrix.start }}-${{ matrix.stop }}
+          path: artifacts/agent40/midwarmup_*.json
+          if-no-files-found: warn
