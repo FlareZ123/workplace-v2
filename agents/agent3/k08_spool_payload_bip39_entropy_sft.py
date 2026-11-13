@@ -18,7 +18,7 @@ from pathlib import Path
 
 def normalize(phrase: str) -> str:
     phrase = phrase.lower()
-    phrase = re.sub(r"[^a-z0-9\\s]", " ", phrase)
+    phrase = re.sub(r"[^a-z0-9\s]", " ", phrase)
     return " ".join(phrase.split())
 
 
@@ -65,8 +65,8 @@ def main() -> None:
     target = acceptance["slot_sha256"]["K08"].lower()
 
     row_re = re.compile(
-        r"^(\\S+) JOB=(\\S+) ATTEMPT=(\\d+) STATE=(\\S+) "
-        r"CLASS=(\\S+) PAYLOAD=([0-9A-F]{32}) DEST=(\\S+)$"
+        r"^(\S+) JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) "
+        r"CLASS=(\S+) PAYLOAD=([0-9A-F]{32}) DEST=(\S+)$"
     )
     rows = []
     for line in spool_bytes.decode("utf-8").splitlines():
