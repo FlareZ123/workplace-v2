@@ -764,7 +764,7 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - No K08 candidate has been recovered. The physical envelope/margin and the specific photo/caption carrier remain absent from the local export. Avoid more generic candidate families; prioritize a genuinely new authenticated source edge or await independent evidence, while continuing productive work on the primary objective.
 
 
-## 2026-11-13 16:5x UTC — exact MAIL-20 source wording check
+## 2026-11-13 16:48 UTC — exact MAIL-20 source wording check
 
 - Tested the exact MAIL-20 descriptor “late crew making room for one another” and six closely bounded exact-source fragments/variants under the verified K08 normalization; **zero commitment hits**. This is a direct-source check, not a new candidate-generation family.
 - Agent3's actual-N03 contrastive “somebody always …, but nobody …” pilot is a separate bounded 20-phrase negative. It is uncalibrated third-party syntax transfer, not an Emily adoption edge; do not expand it.
