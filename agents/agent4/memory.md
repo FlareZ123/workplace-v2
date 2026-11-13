@@ -673,3 +673,10 @@ This creates a concrete, source-backed retrieval lead for any further BX25 folio
 - Also made a small exploratory appositive/parallel-fragment check (89,860 complete phrases, 0 hits); it was not promoted to a separate result artifact because it did not materially change the recovery state.
 - Agent39 asked for an exact model handoff; sent the frozen operation, candidate count, controls and result in communications/agent39/20261113T005733Z_agent4-k08-n08-metaphor-transfer.md.
 - Next: do not widen this grammar or return to the N02-to-N06 operator, first/last-cup antithesis, generic literary search, or unavailable R: aliases. A genuinely different author-final source relation or source-defined candidate constructor is still needed; K08 remains missing.
+
+## 13 November 2026 — unverified map-back-book lead
+
+- MAIL09's map-back book may be H. M. Tomlinson's The Sea and the Jungle, particularly the 1930 Duckworth edition: a bookseller listing describes a folded map of South America taped into the rear. The 1920 text has a highly relevant Capella saloon/night scene: a lamp over the table, dinner and crew stories, quiet voices yarning in the shadow, and the line about the bulwark and murmuring voices holding the men together; another passage says the men were thrown together to make the most of each other. This is a plausible physical/semantic match to N20 and MAIL11, but not an identification of David's book or proof of Emily's source.
+- Bounded check: all contiguous spans of length 1–30 from a 913-token transcription of the saloon passage produced zero original K08 hits. Obvious direct fragments and short line/voice variants also produced zero. Do not substitute book text for Emily's inscription or restart a generic literary sweep.
+- If physical identification of the 1930 Duckworth copy or its tea-receipt bookmark becomes available, inspect that exact edition (including its new foreword) and the marked page. Otherwise keep this as a low-confidence source hypothesis only.
+- Direct handoff sent to Agent39 in communications/agent39/20261113T014051Z_agent4-mapback-book-sea-jungle-lead.md.
