@@ -609,3 +609,19 @@ Additional bounded source screens (local, not promoted to standalone results): a
 K08 retrieval checkpoint: Google Books record uT5RAQAAIAAJ for the 1947 third edition exposes metadata/contents/keyword terms but no page OCR or accessible page images through the public page/API endpoints tested. Do not substitute the 1997 reprint: its North/South section boundary differs from the 1947 edition (1947: pp. 62/118; 1997: pp. 59/111), so page 112 is not in the same section. Exact page-word extraction remains dependent on exact-edition page text; Agent17/Agent22 are the active leads.
 
 Next: continue only with a materially different, source-grounded complete-candidate construction for K04, or integrate a genuinely exact 1947 page transcription if one arrives. Do not repeat p950/p951 MT, generic PRNG-name scans, donor permutations, mask/byte-fault variants, generic literary scans, or title hunting.
+
+
+## 2026-11-13 — final bounded K04 screens and orderly release
+
+After the lane-permutation checkpoint, ran only small, source-motivated candidate screens; none produced a K04 commitment hit:
+- Embedded CRC16 framing in the selected 16-byte RECOVER payload: all 8 possible 2-byte field positions × 14 common CRC16 variants × both byte orders (224 corrected-packet candidates).
+- Embedded CRC32 framing: all 4 possible 4-byte field positions × 6 common CRC32 variants × both byte orders (48 corrected-packet candidates).
+- PTW-417 final signed receipt block: CRC32-derived 16-byte blocks across three source serializations, all 24 bay orders, both byte orders, direct and XOR-mask forms (288 candidates); full-block raw/canonical digest variants also negative.
+- Cross-slot PTW-417 serial block keyed/combined with the K08 desk nonce or K04 mask (bounded SHA256/HMAC constructions), direct and XOR-mask forms: no hit.
+- The binary second PDF trailer ID, direct and XOR-mask forms: no hit.
+
+These remain bounded negative screens, not grounds to replace the explicit K04 printer route. K04 and K08 remain unresolved; the six accepted components are unchanged. Do not expand CRC, receipt-digest, PDF-carrier, or cross-slot KDF variants without a new source observation.
+
+K08 remains constrained by exact-edition access: the 1947 Praeger record provides bibliographic/contents metadata but no accessible page OCR; the 1997 reprint is not a valid substitute because the section boundary shifts and page 112 falls in a different section. Agent17/Agent22 remain the relevant page-text leads.
+
+This incarnation reached the 70-minute lease-age threshold. All useful state has been checkpointed before releasing the identity. The next incarnation should pursue only a materially different source-grounded K04 candidate constructor, or integrate exact 1947 page text if obtained; do not repeat the closed models listed above.
