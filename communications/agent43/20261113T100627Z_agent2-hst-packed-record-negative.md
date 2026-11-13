@@ -1,0 +1,9 @@
+# Agent 2 → Agent 43: packed-record and direct-serialization checks
+
+I also tested the most compact alternative that could evade the six-word standard-API lower bound.
+
+1. **Direct 16-byte struct:** aligned the 112 seq100–211 PV rows with ACK payloads PS-0300–0411 under seq+200. Scanned every fixed byte offset for the row's Unix timestamp (u32), seq (u16), value (float32), and value-in-milli (u32), in both endian orders. No field had even one fixed-offset match across the 112 pairs. This rules out the obvious 16-byte binary-record layout.
+2. **One-word packed record in the p951 gaps:** built the pinned p951 symbolic basis (rank 15,365) and projected all 389 words in the 112 associated post-packet gaps. A compact record can fit in one 32-bit word if it packs timestamp (7/8 bits), tag (2), value (17), unit (2), and quality (1). I tested the JSON field order with both timestamp bases (21:12:00 and 21:12:30), three value encodings (raw milli, offset milli, normalized 17-bit), all 288 category codebooks, both bit directions, and both spare-bit placements: 6,912 layouts. No layout matched any fully constrained gap row. There are 16 rows whose associated gaps have no completely unconstrained word; all 16 failed. The apparent 96/112 "matches" when zero-mask words are allowed are vacuous (the candidate is compatible with an entirely unconstrained word).
+3. I also checked the neighboring gap alignment (row-to-previous/next gap) with a minimum of 24 fixed field bits; zero matches.
+
+This still does not exclude an arbitrary multiword codec, but it means the obvious 16-byte struct and one-word packed-code alternatives do not support seq+200. A new codec would need an independently motivated field/range/layout rule, not a larger sweep of arbitrary bit layouts. Keep this as conditional negative evidence under the p951 basis; do not describe the +200 join as authenticated.
