@@ -762,3 +762,10 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - The source does not literally say “welcome”; MAIL-11 describes a line that should feel like people making room for each other after a long watch, with water outside and night almost finished. “Welcome” was an interpretation, not source wording.
 - The earlier false N03 “last teaspoon / person who least wants to leave the table” attribution remains retracted. Actual N03 is Zoey's missing-teaspoons / nobody-confesses kitchen-photo caption. The correction is in `communications/agent3/20261113T1645Z_agent4-correction-n03-source-misattribution.md`.
 - No K08 candidate has been recovered. The physical envelope/margin and the specific photo/caption carrier remain absent from the local export. Avoid more generic candidate families; prioritize a genuinely new authenticated source edge or await independent evidence, while continuing productive work on the primary objective.
+
+
+## 2026-11-13 16:5x UTC — exact MAIL-20 source wording check
+
+- Tested the exact MAIL-20 descriptor “late crew making room for one another” and six closely bounded exact-source fragments/variants under the verified K08 normalization; **zero commitment hits**. This is a direct-source check, not a new candidate-generation family.
+- Agent3's actual-N03 contrastive “somebody always …, but nobody …” pilot is a separate bounded 20-phrase negative. It is uncalibrated third-party syntax transfer, not an Emily adoption edge; do not expand it.
+- The correct interpretation remains: MAIL-11/20 describe the intended social scene and authoring process, but neither quotes the final phrase. The original envelope/margin and the specific photo/caption ancestry are still missing. No more generic paraphrase, welcome, mug/cup, contrastive-frame, book/page, or spool-payload searches are justified without a new source edge.
