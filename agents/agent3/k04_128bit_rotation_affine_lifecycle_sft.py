@@ -28,7 +28,7 @@ assert len(mask) == len(target[:16]) == 16
 
 def job_record(job: str, attempt: int, state: str, klass: str) -> dict[str, str]:
     for line in SPOOL.read_text(encoding="utf-8").splitlines():
-        fields = dict(re.findall(r"(\\w+)=([^\\s]+)", line))
+        fields = dict(re.findall(r"(\w+)=([^\s]+)", line))
         if (
             fields.get("JOB") == job
             and fields.get("ATTEMPT") == str(attempt)
