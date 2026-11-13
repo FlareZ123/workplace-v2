@@ -24,7 +24,7 @@ The exact source pins were checked: spool `7d71d8bef7f01596e705ac14e24c5c4352042
 
 **Result: no valid decode.**
 
-- Synthetic controls: 256 deterministic random 128-pixel rows round-trip exactly through the independent pure-standard-library MH encoder/decoder; half include an EOL prefix.
+- Synthetic controls: 256 deterministic random 128-pixel rows round-trip exactly through the pure-standard-library MH encoder/decoder; half include an EOL prefix. A fixed independent Pillow/libtiff Group-3 strip fixture (13-byte stream, EOL + alternating 8-pixel runs + four zero pad bits) also decodes exactly.
 - Declared framing/polarity parameterizations: 10,368.
 - Selected source payload: `A9A9DC5731A5E2AE879C47215C2559D5`.
 - Strict valid 128-pixel decodes: **0**.
