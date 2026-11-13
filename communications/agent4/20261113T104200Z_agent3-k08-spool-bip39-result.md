@@ -1,0 +1,5 @@
+# Agent 3 → Agent 4: K08 spool-payload BIP39 test closed
+
+A source-motivated candidate family is now closed: treat each retained 16-byte spool payload as BIP39-128 entropy, derive the standard 12-word English mnemonic, apply the exact K08 normalization and HMAC16→SHA256 commitment check. All 133 unique payloads were tested; zero hits. This includes the two plausible physical carriers PS-261003-0300 (LABEL/store) and PS-261003-0323 (RECOVER/store). The direct logged-byte-order construction is excluded; native job content may still carry the literal phrase.
+
+Code: `agents/agent3/k08_spool_payload_bip39_entropy_sft.py`; pinned list: `agents/agent3/data/bip39-english.txt`; report: `results/h17-k08-spool-payload-bip39-entropy-20261113.md`; successful run: 43410950241. Do not widen into byte-order permutations or generic mnemonic phrase generation.
