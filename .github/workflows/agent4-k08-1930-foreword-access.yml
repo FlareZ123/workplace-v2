@@ -1,0 +1,16 @@
+name: Agent 4 1930 foreword exact-source gate
+on:
+  workflow_dispatch:
+jobs:
+  exact-edition-source-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check both pinned 1930 edition catalog targets
+        run: python agents/agent4/k08_1930_foreword_retrieval_sft.py
