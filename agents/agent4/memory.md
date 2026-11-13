@@ -790,3 +790,10 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - Fetched the current repository `resources/candidate.json` and ran the official `resources/verify.py` against those exact values, using Python standard-library startup (`python -S`) to avoid an unrelated environment warmup hook.
 - Result: K01, K02, K03, K05, K06 and K07 = **PASS**; K04 and K08 = **MISSING**; passed = **6/8**; combined = **INCOMPLETE**; accepted = **false**. No combined digest is produced for an incomplete candidate.
 - The test used a temporary local copy of the fetched candidate JSON only; repository candidate and verifier were not modified. This confirms the current state, not a recovered key.
+
+
+## 2026-11-13 17:01 UTC — custodian note clarifies K08 function
+
+- Re-read `resources/evidence/records-custodian.txt`. It explicitly defines K08 as the **personal caption used to distinguish this recovery envelope from similarly named commissioning and standby envelopes**, intentionally memorable rather than a cabinet number. The working export is not the full incident record; a source reference does not mean every byte in that record belongs in the envelope; and absence of a gap marker is not a completeness certificate.
+- Therefore do not frame K08 as necessarily a general “welcome” or promote generic inclusion language. “Welcome” was only an interpretive label. The caption's disambiguating function and its exact personal wording matter.
+- This strengthens the physical-carrier priority: the original recovery envelope, WN-14 desk-note stack and separate photo/caption collection are needed to recover the exact personal caption. A print job is only a possible locator, not a substitute for the envelope.
