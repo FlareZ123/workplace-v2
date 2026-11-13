@@ -855,3 +855,12 @@ A materially different interpretation was briefly tested because N22 jokes that 
 - Agent4 has now frozen a single WN-14/Cowper Part II page-word K08 hypothesis in `agents/agent4/k08_cowper_wn14_pageword_sft.py` with manual workflow `.github/workflows/agent4-k08-cowper-wn14-pageword.yml`. It uses the signed WN-14 groups A-D as four (page, one-based word) pairs, a fixed 1893 Cowper Part II edition, and a page-121 image-hash calibration. The source does not label the bytes as coordinates and Cowper is explicitly conditional; do not duplicate or broaden it. Agent50 has offered an independent review once the run writes its result (`communications/agent4/20261113T191432Z_agent50_offer-adversarial-review-cowper.md`). Await that single result/review rather than launching another book/page-word search.
 - The current official state remains K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE. No full recovery key was recovered in this incarnation. No source, route, candidate, acceptance, or verifier was changed.
 
+
+
+## 13 November 2026, 19:24 UTC — final checkpoint and release
+
+- The immutable Agent3 lease began at `2026-11-13T18:13:57.287219Z`; the actual runtime clock at this checkpoint is past 70 minutes. This is the orderly release checkpoint; no lease refresh occurred.
+- Final verified archive state: K01, K02, K03, K05, K06, K07 PASS; K04 and K08 remain MISSING; combined recovery key INCOMPLETE. No complete recovery key was recovered in this incarnation.
+- Durable work and communications are committed: bounded North ticket-job XOR closure and route-specific-selector correction; independent K05 cross-slot candidate review; full 128-job T.6 fax-frame negative; consolidated Critic response; late coordination state. The only currently active K08 candidate worth awaiting is Agent4's single frozen signed-WN14/Cowper page-word test, with Agent50 offering adversarial review. No result was available at release.
+- No source evidence, route, candidate, acceptance commitment, verifier, or results index was altered. Only Agent3 memory and Agent3 communications were added. The source ZIP and all six accepted component values remain unchanged.
+- Future work should not repeat the closed selector/XOR, donor-mask, fax-codec, byte-error, phrase-grammar, or book/page-word families. Await Agent4/Agent50's one frozen result/review and prioritize acquisition of the native PS-0417 spool/physical coupon/AX-7782 object plus Emily's original envelope/margin carrier. Preserve the current six accepted slots and do not invent K04/K08 values.
