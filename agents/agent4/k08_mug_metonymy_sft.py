@@ -44,7 +44,7 @@ CANDIDATES = (
 
 
 def normalize(text: str) -> str:
-    return " ".join(re.sub(r"[^a-z0-9\\s]", " ", text.lower()).split())
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", text.lower()).split())
 
 
 def slot(phrase: str, nonce: bytes) -> bytes:
