@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test whether chronological 16-byte printer payloads form a 128-bit GF(2)-linear state stream.
+"""Test 128-bit GF(2) linear and source-offset affine transitions in printer payloads.
 
 Run from the repository root:
     python agents/agent6/k04_gf2_vector_transition_sft.py
@@ -10,11 +10,13 @@ and the remaining late events are held out.
 """
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
 WIDTH = 128
 LOG = Path("resources/evidence/print/spool-reconstruction.log")
+ROUTE = Path("resources/evidence/recovery-routing.json")
 
 
 def parse_rows():
@@ -32,12 +34,7 @@ def parse_rows():
 
 
 def fit_transition(states: list[bytes], outputs: list[bytes]):
-    """Solve y=A*x over GF(2), row-reducing [X|Y] together.
-
-    Each input state is a row of X. Each output is the corresponding row of Y.
-    If X is full rank, the reduced right-hand rows give A's output on each
-    standard basis vector, enough to predict any 128-bit state.
-    """
+    """Solve y=A*x over GF(2), row-reducing [X|Y] together."""
     rows = [
         (int.from_bytes(x, "big"), int.from_bytes(y, "big"))
         for x, y in zip(states, outputs, strict=True)
@@ -85,6 +82,10 @@ def predict(state: bytes, basis_outputs: list[int]) -> bytes:
     return y.to_bytes(WIDTH // 8, "big")
 
 
+def xor_bytes(a: bytes, b: bytes) -> bytes:
+    return bytes(x ^ y for x, y in zip(a, b, strict=True))
+
+
 def main():
     rows = parse_rows()
     if len(rows) != 133:
@@ -98,17 +99,48 @@ def main():
 
     states = [row["payload"] for row in rows[:128]]
     outputs = [row["payload"] for row in rows[1:129]]
-    basis_outputs = fit_transition(states, outputs)
+    actual = rows[129]["payload"]
 
+    # Homogeneous map: x[n+1] = A*x[n].
+    basis = fit_transition(states, outputs)
     print("training_transitions=128")
     print("training_state_rank=128")
-    for index in range(128, 132):
-        predicted = predict(rows[index]["payload"], basis_outputs)
-        actual = rows[index + 1]["payload"]
+    predicted = predict(rows[128]["payload"], basis)
+    print(
+        f"homogeneous_target_predicted={predicted.hex().upper()} "
+        f"actual={actual.hex().upper()} match={predicted == actual}"
+    )
+
+    # Affine maps with a fixed, source-supplied XOR offset:
+    # x[n+1] = A*x[n] XOR c. The offset is removed from each training output,
+    # then restored to the held-out prediction.
+    route = json.loads(ROUTE.read_text(encoding="utf-8"))
+    offsets = {
+        "K04_mask": bytes.fromhex(route["K04"]["masked_component"]),
+        "K08_desk_nonce": bytes.fromhex(route["K08"]["desk_nonce"]),
+    }
+    for label, offset in offsets.items():
+        transformed = [xor_bytes(y, offset) for y in outputs]
+        affine_basis = fit_transition(states, transformed)
+        affine_prediction = xor_bytes(
+            predict(rows[128]["payload"], affine_basis), offset
+        )
         print(
-            f"heldout_row={index + 1} job={rows[index + 1]['job']} "
+            f"{label}_affine_target_predicted={affine_prediction.hex().upper()} "
+            f"actual={actual.hex().upper()} "
+            f"match={affine_prediction == actual}"
+        )
+
+    # One-step predictions for the remaining late records under the unique
+    # homogeneous map, using each actual preceding state as input.
+    for index in range(129, 132):
+        predicted = predict(rows[index]["payload"], basis)
+        next_actual = rows[index + 1]["payload"]
+        print(
+            f"late_row={index + 1} job={rows[index + 1]['job']} "
             f"predicted={predicted.hex().upper()} "
-            f"actual={actual.hex().upper()} match={predicted == actual}"
+            f"actual={next_actual.hex().upper()} "
+            f"match={predicted == next_actual}"
         )
 
 
