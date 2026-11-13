@@ -29,51 +29,36 @@ def run(args: list[str]) -> str:
     return p.stdout
 
 
-def page_columns(block: str) -> list[list[str]]:
-    left: list[str] = []
-    right: list[str] = []
+def header_page_number(block: str) -> int | None:
+    # In this scan the running title/author line carries the printed page number.
     for line in block.splitlines():
-        # pdftotext -layout preserves the gutter between a two-page spread.
-        parts = re.split(r" {5,}", line.rstrip(), maxsplit=1)
-        left.append(parts[0].strip())
-        if len(parts) == 2:
-            right.append(parts[1].strip())
-    cols = [left, right]
-    return [c for c in cols if any(x for x in c)]
-
-
-def printed_page_number(lines: list[str]) -> int | None:
-    for line in reversed([x for x in lines if x][-8:]):
-        # Page numbers in this scan occur at the bottom, sometimes after the running title.
-        m = re.search(r"(?<!\d)(\d{1,3})\s*$", line)
-        if m:
-            return int(m.group(1))
-        m = re.match(r"^\s*(\d{1,3})(?!\d)", line)
-        if m:
-            return int(m.group(1))
+        upper = line.upper()
+        if "THE RIDDLE OF THE SANDS" in upper or "ERSKINE CHILDERS" in upper:
+            m = re.search(r"(?<!\d)(\d{1,3})\s*$", line)
+            if m:
+                return int(m.group(1))
     return None
 
 
-def body_words(lines: list[str], keep_running_matter: bool = False) -> list[str]:
+def body_words(block: str) -> list[str]:
     kept = []
-    for line in lines:
-        if not line:
+    for line in block.splitlines():
+        stripped = line.strip()
+        if not stripped:
             continue
-        if not keep_running_matter and (
-            "THE RIDDLE OF THE SANDS" in line.upper()
-            or "ERSKINE CHILDERS" in line.upper()
-            or re.fullmatch(r"\s*\d{1,3}\s*", line)
-            or re.search(r"(?<!\d)\d{1,3}\s*$", line)
-        ):
+        upper = stripped.upper()
+        if "THE RIDDLE OF THE SANDS" in upper or "ERSKINE CHILDERS" in upper:
             continue
-        kept.append(line)
+        if re.fullmatch(r"\d{1,3}", stripped):
+            continue
+        kept.append(stripped)
     text = " ".join(kept).lower()
     text = re.sub(r"[^a-z0-9\s]", " ", text)
     return re.sub(r"\s+", " ", text).strip().split()
 
 
-def hmac_match(phrase: str) -> tuple[str, str, bool]:
-    normalized = re.sub(r"\s+", " ", re.sub(r"[^a-z0-9\s]", " ", phrase.lower())).strip()
+def hmac_match(words: list[str]) -> tuple[str, str, bool]:
+    normalized = re.sub(r"\s+", " ", re.sub(r"[^a-z0-9\s]", " ", " ".join(words).lower())).strip()
     component = hmac.new(NONCE, normalized.encode("utf-8"), hashlib.sha256).digest()[:16]
     commitment = hashlib.sha256(component).hexdigest().upper()
     return normalized, component.hex().upper(), commitment == EXPECTED_K08_SHA256
@@ -87,45 +72,59 @@ def main() -> int:
     info = run(["pdfinfo", str(pdf)])
     m = re.search(r"^Pages:\s+(\d+)", info, re.M)
     print("PDF_PAGES", m.group(1) if m else "unknown")
+
     extracted = run(["pdftotext", "-layout", str(pdf), "-"])
     pages = extracted.split("\f")
-    page_map: dict[int, list[str]] = {}
-    duplicates: dict[int, list[tuple[int, int]]] = {}
-
+    page_map: dict[int, tuple[int, str]] = {}
+    offsets: list[int] = []
     for pdf_index, block in enumerate(pages):
         if not block.strip():
             continue
-        for col_index, col in enumerate(page_columns(block)):
-            printed = printed_page_number(col)
-            if printed is None:
-                continue
-            duplicates.setdefault(printed, []).append((pdf_index, col_index))
-            # Keep the first exact page-number match; duplicate OCR hits are reported.
-            page_map.setdefault(printed, col)
+        printed = header_page_number(block)
+        if printed is None:
+            continue
+        offsets.append(pdf_index - printed)
+        page_map.setdefault(printed, (pdf_index, block))
 
-    print("MAPPED_TARGETS", {p: (p in page_map) for p, _ in COORDS})
-    print("DUPLICATE_TARGETS", {p: v for p, v in duplicates.items() if p in {x for x, _ in COORDS} and len(v) > 1})
+    if offsets:
+        from collections import Counter
+        counts = Counter(offsets)
+        offset, frequency = counts.most_common(1)[0]
+    else:
+        offset, frequency = None, 0
+    print("PAGE_OFFSETS", dict(sorted(__import__("collections").Counter(offsets).items())))
+    print("OFFSET_MODE", offset, "frequency", frequency)
+    target_pages = sorted({p for p, _ in COORDS})
+    resolved: dict[int, tuple[int, str]] = {}
+    for target in target_pages:
+        if target in page_map:
+            resolved[target] = page_map[target]
+        elif offset is not None and 0 <= target + offset < len(pages):
+            idx = target + offset
+            resolved[target] = (idx, pages[idx])
+    print("MAPPED_TARGETS", {
+        p: (resolved[p][0] if p in resolved else None)
+        for p in target_pages
+    })
+    print("HEADER_MATCH_COUNT", len(page_map), "PDF_PAGE_COUNT", len(pages))
 
-    for keep_headers in (False, True):
-        words_by_page = {p: body_words(lines, keep_headers) for p, lines in page_map.items()}
-        for index_base in (1, 0):
-            picked = []
-            valid = True
-            for page, word in COORDS:
-                words = words_by_page.get(page)
-                idx = word - index_base
-                if words is None or idx < 0 or idx >= len(words):
-                    valid = False
-                    picked.append(f"<missing:{page}/{word}:count={len(words) if words is not None else 'no-page'}>")
-                else:
-                    picked.append(words[idx])
-            if not valid:
-                print("CANDIDATE", "keep_headers", keep_headers, "index_base", index_base,
-                      "INVALID", picked)
-                continue
-            phrase, component, matched = hmac_match(" ".join(picked))
-            print("CANDIDATE", "keep_headers", keep_headers, "index_base", index_base,
-                  "words", picked, "phrase", phrase, "component", component, "K08_MATCH", matched)
+    words_by_page = {p: body_words(block) for p, (_, block) in resolved.items()}
+    picked: list[str] = []
+    valid = True
+    for page, word in COORDS:
+        words = words_by_page.get(page)
+        idx = word - 1
+        if words is None or idx < 0 or idx >= len(words):
+            valid = False
+            picked.append(f"<missing:{page}/{word}:count={len(words) if words is not None else 'no-page'}>")
+        else:
+            picked.append(words[idx])
+    if not valid:
+        print("CANDIDATE INVALID", picked)
+    else:
+        phrase, component, matched = hmac_match(picked)
+        print("CANDIDATE words", picked, "phrase", phrase,
+              "component", component, "K08_MATCH", matched)
 
     print("CHILDERS_PAGEWORD_PROBE_COMPLETE")
     return 0
