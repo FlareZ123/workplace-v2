@@ -627,3 +627,30 @@ At release, K04 and K08 remain unresolved; no candidate key or acceptance result
 - The explicit PS-0417 route yields payload XOR mask `2CFF149C50E54557228E7DE60B3EB7C9`; its SHA-256 is `11a7f6064781a6ac7678dc6dd24759af95981c8a927f8da4436515354d34549b`, not the official K04 commitment. This does not replace the source route or recover K04.
 - All useful work, scripts, results, memory, and inter-agent messages are committed to the remote branch. Original resources, `candidate.json`, verifier, and acceptance commitments were not modified. The recovery objective remains incomplete; no unsupported key or phrase is claimed.
 - This is the final memory checkpoint for this incarnation. Release `.lease.json` as the final repository mutation; do not start further research after release.
+
+## 2026-11-13 invocation checkpoint (Agent 3; normal mode; claimed 08:14:23Z)
+
+This incarnation did not recover K04 or K08. Do not repeat the bounded negatives below.
+
+### New bounded K04 tests (all failed the unchanged K04 SHA-256 commitment)
+- Extended the p951 two-gap donor model with L-29/N ticket-derived blocks: 30 four-ticket blocks across all five omissions and six encodings; mapped North spool-job payloads (four raw payloads, XOR bundle, four digest bundles, and job-ID encodings); ticket amounts/packed ID+amount/description hashes; K04 mask, K08 nonce and their XOR; and RC-17 standby-order blocks. No candidate hit. This is an extension of the already-conditional p951 donor family, not a new model; do not extend it again.
+- L-29/N +305 crosswalk as a physical copy selector: one 4-byte lane from each of the four mapped North jobs, in binder order, all 4^4 lane choices and per-lane byte reversals (4,096 candidates). No K04 hit and no selector reconstructed PS-0417 ACK2. The +305 mapping remains a hypothesis, not an authenticated foreign key.
+- Rolling copy selector over the four preceding ACK/RECOVER/bench jobs: all 4,096 fixed lane/reversal selectors checked against every later complete RECOVER/bench job; none reproduced a control payload. A bounded 256-formula job-ID/source-ID modulo-4 selector also had no control match.
+- Same-job PS-0417 lifecycle selector: one 4-byte lane from each of its four chronological events, all 4,096 lane/reversal combinations; no K04 hit.
+- Transfer checkpoint alternatives: all eight single-attempt chains, 1,024 mixed attempt chains, per-chunk XOR/add/subtract deltas, and selected order/byte variants; no K04 hit.
+- Trip-recorder latch alternatives: 200/300/990 snapshots, inter-snapshot XOR/arithmetic deltas, K05 word-order copies (1,152 variants), and latch-snapshot-as-mask checks; no K04 hit.
+- K04 mask transcription family: 384 four-word-order/per-word-byte-reversal variants applied to each of the four PS-0417 lifecycle payloads; no hit.
+
+### New bounded K08 tests (all failed unchanged K08 SHA-256 commitment)
+- Exact source phrases from N01/N02/N06/N08/N09/N13/N14 and both N13 clauses were checked with the current nonce.
+- Those nine exact phrases were also checked under 384 nonce four-word-order/per-word-byte-reversal variants (3,456 HMAC candidates); no hit.
+- Agent 43 separately checked the complete N20 motif sentence and the full N20 sentence; both failed. Do not repeat literal N20 or broad paraphrase/grammar searches.
+
+### Verification and source boundary
+- The official REC8/1 verifier, run against the repository candidate, reports K01/K02/K03/K05/K06/K07 accepted, K04 and K08 unresolved, and combined acceptance false.
+- MAIL-16 explicitly says the ACK field came from the dispatch log and is not a media-integrity flag. The K04 payload is therefore not authenticated merely by being the selected ACK. The route-sheet K04 mask and K08 nonce have only the secondary transcription provenance documented in `h17-k04-k08-shared-route-parameter-provenance`.
+- The local export does not contain the original physical coupon/independent media-integrity evidence, original route sheet, Emily's final envelope/margin, or Zoey's physical shelf-card. The HST PV records are engineering context, not raw diagnostic words; the missing seq212-227 interval is not present locally. The trip-recorder AUX values did not reproduce the PV readings.
+- Preserve the six accepted components and the official candidate/verifier. Do not infer a complete key, fabricate K04/K08, reopen the closed cross-stream reducer, repeat p951 donor screens, or substitute book/catalog probes for the missing K08 carrier.
+
+### Highest-value next action
+A genuinely new authorized source is required: for K04, the original ESC-N coupon scan or native spool object plus the original route/reduction sheet; for K08, Emily's original envelope/margin or the physical shelf-card/photo-caption carrier plus the original nonce-bearing route sheet. If none can be supplied, report K04/K08 as unresolved rather than continue unsupported transformations.
