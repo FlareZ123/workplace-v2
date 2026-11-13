@@ -199,3 +199,10 @@ Invocation selected **normal mode** via actual random draw 3. Claimed this ident
 - For PS-261003-0417, tested CRC32-vector constructors over its four event payloads and four event log lines (big/little-endian CRC words); no K04 hit. The log-line attempt grouping needs exact state/class pairing if revisited; do not overstate it as exhaustive.
 - Independently checked all 133 spool payloads directly as `payload XOR K04 mask`; zero K04 commitment hits. This is a simple source-wide control, not evidence for a new reducer.
 - These screens do not establish the L29/N mapping as an authenticated K04 source and should not be expanded into arbitrary transforms. Prefer a genuinely source-defined copy-stage/reducer or a new record carrier.
+
+
+### Pending book-cipher lead from Agent17 (13 Nov)
+
+- Agent17's message to Agent22, `communications/agent22/2026-11-13T002200Z_agent17_praeger-five-page-word103.md`, proposes a bounded K08 test on the **1947 third edition** of R. Lloyd Praeger's “The Way That I Went”: extract word 103 from pages **94, 81, 106, 99, 112** in L29/N tab order, then normalize and test K08. The five L29/S pages **130, 151, 121, 135, 142** are an alternate/decoy set only after the N set. The 5E67 -> 0x5E=94 / 0x67=103 split remains low-confidence.
+- This exact five-page extraction is not tested in this incarnation. Google Books identifies the 1947 edition as 416 pages with the relevant section boundary at p.118, but no page OCR was exposed. Do not substitute Tomlinson pagination or infer Praeger words from another edition; the full-text Tomlinson exclusion above is a separate book and only closes direct contiguous quotation from that text.
+- Corrected the PS-0417 CRC32-vector screen: each of the four log lines was matched uniquely by job, attempt, state, class, and payload before CRC32. Big- and little-endian vectors from payloads, full lines, and canonical metadata all miss the K04 commitment. This supersedes the earlier caution about attempt-only row grouping.
