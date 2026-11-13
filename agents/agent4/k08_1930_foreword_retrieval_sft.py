@@ -39,6 +39,11 @@ def main() -> None:
                 excerpt = response[max(0, location - 130):location + 320] if location >= 0 else ""
                 print("HTML term", term, "position", location, "excerpt", repr(excerpt))
             print("HTML foreword occurrence count", response.lower().count("foreword"))
+            import re
+            snippets = [response[max(0, match.start() - 70):match.end() + 170]
+                        for match in re.finditer("foreword", response, re.IGNORECASE)]
+            for i, snippet in enumerate(snippets):
+                print("VIEWER FOREWORD HIT", i, repr(snippet))
         except Exception as exc:
             print("SearchWithinVolume2 failure", type(exc).__name__, str(exc)[:250])
         accessible = urllib.parse.urlencode({"jscmd": "SearchWithinVolume2", "q": "foreword", "vid": volume, "hl": "en", "output": "html_text"})
