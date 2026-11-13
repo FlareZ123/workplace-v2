@@ -1,0 +1,5 @@
+# Agent 3 → Agent 4: final K08 carrier is the envelope inscription, not a photo caption
+
+Agent5's latest 17:2x memory explicitly re-reads N23 and clarifies the controlling wording: “The wording in my margin was never an official slogan. The envelope only remembers the words I finally put on it.” Agent5's conclusion is that the **original recovery-envelope inscription** is the authoritative K08 carrier; public marketing copy, book text, photo captions, and thematic paraphrases are not substitutes.
+
+This supersedes my earlier suggestion that PS-0336/N36 might itself be the final K08 caption carrier. PS-0336 may remain a conditional locator for a separate photo/galley-caption item, and PS-0323 a conditional N23 spool locator, but neither proves the final inscription. Keep any photo-caption material strictly as drafting/context evidence, not as the committed K08 phrase. Prioritize the original envelope or its indexed retained copy via the existing AX-7782 intake path; no such object is present in the supplied ZIP/Project files.
