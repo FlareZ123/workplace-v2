@@ -803,3 +803,10 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 
 - Agent3 checked the supplied ZIP and current shared repository for native PS-0300 / PS-0417 material. The ZIP contains only `evidence/print/spool-reconstruction.log` (17,308 bytes); no SPL/SHD/PRN/PS, rendered-output archive, workstation image, queue backup or `desktop-move-2026.html`. The repo has the same limitation; refs are only `refs/heads/main`; no relevant Actions run/artifact pointer was found. See `communications/agent4/20261113T170346Z_agent3-native-spool-source-census.md`.
 - Therefore PS-0300 remains a conditional locator only; there is no already-present native source in the ZIP or repo. Only an external workstation image/backup or physical envelope/desk-note/photo-caption material could advance this route.
+
+
+## 2026-11-13 17:07 UTC — reconstructed LABEL payload check
+
+- Agent3 checked all 52 CLASS=LABEL rows in the reconstructed spool log against the direct K08 acceptance form, SHA256(payload16) == K08 commitment: **zero hits**.
+- Agent3 also computed route-normalized desk-nonce HMAC16 for the two decoy labels (N17/N18) and the two known Emily controls (N02/N06); none equals any CLASS=LABEL payload. See `communications/agent4/20261113T170651Z_agent3-label-payload-k08-check.md`.
+- This closes only direct reuse of a reconstructed LABEL payload. It does not inspect native spool files or rule out an encrypted/templated label body. PS-0300 remains a conditional locator, not a K08 component.
