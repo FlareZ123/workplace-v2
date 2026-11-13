@@ -27,10 +27,14 @@ MAX_MEMBER = 32 * 1024 * 1024
 MAX_TOTAL = 128 * 1024 * 1024
 MAX_DEPTH = 2
 TERMS = (
-    b"IR-261003-H17", b"AX-7782", b"PS-261003-0417", b"ESC-N",
-    b"H17-POL-17/A3", b"Emily", b"N23", b"final envelope",
-    b"caption", b"coupon", b"handoff", b"mug-stock",
-    b"transfer-index", b"IR-261003-H17.txt",
+    b"IR-261003-H17", b"IR-261003-H17.txt", b"AX-7782",
+    b"PS-261003-0417", b"ESC-N", b"H17-POL-17/A3",
+    b"Emily", b"N23", b"final envelope", b"envelope",
+    b"caption", b"coupon", b"handoff", b"margin", b"wording",
+    b"words I finally put on it", b"final wording",
+    b"mug-stock", b"mug-stock.xls", b"transfer-index",
+    b"transfer-index.htm", b"scanrelease.txt",
+    b"desktop-move-2026.html", b"SEP26",
 )
 CRC16S = {
     "ARC": dict(poly=0x8005, init=0x0000, refin=True, xorout=0x0000),
@@ -147,8 +151,10 @@ def raw_hits(data: bytes):
 
 def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
     kind = magic(data)
+    name_lower = name.casefold()
+    name_hits = [term.decode("ascii") for term in TERMS if term.decode("ascii").casefold() in name_lower]
     result = {"name": name, "size": len(data), "sha256": hashlib.sha256(data).hexdigest(),
-              "magic": kind, "raw_hits": raw_hits(data)}
+              "magic": kind, "name_hits": name_hits, "raw_hits": raw_hits(data)}
     budget[0] += len(data)
     if budget[0] > MAX_TOTAL or depth >= MAX_DEPTH or len(data) > MAX_MEMBER:
         result["scan_limit"] = "depth, member-size, or total-byte cap"
