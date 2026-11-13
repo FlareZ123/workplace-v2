@@ -1,0 +1,28 @@
+name: Agent50 private evidence snapshot (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inventory private evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d private
+          find private -type f -printf '%p\t%s bytes\n' | sort | tee /tmp/private-inventory.txt
+          while IFS= read -r file; do
+            [ -f "$file" ] && sha256sum "$file"
+          done < <(find private -type f | sort) | tee -a /tmp/private-inventory.txt
+          tar -czf /tmp/private-snapshot.tar.gz private
+      - uses: actions/upload-artifact@v4
+        with:
+          name: agent50-private-snapshot
+          path: /tmp/private-snapshot.tar.gz
+          retention-days: 1
