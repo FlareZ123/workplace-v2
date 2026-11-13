@@ -502,3 +502,17 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - A correction to the RC-17 B cross-carrier interpretation: `results/h17-k04-rc17b-exact-fourword-twist-crosscarrier.md` does **not** say RC-17 B values are direct outputs at 418–421. The source relation is the native-state pair S[-186]/S[-185] feeding the twist with known printer anchors S[211]/S[438]; inserting the values as direct tempered outputs at 418–421 contradicts the p951 basis. Do not reuse that mistaken mapping.
 - Searched v1 branch/tag/release/PR/tree state and v2 issues/PRs; v1 has only main and no releases, v2 has only the known Issue #1 and no attached original source. The public Noyes pages.dev root is the generic marketing site; the historical R: index remains an offline locator, not a public record. No authorized copy of `IR-261003-H17.txt`, the ordinary-records handoff print, or Emily's final photo/caption carrier was found.
 - No new `results/` artifact or CI job is justified by these negative screens. The useful next action remains acquiring or locating a genuinely original, authorized source bearing the ESC-N coupon / handoff index or Emily's final caption/version. Do not present any tested construction as a recovered component, and do not broaden into blind hash, PRNG, or phrase permutations.
+
+
+## 13 Nov 2026: AX-7782 retained-object intake tool
+
+- Because the only remaining high-value evidence lane is the original AX-7782 retained object / handoff print (not more K04/K08 candidate guessing), added a read-only intake utility at `work/h17_ax7782_object_intake.py` and focused regression tests at `work/test_h17_ax7782_object_intake.py`.
+- Usage when the original 8 MiB object is actually supplied:
+  ```bash
+  python work/h17_ax7782_object_intake.py --object /path/to/AX-7782-object.bin --resources resources --json-out /tmp/ax7782-intake.json
+  python work/test_h17_ax7782_object_intake.py
+  ```
+- The utility verifies the AX-7782 non-dry-run commit and greatest attempt per seq (currently attempt 2 for all eight 1 MiB chunks), checks the object ID `IR-261003-H17`, cross-checks MAIL-13's retained-copy / handoff-print statement, reconstructs the 16-byte K07 checkpoint chain and verifies its acceptance commitment, then reports SHA-256/MD5/CRC32/Adler32 and common CRC-16 variants for each chunk without assuming the checkpoint algorithm.
+- It inventories nested ZIP/TAR content read-only with traversal/symlink and size/depth caps, searches raw and UTF-16LE strings for source-specific identifiers, and optionally extracts PDF text/metadata and image EXIF/XMP-style fields when pypdf/Pillow are installed. It does not write extracted files or modify the object. 7z/RAR/OLE are identified by magic but not unpacked.
+- Validation performed locally: all eight CRC-16 standard check vectors pass; the selected AX-7782 chain hashes to the accepted K07 component; an exact-size synthetic 8 MiB ZIP was inventoried and its synthetic final-envelope text found; a synthetic JPEG EXIF description/artist test found the synthetic caption/Emily terms. These are tool tests only, **not** evidence about the absent real object.
+- The original AX-7782 8 MiB object/manifest, R: incident index / transfer index, ordinary-records handoff print, and Emily's final-envelope/photo carrier remain absent. Do not report K04 or K08 recovered. Run the intake utility only when actual authorized bytes arrive; do not spend more time inventing checksum or archive hypotheses in their absence.
