@@ -713,3 +713,32 @@ Next incarnation: check the three coordination mailboxes for replies; if exact 1
 - No canonical candidate, acceptance commitment, verifier, or source resource was changed. K01/K02/K03/K05/K06/K07 remain accepted; K04 and K08 remain null; the combined REC8/1 key is incomplete.
 
 Next: do not repeat the closed searches above. Continue only on a genuinely new, source-authenticated K04 lifecycle/copy-stage relation or a newly available original source artifact. For K08, leave the active bounded Cowper/Tomlinson and Emily final-margin work with Agent4 unless new exact-edition or author-final evidence arrives.
+
+
+### 2026-11-13 09:34 UTC — orderly release, 13 November 2026
+
+The immutable Agent2 lease began at 2026-11-13T08:24:09.088Z. The actual clock has crossed the 70-minute threshold. This invocation operated in normal research mode and is performing the required orderly release. No lease refresh occurred.
+
+**Recovery state:** resources/candidate.json remains unchanged: K01/K02/K03/K05/K06/K07 accepted; K04 and K08 null. resources/acceptance.json and resources/verify.py were not modified. No complete REC8/1 key was recovered or verified.
+
+**K04 — new bounded source checks, all negative:**
+- Inspected the supplied ZIP container itself. Its 46 regular entries have no archive comment or unusual extra-field payload. Scanned every 16-byte window in the raw ZIP and deterministic concatenations of extracted file contents/names, both directly and after XOR with the K04 masked_component; no commitment hit. Exhaustively tested ordered four-file CRC32 vectors over the 46 files (both byte orders, direct and XOR-masked); no hit. Four-file size, compressed-size, offset and filename-length vectors likewise produced no hit.
+- Decrypted BX25-08.pdf locally using the already-known exploratory value 8131. The page is a property declaration for H17-POL-17/A3 and FA-17/FA-18, not a coupon or native spool artifact. Checked PDF trailer IDs, encryption fields (/O, /U, /OE, /UE, /Perms), decrypted file-key windows/digests, and all decoded PDF streams for K04 16-byte candidates; no hit. The 8131 value remains an exploratory local release value, not authenticated historical provenance.
+- Under the +305 North ticket locator hypothesis, tested one 4-byte lane from each of four mapped support-job ACK payloads (256 candidates), and 4-of-5 lane selections including PS-0417 ACK2 (1,280 candidates); no K04 hit. CRC32 vectors and common digests of the support/batch payloads also failed. The mapping remains a locator hypothesis, not a payload producer.
+- The p951 gaps after PS-0343 and PS-0396 map under +200 to HST seq143 and seq196. Source-derived MT seeds 343, 396, 417, 8131 and incident/date/time values did not reproduce the known printer stream. Hashes of the complete PS-0343/PS-0396 job lines and payloads (MD5, SHA-256, BLAKE2, SHA3, SHA-512, HMAC variants) did not produce the missing gap blocks. Agent3's existing p951 donor screen already includes all intact printer payloads; do not repeat it or treat the conditional chronology as a historical producer proof.
+
+**K08 — new bounded source checks, all negative:**
+- Tested every contiguous normalized word span of length 1–30 across all UTF-8 text files in the supplied ZIP plus extracted BX25 PDF text against the unchanged HMAC commitment; no hit. The exact phrase does not occur verbatim as a contiguous span in the supplied export.
+- Tested 1,323 source-motivated exact-clause joins using N01 sea fragments, N13 end-of-night fragments, and N09/N02 social/table fragments in N20's stated order with literal separators; no HMAC hit.
+- A proposed 5E67 map-grid reading was withdrawn as low-confidence; the established page-94 / word-103 interpretation remains better supported, though not proved. Agent4 owns K08 author-final/version work.
+
+**HST-4 variable-emitter handoff:**
+- The local export contains 112 PV rows, seq100–211, and 112 ACK jobs, PS-0300–PS-0411. The +200 mapping is a locator hypothesis only. export-readme.txt warns that rows are in retrieval order, timestamps are acquisition times, and PV/unit fields are historian context rather than raw diagnostic words.
+- Under the conditional p951 chronology, the gaps after PS-0343 and PS-0396 are 7 and 8 words; the four-word windows 328–331 and 724–727 fall inside those gaps and align to HST seq143 and seq196 under +200.
+- A deterministic 16-sequence reserve was listed to Agent43: {103,110,117,124,131,138,145,152,159,166,173,180,187,194,201,208}. It is not a clean blind holdout: aggregate tag/unit/quality distributions over all rows were viewed before freezing, and seq117 and seq201 were individually exposed when the first 20 retrieval-order rows were printed. Agent43 received both qualifications; do not claim blind validation from this set.
+- On the remaining 96 rows, simple fixed per-record Python random.Random models using choice or choices for tag/unit/quality plus round(uniform(12,88),3) had no exact fit across source-derived seeds, all category orders and all call-order permutations. A per-row random.Random(seq+200) model also had no fit. This only rejects those simple models, not the full variable-consumption emitter.
+- Training gap lengths are 2:40, 3:24, 4:16, 5:5, 6:4, 8:4, 7:1, 9:1, 13:1. No obvious deterministic gap-length rule follows from tag, unit or quality alone. Agent43 owns any further variable-consumption emitter work; require a genuinely uninspected holdout or external complete-record validation and a source-backed field/call schedule.
+
+**Coordination committed:** Sent Agent3 the +305 spool-lane result; sent Agent4 the full-export K08 span closure, N01/N09/N13 clause-join closure, and 5E67 correction; sent Agent43 the HST +200 join audit, fixed-emitter baseline, gap-length summary, and two holdout qualifications. These messages are under communications/agent3/, communications/agent4/, and communications/agent43/.
+
+**Next useful work:** K04 still needs a selected physical/production-stage 16-byte coupon or a new source-authenticated copy-stage relation; the surviving PS-0417 ACK2 is a dispatch receipt, not media-integrity proof. K08 still needs the author-final normalized phrase or an independently validated final-version constructor. Agent43 may continue the HST variable-emitter hypothesis, but only with a defensible source schema and clean validation. Do not repeat the closed ZIP metadata/window, PDF internal-field, +305 lane/digest, p951 seed/hash, literal-span, or exact-clause-join checks.
