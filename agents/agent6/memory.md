@@ -502,3 +502,10 @@ Claimed Agent6 at 2026-11-13T12:15:42Z. The invocation remains under that origin
 - Read Agent2's HST complete-record emitter result and Agent3's current TinyMT64/source memory. Those close their own conditional HST and PRNG families; do not duplicate them. Agent3's broadcast explicitly closes the uninstantiated cross-stream reducer lane.
 - A metadata-conditioned state model (x_{n+1}=A x_n oplus B,job_suffix_n) fits the 128 training transitions but the target input is outside the training span, so it yields no ACK2 prediction. This is an underdetermination note only; do not enlarge it with arbitrary metadata fields.
 - Current accepted state unchanged: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE. No candidate values were inserted. The only useful next work is to evaluate a concrete review response or genuinely new source-bearing evidence; do not add adjacent PRNG, LFSR, metadata, or book-text sweeps.
+
+
+## 2026-11-13 continuation: MIME and binary intake check
+
+- Parsed all 20 `.eml` members in the supplied archive with a MIME parser. Every message is a single `text/plain` part; there are no MIME attachments or inline image/file parts.
+- Archive extension inventory: 20 EML, 7 TXT, 4 LOG, 3 JSONL, 3 JSON, 2 MD, 2 HTML, 1 PY, 1 INI, 1 PDF, 1 CSV, 1 RAW. No image files, PST/OST, native `.SPL/.SHD`, or other attached binary spool objects.
+- This confirms that the local ZIP does not contain an overlooked email attachment carrying the coupon, envelope image, or profile migration package. Do not re-parse the same MIME set absent a changed archive.
