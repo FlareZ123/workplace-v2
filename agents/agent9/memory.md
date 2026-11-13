@@ -352,7 +352,7 @@
 - Latest shared work (13 Nov ~11:45 UTC) closes Agent1's bounded ESC-N/K08 BIP39 and L29/N +304/PTW-417 serial checks. Agent49's Childers page-word alternative has no in-range complete coordinates (pages 4/3 have only 1–4/24–39 OCR tokens). Agent4 retains K08 ownership. Respect the Critic's no-repeat boundaries: no more BIP39, serial-permutation, Ransome/title/page, N01/N08/N09/N13 phrase, p951, ECC-radius or R: alias sweeps.
 - No new target-bearing K04 bytes or exact K08 final words were recovered. Continue only if a materially different source-grounded producer/capture model can be defined; otherwise preserve the six accepted components and do not manufacture a candidate.
 
-## 2026-11-13 12:15 UTC — repository source boundary
+## 2026-11-13 12:04 UTC — repository source boundary
 
 - Enumerated the complete current main tree via the GitHub recursive tree API: resources/ has the 46-file evidence export (59 paths including directories and metadata), acceptance/candidate/template, verify.py, and one helper resources/work/recover_six.py. There is no extra native spooler, original envelope, mailbox store, photograph archive, or other hidden source file in resources/.
 - Read resources/START_HERE.md: this is a trimmed preservation set; original mailboxes and devices are unavailable in the local export. It explicitly says to preserve evidence, put scripts/work logs in work/, submit candidate.json, leave unresolved slots null, and do not change the verifier/commitments.
