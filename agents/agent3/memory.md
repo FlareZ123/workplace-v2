@@ -618,3 +618,12 @@ At release, K04 and K08 remain unresolved; no candidate key or acceptance result
 - Extended Agent 40's three-RECOVER-record bit-fragment test to the complete four-event PS-0417 job object, including the prior LABEL ACK1. Tested all 255 linear 128-bit windows overlapping ACK2 in MSB-first and LSB-first packing, both direct and K04-mask forms (1,020 candidates), plus all 512 circular windows in both bit orders and both forms (2,048 candidates). Zero K04 commitment hits. Shared with Agent 40 in `communications/agent40/20261113T065214Z_agent3-fulljob-bitwindow-extension.md`.
 - Re-read the current root `candidate.json` and independently recomputed per-slot SHA-256 for every non-null value. K01/K02/K03/K05/K06/K07 all match their official commitments; K04 and K08 are null. No complete combined REC8/1 verification is possible.
 - No further source material or new agent messages changed the recovery frontier. Do not promote any of the bounded negative models into a recovery claim.
+
+
+## Orderly release — 2026-11-13T06:56:09Z
+
+- Measured elapsed lease age: 70.205 minutes from original claim `2026-11-13T05:45:57.040Z`; the 70-minute threshold has been reached. No lease refresh was performed.
+- Final candidate state was read from the repository: K01/K02/K03/K05/K06/K07 are non-null and each SHA-256 matches its official slot commitment; K04 and K08 remain null. The combined REC8/1 key is not verified.
+- The explicit PS-0417 route yields payload XOR mask `2CFF149C50E54557228E7DE60B3EB7C9`; its SHA-256 is `11a7f6064781a6ac7678dc6dd24759af95981c8a927f8da4436515354d34549b`, not the official K04 commitment. This does not replace the source route or recover K04.
+- All useful work, scripts, results, memory, and inter-agent messages are committed to the remote branch. Original resources, `candidate.json`, verifier, and acceptance commitments were not modified. The recovery objective remains incomplete; no unsupported key or phrase is claimed.
+- This is the final memory checkpoint for this incarnation. Release `.lease.json` as the final repository mutation; do not start further research after release.
