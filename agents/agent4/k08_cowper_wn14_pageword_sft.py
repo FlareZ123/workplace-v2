@@ -32,7 +32,7 @@ CALIBRATION_PAGE = 121
 TOP_CROP_PX = 150
 BOTTOM_CROP_PX = 60
 WORD_PATTERN = re.compile(r"[A-Za-z0-9]+(?:[.'’/-][A-Za-z0-9]+)*")
-GROUP_PATTERN = re.compile(r"WN-14\\s*/\\s*group\\s+([A-D])\\s*/\\s*([0-9A-F]{8})", re.I)
+GROUP_PATTERN = re.compile(r"WN-14\s*/\s*group\s+([A-D])\s*/\s*([0-9A-F]{8})", re.I)
 EXPECTED_GROUPS = OrderedDict([
     ("A", "049AAB2E"),
     ("B", "1CDE7A82"),
@@ -46,13 +46,13 @@ def sha256(data: bytes) -> str:
 
 
 def normalize_k08(text: str) -> str:
-    text = re.sub(r"[^a-z0-9\\s]", " ", text.lower())
+    text = re.sub(r"[^a-z0-9\s]", " ", text.lower())
     return " ".join(text.split())
 
 
 def join_line_wrap_hyphens(text: str) -> str:
     return re.sub(
-        r"(?<=[A-Za-z0-9])-\\s*\\n\\s*(?=[A-Za-z0-9])",
+        r"(?<=[A-Za-z0-9])-\s*\n\s*(?=[A-Za-z0-9])",
         "",
         text,
     )
@@ -71,6 +71,16 @@ def source_groups() -> tuple[dict[str, str], dict[str, str]]:
             if group in found and found[group] != value:
                 raise ValueError(f"Conflicting WN-14 group {group}")
             found[group] = value
+
+    confirmation_path = EVIDENCE / "mail/14.eml"
+    confirmation = confirmation_path.read_bytes()
+    confirmation_text = confirmation.decode("utf-8")
+    if "No replacement groups were issued." not in confirmation_text:
+        raise ValueError("MAIL-14 no-replacement confirmation changed")
+    if "A, then B, then C, then D remains the order." not in confirmation_text:
+        raise ValueError("MAIL-14 group-order confirmation changed")
+    source_hashes["mail/14.eml"] = sha256(confirmation)
+
     if found != dict(EXPECTED_GROUPS):
         raise ValueError(f"Signed WN-14 source groups changed: {found!r}")
     return found, source_hashes
@@ -85,7 +95,7 @@ def page_word_pairs(groups: dict[str, str]) -> list[tuple[int, int]]:
 
 
 def png_dimensions(data: bytes) -> list[int] | None:
-    if len(data) < 24 or not data.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+    if len(data) < 24 or not data.startswith(b"\x89PNG\r\n\x1a\n"):
         return None
     return list(struct.unpack(">II", data[16:24]))
 
@@ -179,8 +189,12 @@ def main() -> None:
     groups, group_source_hashes = source_groups()
     pairs = page_word_pairs(groups)
 
-    route = json.loads((EVIDENCE / "recovery-routing.json").read_text(encoding="utf-8"))
-    acceptance = json.loads((ROOT / "resources" / "acceptance.json").read_text(encoding="utf-8"))
+    route_path = EVIDENCE / "recovery-routing.json"
+    acceptance_path = ROOT / "resources" / "acceptance.json"
+    route_bytes = route_path.read_bytes()
+    acceptance_bytes = acceptance_path.read_bytes()
+    route = json.loads(route_bytes)
+    acceptance = json.loads(acceptance_bytes)
     nonce = bytes.fromhex(route["K08"]["desk_nonce"])
     target_hash = acceptance["slot_sha256"]["K08"]
 
@@ -199,6 +213,10 @@ def main() -> None:
         "book": {"title": "Sailing Tours", "author": "Frank Cowper", "part": "Part II", "edition": EDITION, "google_books_id": BOOK_ID},
         "wn14_groups_hex": groups,
         "wn14_source_sha256": group_source_hashes,
+        "source_file_sha256": {
+            "recovery-routing.json": sha256(route_bytes),
+            "acceptance.json": sha256(acceptance_bytes),
+        },
         "page_word_pairs_in_source_order": [
             {"group": "ABCD"[i // 2], "page": page, "word_1based": word}
             for i, (page, word) in enumerate(pairs)
@@ -237,7 +255,7 @@ def main() -> None:
     if calibration_bytes is None or sha256(calibration_bytes) != calibration["sha256"]:
         result["status"] = "ACCESS_OR_CALIBRATION_MISMATCH"
         result["calibration"]["match"] = False
-        (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\\n", encoding="utf-8")
+        (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(result, indent=2))
         return
     result["calibration"]["match"] = True
@@ -249,7 +267,7 @@ def main() -> None:
             record["selected_word"] = None
             result["pages"].append(record)
             result["status"] = "INCOMPLETE_PAGE_ACCESS"
-            (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\\n", encoding="utf-8")
+            (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
             print(json.dumps(result, indent=2))
             return
         image_path = OUT / f"p{page}.png"
@@ -260,7 +278,7 @@ def main() -> None:
         result["pages"].append(record)
         if extracted["selected_word"] is None:
             result["status"] = "INCOMPLETE_WORD_INDEX"
-            (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\\n", encoding="utf-8")
+            (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
             print(json.dumps(result, indent=2))
             return
         selected_words.append(extracted["selected_word"])
@@ -280,7 +298,7 @@ def main() -> None:
     }
     result["status"] = "MATCH" if component_hash == target_hash else "NO_MATCH"
     result["ocr_engine"] = subprocess_version()
-    (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\\n", encoding="utf-8")
+    (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2))
 
 
