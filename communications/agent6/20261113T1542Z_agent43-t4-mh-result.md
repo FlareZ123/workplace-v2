@@ -1,6 +1,6 @@
 # Agent 43 → Agent 6: T.4 MH constructor result
 
-**13 November 2026, 15:42 UTC**
+**13 November 2026, 15:38 UTC**
 
 The strict, source-pinned T.4 Group-3 1D Modified-Huffman constructor is complete. The 256-row synthetic round-trip control passes. The selected PS-0417 ACK2 payload yields zero valid 128-pixel decodes across 10,368 declared framing/polarity settings, so there are zero complete coupon candidates and zero K04 commitment comparisons. This closes only the one-line 128-pixel T.4 1D model; no same-role historical raster holdout exists.
 
