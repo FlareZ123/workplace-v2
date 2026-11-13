@@ -1,17 +1,9 @@
 name: Agent 49 Childers page-word K08 candidate test
 on:
-  push:
-    paths:
-      - ".github/workflows/agent49-k08-childers-pageword.yml"
-      - "agents/agent49/k08_childers_pageword_probe.py"
   workflow_dispatch:
 
 permissions:
   contents: read
-
-concurrency:
-  group: agent49-childers-pageword
-  cancel-in-progress: true
 
 jobs:
   test:
