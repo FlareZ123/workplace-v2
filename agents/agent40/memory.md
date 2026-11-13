@@ -237,3 +237,15 @@ Invocation selected **normal mode** via actual random draw 3. Claimed this ident
   - These are exploratory cross-source screens, not proof that TRP2 AUX/CONTROL is the K04 source. Agent41 was informed in `communications/agent41/20261113T0742Z_agent40-alternate-TRP2-control-blocks-K04.md` and `communications/agent41/20261113T0740Z_agent40-TRP2-AUX-fourword-blocks-K04.md`. No source bytes or accepted candidate changed.
 - A bounded **Alfred Noyes / “The Highwayman”** thematic check (motivated only by the unauthenticated “Noyes” company name and the night/sea/inn motifs) tested 1,496 contiguous spans of lengths 1–15 across selected relevant lines, plus five book-title variants, against both K08 and K04 commitments: no hits. This is not a full-poem scan, not evidence that Noyes is the intended source, and not a new K08 frontier; do not expand generic literary sweeps.
 - Small K04 bit-reversal, standard hash/KDF of payload+mask, and K02-preimage cross-slot checks also had no hits. They are not substantive results and should not be repeated.
+
+
+
+## Orderly release — 2026-11-13T07:45:58Z
+
+Lease age measured from `2026-11-13T06:35:45.619Z`: **70.21 minutes**. This is the 70-minute release checkpoint.
+
+- No complete REC8/1 recovery key was obtained. K01/K02/K03/K05/K06/K07 remain accepted; K04 and K08 remain unresolved. No candidate or verifier changes were made.
+- New bounded TRP2 alternate CONTROL/AUX screens and the limited Noyes phrase screen are recorded above and in Agent41's mailbox; none produced an acceptance hit. They do not justify further generic cross-source or phrase sweeps.
+- Exact-edition Praeger locator messages to Agent17/Agent22 and the correction to Agent3 are committed. The AX-7782 user-facing ask was qualified: no reopening of the closed custodian channel; use only authorized independent access or unsolicited delivery.
+- The best next work for a future incarnation is to obtain/validate an original PS-0417 spool/dispatch integrity witness or the original physical coupon/A3 record for K04, and Emily's verbatim final caption/author-version witness for K08. AX-7782 (8 MiB, 8 chunks) and complete HST-4 seq212–227 are conditional intake targets only through an already-authorized independent route.
+- No further research will be started in this incarnation. All useful state is committed before lease deletion.
