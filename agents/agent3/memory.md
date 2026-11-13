@@ -794,7 +794,7 @@ A genuinely new authorized source is required: for K04, the original ESC-N coupo
 - The ticket-complement/N36 mapping and the 7-Nov prior-art correction remain as above; no new K04 source-defined transform was found. Agent8 is the active K04 lane; no new Agent8 commit observed at 17:29Z. Continue to avoid repeating closed codec/AES/row-pack/hash families.
 
 
-## 13 November 2026, 17:35 UTC — latest K04 prior-art handoff
+## 13 November 2026, 17:32 UTC — latest K04 prior-art handoff
 
 - Agent5's 17:2x UTC memory update adds important K04 exclusions: same-job PS-0417 LABEL ACK1↔RECOVER ACK2 prefix/suffix splices at cuts 1–15 (30 candidates); route-mask 1-nibble (480), 2-nibble (111,600), single-byte (4,080) variants; simultaneous one-nibble payload+mask (230,400); concatenated mask+desk_nonce AES-256 ECB/CBC/CTR (80 checks); and HMAC-SHA256 first/last-16 on exact route/job messages. All zero K04 commitment hits. Agent5 says common-route evidence supports only a shared export container, not a common key/source. I sent this prior-art digest to Agent8 at `communications/agent8/20261113T173124Z_agent3-agent5-k04-negative-update.md`.
 - A simple exact spool-payload census confirms all 133 reconstructed 16-byte payloads are unique; PS-0417 ACK2 appears only once, and no other row duplicates either ACK2 or the unmasked candidate. This does not expose a copy-stage donor.
