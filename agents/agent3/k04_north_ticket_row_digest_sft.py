@@ -40,10 +40,10 @@ assert len(mask) == 16 and len(target) == 32
 
 # The fleet note supplies the five-ticket binder order and the selected ESC-N
 # / L-29/N / FA-17 / H17-POL-17/A3 association.
-binder_ids = re.findall(r"^L-29/N\\s+\\d+\\s+(ST-\\d+)\\s+", fleet, re.M)
+binder_ids = re.findall(r"^L-29/N\s+\d+\s+(ST-\d+)\s+", fleet, re.M)
 assert binder_ids == ["ST-094", "ST-081", "ST-106", "ST-099", "ST-112"]
 assert re.search(
-    r"^PS-261003-0417\\s+ESC-N\\s+L-29/N\\s+FA-17\\s+H17-POL-17/A3$",
+    r"^PS-261003-0417\s+ESC-N\s+L-29/N\s+FA-17\s+H17-POL-17/A3$",
     fleet, re.M
 )
 
@@ -87,10 +87,10 @@ candidates: list[tuple[str, bytes]] = []
 for order_name, ids in orders.items():
     row_lines = [by_id[ticket] for ticket in ids]
     forms = {
-        "rows-LF": "\\n".join(row_lines).encode("utf-8"),
-        "rows-LF-final": ("\\n".join(row_lines) + "\\n").encode("utf-8"),
-        "header-rows-LF": ("\\n".join([header] + row_lines)).encode("utf-8"),
-        "header-rows-LF-final": ("\\n".join([header] + row_lines) + "\\n").encode("utf-8"),
+        "rows-LF": "\n".join(row_lines).encode("utf-8"),
+        "rows-LF-final": ("\n".join(row_lines) + "\n").encode("utf-8"),
+        "header-rows-LF": ("\n".join([header] + row_lines)).encode("utf-8"),
+        "header-rows-LF-final": ("\n".join([header] + row_lines) + "\n").encode("utf-8"),
     }
     for form_name, body in forms.items():
         for hash_name, hasher in hashers.items():
