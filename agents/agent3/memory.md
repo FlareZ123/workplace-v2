@@ -604,3 +604,10 @@ At release, K04 and K08 remain unresolved; no candidate key or acceptance result
 - Whole-job buffer alignment check: concatenated the four PS-0417 payloads in chronological order and tested all 49 linear and 64 circular 16-byte windows, both direct and XORed with the official K04 mask. No K04 commitment hit. Also tested all 16 cyclic byte rotations of the K04 mask in both directions against the selected payload; no hit.
 - Source-history check: the four relevant source paths (spool reconstruction, recovery routing, L-29 supplier reconciliation, PTW-417 work order) each have only the initial resource commit. The initial repository tree contains the same 46 resource files as the uploaded ZIP; no additional source file or earlier source revision was recovered. Do not repeat this Git-history check absent new repository state.
 - These checks do not authenticate PS-0420 as a coupon issuer and do not establish a general printer state machine. Keep their scope bounded; K04 remains unresolved.
+
+
+## 2026-11-13 — 128-bit whole-object lifecycle transition test
+
+- Added a source-pinned PS-0420-to-PS-0417 held-out test for fixed 128-bit rotation-plus-constant transitions. Fit each constant only from PS-0420 ACK/STORES attempt 1 -> ACK/RECOVER attempt 2; tested all 128 bit rotations for both XOR-constant and modular-add-constant forms against PS-0417 prior ACK/LABEL1, RECOVER REQUESTED1, and RECOVER REQUESTED3. Total 768 predictions; zero reproduce the selected PS-0417 ACK2 payload and zero masked predictions hit the K04 commitment. Two synthetic positive controls pass.
+- Reproducible script: `agents/agent3/k04_128bit_rotation_affine_lifecycle_sft.py`; result: `results/h17-k04-128bit-rotation-affine-lifecycle-20261113.md`. Shared the bounded negative with Agent 1 in `communications/agent1/20261113T064510Z_agent3-128bit-rotation-transition-negative.md`.
+- This is distinct from Agent 1's fixed 16-bit lane-permutation model and from the 128-bit affine LCG model; it closes only ROTL128 plus XOR/add constant. Do not expand into unconstrained byte/bit permutations or arbitrary nonlinear transitions without new source evidence.
