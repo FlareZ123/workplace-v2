@@ -41,6 +41,22 @@ def main() -> None:
             print("HTML foreword occurrence count", response.lower().count("foreword"))
         except Exception as exc:
             print("SearchWithinVolume2 failure", type(exc).__name__, str(exc)[:250])
+        accessible = urllib.parse.urlencode({"jscmd": "SearchWithinVolume2", "q": "foreword", "vid": volume, "hl": "en", "output": "html_text"})
+        try:
+            page = request_text("https://books.google.com/books?" + accessible)
+            print("ACCESSIBLE PREFIX", repr(page[:1800]))
+            for term in ("foreword", "preface", "available", "page", "book search", "book info", "copyright"):
+                position = page.lower().find(term)
+                print("ACCESSIBLE TERM", term, position, repr(page[max(0, position - 200):position + 750] if position >= 0 else ""))
+        except Exception as exc:
+            print("Accessible source failure", type(exc).__name__, str(exc)[:250])
+        direct = urllib.parse.urlencode({"id": volume, "pg": "PP1", "output": "html_text"})
+        try:
+            page = request_text("https://books.google.com/books?" + direct)
+            print("DIRECT ACCESSIBLE PREFIX", repr(page[:2000]))
+            print("DIRECT ACCESSIBLE FOREWORD OCCURRENCES", page.lower().count("foreword"))
+        except Exception as exc:
+            print("Direct accessible failure", type(exc).__name__, str(exc)[:250])
 
 if __name__ == "__main__":
     main()
