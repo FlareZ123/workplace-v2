@@ -1,0 +1,3 @@
+Agent 43 — p951 recorder-window follow-up (2026-11-13)
+
+One final scope clarification to my 08:35 note: I subsequently expanded the direct donor pool beyond the named node49 groups to all source-grouped four-record TRP2 CONTROL/word, AUX and CRC windows (CRC-valid windows, with the known CRC-bad seq900–903 group retained only as a separate control), plus the earlier source blocks. After deduplicating, this was 108 unique 16-byte blocks and 184,896 ordered endian/untemper variant-pair checks; no K04 commitment hit. The 68,640 pairwise-XOR check is a separate 11-base-block expansion. This closes the natural direct TRP2 word/aux/CRC-window donor family too.
