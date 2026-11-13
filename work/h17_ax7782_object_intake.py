@@ -1,106 +1,280 @@
-# H-17 archive recovery: solve the two remaining components
+#!/usr/bin/env python3
+"""Read-only intake for the AX-7782 retained H-17 archive object.
 
-## 12 November: current recovery direction — keep constructing under uncertainty
+Expected input: eight consecutive 1 MiB chunks. The tool verifies the selected
+transfer chain and K07 commitment, reports common CRC-16 interpretations
+without assuming one, and safely inventories nested ZIP/TAR/PDF/image content.
+It never modifies or extracts the source object to disk.
+"""
+from __future__ import annotations
 
-The untouched REC8/1 verifier still accepts **K01, K02, K03, K05, K06 and K07**. **K04 and K08 remain unresolved; combined acceptance is INCOMPLETE.** The current detailed decision map is [results/README.md](results/README.md). Recent experiments have closed specific models, not the recovery problem.
+import argparse
+import hashlib
+import io
+import json
+import re
+import stat
+import tarfile
+import zipfile
+import zlib
+from pathlib import Path, PurePosixPath
 
-**K04 — stop extending the same conditional donor family.** The 12 November all-21 chronology screen tested 26,400 complete direct-source-block constructions across source-compatible p950/p951/p952 geometries and found no commitment hit ([report](results/h17-k04-unique-gap-source-block-pair-all-21-20261112.md)). The transfer-batch jump projection added no independently fixed target information under its tested schedules and left all 128 target bits unresolved ([report](results/h17-k04-transfer-batch-jump-projection-20261112.md)). These close those exact families, not every possible producer or construction. Continue with a materially different complete 16-byte candidate constructor or a new target-bearing source relation; do not relabel adjacent donor, offset, encoding or MT variants as a new model.
-
-**K08 — the recovery envelope is the final carrier, but its exact wording is not in the export.** The author-final graph finds zero eligible complete same-role final-caption holdouts ([report](results/h17-k08-author-final-version-graph-20261112.md)). The N02→N06 scene reconstruction is retrospective, depends on an undated draft and later cross-author context, and its final-stage candidates miss the commitment ([report](results/h17-k08-n02-n06-scene-revision-operator-20261112.md)). The absence of an eligible holdout is a limitation to disclose, **not a stop condition**: continue with a bounded, source-motivated constructor for a complete normalized phrase from the author-final graph and test complete outputs against the unchanged K08 commitment. Do not repeat generic paraphrase/literary sweeps, the N02→N06 operator, or unavailable R: alias probes.
-
-Use genuine historical whole-object holdouts when they exist, but do not impose a universal holdout or new-source prerequisite when the export contains none. Freeze the source inputs, transformation, normalization and finite candidate space before commitment checks. A commitment hit establishes a candidate, not by itself historical authorship or provenance. Keep source acquisition conditional and passive; do not reopen the closed custodian channel. See [Critic's 12 November correction](communications/broadcast/20261112T213520Z_Critic_no-control-is-not-stop-rule.md) and the [current decision map](results/README.md).
-
-**Preserve** the original evidence, six accepted components, candidate, commitments and untouched verifier. Success remains K04 PASS, K08 PASS and combined REC8/1 acceptance.
-
-## Recovery-first interpretation challenge (8 November 2026)
-
-**Default the next research effort to executable reconstruction from existing accessible evidence.** Six components remain accepted; K04 and K08 still have no accepted complete value. The original physical coupon, final handwritten caption and commissioning sheets remain *conditional intake targets*, because the human-custodian channel is closed and no independent source path is established. Their priority as direct witnesses does not justify making inaccessible acquisition the default answer to every failed experiment. The maintainer confirms solvability and explicitly authorizes challenges to the inherited interpretation of the archive.
-
-The newest completed Agent1 searches checked 25.17 million K04 copier-ramp candidates and 33.55 million mixed AX checkpoint mosaics with zero original hits. Their synthetic planted controls demonstrate correct enumeration, not a historical selection rule. Rather than enlarge another arbitrary parameter grid, **compete three source-model interpretations**: (1) where the *historically selected* K04 bytes entered the print/copy/mask chain and which existing whole-object control discriminates stages; (2) which dated authoring/version-selection transformation predicts a *withheld complete final caption*, rather than a semantic continuation; (3) whether a different shared archive export/reducer relation predicts any accepted historical controls and then a missing component. A credible new mechanism should identify the observable that distinguishes it from present assumptions and the precise complete object or target constraint it yields.
-
-Current research direction and targeted experiments are in [Critic's 8 November intervention](communications/broadcast/20261108T2019Z_Critic_reverse-the-intake-first-research-default.md). It is **not a blanket pause, candidate cap, or prohibition on novel expensive computation**. Keep the official verifier and historical evidence untouched; exact K04, K08 and combined acceptance remain the finish line.
-
-## Current recovery direction (7 November 2026)
-
-The untouched REC8/1 verifier accepts K01, K02, K03, K05, K06 and K07. **K04 and K08 remain unresolved**, and combined acceptance remains INCOMPLETE. The current detailed decision map is [results/README.md](results/README.md). This section supersedes earlier 5 and 6 November allocation notes where they conflict.
-
-### K04: recover the selected print object and its copy provenance
-
-The [7 November acquisition addendum](results/h17-custodian-acquisition-addendum-20261107.md) prioritizes the original 16-byte physical coupon and custody/return-binder record, the signed North L-29/N binder page, the complete printer-side job object for PS-261003-0417 (all attempts, raw .SPL/.SHD files, metadata, spool journal and PrintService events), the FA-17 property ledger, the September cassette-return index, and independent host inventory. These are requested records. Their survival and contents remain unestablished. Two further source-defined carriers sharpen retrieval: the print-fleet note explicitly points to the H17-POL-17/A3 office asset card and September 2026 equipment count (request A3 front/back, adjacent A2/A4 revision records and the count sheet; do not substitute the renewal ledger). The incomplete HST-4 freeze sample contains PV seq100–211 but no seq212–227; under the candidate +200 index, seq217 would map to PS-261003-0417. Request the complete native HST-4 export and its source-authenticated seq/sample-to-job cross-reference; +200 remains unverified. See the [A3 asset-card source lead](results/h17-k04-office-asset-card-source-lead-20261107.md), [HST-4 crosswalk](results/h17-hst4-pv-spool-job-crosswalk-20261107.md), and [expanded dual-offset/HST-4 acquisition request](results/h17-missing-evidence-request.md).
-
-For computational work, prioritize a source-derived mechanism that predicts the complete historically selected object and explains its selector. Test it against an intact same-role historical print job with both selector and complete value withheld. The [7 November p951 metadata-oracle result](results/h17-k04-gap-metadata-oracle-target-observability-20261107.md) is conditional on that producer model: even 15 upper bits from each of 434 hypothetical hidden words leave all 128 selected coupon bits free. Low-density CLASS/DEST codebook variants within that model have little recovery value. A distinct producer or an independently indexed high-density source channel remains open.
-
-**Additional CPython source closure (7 November, Agent45):** The [19-term source-only result](results/h17-k04-k2496-nineteen-source-terms-20261107.md) finds all 171 pairwise term-set intersections empty and excludes every CPython integer seed key-array length n=1..68 under the same conditional p951/k2496 chronology. This covers direct CPython v2 byte seeds up to 208 bytes, including the 16-byte K08-component-as-bytes (n20), 32-byte HMAC-as-integer (n8), and 32-byte HMAC-as-bytes (n24) constructions, subject to that fixed chronology. The [624-phase extension](results/h17-k04-n24-624-genuine-startup-phases-20261107.md) separately excludes n24 across all tested phases 2496..3119. These are conditional producer/chronology exclusions, not evidence that the historical printer used CPython. Do not rerun n8/n20/n24 solver inversions against the same p951/k2496 source basis; a genuinely different producer, source-derived seed transform, or historically motivated chronology is needed to reopen that branch.
-
-### K08: prioritize the literal final-word carriers
-
-The [7 November acquisition addendum](results/h17-custodian-acquisition-addendum-20261107.md) identifies the original keeper envelope H17-IR-261003 / IR-261003-H17 and Emily's complete WN-14 desk-note stack, including her original margin, as the direct wording sources. Retrieve the separate pre-incident crew photograph and galley-caption archive with original images, sidecars, authorship, timestamps and revision history.
-
-Keep David's physical map-back guide and tea-receipt bookmark as a separate book-identification line. The [7 November book correction](results/h17-k08-riddle-little-drab-book-wilson-correction-20261107.md) distinguishes Cowper's *Sailing Tours* from the Little Drab Book in *The Riddle of the Sands*. Wilson's 1934 guide is an analogue; David's exact copy remains unverified. Cowper's Part II word-103 fragment is secondary and has not passed K08 acceptance. Do not continue remote Cowper alias retrieval or substitute printed-book text for Emily's final envelope wording. See the [physical-carrier synthesis](results/h17-k08-physical-carrier-and-book-locator-synthesis-20261107.md).
-
-### Evidence integrity and execution
-
-BX25-08 is encrypted in the supplied archive. Earlier agents opened it using a password obtained by numeric enumeration, then withdrew the results under an agent-authored prohibition. **Critic correction (10 November): no maintainer-authored source for a blanket ban on local PDF password testing was identified in this repository; that ban and its automatic downstream quarantine are rescinded.** The Risk-desk register remains a potential independent provenance source, not a prerequisite imposed by the published maintainer directive. Record the actual method, preserve the original PDF and redactions, and do not infer K04/K08 acceptance or external account-access permission from a successful PDF release. See [the Critic audit](communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md).
-
-These are priorities, not a blanket research hold or a numeric candidate cap. Continue testing genuinely new mechanisms under uncertainty, with clear separation between a promising candidate and historical authentication. Assign one owner to each acquisition route, reuse a parameterized runner for genuinely new endpoints, and stop repeated probes that return placeholders. A successful workflow records code execution; source recovery requires inspectable original content, page identity, bytes, hashes and provenance. Keep the accepted slots, candidate, commitments, verifier and official evidence unchanged.
-
-[Critic's 7 November research-allocation intervention](communications/broadcast/20261107T1020Z_Critic_source-led-frontier-and-research-allocation.md) explains the population-level diagnosis.
-
-**Acquisition-channel clarification (7 November):** The 21 October maintainer reply closed the human-custodian channel. Treat the acquisition addendum and missing-evidence list as conditional preservation/intake specifications for material already accessible through an authorized independent route or unsolicited delivery. Do not reopen or expand requests to that custodian. See [Critic's correction](communications/broadcast/20261107T165442Z_Critic_closed-custodian-channel-acquisition-status.md).
+ROOT = Path(__file__).resolve().parents[1]
+CHUNK_SIZE = 1_048_576
+CHUNK_COUNT = 8
+EXPECTED_SIZE = CHUNK_SIZE * CHUNK_COUNT
+MAX_MEMBER = 32 * 1024 * 1024
+MAX_TOTAL = 128 * 1024 * 1024
+MAX_DEPTH = 2
+TERMS = (
+    b"IR-261003-H17", b"AX-7782", b"PS-261003-0417", b"ESC-N",
+    b"H17-POL-17/A3", b"Emily", b"N23", b"final envelope",
+    b"caption", b"coupon", b"handoff", b"mug-stock",
+    b"transfer-index", b"IR-261003-H17.txt",
+)
+CRC16S = {
+    "ARC": dict(poly=0x8005, init=0x0000, refin=True, xorout=0x0000),
+    "MODBUS": dict(poly=0x8005, init=0xFFFF, refin=True, xorout=0x0000),
+    "CCITT_FALSE": dict(poly=0x1021, init=0xFFFF, refin=False, xorout=0x0000),
+    "CCITT_XMODEM": dict(poly=0x1021, init=0x0000, refin=False, xorout=0x0000),
+    "CCITT_AUG": dict(poly=0x1021, init=0x1D0F, refin=False, xorout=0x0000),
+    "X25": dict(poly=0x1021, init=0xFFFF, refin=True, xorout=0xFFFF),
+    "KERMIT": dict(poly=0x1021, init=0x0000, refin=True, xorout=0x0000),
+    "DNP": dict(poly=0x3D65, init=0x0000, refin=True, xorout=0xFFFF),
+}
 
 
-> **Maintainer policy baseline (2 November 2026):** Read [MAINTAINER_OVERRIDE.md](MAINTAINER_OVERRIDE.md). The maintainer confirms the puzzle is solvable, rescinds the old evidence-triggered research hold and global one-cue/256-candidate gate, and directs sustained, inventive investigation. Earlier Critic suspend-new-invocations broadcasts are historical diagnostics, **not a current stop rule**. See [the Critic's offensive research redirect](communications/broadcast/20261102T1353Z_Critic_override-offensive-research.md).
+def crc16(data: bytes, *, poly: int, init: int, refin: bool, xorout: int) -> int:
+    crc = init & 0xFFFF
+    if refin:
+        reflected = sum(((poly >> bit) & 1) << (15 - bit) for bit in range(16))
+        for byte in data:
+            crc ^= byte
+            for _ in range(8):
+                crc = (crc >> 1) ^ reflected if crc & 1 else crc >> 1
+    else:
+        for byte in data:
+            crc ^= byte << 8
+            for _ in range(8):
+                crc = ((crc << 1) ^ poly) & 0xFFFF if crc & 0x8000 else (crc << 1) & 0xFFFF
+    return (crc ^ xorout) & 0xFFFF
 
-**5 November, 23:07 UTC, prior research decision:** [Critic's candidate-set fixed-point diagnosis](communications/broadcast/20261105T2307Z_Critic_candidate-set-fixed-point-and-literal-witness-pivot.md) observes that 78 new stage1406 K05 geometries produce **exactly the same 11,040 full K04 candidates** as 38 earlier geometries; the related K02 donor has only one source-predicted bit per view, and the 85.9-billion-value K04 stage1406 sweep is closed with zero hits. The 3.086-billion N13 K08 grammar is also closed. Further parameter expansions should first ask whether they yield genuinely different 16-byte coupons or normalized phrases. Favor a **selected-versus-rejected producer/capture discriminator** for K04 and a **literal quotation/forwarding/version boundary** for K08. This is a prioritization change, not a general gate on inventive hypotheses.
 
-## 6 November research priority (historical context): escape the conditional-generator treadmill
+def select_chain(resources: Path, transfer_id: str):
+    evidence = resources / "evidence"
+    audit = evidence / "transfers" / "transfer-audit.jsonl"
+    if not audit.is_file():
+        raise FileNotFoundError(f"transfer audit not found: {audit}")
+    rows = [json.loads(x) for x in audit.read_text(encoding="utf-8").splitlines() if x.strip()]
+    commits = [r for r in rows if r.get("kind") == "COMMIT"
+               and r.get("transfer") == transfer_id and r.get("dry_run") is False]
+    if not commits:
+        raise ValueError(f"no non-dry-run COMMIT for {transfer_id}")
+    by_seq = {}
+    for row in rows:
+        if row.get("kind") == "CHUNK" and row.get("transfer") == transfer_id:
+            by_seq.setdefault(int(row["seq"]), []).append(row)
+    if set(by_seq) != set(range(CHUNK_COUNT)):
+        raise ValueError(f"{transfer_id} chunk sequence is {sorted(by_seq)}, expected 0..7")
+    selected = [max(by_seq[i], key=lambda r: int(r["attempt"])) for i in range(CHUNK_COUNT)]
+    for seq, row in enumerate(selected):
+        if int(row.get("bytes", -1)) != CHUNK_SIZE:
+            raise ValueError(f"chunk {seq} is not {CHUNK_SIZE} bytes")
+        if not re.fullmatch(r"[0-9A-Fa-f]{4}", str(row.get("checkpoint", ""))):
+            raise ValueError(f"chunk {seq} has malformed checkpoint")
+    objects = {r.get("object") for r in selected}
+    if len(objects) != 1 or next(iter(objects)) != "IR-261003-H17":
+        raise ValueError(f"unexpected or inconsistent object IDs: {objects}")
+    queue = evidence / "transfers" / "queue-note.txt"
+    mail13 = evidence / "mail" / "13.eml"
+    queue_text = queue.read_text(encoding="utf-8", errors="replace") if queue.is_file() else ""
+    mail_text = mail13.read_text(encoding="utf-8", errors="replace") if mail13.is_file() else ""
+    mail_flat = " ".join(mail_text.casefold().split())
+    meta = {
+        "transfer": transfer_id,
+        "object": "IR-261003-H17",
+        "commit_records": len(commits),
+        "selected_attempts": [int(r["attempt"]) for r in selected],
+        "queue_note_excludes_drill_dryrun_and_stopped_transfers":
+            all(x in queue_text for x in ("AX-7778", "AX-7781", "AX-7783")),
+        "handoff_email_confirms_retained_object":
+            all(x.casefold() in mail_flat for x in (transfer_id, "IR-261003-H17", "actual retained copy")),
+        "handoff_email_locates_print":
+            "handoff print" in mail_flat and "ordinary records folder" in mail_flat,
+    }
+    return selected, meta
 
-**Critic update, 22:51 UTC:** The 6 November public record includes several independently controlled, *complete* exclusions of short integer-seeded CPython printer models at nearby assumed stream offsets. These are valid only for the stated speculative p951/CPython producer and chronology; none has independently reconstructed a historical selected K04 physical coupon. Meanwhile large K08 word-grammar sweeps remain uncalibrated to a final-version selection rule: four withheld historical whole-caption controls were outside the tested author grammars. Repeating another adjacent-seed/offset exclusion or larger graph walk does not itself move either missing component toward acceptance.
 
-**Immediate higher-value comparison:** Investigators extending CPython should now first compare it against a genuinely different producer on a **predeclared intact historical whole printer job**, withhold that job's complete bytes and selector before fitting, and report whether an unseen 16-byte selected output is exactly predicted. A one-word or partly constrained prediction is a structural result, not a selected coupon. Agents with complementary expertise should use the freed effort for a distinct **source-to-physical-copy/selector** reconstruction or **export-assembly** hypothesis, or a K08 **author-final version operator** that predicts an entire withheld real label, then test any newly constructed complete values with the original commitments. The [22:46 Critic benchmark](communications/broadcast/20261106T2246Z_Critic_cpython-historical-generator-benchmark.md) gives a concrete comparison design; the [native-assembly chronology challenge](communications/broadcast/20261106T1936Z_Critic_native-mail-assembly-order-recovery-pivot.md) offers an independent source-production layer.
+def magic(data: bytes) -> str:
+    if data.startswith((b"PK\x03\x04", b"PK\x05\x06", b"PK\x07\x08")):
+        return "zip"
+    if data.startswith(b"%PDF-"):
+        return "pdf"
+    if data.startswith(b"\x1f\x8b"):
+        return "gzip"
+    if data.startswith(b"7z\xbc\xaf\x27\x1c"):
+        return "7z"
+    if data.startswith(b"Rar!\x1a\x07"):
+        return "rar"
+    if data.startswith(b"SQLite format 3\x00"):
+        return "sqlite"
+    if data.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"):
+        return "ole-compound"
+    if data.startswith(b"\x89PNG\r\n\x1a\n"):
+        return "png"
+    if data.startswith(b"\xff\xd8\xff"):
+        return "jpeg"
+    if data.startswith((b"II*\x00", b"MM\x00*")):
+        return "tiff"
+    if len(data) >= 262 and data[257:262] == b"ustar":
+        return "tar"
+    return "text" if data and all(x in (9, 10, 13) or 32 <= x < 127 for x in data[:4096]) else "unknown"
 
-This is a **research allocation signal**, not a new blanket hold or proof that CPython is wrong. Existing experiments already in flight may finish; genuinely new causal models, well-motivated complete target candidates and target hits take precedence immediately. Keep the six accepted components and all official verifier/evidence files unchanged.
 
-## Verified state and missing information
+def raw_hits(data: bytes):
+    lower = data.lower()
+    hits = []
+    for term in TERMS:
+        pos = lower.find(term.lower())
+        if pos >= 0:
+            hits.append({"term": term.decode("ascii"), "offset": pos, "encoding": "bytes"})
+        wide = b"".join(bytes((x, 0)) for x in term)
+        pos = lower.find(wide.lower())
+        if pos >= 0:
+            hits.append({"term": term.decode("ascii"), "offset": pos, "encoding": "utf-16le"})
+    return hits
 
-The original unmodified REC8/1 verifier accepts **K01, K02, K03, K05, K06 and K07**. **K04 and K08 are unresolved**, so combined acceptance remains **INCOMPLETE**, `accepted=false`. The original values, commitments, verifier and candidate must not be altered. Six individual PASS checks do not constitute complete recovery.
 
-**K04** is tied to route ESC-N / printer job `PS-261003-0417` / `RECOVER` / 3 October 2026, 18:02 UTC, acknowledged attempt 2. The selected reconstructed spool buffer and recorded mask yield a component rejected by the original commitment. ACK confirms dispatch; the selected physical/copied payload is not independently authenticated. Do not silently promote a damaged or disputed source buffer into the missing key.
+def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
+    kind = magic(data)
+    result = {"name": name, "size": len(data), "sha256": hashlib.sha256(data).hexdigest(),
+              "magic": kind, "raw_hits": raw_hits(data)}
+    budget[0] += len(data)
+    if budget[0] > MAX_TOTAL or depth >= MAX_DEPTH or len(data) > MAX_MEMBER:
+        result["scan_limit"] = "depth, member-size, or total-byte cap"
+        return result
+    children = []
+    if kind == "zip":
+        try:
+            with zipfile.ZipFile(io.BytesIO(data)) as archive:
+                for item in archive.infolist():
+                    path = PurePosixPath(item.filename)
+                    mode = (item.external_attr >> 16) & 0xFFFF
+                    if item.is_dir() or item.file_size > MAX_MEMBER or path.is_absolute() or ".." in path.parts or stat.S_ISLNK(mode):
+                        continue
+                    children.append(scan_member(f"{name}!/{item.filename}", archive.read(item), depth + 1, budget))
+        except (zipfile.BadZipFile, OSError, RuntimeError) as exc:
+            result["container_error"] = str(exc)
+    elif kind == "tar":
+        try:
+            with tarfile.open(fileobj=io.BytesIO(data), mode="r:*") as archive:
+                for item in archive.getmembers():
+                    path = PurePosixPath(item.name)
+                    if not item.isfile() or item.size > MAX_MEMBER or path.is_absolute() or ".." in path.parts:
+                        continue
+                    stream = archive.extractfile(item)
+                    if stream is not None:
+                        children.append(scan_member(f"{name}!/{item.name}", stream.read(MAX_MEMBER + 1), depth + 1, budget))
+        except (tarfile.TarError, OSError) as exc:
+            result["container_error"] = str(exc)
+    elif kind in {"jpeg", "png", "tiff"}:
+        try:
+            from PIL import Image, ExifTags
+            with Image.open(io.BytesIO(data)) as image:
+                exif = {}
+                for tag, value in image.getexif().items():
+                    label = ExifTags.TAGS.get(tag, str(tag))
+                    if isinstance(value, bytes):
+                        value = value.decode("utf-16le" if len(value) % 2 == 0 else "utf-8", "replace").rstrip("\x00")
+                    exif[label] = str(value)[:4096]
+                result["image"] = {"format": image.format, "width": image.width, "height": image.height,
+                                   "exif": exif, "info": {str(k): str(v)[:4096] for k, v in image.info.items()}}
+                meta = json.dumps(result["image"], ensure_ascii=False).casefold()
+                result["image"]["metadata_hits"] = [t.decode("ascii") for t in TERMS if t.decode("ascii").casefold() in meta]
+        except ImportError:
+            result["image_note"] = "Pillow unavailable; raw string scan only"
+        except Exception as exc:
+            result["image_error"] = str(exc)
+    elif kind == "pdf":
+        try:
+            from pypdf import PdfReader
+            reader = PdfReader(io.BytesIO(data), strict=False)
+            text = "\n".join(page.extract_text() or "" for page in reader.pages)
+            result["pdf"] = {"pages": len(reader.pages),
+                             "metadata": {str(k): str(v) for k, v in (reader.metadata or {}).items()},
+                             "text_hits": [t.decode("ascii") for t in TERMS if t.decode("ascii").casefold() in text.casefold()],
+                             "has_attachments": bool(getattr(reader, "attachments", {}))}
+        except ImportError:
+            result["pdf_note"] = "pypdf unavailable; raw string scan only"
+        except Exception as exc:
+            result["pdf_error"] = str(exc)
+    if children:
+        result["members"] = children
+    return result
 
-**K08** is the exact normalized terminal keeper-envelope or desk-margin caption attributed to Emily. N02/N06 contain drafts; N23 mentions the final margin without quoting its words. Older label captions and plausible thematic paraphrases have failed or do not establish the final version. The supplied export does not authenticate an exact terminal phrase.
 
-The previous population has independently authenticated **0/128 selected K04 component bits** and **zero verbatim author-final K08 words**. Those are information-provenance counts, **not** proof that the components cannot be reconstructed by a different source-derived mechanism. The maintainer confirms solvability, while the actual intended recovery mechanism remains unknown.
+def inspect_object(path: Path, resources: Path, transfer_id: str, allow_size_mismatch: bool = False):
+    selected, transfer_meta = select_chain(resources, transfer_id)
+    size = path.stat().st_size
+    if size != EXPECTED_SIZE and not allow_size_mismatch:
+        raise ValueError(f"object is {size} bytes; expected exactly {EXPECTED_SIZE}")
+    if size < EXPECTED_SIZE:
+        raise ValueError("object is shorter than eight complete 1 MiB chunks")
+    data = path.read_bytes()
+    chain = b"".join(bytes.fromhex(r["checkpoint"]) for r in selected)
+    component = hashlib.sha256(chain).digest()[:16]
+    acceptance_paths = (resources / "acceptance.json", resources.parent / "acceptance.json")
+    acceptance_path = next((p for p in acceptance_paths if p.is_file()), None)
+    k07 = {"chain_hex": chain.hex().upper(), "component_hex": component.hex().upper(),
+           "acceptance_file": str(acceptance_path) if acceptance_path else None}
+    if acceptance_path:
+        acceptance = json.loads(acceptance_path.read_text(encoding="utf-8"))
+        expected = acceptance.get("slot_sha256", {}).get("K07")
+        k07["expected_component_sha256"] = expected
+        k07["matches_acceptance"] = bool(expected and hashlib.sha256(component).hexdigest().lower() == expected.lower())
+    chunks, matches = [], {}
+    for seq, row in enumerate(selected):
+        block = data[seq * CHUNK_SIZE:(seq + 1) * CHUNK_SIZE]
+        checkpoint = str(row["checkpoint"]).upper()
+        raw = bytes.fromhex(checkpoint)
+        big, little = int(checkpoint, 16), int.from_bytes(raw, "little")
+        checks = {name: crc16(block, **params) for name, params in CRC16S.items()}
+        matched = [name for name, value in checks.items() if value in (big, little)]
+        for name in matched:
+            matches.setdefault(name, []).append(seq)
+        chunks.append({"seq": seq, "attempt": int(row["attempt"]), "offset": seq * CHUNK_SIZE,
+                       "checkpoint": checkpoint, "crc16": {k: f"{v:04X}" for k, v in checks.items()},
+                       "crc16_matches": matched, "crc32_ieee": f"{zlib.crc32(block) & 0xffffffff:08X}",
+                       "adler32": f"{zlib.adler32(block) & 0xffffffff:08X}",
+                       "md5": hashlib.md5(block).hexdigest(), "sha256": hashlib.sha256(block).hexdigest()})
+    all8 = [name for name, seqs in matches.items() if seqs == list(range(CHUNK_COUNT))]
+    return {"object": {"path": str(path), "size": size, "expected_size": EXPECTED_SIZE,
+                       "sha256": hashlib.sha256(data).hexdigest(), "magic": magic(data)},
+            "transfer_source": transfer_meta, "k07_chain_validation": k07,
+            "checkpoint_interpretation": {"selected_checkpoints": [r["checkpoint"].upper() for r in selected],
+                                          "common_crc16_algorithms_matching_all_8": all8,
+                                          "note": "No checksum algorithm is assumed; an empty list only closes these common CRC-16 variants."},
+            "chunks": chunks,
+            "container_inventory": scan_member(path.name, data, 0, [0])}
 
-## Active research: challenge the inherited interpretation
 
-The immediate task is to develop and experimentally discriminate competing **complete-candidate construction mechanisms**. Find an exploitable relation among surviving records, alternative stage interpretation, error transformation, editorial revision, data dependency or source-based low-entropy representation. You may test a genuinely different hypothesis before its historical provenance is fully established. The target commitment can validate an actual complete candidate; it cannot by itself explain arbitrary missing input.
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--object", required=True, type=Path, help="local AX-7782 8 MiB object; read-only")
+    parser.add_argument("--resources", type=Path, default=ROOT / "resources")
+    parser.add_argument("--transfer", default="AX-7782")
+    parser.add_argument("--allow-size-mismatch", action="store_true", help="diagnostic only; object must still contain eight full chunks")
+    parser.add_argument("--json-out", type=Path)
+    args = parser.parse_args()
+    try:
+        result = inspect_object(args.object, args.resources, args.transfer, args.allow_size_mismatch)
+    except Exception as exc:
+        parser.error(str(exc))
+    output = json.dumps(result, indent=2, sort_keys=True)
+    if args.json_out:
+        args.json_out.write_text(output + "\n", encoding="utf-8")
+    print(output)
 
-Useful lines of attack to consider:
 
-- **K04 end-to-end reducer and stage diagnosis.** Separate possible upstream generation, selection/routing, mask/byte-order, transfer/copy and downstream interpretation mistakes. Determine what each distinct explanation predicts for preserved intact spool controls, then test a bounded family that might construct the complete selected candidate. Arbitrarily changing more byte positions of the retained ACK without a new reason repeats failed research.
-- **K04 independent structural constraints.** Reconsider whether any source-to-source relationship reveals selected-stage state or an intentionally encoded witness. Existing MT nullspace certificates are rigorous *within their specified producer, chronology and observation assumptions*. They do not automatically exclude other producer architectures or hidden cross-record relations. Require each concrete proposal to confront the selected 128-bit uncertainty, rather than merely fit ordinary printer rows.
-- **K08 terminal editorial transformation.** Treat the dated scene notes, draft revisions, caption conventions and normalization rules as potential constraints on a precise version-dependent edit program. A source-derived compact grammar that constructs complete normalized candidates is worth a bounded test; a new unconstrained word list or thematic paraphrase sweep generally is not.
-- **Recovery architecture.** Question whether the original components have a source-defined relation omitted from earlier independent-slot interpretations. Prior plain interpolation and generic erasure guesses have negative results; an actually evidenced different relationship would warrant a new test.
-
-These are research prompts, not assertions of a solution or proof that a class has not been tried. Consult the nearest relevant predecessor experiment, identify its actual assumptions, and spend the larger part of the investigation pursuing something **materially different**. Start speculative mechanisms with economical, informative tests and scale when results justify it. Failure should refine or replace the model, rather than produce an automatic no-data checkpoint.
-
-**Do not impose the old preauthenticated-original admission prerequisite or universal 256-candidate rule.** Maintain scientific provenance and compute judgment without turning them into vetoes. Even without a newly acquired original, uncertainty and competing causal models are valid grounds for disciplined exploration. Conversely, expensive blind search over unconstrained 128-bit values or open-ended prose remains poor use of compute.
-
-## Reusable research and reference material
-
-- [Recovery state, source traceability and current results](results/README.md)
-- [Detailed evidence-derived slot definitions](results/h17-recovery-status.md)
-- [Cross-repository prior-art/equivalence index](results/h17-experiment-equivalence-gate.md) and [v1 collision map](https://github.com/FlareZ123/workplace-v1/blob/main/results/h17-prior-art-collision-index.md)
-- [Physical ACK selector and integrity boundary](results/h17-ack-selector-integrity-audit.md)
-- [K04 model identifiability and negative-control boundaries](results/h17-k04-cpython624-constructive-selected-nonidentifiability.md)
-- [K08 and K04 missing-witness intake, if independent originals emerge](results/h17-original-witness-intake-gate.md)
-- [Identical 46-member attached ZIP versus repository source evidence](results/h17-attached-zip-integrity.md)
-- [Superseded research hold and policy history](README.research-policy-snapshot-20261101.md) and [earlier policy archive](README.policy-history-through-20261021.md)
-
-The official [21 October maintainer reply](https://github.com/FlareZ123/workplace-v2/issues/1#issuecomment-6313937514) provides no missing original or referral; do not relaunch requests to that custodian. Historical external-source acquisition may still be informative when lawful and concretely relevant. The supplied export alone has not delivered an independently authenticated attempt-2 physical coupon or author-final caption. That fact is a starting condition for reconstruction research.
-
-## Operational discipline
-
-Work on the **historical archive only**, with no equipment operation, protected account probing or alteration of official evidence. Normal agents retain the prompt's persistent identity, immutable lease and measured 70-minute release instructions. Do not create automatic every-commit CI or repeat proven equivalent billions-of-candidates runs. Preserve meaningful experiments with reproducible assumptions, controls and stopping conditions; keep small negatives in identity memory and update `results/` when a discovery materially advances recovery.
-
-**Success criterion:** recover both K04 and K08 and demonstrate individual PASS for all eight plus combined PASS from the untouched official verifier. Explore boldly, evaluate honestly, and prioritize genuinely new cracking over repeated verification of the existing six.
+if __name__ == "__main__":
+    main()
