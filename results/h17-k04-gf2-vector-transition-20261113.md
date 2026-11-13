@@ -24,6 +24,8 @@ using 128 transitions: the 128 regular payloads as inputs, and the next 128 payl
 
 The input matrix has rank **128**, so the fitted map is unique; this is not an underdetermined fit. Hold out the next four transitions, beginning with the selected PS-0417 attempt-2 ACK.
 
+Positive control: the same fitter was tested against a planted invertible 128×128 GF(2) map (deterministic seed 20261113) and correctly predicted 32/32 withheld random states. This validates the implementation path; it is not evidence for the printer model.
+
 Reproduction:
 
 ```bash
