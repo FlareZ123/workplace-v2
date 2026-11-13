@@ -1,0 +1,44 @@
+name: Agent 4 Cowper Part II signed WN-14 page-word test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  frozen-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install OCR engine and Python libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install --disable-pip-version-check Pillow pytesseract
+
+      - name: Run one frozen signed-WN-14 page-word candidate
+        run: python agents/agent4/k08_cowper_wn14_pageword_sft.py
+
+      - name: Commit source-pinned result and acquired page images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/assets/cowper/part2-wn14
+          if git diff --cached --quiet; then
+            echo "No new candidate output"
+          else
+            git commit -m "Agent 4: Test signed WN-14 coordinates in Cowper Part II"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
