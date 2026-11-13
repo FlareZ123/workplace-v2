@@ -1,0 +1,23 @@
+name: Agent 3 K04 p951 LT-204 revision donor SFT
+
+on:
+  push:
+    paths:
+      - "agents/agent3/k04_p951_lt204_revision_donor_sft.py"
+      - ".github/workflows/agent3-k04-p951-lt204-revision-donors.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  revision-donor-sft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run complete p951 revision-cohort donor constructor
+        run: python agents/agent3/k04_p951_lt204_revision_donor_sft.py
