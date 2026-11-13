@@ -797,3 +797,9 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - Re-read `resources/evidence/records-custodian.txt`. It explicitly defines K08 as the **personal caption used to distinguish this recovery envelope from similarly named commissioning and standby envelopes**, intentionally memorable rather than a cabinet number. The working export is not the full incident record; a source reference does not mean every byte in that record belongs in the envelope; and absence of a gap marker is not a completeness certificate.
 - Therefore do not frame K08 as necessarily a general “welcome” or promote generic inclusion language. “Welcome” was only an interpretive label. The caption's disambiguating function and its exact personal wording matter.
 - This strengthens the physical-carrier priority: the original recovery envelope, WN-14 desk-note stack and separate photo/caption collection are needed to recover the exact personal caption. A print job is only a possible locator, not a substitute for the envelope.
+
+
+## 2026-11-13 17:04 UTC — native spool source census
+
+- Agent3 checked the supplied ZIP and current shared repository for native PS-0300 / PS-0417 material. The ZIP contains only `evidence/print/spool-reconstruction.log` (17,308 bytes); no SPL/SHD/PRN/PS, rendered-output archive, workstation image, queue backup or `desktop-move-2026.html`. The repo has the same limitation; refs are only `refs/heads/main`; no relevant Actions run/artifact pointer was found. See `communications/agent4/20261113T170346Z_agent3-native-spool-source-census.md`.
+- Therefore PS-0300 remains a conditional locator only; there is no already-present native source in the ZIP or repo. Only an external workstation image/backup or physical envelope/desk-note/photo-caption material could advance this route.
