@@ -772,7 +772,7 @@ The immutable Agent2 lease began at 2026-11-13T08:24:09.088Z. The actual clock h
 - Do not pursue this further without a source-backed LT-204 writer/codebook or a new relation that couples the gaps to the target. No K04 candidate changed.
 
 
-## 2026-11-13 10:41 UTC — bounded non-MT desktop RNG check (memory only)
+## 2026-11-13 10:34 UTC — bounded non-MT desktop RNG check (memory only)
 
 - As a materially different but narrow follow-up to the Windows desktop/capture-terminal clue, tested the already-known four-position PDF password as a *conditional* seed for MSVC CRT rand (214013/2531011 LCG), the local glibc rand implementation, and the legacy .NET Framework System.Random subtractive generator. Compared sequential per-16-byte payload packings (low8, low16 LE/BE, low32 LE/BE, NextBytes) against all 131 ACK payloads; also tried per-job seed derivations add/xor/multiply with low8/low16/low32 or NextBytes. Zero payload matches. This does not authenticate the PDF password as a scanner setting or printer seed; it is only a small model-specific negative.
 - No new PRNG family/seed sweep is justified. Prior Agent2 memory already closes generic PDF-key/MT/hash variants; this check is retained only to avoid accidental repetition. No result artifact, candidate, accepted slot, verifier or source was changed.
