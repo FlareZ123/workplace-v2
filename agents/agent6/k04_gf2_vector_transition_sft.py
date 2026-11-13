@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test 128-bit GF(2) linear and source-offset affine transitions in printer payloads.
+"""Test full 128-bit GF(2) homogeneous and arbitrary-affine payload transitions.
 
 Run from the repository root:
     python agents/agent6/k04_gf2_vector_transition_sft.py
@@ -10,15 +10,12 @@ and the remaining late events are held out.
 """
 from __future__ import annotations
 
-import json
-import re
 import random
+import re
 from pathlib import Path
 
 WIDTH = 128
 LOG = Path("resources/evidence/print/spool-reconstruction.log")
-ROUTE = Path("resources/evidence/recovery-routing.json")
-CANDIDATE = Path("candidate.json")
 
 
 def parse_rows():
@@ -60,9 +57,8 @@ def fit_transition(states: list[bytes], outputs: list[bytes]):
         if pivot_row == len(rows):
             break
 
-    rank = pivot_row
-    if rank != WIDTH:
-        raise RuntimeError(f"training state matrix is rank {rank}, not {WIDTH}")
+    if pivot_row != WIDTH:
+        raise RuntimeError(f"training state matrix is rank {pivot_row}, not {WIDTH}")
 
     basis_outputs = [None] * WIDTH
     for x, y in rows:
@@ -70,7 +66,7 @@ def fit_transition(states: list[bytes], outputs: list[bytes]):
             raise RuntimeError("row reduction did not produce a standard basis")
         basis_outputs[x.bit_length() - 1] = y
     if any(value is None for value in basis_outputs):
-        raise RuntimeError("incomplete basis")
+        raise RuntimeError("incomplete output basis")
     return basis_outputs
 
 
@@ -86,6 +82,42 @@ def predict(state: bytes, basis_outputs: list[int]) -> bytes:
 
 def xor_bytes(a: bytes, b: bytes) -> bytes:
     return bytes(x ^ y for x, y in zip(a, b, strict=True))
+
+
+def build_coordinate_basis(states: list[bytes]):
+    """Map each pivot state bit to the original-training-row coefficient mask."""
+    basis = {}
+    for index, state in enumerate(states):
+        value = int.from_bytes(state, "big")
+        coefficients = 1 << index
+        while value:
+            pivot = value.bit_length() - 1
+            if pivot in basis:
+                bv, bc = basis[pivot]
+                value ^= bv
+                coefficients ^= bc
+            else:
+                basis[pivot] = (value, coefficients)
+                break
+        if value == 0:
+            raise RuntimeError("training input states are not linearly independent")
+    if len(basis) != WIDTH:
+        raise RuntimeError(f"coordinate basis rank is {len(basis)}, not {WIDTH}")
+    return basis
+
+
+def coordinates(state: bytes, basis) -> int:
+    """Return unique alpha with state = XOR_i(alpha_i * training_state_i)."""
+    value = int.from_bytes(state, "big")
+    alpha = 0
+    while value:
+        pivot = value.bit_length() - 1
+        if pivot not in basis:
+            raise RuntimeError("query state is outside full-rank training span")
+        bv, bc = basis[pivot]
+        value ^= bv
+        alpha ^= bc
+    return alpha
 
 
 def synthetic_check():
@@ -132,53 +164,46 @@ def main():
 
     states = [row["payload"] for row in rows[:128]]
     outputs = [row["payload"] for row in rows[1:129]]
-    actual = rows[129]["payload"]
+    output_basis = fit_transition(states, outputs)
+    coordinate_basis = build_coordinate_basis(states)
 
-    # Homogeneous map: x[n+1] = A*x[n].
-    basis = fit_transition(states, outputs)
     print("training_transitions=128")
     print("training_state_rank=128")
-    predicted = predict(rows[128]["payload"], basis)
-    print(
-        f"homogeneous_target_predicted={predicted.hex().upper()} "
-        f"actual={actual.hex().upper()} match={predicted == actual}"
-    )
 
-    # Affine maps with a fixed, source-supplied XOR offset:
-    # x[n+1] = A*x[n] XOR c. The offset is removed from each training output,
-    # then restored to the held-out prediction.
-    route = json.loads(ROUTE.read_text(encoding="utf-8"))
-    candidate = json.loads(CANDIDATE.read_text(encoding="utf-8"))
-    offsets = {
-        "K04_mask": bytes.fromhex(route["K04"]["masked_component"]),
-        "K08_desk_nonce": bytes.fromhex(route["K08"]["desk_nonce"]),
-    }
-    for key in ("K01", "K02", "K03", "K05", "K06", "K07"):
-        if candidate.get(key):
-            offsets[key] = bytes.fromhex(candidate[key])
-
-    for label, offset in offsets.items():
-        transformed = [xor_bytes(y, offset) for y in outputs]
-        affine_basis = fit_transition(states, transformed)
-        affine_prediction = xor_bytes(
-            predict(rows[128]["payload"], affine_basis), offset
-        )
+    # For every possible constant c, the unique affine fit is
+    # F_c(x)=A_c*x XOR c = A_0*x XOR gamma(x)*c,
+    # where gamma(x)=1 XOR parity(alpha(x)) and x=sum(alpha_i*x_i).
+    # gamma=0 controls cannot be repaired by any affine offset.
+    for label, index, expected_gamma in (
+        ("selected_ACK2", 128, 1),
+        ("ESC_S_ACK", 130, 0),
+        ("WATCH_SPARE_ACK", 131, 0),
+    ):
+        alpha = coordinates(rows[index]["payload"], coordinate_basis)
+        gamma = 1 ^ (alpha.bit_count() & 1)
+        if gamma != expected_gamma:
+            raise RuntimeError(
+                f"{label} affine coefficient {gamma}, expected {expected_gamma}"
+            )
+        predicted_a0 = predict(rows[index]["payload"], output_basis)
+        actual = rows[index + 1]["payload"]
+        residual = xor_bytes(predicted_a0, actual)
         print(
-            f"{label}_affine_target_predicted={affine_prediction.hex().upper()} "
+            f"{label}_affine_offset_coefficient={gamma} "
+            f"A0_prediction={predicted_a0.hex().upper()} "
             f"actual={actual.hex().upper()} "
-            f"match={affine_prediction == actual}"
+            f"residual={residual.hex().upper()}"
         )
 
-    # One-step predictions for the remaining late records under the unique
-    # homogeneous map, using each actual preceding state as input.
-    for index in range(129, 132):
-        predicted = predict(rows[index]["payload"], basis)
-        next_actual = rows[index + 1]["payload"]
+    # Homogeneous one-step predictions for all four late records.
+    for index in range(128, 132):
+        predicted = predict(rows[index]["payload"], output_basis)
+        actual = rows[index + 1]["payload"]
         print(
             f"late_row={index + 1} job={rows[index + 1]['job']} "
             f"predicted={predicted.hex().upper()} "
-            f"actual={next_actual.hex().upper()} "
-            f"match={predicted == next_actual}"
+            f"actual={actual.hex().upper()} "
+            f"match={predicted == actual}"
         )
 
 
