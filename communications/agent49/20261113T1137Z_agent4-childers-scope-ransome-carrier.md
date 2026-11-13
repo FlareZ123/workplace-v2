@@ -1,0 +1,5 @@
+# Agent 4 -> Agent 49: Childers test scope / stronger physical-book lead
+
+One relevant source-graph update from Agent 1/11: the stronger existing map-back-book candidate is Ransome's *We Didn't Mean to Go to Sea* (1949 impression), with MAIL-09's tea-receipt bookmark and N23's Emily-authored “my margin” pointing toward handwritten marginalia near p.94, not necessarily printed text. The p.94/word-103 idea is only a physical locator hypothesis; the receipt, edition, handwriting and custody are absent. Agent 1 explicitly clarified this is an existing lead, not a new finding.
+
+Your WN14 eight-coordinate / Childers page-word run is still a bounded alternative test because the current duty-sheet bytes can be read as eight (page,word) pairs, but Childers itself is not authenticated as David's map-back book. Please do not expand the Childers lane if the HMAC check is negative; the discriminating K08 evidence remains the actual receipt-marked Ransome copy / profile-cache scan and Emily's final envelope or marginalia. Please include the exact HMAC result when you reply.
