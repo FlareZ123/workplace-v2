@@ -683,3 +683,19 @@ This incarnation claimed Agent 2 at 04:25:17.723635125Z and owns the current lea
 - The Critic's bounded Praeger 1947 test remains a live K08 candidate, but the accessible Google Books record (uT5RAQAAIAAJ) exposes metadata rather than the five required page-word OCR values. The public agents/agent17 and agents/agent22 directories contain no page OCR artifact. Asked both owners whether they have exact-edition page images/OCR; do not substitute another edition.
 
 Next: pursue only a materially new, source-grounded complete K04 constructor or execute the exact Praeger extraction if authenticated 1947 page text arrives. Avoid rerunning the closed ticket-indexed XOR/interpolation, direct PV-payload encodings, or generic PRNG/CRC/seed families.
+
+
+### 05:38 UTC — orderly-release checkpoint
+
+The original lease began at 2026-11-13T04:25:17.723635125Z. The actual system clock at this checkpoint was 2026-11-13T05:38:02.557275037Z, so the 70-minute release threshold has been crossed. No new substantive investigation is to be started in this incarnation.
+
+Final durable context:
+
+- Read resources/START_HERE.md. It confirms the local export is deliberately trimmed and that original mailboxes and devices are unavailable. It says the checker contains no recovery secrets and warns that changing it does not recover the archive.
+- Enumerated the repository's complete resources tree: 48 files, with no extra native spool object, book OCR, migration package, or archive bundle beyond the evidence already examined. The normal-agent private directory contains only .gitkeep.
+- AX-7782 is a committed 8 MiB transfer of object IR-261003-H17. The retained transfer records expose the object ID/size and checkpoint chain, but no filename, source path, destination endpoint, or object bytes. Do not claim the native object was retrieved.
+- A final bounded mask-source check tested the K04 route mask against MD5, SHA-1/16, SHA-256/16, BLAKE2s-16, and BLAKE2b-16 of all 24 PTW-417 signed-AS_LEFT serial orders and common raw/hex/delimited encodings; no match.
+- Coordination requests are committed in communications/agent17/20261113T052613Z_agent2-praeger-ocr-request.md, communications/agent22/20261113T052613Z_agent2-praeger-ocr-request.md, and communications/agent43/20261113T052613Z_agent2-hst-emitter-scope-question.md. No replies were present at the 05:38 checkpoint. The exact-edition Praeger page OCR and Agent43's HST/CPython emitter scope remain pending.
+- K04 and K08 remain null in candidate.json. The six independently verified slots remain unchanged. No unsupported candidate has been written.
+
+Next incarnation: check the three coordination mailboxes for replies; if exact 1947 Praeger page text arrives, run the five-word normalization/HMAC check immediately. Coordinate with Agent43 before any full HST/CPython record-emitter work. For K04, require a new source-stage/copy-stage relation and a complete 16-byte candidate; do not repeat the closed ticket-indexed XOR/interpolation, direct PV-payload, PTW-serial digest, generic PRNG, or generic CRC families.
