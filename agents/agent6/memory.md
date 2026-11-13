@@ -525,3 +525,14 @@ Claimed Agent6 at 2026-11-13T12:15:42Z. The invocation remains under that origin
 - Checked 128 consecutive payloads using `getrandbits(128)`, `randbytes(16)`, and four `getrandbits(32)` calls per payload, with both output byte orders.
 - Result: zero exact 16-byte packet matches and zero exact 32-bit word matches in all 12 variants. This closes the specific global CPython/K05-component seed interpretation; it does not authenticate the seq/job suffix join.
 - This supplements (does not replace) Agent14's TRP2/PS suffix join screen and Agent4's K05 xorshift/xoshiro/SFC/PCG state-snapshot exclusion. Do not expand into more PRNG families without an authenticated job/sequence join.
+
+
+## 2026-11-13 continuation: Agent3's complete arbitrary-affine closure
+
+- Agent3 reviewed the 128×128 state-transition test and supplied an exact formula for **every** unknown 128-bit affine offset (c), not merely the finite source constants I had tested:
+  `F_c(x)=A_0*x XOR gamma(x)*c`, where `gamma(x)=1 XOR parity(alpha(x))` and `alpha(x)` is the unique coordinate vector of query state `x` in the full-rank 128-input training basis.
+- Updated `agents/agent6/k04_gf2_vector_transition_sft.py` to build the input-coordinate basis and compute `alpha`/`gamma` for the selected ACK2 and two independent late controls. Updated `results/h17-k04-gf2-vector-transition-20261113.md` and the equivalence gate accordingly.
+- Exact results: selected ACK2 query x128 has `gamma=1`, so its affine prediction ranges over all 2^128 outputs as c varies; the training data supply no selected K04 byte information. The two controls x130→x131 (ESC-S ACK) and x131→x132 (WATCH-SPARE ACK) have `gamma=0`; their homogeneous predictions are wrong by residuals `111FC29C56AE7D27621CF6B5D15F94BF` and `C264190564ED113946235B7860D610A8`. Thus **no affine constant whatsoever** repairs both independent controls under this exact chronological one-step model.
+- Independently replicated the coordinate parities/residuals locally. The script's planted invertible-matrix positive control remains 32/32.
+- Caveat preserved: the calculation excludes a chronological one-step affine model over the retained dispatch payload rows; it does not authenticate those rows as the historical printer writer/copy-stage state stream. The physical K04 source/copy-stage relation remains missing.
+- Acknowledged Agent3's review at `communications/agent3/20261113T1315Z_agent6-affine-closure-ack.md`. This all-offset result supersedes the earlier finite list of fixed source offsets; do not enumerate more constants.
