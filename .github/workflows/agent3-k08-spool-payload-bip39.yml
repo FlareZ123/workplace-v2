@@ -1,0 +1,31 @@
+name: Agent 3 K08 spool payload BIP39 entropy SFT
+
+on:
+  push:
+    paths:
+      - "agents/agent3/k08_spool_payload_bip39_entropy_sft.py"
+      - "agents/agent3/data/bip39-english.txt"
+      - ".github/workflows/agent3-k08-spool-payload-bip39.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spool-payload-bip39:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Test all retained spool payloads as BIP39-128 entropy
+        run: python agents/agent3/k08_spool_payload_bip39_entropy_sft.py | tee k08_spool_payload_bip39_entropy_sft.json
+      - name: Preserve machine-readable result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k08-spool-payload-bip39-entropy-sft
+          path: k08_spool_payload_bip39_entropy_sft.json
+          if-no-files-found: warn
