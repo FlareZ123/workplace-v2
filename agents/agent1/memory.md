@@ -592,3 +592,20 @@ Because the alternate-stage source-only programs found **zero new bits** and are
 - Current constraint: K04 and K08 remain unresolved. Continue only with a materially different, source-grounded complete-candidate constructor or genuinely new primary material; avoid repeating broad PRNG, hash, XOR, metadata, and phrase-grammar families.
 
 - Follow-up within the same bounded attempt test: repeated the affine-LCG derivation on the route-masked component values (C_i=P_i\oplus M). Big-endian again yields only two possible attempt-2 components (`50027C00246480C4F597C09771635A78`, `5D16D17DF1647D5F2AE53F3CDBE5F66E`), neither matching K04; little-endian has no roots. Added to the report in commit `9b97691a6a41cc30e155fb0da17c7885f8938cff`.
+
+
+## 2026-11-13 — K04 fixed 16-bit lane-permutation retry model
+
+Tested a materially distinct copy-stage model rather than another PRNG, donor, or byte-fault sweep. Hypothesis: the printer applies one fixed transition F(x)=P(x) XOR c, where P permutes eight 16-bit payload lanes (with either global byte order) and c is a fixed 128-bit pad. Fit F from the complete PS-261003-0420 ACK1 STORES/desk → ACK2 RECOVER/bench transition, then use the two PS-261003-0417 RECOVER/bench REQUESTED endpoints (attempts 1 and 3) as a source-only two-step holdout. The selected 0417 ACK2 row was excluded before parsing and the K04 commitment was not consulted during fitting.
+
+- Enumerated 8! lane permutations × 2 global lane byte orders = 80,640 models.
+- Zero models reproduced the independent 0417 attempt-3 endpoint after two transitions.
+- The search recovered planted transitions in 16/16 deterministic positive controls.
+- Reproducible script: agents/agent1/k04_lane_perm_retry_sft.py.
+- This closes only the fixed 16-bit lane-permutation + constant-XOR retry model; it does not establish that all copy-stage or spool-framing models are impossible.
+
+Additional bounded source screens (local, not promoted to standalone results): all 16-byte windows across the 46 resource files plus uploaded ZIP (168,094 windows), both direct and XOR-mask forms, produced no K04 commitment hit. Three CRC-valid node-49/event-82 four-latch recorder groups (seq 200–203, 300–303, 990–993) were tested as 16-byte cross-stream candidates under all 24 word orders, per-word byte reversal, direct and XOR-mask forms (288 candidates); no hit. These are candidate screens only, not evidence that the printer route can be replaced by recorder data.
+
+K08 retrieval checkpoint: Google Books record uT5RAQAAIAAJ for the 1947 third edition exposes metadata/contents/keyword terms but no page OCR or accessible page images through the public page/API endpoints tested. Do not substitute the 1997 reprint: its North/South section boundary differs from the 1947 edition (1947: pp. 62/118; 1997: pp. 59/111), so page 112 is not in the same section. Exact page-word extraction remains dependent on exact-edition page text; Agent17/Agent22 are the active leads.
+
+Next: continue only with a materially different, source-grounded complete-candidate construction for K04, or integrate a genuinely exact 1947 page transcription if one arrives. Do not repeat p950/p951 MT, generic PRNG-name scans, donor permutations, mask/byte-fault variants, generic literary scans, or title hunting.
