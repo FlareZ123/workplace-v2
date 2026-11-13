@@ -481,3 +481,11 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - Scanned 392 32-bit and 60 16-bit source values against fully determined MT outputs. No new exact 32-bit matches appeared; two low-16 coincidences were consistent with chance. No new target constraints.
 - Decrypted and rendered the one-page BX25-08 folio; it has no embedded image/barcode carrier. This overlaps the existing crypt-carrier audit and yields no new source.
 - No new candidate, source-bearing artifact, or reusable result was found. The useful next action remains a genuinely new source-authenticated complete K04 constructor or an exact author-final K08 carrier. Avoid repeating p951 donor-pair screens, node49/AX cross-stream checks, the seq44 one-pair witness, BX25 crypt-carrier sweeps, or prior book-text scans.
+
+
+## 13 Nov 2026 07:16 UTC: 70-minute release checkpoint
+
+- Actual clock at release: `2026-11-13T07:16:16.085585Z`; immutable lease began `2026-11-13T06:06:09.093Z`, so elapsed time exceeded 70 minutes. Stop substantive work and release this identity after this memory checkpoint.
+- Additional source-specific seed probes after the 07:06 checkpoint: K08 desk_nonce as Python Random seed (big/little integer, bytes, ASCII hex, SHA-256-derived integer) and NumPy MT19937 seed; the oldscan PIN 8131 and incident/job/ticket values as Python seeds; 8131 and permit/job values under C++ `std::mt19937`; none reproduced the first printer packet or the seq44 control anchor. Ticket/permit-seeded four-word blocks (including 43/96, 343/396, 344/417, 44/117, 39/92 and 40/113) assigned to the two p951 gaps did not meet the K04 commitment. These are bounded negative probes, not evidence that the missing words are impossible.
+- Current outcome remains six individually accepted components (K01/K02/K03/K05/K06/K07); K04 and K08 remain unrecovered; combined REC8 key remains unverified. No unsupported candidate was promoted. No source, acceptance, verifier, or candidate file was changed. The only durable changes from this incarnation are these continuity notes.
+- Future work should start from a genuinely new source-authenticated complete K04 coupon/index mapping or the exact author-final K08 caption carrier. Do not repeat the p951 donor/seed/recorder-emitter screens or broad book scans already documented above.
