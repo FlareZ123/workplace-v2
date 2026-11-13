@@ -1,12 +1,12 @@
-# K04: full 128-bit GF(2) linear-state transition test
+# K04: full 128-bit GF(2) state and affine-transition test
 
 **Date:** 2026-11-13  
-**Identity:** Agent 6  
-**Status:** Negative, reproducible model exclusion
+**Identity:** Agent 6, with independent affine-family review by Agent 3  
+**Status:** Reproducible model exclusion; no K04 candidate
 
 ## Question
 
-Can the chronological 16-byte printer payloads be treated as states of one fixed, homogeneous linear transition over GF(2), with one transition per logged payload row? This is broader than testing a named xorshift/LFSR implementation: it permits an arbitrary 128×128 binary transition matrix.
+Can the chronological 16-byte printer payloads be treated as states of one fixed first-order transition over GF(2)? Test both the most general homogeneous 128×128 binary matrix and the entire affine family with an arbitrary 128-bit constant offset.
 
 ## Method
 
@@ -14,17 +14,15 @@ Source: `resources/evidence/print/spool-reconstruction.log`.
 
 The log contains 133 payload-bearing rows: 128 regular rows (PS-261003-0300 through PS-261003-0427) followed by five late rows. Treat each 16-byte payload as a 128-bit state vector `x_i`, in chronological log order.
 
-Fit the most general first-order homogeneous linear map:
+Fit the most general homogeneous map:
 
 ```
 x[i+1] = A * x[i]  over GF(2)
 ```
 
-using 128 transitions: the 128 regular payloads as inputs, and the next 128 payloads as outputs. The last training output is the first late event, PS-0417 attempt-1 REQUESTED. Row-reduce the 128×128 input-state matrix while applying identical row operations to the output vectors.
+using 128 transitions: the 128 regular payloads as inputs and the next 128 payloads as outputs. The last training output is the first late event, PS-0417 attempt-1 REQUESTED. The input-state matrix has rank **128**, so the homogeneous map is unique.
 
-The input matrix has rank **128**, so the fitted map is unique; this is not an underdetermined fit. Hold out the next four transitions, beginning with the selected PS-0417 attempt-2 ACK.
-
-Positive control: the same fitter was tested against a planted invertible 128×128 GF(2) map (deterministic seed 20261113) and correctly predicted 32/32 withheld random states. This validates the implementation path; it is not evidence for the printer model.
+A deterministic planted invertible 128×128 GF(2) positive control (seed 20261113) is recovered and predicts **32/32** withheld random states. This validates the fit/prediction implementation, not the printer model.
 
 Reproduction:
 
@@ -32,51 +30,47 @@ Reproduction:
 python agents/agent6/k04_gf2_vector_transition_sft.py
 ```
 
-## Results
+## Homogeneous-map results
 
-| Held-out row | Record | Predicted 16-byte payload | Actual payload | Match |
-|---:|---|---|---|---|
-| 129 | PS-0417 attempt-2 ACK | `CAEC4F38328DCA2769502D24FE9D80E7` | `A9A9DC5731A5E2AE879C47215C2559D5` | No |
-| 130 | PS-0417 attempt-3 REQUESTED | `5EB2E2370735C37E4F790DD0323F98C2` | `44D53DFC29D7943A95D89371DA58EC64` | No |
-| 131 | PS-0448 attempt-1 ACK | `3254231ABFD09D7F528C612532698421` | `234BE186E97EE05830909790E336109E` | No |
-| 132 | PS-0420 attempt-2 ACK | `81406CF24E8FCA00B5F632464C456F0C` | `432475F72A62DB39F3D5693E2C937FA4` | No |
+| Held-out transition | Homogeneous prediction | Actual retained payload | Match |
+|---|---|---|---|
+| PS-0417 attempt-2 ACK | `CAEC4F38328DCA2769502D24FE9D80E7` | `A9A9DC5731A5E2AE879C47215C2559D5` | No |
+| PS-0417 attempt-3 REQUESTED | `5EB2E2370735C37E4F790DD0323F98C2` | `44D53DFC29D7943A95D89371DA58EC64` | No |
+| PS-0448 attempt-1 ACK | `3254231ABFD09D7F528C612532698421` | `234BE186E97EE05830909790E336109E` | No |
+| PS-0420 attempt-2 ACK | `81406CF24E8FCA00B5F632464C456F0C` | `432475F72A62DB39F3D5693E2C937FA4` | No |
 
-The selected K04 ACK payload is not predicted. All four late one-step holdouts fail.
+## Complete arbitrary-affine closure
 
-### Source-specified affine offsets
+Agent 3 independently extended the calculation from selected fixed offsets to **every possible 128-bit affine constant**.
 
-Also fit the affine form:
+Let (X) be the full-rank matrix of the 128 training input packets, (Y) their successors, and (A_0) the homogeneous fit. For any constant (c), the unique affine fit satisfying the same training pairs is:
 
 ```
-x[i+1] = A * x[i] XOR c
+F_c(x) = A_c*x XOR c
+       = A_0*x XOR gamma(x)*c
+
+gamma(x) = 1 XOR parity(alpha(x))
+x = XOR_i(alpha_i * x_i)
 ```
 
-with the constant offset fixed, in turn, to each of the two routing-record values and each of the six already accepted components. For each fixed offset, it is removed from every training output before fitting and restored to the held-out prediction.
+Here `alpha(x)` is the unique coordinate vector of query state `x` in the 128 training input basis. The reproducer now computes this coordinate vector and the exact coefficient `gamma` for three late queries.
 
-| Fixed offset c | Predicted PS-0417 attempt-2 ACK | Match |
-|---|---|---|
-| K04 masked_component | `4FBA87F353CD6DDECC4217E3A9866EFB` | No |
-| K08 desk_nonce | `957F729E9330C9E444F5E6E6ADD97470` | No |
-| K01 | `CE76E4162E53B0A5A42C4D07BD9E49FD` | No |
-| K02 | `C792758D5D3A9784825E032286F0A379` | No |
-| K03 | `D968E0AED0D0A0FD0F3224EFAB7DE21D` | No |
-| K05 | `3567371838DB227F049D8D2A0E83C595` | No |
-| K06 | `97530FD6607764FECC66FE16926D59BD` | No |
-| K07 | `59A5106670D772C2FB42108F502B05A2` | No |
+| Query transition | `gamma` (coefficient of arbitrary c) | `A0` prediction | Actual successor | Residual `A0 XOR actual` |
+|---|---:|---|---|---|
+| 18:01 PS-0417 REQUESTED1 → selected ACK2 | **1** | `CAEC4F38328DCA2769502D24FE9D80E7` | `A9A9DC5731A5E2AE879C47215C2559D5` (untrusted reconstruction) | `6345936F03282889EECC6A05A2B8D932` |
+| 18:03 PS-0417 REQUESTED3 → PS-0448 ESC-S ACK | **0** | `3254231ABFD09D7F528C612532698421` | `234BE186E97EE05830909790E336109E` | `111FC29C56AE7D27621CF6B5D15F94BF` |
+| PS-0448 ESC-S ACK → PS-0420 WATCH-SPARE ACK | **0** | `81406CF24E8FCA00B5F632464C456F0C` | `432475F72A62DB39F3D5693E2C937FA4` | `C264190564ED113946235B7860D610A8` |
 
-Each affine fit uses the same full-rank 128-state training matrix. None predicts the selected ACK payload.
+Interpretation:
+
+- For the selected ACK2 query, `gamma=1`: its affine prediction is `A0(x) XOR c`. As (c) ranges over all 128-bit values, the predicted ACK2 ranges over **all 2^128 possible values**. The training data therefore provide no selected K04 byte information under this affine family. A chosen offset can force any candidate, but is not evidence.
+- For both independent late control transitions, `gamma=0`: their predictions are independent of (c), and both disagree with the retained successors. **No affine constant whatsoever can repair either control transition** under this precise chronological one-step model.
+- The earlier finite checks using K04.mask, K08.desk_nonce, and accepted components K01/K02/K03/K05/K06/K07 are special cases of this now-complete affine analysis; no further offset enumeration is warranted.
 
 ## Conclusion and limits
 
-The chronological printer payload stream is **not** generated by one fixed, homogeneous 128-bit GF(2)-linear first-order state transition with one state update per logged row, under the observed row order. The result excludes the entire fitted matrix family, not merely a named PRNG. The tested affine variants with offsets fixed to either routing-record value or any accepted component also fail.
+The observed chronological retained-payload stream is not explained by a single fixed homogeneous or affine 128-bit GF(2) state transition with one update per logged row. The homogeneous fit is uniquely determined and fails four late holdouts; the complete affine family cannot repair two independent late controls. The selected ACK2 remains entirely underdetermined within that family.
 
-It does **not** exclude:
-- variable-consumption or metadata-conditioned state updates;
-- other affine offsets;
-- nonlinear transitions;
-- independent per-route/per-class generators;
-- a different event ordering or omitted spool records;
-- corruption or truncation in the reconstructed log;
-- a source-defined transformation not represented by these models.
+This is a model-level exclusion, **not** proof about the historical printer writer or physical coupon. The late 16-byte fields are reconstructed dispatch metadata; the REQUESTED/ACK transitions and route/job boundaries are not authenticated as a single writer-state stream. Variable-consumption, metadata-conditioned, nonlinear, per-route/per-class, omitted-event, or copy-stage producers remain outside this exact model.
 
-No K04 candidate is produced by this test. Do not use the fitted predictions as recovery values. The next K04 attempt should introduce a distinct source-supported mechanism, not another fixed linear recurrence over the same chronological stream.
+No K04 candidate is produced. Do not use the homogeneous prediction or an arbitrary affine offset as a recovery value. The actual K04 route still requires original native PS-0417 spool/coupon evidence and an authenticated copy-stage/selector relation.
