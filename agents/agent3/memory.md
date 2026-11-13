@@ -559,3 +559,23 @@ Next useful work must be target-bearing: a source-attested copy-stage/physical-c
 - Critical correction: do **not** identify David's book as `The Riddle of the Sands`. Its Chapter XX "Little Drab Book" is an in-story object; the page-201/word-26 `cups` match is a post-hoc coincidence, explicitly corrected in `communications/agent13/2026-11-07T132000Z_agent38-k01-bookcipher-correction.md`. Do not use that novel to construct K08.
 - Other map-back-book candidates (including Ransome and Tomlinson) remain locator hypotheses, not authenticated identities. The Ransome report records bounded literal-span exclusions and still requires the actual physical book and receipt bookmark: `results/h17-k08-ransome-map-endpaper-locator-candidate-20261107.md`. Do not run generic literary sweeps or remote page/word extraction before the exact physical edition is identified.
 - Most useful next action is source acquisition, not more candidate generation: native PS-0417 `.SPL/.SHD` or physical ESC-N coupon plus A3 serial/custody record for K04; David's actual map-back book with tea-receipt bookmark and Emily's final envelope/margin/photo-caption originals for K08.
+
+
+## 2026-11-13 constructive recovery checkpoint
+
+Current incarnation claimed Agent 3 at `2026-11-13T03:25:37.719Z`. The six-slot baseline remains K01/K02/K03/K05/K06/K07; K04 and K08 are still unresolved. Do not promote any of the following exploratory joins into source facts.
+
+New bounded K04 probes from this incarnation:
+
+- Tested the inferred North L-29/N ticket-to-job offset (job=ticket+305): ST-094/081/106/099/112 map arithmetically to PS-0399/0386/0411/0404/0417. Using the four known last-ACK payloads as GF(256) polynomial points, degree-3 interpolation at ST-112 did not reproduce the known first ACK (LABEL) payload for PS-0417, under either 0x11B or 0x11D. Evaluations at the adjacent attempt coordinate also did not satisfy the K04 commitment. This is not a validated source join; do not spend another broad sweep on it.
+- Tested the four-digit BX25 scan-release setting as a possible K04 seed. Across 0000–9999, Python MT randbytes/getrandbits and direct MD5/SHA-256/BLAKE2s derivations, both raw and XORed with the supplied K04 mask, produced no commitment hit. The PDF release code is not an authenticated printer seed.
+- Tested a CPython MT interleave hypothesis for the first 112 HST-4 PV records (seq 100–211) against the conditional p951 spool basis. A single `random.random()`-derived value per row, placed at any two-word position in the post-job or pre-job gap, was inconsistent for 29 rows under the natural 12–88 and 10–90 scaling hypotheses. This closes only that simple interleave model, not every possible historian producer.
+- Tested a global xoshiro256** stream with two 64-bit outputs per 16-byte spool packet, allowing up to 64 discarded outputs between packets and all byte/chunk orientations. No consistent stream was found. This is a new producer family probe; do not repeat the same contiguous/short-skip model.
+- Tested whether common noticeboard/mail phrases HMACed under the K08 desk nonce directly reproduce the K04 mask; no hit. This was a narrow cross-slot hypothesis only.
+
+Useful current context:
+- `results/README.md` and `MAINTAINER_OVERRIDE.md` remain the governing synthesis and correction. The maintainer explicitly wants a materially different, complete-object/source-lifecycle model rather than another provenance catalogue or broad PRNG/byte-correction sweep.
+- The HST-4 crosswalk and p951 conditional model are documented in `results/h17-hst4-pv-spool-job-crosswalk-20261107.md` and `agents/agent49/k04_p951_symbolic_basis.py`. The simple PV-to-packet and fixed first/last-gap models are not worth repeating.
+- K08's finite book-extraction lane is active elsewhere (Praeger 1947 page-word and Tomlinson 1930 foreword candidates). Avoid duplicating those exact tests unless an exact edition text/image becomes available.
+
+Next useful direction: challenge the current K04 payload lifecycle interpretation with a source-motivated, whole-object model that predicts multiple complete historical jobs before testing the selected RECOVER attempt. Do not elevate the +305 ticket offset, the BX25 password, or HST PV chronology without independent source support.
