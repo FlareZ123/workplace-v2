@@ -17,6 +17,7 @@ from pathlib import Path
 WIDTH = 128
 LOG = Path("resources/evidence/print/spool-reconstruction.log")
 ROUTE = Path("resources/evidence/recovery-routing.json")
+CANDIDATE = Path("candidate.json")
 
 
 def parse_rows():
@@ -115,10 +116,15 @@ def main():
     # x[n+1] = A*x[n] XOR c. The offset is removed from each training output,
     # then restored to the held-out prediction.
     route = json.loads(ROUTE.read_text(encoding="utf-8"))
+    candidate = json.loads(CANDIDATE.read_text(encoding="utf-8"))
     offsets = {
         "K04_mask": bytes.fromhex(route["K04"]["masked_component"]),
         "K08_desk_nonce": bytes.fromhex(route["K08"]["desk_nonce"]),
     }
+    for key in ("K01", "K02", "K03", "K05", "K06", "K07"):
+        if candidate.get(key):
+            offsets[key] = bytes.fromhex(candidate[key])
+
     for label, offset in offsets.items():
         transformed = [xor_bytes(y, offset) for y in outputs]
         affine_basis = fit_transition(states, transformed)
