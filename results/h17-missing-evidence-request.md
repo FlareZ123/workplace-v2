@@ -475,10 +475,22 @@ The existing retired-profile request should explicitly include the local native 
 The native EML export is only 20 single-part text/plain messages with no MIME attachments. These stores may contain complete thread material, omitted messages, attachments, local note versions, filenames or snippets; their existence and contents are unproven.
 
 
-Native-mail retrieval keys identified from the export (search these exact local Message-ID tokens in the preserved store): `11.IR261003` (Emily, “RC-17 issue receipt”), `13.IR261003` (Gabriel, “Archive transfer receipt to keep with the folder”), `16.IR261003` (Simon, “Escrow print jobs / recovered buffer”), and `20.IR261003` (Gabriel, “Preservation bundle 06 / desk-caption wording”). The supplied EMLs contain no `In-Reply-To` or `References` headers, so request the native conversation/thread graph, full bodies, quoted/omitted messages, MIME parts, attachment and inline-image IDs.
+The exported EML `Message-ID` tokens (`11.IR261003`, `13.IR261003`, `16.IR261003`, `20.IR261003`) are templated/prepublication identifiers, not authenticated native mailbox keys. **Do not** query a live mailbox or preserved native store using those tokens. First authenticate the original mail system/namespace and export provenance from a source manifest, mailbox inventory or archive index. Only then retrieve by an authenticated mailbox folder/UID, original Message-ID/thread ID or source record identifier. Preserve raw RFC822/MIME, Received/delivery headers, original References/In-Reply-To, quoted history, attachments and inline-image IDs. If the namespace cannot be authenticated, stop native-thread lookup and treat the supplied MAIL excerpts as prepublication excerpts. The 20 supplied EMLs are single-part `text/plain` with no MIME attachments.
 
 MAIL-16's route constraint must be preserved during interpretation: ESC-N is the K04 masked-component coupon route; WATCH-SPARE is unrelated; ESC-S is not an input to the K08 keeper's desk phrase. The route transcription maps those queues to jobs 0417, 0420 and 0448 respectively, while job 0323 has no preserved route assignment. Search native mail and profile metadata for job 0323, but do not treat its output as K08 input unless its original route and source role are established.
  Do not access credentials or a live cloud mailbox, and do not rebuild indexes or resave cached documents. Treat this as a local read-only acquisition lead, not evidence that the phrase has been found. It complements the direct print-output locator PS-261003-0323; keep both sources separate until original identifiers establish their relationship.
+
+
+### K04: authenticate the native dispatch and the physical coupon separately
+
+The selected PS-0417 attempt-2 ACK in the reconstructed log is dispatch-side evidence only; MAIL-16 explicitly warns that ACK is not media-integrity evidence.
+
+1. **To authenticate the selected ACK2 job and its bytes:** obtain the original native spool object (`.SPL/.SHD` pair where applicable, or host-native equivalent), with original timestamps/job IDs, plus the queue/port mapping and native print-service/queue journal covering all three PS-0417 attempts and the earlier LABEL control. Preserve the unrendered spool representation.
+2. **To authenticate the physical coupon and any downstream copy/render stage:** additionally obtain device-local job history and completion/media-eject receipt, plus an independently preserved ESC-N coupon scan/photo with chain of custody. A spool object alone does not prove what reached the media.
+3. First establish the print host OS and exact queue/port from an independent inventory. The R: paths establish Windows-origin paths, not necessarily a Windows print host. Request Windows PrintService EVTX/registry/driver artifacts only if the host is confirmed Windows; otherwise request equivalent native artifacts.
+
+This is an acquisition target, not evidence that any artifact exists or remains retained. If native spool/media records are unavailable, preserve the retention gap rather than inventing a copy-stage rule.
+
 
 ### K08: conditional photo-caption print witnesses
 
