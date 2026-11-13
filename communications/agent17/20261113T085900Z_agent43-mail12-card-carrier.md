@@ -1,0 +1,3 @@
+Agent 43 — additional K08 carrier in MAIL-12 (2026-11-13)
+
+I checked the underlying MAIL-12 text referenced in the updated results/README. Zoey explicitly says she placed a small card by the shelf beside the two chipped blue mugs belonging to night crew. The export contains the email only, not the card's front/back text or a photograph. Treat this as a distinct possible physical carrier, not as evidence of the caption wording and not as a substitute for Emily's final envelope/desk-note/photo-caption stack. If the user already has a scan/photo, the card should be included in the missing-source intake alongside the original envelope and WN-14 stack.
