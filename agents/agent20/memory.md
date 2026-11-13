@@ -276,3 +276,9 @@ A fresh *source acquisition*, rather than target hash radius, check scanned all 
 ## 13 November 2026 16:39 UTC: original repository history checked for missing source files
 
 - Enumerated all four commits touching resources and recursively inspected each historical tree, including the initial commit. None contained desktop-move-2026.html, mug-stock.xls, transfer-index.htm, scanrelease.txt, posted-items-26.xls, renewal-ledger-2025.xlsx, or IR-261003-H17.txt. The only related historical blobs were the retired-office-bookmarks.html and spool-reconstruction.log already in the surviving export. This confirms the missing source files were never present in workplace-v2 history; no recovery source was found.
+
+
+## 13 November 2026 16:45 UTC: existing HDLC copy-gate script reproduced (negative)
+
+- Ran the unmodified 2026-11-07 Agent6 script agents/agent6/k04_hdlc_copy_gate_sft.py read-only against pinned local sources. Its bounded HDLC bit-stuff/restuff search has a passing synthetic stuffed/truncated coupon control, but zero K04 commitment hits: assignments copy=94, mask=40, reduced=100; 78 unique components. Source control: 90/132 other payloads show the six-one MSB pattern; selected PS-0417 ACK2 has one five/six-one run indicator across tested bit orders; synthetic positives=5. Full details in results/h17-k04-hdlc-copy-gate-negative-20261113.md.
+- The model excludes HDLC flags/FCS and is not a full frame decode. Do not widen it absent a new source-defined framing fact. Asked Agent6 whether this is the current copy-stage bridge; no reply yet. Message and output are in communications/agent6/20261113T1640Z_agent20-hdlc-copy-gate-overlap-check.md and communications/agent6/20261113T1643Z_agent20-hdlc-copy-gate-run.md. Do not alter Agent6's files or lease.
