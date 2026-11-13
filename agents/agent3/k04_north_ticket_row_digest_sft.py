@@ -15,12 +15,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 FLEET = ROOT / "resources/evidence/h17-supplemental-office-files/print-fleet-retirement-note.txt"
 CSV_PATH = ROOT / "resources/evidence/h17-supplemental-office-files/supplier-reconciliation-L29.csv"
+SPOOL = ROOT / "resources/evidence/print/spool-reconstruction.log"
 ROUTE = ROOT / "resources/evidence/recovery-routing.json"
 ACCEPTANCE = ROOT / "resources/acceptance.json"
 
 PINS = {
     FLEET: "10c3a6e46b2c8475fd5fd8333cd8546633bda7ca3eac4e813ac059cd045e3cbf",
     CSV_PATH: "73b85da6d358cfc57dd340c1d6b84a5434d50693c6b12b256238ef3ff8c5c87e",
+    SPOOL: "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083",
     ROUTE: "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5",
     ACCEPTANCE: "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f",
 }
@@ -115,10 +117,70 @@ hits = [
     label for label, value in candidates
     if hashlib.sha256(value).digest() == target
 ]
+# Independent South L-29/S historical-job control. It uses the same exact
+# row-digest constructor, but compares against the retained PS-0448 RECOVER
+# ACK1 payload rather than the K04 commitment.
+south_binder_ids = re.findall(r"^L-29/S\s+\d+\s+(ST-\d+)\s+", fleet, re.M)
+assert south_binder_ids == ["ST-130", "ST-151", "ST-121", "ST-135", "ST-142"]
+assert re.search(
+    r"^PS-261003-0448\s+ESC-S\s+L-29/S\s+LV-42\s+CS-18/5$",
+    fleet, re.M
+)
+south_reader = csv.DictReader(data_lines)
+south_selected = []
+for row in south_reader:
+    raw_line = data_lines[south_reader.line_num - 1]
+    if (
+        row["line_ref"] in south_binder_ids
+        and row["run"] == "R3"
+        and row["posting"] == "POSTED"
+        and row["account"] == "LV-42"
+        and row["folio_or_jacket"] == "CS-18/5"
+    ):
+        south_selected.append((row["line_ref"], raw_line))
+assert len(south_selected) == 5
+south_by_id = dict(south_selected)
+assert set(south_by_id) == set(south_binder_ids)
+south_csv_order = [ticket for ticket, _ in south_selected]
+assert south_csv_order == ["ST-151", "ST-121", "ST-130", "ST-142", "ST-135"]
+
+spool_text = SPOOL.read_text(encoding="utf-8")
+south_payload_match = re.search(
+    r"^.*\bJOB=PS-261003-0448\b.*\bATTEMPT=1\b.*\bSTATE=ACK\b.*"
+    r"\bCLASS=RECOVER\b.*\bPAYLOAD=([0-9A-F]{32})\b.*\bDEST=desk\b.*$",
+    spool_text, re.M
+)
+assert south_payload_match
+south_payload = bytes.fromhex(south_payload_match.group(1))
+south_orders = {"binder": south_binder_ids, "csv": south_csv_order}
+south_candidates = []
+for order_name, ids in south_orders.items():
+    row_lines = [south_by_id[ticket] for ticket in ids]
+    forms = {
+        "rows-LF": "\n".join(row_lines).encode("utf-8"),
+        "rows-LF-final": ("\n".join(row_lines) + "\n").encode("utf-8"),
+        "header-rows-LF": ("\n".join([header] + row_lines)).encode("utf-8"),
+        "header-rows-LF-final": ("\n".join([header] + row_lines) + "\n").encode("utf-8"),
+    }
+    for form_name, body in forms.items():
+        for hash_name, hasher in hashers.items():
+            digest = hasher(body)
+            south_candidates.append((f"{order_name}/{form_name}/{hash_name}/component", digest))
+            south_candidates.append((
+                f"{order_name}/{form_name}/{hash_name}/payload",
+                bytes(a ^ b for a, b in zip(digest, mask)),
+            ))
+assert len(south_candidates) == 96
+assert len({value for _, value in south_candidates}) == 96
+south_hits = [label for label, value in south_candidates if value == south_payload]
+
 print(f"binder_order={','.join(binder_ids)}")
 print(f"csv_order={','.join(csv_order)}")
 print(f"distinct_complete_candidates={len(candidates)}")
 print(f"original_K04_hits={len(hits)}")
 print(f"synthetic_positive_hits={synthetic_hits}")
 print("RESULT=NO_MATCH" if not hits else "RESULT=MATCH")
+print(f"south_control_payload={south_payload.hex().upper()}")
+print(f"south_control_candidate_hits={len(south_hits)}")
 assert not hits
+assert not south_hits
