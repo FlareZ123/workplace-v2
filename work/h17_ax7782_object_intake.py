@@ -165,6 +165,17 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
                     children.append(scan_member(f"{name}!/{item.filename}", archive.read(item), depth + 1, budget))
         except (zipfile.BadZipFile, OSError, RuntimeError) as exc:
             result["container_error"] = str(exc)
+    elif kind == "gzip":
+        try:
+            import gzip
+            with gzip.GzipFile(fileobj=io.BytesIO(data)) as stream:
+                child = stream.read(MAX_MEMBER + 1)
+            if len(child) <= MAX_MEMBER:
+                children.append(scan_member(f"{name}!/<gzip-payload>", child, depth + 1, budget))
+            else:
+                result["scan_limit"] = "gzip payload exceeds member-size cap"
+        except (OSError, EOFError) as exc:
+            result["container_error"] = str(exc)
     elif kind == "tar":
         try:
             with tarfile.open(fileobj=io.BytesIO(data), mode="r:*") as archive:
