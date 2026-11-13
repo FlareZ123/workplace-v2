@@ -149,7 +149,7 @@ def raw_hits(data: bytes):
     return hits
 
 
-def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
+def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool = False):
     kind = magic(data)
     name_lower = name.casefold()
     name_hits = [term.decode("ascii") for term in TERMS if term.decode("ascii").casefold() in name_lower]
@@ -168,7 +168,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
                     mode = (item.external_attr >> 16) & 0xFFFF
                     if item.is_dir() or item.file_size > MAX_MEMBER or path.is_absolute() or ".." in path.parts or stat.S_ISLNK(mode):
                         continue
-                    children.append(scan_member(f"{name}!/{item.filename}", archive.read(item), depth + 1, budget))
+                    children.append(scan_member(f"{name}!/{item.filename}", archive.read(item), depth + 1, budget, ocr))
         except (zipfile.BadZipFile, OSError, RuntimeError) as exc:
             result["container_error"] = str(exc)
     elif kind == "gzip":
@@ -177,7 +177,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
             with gzip.GzipFile(fileobj=io.BytesIO(data)) as stream:
                 child = stream.read(MAX_MEMBER + 1)
             if len(child) <= MAX_MEMBER:
-                children.append(scan_member(f"{name}!/<gzip-payload>", child, depth + 1, budget))
+                children.append(scan_member(f"{name}!/<gzip-payload>", child, depth + 1, budget, ocr))
             else:
                 result["scan_limit"] = "gzip payload exceeds member-size cap"
         except (OSError, EOFError) as exc:
@@ -191,7 +191,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
                         continue
                     stream = archive.extractfile(item)
                     if stream is not None:
-                        children.append(scan_member(f"{name}!/{item.name}", stream.read(MAX_MEMBER + 1), depth + 1, budget))
+                        children.append(scan_member(f"{name}!/{item.name}", stream.read(MAX_MEMBER + 1), depth + 1, budget, ocr))
         except (tarfile.TarError, OSError) as exc:
             result["container_error"] = str(exc)
     elif kind in {"jpeg", "png", "tiff"}:
@@ -208,6 +208,16 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
                                    "exif": exif, "info": {str(k): str(v)[:4096] for k, v in image.info.items()}}
                 meta = json.dumps(result["image"], ensure_ascii=False).casefold()
                 result["image"]["metadata_hits"] = [t.decode("ascii") for t in TERMS if t.decode("ascii").casefold() in meta]
+                if ocr:
+                    try:
+                        import pytesseract
+                        text = pytesseract.image_to_string(image)
+                        result["image"]["ocr_text"] = text[:20000]
+                        result["image"]["ocr_hits"] = [t.decode("ascii") for t in TERMS if t.decode("ascii").casefold() in text.casefold()]
+                    except ImportError:
+                        result["image"]["ocr_note"] = "pytesseract unavailable"
+                    except Exception as exc:
+                        result["image"]["ocr_error"] = str(exc)
         except ImportError:
             result["image_note"] = "Pillow unavailable; raw string scan only"
         except Exception as exc:
@@ -230,7 +240,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int]):
     return result
 
 
-def inspect_object(path: Path, resources: Path, transfer_id: str, allow_size_mismatch: bool = False):
+def inspect_object(path: Path, resources: Path, transfer_id: str, allow_size_mismatch: bool = False, ocr: bool = False):
     selected, transfer_meta = select_chain(resources, transfer_id)
     size = path.stat().st_size
     if size != EXPECTED_SIZE and not allow_size_mismatch:
@@ -272,7 +282,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str, allow_size_mis
                                           "common_crc16_algorithms_matching_all_8": all8,
                                           "note": "No checksum algorithm is assumed; an empty list only closes these common CRC-16 variants."},
             "chunks": chunks,
-            "container_inventory": scan_member(path.name, data, 0, [0])}
+            "container_inventory": scan_member(path.name, data, 0, [0], ocr)}
 
 
 def main():
@@ -281,10 +291,11 @@ def main():
     parser.add_argument("--resources", type=Path, default=ROOT / "resources")
     parser.add_argument("--transfer", default="AX-7782")
     parser.add_argument("--allow-size-mismatch", action="store_true", help="diagnostic only; object must still contain eight full chunks")
+    parser.add_argument("--ocr", action="store_true", help="attempt local image OCR when Pillow and pytesseract/Tesseract are installed")
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
     try:
-        result = inspect_object(args.object, args.resources, args.transfer, args.allow_size_mismatch)
+        result = inspect_object(args.object, args.resources, args.transfer, args.allow_size_mismatch, args.ocr)
     except Exception as exc:
         parser.error(str(exc))
     output = json.dumps(result, indent=2, sort_keys=True)
