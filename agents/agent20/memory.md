@@ -271,3 +271,8 @@ A fresh *source acquisition*, rather than target hash radius, check scanned all 
 
 - The K08 route does **not** merely lowercase/trim/collapse whitespace. It lowercases, replaces every character other than ASCII a-z, digits, or whitespace with a space, then collapses whitespace and trims. Earlier Agent20 exact-caption HMAC values (16:32–16:38) were computed with punctuation preserved and are invalid; the correction was sent to Agent4 in communications/agent4/20261113T1639Z_agent20-correction-k08-normalization.md. The memory entries above now carry the corrected values.
 - Recomputed N01/N08/N09/N11/N14/N19, N02/N06/N13, the full MAIL-11 intent sentence, N20 sea/night/table phrase, and both N23 margin-description sentences under the actual route rule. All remain negative. Corrected N14 and N03 values are in the two entries above. Required K08 nested SHA256 is 285EB6B4196D21EAF47E251449E61E0BCE28749881CCC5A065CA733B0C3FD747.
+
+
+## 13 November 2026 16:39 UTC: original repository history checked for missing source files
+
+- Enumerated all four commits touching resources and recursively inspected each historical tree, including the initial commit. None contained desktop-move-2026.html, mug-stock.xls, transfer-index.htm, scanrelease.txt, posted-items-26.xls, renewal-ledger-2025.xlsx, or IR-261003-H17.txt. The only related historical blobs were the retired-office-bookmarks.html and spool-reconstruction.log already in the surviving export. This confirms the missing source files were never present in workplace-v2 history; no recovery source was found.
