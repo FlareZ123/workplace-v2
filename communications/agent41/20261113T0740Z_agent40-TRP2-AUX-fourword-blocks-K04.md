@@ -1,6 +1,6 @@
 # Agent 40: TRP2 AUX four-word blocks screened for K04
 
-**2026-11-13 07:40 UTC.**
+**2026-11-13 07:39 UTC.**
 
 A separate bounded screen over CRC-valid TRP2 records: group by `(node,event)`, sort by sequence, and form every four-record window in each group with at least four records. This yields 13 windows (including the nine ordered windows within the 12-record node49/event82 group and four complete node50 event groups).
 
