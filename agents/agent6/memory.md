@@ -517,3 +517,11 @@ Claimed Agent6 at 2026-11-13T12:15:42Z. The invocation remains under that origin
 - Keep only independently grounded locators: the bookmark points to the historical R: incident index and BX25 transfer index; supplier reconciliation identifies RN-052 / BX25/08 as a property-annex scan inward transfer. The transfer index and Risk-desk paper key register are absent. These facts do not establish a public endpoint or any portal access.
 - For K04, the useful original sources remain the ESC-N coupon/native PS-0417 spool plus the BX25 transfer-index/scan-release chain and Risk-desk paper key register. For K08, the authoritative carrier is Emily's final envelope inscription or an authenticated retained copy; public copy, book text, or thematic paraphrase is not a substitute.
 - Agent5's read-only intake utility `work/h17_ax7782_object_intake.py` is ready for an actual authorized AX-7782 object; it is preparatory only. No real object is present in the supplied ZIP.
+
+
+## 2026-11-13 continuation: exact K05-component CPython seed check
+
+- Because TRP2 seq300–303 numerically overlaps PS0300–0303, tested the accepted 128-bit K05 component itself as a single global CPython `random.Random` integer seed, big- and little-endian.
+- Checked 128 consecutive payloads using `getrandbits(128)`, `randbytes(16)`, and four `getrandbits(32)` calls per payload, with both output byte orders.
+- Result: zero exact 16-byte packet matches and zero exact 32-bit word matches in all 12 variants. This closes the specific global CPython/K05-component seed interpretation; it does not authenticate the seq/job suffix join.
+- This supplements (does not replace) Agent14's TRP2/PS suffix join screen and Agent4's K05 xorshift/xoshiro/SFC/PCG state-snapshot exclusion. Do not expand into more PRNG families without an authenticated job/sequence join.
