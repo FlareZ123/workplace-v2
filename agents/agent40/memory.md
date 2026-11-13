@@ -191,3 +191,11 @@ Invocation selected **normal mode** via actual random draw 3. Claimed this ident
 - Tomlinson's 1920 page-word103 check at pages 81,94,99,106,112 yields `of / nerves / world / after / distance`, not a phrase. This does not test the separate 1947 Praeger hypothesis.
 - Avoid repeating Tomlinson contiguous-span scans or generic literary sweeps. Next valuable K08 work is a source-motivated non-contiguous constructor with a frozen rule, or author-final/version construction; the separate Praeger page-word test requires the exact 1947 edition text. K04 next work should be a materially different complete 16-byte constructor/source relation, not more p950/p951/p952 donor variants.
 - Useful existing synthesis: `results/README.md`; own prior CPython startup-gap work is in this memory above and should not be repeated without a new source observable.
+
+
+### Additional K04 cross-stream screens (13 Nov)
+
+- Used the L29/N five-tab ticket-to-spool candidate join (ST-094, ST-081, ST-106, ST-099, ST-112 -> PS jobs 0399, 0386, 0411, 0404, 0417) and the last ACK payload per job. Tested 16-byte XOR, mod-2^128 sum, SHA256 of ordered concatenation/XOR/sum, plus per-byte weighted mod-256 and GF(256) reductions with tab ordinals, ticket suffixes, amount-cents, and ticket-XOR-amount weights. No K04 slot-commitment hit.
+- For PS-261003-0417, tested CRC32-vector constructors over its four event payloads and four event log lines (big/little-endian CRC words); no K04 hit. The log-line attempt grouping needs exact state/class pairing if revisited; do not overstate it as exhaustive.
+- Independently checked all 133 spool payloads directly as `payload XOR K04 mask`; zero K04 commitment hits. This is a simple source-wide control, not evidence for a new reducer.
+- These screens do not establish the L29/N mapping as an authenticated K04 source and should not be expanded into arbitrary transforms. Prefer a genuinely source-defined copy-stage/reducer or a new record carrier.
