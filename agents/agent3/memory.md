@@ -654,3 +654,9 @@ This incarnation did not recover K04 or K08. Do not repeat the bounded negatives
 
 ### Highest-value next action
 A genuinely new authorized source is required: for K04, the original ESC-N coupon scan or native spool object plus the original route/reduction sheet; for K08, Emily's original envelope/margin or the physical shelf-card/photo-caption carrier plus the original nonce-bearing route sheet. If none can be supplied, report K04/K08 as unresolved rather than continue unsupported transformations.
+
+### BX25 physical-source route clarification (2026-11-13)
+- `retired-office-bookmarks.html` links the missing `R:/Risk/Transfers/BX25/transfer-index.htm` and `R:/IT/desk-images/oldscan/scanrelease.txt`. Its description says BX25 folios were stored by the old capture terminal with a four-position numeric release setting and that the paper key register remained with the Risk desk.
+- The print-fleet register and supplier reconciliation cross-reference the three jobs to three property folios: PS-0417 / ESC-N / L-29/N / FA-17 / BX25/08; PS-0448 / ESC-S / L-29/S / LV-42 / BX25/12; PS-0420 / WATCH-SPARE / L-29/W / ST-09 / BX25/03.
+- The only local folio, BX25-08.pdf, is an encrypted one-page FA-17 property declaration. Password 8131 opens it, but it contains no coupon bytes. Treat 8131 as a computationally observed PDF password only, not a verified historical paper-register entry or REC8 component.
+- This refines the K04 acquisition target: the original Risk-desk paper key register and the actual BX25 folio/scan-release chain are potentially relevant physical sources. They are not present in the local ZIP or repository resources. Do not infer the 16-byte K04 component from 8131 or the folio numbers; the 67,520 BX25 crypt-carrier candidate screen already had zero K04/K08 hits.
