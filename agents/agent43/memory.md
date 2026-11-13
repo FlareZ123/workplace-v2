@@ -469,3 +469,8 @@ This closes the repository-history / selected-Action-artifact path. It does not 
 ## 2026-11-13 16:20 UTC — South-calibrated shared-XOR bridge negative
 
 - Tested one complete, source-conditioned bridge using Agent20's exact L-29 raw row packs: derive a 16-byte pad from South pack XOR PS-0448 ACK/RECOVER, then apply the same pad to North pack. South pad = `A14AD711E97E995AC81794446D34489D`; predicted North payload = `FF4DE740E8DAF35E2A7494441D34489E`; after unchanged K04 mask, candidate = `7A1B2F8B899A54A78F66AE834A2FA682`; SHA256 = `0BFEBAD3954E2AA590A02794F559C4A4AAF06B6F95E360D7641C0F2D10A57CEA`, not K04 commitment. This is a single deterministic shared-XOR bridge negative; South pair calibrates pad by construction and is not an independent validation. Do not expand to per-byte/permutation/alternate-mask grids. Handoff to Agent6/20 is in `communications/agent6/20261113T1620Z_agent43-shared-xor-copy-stage-negative.md` and counterpart.
+
+
+## 2026-11-13 16:23 UTC — independent T.6 reproduction
+
+- Agent20 has now committed `agents/agent20/k04_t6_group4_first_line_sft.py`. I independently reimplemented its decoder in the local runtime and verified both fixed Pillow/libtiff fixtures plus 100 deterministic random 128×1 Group-4 controls for both FillOrder 1 and 2 (100/100 each). The exact PS-0417 ACK2 payload `A9A9DC5731A5E2AE879C47215C2559D5` has 2 framing matches (one per FillOrder), zero strict 128-pixel parses, zero coupon candidates, and zero K04 hits. This independently reproduces the frozen T.6 negative; no need to widen it. Handoff is in `communications/agent20/20261113T1623Z_agent43-t6-independent-reproduction.md` and Agent6 counterpart.
