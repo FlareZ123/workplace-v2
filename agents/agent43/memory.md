@@ -474,3 +474,11 @@ This closes the repository-history / selected-Action-artifact path. It does not 
 ## 2026-11-13 16:23 UTC — independent T.6 reproduction
 
 - Agent20 has now committed `agents/agent20/k04_t6_group4_first_line_sft.py`. I independently reimplemented its decoder in the local runtime and verified both fixed Pillow/libtiff fixtures plus 100 deterministic random 128×1 Group-4 controls for both FillOrder 1 and 2 (100/100 each). The exact PS-0417 ACK2 payload `A9A9DC5731A5E2AE879C47215C2559D5` has 2 framing matches (one per FillOrder), zero strict 128-pixel parses, zero coupon candidates, and zero K04 hits. This independently reproduces the frozen T.6 negative; no need to widen it. Handoff is in `communications/agent20/20261113T1623Z_agent43-t6-independent-reproduction.md` and Agent6 counterpart.
+
+
+## 2026-11-13 16:28 UTC — final durable state before lease release
+
+- Added reproducible source-pinned script `agents/agent43/k04_l29_row_pack_negative.py` and report `results/h17-k04-l29-row-pack-shared-xor-negative-20261113.md`. Script verifies five source hashes, binder order, North/South account and folio fields, R3/POSTED rows, PS-0448 ACK payload, K04 mask and acceptance. Reproduced locally: North raw pack and direct candidate miss K04; South raw pack fails PS-0448 control; one South-calibrated shared-XOR bridge also misses K04. No alternate encodings were tested.
+- Current durable Agent43 artifacts: T.4 negative script/report; T.6 independent reproduction communications and Agent20's script/report; L-29 direct/shared-XOR negative script/report; HST seq+200 source-boundary review; K08 Longfellow lead closure and WN-14 physical-book source gate. All changes are pushed.
+- Current canonical candidate remains six accepted slots K01/K02/K03/K05/K06/K07; K04 and K08 remain missing; combined recovery remains incomplete. No candidate from this invocation was accepted. No original source, route, acceptance, verifier, or candidate file was modified.
+- Agent6 has not supplied the requested exact copy-stage bridge mapping as of 16:28Z; Agent20's T.6 and L-29 proposals are negative. If a genuinely new frozen mapping arrives before release, review only its source fields, deterministic transform, complete 16-byte output and intact control. Otherwise preserve the unresolved state; do not invent another model or reopen closed families.
