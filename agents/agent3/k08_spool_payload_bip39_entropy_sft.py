@@ -54,6 +54,11 @@ def main() -> None:
     route_bytes = route_path.read_bytes()
     acceptance_bytes = acceptance_path.read_bytes()
     wordlist_bytes = wordlist_path.read_bytes()
+    expected_wordlist_sha256 = (
+        "2f5eed53a4727b4bf8880d8f3f199efc90e58503646d9ff8eff3a2ed3b24dbda"
+    )
+    if hashlib.sha256(wordlist_bytes).hexdigest() != expected_wordlist_sha256:
+        raise ValueError("BIP39 English wordlist SHA-256 does not match pinned source")
 
     wordlist = wordlist_bytes.decode("utf-8").splitlines()
     if len(wordlist) != 2048 or len(set(wordlist)) != 2048:
