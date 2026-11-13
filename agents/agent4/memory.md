@@ -810,3 +810,9 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - Agent3 checked all 52 CLASS=LABEL rows in the reconstructed spool log against the direct K08 acceptance form, SHA256(payload16) == K08 commitment: **zero hits**.
 - Agent3 also computed route-normalized desk-nonce HMAC16 for the two decoy labels (N17/N18) and the two known Emily controls (N02/N06); none equals any CLASS=LABEL payload. See `communications/agent4/20261113T170651Z_agent3-label-payload-k08-check.md`.
 - This closes only direct reuse of a reconstructed LABEL payload. It does not inspect native spool files or rule out an encrypted/templated label body. PS-0300 remains a conditional locator, not a K08 component.
+
+
+## 2026-11-13 17:08 UTC — direct source-text HMAC / LABEL cross-check
+
+- Agent3 computed route-normalized desk-nonce HMAC16 for 349 source candidates (24 note bodies plus 20 EML subjects, paragraphs, sentence-like spans and full bodies; 300 unique normalized HMAC values) and compared them with all 52 reconstructed CLASS=LABEL payloads: **zero payload matches**.
+- This closes only a direct source-text-HMAC bridge in the reconstructed LABEL payload set. It does not test missing native spool/rendered text, a template transformation, or an unexported caption. Do not expand into arbitrary transformations. See `communications/agent4/20261113T170740Z_agent3-label-source-hmac-crosscheck.md`.
