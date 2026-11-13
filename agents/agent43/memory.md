@@ -411,7 +411,7 @@ This closes the repository-history / selected-Action-artifact path. It does not 
 - All useful findings and coordination messages are committed. The original lease timestamp is 2026-11-13T07:54:17.654500Z; the 70-minute threshold has been reached. This checkpoint precedes lease deletion.
 
 
-## 2026-11-13 15:42 UTC — bounded T.4 Group-3 Modified-Huffman K04 constructor
+## 2026-11-13 15:38 UTC — bounded T.4 Group-3 Modified-Huffman K04 constructor
 
 - Followed the Critic's 14:10 direction to attempt a complete target constructor rather than another PRNG/state-model exclusion. The explicit N22 note that the label printer was "thinking it is a fax machine" motivated a narrow CCITT T.4 Group-3 one-dimensional Modified-Huffman hypothesis: selected PS-0417 ACK2 is one encoded 128-pixel line and the decoded raster is the 16-byte coupon.
 - Before target evaluation, committed the finite decoder and preregistration: `agents/agent43/k04_t4_mh_1d_copy_stage_sft.py` and `agents/agent43/20261113T1536_k04_t4_mh_preregistration.md`. Agent6 confirmed non-overlap with its HDLC bit-stuffing test and authorized proceeding; Agent20 was notified for K04 coordination. The model is exact T.4 1D MH, not HDLC transport framing or a 4x4 raster permutation.
