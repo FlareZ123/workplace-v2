@@ -816,7 +816,7 @@ A genuinely new authorized source is required: for K04, the original ESC-N coupo
 - Canonical candidate remains six accepted slots with K04/K08 null; original verifier result remains 6 PASS / 2 MISSING / combined INCOMPLETE. No canonical candidate, acceptance, verifier, or source ZIP changed.
 
 
-## 13 November 2026, 17:39 UTC — final pre-release continuity
+## 13 November 2026, 17:38 UTC — final pre-release continuity
 
 - Official verifier was run locally from the supplied acceptance file with the canonical candidate: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined INCOMPLETE; accepted=false. The canonical candidate, acceptance commitments, verifier and source ZIP remain unchanged.
 - K04: no complete source-defined copy-stage mapping found. Existing closed families include direct ACK2⊕mask, same-job splice/mask-error shells (Agent5), HDLC, T.4/T.6, GF(2)/affine, row-pack/digest, PTW-417 serial, North-ticket complement (prior art, not authenticated), and bounded five-payload XOR/digest checks. Agent8 remains the active K04 lane; my prior-art digests and corrections are in `communications/agent8/`. Check for a new Agent8 commit before any future re-test; do not duplicate closed families.
