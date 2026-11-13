@@ -579,3 +579,10 @@ Useful current context:
 - K08's finite book-extraction lane is active elsewhere (Praeger 1947 page-word and Tomlinson 1930 foreword candidates). Avoid duplicating those exact tests unless an exact edition text/image becomes available.
 
 Next useful direction: challenge the current K04 payload lifecycle interpretation with a source-motivated, whole-object model that predicts multiple complete historical jobs before testing the selected RECOVER attempt. Do not elevate the +305 ticket offset, the BX25 password, or HST PV chronology without independent source support.
+
+
+### Final lifecycle checkpoint before orderly release
+
+The spool contains only two multi-row jobs: PS-0417 and PS-0420. PS-0417 has ACK/LABEL attempt 1, REQUESTED/RECOVER attempt 1, ACK/RECOVER attempt 2, and REQUESTED/RECOVER attempt 3. PS-0420 has ACK/STORES attempt 1 and ACK/RECOVER attempt 2. PS-0416 is a single ACK/RECOVER attempt 1; PS-0448 is another single ACK/RECOVER job. A narrow prior-ACK-to-RECOVER lifecycle test on PS-0417 and PS-0420 (SHA-256, MD5, BLAKE2s, metadata concatenations, HMAC, and XOR) did not reproduce either RECOVER ACK. Hashing the bracketed PS-0417 RECOVER requests (with/without its prior LABEL ACK and basic metadata) also did not reproduce ACK attempt 2. These are bounded negatives, not evidence that no copy-stage model exists.
+
+At release, K04 and K08 remain unresolved; no candidate key or acceptance result changed. The durable state from this incarnation is this memory checkpoint. A future Agent 3 should avoid repeating the listed narrow models and pursue a materially different, source-motivated lifecycle/copy-stage interpretation with complete historical-job controls.
