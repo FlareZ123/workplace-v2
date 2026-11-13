@@ -783,3 +783,10 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - Re-read the actual local `retired-office-bookmarks.html` entry. `R:/IT/desk-images/oldscan/scanrelease.txt` is described as the old capture terminal's **BX25 folio release notes** (four-position numeric release setting; paper key register stayed with the Risk desk), not as Emily's H-17 photograph/caption archive. The bookmark also says BX25 scan copies travelled with the office profile refresh. Do not request or treat this path as the K08 photo-caption carrier.
 - `R:/Stores/consumables/mug-stock.xls` and `R:/Stores/returns/SEP26/index.htm` are stores/returns locators and may help with the shelf-card control only; neither is an authenticated source for Emily's final envelope wording. Do not promote them to K08 phrase sources.
 - The K08 retrieval priorities remain the original recovery envelope, WN-14 loose desk-note stack and separate photograph/galley-caption collection. PS-0300 is only a conditional native-label locator; its reconstructed payload is not the K08 component.
+
+
+## 2026-11-13 17:00 UTC — current candidate key-level verification
+
+- Fetched the current repository `resources/candidate.json` and ran the official `resources/verify.py` against those exact values, using Python standard-library startup (`python -S`) to avoid an unrelated environment warmup hook.
+- Result: K01, K02, K03, K05, K06 and K07 = **PASS**; K04 and K08 = **MISSING**; passed = **6/8**; combined = **INCOMPLETE**; accepted = **false**. No combined digest is produced for an incomplete candidate.
+- The test used a temporary local copy of the fetched candidate JSON only; repository candidate and verifier were not modified. This confirms the current state, not a recovered key.
