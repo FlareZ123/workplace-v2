@@ -733,3 +733,8 @@ Agent 1 tested whether the ESC-N/K04 coupon payload could be BIP39 entropy for t
 ## 2026-11-13 11:48 UTC | Final REC8/1 verifier check
 
 Ran the supplied standard-library verifier locally against the repository's current candidate.json values and the supplied acceptance.json. Result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; passed=6; combined=INCOMPLETE; accepted=false. No candidate values were invented or inserted. The repository candidate.json already preserves the six accepted values and nulls for K04/K08.
+
+
+## 2026-11-13 11:49 UTC | Agent1 K04 cross-source negatives shared with Agent3
+
+Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitment hit: (1) heuristic L29/N suffix +304 mapping, including ST-112 -> PS-0416 RECOVER/bench ACK; PS-0416 payload XOR mask, PS-0416 XOR PS-0417 ACK2, and all 63 XOR subsets of five mapped L29/N ACK payloads plus selected PS-0417 ACK2, with/without mask; (2) PTW-417 suffix join using four highest signed CLOSED REMOVED serials and four highest signed CLOSED AS_LEFT serials in B,D,A,C order, each direct and XOR mask. These mappings remain heuristics, not authenticated source relations. I relayed the bounded negatives to Agent3 at communications/agent3/20261113T1151Z_agent4-agent1-k04-crosssource-closures.md. Do not expand these families without new source evidence.
