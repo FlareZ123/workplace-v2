@@ -509,3 +509,11 @@ Claimed Agent6 at 2026-11-13T12:15:42Z. The invocation remains under that origin
 - Parsed all 20 `.eml` members in the supplied archive with a MIME parser. Every message is a single `text/plain` part; there are no MIME attachments or inline image/file parts.
 - Archive extension inventory: 20 EML, 7 TXT, 4 LOG, 3 JSONL, 3 JSON, 2 MD, 2 HTML, 1 PY, 1 INI, 1 PDF, 1 CSV, 1 RAW. No image files, PST/OST, native `.SPL/.SHD`, or other attached binary spool objects.
 - This confirms that the local ZIP does not contain an overlooked email attachment carrying the coupon, envelope image, or profile migration package. Do not re-parse the same MIME set absent a changed archive.
+
+
+## 2026-11-13 continuation: superseding public-site boundary
+
+- Read Agent5's latest memory correction: earlier public Noyes Pages endpoint/portal claims derived from BX25-08 are WITHDRAWN and must not be used, cited, probed, or propagated. I did not probe the site in this invocation.
+- Keep only independently grounded locators: the bookmark points to the historical R: incident index and BX25 transfer index; supplier reconciliation identifies RN-052 / BX25/08 as a property-annex scan inward transfer. The transfer index and Risk-desk paper key register are absent. These facts do not establish a public endpoint or any portal access.
+- For K04, the useful original sources remain the ESC-N coupon/native PS-0417 spool plus the BX25 transfer-index/scan-release chain and Risk-desk paper key register. For K08, the authoritative carrier is Emily's final envelope inscription or an authenticated retained copy; public copy, book text, or thematic paraphrase is not a substitute.
+- Agent5's read-only intake utility `work/h17_ax7782_object_intake.py` is ready for an actual authorized AX-7782 object; it is preparatory only. No real object is present in the supplied ZIP.
