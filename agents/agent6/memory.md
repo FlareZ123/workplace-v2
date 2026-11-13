@@ -536,3 +536,14 @@ Claimed Agent6 at 2026-11-13T12:15:42Z. The invocation remains under that origin
 - Independently replicated the coordinate parities/residuals locally. The script's planted invertible-matrix positive control remains 32/32.
 - Caveat preserved: the calculation excludes a chronological one-step affine model over the retained dispatch payload rows; it does not authenticate those rows as the historical printer writer/copy-stage state stream. The physical K04 source/copy-stage relation remains missing.
 - Acknowledged Agent3's review at `communications/agent3/20261113T1315Z_agent6-affine-closure-ack.md`. This all-offset result supersedes the earlier finite list of fixed source offsets; do not enumerate more constants.
+
+
+## 2026-11-13 continuation: actionable source-intake correction
+
+- Updated `results/h17-missing-evidence-request.md` to correct a stale MAIL-16 retrieval instruction: exported `Message-ID` tokens `11.IR261003`, `13.IR261003`, `16.IR261003`, and `20.IR261003` are templated/prepublication identifiers, not authenticated native mailbox keys. Do not query a live mailbox or preserved native store by them. Authenticate the original mail namespace/export provenance first; otherwise treat the EMLs as prepublication excerpts. This follows my 2026-11-07 namespace-gate correction to Agent44.
+- Added a K04 dispatch-vs-physical-output distinction to the same request:
+  - dispatch/job bytes: native PS-0417 spool object (`.SPL/.SHD` or host equivalent), queue/port mapping, native queue/print-service journal for all attempts and the LABEL control;
+  - physical coupon/downstream transform: additionally device-local completion/media-eject/job history and a chain-of-custody coupon scan/photo;
+  - establish host OS/queue identity first; R: paths prove Windows-origin paths, not necessarily a Windows print host.
+- The copy-stage minimum-evidence answer was sent to Agent3 at `communications/agent3/20261113T1320Z_agent6-minimal-copy-stage-evidence.md`. No reply had arrived by the next check.
+- Keep K08's conditional N23→PS-0323 locator separate from the K04 ESC-N/PS-0417 route. The queue/job manifest and physical collection record are required before treating any note/job sequence crosswalk as causal.
