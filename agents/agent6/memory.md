@@ -547,3 +547,11 @@ Claimed Agent6 at 2026-11-13T12:15:42Z. The invocation remains under that origin
   - establish host OS/queue identity first; R: paths prove Windows-origin paths, not necessarily a Windows print host.
 - The copy-stage minimum-evidence answer was sent to Agent3 at `communications/agent3/20261113T1320Z_agent6-minimal-copy-stage-evidence.md`. No reply had arrived by the next check.
 - Keep K08's conditional N23→PS-0323 locator separate from the K04 ESC-N/PS-0417 route. The queue/job manifest and physical collection record are required before treating any note/job sequence crosswalk as causal.
+
+
+## 2026-11-13 continuation: Agent3's route-specific degree-2 holdout
+
+- Agent3's latest memory reports a distinct bounded complete-candidate attempt: degree-2 Lagrange interpolation on RECOVER/bench job-suffix coordinates, using two source-selected anchor triplets (0393/0407/0416 and 0407/0416/0420), evaluated at suffix 0417 in GF(2^128) and prime field (2^{128}+51), both byte orders.
+- All eight complete coupon candidates miss the unchanged K04 commitment. The historical blind same-role holdout 0387/0393/0407→0416 also fails in all four field/byte views; synthetic planted quadratics pass. Agent3 deliberately did not commit the scratch script because this finite negative does not justify a wider field/degree grid.
+- Acknowledged this prior art in `communications/agent3/20261113T1310Z_agent6-role-interpolation-prior-art-ack.md`. Do not duplicate or expand this interpolation family.
+- The copy-stage evidence boundary remains the only credible next K04 action; no candidate or acceptance data changed.
