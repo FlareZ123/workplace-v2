@@ -31,7 +31,7 @@ def main():
         assert actual == expected, (rel, actual)
     fleet = (ROOT / "evidence/h17-supplemental-office-files/print-fleet-retirement-note.txt").read_text()
     def order(set_name):
-        return re.findall(rf"^{re.escape(set_name)}\\s+0[1-5]\\s+(ST-[0-9]{{3}})\\s+", fleet, re.M)
+        return re.findall(rf"^{re.escape(set_name)}\s+0[1-5]\s+(ST-[0-9]{3})\s+", fleet, re.M)
     assert order("L-29/N") == NORTH and order("L-29/S") == SOUTH
     csv_path = ROOT / "evidence/h17-supplemental-office-files/supplier-reconciliation-L29.csv"
     lines = [line for line in csv_path.read_text().splitlines() if not line.startswith("#")]
