@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 NOTES_SHA = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
 MAIL11_SHA = "f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29"
 MAIL12_SHA = "4cadd373aa676f97e64690a631eea3f3993e0908eaac0aacb86e76ed0c2c68fd"
+MAIL20_SHA = "e83391f77c3a41b97cf92c78d93abfa0bebeed0ddf7cbcb9309250973963ac71"
 
 CANDIDATES = (
     "There is always a mug for one more",
@@ -56,17 +57,20 @@ def main() -> None:
     notes = (evidence / "crew" / "noticeboard-and-desk-notes.txt").read_bytes()
     mail11 = (evidence / "mail" / "11.eml").read_bytes()
     mail12 = (evidence / "mail" / "12.eml").read_bytes()
+    mail20 = (evidence / "mail" / "20.eml").read_bytes()
 
     assert hashlib.sha256(notes).hexdigest() == NOTES_SHA
     assert hashlib.sha256(mail11).hexdigest() == MAIL11_SHA
     assert hashlib.sha256(mail12).hexdigest() == MAIL12_SHA
+    assert hashlib.sha256(mail20).hexdigest() == MAIL20_SHA
 
     notes_text = notes.decode("utf-8")
     mail11_text = " ".join(mail11.decode("utf-8").split())
     mail12_text = " ".join(mail12.decode("utf-8").split())
+    mail20_text = " ".join(mail20.decode("utf-8").split())
 
     # Source-role pins: mug ownership / expected return; mugs as evidence
-    # of people sitting down; end-of-night scene; explicit welcome intent.
+    # of people sitting down; end-of-night scene; explicit late-watch intent.
     for anchor in (
         "Even the chipped blue one belongs to someone who expects to see it again.",
         "Someone asked why I count mugs when I could count beds. A bed does not tell you whether anybody has sat down.",
@@ -75,8 +79,10 @@ def main() -> None:
     ):
         assert anchor in notes_text, anchor
     assert "They belong to two of the night crew and they know which ones they are." in mail12_text
-    assert "more like a welcome" in mail11_text
     assert "people making room for each other after a long watch" in mail11_text
+    assert "with the water outside and the night almost finished" in mail11_text
+    assert "late crew making room for one another" in mail20_text
+    assert "The words she finally chose matter, not our preferred paraphrase." in mail20_text
 
     route = json.loads((evidence / "recovery-routing.json").read_text())
     acceptance = json.loads((evidence / "acceptance.json").read_text())
@@ -105,6 +111,7 @@ def main() -> None:
             "noticeboard_and_desk_notes": NOTES_SHA,
             "mail11": MAIL11_SHA,
             "mail12": MAIL12_SHA,
+            "mail20": MAIL20_SHA,
         },
     }, indent=2))
     assert not hits, "A candidate matched; preserve and independently verify it before promotion."
