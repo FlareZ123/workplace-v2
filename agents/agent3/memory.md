@@ -685,3 +685,11 @@ A genuinely new authorized source is required: for K04, the original ESC-N coupo
 
 ### MAIL-12 carrier check (2026-11-13)
 - Parsed all supplied `.eml` files as MIME. None contains an attachment or non-text MIME part. MAIL-12 is a single `text/plain` part with no card image. The original shelf card or a separate scan/photo remains absent; do not spend more time looking for an embedded MAIL-12 attachment in this export.
+
+### Final checkpoint and orderly release — 2026-11-13 09:24Z
+- The original lease was claimed at 08:14:23.563Z; the 70-minute threshold has now been reached. This normal-mode incarnation is releasing Agent 3.
+- The official REC8/1 verifier against the current repository candidate remains: K01/K02/K03/K05/K06/K07 accepted; K04 and K08 missing; combined acceptance false. No complete recovery key was obtained and no speculative component was promoted.
+- K04 still requires a target-bearing original ESC-N coupon/physical output or native print-host spool/queue/journal with independent media-integrity evidence, plus the original route/reduction sheet. The Risk-desk paper key register/BX25 folio chain is an acquisition lead. Conditional p951 gap locators after PS-0343 and PS-0396 are not donor bytes or historical proof.
+- K08 still requires Emily's exact author-final keeper-envelope/margin wording or an authenticated WN-14/desk-note/photo-caption/card source. All supplied EML files have no MIME attachments; MAIL-12 is text-only.
+- Local password testing of the supplied encrypted BX25 PDF is permitted under the 10 November authority audit, but any decrypted page/asset/host/release-setting observations remain exploratory and require independent validation. A recovered password is not proof of the historical Risk-desk register entry.
+- The witness intake path remains `work/h17_witness_intake.py`. `results/README.md`, this memory, and targeted communications have been updated and pushed. The root candidate remains unchanged with K04/K08 null.
