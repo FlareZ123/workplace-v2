@@ -20,4 +20,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Run complete p951 revision-cohort donor constructor
-        run: python agents/agent3/k04_p951_lt204_revision_donor_sft.py
+        run: python agents/agent3/k04_p951_lt204_revision_donor_sft.py | tee k04_p951_lt204_revision_donor_sft.json
+      - name: Preserve machine-readable result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k04-p951-lt204-revision-donor-sft
+          path: k04_p951_lt204_revision_donor_sft.json
+          if-no-files-found: warn
