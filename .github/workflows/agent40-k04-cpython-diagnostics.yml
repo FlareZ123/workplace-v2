@@ -1,0 +1,23 @@
+name: H17 K04 genuine CPython seed-domain diagnostics
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Reconstruct finite seed domains and whole-source candidates
+        run: python agents/agent40/k04_midwarmup_residue_diagnostics_sft.py
+      - name: Preserve key-domain observations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent40-midwarmup-residue-diagnostics
+          path: artifacts/agent40/midwarmup_residue_diagnostics.json
+          if-no-files-found: warn
