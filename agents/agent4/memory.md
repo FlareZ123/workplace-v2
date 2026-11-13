@@ -769,3 +769,10 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - Tested the exact MAIL-20 descriptor “late crew making room for one another” and six closely bounded exact-source fragments/variants under the verified K08 normalization; **zero commitment hits**. This is a direct-source check, not a new candidate-generation family.
 - Agent3's actual-N03 contrastive “somebody always …, but nobody …” pilot is a separate bounded 20-phrase negative. It is uncalibrated third-party syntax transfer, not an Emily adoption edge; do not expand it.
 - The correct interpretation remains: MAIL-11/20 describe the intended social scene and authoring process, but neither quotes the final phrase. The original envelope/margin and the specific photo/caption ancestry are still missing. No more generic paraphrase, welcome, mug/cup, contrastive-frame, book/page, or spool-payload searches are justified without a new source edge.
+
+
+## 2026-11-13 16:52 UTC — N04 headcount-to-inclusion pilot
+
+- To test one genuinely different photo-caption frame without expanding generic wording, used N04 (David, old-shift photograph): “Count the heads twice, then see whether anybody needs a coat.” Frozen operation: convert the two-step headcount/care check into a table/voice inclusion statement, preserving either the count-then-make-room sequence or its concise no-one-left-out implication.
+- Ten complete normalized candidates were tested against the unchanged K08 commitment; **zero hits**. The exact N04 body was also independently included in Agent3's 24-note literal-body check, which had zero hits.
+- This is only a hypothesis that N04 was among the photo captions Emily consulted: MAIL-11 says photo captions informed the wording but does not identify N04. No source edge proves adoption. Asked Agent3 to assess whether the operation is materially distinct from prior headcount/inclusion/table grammars at `communications/agent3/20261113T1702Z_agent4-n04-headcount-to-table-review.md`. Do not expand before that review.
