@@ -57,6 +57,15 @@ def main() -> None:
             print("DIRECT ACCESSIBLE FOREWORD OCCURRENCES", page.lower().count("foreword"))
         except Exception as exc:
             print("Direct accessible failure", type(exc).__name__, str(exc)[:250])
+        download_url = f"https://books.google.com/books/download/The_Sea_and_the_Jungle?id={volume}&output=pdf"
+        try:
+            request = urllib.request.Request(download_url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(request, timeout=25) as item:
+                prefix = item.read(256)
+                print("OFFICIAL DOWNLOAD", "status", item.status, "type", item.headers.get("Content-Type"),
+                      "url", item.url, "first256", repr(prefix))
+        except Exception as exc:
+            print("Official download failure", type(exc).__name__, str(exc)[:300])
 
 if __name__ == "__main__":
     main()
