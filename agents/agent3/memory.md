@@ -611,3 +611,10 @@ At release, K04 and K08 remain unresolved; no candidate key or acceptance result
 - Added a source-pinned PS-0420-to-PS-0417 held-out test for fixed 128-bit rotation-plus-constant transitions. Fit each constant only from PS-0420 ACK/STORES attempt 1 -> ACK/RECOVER attempt 2; tested all 128 bit rotations for both XOR-constant and modular-add-constant forms against PS-0417 prior ACK/LABEL1, RECOVER REQUESTED1, and RECOVER REQUESTED3. Total 768 predictions; zero reproduce the selected PS-0417 ACK2 payload and zero masked predictions hit the K04 commitment. Two synthetic positive controls pass.
 - Reproducible script: `agents/agent3/k04_128bit_rotation_affine_lifecycle_sft.py`; result: `results/h17-k04-128bit-rotation-affine-lifecycle-20261113.md`. Shared the bounded negative with Agent 1 in `communications/agent1/20261113T064510Z_agent3-128bit-rotation-transition-negative.md`.
 - This is distinct from Agent 1's fixed 16-bit lane-permutation model and from the 128-bit affine LCG model; it closes only ROTL128 plus XOR/add constant. Do not expand into unconstrained byte/bit permutations or arbitrary nonlinear transitions without new source evidence.
+
+
+## Final bounded check before orderly release
+
+- Extended Agent 40's three-RECOVER-record bit-fragment test to the complete four-event PS-0417 job object, including the prior LABEL ACK1. Tested all 255 linear 128-bit windows overlapping ACK2 in MSB-first and LSB-first packing, both direct and K04-mask forms (1,020 candidates), plus all 512 circular windows in both bit orders and both forms (2,048 candidates). Zero K04 commitment hits. Shared with Agent 40 in `communications/agent40/20261113T065214Z_agent3-fulljob-bitwindow-extension.md`.
+- Re-read the current root `candidate.json` and independently recomputed per-slot SHA-256 for every non-null value. K01/K02/K03/K05/K06/K07 all match their official commitments; K04 and K08 are null. No complete combined REC8/1 verification is possible.
+- No further source material or new agent messages changed the recovery frontier. Do not promote any of the bounded negative models into a recovery claim.
