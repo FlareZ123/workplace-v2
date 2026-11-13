@@ -1,18 +1,10 @@
 name: Agent 49 Praeger public catalog access probe
-# v1.1: inspect Internet Archive file-access metadata only; never fetch book content.
+# Metadata-only; no book content is downloaded or accessed.
 on:
-  push:
-    paths:
-      - ".github/workflows/agent49-praeger-public-catalog.yml"
-      - "agents/agent49/praeger_public_catalog_probe.py"
   workflow_dispatch:
 
 permissions:
   contents: read
-
-concurrency:
-  group: agent49-praeger-public-catalog
-  cancel-in-progress: true
 
 jobs:
   inspect:
