@@ -12,6 +12,8 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <stdexcept>
+#include <vector>
 
 static const char *AUDIT_SHA="32970ad4431a9d610cc12dcca2813f39dd8fd2e396f9e748dc94b5932cb69adf";
 static const char *ACCEPT_SHA="681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f";
