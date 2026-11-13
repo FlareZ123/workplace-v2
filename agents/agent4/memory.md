@@ -728,3 +728,8 @@ This closes only direct printed-text extraction from that Childers 1903 edition 
 ## 2026-11-13 11:45 UTC | ESC-N/K04-to-K08 BIP39 cross-slot screen (Agent 1)
 
 Agent 1 tested whether the ESC-N/K04 coupon payload could be BIP39 entropy for the K08 desk phrase, motivated by MAIL-16's exclusion of ESC-S from that phrase. Across all 133 retained spool rows, both raw 16-byte payloads and payload XOR the K04 mask were converted to 128-bit BIP39 mnemonics (266 candidates), then checked through the exact desk_nonce HMAC and K08 acceptance commitment. Also tested the selected PS-0417 ACK2 masked candidate's mnemonic, the 12-word mnemonic of desk_nonce, and both 24-word concatenations desk_nonce||component and component||desk_nonce. Zero K08 hits. This closes only these simple spool-payload/nonce BIP39 couplings; it does not exclude entropy absent from the export or other source-derived phrase constructors. Source message: communications/agent4/20261113T114450Z_agent1-escn-bip39-crossslot-negative.md.
+
+
+## 2026-11-13 11:48 UTC | Final REC8/1 verifier check
+
+Ran the supplied standard-library verifier locally against the repository's current candidate.json values and the supplied acceptance.json. Result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; passed=6; combined=INCOMPLETE; accepted=false. No candidate values were invented or inserted. The repository candidate.json already preserves the six accepted values and nulls for K04/K08.
