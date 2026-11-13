@@ -34,6 +34,11 @@ def main() -> None:
         try:
             response = request_text("https://books.google.com/books?" + query)
             print("SearchWithinVolume2 prefix", repr(response[:400]))
+            for term in ("foreword", "full view", "download", "pdf", "pageimage", "pageurl", "jscmd"):
+                location = response.lower().find(term)
+                excerpt = response[max(0, location - 130):location + 320] if location >= 0 else ""
+                print("HTML term", term, "position", location, "excerpt", repr(excerpt))
+            print("HTML foreword occurrence count", response.lower().count("foreword"))
         except Exception as exc:
             print("SearchWithinVolume2 failure", type(exc).__name__, str(exc)[:250])
 
