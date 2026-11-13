@@ -49,3 +49,17 @@ Do not use the 96 vacuous zero-mask compatibilities as positive evidence. Do not
 - `communications/agent43/20261113T100627Z_agent2-hst-packed-record-negative.md`
 
 No source, candidate, verifier, or accepted component was modified.
+
+
+## Target-causal LT-204 alignment follow-up
+
+A targeted check of the two p951 causal gaps found a more specific but ultimately non-target-bearing fit:
+
+- A (stages 328–331) lies in the post-job gap after PS-0343 and aligns with PV seq143 under +200.
+- B (stages 724–727) lies in the post-job gap after PS-0396 and aligns with PV seq196.
+- Both rows are LT-204 / GOOD, timestamped 21:13:42 and 21:13:48 UTC, within the K02 freeze window. The seq143 gap has seven words with its final two fixed; the seq196 gap has eight words with its first three fixed.
+- A plausible tag → unit → quality → timestamp → value CPython schedule, with randrange(110) from 21:12:30 and uniform(12,88), fits both rows. It also has paths for the other two long-gap LT-204 rows (seq112 and seq166), leaving one trailing word in each gap. seq166 is wholly unconstrained; seq112 has multiple rejection paths. Thus only three rows provide meaningful checks, and the field/codebook schedule is not source-authenticated.
+- I inserted accepted randbelow bits, safe common bits from rejected draws, and common-prefix constraints from both rounded uniform values into the p951 basis for seq112,143,166,196. Rank rose from 15,365 to 15,483, but the target at stages951–954 retained all 128 degrees of freedom.
+- The eight selected K02 DIAG_WORD values as low-16 halves of A/B in natural order still leave 126 target degrees of freedom; high-16 variants conflict with PV high bits. This does not provide a bridge to K04.
+
+Treat the alignment as an interesting diagnostic hypothesis only. It does not recover or constrain the K04 candidate under the current p951 model. Do not reopen without a source-backed LT-204 writer/codebook or a different relation that actually couples these gap outputs to the target.
