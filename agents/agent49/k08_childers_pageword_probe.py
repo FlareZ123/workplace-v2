@@ -1,10 +1,9 @@
 """Bounded K08 page/word test against the public-domain 1903 Childers edition.
 
-Hypothesis: each signed WN14 4-byte group encodes two (page, word) pairs;
-the eight selected words, in A->D group order, form the keeper phrase.
-The scan's OCR text layer carries page headers only, so this script OCRs just
-the eight mapped page images. It emits selected words and hash results, not
-the surrounding book text.
+Tests the two plausible pair interpretations of the signed WN14 bytes:
+(page, word) and (word, page). The scan's OCR text layer carries page headers
+only, so this script OCRs just the pages required by those coordinates. It
+emits selected words and hash results, never surrounding book text.
 """
 from __future__ import annotations
 
@@ -16,12 +15,16 @@ import sys
 import tempfile
 from pathlib import Path
 
-COORDS = [
+PAGE_WORD = [
     (4, 154), (171, 46),
     (28, 222), (122, 130),
     (205, 124), (96, 35),
     (67, 3), (201, 26),
 ]
+COORD_SETS = {
+    "page-word": PAGE_WORD,
+    "word-page": [(word, page) for page, word in PAGE_WORD],
+}
 PDF_PAGE_OFFSET = 4  # printed page n is PDF page n+4 (1-based), confirmed by scan headers
 NONCE = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
 EXPECTED_K08_SHA256 = "285EB6B4196D21EAF47E251449E61E0BCE28749881CCC5A065CA733B0C3FD747"
@@ -65,10 +68,11 @@ def main() -> int:
     page_count = int(m.group(1)) if m else 0
     print("PDF_PAGES", page_count, "PRINTED_TO_PDF_OFFSET", PDF_PAGE_OFFSET)
 
+    all_pages = sorted({page for coords in COORD_SETS.values() for page, _ in coords})
     page_texts: dict[int, dict[int, list[str]]] = {}
     with tempfile.TemporaryDirectory(prefix="h17-childers-ocr-") as td:
         temp = Path(td)
-        for printed_page in sorted({p for p, _ in COORDS}):
+        for printed_page in all_pages:
             pdf_page = printed_page + PDF_PAGE_OFFSET
             if pdf_page < 1 or pdf_page > page_count:
                 print("PAGE_OUT_OF_RANGE", printed_page, pdf_page)
@@ -88,23 +92,24 @@ def main() -> int:
                 psm: len(words) for psm, words in modes.items()
             })
 
-    for psm in (3, 4, 6):
-        picked: list[str] = []
-        valid = True
-        for page, word in COORDS:
-            words = page_texts.get(page, {}).get(psm)
-            idx = word - 1
-            if words is None or idx < 0 or idx >= len(words):
-                valid = False
-                picked.append(f"<missing:{page}/{word}:count={len(words) if words is not None else 'no-page'}>")
-            else:
-                picked.append(words[idx])
-        if not valid:
-            print("CANDIDATE", "psm", psm, "INVALID", picked)
-            continue
-        phrase, component, matched = hmac_match(picked)
-        print("CANDIDATE", "psm", psm, "words", picked, "phrase", phrase,
-              "component", component, "K08_MATCH", matched)
+    for label, coords in COORD_SETS.items():
+        for psm in (3, 4, 6):
+            picked: list[str] = []
+            valid = True
+            for page, word in coords:
+                words = page_texts.get(page, {}).get(psm)
+                idx = word - 1
+                if words is None or idx < 0 or idx >= len(words):
+                    valid = False
+                    picked.append(f"<missing:{page}/{word}:count={len(words) if words is not None else 'no-page'}>")
+                else:
+                    picked.append(words[idx])
+            if not valid:
+                print("CANDIDATE", label, "psm", psm, "INVALID", picked)
+                continue
+            phrase, component, matched = hmac_match(picked)
+            print("CANDIDATE", label, "psm", psm, "words", picked,
+                  "phrase", phrase, "component", component, "K08_MATCH", matched)
 
     print("CHILDERS_PAGEWORD_PROBE_COMPLETE")
     return 0
