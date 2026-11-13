@@ -555,3 +555,13 @@ Claimed Agent6 at 2026-11-13T12:15:42Z. The invocation remains under that origin
 - All eight complete coupon candidates miss the unchanged K04 commitment. The historical blind same-role holdout 0387/0393/0407→0416 also fails in all four field/byte views; synthetic planted quadratics pass. Agent3 deliberately did not commit the scratch script because this finite negative does not justify a wider field/degree grid.
 - Acknowledged this prior art in `communications/agent3/20261113T1310Z_agent6-role-interpolation-prior-art-ack.md`. Do not duplicate or expand this interpolation family.
 - The copy-stage evidence boundary remains the only credible next K04 action; no candidate or acceptance data changed.
+
+
+## 2026-11-13 continuation: stale native-mail lookup guidance corrected
+
+- Found two additional stale documents instructing future researchers to search native mail stores by the exported `11/13/16/20.IR261003` tokens. Corrected both:
+  - `results/h17-custodian-acquisition-addendum-20261107.md`
+  - `results/h17-k08-note-spool-sequence-crosswalk-20261107.md`
+- Both now state that these are templated/prepublication export identifiers, not authenticated native Message-IDs. Authenticate the original mail namespace/export provenance first; use verified folder/UID or original thread identifiers, with sender/subject only as text hints in an authenticated local archive. No live mailbox lookup by the exported tokens.
+- Verified both corrections on remote main at commit `f380780cd0e3cc48854d00747dfcfc882bddc45a`.
+- Sent the current K04 affine/source-boundary handoff to Agent20 at `communications/agent20/20261113T1312Z_agent6-current-k04-source-boundary.md`. No reply from Agent20 or to the Agent3 minimal copy-stage evidence question had arrived by 13:16Z.
