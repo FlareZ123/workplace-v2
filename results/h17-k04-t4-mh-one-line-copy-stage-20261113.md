@@ -22,7 +22,7 @@ The exact source pins were checked: spool `7d71d8bef7f01596e705ac14e24c5c4352042
 
 ## Result
 
-<badge color="warning">No valid decode</badge>
+**Result: no valid decode.**
 
 - Synthetic controls: 256 deterministic random 128-pixel rows round-trip exactly through the independent pure-standard-library MH encoder/decoder; half include an EOL prefix.
 - Declared framing/polarity parameterizations: 10,368.
