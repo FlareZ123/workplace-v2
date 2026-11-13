@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import re
+import random
 from pathlib import Path
 
 WIDTH = 128
@@ -87,7 +88,38 @@ def xor_bytes(a: bytes, b: bytes) -> bytes:
     return bytes(x ^ y for x, y in zip(a, b, strict=True))
 
 
+def synthetic_check():
+    """Positive control: recover a planted invertible 128-bit GF(2) map."""
+    rng = random.Random(20261113)
+    columns = []
+    for j in range(WIDTH):
+        column = 1 << j
+        for i in range(j):
+            if rng.getrandbits(1):
+                column |= 1 << i
+        columns.append(column)
+
+    def apply(x: int) -> int:
+        y = 0
+        while x:
+            bit = (x & -x).bit_length() - 1
+            y ^= columns[bit]
+            x &= x - 1
+        return y
+
+    training_states = [(1 << i).to_bytes(16, "big") for i in range(WIDTH)]
+    training_outputs = [apply(1 << i).to_bytes(16, "big") for i in range(WIDTH)]
+    basis = fit_transition(training_states, training_outputs)
+    for _ in range(32):
+        state = rng.getrandbits(WIDTH)
+        predicted = predict(state.to_bytes(16, "big"), basis)
+        if predicted != apply(state).to_bytes(16, "big"):
+            raise RuntimeError("synthetic positive control failed")
+    print("synthetic_positive_control=32/32")
+
+
 def main():
+    synthetic_check()
     rows = parse_rows()
     if len(rows) != 133:
         raise RuntimeError(f"expected 133 payload rows, found {len(rows)}")
