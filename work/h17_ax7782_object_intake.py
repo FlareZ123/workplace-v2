@@ -231,6 +231,30 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool
                              "metadata": {str(k): str(v) for k, v in (reader.metadata or {}).items()},
                              "text_hits": [t.decode("ascii") for t in TERMS if t.decode("ascii").casefold() in text.casefold()],
                              "has_attachments": bool(getattr(reader, "attachments", {}))}
+            for filename, payloads in getattr(reader, "attachments", {}).items():
+                if not isinstance(payloads, (list, tuple)):
+                    payloads = [payloads]
+                for index, payload in enumerate(payloads):
+                    if isinstance(payload, bytes):
+                        children.append(scan_member(f"{name}!/{filename}[{index}]", payload, depth + 1, budget, ocr))
+            if ocr and not text.strip():
+                try:
+                    import fitz
+                    import pytesseract
+                    from PIL import Image
+                    document = fitz.open(stream=data, filetype="pdf")
+                    ocr_pages = []
+                    for page_index in range(min(len(document), 20)):
+                        pix = document[page_index].get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
+                        image = Image.open(io.BytesIO(pix.tobytes("png")))
+                        ocr_pages.append(pytesseract.image_to_string(image))
+                    ocr_text = "\n".join(ocr_pages)
+                    result["pdf"]["ocr_text"] = ocr_text[:40000]
+                    result["pdf"]["ocr_hits"] = [t.decode("ascii") for t in TERMS if t.decode("ascii").casefold() in ocr_text.casefold()]
+                except ImportError:
+                    result["pdf"]["ocr_note"] = "PyMuPDF, Pillow, and pytesseract are required for scanned-PDF OCR"
+                except Exception as exc:
+                    result["pdf"]["ocr_error"] = str(exc)
         except ImportError:
             result["pdf_note"] = "pypdf unavailable; raw string scan only"
         except Exception as exc:
@@ -291,7 +315,7 @@ def main():
     parser.add_argument("--resources", type=Path, default=ROOT / "resources")
     parser.add_argument("--transfer", default="AX-7782")
     parser.add_argument("--allow-size-mismatch", action="store_true", help="diagnostic only; object must still contain eight full chunks")
-    parser.add_argument("--ocr", action="store_true", help="attempt local image OCR when Pillow and pytesseract/Tesseract are installed")
+    parser.add_argument("--ocr", action="store_true", help="attempt local image/scanned-PDF OCR when optional dependencies are installed")
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
     try:
