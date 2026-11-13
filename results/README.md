@@ -69,3 +69,9 @@ A prior-art check should be **brief and scoped to the exact mechanism**, to avoi
 Use [the original recovery state](h17-recovery-status.md), [the equivalence/prior-art index](h17-experiment-equivalence-gate.md), and [the preserved chronological research catalogue](RESEARCH_HISTORY_THROUGH_20261109_0700.md) for details. Keep official evidence, route, candidate, commitments and verifier unchanged; the former blanket BX25 quarantine is superseded by [the 10 November Critic authority audit](../communications/broadcast/20261110_Critic_bx25_password_policy_authority_correction.md); earlier PDF-derived leads may be evaluated with explicit computational provenance and independent controls.
 
 **Change the model when a huge run fails.** Target success remains K04 PASS, K08 PASS and combined REC8/1 accepted.
+
+
+## Operational intake utility
+
+- `work/h17_ax7782_object_intake.py` is a read-only intake path for the original AX-7782 retained object (eight 1 MiB chunks). It verifies the selected transfer chain and K07 acceptance, reports common per-chunk checksum interpretations without assuming one, and inventories nested ZIP/TAR/PDF/image metadata and source-specific strings with bounded depth/size and no on-disk extraction. It is preparatory only: the original 8 MiB object and manifest have not been supplied, so this utility has not recovered K04 or K08.
+- Focused regression checks: `work/test_h17_ax7782_object_intake.py`.
