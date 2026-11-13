@@ -38,11 +38,12 @@ class IntakeTests(unittest.TestCase):
     def test_zip_member_text_is_found_without_extraction(self):
         payload = io.BytesIO()
         with zipfile.ZipFile(payload, "w", compression=zipfile.ZIP_STORED) as archive:
-            archive.writestr("records/final-envelope.txt",
+            archive.writestr("records/IR-261003-H17.txt",
                              "IR-261003-H17 final envelope caption coupon handoff N23")
         result = intake.scan_member("fixture.zip", payload.getvalue(), 0, [0])
         self.assertEqual(result["magic"], "zip")
         self.assertEqual(len(result["members"]), 1)
+        self.assertIn("IR-261003-H17.txt", result["members"][0]["name_hits"])
         hits = result["members"][0]["raw_hits"]
         terms = {hit["term"] for hit in hits}
         self.assertIn("IR-261003-H17", terms)
