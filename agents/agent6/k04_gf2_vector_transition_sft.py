@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test whether the chronological 16-byte printer payloads form a 128-bit GF(2)-linear state stream.
+"""Test whether chronological 16-byte printer payloads form a 128-bit GF(2)-linear state stream.
 
 Run from the repository root:
     python agents/agent6/k04_gf2_vector_transition_sft.py
@@ -14,7 +14,6 @@ import re
 from pathlib import Path
 
 WIDTH = 128
-MASK = (1 << WIDTH) - 1
 LOG = Path("resources/evidence/print/spool-reconstruction.log")
 
 
@@ -94,8 +93,7 @@ def main():
         raise RuntimeError("first 128 records are not the expected regular block")
     if "18:01:00Z" not in rows[128]["line"]:
         raise RuntimeError("row 128 is not the first late REQUESTED event")
-    if "18:02:00Z" not in rows[129]["line]":
-        # Keep the target identity check explicit and fail closed.
+    if "18:02:00Z" not in rows[129]["line"]:
         raise RuntimeError("row 129 is not the selected PS-0417 attempt-2 ACK")
 
     states = [row["payload"] for row in rows[:128]]
