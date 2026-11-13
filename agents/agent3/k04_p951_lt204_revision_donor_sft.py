@@ -165,13 +165,16 @@ def read_blocks():
     assert hashlib.sha256(telemetry_path.read_bytes()).hexdigest() == (
         "3787dbd6bab3930ea5293c25a995175161a1c0d7683daad29f498026e057639f"
     )
+    k02_window = route["K02"]
+    k02_start = datetime.fromisoformat(k02_window["start_utc"])
+    k02_end = datetime.fromisoformat(k02_window["end_utc_exclusive"])
     cohorts = {revision: {} for revision in (1, 3, 4)}
     for line in telemetry_path.read_text().splitlines():
         row = json.loads(line)
         ts = datetime.fromisoformat(row["ts"])
         revision = row.get("revision")
         if (row.get("tag") == "LT-204" and row.get("field") == "DIAG_WORD"
-                and revision in cohorts and start <= ts < end):
+                and revision in cohorts and k02_start <= ts < k02_end):
             seq = row["seq"]
             assert seq not in cohorts[revision]
             cohorts[revision][seq] = row
