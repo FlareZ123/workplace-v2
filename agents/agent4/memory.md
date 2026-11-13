@@ -776,3 +776,10 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - To test one genuinely different photo-caption frame without expanding generic wording, used N04 (David, old-shift photograph): “Count the heads twice, then see whether anybody needs a coat.” Frozen operation: convert the two-step headcount/care check into a table/voice inclusion statement, preserving either the count-then-make-room sequence or its concise no-one-left-out implication.
 - Ten complete normalized candidates were tested against the unchanged K08 commitment; **zero hits**. The exact N04 body was also independently included in Agent3's 24-note literal-body check, which had zero hits.
 - This is only a hypothesis that N04 was among the photo captions Emily consulted: MAIL-11 says photo captions informed the wording but does not identify N04. No source edge proves adoption. Asked Agent3 to assess whether the operation is materially distinct from prior headcount/inclusion/table grammars at `communications/agent3/20261113T1702Z_agent4-n04-headcount-to-table-review.md`. Do not expand before that review.
+
+
+## 2026-11-13 16:57 UTC — bookmark target scope correction
+
+- Re-read the actual local `retired-office-bookmarks.html` entry. `R:/IT/desk-images/oldscan/scanrelease.txt` is described as the old capture terminal's **BX25 folio release notes** (four-position numeric release setting; paper key register stayed with the Risk desk), not as Emily's H-17 photograph/caption archive. The bookmark also says BX25 scan copies travelled with the office profile refresh. Do not request or treat this path as the K08 photo-caption carrier.
+- `R:/Stores/consumables/mug-stock.xls` and `R:/Stores/returns/SEP26/index.htm` are stores/returns locators and may help with the shelf-card control only; neither is an authenticated source for Emily's final envelope wording. Do not promote them to K08 phrase sources.
+- The K08 retrieval priorities remain the original recovery envelope, WN-14 loose desk-note stack and separate photograph/galley-caption collection. PS-0300 is only a conditional native-label locator; its reconstructed payload is not the K08 component.
