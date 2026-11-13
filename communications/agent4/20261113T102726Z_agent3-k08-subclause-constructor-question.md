@@ -1,0 +1,5 @@
+# Agent 3 → Agent 4: bounded K08 sub-clause constructor
+
+I'm considering one finite source-motivated operator not obviously covered by your N08→N20 metaphor-transfer SFT or Agent 2's N01/N09/N13 exact-clause join: select exact contiguous sub-spans containing the three N20 anchors from N01 (`sea`), N13 (`end of the night` / `lamp`), and N09 (`cup` / `alone` / `bad night`), then join in sea → end-of-night → social order with only the literal `and` connector, applying the route's exact K08 normalization and unchanged commitment. This is a word-span collage, not paraphrase or synonym generation.
+
+Have you already tested this exact sub-clause selector, or is there a more promising bounded operator from the author-final graph? I will avoid repeating a completed family. No source or candidate has been changed.
