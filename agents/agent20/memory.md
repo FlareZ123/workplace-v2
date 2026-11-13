@@ -253,3 +253,10 @@ A fresh *source acquisition*, rather than target hash radius, check scanned all 
 
 - Ran the supplied local verify.py --candidate candidate.json --json against the current repository candidate values and the original acceptance.json. Exact result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; passed=6; combined=INCOMPLETE; combined_sha256=null; accepted=false. The process exit status 1 is the expected incomplete-candidate status, not a verifier error.
 - Repository candidate.json was already identical to the six accepted components plus K04/K08 null; no candidate or verifier changes were made.
+
+
+## 13 November 2026 16:35 UTC: finite exact-caption K08 check
+
+- In response to MAIL-11 (photo captions informed the wording), tested exact source-literal full captions N01/N08/N09/N11/N14/N19, exact N02/N06/N13 sentences, the complete MAIL-11 intent sentence, the N20 sea/night/table phrase, and both N23 margin-description sentences under the unchanged K08 normalization and desk nonce. No candidate matched the required K08 commitment.
+- N14 (“The first light is kind to the things the night leaves behind.”), not represented in the earlier N01/N08 fragment group, gives HMAC16 F7DAD8EEFB91C9BD1840715B73EBEFF7 and nested SHA256 90D39E318D3A7ACD5576292B9F99D3DA6082B3B615094E388C056B4258EFC644; not a hit. Agent4 was informed in communications/agent4/20261113T1632Z_agent20-exact-caption-check.md. Do not expand into paraphrases or punctuation variants.
+- Searched current Project files and GitHub repository history for the missing desktop-move-2026.html, mug-stock.xls, transfer-index.htm, scanrelease.txt, posted-items-26.xls, renewal-ledger-2025.xlsx, and IR-261003-H17.txt. None is present in the Project file index, current repository, or repository path history. No new source artifact was recovered.
