@@ -1,7 +1,7 @@
 """Read-only public catalog/access check for the Praeger map-back-book hypothesis.
 
-This probe retrieves bibliographic metadata only. It does not download book text,
-page images, restricted material, or use credentials.
+The probe retrieves public bibliographic metadata and file-access flags only. It
+never downloads book text, page images, restricted material, or uses credentials.
 """
 from __future__ import annotations
 
@@ -9,12 +9,13 @@ import json
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-UA = "H17-public-book-catalog-probe/1.0 (+read-only metadata)"
+UA = "H17-public-book-catalog-probe/1.1 (+read-only metadata)"
+IA_IDS = ("bwb_KU-429-532", "bwb_KU-389-133", "bwb_KV-165-111")
 
 
 def get_json(url: str) -> dict:
     req = Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
-    with urlopen(req, timeout=18) as response:
+    with urlopen(req, timeout=20) as response:
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}")
         body = response.read(500_001)
@@ -31,8 +32,11 @@ def archive_query(query: str) -> dict:
         "page": 1,
         "output": "json",
     }
-    # urlencode with doseq is required for the repeated fl[] fields.
     return get_json("https://archive.org/advancedsearch.php?" + urlencode(params, doseq=True))
+
+
+def archive_item(identifier: str) -> dict:
+    return get_json("https://archive.org/metadata/" + identifier)
 
 
 def google_volume(volume_id: str) -> dict:
@@ -61,6 +65,33 @@ def main() -> None:
                   json.dumps(docs[:20], sort_keys=True))
         except Exception as exc:
             print("ARCHIVE_UNAVAILABLE", label, type(exc).__name__, str(exc)[:240])
+
+    for identifier in IA_IDS:
+        try:
+            result = archive_item(identifier)
+            meta = result.get("metadata") or {}
+            files = result.get("files") or []
+            selected = []
+            for item in files:
+                name = str(item.get("name", ""))
+                if name.lower().endswith((".txt", ".djvu", ".pdf", ".epub", ".xml", ".jp2", ".zip")):
+                    selected.append({
+                        key: item.get(key)
+                        for key in ("name", "format", "size", "private", "access-restricted-item", "source", "original")
+                        if key in item
+                    })
+            print("ARCHIVE_ITEM", identifier, json.dumps({
+                "identifier": meta.get("identifier"),
+                "title": meta.get("title"),
+                "creator": meta.get("creator"),
+                "year": meta.get("year"),
+                "collection": meta.get("collection"),
+                "access-restricted-item": meta.get("access-restricted-item"),
+                "rights": meta.get("rights"),
+                "files": selected,
+            }, sort_keys=True))
+        except Exception as exc:
+            print("ARCHIVE_ITEM_UNAVAILABLE", identifier, type(exc).__name__, str(exc)[:240])
 
     for label, volume_id in (
         ("1947-third-edition-candidate", "uT5RAQAAIAAJ"),
