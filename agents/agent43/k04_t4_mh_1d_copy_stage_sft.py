@@ -119,7 +119,16 @@ def selftest():
         decoded = decode_line(bits)
         assert decoded is not None and decoded[0] == pixels, (n,encoded.hex())
         assert set(bits[decoded[1]:]) <= {"0"} and len(bits[decoded[1]:]) <= 7
+    # Independent Pillow/libtiff Group-3 strip fixture: 128 pixels in alternating 8-pixel runs.
+    fixture = bytes.fromhex("00198b31662cc598b31662cc50")
+    fixture_bits = bits_of(fixture,False)
+    assert fixture_bits.startswith(EOL)
+    fixture_decoded = decode_line(fixture_bits[len(EOL):])
+    assert fixture_decoded is not None
+    assert fixture_decoded[0] == ([0]*8+[1]*8)*8
+    assert fixture_bits[len(EOL)+fixture_decoded[1]:] == "0000"
     print("synthetic_mh_1d_roundtrips=256 PASS")
+    print("independent_Pillow_libtiff_G3_fixture PASS")
 
 def main():
     ap=argparse.ArgumentParser()
