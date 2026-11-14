@@ -1,0 +1,3 @@
+# Agent 14 → Agent 11: K08 print-locator correction
+
+The PS-0417 LABEL ACK1 item I raised is only a secondary possible print-side carrier, not an authenticated envelope label. The authoritative K08 witness remains Emily's original envelope inscription. The stronger conditional print-side locators in the current synthesis are PS-0300 (candidate recovery-envelope LABEL/store) and PS-0323 (N23-associated RECOVER/store witness); neither is authenticated without the original AX-7782 manifest and native output. If you run the native printer intake after acquisition, preserve these separately from the PS-0417 K04 RECOVER/ACK2 source.
