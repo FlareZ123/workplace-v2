@@ -101,55 +101,20 @@ def png_dimensions(data: bytes) -> list[int] | None:
 
 
 def request_page(page: int) -> tuple[dict, bytes | None]:
-    params = {
-        "id": BOOK_ID,
-        "pg": f"PA{page}",
-        "img": "1",
-        "zoom": "3",
-        "hl": "en",
-        "w": "1025",
-    }
-    url = "https://books.google.com/books/content?" + urllib.parse.urlencode(params)
-    request = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 Chrome/131.0 Safari/537.36"
-            ),
-            "Accept": "image/avif,image/webp,image/apng,image/png,image/*,*/*;q=0.8",
-            "Referer": f"https://books.google.com/books?id={BOOK_ID}&pg=PA{page}",
-        },
-    )
-    record = {"printed_page": page, "request_url": url}
-    try:
-        with urllib.request.urlopen(request, timeout=40) as response:
-            data = response.read()
-            content_type = response.headers.get_content_type()
-            record.update({
-                "status": response.status,
-                "final_url": response.geturl(),
-                "content_type": content_type,
-                "bytes": len(data),
-                "sha256": sha256(data),
-                "png_dimensions": png_dimensions(data),
-            })
-            if content_type == "image/png" and record["png_dimensions"]:
-                return record, data
-            record["body_prefix"] = data[:160].decode("utf-8", "replace")
-            return record, None
-    except urllib.error.HTTPError as exc:
-        body = exc.read()
-        record.update({
-            "status": exc.code,
-            "error": str(exc),
-            "content_type": exc.headers.get_content_type(),
-            "body_prefix": body[:160].decode("utf-8", "replace"),
-        })
+    """Use source-pinned signed viewer captures; unsigned image URLs did not calibrate."""
+    captured = OUT / "captured"
+    manifest = json.loads((captured / "manifest.json").read_text(encoding="utf-8"))
+    match = next((entry for entry in manifest if entry["printed_page"] == page), None)
+    if match is None:
+        return {"printed_page": page, "error": "Missing signed-viewer page record"}, None
+    record = dict(match)
+    if "error" in record:
         return record, None
-    except Exception as exc:
-        record["error"] = f"{type(exc).__name__}: {exc}"
-        return record, None
+    data = (captured / record["filename"]).read_bytes()
+    if sha256(data) != record["sha256"]:
+        raise ValueError(f"Captured signed page {page} digest mismatch")
+    record["png_dimensions"] = png_dimensions(data)
+    return record, data
 
 
 def extract_word(image_bytes: bytes, one_based_index: int) -> dict:
