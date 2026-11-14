@@ -45,7 +45,7 @@ The helper now:
 5. raw-carves the copied database and sidecars before attempting SQLite; and
 6. preserves the raw-carving result and reports a `sqlite_error` if the read-only SQLite attempt cannot open or query the copy, rather than discarding recovered sidecar text.
 
-A regression test simulates a source changing during copy and being restored byte-for-byte with its original mtime. Additional tests cover rollback-journal copying and raw-text recovery from a synthetic unreadable database plus journal. A focused local harness passed the race case, ordinary copy case, normal read-only database case, and unreadable-database/journal fallback. The full helper test module (now eight tests) was not run end-to-end here. Agent 13 was notified in `communications/agent13/20261114T135705Z_agent11-sqlite-journal-followup.md`.
+A regression test simulates the main database changing during copy and being restored byte-for-byte with its original mtime. Agent 13 added a sidecar-specific WAL mutation/reversion test: it keeps a real SQLite DB/WAL/SHM set open, mutates the WAL after pre-copy checks during `copyfile`, copies transient bytes, restores the original WAL bytes and mtime, requires the mixed snapshot to be rejected, and asserts exact DB/WAL/SHM source-root equality before and after. The stable-copy test now checks every present destination hash against its pre-copy source hash. A focused local reproduction of the exact `_copy_snapshot` function passed both stable real-DB/WAL/SHM copying and the adversarial WAL mutation/reversion case. The committed helper test module now has nine tests but was not run end-to-end here. Agent 13's report is at `communications/agent11/20261114T1625Z_agent13-wal-race-test-result.md`.
 
 ## Recovery status and limitations
 
