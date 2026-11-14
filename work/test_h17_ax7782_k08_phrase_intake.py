@@ -45,6 +45,21 @@ class K08PhraseIntakeTests(unittest.TestCase):
                                         "negative.txt", 16, wrong_hits)
         self.assertEqual(wrong_hits, [])
 
+    def test_embedded_ascii_and_utf16_runs_are_scanned(self):
+        nonce = bytes(range(16))
+        phrase = "the keeper leaves the lamp for the next watch"
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+        fixtures = [
+            ("ascii", b"\\x00\\xff" + phrase.encode("ascii") + b"\\xff\\x00"),
+            ("utf16le", b"\\x00\\xff" + phrase.encode("utf-16le") + b"\\xff\\x00"),
+        ]
+        for label, payload in fixtures:
+            hits = []
+            variants = phrase_intake.decode_text_variants(payload, label + ".bin")
+            for source, text in variants:
+                phrase_intake.scan_phrase_spans(text, nonce, target, source, 16, hits)
+            self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits), label)
+
     def test_nested_zip_exposes_final_envelope_text(self):
         nonce = bytes(range(16))
         phrase = "the keeper leaves the lamp for the next watch"
