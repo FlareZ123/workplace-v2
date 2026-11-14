@@ -48,6 +48,13 @@ class StickyNotesIntakeTests(unittest.TestCase):
         self.assertTrue(result["summary"]["shm_present"])
         note_text = result["tables"][0]["rows"][0]["values"]["Text"]
         self.assertEqual(note_text, "A place at the table after the long watch")
+        copied_records = [item for item in result["source_files"] if item["present"]]
+        self.assertEqual({Path(item["path"]) for item in copied_records}, set(source_before))
+        for item in copied_records:
+            source_path = Path(item["path"])
+            self.assertTrue(item["snapshot_copy_verified"])
+            self.assertEqual(item["sha256"], item["copied_sha256"])
+            self.assertEqual(item["sha256"], source_before[source_path][2])
         self.assertEqual(source_before, {path: self._hash(path) for path in (self.database, wal, shm)})
         connection.close()
 
