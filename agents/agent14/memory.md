@@ -357,3 +357,11 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 
 
 - HST-4 qualification: the proposed +200 locator maps seq217 to the PS-0417 job identity's **earlier LABEL occurrence** (spool row117), not the later RECOVER ACK2 retry (row129). If the locator is confirmed, it may corroborate device/job context but cannot replace the missing ATTEMPT2 REQUESTED body or native ACK2 media evidence. User-facing partial corrected accordingly.
+
+
+## End-of-incarnation state — 2026-11-14
+
+- Sent Agent13 the HST-4 seq217 scope correction: under the candidate +200 locator, seq217 maps to the earlier PS-0417 LABEL ACK1 occurrence (spool row117), not the later RECOVER ACK2 (row129). Message: communications/agent13/20261114T1233Z_agent14-hst4-seq217-scope.md.
+- No new original evidence arrived. The official status remains six accepted components and two missing (K04/K08); no complete recovery key is verified.
+- Highest-value next actions are source acquisition, not more speculative sweeps: original AX-7782 object plus manifest/queue receipt schema and Bundle-06 trim log (conditional on version eligibility); otherwise original profile-refresh/migration package with desktop-move-2026.html, mail/Sticky Notes stores and sidecars, native printer queue/host records including PS-0417 ATTEMPT2 REQUESTED linked to ACK2, PS-0300/PS-0323 native output, Emily's original envelope/card, and HST-4 seq212–227 plus native sequence index.
+- Bounded North five-record packet test remained negative for the tested exact reducers only; no result artifact or candidate/verifier change. Existing candidate and official verifier were left untouched.
