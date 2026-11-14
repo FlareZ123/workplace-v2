@@ -77,7 +77,7 @@ def source_groups() -> tuple[dict[str, str], dict[str, str]]:
     confirmation_text = confirmation.decode("utf-8")
     if "No replacement groups were issued." not in confirmation_text:
         raise ValueError("MAIL-14 no-replacement confirmation changed")
-    if "A, then B, then C, then D remains the order." not in confirmation_text:
+    if "A, then B, then C, then D remains the order." not in " ".join(confirmation_text.split()):
         raise ValueError("MAIL-14 group-order confirmation changed")
     source_hashes["mail/14.eml"] = sha256(confirmation)
 
