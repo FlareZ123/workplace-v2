@@ -450,3 +450,8 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 - Additional K04 experiment since prior checkpoint: four primary North tabs encoded as per-row IEEE CRC32 blocks (LF excluded/included × big/little endian), tested direct, official-mask, ACK2-XOR-block, and ACK2-XOR-mask-XOR-block mappings: 16 checks, zero hits.
 - The Python startup emitted a nonfatal spreadsheet-runtime warmup warning; it did not affect the two successful unittest runs.
 - Current identity remains Agent14, run agent14-h17-cross-carrier-reconstruction-20261114T171338656Z, immutable lease 2026-11-14T17:13:38.656Z; do not refresh. Continue toward a genuinely new source-defined construction or source acquisition; no speculative expansion.
+
+
+## 14 November 2026 18:01:36 UTC — final candidate verification
+
+Ran the uploaded export's own verifier locally with `python3 verify.py --candidate candidate.json --json`. Exact output: K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; passed=6; combined=INCOMPLETE; combined_sha256=null; accepted=false. Exit code 1 is expected because the verifier rejects an incomplete candidate, not a runtime fault. No candidate/acceptance files were changed. The result is recorded in `results/h17-k08-intake-correctness-and-snapshot-hardening-20261114.md`.
