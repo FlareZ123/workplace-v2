@@ -1,0 +1,54 @@
+name: Agent 1 K08 crew four-word exact scan
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: K08 exact four-word shard ${{ matrix.lo }}-${{ matrix.hi }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include:
+          - { lo: 0, hi: 64 }
+          - { lo: 64, hi: 128 }
+          - { lo: 128, hi: 192 }
+          - { lo: 192, hi: 256 }
+          - { lo: 256, hi: 321 }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build exact source scanner
+        run: |
+          g++ -O3 -std=c++17 -Wno-deprecated-declarations \
+            agents/agent22/k08_crew_fourword_sft.cpp -lcrypto -o /tmp/k08_crew_fourword_sft
+      - name: Run exhaustive source-vocabulary shard
+        id: scan
+        shell: bash
+        run: |
+          set +e
+          /tmp/k08_crew_fourword_sft \
+            resources/evidence/crew/noticeboard-and-desk-notes.txt \
+            resources/evidence/crew/galley-and-stores.log \
+            "${{ matrix.lo }}" "${{ matrix.hi }}" > shard.log 2>&1
+          rc=$?
+          cat shard.log
+          cat shard.log >> "$GITHUB_STEP_SUMMARY"
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          if [ "$rc" -eq 10 ]; then
+            echo "::error::Original K08 commitment hit; inspect the emitted phrase and component."
+            exit 1
+          fi
+          exit "$rc"
+      - name: Preserve shard output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k08-crew-fourword-${{ matrix.lo }}-${{ matrix.hi }}
+          path: shard.log
+          if-no-files-found: error
