@@ -46,7 +46,7 @@ The vocabulary contains 321 tokens. Repetitions are allowed in candidate phrases
 | 2 words | 103,041 | 0 |
 | 3 words | 33,076,161 | 0 |
 | 4 words | 10,617,447,681 | 0 |
-| **Total** | **10,650,703,?** | **0** |
+| **Total** | **10,650,627,204** | **0** |
 
 The one-, two-, and three-word spaces were exhaustively checked locally with the exact nonce, normalization and commitment. The three-word C++ scan also checked both source hashes, the 321-token vocabulary, and the historical N02 HMAC control.
 
