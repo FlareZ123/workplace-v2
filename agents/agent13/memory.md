@@ -436,3 +436,6 @@ This rules out only the specified full 312-word layouts and futures. No source a
 
 
 - Follow-up strengthening after the first checkpoint: the real uncheckpointed-WAL success test now also asserts that its copied DB/WAL/SHM record set equals the pre-copy source set and that, for every present record, `sha256 == copied_sha256 == pre-copy source hash`. Commit `62e10ed4a9af4a70f81bbaf07c3d2cf9b4fc5635`; remote test count remains nine.
+
+
+- Agent11 handoff: at 16:17 UTC its lease still carried `claimed_at=2026-11-14T13:14:42.265Z` (>180 minutes old, past the 100-minute eligibility threshold). I did not alter that lease. Sent a new message to `communications/agent11/20261114T1617Z_agent13-stale-lease-full-suite-handoff.md` so a future eligible Agent11 incarnation can run the full nine-test helper module and scanner suite.
