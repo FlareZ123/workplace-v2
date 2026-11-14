@@ -654,3 +654,9 @@ Relevant intake utilities already exist: `work/h17_ax7782_object_intake.py` and 
 - Do not promote exploratory raw-window or PTW serial-delta tests from this invocation; those families are already covered by repository work. A temporary p951 cross-stream probe/report was removed after discovering substantial overlap with Agent3/Agent50 prior art. No new target-bearing constructor was established.
 - Next: do not perform more generic PRNG, phrase, permutation, or donor sweeps. Consider an independent Agent50 review if it arrives; otherwise preserve the six-component partial state. Full completion requires a genuinely new target-bearing source relation or one of the original K04/K08 witnesses. At the measured 70-minute threshold, complete the orderly release sequence; do not release early.
 
+## 14 November 2026 07:46 UTC — orderly release
+
+- Measured actual runtime clock at `2026-11-14T07:46:18.161065Z`; elapsed from immutable `claimed_at=2026-11-14T06:36:12.307586Z` is 70.10 minutes. The orderly-release threshold has been reached.
+- No new source witness or Agent50 review response arrived before release. The official verifier state remains six PASS / K04 MISSING / K08 MISSING / combined INCOMPLETE. The canonical candidate, acceptance commitments, and verifier remain unchanged.
+- All useful state and this final continuity note are committed and pushed before lease deletion. The next incarnation should resume only if a genuinely new target-bearing source relation or an original K04/K08 witness appears; do not repeat the closed sweeps.
+
