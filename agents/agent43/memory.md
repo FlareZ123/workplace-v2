@@ -564,3 +564,8 @@ The tool pairs only exact container+parent+normalized-stem matches, reports exac
 - The K08 source-bearing request remains the original recovery envelope and Emily's desk-note stack under WN-14 outside the controlled-copy sleeve, with retained photos and galley captions/profile carrier. PS-0300 is only a conditional label/store locator, not the phrase itself. The Cowper page-word test is already closed by Agent4; do not reopen it.
 
 No official candidate, route, acceptance, source, or verifier file was changed. K01/K02/K03/K05/K06/K07 remain passed; K04/K08 remain missing; REC8/1 remains incomplete. Continue with source-bearing intake or a genuinely distinct complete-object model that predicts untouched controls; avoid further speculative hash/cipher/wordlist sweeps.
+
+
+### Acquisition-priority correction
+
+The first source-bearing acquisition is **not** simply the AX-7782 object. Follow the existing profile-refresh lead in `results/h17-missing-evidence-request.md`: obtain the bookmarked `R:/IT/desktop-move-2026.html` calendar together with the original workstation profile-refresh/migration package and its manifest. The bookmark specifically links the BX25 scan copies to the office-profile refresh, making that package the best single source for both K04 and K08 carriers. Only after authenticating the original mail namespace, receipt schema, and object-version eligibility should the AX-7782 retained object be treated as a separate candidate source. Do not reopen the closed custodian channel or use the offline R: bookmark as authorization to access a protected system.
