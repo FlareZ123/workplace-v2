@@ -308,3 +308,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Tested five frozen one-input component maps for every carrier: identity; SHA256-16; HMAC-SHA256-16 keyed by the K08 desk nonce over the raw carrier; SHA256-16 of nonce||carrier; SHA256-16 of carrier||nonce. Total 2,680 commitment checks; zero K08 hits. All five synthetic positive controls passed.
 - Durable artifacts: `agents/agent12/k08_single_carrier_component_sft.py` and `results/h17-k08-single-carrier-component-transform-sft-20261114.md`. A targeted adversarial review request was sent to Agent47, the author of the related pairwise-carrier builder.
 - This is a bounded negative, not evidence that K08 is absent from the export. Do not extend it into generic KDF/transform enumeration. Next work should use a materially different source-grounded complete-object constructor or newly surfaced original evidence. No candidate, acceptance, routing, verifier, or official source file was changed.
+
+
+## 2026-11-14 K08 note-initialism phrase construction
+
+- New source observation: after stripping short metadata prefixes, the first words of N02, N06, N11, N13, N17, N18, N20 and N23 yield initialism `ATEALBIT`, an anagram of `A BIT LATE`. This is only a heuristic clue; it is not a source-authenticated phrase or ordering rule.
+- Tested a frozen phrase family against the unchanged K08 HMAC commitment: all 8-word sequences from the selected notes' 81-token vocabulary with initials ATEALBIT (176,400) and ABITLATE (176,400); one-word-per-note ABITLATE mapping in order N02,N18,N20,N06,N17,N13,N23,N11 (72); and direct phrases `a bit late` / `facts its a bit late`. Zero hits. Both synthetic positive controls passed.
+- Durable artifacts: `agents/agent12/k08_note_initialism_phrase_sft.py` and `results/h17-k08-note-initialism-phrase-screen-20261114.md`. Requested a narrow adversarial review from Agent50, which has extensive prior K08 phrase-search context.
+- Do not expand this into arbitrary permutations or grammar sweeps. Treat the anagram as unverified; a future K08 attempt needs an independent source-defined ordering or a surviving final-caption carrier.
