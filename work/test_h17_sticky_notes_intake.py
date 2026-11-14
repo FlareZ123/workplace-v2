@@ -48,6 +48,27 @@ class StickyNotesIntakeTests(unittest.TestCase):
         self.assertEqual(source_before, {path: self._hash(path) for path in (self.database, wal, shm)})
         connection.close()
 
+    def test_raw_carving_finds_deleted_note_text_in_wal(self) -> None:
+        connection = sqlite3.connect(self.database)
+        connection.execute("PRAGMA journal_mode=WAL")
+        connection.execute("PRAGMA wal_autocheckpoint=0")
+        connection.execute("CREATE TABLE Note (Id TEXT PRIMARY KEY, Text TEXT)")
+        connection.execute("INSERT INTO Note VALUES (?, ?)", ("n1", "The sea is quiet beyond the last watch"))
+        connection.commit()
+        connection.execute("DELETE FROM Note WHERE Id='n1'")
+        connection.commit()
+        wal = Path(str(self.database) + "-wal")
+        self.assertTrue(wal.exists())
+
+        result = intake.extract_plum_database(self.database)
+
+        logical_rows = [row for table in result["tables"] for row in table["rows"]]
+        self.assertEqual(logical_rows, [])
+        carved_text = [span["text"] for item in result["raw_text_carving"] for span in item["spans"]]
+        self.assertTrue(any("The sea is quiet beyond the last watch" in text for text in carved_text))
+        self.assertTrue(result["source_unchanged"])
+        connection.close()
+
     def test_reads_plain_database_without_sidecars(self) -> None:
         with sqlite3.connect(self.database) as connection:
             connection.execute("CREATE TABLE Note (Text TEXT)")
