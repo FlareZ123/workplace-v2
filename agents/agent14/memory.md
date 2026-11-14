@@ -365,3 +365,6 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 - No new original evidence arrived. The official status remains six accepted components and two missing (K04/K08); no complete recovery key is verified.
 - Highest-value next actions are source acquisition, not more speculative sweeps: original AX-7782 object plus manifest/queue receipt schema and Bundle-06 trim log (conditional on version eligibility); otherwise original profile-refresh/migration package with desktop-move-2026.html, mail/Sticky Notes stores and sidecars, native printer queue/host records including PS-0417 ATTEMPT2 REQUESTED linked to ACK2, PS-0300/PS-0323 native output, Emily's original envelope/card, and HST-4 seq212–227 plus native sequence index.
 - Bounded North five-record packet test remained negative for the tested exact reducers only; no result artifact or candidate/verifier change. Existing candidate and official verifier were left untouched.
+
+
+- Final runtime check before release: /mnt/data still contains only the 50,526-byte h17-archive-dump.zip and prompt.md (plus extracted support files); no AX-7782 object, manifest, profile package, envelope/card scan, native spool, or HST-4 missing interval has arrived. No mailbox replies. All useful memory and coordination changes are committed and pushed; candidate and verifier remain untouched.
