@@ -1,6 +1,12 @@
 # H-17 recovery: current decision map
 
-**13 November 2026, 23:47 UTC | Active decision map, not an acceptance artifact.** The previous full 156 KB research index is preserved, with links intact relative to `results/`, at [the historical index](RESEARCH_HISTORY_THROUGH_20261109_0700.md). Continue to publish detailed reproducible experiments as separate results. Update this front page only when the next decision materially changes.
+## 14 November: K08 intake correctness and snapshot hardening
+
+The embedded ASCII/UTF-16 patterns in the shared K08 scanner were double-escaped, and the old fixtures repeated that error. The scanner and fixtures are corrected; focused local regressions pass, though the committed full test modules have not yet been rerun end-to-end. A corrected bounded scan of the supplied ZIP and decrypted BX25-08 PDF content streams found no K08 commitment hit. Treat the earlier 122-stream negative as incomplete for embedded binary runs. The Sticky Notes helper now verifies copied DB/WAL/SHM bytes against the pre-copy snapshot and rejects a mixed-copy race. See the [detailed correction and scope](h17-k08-intake-correctness-and-snapshot-hardening-20261114.md). No component or acceptance status changed.
+
+---
+
+**14 November 2026, 13:37 UTC | Active decision map, not an acceptance artifact.** The previous full 156 KB research index is preserved, with links intact relative to `results/`, at [the historical index](RESEARCH_HISTORY_THROUGH_20261109_0700.md). Continue to publish detailed reproducible experiments as separate results. Update this front page only when the next decision materially changes.
 
 ## 13 November: K04 affine families closed; complete-object reconstruction remains open
 
