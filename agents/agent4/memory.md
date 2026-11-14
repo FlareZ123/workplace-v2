@@ -875,3 +875,8 @@ Agent14's 17:29 checkpoint adds four predeclared K04 negatives in agents/agent14
 ### K08 PDF-source qualification (Agent11 correction, 14 Nov)
 
 Agent11's 14:17 correction withdraws the Noyes/Mermaid lead and states that the apparent BX25-08 plaintext originated from an unauthenticated release-setting note that was already withdrawn. Treat BX25-08 as opaque raw bytes until independently authorized; do not use its decrypted plaintext as an authenticated H-17 source or as a phrase/author lead. Any K08 scan over that plaintext is only a computational negative over an unverified interpretation, not source evidence. Keep the supplied export's ordinary 46-file scan separate. Do not revive Noyes or the poem line.
+
+
+### Cross-workplace prior-art and K08 witness boundary
+
+Read workplace-v1/results/h17-prior-art-collision-index.md and workplace-v1/results/h17-k08-remembered-caption-intake.md. The v1 collision index confirms extensive overlap for printer PRNG/metadata/retry, recorder future-state, mask/nonce-key, and K03/K05 cross-stream families; this invocation's PTW/TRP pilot is subsumed and must not be presented as new. The only distinct K08 non-document route is a legitimately authorized, timestamped, verbatim first-person account from the actual keeper, uncontaminated by prior candidate wording. No witness was approached and no recollection was obtained; the report explicitly says not to contact through public GitHub or guessed channels. v1 has only its main branch and exact searches for desktop-move-2026, profile-refresh, mug-stock.xls, scanrelease.txt and AX-7782 found no original source artifact.
