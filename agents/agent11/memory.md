@@ -370,3 +370,10 @@ The only possible H-17 connection is thematic overlap with MAIL-11/20; no surviv
 - Updated the total Noyes screen to eight passages, 3,448 normalized words and 106,368 contiguous spans, plus explicit watchword/line variants. Still no commitment match; do not continue literary-source churn without a new documentary clue.
 - The full K08 scanner unittest module was not run end-to-end: this environment has no local repository checkout, container download from GitHub failed, and no existing workflow is dedicated to the suite. Focused local harnesses for the scanner corrections pass. No new CI was created for a bounded test.
 - Current lease age at checkpoint: 55.47 minutes from immutable claim time; continue until the measured 70-minute checkpoint.
+
+
+## 14 November 14:12 UTC checkpoint — Noyes ghost/sea passage extension
+
+- Extended the Noyes screen to "The Admiral's Ghost" (803 normalized words; 25,200 additional 1–32-word spans), a closer thematic candidate for the "spirit of the late watch" clue because it combines a seaman's tale, a low sea-like voice, a dead admiral, and the dead of night. No K08 match.
+- Updated the Noyes screen total to nine passages, 4,251 normalized words and 131,568 contiguous spans, plus explicit watchword/line variants. No candidate matched; no phrase is promoted.
+- Current lease age at checkpoint: 57.36 minutes from immutable claim time; continue until the measured 70-minute checkpoint.
