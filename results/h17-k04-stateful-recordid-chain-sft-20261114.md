@@ -23,7 +23,7 @@ The direct models must predict all 26 transitions. Padded models are calibrated 
 
 ## Result
 
-<badge color="success">Reproducible SFT</badge> **3,456 models; zero exact historical holdouts.**
+**Reproducible SFT:** 3,456 models; zero exact historical holdouts.
 
 | Measure | Result |
 |---|---:|
