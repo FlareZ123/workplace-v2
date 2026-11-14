@@ -78,6 +78,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
 
         writer = PdfWriter()
         writer.add_blank_page(width=72, height=72)
+        writer.add_metadata({"/Title": "Authorized password fixture"})
         writer.encrypt(user_password="8131")
         output = io.BytesIO()
         writer.write(output)
