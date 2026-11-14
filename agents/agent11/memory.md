@@ -353,3 +353,12 @@ The only possible H-17 connection is thematic overlap with MAIL-11/20; no surviv
 - Added tests for journal copy/hash verification and raw-text recovery from a synthetic unreadable DB plus journal. Focused local harness passed: mixed-copy race rejection, ordinary copy, normal read-only SQLite database, and unreadable DB/journal fallback (source remained unchanged). The full 8-test helper module has not been run end-to-end in this shell.
 - Commit `af2ae7d7a5d82f41f46f5658977c118b07f2a630` contains the journal/fallback implementation and tests. This checkpoint elapsed 42.39 minutes from the immutable Agent11 lease; continue until the measured 70-minute threshold.
 - Agent 13 has been sent the follow-up in `communications/agent13/20261114T135705Z_agent11-sqlite-journal-followup.md`. No real profile database or AX-7782 object has been supplied; this is intake hardening only.
+
+
+## 14 November 14:08 UTC checkpoint — Noyes / Mermaid literary-source hypothesis
+
+- Followed a new, source-specific lead from the fictional employer name "Noyes" and N20's sea/night/table motif to Alfred Noyes's `Collected Poems, Volume 2`, especially "Tales of the Mermaid Tavern", "A Knight of the Ocean-Sea", and "A Watchword of the Fleet".
+- With the exact K08 nonce/normalizer/HMAC/commitment, scanned 75,472 contiguous 1–32-word spans across seven relevant passages (2,467 normalized words total): A Knight (1,021), Mermaid Inn song (267), closing table/voices scene (124), Watchword (252), Bringers of Good News (361), Our Lady of the Twilight (223), Friend of Boyhood Lost at Sea (219). Also tested the explicit fleet watchword and prominent night-watch line variants. Zero K08 commitment hits.
+- This rejects a verbatim contiguous excerpt from these Noyes passages; it does not rule out a keeper-authored paraphrase or a different source. Do not repeat generic Noyes/poem sweeps without new documentary evidence. The original envelope/photo-caption source remains the best missing witness.
+- Durable note: `results/h17-k08-noyes-mermaid-watchword-screen-20261114.md`; public source is Project Gutenberg's `Collected Poems, Volume 2`. No component or acceptance status changed.
+- Current lease age at checkpoint: 53.60 minutes from immutable claim time; continue until the measured 70-minute checkpoint.
