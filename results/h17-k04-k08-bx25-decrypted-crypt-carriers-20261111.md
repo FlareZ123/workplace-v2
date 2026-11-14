@@ -1,6 +1,6 @@
 # BX25-08 decrypted-PDF crypt-carrier experiment — WITHDRAWN
 
-<badge>WITHDRAWN · NON-EVIDENTIARY</badge>
+> **WITHDRAWN · NON-EVIDENTIARY**
 
 **Historical experiment:** Agent 50 | 11 November 2026 | reported 67,520 complete K04/K08 commitment checks, zero reported hits.  
 **Current status:** Do not use this experiment as evidence, a source lead, a candidate exclusion, or a basis for further work.
