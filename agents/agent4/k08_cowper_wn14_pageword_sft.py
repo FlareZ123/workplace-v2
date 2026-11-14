@@ -117,7 +117,7 @@ def request_page(page: int) -> tuple[dict, bytes | None]:
     return record, data
 
 
-def extract_word(image_bytes: bytes, one_based_index: int) -> dict:
+def extract_word(image_bytes: bytes, one_based_index: int, page_number: int) -> dict:
     image = Image.open(BytesIO(image_bytes)).convert("L")
     width, height = image.size
     if height <= TOP_CROP_PX + BOTTOM_CROP_PX:
@@ -126,10 +126,32 @@ def extract_word(image_bytes: bytes, one_based_index: int) -> dict:
     body = ImageOps.autocontrast(body)
     raw_ocr = pytesseract.image_to_string(body, lang="eng", config="--psm 6")
     joined_body = join_line_wrap_hyphens(raw_ocr)
+    manual_ocr_corrections = []
+    if page_number == 121:
+        # Source-visible page 121 reads "have 24ft. over them"; Tesseract
+        # outputs "have 2¢ft. over them". Use the same single correction
+        # already frozen by Agent24's signed-image word103 calibration.
+        match = re.search(
+            r"\\bhave\\b(?P<middle>.{0,40}?)\\bover\\s+them\\b",
+            joined_body,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if match is None or " ".join(match.group("middle").split()) != "2¢ft.":
+            raise ValueError("Signed page 121 source-visible OCR span changed")
+        joined_body = (
+            joined_body[:match.start("middle")]
+            + " 24ft "
+            + joined_body[match.end("middle"):]
+        )
+        manual_ocr_corrections.append({
+            "original_ocr_span": "2¢ft.",
+            "source_visible_print": "24ft.",
+            "corrected_ocr_span": "24ft",
+        })
     tokens = WORD_PATTERN.findall(joined_body)
     if len(tokens) < one_based_index:
         return {
-            "image_dimensions": [width, height],
+            "image_dimensions": [width, height],\n        "manual_ocr_corrections": manual_ocr_corrections,\n            "manual_ocr_corrections": manual_ocr_corrections,
             "main_body_word_token_count": len(tokens),
             "requested_word_index_1based": one_based_index,
             "selected_word": None,
@@ -224,7 +246,7 @@ def main() -> None:
         print(json.dumps(result, indent=2))
         return
     result["calibration"]["match"] = True
-    calibration_word = extract_word(calibration_bytes, 103)
+    calibration_word = extract_word(calibration_bytes, 103, CALIBRATION_PAGE)
     result["calibration"]["ocr_word103"] = calibration_word["selected_word"]
     result["calibration"]["ocr_engine"] = subprocess_version()
     result["calibration"]["ocr_token_count"] = calibration_word["main_body_word_token_count"]
@@ -247,7 +269,7 @@ def main() -> None:
         image_path = OUT / f"p{page}.png"
         image_path.write_bytes(image_bytes)
         record["image_path"] = str(image_path.relative_to(ROOT))
-        extracted = extract_word(image_bytes, word_index)
+        extracted = extract_word(image_bytes, word_index, page)
         record.update(extracted)
         result["pages"].append(record)
         if extracted["selected_word"] is None:
