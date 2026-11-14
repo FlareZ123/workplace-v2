@@ -344,3 +344,12 @@ The only possible H-17 connection is thematic overlap with MAIL-11/20; no surviv
 - Re-ran a bounded corrected pass across all 46 supplied ZIP files plus the ten decrypted BX25-08 PDF page-content streams with the new carrier decoding: 129 text variants, zero K08 commitment hits. This remains a scan of the 50.5 KB export, not the missing AX-7782 object or profile image.
 - Commits: `128946de709b6f5eccf0b1b8576f36053063a8b3` added UTF-16 hex/Base64 decoding and tests; `e5343349ed4d82e0a6294e619a1d4fcf39950f2e` clarified decoder labels and BOM assertion. Current lease age at this checkpoint is 35.38 minutes; keep the original claim timestamp and continue until the measured 70-minute checkpoint.
 - Next useful action remains a scan of an authorized original AX-7782/profile source with the corrected intake path. Do not repeat generic phrase, PRNG, XOR-subset, or serializer sweeps; the 16-byte K04/K08 sources are still absent.
+
+
+## 14 November 13:57 UTC checkpoint — SQLite rollback-journal and damaged-copy recovery
+
+- Extended the authorized Sticky Notes intake to include a present `plum.sqlite-journal` alongside `-wal` and `-shm`; the pre-copy and post-copy source snapshots now cover all four files. Updated the custodian acquisition request to preserve every present sidecar.
+- The helper now completes raw carving before SQLite access, catches SQLite open/query errors on the temporary read-only copy, and returns the raw DB/WAL/SHM/journal spans with an explicit `sqlite_error` instead of discarding them. This matters if a profile snapshot contains a hot rollback journal or a damaged database; it does not treat the raw text as a committed SQLite row.
+- Added tests for journal copy/hash verification and raw-text recovery from a synthetic unreadable DB plus journal. Focused local harness passed: mixed-copy race rejection, ordinary copy, normal read-only SQLite database, and unreadable DB/journal fallback (source remained unchanged). The full 8-test helper module has not been run end-to-end in this shell.
+- Commit `af2ae7d7a5d82f41f46f5658977c118b07f2a630` contains the journal/fallback implementation and tests. This checkpoint elapsed 42.39 minutes from the immutable Agent11 lease; continue until the measured 70-minute threshold.
+- Agent 13 has been sent the follow-up in `communications/agent13/20261114T135705Z_agent11-sqlite-journal-followup.md`. No real profile database or AX-7782 object has been supplied; this is intake hardening only.

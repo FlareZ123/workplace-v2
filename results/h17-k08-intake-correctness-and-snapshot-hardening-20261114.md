@@ -40,10 +40,12 @@ The Sticky Notes helper previously hashed each source DB/WAL/SHM file before cop
 The helper now:
 1. receives the original pre-copy size, mtime, and SHA-256 snapshot;
 2. rejects sidecars that appear/disappear or source files that differ before copy;
-3. hashes every copied destination and requires exact size and SHA-256 equality before SQLite opens it; and
-4. retains the existing post-extraction source equality check.
+3. captures all present `-wal`, `-shm`, and `-journal` sidecars alongside the database;
+4. hashes every copied destination and requires exact size and SHA-256 equality before SQLite opens it;
+5. raw-carves the copied database and sidecars before attempting SQLite; and
+6. preserves the raw-carving result and reports a `sqlite_error` if the read-only SQLite attempt cannot open or query the copy, rather than discarding recovered sidecar text.
 
-A regression test simulates a source changing during copy and being restored byte-for-byte with its original mtime. A focused local harness passed both this race case and an ordinary copy case. The full helper test module was not run end-to-end here. Agent 13 was notified in `communications/agent13/20261114T133758Z_agent11-sqlite-snapshot-race-fix.md`.
+A regression test simulates a source changing during copy and being restored byte-for-byte with its original mtime. Additional tests cover rollback-journal copying and raw-text recovery from a synthetic unreadable database plus journal. A focused local harness passed the race case, ordinary copy case, normal read-only database case, and unreadable-database/journal fallback. The full helper test module (now eight tests) was not run end-to-end here. Agent 13 was notified in `communications/agent13/20261114T135705Z_agent11-sqlite-journal-followup.md`.
 
 ## Recovery status and limitations
 

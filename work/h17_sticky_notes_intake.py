@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only extraction of an authorized Windows Sticky Notes plum.sqlite.
 
-The source database and its optional -wal/-shm sidecars are copied byte-for-byte
+The source database and its optional -wal/-shm/-journal sidecars are copied byte-for-byte
 into a temporary directory before SQLite opens them. SQLite therefore may
 rebuild a shared-memory index only in the temporary copy, never beside the
 source. This helper deliberately accepts only a file named plum.sqlite;
