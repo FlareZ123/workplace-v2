@@ -1,0 +1,93 @@
+{
+  "hypothesis": "Interpret each consecutive pair of bytes in the signed WN-14 groups A-D as (printed page, one-based main-body word) in Frank Cowper, Sailing Tours, Part II (1893).",
+  "book": {
+    "title": "Sailing Tours",
+    "author": "Frank Cowper",
+    "part": "Part II",
+    "edition": 1893,
+    "google_books_id": "o7P-qis2u9IC"
+  },
+  "wn14_groups_hex": {
+    "A": "049AAB2E",
+    "C": "CD7C6023",
+    "B": "1CDE7A82",
+    "D": "4303C91A"
+  },
+  "wn14_source_sha256": {
+    "mail/03.eml": "3cf886c12e094cb0362999c5a4d93f913c848a64471f833fbddbfdc2d57ff889",
+    "mail/06.eml": "6049994562a82e46afd3f0231e136a1e6911cc3040d848e32eaa5771a6f8c2f3",
+    "mail/14.eml": "9c86de086a1727ca09b4df6f12cf5c634eaa22a3949424171cc50b4ef9983be5"
+  },
+  "source_file_sha256": {
+    "recovery-routing.json": "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5",
+    "acceptance.json": "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
+  },
+  "page_word_pairs_in_source_order": [
+    {
+      "group": "A",
+      "page": 4,
+      "word_1based": 154
+    },
+    {
+      "group": "A",
+      "page": 171,
+      "word_1based": 46
+    },
+    {
+      "group": "B",
+      "page": 28,
+      "word_1based": 222
+    },
+    {
+      "group": "B",
+      "page": 122,
+      "word_1based": 130
+    },
+    {
+      "group": "C",
+      "page": 205,
+      "word_1based": 124
+    },
+    {
+      "group": "C",
+      "page": 96,
+      "word_1based": 35
+    },
+    {
+      "group": "D",
+      "page": 67,
+      "word_1based": 3
+    },
+    {
+      "group": "D",
+      "page": 201,
+      "word_1based": 26
+    }
+  ],
+  "coordinate_convention": "Read bytes left-to-right within groups A, B, C, D; each adjacent pair is (printed page number, one-based main-body word index).",
+  "calibration": {
+    "printed_page": 121,
+    "known_image_sha256": "3b1e1b88244b2c0e15eeabf1f3f0d72d4cc6f0127256c55e0bc8e3978c3d0083",
+    "known_word103": "sailing",
+    "request_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA121&img=1&zoom=3&hl=en&w=1025",
+    "status": 200,
+    "final_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA121&img=1&zoom=3&hl=en&w=1025",
+    "content_type": "image/png",
+    "bytes": 63361,
+    "sha256": "fec5f2603cd52e1adb93df00e677e063f36bd554315ae6ac36996335cddce057",
+    "png_dimensions": [
+      1025,
+      1337
+    ],
+    "match": false
+  },
+  "pages": [],
+  "status": "ACCESS_OR_CALIBRATION_MISMATCH",
+  "candidate": null,
+  "counting_convention": "Use the existing Cowper Part II OCR convention: grayscale page; exclude the top 150 and bottom 60 pixels (running head and folio); autocontrast; Tesseract English PSM 6; join line-end hyphenation; count visual-order main-body tokens matching the existing WORD_PATTERN; include body headings, captions, tables and footnotes. Select one-based word positions before K08 normalization.",
+  "limitations": [
+    "Cowper Part II is a conditional book candidate, not an authenticated identification of David's physical map-back book.",
+    "The WN-14 byte-pair page/word interpretation is a hypothesis; the signed source itself does not label these bytes as coordinates.",
+    "Only this one page/word order, edition, volume and counting convention are tested."
+  ]
+}
