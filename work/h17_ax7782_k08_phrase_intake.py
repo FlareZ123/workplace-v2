@@ -139,15 +139,15 @@ def decode_text_variants(data: bytes, name: str) -> list[tuple[str, str]]:
     except UnicodeDecodeError:
         pass
     run_count = 0
-    for match in re.finditer(rb"[\\x09\\x0a\\x0d\\x20-\\x7e]{4,}", data):
+    for match in re.finditer(rb"[\x09\x0a\x0d\x20-\x7e]{4,}", data):
         candidates.append((f"embedded-ascii@{match.start()}", match.group().decode("ascii", "replace")))
         run_count += 1
         if run_count >= 10000:
             break
     if run_count < 10000:
         for pattern, encoding in (
-            (rb"(?:[\\x09\\x0a\\x0d\\x20-\\x7e]\\x00){4,}", "utf-16le"),
-            (rb"(?:\\x00[\\x09\\x0a\\x0d\\x20-\\x7e]){4,}", "utf-16be"),
+            (rb"(?:[\x09\x0a\x0d\x20-\\x7e]\x00){4,}", "utf-16le"),
+            (rb"(?:\x00[\x09\x0a\x0d\x20-\\x7e]){4,}", "utf-16be"),
         ):
             for match in re.finditer(pattern, data):
                 candidates.append((f"embedded-{encoding}@{match.start()}", match.group().decode(encoding, "replace")))

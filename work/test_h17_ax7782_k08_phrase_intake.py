@@ -50,12 +50,25 @@ class K08PhraseIntakeTests(unittest.TestCase):
         phrase = "the keeper leaves the lamp for the next watch"
         target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
         fixtures = [
-            ("ascii", b"\\x00\\xff" + phrase.encode("ascii") + b"\\xff\\x00"),
-            ("utf16le", b"\\x00\\xff" + phrase.encode("utf-16le") + b"\\xff\\x00"),
+            ("ascii", b"\x00\xff" + phrase.encode("ascii") + b"\xff\x00"),
+            ("utf16le", b"\xff\x01" + phrase.encode("utf-16le") + b"\xfe"),
+            ("utf16be", b"\xff\x01" + phrase.encode("utf-16be") + b"\xfe"),
+            
+            
         ]
         for label, payload in fixtures:
             hits = []
             variants = phrase_intake.decode_text_variants(payload, label + ".bin")
+            expected_prefix = {
+                "ascii": "embedded-ascii@",
+                "utf16le": "embedded-utf-16le@",
+                "utf16be": "embedded-utf-16be@",
+            }[label]
+            self.assertTrue(
+                any(source.startswith(expected_prefix) and text == phrase
+                    for source, text in variants),
+                f"{label}: embedded run was not isolated",
+            )
             for source, text in variants:
                 phrase_intake.scan_phrase_spans(text, nonce, target, source, 16, hits)
             self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits), label)
