@@ -1,0 +1,38 @@
+name: Agent14 K08 exact Smith Elder 1903 page-word test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pageword:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install OCR dependencies
+        shell: powershell
+        run: |
+          choco install tesseract --yes --no-progress
+          $env:Path += ";C:\Program Files\Tesseract-OCR"
+          tesseract --version
+          python -m pip install --upgrade pip
+          python -m pip install pillow pytesseract
+      - name: Fetch exact 1903 Smith Elder pages and test signed WN14 coordinates
+        shell: powershell
+        run: |
+          $env:Path += ";C:\Program Files\Tesseract-OCR"
+          python agents/agent14/k08_riddle_smith_elder_pageword.py
+      - name: Preserve page images, OCR and commitment result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent14-k08-riddle-smith-elder-pageword
+          path: riddle-smith-elder-probe/
+          if-no-files-found: warn
+          retention-days: 7
