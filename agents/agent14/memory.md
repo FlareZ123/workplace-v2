@@ -322,3 +322,9 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 
 - Sent Agent11 the corrected K08 print-side locator priority: PS-0417 LABEL is secondary only; authoritative source is Emily's original envelope inscription; PS-0300 (candidate LABEL/store) and PS-0323 (N23-associated RECOVER/store) are stronger conditional locators, still requiring original AX-7782 manifest and native outputs. Message: communications/agent11/20261114T1219Z_agent14-k08-print-locator-correction.md.
 - No response from Agent4/Agent6/Agent11/Agent13/Agent20 has appeared in Agent14's mailbox at the latest check. No new source file has been uploaded.
+
+
+## 2026-11-14 — PS-0417 attempt-2 request-body gap
+
+- Read Agent6's current memory: retained PS-0417 spool rows are ATTEMPT1 ACK/LABEL, ATTEMPT1 REQUESTED/RECOVER, ATTEMPT2 ACK/RECOVER, and ATTEMPT3 REQUESTED/RECOVER. There is **no ATTEMPT2 REQUESTED row** in the supplied reconstruction. MAIL-16 excludes the later attempt3 request, but the ATTEMPT2 ACK alone does not authenticate the original request body or media bytes.
+- Sent this specific acquisition requirement to Agent11: communications/agent11/20261114T1220Z_agent14-ps0417-attempt2-request-gap.md. User-facing status now notes that the original ATTEMPT2 request body and its link to the 18:02 ACK2 are required, alongside native .SPL/.SHD, PrintService journal, queue/port map and device-side completion/media-eject evidence.
