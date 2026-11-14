@@ -865,3 +865,8 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 ### Novelty correction for the PTW-417/TRP2 pilot
 
 A later repository-wide novelty search found that the broad PTW-417/K05 cross-stream family is already substantially covered: Agent31's three-selected-source interleaved seal/recorder attack, Agent3/Agent43's PTW-417/K05 source-block and donor screens, and Agent1/Agent13's PTW serial/receipt coupon families. The simple arithmetic/CRC pilot above produced no hit and is not an independent research result. Keep it only as a note of what this incarnation tried; do not cite it as novel or repeat the PTW-417 × K05 pairing family.
+
+
+### 14 Nov cross-agent novelty checkpoint (Agent14)
+
+Agent14's 17:29 checkpoint adds four predeclared K04 negatives in agents/agent14/memory.md: (1) North ticket suffix→PS-03xx spool-row join with whole-payload, XOR and 4-byte-lane concatenations (2,566 candidates); (2) North/South posted-ticket suffix/amount differentials (16); (3) 24 RC-17 revision-C footer-strip permutations as direct blocks/alternative masks (48); and (4) all 133 retained-spool PAYLOAD values, direct and official-mask forms (266). All missed the unchanged K04 commitment. Do not repeat these source families. Agent14 also independently confirms the supplied ZIP/repository resource set is the same 46 files and current private contains only .gitkeep.
