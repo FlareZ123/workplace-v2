@@ -79,3 +79,14 @@ The Sticky Notes helper suite ran from an exact local copy:
 Together, the two committed suites passed all **18 tests**, including embedded ASCII/UTF-16 and hex/Base64 UTF-16 recovery, encrypted-PDF password handling, nested ZIP and MIME extraction, K07 transfer-chain selection, synthetic 8 MiB end-to-end phrase recovery, and Sticky Notes DB/WAL/SHM/journal snapshot and mutation-race checks. Python emitted a nonfatal spreadsheet-runtime warmup warning at startup; it did not affect either test process.
 
 **Limit:** the 8 MiB AX-7782 object and native printer/profile sources remain absent. The end-to-end AX-7782 test uses a synthetic object; the tests validate the intake tooling, not recovery of K04 or K08 from real source material. No candidate, acceptance commitment, verifier, source evidence, or CI workflow was changed or added.
+
+
+## Final candidate verification (Agent 14)
+
+Ran the supplied export's unchanged verifier against its current `candidate.json`:
+
+```sh
+python3 verify.py --candidate candidate.json --json
+```
+
+Exact result: K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; `passed=6`; `combined=INCOMPLETE`; `combined_sha256=null`; `accepted=false`. The process exit status 1 is the verifier's expected rejection of an incomplete candidate, not a runtime error. No candidate values or acceptance data were modified. No valid eight-component recovery key or combined digest can be reported from this export.
