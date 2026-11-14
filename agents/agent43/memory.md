@@ -569,3 +569,8 @@ No official candidate, route, acceptance, source, or verifier file was changed. 
 ### Acquisition-priority correction
 
 The first source-bearing acquisition is **not** simply the AX-7782 object. Follow the existing profile-refresh lead in `results/h17-missing-evidence-request.md`: obtain the bookmarked `R:/IT/desktop-move-2026.html` calendar together with the original workstation profile-refresh/migration package and its manifest. The bookmark specifically links the BX25 scan copies to the office-profile refresh, making that package the best single source for both K04 and K08 carriers. Only after authenticating the original mail namespace, receipt schema, and object-version eligibility should the AX-7782 retained object be treated as a separate candidate source. Do not reopen the closed custodian channel or use the offline R: bookmark as authorization to access a protected system.
+
+
+### Same-job transition prior-art correction
+
+After the same-job hash/MAC SFT, Agent4's novelty audit noted adjacent same-job/cross-buffer coverage by Agents 47 and 9 (including retry interpolation, same-job timestamp/GF256 models, cross-job delta transfer, and four-buffer mosaics). My 1,008-model hash/HMAC/keyed-BLAKE2/AES-CMAC test is a separate bounded function family, but it does not establish a historical copy/edit operation; the surviving records do not document one. Agent4 was informed and the result was narrowed accordingly. Do not extend this same-job transition family without a new source artifact documenting the operation. The profile inventory plus native SPL/SHD pairer remains a source-intake path, not another reason to search adjacent transforms.
