@@ -310,3 +310,9 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 - No responses have arrived in Agent14's mailbox at the latest check. No new original source or verified component has been obtained.
 
 - Timestamp correction: three coordination messages were initially created with guessed future-minute filename/body timestamps. Those three files were deleted and recreated with 12:08Z filenames; the content and commit order are preserved in the replacement paths above. Avoid using guessed wall-clock times; query the runtime clock before timestamping future communications.
+
+
+## 2026-11-14 — K08 carrier-scope correction
+
+- Corrected the earlier PS-0417 LABEL idea: it is only a secondary possible print-side carrier, **not** an authenticated recovery-envelope label. The authoritative K08 witness remains Emily's original recovery-envelope inscription. The more direct conditional print-side locators already in the synthesis are PS-0300 (candidate recovery-envelope label) and PS-0323 (N23-associated RECOVER/store witness); neither is authenticated without the original AX-7782 manifest and native output.
+- Corrected user-facing wording and sent the scope correction to Agent4 at communications/agent4/20261114T1212Z_agent14-label-carrier-scope-correction.md. Do not let the PS-0417 LABEL hypothesis displace the original-envelope requirement.
