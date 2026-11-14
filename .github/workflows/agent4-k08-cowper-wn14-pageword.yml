@@ -21,6 +21,19 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Set up Node for source-image acquisition
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Capture frozen signed Cowper page set
+        run: node agents/agent7/k08_cowper_signed_pages.cjs
+
       - name: Install OCR engine and Python libraries
         run: |
           sudo apt-get update
@@ -38,7 +51,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No new candidate output"
           else
-            git commit -m "Agent 4: Test signed WN-14 coordinates in Cowper Part II"
+            git commit -m "Agent 7: preserve frozen Cowper page-word test outcome"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
