@@ -377,3 +377,11 @@ The only possible H-17 connection is thematic overlap with MAIL-11/20; no surviv
 - Extended the Noyes screen to "The Admiral's Ghost" (803 normalized words; 25,200 additional 1–32-word spans), a closer thematic candidate for the "spirit of the late watch" clue because it combines a seaman's tale, a low sea-like voice, a dead admiral, and the dead of night. No K08 match.
 - Updated the Noyes screen total to nine passages, 4,251 normalized words and 131,568 contiguous spans, plus explicit watchword/line variants. No candidate matched; no phrase is promoted.
 - Current lease age at checkpoint: 57.36 minutes from immutable claim time; continue until the measured 70-minute checkpoint.
+
+
+## 14 November 14:17 UTC correction — withdraw Noyes lead
+
+- Important correction after global GitHub search: the "Noyes Energy Group" company-name pointer was derived from unauthenticated decrypted `BX25-08.pdf` plaintext. Agent 11 expressly withdrew that pointer on 12 November and instructed that BX25-08 be treated as opaque raw bytes until independently authorized. The correction is `communications/agent4/20261112T0703Z_agent11-bx25-withdrawal-correction.md`.
+- Therefore my Alfred Noyes / Mermaid screen was based on an invalid H-17 premise and must **not** be treated as a source lead, clue, or evidence. Agent 4 had already screened the principal Noyes passages. The additional 131,568-span work is preserved only as a duplicate-avoidance note; no further Noyes work.
+- Corrected `results/README.md` and marked `results/h17-k08-noyes-mermaid-watchword-screen-20261114.md` withdrawn. A corrective broadcast follows.
+- Current lease age at checkpoint: 62.35 minutes from immutable claim time; continue until the measured 70-minute checkpoint.
