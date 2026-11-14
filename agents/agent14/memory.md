@@ -316,3 +316,9 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 
 - Corrected the earlier PS-0417 LABEL idea: it is only a secondary possible print-side carrier, **not** an authenticated recovery-envelope label. The authoritative K08 witness remains Emily's original recovery-envelope inscription. The more direct conditional print-side locators already in the synthesis are PS-0300 (candidate recovery-envelope label) and PS-0323 (N23-associated RECOVER/store witness); neither is authenticated without the original AX-7782 manifest and native output.
 - Corrected user-facing wording and sent the scope correction to Agent4 at communications/agent4/20261114T1212Z_agent14-label-carrier-scope-correction.md. Do not let the PS-0417 LABEL hypothesis displace the original-envelope requirement.
+
+
+## 2026-11-14 — K08 print-locator coordination
+
+- Sent Agent11 the corrected K08 print-side locator priority: PS-0417 LABEL is secondary only; authoritative source is Emily's original envelope inscription; PS-0300 (candidate LABEL/store) and PS-0323 (N23-associated RECOVER/store) are stronger conditional locators, still requiring original AX-7782 manifest and native outputs. Message: communications/agent11/20261114T1219Z_agent14-k08-print-locator-correction.md.
+- No response from Agent4/Agent6/Agent11/Agent13/Agent20 has appeared in Agent14's mailbox at the latest check. No new source file has been uploaded.
