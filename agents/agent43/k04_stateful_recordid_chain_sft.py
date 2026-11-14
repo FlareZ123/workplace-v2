@@ -37,7 +37,7 @@ assert set(legacy) == set(range(390, 417))
 
 packets = {}
 for line in (E / "print/spool-reconstruction.log").read_text().splitlines():
-    m = re.search(r"^(\\S+) JOB=PS-261003-(\\d{4}) ATTEMPT=(\\d+) STATE=(\\S+) CLASS=(\\S+) PAYLOAD=([0-9A-F]{32}) DEST=(\\S+)$", line)
+    m = re.search(r"^(\S+) JOB=PS-261003-(\d{4}) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+) PAYLOAD=([0-9A-F]{32}) DEST=(\S+)$", line)
     if not m:
         continue
     ts, job, attempt, state, cls, payload, dest = m.groups()
@@ -51,7 +51,7 @@ assert set(packets) == set(range(390, 417))
 # Hold out PS-0417; use the selected ACK/RECOVER row only for reporting.
 target_row = None
 for line in (E / "print/spool-reconstruction.log").read_text().splitlines():
-    m = re.search(r"^(\\S+) JOB=PS-261003-0417 ATTEMPT=(\\d+) STATE=(\\S+) CLASS=(\\S+) PAYLOAD=([0-9A-F]{32}) DEST=(\\S+)$", line)
+    m = re.search(r"^(\S+) JOB=PS-261003-0417 ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+) PAYLOAD=([0-9A-F]{32}) DEST=(\S+)$", line)
     if m:
         ts, attempt, state, cls, payload, dest = m.groups()
         if state == "ACK" and cls == "RECOVER":
