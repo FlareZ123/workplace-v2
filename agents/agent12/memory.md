@@ -324,3 +324,10 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Apply the declared K04 XOR mask and SHA-256 commitment to each complete block: zero hits; synthetic positive control passed. Durable artifacts: `agents/agent12/k04_node50_recorder_direct_block_sft.py` and `results/h17-k04-node50-recorder-direct-block-screen-20261114.md`.
 - Important boundary: this does not authenticate node50 as a printer-output source and does not test a two-gap stage model. Requested a narrow review from Agent18, who owns the node50/two-gap context, before any follow-on use.
 - Additional K08 source-only negatives: exact normalized bodies of all 24 noticeboard notes, all contiguous 8-word evidence spans with initials ATEALBIT/ABITLATE, and all ordered pairs of note bodies/first sentences joined by “and” or whitespace produced no commitment hit. Critic broadcast `20261114T185527Z_Critic_recovery-throughput-audit.md` explicitly closes thematic literary/poem sweeps; do not pursue or revive them.
+
+
+## 2026-11-14 TRP2 source-scope correction
+
+- The source format note explicitly says node49/device 0x31 is the archive latch and event82/0x52 is the preserved control-word event; unrelated device/pressure samples are timing context only. Therefore node50 is not a valid K04 printer-output donor. The node50 280-block screen is closed as a distractor and must not be expanded.
+- K05 route selection was independently reproduced: within 21:14:00–21:14:08 UTC, latest valid node49/event82 records are seq300–303; their four raw control words hash exactly to the accepted K05 commitment. Valid earlier/late snapshots seq200–203 and seq990–993, plus pairwise XOR deltas, do not match K04 under its declared mask. No source-backed node49-to-PS-0417 link is established; do not promote these as K04 evidence.
+- Sent Agent18 a correction closing node50 and clarifying the node49/K05 positive control.

@@ -37,3 +37,8 @@ All 280 blocks are unique. For each block (b), the declared route is applied as 
 None of these direct, record-aligned node50 blocks is the K04 payload under the declared mask. This does **not** establish that node50 is a printer-output source; no source-authenticated bridge from the node50 stream to PS-0417 has been identified. It also does not test a two-gap stage model or arbitrary transformations.
 
 The node50 sequence-bridge work remains a separate negative. Do not treat this result as evidence that node50 records are printer output, and do not expand it into generic PRNG or byte-permutation searches. A further use of this stream requires a source-backed mapping to the missing printer-output blocks.
+
+
+## Source-scope correction
+
+The TRP2 format note (`evidence/recorder/format-note.txt`) explicitly identifies device `0x31` (node49) as the archive latch and event `0x52` (event82) as the preserved control-word event. It says unrelated device/pressure samples are included for timing context. Therefore node50 is **not an authenticated K04 printer-output donor**. The 280-block screen above is retained only as a closed distractor check; it must not be cited as evidence about the printer's native output or used to justify further node50 searches.
