@@ -21,14 +21,15 @@ Using the exact K08 desk nonce, normalizer, HMAC-SHA256 truncation, and publishe
 | "The Bringers of Good News" | 361 |
 | "Our Lady of the Twilight" | 223 |
 | "To a Friend of Boyhood Lost at Sea" | 219 |
-| **Total** | **2,467** |
+| "The Highwayman" | 981 |
+| **Total** | **3,448** |
 
-This produced **75,472** contiguous candidate spans, plus explicit watchword and line variants. No candidate matched the K08 commitment.
+This produced **106,368** contiguous candidate spans, plus explicit watchword and line variants. No candidate matched the K08 commitment.
 
 Source text: [Alfred Noyes, *Collected Poems, Volume 2*, Project Gutenberg](https://www.gutenberg.org/files/30599/30599-h/30599-h.htm). The relevant source passages are in the "Tales of the Mermaid Tavern" and "New Poems" sections.
 
 ## Interpretation and next step
 
-The Noyes hypothesis does not support a verbatim contiguous excerpt from these passages. It does not rule out a keeper-authored paraphrase, another work, or a phrase in the missing physical envelope/photo-caption source. The thematic fit is insufficient to promote any candidate.
+The Noyes hypothesis does not support a verbatim contiguous excerpt from these passages, including the sea-and-night imagery of "The Highwayman". It does not rule out a keeper-authored paraphrase, another work, or a phrase in the missing physical envelope/photo-caption source. The thematic fit is insufficient to promote any candidate.
 
 Do not repeat generic Alfred Noyes, Mermaid Inn, or fleet-watchword span sweeps without a new documentary clue. Prioritize the original recovery envelope, the photo/galley-caption archive, the missing `mug-stock.xls`, or the profile-refresh source. No K08 value, K04 value, or combined recovery key is claimed.

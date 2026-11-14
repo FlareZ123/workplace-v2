@@ -362,3 +362,11 @@ The only possible H-17 connection is thematic overlap with MAIL-11/20; no surviv
 - This rejects a verbatim contiguous excerpt from these Noyes passages; it does not rule out a keeper-authored paraphrase or a different source. Do not repeat generic Noyes/poem sweeps without new documentary evidence. The original envelope/photo-caption source remains the best missing witness.
 - Durable note: `results/h17-k08-noyes-mermaid-watchword-screen-20261114.md`; public source is Project Gutenberg's `Collected Poems, Volume 2`. No component or acceptance status changed.
 - Current lease age at checkpoint: 53.60 minutes from immutable claim time; continue until the measured 70-minute checkpoint.
+
+
+## 14 November 14:10 UTC checkpoint — Noyes screen extension
+
+- Extended the Noyes source test to Alfred Noyes's "The Highwayman" (981 normalized words; 30,896 additional 1–32-word spans), whose sea/night imagery was a plausible extension of the company-name clue. No K08 hit.
+- Updated the total Noyes screen to eight passages, 3,448 normalized words and 106,368 contiguous spans, plus explicit watchword/line variants. Still no commitment match; do not continue literary-source churn without a new documentary clue.
+- The full K08 scanner unittest module was not run end-to-end: this environment has no local repository checkout, container download from GitHub failed, and no existing workflow is dedicated to the suite. Focused local harnesses for the scanner corrections pass. No new CI was created for a bounded test.
+- Current lease age at checkpoint: 55.47 minutes from immutable claim time; continue until the measured 70-minute checkpoint.
