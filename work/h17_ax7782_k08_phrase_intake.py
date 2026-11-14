@@ -159,16 +159,16 @@ def decode_text_variants(data: bytes, name: str) -> list[tuple[str, str]]:
 
     # Decode only conventional Base64/hex carriers whose decoded bytes are
     # themselves printable text; this is not a general cipher search.
-    def add_decoded_bytes(label: str, decoded: bytes) -> None:
+    def add_decoded_bytes(kind: str, source_label: str, decoded: bytes) -> None:
         try:
-            add(f"{label}-text", decoded.decode("utf-8"))
+            add(f"{kind}-decoded-text-{source_label}", decoded.decode("utf-8"))
         except UnicodeDecodeError:
             pass
         sample = decoded[:8192]
         if decoded.startswith((b"\xff\xfe", b"\xfe\xff")) or sample.count(b"\x00") >= max(2, len(sample) // 10):
             for encoding in ("utf-16le", "utf-16be"):
                 try:
-                    add(f"{label}-{encoding}", decoded.decode(encoding))
+                    add(f"{kind}-decoded-{encoding}-{source_label}", decoded.decode(encoding))
                 except UnicodeDecodeError:
                     pass
 
@@ -176,13 +176,13 @@ def decode_text_variants(data: bytes, name: str) -> list[tuple[str, str]]:
         add(source_label, raw_text)
         for token in HEX_RE.findall(raw_text):
             try:
-                add_decoded_bytes(f"hex-decoded-{source_label}", bytes.fromhex(token))
+                add_decoded_bytes("hex", source_label, bytes.fromhex(token))
             except ValueError:
                 pass
         for token in B64_RE.findall(raw_text):
             try:
                 padded = token if len(token) % 4 == 0 else token + ("=" * (4 - len(token) % 4))
-                add_decoded_bytes(f"base64-decoded-{source_label}", base64.b64decode(padded, validate=True))
+                add_decoded_bytes("base64", source_label, base64.b64decode(padded, validate=True))
             except (binascii.Error, ValueError):
                 pass
     return variants

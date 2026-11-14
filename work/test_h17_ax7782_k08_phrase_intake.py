@@ -87,7 +87,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
         for name, payload, expected_label in carriers:
             variants = phrase_intake.decode_text_variants(payload, name + ".bin")
             self.assertTrue(
-                any(label.startswith(expected_label) and text.lstrip("\\ufeff") == phrase
+                any(label.startswith(expected_label) and text.lstrip("\ufeff") == phrase
                     for label, text in variants),
                 f"{name}: UTF-16 carrier was not decoded",
             )
