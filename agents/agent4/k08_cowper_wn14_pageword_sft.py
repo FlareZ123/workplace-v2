@@ -132,7 +132,7 @@ def extract_word(image_bytes: bytes, one_based_index: int, page_number: int) -> 
         # outputs "have 2¢ft. over them". Use the same single correction
         # already frozen by Agent24's signed-image word103 calibration.
         match = re.search(
-            r"\\bhave\\b(?P<middle>.{0,40}?)\\bover\\s+them\\b",
+            r"\bhave\b(?P<middle>.{0,40}?)\bover\s+them\b",
             joined_body,
             flags=re.IGNORECASE | re.DOTALL,
         )
