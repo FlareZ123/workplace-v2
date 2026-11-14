@@ -117,6 +117,48 @@ class StickyNotesIntakeTests(unittest.TestCase):
         self.assertEqual(self.database.read_bytes(), original_bytes)
         self.assertEqual(self._hash(self.database)[2], hashlib.sha256(original_bytes).hexdigest())
 
+    def test_rejects_mixed_snapshot_if_wal_changes_during_copy(self) -> None:
+        connection = sqlite3.connect(self.database)
+        connection.execute("PRAGMA journal_mode=WAL")
+        connection.execute("PRAGMA wal_autocheckpoint=0")
+        connection.execute("CREATE TABLE Note (Id TEXT PRIMARY KEY, Text TEXT)")
+        connection.execute("INSERT INTO Note VALUES (?, ?)", ("n1", "stable WAL source"))
+        connection.commit()
+
+        wal = Path(str(self.database) + "-wal")
+        shm = Path(str(self.database) + "-shm")
+        self.assertTrue(wal.exists())
+        self.assertTrue(shm.exists())
+        source_paths = (self.database, wal, shm)
+        source_before = {path: self._hash(path) for path in source_paths}
+        original_wal_bytes = wal.read_bytes()
+        original_wal_stat = wal.stat()
+        real_copyfile = shutil.copyfile
+
+        def racing_copyfile(source: str | os.PathLike[str], destination: str | os.PathLike[str]):
+            source_path = Path(source)
+            if source_path == wal:
+                source_path.write_bytes(original_wal_bytes + b"transient-WAL-mutation")
+                try:
+                    return real_copyfile(source_path, destination)
+                finally:
+                    source_path.write_bytes(original_wal_bytes)
+                    os.utime(
+                        source_path,
+                        ns=(original_wal_stat.st_atime_ns, original_wal_stat.st_mtime_ns),
+                    )
+            return real_copyfile(source_path, destination)
+
+        try:
+            with patch.object(intake.shutil, "copyfile", side_effect=racing_copyfile):
+                with self.assertRaisesRegex(RuntimeError, "snapshot copy mismatch"):
+                    intake.extract_plum_database(self.database)
+
+            self.assertEqual(source_before, {path: self._hash(path) for path in source_paths})
+            self.assertEqual(wal.read_bytes(), original_wal_bytes)
+        finally:
+            connection.close()
+
     def test_snapshot_copies_rollback_journal_sidecar(self) -> None:
         self.database.write_bytes(b"database evidence")
         journal = Path(str(self.database) + "-journal")
@@ -129,9 +171,13 @@ class StickyNotesIntakeTests(unittest.TestCase):
         snapshot_dir = self.root / "snapshot"
         snapshot_dir.mkdir()
         result = intake._copy_snapshot(self.database, snapshot_dir, expected_root)
-        journal_record = next(item for item in result["files"] if item["path"] == str(journal))
-        self.assertTrue(journal_record["present"])
-        self.assertEqual(journal_record["sha256"], journal_record["copied_sha256"])
+        present_records = [item for item in result["files"] if item["present"]]
+        self.assertEqual(len(present_records), 2)
+        for record in present_records:
+            self.assertTrue(record["snapshot_copy_verified"])
+            self.assertEqual(record["sha256"], record["copied_sha256"])
+            self.assertEqual(record["sha256"], self._hash(Path(record["path"]))[2])
+        journal_record = next(item for item in present_records if item["path"] == str(journal))
         self.assertEqual((snapshot_dir / "plum.sqlite-journal").read_bytes(), journal.read_bytes())
 
     def test_raw_carving_survives_unreadable_database_and_journal(self) -> None:
