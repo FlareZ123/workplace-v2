@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import hashlib
+import os
+import shutil
 import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import h17_sticky_notes_intake as intake
 
@@ -86,6 +89,33 @@ class StickyNotesIntakeTests(unittest.TestCase):
         row = result["tables"][0]["rows"][0]
         self.assertIsNone(row["rowid"])
         self.assertEqual(row["values"]["Text"], "No rowid table")
+
+    def test_rejects_mixed_snapshot_if_source_changes_during_copy(self) -> None:
+        with sqlite3.connect(self.database) as connection:
+            connection.execute("CREATE TABLE Note (Text TEXT)")
+            connection.execute("INSERT INTO Note VALUES (?)", ("stable source",))
+        original_bytes = self.database.read_bytes()
+        original_stat = self.database.stat()
+        real_copyfile = shutil.copyfile
+
+        def racing_copyfile(source: str | os.PathLike[str], destination: str | os.PathLike[str]):
+            source_path = Path(source)
+            source_path.write_bytes(original_bytes + b"transient-change")
+            try:
+                return real_copyfile(source_path, destination)
+            finally:
+                source_path.write_bytes(original_bytes)
+                os.utime(
+                    source_path,
+                    ns=(original_stat.st_atime_ns, original_stat.st_mtime_ns),
+                )
+
+        with patch.object(intake.shutil, "copyfile", side_effect=racing_copyfile):
+            with self.assertRaisesRegex(RuntimeError, "snapshot copy mismatch"):
+                intake.extract_plum_database(self.database)
+
+        self.assertEqual(self.database.read_bytes(), original_bytes)
+        self.assertEqual(self._hash(self.database)[2], hashlib.sha256(original_bytes).hexdigest())
 
     def test_rejects_non_sticky_notes_database_name(self) -> None:
         other = self.root / "History.sqlite"

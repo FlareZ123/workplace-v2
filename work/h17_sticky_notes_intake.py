@@ -51,21 +51,46 @@ def _safe_regular_file(path: Path) -> os.stat_result:
     return info
 
 
-def _copy_snapshot(source: Path, target_dir: Path) -> dict[str, Any]:
+def _copy_snapshot(
+    source: Path,
+    target_dir: Path,
+    expected_root: dict[str, tuple[int, int, str] | None],
+) -> dict[str, Any]:
+    """Copy one coherent DB/WAL/SHM set and verify every temporary byte."""
     files: list[dict[str, Any]] = []
     for suffix in ("", "-wal", "-shm"):
         path = source if not suffix else Path(str(source) + suffix)
-        if not path.exists():
+        expected = expected_root.get(str(path))
+        exists = path.exists()
+        if expected is None:
+            if exists:
+                raise RuntimeError(f"source sidecar appeared during snapshot: {path}")
             if suffix:
                 files.append({"path": str(path), "present": False})
-            continue
+                continue
+            raise RuntimeError(f"source database disappeared during snapshot: {path}")
+        if not exists:
+            raise RuntimeError(f"source file disappeared during snapshot: {path}")
+
         info = _safe_regular_file(path)
+        expected_size, expected_mtime_ns, expected_digest = expected
+        if info.st_size != expected_size or info.st_mtime_ns != expected_mtime_ns:
+            raise RuntimeError(f"source changed before snapshot copy: {path}")
         digest = sha256_file(path)
+        if digest != expected_digest:
+            raise RuntimeError(f"source hash changed before snapshot copy: {path}")
+
         target = target_dir / (source.name + suffix)
         shutil.copyfile(path, target)
+        copied_size = target.stat().st_size
+        copied_digest = sha256_file(target)
+        if copied_size != info.st_size or copied_digest != digest:
+            raise RuntimeError(f"snapshot copy mismatch; refusing mixed DB/WAL/SHM set: {path}")
         files.append({
             "path": str(path), "present": True, "size": info.st_size,
-            "sha256": digest, "copied_to_temporary_snapshot": True,
+            "sha256": digest, "copied_sha256": copied_digest,
+            "snapshot_copy_verified": True,
+            "copied_to_temporary_snapshot": True,
         })
     return {"files": files}
 
@@ -164,7 +189,7 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
 
     with tempfile.TemporaryDirectory(prefix="h17-plum-snapshot-") as temp_name:
         temp_dir = Path(temp_name)
-        sidecar_info = _copy_snapshot(source, temp_dir)
+        sidecar_info = _copy_snapshot(source, temp_dir, before_root)
         raw_carving = []
         for item in sidecar_info["files"]:
             if not item.get("present"):
