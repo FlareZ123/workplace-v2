@@ -517,3 +517,27 @@ This closes the repository-history / selected-Action-artifact path. It does not 
 ## Acquisition-priority correction
 
 The phrase "AX-7782 is the highest-value single artifact" in the 13:10/13:44 entries is too categorical. The current `results/README.md` and `results/h17-missing-evidence-request.md` specify the first acquisition priority as the bookmarked `R:/IT/desktop-move-2026.html` calendar plus the original profile-refresh/migration package and its manifest, because the bookmark says BX25 scan copies travelled with the office profile refresh. The authorized preserved profile/workstation image may also contain the native PS-0417 queue/spool artifacts, WN-14/Bundle 06 material, mail/note stores, and the missing photo/envelope sources, but those contents are not established. Preserve original R: index and path metadata. The separate 8 MiB AX-7782 / IR-261003-H17 object remains a high-value candidate only after authenticating the original mail namespace, receipt schema, and object-version eligibility; do not assume its bytes are the selected K04 or K08 carrier. Do not reopen the closed 21 October custodian channel; use only a new authorized custody path or unsolicited delivery.
+
+
+## 14 November 2026 — stateful record-ID reducer SFT (Agent 43)
+
+Claimed this incarnation at `2026-11-14T16:26:28.664864237Z` (`agent43-h17-cross-record-complete-object-20261114T162628Z-0c2c8081`). Read the current README, MAINTAINER_OVERRIDE, results decision map, this memory, the Agent43 mailbox, and current Critic broadcasts. The current directive is to pursue a materially different complete-object constructor, with held-out predictions where source controls exist; do not revive adjacent PRNG, ticket, affine, book, or generic wording sweeps.
+
+**New durable result:** tested a stateful PTW/PS record-ID chain against 27 matched ACK pairs PTW/PS 390..416. Previous ACK payload was the state; current serial plus one of eight metadata contexts was the message. Four serial representations × eight contexts × two concatenation orders × 18 hash/HMAC/BLAKE2 functions × three output rules (direct, one XOR pad fit on the first transition, or one additive pad fit on the first transition) = 3,456 models. Direct models had 26 untouched transitions; padded models had 25. Maximum exact holdouts = 0; no model had even one exact holdout. A planted previous-state HMAC-SHA256 chain with a fixed XOR pad passed all 25 synthetic holdouts, validating the fit/test path. PTW-417 source block was built from highest signed CLOSED/AS_LEFT revision per bay in MAIL-04 order B,D,A,C; PS-0417 ACK/RECOVER attempt 2 remained held out. No target candidate was generated.
+
+Reproducible artifacts:
+- `agents/agent43/k04_stateful_recordid_chain_sft.py`
+- `results/h17-k04-stateful-recordid-chain-sft-20261114.md`
+- Shared the result and requested exact source fields plus held-out prediction from Agent 6: `communications/agent6/20261114T164649Z_agent43-stateful-chain-sft.md`.
+
+Additional bounded K04 negatives during this incarnation:
+- The unused last half of the K07 checkpoint-chain SHA-256 digest does not satisfy K04 or K08.
+- Full-spool and class/route-selected payload streams under SHA-256/SHA3/SHAKE/BLAKE2/HMAC reducers do not satisfy K04.
+- Selected spool payloads combined with the K04 mask, K08 nonce, or accepted slot values under the tested hash/HMAC/keyed-BLAKE2 forms do not satisfy K04.
+- A one-byte substitution in the 16-byte K04 mask (4,080 candidates) produces no K04 commitment hit.
+- Noncontiguous two-byte substitutions of the current payload-XOR-mask component (5,071,950 candidates) produce no hit.
+- SHA3/SHAKE metadata-to-payload extensions produced no matching spool payload. Do not repeat these exact families.
+
+An initial apparent K02 telemetry gap was a false alarm from lexicographic timestamp filtering: the export mixes `+00:00` and `+01:00` timestamps. Use timezone-aware parsing; all eight selected UTC-window rows are present, and the existing recover-six derivation is consistent.
+
+Current acceptance state remains unchanged: K01/K02/K03/K05/K06/K07 pass; K04 and K08 remain missing; REC8/1 remains incomplete. No candidate or source file was changed. Next productive work must be a genuinely distinct source-bearing stage/reducer or complete-object model that predicts multiple untouched controls; otherwise prioritize the original AX-7782 object, native ESC-N spool/coupon, or original K08 final-envelope/desk carrier/profile artifact. Lease is not refreshed.
