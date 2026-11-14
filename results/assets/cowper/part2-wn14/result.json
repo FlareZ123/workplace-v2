@@ -81,17 +81,352 @@
       1516
     ],
     "match": true,
-    "ocr_word103": "pleasant",
+    "ocr_word103": "sailing",
     "ocr_engine": "tesseract 5.5.0",
-    "ocr_token_count": 245
+    "ocr_token_count": 244
   },
-  "pages": [],
-  "status": "OCR_CALIBRATION_MISMATCH",
-  "candidate": null,
+  "pages": [
+    {
+      "printed_page": 4,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA4",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA4&img=1&zoom=3&hl=en&sig=ACfU3U37dTAD2EXNToVVzWlyoG_QQ_jTIw&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p4.img",
+      "bytes": 138366,
+      "sha256": "2b678d593a1acf9cab18799b51feb1edc28392cf993d9fa32242ff734c2b3cc4",
+      "png_dimensions": [
+        1025,
+        1500
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p4.png",
+      "image_dimensions": [
+        1025,
+        1500
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 409,
+      "requested_word_index_1based": 154,
+      "selected_word": "a",
+      "context_tokens": [
+        "suggested",
+        "these",
+        "chances",
+        "are",
+        "reduced",
+        "to",
+        "a",
+        "minimum",
+        "and",
+        "even",
+        "if",
+        "we",
+        "should"
+      ],
+      "ocr_text_sha256": "61db0264608d5a960d874a8add43beb9595b41800118ae60096c313f34bde53b",
+      "joined_body_sha256": "2a9f18367858138645e6e79ddf288e3ace8d62bbf4220328088407e9b168667a"
+    },
+    {
+      "printed_page": 171,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA171",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA171&img=1&zoom=3&hl=en&sig=ACfU3U0ye8dwX-192YnWfiDtIqYEJoO3GA&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p171.img",
+      "bytes": 147339,
+      "sha256": "f20eb1ae02e670e48929c8ca153aac5ec4cf51650115b880c60a90caf1aa770d",
+      "png_dimensions": [
+        1025,
+        1507
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p171.png",
+      "image_dimensions": [
+        1025,
+        1507
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 424,
+      "requested_word_index_1based": 46,
+      "selected_word": "should",
+      "context_tokens": [
+        "to",
+        "Wych",
+        "Farm",
+        "and",
+        "Ferry",
+        "we",
+        "should",
+        "advise",
+        "sailing",
+        "round",
+        "to",
+        "Studland",
+        "Bay"
+      ],
+      "ocr_text_sha256": "0655d1ccefb50a872c2e570749316827ca1e4e07ca7aa23fa8bcf09a9b1acfbb",
+      "joined_body_sha256": "0655d1ccefb50a872c2e570749316827ca1e4e07ca7aa23fa8bcf09a9b1acfbb"
+    },
+    {
+      "printed_page": 28,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA28",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA28&img=1&zoom=3&hl=en&sig=ACfU3U1WnQCvDZZXISJGHSx2NFTyjVn_kg&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p28.img",
+      "bytes": 136666,
+      "sha256": "22ee620cc80264cbc7c707f5259e9194c1f0993e879fdc316b7335834edb78db",
+      "png_dimensions": [
+        1025,
+        1491
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p28.png",
+      "image_dimensions": [
+        1025,
+        1491
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 374,
+      "requested_word_index_1based": 222,
+      "selected_word": "At",
+      "context_tokens": [
+        "luckily",
+        "Lights",
+        "on",
+        "the",
+        "Admiralty",
+        "Pier",
+        "At",
+        "the",
+        "pier-head",
+        "is",
+        "a",
+        "fixed",
+        "white"
+      ],
+      "ocr_text_sha256": "f87fb00018bce8d16f2b0c31608bcb586d0d32cc9d739d48cfe64282c40e42d8",
+      "joined_body_sha256": "a39d9811428d193d5ccf491f6590acc21241004ce699fb1be42c98c55ac7ca2c"
+    },
+    {
+      "printed_page": 122,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA122",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA122&img=1&zoom=3&hl=en&sig=ACfU3U1Lm9Ks58vWsWSAerOj8iKjPKEPZg&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p122.img",
+      "bytes": 104120,
+      "sha256": "12fae6b0d288eb87c3ff24625bc8a0916b0370361239bce0b9d4f60bce2d568a",
+      "png_dimensions": [
+        1025,
+        1500
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p122.png",
+      "image_dimensions": [
+        1025,
+        1500
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 272,
+      "requested_word_index_1based": 130,
+      "selected_word": "away",
+      "context_tokens": [
+        "creeks",
+        "it",
+        "is",
+        "best",
+        "to",
+        "get",
+        "away",
+        "a",
+        "little",
+        "before",
+        "the",
+        "first",
+        "high"
+      ],
+      "ocr_text_sha256": "48afe0e0fd73994d4e7b45f587b3ba796bf845dabb82452dad4629efdf6fd449",
+      "joined_body_sha256": "48afe0e0fd73994d4e7b45f587b3ba796bf845dabb82452dad4629efdf6fd449"
+    },
+    {
+      "printed_page": 205,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA205",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA205&img=1&zoom=3&hl=en&sig=ACfU3U1j0rz3_0aepoA_ZjF8OKzw0UB3yQ&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p205.img",
+      "bytes": 143876,
+      "sha256": "0ae98ba44f23441c5267823a6703df4db0053661cd863b6fe450ca7edf9a216d",
+      "png_dimensions": [
+        1025,
+        1508
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p205.png",
+      "image_dimensions": [
+        1025,
+        1508
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 402,
+      "requested_word_index_1based": 124,
+      "selected_word": "a",
+      "context_tokens": [
+        "a",
+        "picture",
+        "to",
+        "be",
+        "seen",
+        "at",
+        "a",
+        "distance",
+        "it",
+        "is",
+        "decidedly",
+        "good",
+        "They"
+      ],
+      "ocr_text_sha256": "5600e944f1752288a0221f46ae344ffc77df778ac6049c0fd42716470b08d249",
+      "joined_body_sha256": "5600e944f1752288a0221f46ae344ffc77df778ac6049c0fd42716470b08d249"
+    },
+    {
+      "printed_page": 96,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA96",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA96&img=1&zoom=3&hl=en&sig=ACfU3U3Asf4qs1lVNgCib2XFmYtyK7cLDw&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p96.img",
+      "bytes": 151204,
+      "sha256": "65c94b7c43eeeb78228ab08ae8bc0fa931a08303276c5c14dead72f773b5c778",
+      "png_dimensions": [
+        1025,
+        1517
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p96.png",
+      "image_dimensions": [
+        1025,
+        1517
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 384,
+      "requested_word_index_1based": 35,
+      "selected_word": "Why",
+      "context_tokens": [
+        "Cassiterides",
+        "was",
+        "brought",
+        "to",
+        "the",
+        "island",
+        "Why",
+        "they",
+        "should",
+        "have",
+        "wanted",
+        "to",
+        "bring"
+      ],
+      "ocr_text_sha256": "308f0979e7f54ddb2eb637688e8f3dcb7393002a2c8125251c379a31a629d3b3",
+      "joined_body_sha256": "205e06932cd5ba15e552fa1064fe661dcf77493b56538cf4723df36d4e5eea82"
+    },
+    {
+      "printed_page": 67,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA67",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA67&img=1&zoom=3&hl=en&sig=ACfU3U28qZErDujw3GS2FRS3IlzSqHUuWQ&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p67.img",
+      "bytes": 145776,
+      "sha256": "ea2f37478203432980dc3c655eb0ebce12c01f83ff10bfd9c0b845f0316db7a8",
+      "png_dimensions": [
+        1025,
+        1503
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p67.png",
+      "image_dimensions": [
+        1025,
+        1503
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 419,
+      "requested_word_index_1based": 3,
+      "selected_word": "the",
+      "context_tokens": [
+        "away",
+        "at",
+        "the",
+        "first",
+        "quarter",
+        "of",
+        "the",
+        "flood",
+        "as"
+      ],
+      "ocr_text_sha256": "ff83d498a8598e9ba1f2d48f19fbfbeeda487cdb07e4ff1d786316fb7acf7add",
+      "joined_body_sha256": "0c1a6d0856e841157800daddfb327d7c0f7721deca115a20c86ccc93a78f8f42"
+    },
+    {
+      "printed_page": 201,
+      "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA201",
+      "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA201&img=1&zoom=3&hl=en&sig=ACfU3U1vvzof5hbu74eWbqcrwIGI2HkFQA&w=1025",
+      "status": 200,
+      "content_type": "image/png",
+      "filename": "p201.img",
+      "bytes": 150678,
+      "sha256": "acb5b7c1421db104bf38fc8c7aa3671569bdd7605f094535d62191d98165724e",
+      "png_dimensions": [
+        1025,
+        1530
+      ],
+      "image_path": "results/assets/cowper/part2-wn14/p201.png",
+      "image_dimensions": [
+        1025,
+        1530
+      ],
+      "manual_ocr_corrections": [],
+      "main_body_word_token_count": 378,
+      "requested_word_index_1based": 26,
+      "selected_word": "We",
+      "context_tokens": [
+        "mansion",
+        "ot",
+        "Wolveton",
+        "then",
+        "just",
+        "finished",
+        "We",
+        "certainly",
+        "ought",
+        "to",
+        "go",
+        "over",
+        "and"
+      ],
+      "ocr_text_sha256": "86c4028087567f4689b8487b5a50147a66d288c5e2877325074a7b9bd9b139be",
+      "joined_body_sha256": "40de67b6eca111081db28c275099bdbee30a799942d75ac52d9cd2c179106bd6"
+    }
+  ],
+  "status": "NO_MATCH",
+  "candidate": {
+    "selected_words": [
+      "a",
+      "should",
+      "At",
+      "away",
+      "a",
+      "Why",
+      "the",
+      "We"
+    ],
+    "raw_phrase": "a should At away a Why the We",
+    "normalized_phrase": "a should at away a why the we",
+    "hmac16_hex": "97225D964C198211328E9035E912C272",
+    "component_sha256": "2365078084faa3e335a3f025585c803e531e532e2dc8fa635c17d146852623b8",
+    "target_sha256": "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747",
+    "commitment_match": false
+  },
   "counting_convention": "Use the existing Cowper Part II OCR convention: grayscale page; exclude the top 150 and bottom 60 pixels (running head and folio); autocontrast; Tesseract English PSM 6; join line-end hyphenation; count visual-order main-body tokens matching the existing WORD_PATTERN; include body headings, captions, tables and footnotes. Select one-based word positions before K08 normalization.",
   "limitations": [
     "Cowper Part II is a conditional book candidate, not an authenticated identification of David's physical map-back book.",
     "The WN-14 byte-pair page/word interpretation is a hypothesis; the signed source itself does not label these bytes as coordinates.",
     "Only this one page/word order, edition, volume and counting convention are tested."
-  ]
+  ],
+  "ocr_engine": "tesseract 5.5.0"
 }
