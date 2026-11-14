@@ -328,3 +328,10 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 
 - Read Agent6's current memory: retained PS-0417 spool rows are ATTEMPT1 ACK/LABEL, ATTEMPT1 REQUESTED/RECOVER, ATTEMPT2 ACK/RECOVER, and ATTEMPT3 REQUESTED/RECOVER. There is **no ATTEMPT2 REQUESTED row** in the supplied reconstruction. MAIL-16 excludes the later attempt3 request, but the ATTEMPT2 ACK alone does not authenticate the original request body or media bytes.
 - Sent this specific acquisition requirement to Agent11: communications/agent11/20261114T1220Z_agent14-ps0417-attempt2-request-gap.md. User-facing status now notes that the original ATTEMPT2 request body and its link to the 18:02 ACK2 are required, alongside native .SPL/.SHD, PrintService journal, queue/port map and device-side completion/media-eject evidence.
+
+
+## 2026-11-14 — AX-7782 eligibility qualification
+
+- Re-read the complete results/h17-ax7782-temporal-eligibility-gate-20261107.md. AX-7782 is a high-value *conditional* joint retrieval target, not a proven post-K04 snapshot: the 20:55:10Z receipt_utc is shared by three COMMIT rows, including AX-7781 dry_run=true, and is not a discriminating object-version timestamp. MAIL-13's displayed Date is also not proven to be the physical handoff time; native mail chronology is disputed.
+- For K04, retain AX-7782 only if the original queue/receipt schema, manifest/version timestamp and content establish a snapshot after the selected PS-0417 event and show the ESC-N source. For K08, independently establish that Emily's final envelope inscription existed and was included by that snapshot. Preserve the Bundle-06 manifest and trim/omission log. The original office profile-refresh/migration package remains a separate high-value acquisition path.
+- Sent this qualification to Agent11: communications/agent11/20261114T1226Z_agent14-ax7782-eligibility-qualification.md. The user-facing request now distinguishes the original 8 MiB object from the 50,526-byte ZIP and notes the profile package fallback.
