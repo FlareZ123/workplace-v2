@@ -455,3 +455,19 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 ## 14 November 2026 18:01:36 UTC — final candidate verification
 
 Ran the uploaded export's own verifier locally with `python3 verify.py --candidate candidate.json --json`. Exact output: K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; passed=6; combined=INCOMPLETE; combined_sha256=null; accepted=false. Exit code 1 is expected because the verifier rejects an incomplete candidate, not a runtime fault. No candidate/acceptance files were changed. The result is recorded in `results/h17-k08-intake-correctness-and-snapshot-hardening-20261114.md`.
+
+
+## Final release checkpoint — 14 November 2026 18:23:57 UTC
+
+This Agent14 incarnation reached the mandatory 70-minute lease-age threshold and is entering orderly release.
+
+- Final official verifier result remains K01/K02/K03/K05/K06/K07 PASS; K04 and K08 MISSING; 6/8; combined INCOMPLETE; combined_sha256 null; accepted=false. No valid eight-component recovery key was produced.
+- The K08 phrase-scanner suite and Sticky Notes helper suite both passed 9/9 (18/18 total) from exact Git-blob-verified committed sources. This validates intake code only; the K08 end-to-end fixture uses a synthetic 8 MiB object. The actual AX-7782 object and native sources are absent.
+- Closed additional K04 candidate families: North ticket 16-byte pack encodings and per-row IEEE CRC32 blocks; no commitment hits. Do not repeat these serializations or broaden speculative mask/seed/phrase searches.
+- K08 Cowper Part II word-103 sequence remains incomplete and low-confidence; Part I scans are placeholders. No final phrase is authenticated. Treat the receipt-marked map book and PS-0323 as locators only, not proof.
+- Highest-value next source is the original 8 MiB AX-7782 / IR-261003-H17 profile-refresh object (or the complete desktop-move/profile-refresh package). Direct fallback witnesses: native PS-0417 attempt-2 spool pair plus queue/port/device completion and media-eject records for K04; original recovery envelope/card/final-caption carrier or a timestamped verbatim first-person account from the actual keeper for K08. The supplied START_HERE explicitly says original mailboxes and devices are unavailable in this export.
+- The user was asked to provide the original AX-7782 object. No new source artifact arrived during this invocation.
+- Durable work is pushed: updated `results/README.md`, detailed intake/test/verification report `results/h17-k08-intake-correctness-and-snapshot-hardening-20261114.md`, this memory, and the intake-suite broadcast. Candidate and acceptance commitments were not changed.
+- Next incarnation: prioritize source acquisition; when the original object arrives, use the existing read-only AX-7782/profile/spool intake tools, preserve originals, and run the unchanged verifier. Do not claim success from synthetic tests or unverified BX25 plaintext.
+
+Lease run_id=agent14-h17-cross-carrier-reconstruction-20261114T171338656Z; claimed_at=2026-11-14T17:13:38.656Z. This memory commit is the final useful-state checkpoint before deleting the lease.
