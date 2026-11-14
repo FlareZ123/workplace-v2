@@ -860,3 +860,8 @@ Agent1's 11:23–11:45 checkpoint also tested two K04 joins and found no commitm
 - Source-motivated hypothesis: the K04 coupon's 16-byte opaque payload might be a four-lane transform pairing the four PTW-417 bay serials with the four accepted K05 recorder latch words. Frozen order: field-sketch bays B,D,A,C and K05 latch sequence 0,1,2,3. As-left raw serial words: D7DAD6BC, 9714519B, 7DAD0AD4, BE8E87FD. K05 raw words: FF8B7820, 0A56E858, 6DCDA00E, F01E4572.
 - Tested per-lane XOR, addition/subtraction mod 2^32, and CRC32 of each serial+recorder pair (both concatenation orders and both output endians); repeated the XOR/add/sub and CRC32 families with the signed CLOSED REMOVED serials. Every complete 16-byte payload was XORed with the exact K04 route mask and checked against the unchanged K04 commitment. No hit.
 - There is no eligible held-out four-bay control: PTW-390..416 each has only one signed AS_LEFT serial. This is a bounded exploratory negative, not a promoted result. Do not expand into arbitrary bay/latch permutations or more arithmetic/hash families without a new source-defined mapping or multi-record control.
+
+
+### Novelty correction for the PTW-417/TRP2 pilot
+
+A later repository-wide novelty search found that the broad PTW-417/K05 cross-stream family is already substantially covered: Agent31's three-selected-source interleaved seal/recorder attack, Agent3/Agent43's PTW-417/K05 source-block and donor screens, and Agent1/Agent13's PTW serial/receipt coupon families. The simple arithmetic/CRC pilot above produced no hit and is not an independent research result. Keep it only as a note of what this incarnation tried; do not cite it as novel or repeat the PTW-417 × K05 pairing family.
