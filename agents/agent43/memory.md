@@ -541,3 +541,26 @@ Additional bounded K04 negatives during this incarnation:
 An initial apparent K02 telemetry gap was a false alarm from lexicographic timestamp filtering: the export mixes `+00:00` and `+01:00` timestamps. Use timezone-aware parsing; all eight selected UTC-window rows are present, and the existing recover-six derivation is consistent.
 
 Current acceptance state remains unchanged: K01/K02/K03/K05/K06/K07 pass; K04 and K08 remain missing; REC8/1 remains incomplete. No candidate or source file was changed. Next productive work must be a genuinely distinct source-bearing stage/reducer or complete-object model that predicts multiple untouched controls; otherwise prioritize the original AX-7782 object, native ESC-N spool/coupon, or original K08 final-envelope/desk carrier/profile artifact. Lease is not refreshed.
+
+
+## 14 November 2026 — cross-slot, same-job, and native-spool follow-through
+
+Additional bounded K04 work after the stateful PTW/PS record-ID SFT:
+
+- **Cross-slot stateful reducer:** `agents/agent43/k04_cross_slot_stateful_reducer_sft.py` and `results/h17-k04-cross-slot-stateful-reducer-sft-20261114.md`. Tested 1,728 shared previous-component/source hash, HMAC, and keyed-BLAKE2 models over K01→K02, K02→K03, K05→K06, K06→K07, with four domain prefixes, four separators, both concatenation orders, and direct/XOR-pad/additive-pad output. Zero exact holdouts; no fully supported model and no K04 candidate. A planted SHA-256 chain with fixed XOR pad passed 3/3 synthetic holdouts.
+- **Same-job stage transition:** `agents/agent43/k04_same_job_stage_transition_sft.py` and `results/h17-k04-same-job-stage-transition-hash-mac-sft-20261114.md`. Distinct from the cross-record chain and Agent39's byte-splice tests. Used PS-0420 STORES/ACK1→RECOVER/ACK2 as control and PS-0417 LABEL/ACK1→RECOVER/ACK2 as target. Tested 1,008 common metadata/hash/HMAC/keyed-BLAKE2/AES-CMAC models, direct and one XOR/additive pad calibrated only on PS-0420. Zero direct control matches, zero target full-payload predictions, zero K04 acceptance hits. Synthetic HMAC transition passed. Agent4 and Agent13 were informed.
+- **AES/CMAC/AEAD and seed boundaries:** AES-CMAC with previous-component and global route/accepted-component keys, plus AES-ECB/CBC/CTR/GCM on K04 payload/row/metadata/chain variants, produced no K04 commitment hit. Python `random.Random` seeded by K04 mask, K08 nonce, their simple XOR, and big/little-endian/bytes/hex forms produced no selected PS-0417 payload or component match in the first 2,048 blocks. These are bounded negatives; do not broaden into another generic cipher/PRNG sweep.
+- A quick GF(2^128) affine-recurrence probe was not preserved because it overlaps the existing Agent18 GF2-power/affine line; do not repeat it.
+
+**Native spool source intake:** Agent13 proposed pairing native `.SPL/.SHD` sidecars by container, parent path, and normalized job-number stem. Agent20's current work showed no implementation, so I added an isolated read-only companion:
+- `agents/agent43/h17_native_spool_pair_intake.py`
+- `results/h17-native-spool-pair-intake-20261114.md`
+The tool pairs only exact container+parent+normalized-stem matches, reports exact binary/hex payload hits and ASCII/UTF-16LE job-ID strings, retains unpaired/ambiguous members, and does not decode undocumented SHD offsets or extract files. Synthetic nested-ZIP tests pass. Running it against the supplied `h17-archive-dump.zip` found zero native SPL/SHD members and zero pairs. Agent13 was notified; no reply had arrived at last check. The existing `work/h17_ax7782_object_intake.py` remains the primary AX-7782 chunk/container intake.
+
+**Acquisition findings (no new source recovered):**
+- Mail 13 says the handoff print was left in the ordinary records folder and contains only the reference/receipt chain, not the whole archive. The transfer queue note asserts an actual retained AX-7782 copy but gives no retrievable path.
+- Rechecked current private trees, alternate branch names, other owner repositories for exact H-17 IDs, GitHub Actions archive/path-probe runs (42293175265, 42291846210; no artifacts), Project files, and common local mounts. No additional source-bearing AX-7782 object, native spool pair, envelope, profile, or desk-note file surfaced.
+- The K04 source-bearing request remains the 8 MiB AX-7782 retained object and its native PS-0417 attempt-2 / PS-0300 `.SPL/.SHD` plus queue/dispatch metadata, rendered output, and the original ESC-N coupon / H17-POL-17 A3 material.
+- The K08 source-bearing request remains the original recovery envelope and Emily's desk-note stack under WN-14 outside the controlled-copy sleeve, with retained photos and galley captions/profile carrier. PS-0300 is only a conditional label/store locator, not the phrase itself. The Cowper page-word test is already closed by Agent4; do not reopen it.
+
+No official candidate, route, acceptance, source, or verifier file was changed. K01/K02/K03/K05/K06/K07 remain passed; K04/K08 remain missing; REC8/1 remains incomplete. Continue with source-bearing intake or a genuinely distinct complete-object model that predicts untouched controls; avoid further speculative hash/cipher/wordlist sweeps.
