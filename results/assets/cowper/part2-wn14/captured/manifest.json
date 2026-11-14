@@ -1,0 +1,92 @@
+[
+  {
+    "printed_page": 121,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA121",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA121&img=1&zoom=3&hl=en&sig=ACfU3U3_tdUT-UUA9BKG_Vr3b7Rbmkl8uQ&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p121.img",
+    "bytes": 97450,
+    "sha256": "3b1e1b88244b2c0e15eeabf1f3f0d72d4cc6f0127256c55e0bc8e3978c3d0083"
+  },
+  {
+    "printed_page": 4,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA4",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA4&img=1&zoom=3&hl=en&sig=ACfU3U37dTAD2EXNToVVzWlyoG_QQ_jTIw&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p4.img",
+    "bytes": 138366,
+    "sha256": "2b678d593a1acf9cab18799b51feb1edc28392cf993d9fa32242ff734c2b3cc4"
+  },
+  {
+    "printed_page": 171,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA171",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA171&img=1&zoom=3&hl=en&sig=ACfU3U0ye8dwX-192YnWfiDtIqYEJoO3GA&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p171.img",
+    "bytes": 147339,
+    "sha256": "f20eb1ae02e670e48929c8ca153aac5ec4cf51650115b880c60a90caf1aa770d"
+  },
+  {
+    "printed_page": 28,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA28",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA28&img=1&zoom=3&hl=en&sig=ACfU3U1WnQCvDZZXISJGHSx2NFTyjVn_kg&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p28.img",
+    "bytes": 136666,
+    "sha256": "22ee620cc80264cbc7c707f5259e9194c1f0993e879fdc316b7335834edb78db"
+  },
+  {
+    "printed_page": 122,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA122",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA122&img=1&zoom=3&hl=en&sig=ACfU3U1Lm9Ks58vWsWSAerOj8iKjPKEPZg&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p122.img",
+    "bytes": 104120,
+    "sha256": "12fae6b0d288eb87c3ff24625bc8a0916b0370361239bce0b9d4f60bce2d568a"
+  },
+  {
+    "printed_page": 205,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA205",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA205&img=1&zoom=3&hl=en&sig=ACfU3U1j0rz3_0aepoA_ZjF8OKzw0UB3yQ&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p205.img",
+    "bytes": 143876,
+    "sha256": "0ae98ba44f23441c5267823a6703df4db0053661cd863b6fe450ca7edf9a216d"
+  },
+  {
+    "printed_page": 96,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA96",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA96&img=1&zoom=3&hl=en&sig=ACfU3U3Asf4qs1lVNgCib2XFmYtyK7cLDw&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p96.img",
+    "bytes": 151204,
+    "sha256": "65c94b7c43eeeb78228ab08ae8bc0fa931a08303276c5c14dead72f773b5c778"
+  },
+  {
+    "printed_page": 67,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA67",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA67&img=1&zoom=3&hl=en&sig=ACfU3U28qZErDujw3GS2FRS3IlzSqHUuWQ&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p67.img",
+    "bytes": 145776,
+    "sha256": "ea2f37478203432980dc3c655eb0ebce12c01f83ff10bfd9c0b845f0316db7a8"
+  },
+  {
+    "printed_page": 201,
+    "viewer_url": "https://books.google.com/books?id=o7P-qis2u9IC&pg=PA201",
+    "signed_image_url": "https://books.google.com/books/content?id=o7P-qis2u9IC&pg=PA201&img=1&zoom=3&hl=en&sig=ACfU3U1vvzof5hbu74eWbqcrwIGI2HkFQA&w=1025",
+    "status": 200,
+    "content_type": "image/png",
+    "filename": "p201.img",
+    "bytes": 150678,
+    "sha256": "acb5b7c1421db104bf38fc8c7aa3671569bdd7605f094535d62191d98165724e"
+  }
+]
