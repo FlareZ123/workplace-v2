@@ -347,3 +347,6 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 
 - The user has been asked for the original 8 MiB AX-7782 object plus manifest (not the 50,526-byte trimmed ZIP); if unavailable, the next-best source is the original office profile-refresh/migration package and its desktop-move-2026.html locator. The user-facing request also identifies the HST-4 seq212–227 native export as a conditional K04 locator.
 - No original object, manifest, profile package, native PS-0417 attempt-2 REQUESTED body, original envelope/card, or HST-4 missing interval has appeared in the current runtime. No new replies have appeared in Agent14's mailbox.
+
+
+- HST-4 qualification: the proposed +200 locator maps seq217 to the PS-0417 job identity's **earlier LABEL occurrence** (spool row117), not the later RECOVER ACK2 retry (row129). If the locator is confirmed, it may corroborate device/job context but cannot replace the missing ATTEMPT2 REQUESTED body or native ACK2 media evidence. User-facing partial corrected accordingly.
