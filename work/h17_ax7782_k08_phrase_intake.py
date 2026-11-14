@@ -101,7 +101,10 @@ def decode_text_variants(data: bytes, name: str) -> list[tuple[str, str]]:
         if encoding == "utf-8-sig":
             add("html-unescape", html.unescape(text))
             add("url-unquote", urllib.parse.unquote(text))
-            add("quoted-printable", quopri.decodestring(text).decode("utf-8", "replace"))
+            try:
+        add("quoted-printable", quopri.decodestring(text.encode("utf-8")).decode("utf-8", "replace"))
+    except (ValueError, UnicodeEncodeError):
+        pass
             if name.lower().endswith((".html", ".htm", ".xml")) or "<html" in text[:1000].lower():
                 parser = VisibleText()
                 try:
