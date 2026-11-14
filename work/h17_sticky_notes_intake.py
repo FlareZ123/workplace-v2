@@ -27,7 +27,11 @@ MAX_DB_BYTES = 64 * 1024 * 1024
 MAX_ROWS = 100_000
 MAX_CELL_BYTES = 4 * 1024 * 1024
 MAX_TOTAL_TEXT = 64 * 1024 * 1024
-PRINTABLE = re.compile(rb"[\x20-\x7e]{4,}")
+MAX_RAW_SPANS = 100_000
+MIN_RAW_RUN = 8
+PRINTABLE = re.compile(rb"[\x20-\x7e]{" + str(MIN_RAW_RUN).encode() + rb",}")
+UTF16LE_RUN = re.compile(rb"(?:[\x09\x0a\x0d\x20-\x7e]\x00){" + str(MIN_RAW_RUN).encode() + rb",}")
+UTF16BE_RUN = re.compile(rb"(?:\x00[\x09\x0a\x0d\x20-\x7e]){" + str(MIN_RAW_RUN).encode() + rb",}")
 
 
 def sha256_file(path: Path) -> str:
@@ -64,6 +68,38 @@ def _copy_snapshot(source: Path, target_dir: Path) -> dict[str, Any]:
             "sha256": digest, "copied_to_temporary_snapshot": True,
         })
     return {"files": files}
+
+
+def _carve_raw_text(path: Path, original_path: str) -> dict[str, Any]:
+    data = path.read_bytes()
+    spans: list[dict[str, Any]] = []
+    seen: set[tuple[int, str, str]] = set()
+    patterns = ((PRINTABLE, "ascii"), (UTF16LE_RUN, "utf-16le"), (UTF16BE_RUN, "utf-16be"))
+    for pattern, encoding in patterns:
+        for match in pattern.finditer(data):
+            try:
+                text = match.group().decode(encoding, "strict")
+            except UnicodeDecodeError:
+                continue
+            text = text.strip("\x00")
+            key = (match.start(), encoding, text)
+            if not text or key in seen:
+                continue
+            seen.add(key)
+            spans.append({"offset": match.start(), "encoding": encoding, "text": text})
+            if len(spans) >= MAX_RAW_SPANS:
+                break
+        if len(spans) >= MAX_RAW_SPANS:
+            break
+    return {
+        "source_file": original_path,
+        "size": len(data),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "minimum_run_characters": MIN_RAW_RUN,
+        "span_limit": MAX_RAW_SPANS,
+        "spans": spans,
+        "truncated": len(spans) >= MAX_RAW_SPANS,
+    }
 
 
 def _quote_identifier(identifier: str) -> str:
@@ -129,6 +165,14 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
     with tempfile.TemporaryDirectory(prefix="h17-plum-snapshot-") as temp_name:
         temp_dir = Path(temp_name)
         sidecar_info = _copy_snapshot(source, temp_dir)
+        raw_carving = []
+        for item in sidecar_info["files"]:
+            if not item.get("present"):
+                continue
+            original_path = item["path"]
+            suffix = "" if original_path == str(source) else original_path[len(str(source)):]
+            copied_path = temp_dir / (source.name + suffix)
+            raw_carving.append(_carve_raw_text(copied_path, original_path))
         temp_db = temp_dir / "plum.sqlite"
         uri = "file:" + quote(str(temp_db), safe="/:") + "?mode=ro"
         connection = sqlite3.connect(uri, uri=True, timeout=2.0)
@@ -181,6 +225,7 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
             "created_utc": dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z"),
             "source_database": str(source),
             "source_files": sidecar_info["files"],
+            "raw_text_carving": raw_carving,
             "source_unchanged": unchanged,
             "source_hashes_before_after_match": unchanged,
             "safety": {
