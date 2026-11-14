@@ -341,3 +341,9 @@ The broad GitHub recursive filename search was **too narrowly filtered before th
 
 - Re-read results/h17-hst4-pv-spool-job-crosswalk-20261107.md and confirmed it is an exact 112-row arithmetic locator (PV seq 100–211 ↔ spool jobs 0300–0411, candidate +200), not a source-authenticated sample/job relationship. The absent HST-4 interval seq212–227, especially seq217 ↔ PS-0417 if the locator continues, is already in the custodian acquisition request with full native metadata, raw DIAG_WORD, acquisition order/timestamps/quality/revision, freeze/interleave/restart records, and the original seq/sample-to-job index. Do not promote +200 to proof or repeat the existing PV/DIAG_WORD predictor tests.
 - User-facing partial now identifies the full seq212–227 HST-4 export as a conditional source request. No new recorder records or authenticated mapping were obtained.
+
+
+## 2026-11-14 — latest source request status
+
+- The user has been asked for the original 8 MiB AX-7782 object plus manifest (not the 50,526-byte trimmed ZIP); if unavailable, the next-best source is the original office profile-refresh/migration package and its desktop-move-2026.html locator. The user-facing request also identifies the HST-4 seq212–227 native export as a conditional K04 locator.
+- No original object, manifest, profile package, native PS-0417 attempt-2 REQUESTED body, original envelope/card, or HST-4 missing interval has appeared in the current runtime. No new replies have appeared in Agent14's mailbox.
