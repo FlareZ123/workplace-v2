@@ -128,27 +128,51 @@ def decode_text_variants(data: bytes, name: str) -> list[tuple[str, str]]:
                 except (json.JSONDecodeError, TypeError):
                     pass
 
+    # Recover printable runs embedded in binary streams (for example, raw
+    # spool/compound members with text interleaved with control bytes).
+    candidates: list[tuple[str, str]] = []
+    try:
+        candidates.append(("utf8-whole-stream", data.decode("utf-8")))
+    except UnicodeDecodeError:
+        pass
+    run_count = 0
+    for match in re.finditer(rb"[\\x09\\x0a\\x0d\\x20-\\x7e]{4,}", data):
+        candidates.append((f"embedded-ascii@{match.start()}", match.group().decode("ascii", "replace")))
+        run_count += 1
+        if run_count >= 10000:
+            break
+    if run_count < 10000:
+        for pattern, encoding in (
+            (rb"(?:[\\x09\\x0a\\x0d\\x20-\\x7e]\\x00){4,}", "utf-16le"),
+            (rb"(?:\\x00[\\x09\\x0a\\x0d\\x20-\\x7e]){4,}", "utf-16be"),
+        ):
+            for match in re.finditer(pattern, data):
+                candidates.append((f"embedded-{encoding}@{match.start()}", match.group().decode(encoding, "replace")))
+                run_count += 1
+                if run_count >= 10000:
+                    break
+            if run_count >= 10000:
+                break
+
     # Decode only conventional Base64/hex carriers whose decoded bytes are
     # themselves printable text; this is not a general cipher search.
-    try:
-        raw_text = data.decode("utf-8")
-    except UnicodeDecodeError:
-        raw_text = ""
-    for token in HEX_RE.findall(raw_text):
-        try:
-            decoded = bytes.fromhex(token)
-            text = decoded.decode("utf-8")
-            add("hex-decoded-text", text)
-        except (ValueError, UnicodeDecodeError):
-            pass
-    for token in B64_RE.findall(raw_text):
-        try:
-            padded = token if len(token) % 4 == 0 else token + ("=" * (4 - len(token) % 4))
-            decoded = base64.b64decode(padded, validate=True)
-            text = decoded.decode("utf-8")
-            add("base64-decoded-text", text)
-        except (binascii.Error, ValueError, UnicodeDecodeError):
-            pass
+    for source_label, raw_text in candidates:
+        add(source_label, raw_text)
+        for token in HEX_RE.findall(raw_text):
+            try:
+                decoded = bytes.fromhex(token)
+                text = decoded.decode("utf-8")
+                add(f"hex-decoded-text-{source_label}", text)
+            except (ValueError, UnicodeDecodeError):
+                pass
+        for token in B64_RE.findall(raw_text):
+            try:
+                padded = token if len(token) % 4 == 0 else token + ("=" * (4 - len(token) % 4))
+                decoded = base64.b64decode(padded, validate=True)
+                text = decoded.decode("utf-8")
+                add(f"base64-decoded-text-{source_label}", text)
+            except (binascii.Error, ValueError, UnicodeDecodeError):
+                pass
     return variants
 
 
