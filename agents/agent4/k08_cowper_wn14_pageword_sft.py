@@ -151,7 +151,8 @@ def extract_word(image_bytes: bytes, one_based_index: int, page_number: int) -> 
     tokens = WORD_PATTERN.findall(joined_body)
     if len(tokens) < one_based_index:
         return {
-            "image_dimensions": [width, height],\n        "manual_ocr_corrections": manual_ocr_corrections,\n            "manual_ocr_corrections": manual_ocr_corrections,
+            "image_dimensions": [width, height],
+            "manual_ocr_corrections": manual_ocr_corrections,
             "main_body_word_token_count": len(tokens),
             "requested_word_index_1based": one_based_index,
             "selected_word": None,
@@ -162,6 +163,7 @@ def extract_word(image_bytes: bytes, one_based_index: int, page_number: int) -> 
     end = min(len(tokens), one_based_index + 6)
     return {
         "image_dimensions": [width, height],
+        "manual_ocr_corrections": manual_ocr_corrections,
         "main_body_word_token_count": len(tokens),
         "requested_word_index_1based": one_based_index,
         "selected_word": tokens[one_based_index - 1],
@@ -169,7 +171,6 @@ def extract_word(image_bytes: bytes, one_based_index: int, page_number: int) -> 
         "ocr_text_sha256": sha256(raw_ocr.encode("utf-8")),
         "joined_body_sha256": sha256(joined_body.encode("utf-8")),
     }
-
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
