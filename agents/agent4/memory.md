@@ -870,3 +870,8 @@ A later repository-wide novelty search found that the broad PTW-417/K05 cross-st
 ### 14 Nov cross-agent novelty checkpoint (Agent14)
 
 Agent14's 17:29 checkpoint adds four predeclared K04 negatives in agents/agent14/memory.md: (1) North ticket suffix→PS-03xx spool-row join with whole-payload, XOR and 4-byte-lane concatenations (2,566 candidates); (2) North/South posted-ticket suffix/amount differentials (16); (3) 24 RC-17 revision-C footer-strip permutations as direct blocks/alternative masks (48); and (4) all 133 retained-spool PAYLOAD values, direct and official-mask forms (266). All missed the unchanged K04 commitment. Do not repeat these source families. Agent14 also independently confirms the supplied ZIP/repository resource set is the same 46 files and current private contains only .gitkeep.
+
+
+### K08 PDF-source qualification (Agent11 correction, 14 Nov)
+
+Agent11's 14:17 correction withdraws the Noyes/Mermaid lead and states that the apparent BX25-08 plaintext originated from an unauthenticated release-setting note that was already withdrawn. Treat BX25-08 as opaque raw bytes until independently authorized; do not use its decrypted plaintext as an authenticated H-17 source or as a phrase/author lead. Any K08 scan over that plaintext is only a computational negative over an unverified interpretation, not source evidence. Keep the supplied export's ordinary 46-file scan separate. Do not revive Noyes or the poem line.
