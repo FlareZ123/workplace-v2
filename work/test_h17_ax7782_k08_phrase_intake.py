@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Positive controls for the source-backed AX-7782 K08 phrase scanner."""
+import base64
 import hashlib
 import io
 import json
@@ -72,6 +73,31 @@ class K08PhraseIntakeTests(unittest.TestCase):
             for source, text in variants:
                 phrase_intake.scan_phrase_spans(text, nonce, target, source, 16, hits)
             self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits), label)
+
+    def test_hex_and_base64_utf16_carriers_are_scanned(self):
+        nonce = bytes(range(16))
+        phrase = "the keeper leaves the lamp for the next watch"
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+        carriers = [
+            ("hex", ("hex:" + phrase.encode("utf-16be").hex()).encode("ascii"),
+             "hex-decoded-utf-16be"),
+            ("base64", ("base64:" + base64.b64encode(phrase.encode("utf-16le")).decode("ascii")).encode("ascii"),
+             "base64-decoded-utf-16le"),
+        ]
+        for name, payload, expected_label in carriers:
+            variants = phrase_intake.decode_text_variants(payload, name + ".bin")
+            self.assertTrue(
+                any(label.startswith(expected_label) and text.lstrip("\\ufeff") == phrase
+                    for label, text in variants),
+                f"{name}: UTF-16 carrier was not decoded",
+            )
+            hits = []
+            for label, text in variants:
+                phrase_intake.scan_phrase_spans(text, nonce, target, name + " [" + label + "]", 16, hits)
+            self.assertTrue(
+                any(hit["normalized_phrase"] == phrase for hit in hits),
+                f"{name}: decoded carrier did not reach K08 commitment scan",
+            )
 
     def test_encrypted_pdf_requires_and_accepts_supplied_password(self):
         from pypdf import PdfWriter
