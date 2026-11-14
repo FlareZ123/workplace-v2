@@ -8,7 +8,7 @@ The existing AX-7782 object intake validates the eight-chunk transfer chain and 
 
 ## Pairing and evidence rules
 
-The tool is agents/agent43/h17_native_spool_pair_intake.py.
+The tool is agents/agent43/h17_native_spool_pair_intake.py. It complements (does not replace) work/h17_profile_inventory.py: first inventory an authorized read-only profile image with the existing helper, then run this pairer against the identified printer-spool directory or an authorized archive containing those members. Keep the scan scoped to the recovered spool area.
 
 - It pairs SPL and SHD files only when they share the same container, parent path, and normalized filename stem.
 - It reports literal job-ID strings found in SHD bytes (ASCII or UTF-16LE) but does not decode undocumented SHD offsets or infer job identity from a filename.
