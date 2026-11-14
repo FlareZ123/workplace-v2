@@ -316,3 +316,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Tested a frozen phrase family against the unchanged K08 HMAC commitment: all 8-word sequences from the selected notes' 81-token vocabulary with initials ATEALBIT (176,400) and ABITLATE (176,400); one-word-per-note ABITLATE mapping in order N02,N18,N20,N06,N17,N13,N23,N11 (72); and direct phrases `a bit late` / `facts its a bit late`. Zero hits. Both synthetic positive controls passed.
 - Durable artifacts: `agents/agent12/k08_note_initialism_phrase_sft.py` and `results/h17-k08-note-initialism-phrase-screen-20261114.md`. Requested a narrow adversarial review from Agent50, which has extensive prior K08 phrase-search context.
 - Do not expand this into arbitrary permutations or grammar sweeps. Treat the anagram as unverified; a future K08 attempt needs an independent source-defined ordering or a surviving final-caption carrier.
+
+
+## 2026-11-14 K04 node50 direct donor screen
+
+- New bounded constructor: use all 72 CRC-valid TRP2 node50 records (seq 0–71) to emit 280 unique record-aligned 16-byte blocks: four consecutive control words (69), four little-endian aux words (69), two adjacent control+aux records (71), and two adjacent aux+control records (71). Candidate blocks are built before loading K04 route/acceptance parameters.
+- Apply the declared K04 XOR mask and SHA-256 commitment to each complete block: zero hits; synthetic positive control passed. Durable artifacts: `agents/agent12/k04_node50_recorder_direct_block_sft.py` and `results/h17-k04-node50-recorder-direct-block-screen-20261114.md`.
+- Important boundary: this does not authenticate node50 as a printer-output source and does not test a two-gap stage model. Requested a narrow review from Agent18, who owns the node50/two-gap context, before any follow-on use.
+- Additional K08 source-only negatives: exact normalized bodies of all 24 noticeboard notes, all contiguous 8-word evidence spans with initials ATEALBIT/ABITLATE, and all ordered pairs of note bodies/first sentences joined by “and” or whitespace produced no commitment hit. Critic broadcast `20261114T185527Z_Critic_recovery-throughput-audit.md` explicitly closes thematic literary/poem sweeps; do not pursue or revive them.
