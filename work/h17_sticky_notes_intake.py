@@ -56,9 +56,9 @@ def _copy_snapshot(
     target_dir: Path,
     expected_root: dict[str, tuple[int, int, str] | None],
 ) -> dict[str, Any]:
-    """Copy one coherent DB/WAL/SHM set and verify every temporary byte."""
+    """Copy one coherent DB/WAL/SHM/rollback-journal set and verify every byte."""
     files: list[dict[str, Any]] = []
-    for suffix in ("", "-wal", "-shm"):
+    for suffix in ("", "-wal", "-shm", "-journal"):
         path = source if not suffix else Path(str(source) + suffix)
         expected = expected_root.get(str(path))
         exists = path.exists()
@@ -85,7 +85,7 @@ def _copy_snapshot(
         copied_size = target.stat().st_size
         copied_digest = sha256_file(target)
         if copied_size != info.st_size or copied_digest != digest:
-            raise RuntimeError(f"snapshot copy mismatch; refusing mixed DB/WAL/SHM set: {path}")
+            raise RuntimeError(f"snapshot copy mismatch; refusing mixed SQLite sidecar set: {path}")
         files.append({
             "path": str(path), "present": True, "size": info.st_size,
             "sha256": digest, "copied_sha256": copied_digest,
@@ -179,7 +179,7 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
     _safe_regular_file(source)
 
     before_root: dict[str, tuple[int, int, str] | None] = {}
-    for suffix in ("", "-wal", "-shm"):
+    for suffix in ("", "-wal", "-shm", "-journal"):
         path = source if not suffix else Path(str(source) + suffix)
         if path.exists():
             info = _safe_regular_file(path)
@@ -200,17 +200,21 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
             raw_carving.append(_carve_raw_text(copied_path, original_path))
         temp_db = temp_dir / "plum.sqlite"
         uri = "file:" + quote(str(temp_db), safe="/:") + "?mode=ro"
-        connection = sqlite3.connect(uri, uri=True, timeout=2.0)
-        connection.row_factory = sqlite3.Row
+        connection: sqlite3.Connection | None = None
+        sqlite_error: str | None = None
+        output_tables: list[dict[str, Any]] = []
+        total_text = [0]
+        total_rows = 0
+        sqlite_opened = False
         try:
+            connection = sqlite3.connect(uri, uri=True, timeout=2.0)
+            sqlite_opened = True
+            connection.row_factory = sqlite3.Row
             connection.execute("PRAGMA query_only=ON")
             connection.execute("PRAGMA busy_timeout=2000")
             tables = connection.execute(
                 "SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
             ).fetchall()
-            output_tables: list[dict[str, Any]] = []
-            total_text = [0]
-            total_rows = 0
             for table_row in tables:
                 table_name = table_row["name"]
                 quoted = _quote_identifier(table_name)
@@ -233,8 +237,11 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
                 output_tables.append({"name": table_name, "schema": table_row["sql"], "columns": columns, "rows": rows})
                 if total_rows >= MAX_ROWS:
                     break
+        except sqlite3.Error as exc:
+            sqlite_error = f"{type(exc).__name__}: {exc}"
         finally:
-            connection.close()
+            if connection is not None:
+                connection.close()
 
         after_root: dict[str, tuple[int, int, str] | None] = {}
         for path_text in before_root:
@@ -253,11 +260,14 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
             "raw_text_carving": raw_carving,
             "source_unchanged": unchanged,
             "source_hashes_before_after_match": unchanged,
+            "sqlite_error": sqlite_error,
             "safety": {
                 "source_files_modified": False,
                 "source_opened_directly_by_sqlite": False,
-                "sqlite_opened_temporary_byte_copy_read_only": True,
+                "sqlite_open_attempted_temporary_byte_copy_read_only": True,
+                "sqlite_opened_temporary_byte_copy_read_only": sqlite_opened,
                 "wal_shm_copied_when_present": True,
+                "rollback_journal_copied_when_present": True,
                 "only_plum_sqlite_accepted": True,
                 "browser_history_or_credentials_opened": False,
                 "network_access": False,
@@ -273,6 +283,7 @@ def extract_plum_database(database_path: str | os.PathLike[str]) -> dict[str, An
                 "text_bytes_emitted": total_text[0],
                 "wal_present": any(item.get("path", "").endswith("-wal") and item.get("present") for item in sidecar_info["files"]),
                 "shm_present": any(item.get("path", "").endswith("-shm") and item.get("present") for item in sidecar_info["files"]),
+                "journal_present": any(item.get("path", "").endswith("-journal") and item.get("present") for item in sidecar_info["files"]),
             },
             "tables": output_tables,
         }

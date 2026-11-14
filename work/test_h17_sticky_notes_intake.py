@@ -117,6 +117,39 @@ class StickyNotesIntakeTests(unittest.TestCase):
         self.assertEqual(self.database.read_bytes(), original_bytes)
         self.assertEqual(self._hash(self.database)[2], hashlib.sha256(original_bytes).hexdigest())
 
+    def test_snapshot_copies_rollback_journal_sidecar(self) -> None:
+        self.database.write_bytes(b"database evidence")
+        journal = Path(str(self.database) + "-journal")
+        journal.write_bytes(b"rollback journal final keeper wording")
+        expected_root = {}
+        for suffix in ("", "-wal", "-shm", "-journal"):
+            path = self.database if not suffix else Path(str(self.database) + suffix)
+            expected_root[str(path)] = self._hash(path) if path.exists() else None
+
+        snapshot_dir = self.root / "snapshot"
+        snapshot_dir.mkdir()
+        result = intake._copy_snapshot(self.database, snapshot_dir, expected_root)
+        journal_record = next(item for item in result["files"] if item["path"] == str(journal))
+        self.assertTrue(journal_record["present"])
+        self.assertEqual(journal_record["sha256"], journal_record["copied_sha256"])
+        self.assertEqual((snapshot_dir / "plum.sqlite-journal").read_bytes(), journal.read_bytes())
+
+    def test_raw_carving_survives_unreadable_database_and_journal(self) -> None:
+        self.database.write_bytes(b"not a valid sqlite database")
+        journal = Path(str(self.database) + "-journal")
+        journal.write_bytes(b"the keeper leaves the lamp for the next watch")
+        result = intake.extract_plum_database(self.database)
+
+        self.assertIsNotNone(result["sqlite_error"])
+        self.assertTrue(result["source_unchanged"])
+        self.assertTrue(result["summary"]["journal_present"])
+        carved = [
+            span["text"]
+            for item in result["raw_text_carving"]
+            for span in item["spans"]
+        ]
+        self.assertTrue(any("the keeper leaves the lamp for the next watch" in text for text in carved))
+
     def test_rejects_non_sticky_notes_database_name(self) -> None:
         other = self.root / "History.sqlite"
         with sqlite3.connect(other) as connection:
