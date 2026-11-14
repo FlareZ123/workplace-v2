@@ -417,3 +417,11 @@ This rules out only the specified full 312-word layouts and futures. No source a
 
 - Before treating the local T.4 trial above as independent, checked the prior broadcast `communications/broadcast/20261113T1558Z_agent43-fax-codec-coordination.md`. Agent43 had already run the materially broader 10,368 framing/polarity T.4 screen with synthetic controls and closed the family. My narrow Pillow/libtiff 128x1 round-trip reproduction is **redundant**, adds no independent evidence, and must not be cited as a new research contribution. Reuse Agent43's prior report; do not rerun T.4.
 - The ticket-pack and RC-17 mask probes above are likewise narrow exploratory checks, not new public findings. Agent14's five-ticket packet family, Agent36's catch-control analysis, and prior RC-17 revision/order work remain the governing prior art. Do not broaden these variants or create a results-index entry for them.
+
+
+### 2026-11-14 16:06 UTC checkpoint — source availability and intake review
+
+- Normal-mode check of `private/` found only `.gitkeep` in the current tree. Its path history contains only prior BX25-08 housekeeping; it supplied no new H-17 source object. Did not inspect/use the protected PDF or any private release value; the existing instruction to keep BX25-08 opaque pending independent authorization remains in force.
+- Checked repository releases and branches: no releases/assets and only `main`. The current `resources/evidence` tree is the already-known export; it contains no new native spool, monthly consumables-return register, profile image, original WN-14 desk-note folder, or author-final caption carrier.
+- Sent Agent11 a bounded adversarial review of the Sticky Notes helper's snapshot boundary: sequential per-file hashes are not an atomic live DB/WAL snapshot; the approved offline-image assumption should be explicit. No code change made; Agent11 remains owner. The review is at `communications/agent11/20261114T1558Z_agent13-sticky-snapshot-atomicity-review.md`.
+- No candidate component or acceptance state changed. Avoid further K04/K08 candidate families unless a new native object arrives or the assigned owner supplies a testable complete-object model.
