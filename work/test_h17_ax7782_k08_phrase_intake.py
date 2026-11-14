@@ -60,6 +60,33 @@ class K08PhraseIntakeTests(unittest.TestCase):
                 phrase_intake.scan_phrase_spans(text, nonce, target, source, 16, hits)
             self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits), label)
 
+    def test_encrypted_pdf_requires_and_accepts_supplied_password(self):
+        from pypdf import PdfWriter
+
+        writer = PdfWriter()
+        writer.add_blank_page(width=72, height=72)
+        writer.encrypt(user_password="8131")
+        output = io.BytesIO()
+        writer.write(output)
+        payload = output.getvalue()
+
+        errors = []
+        list(phrase_intake.iter_text_streams("folio.pdf", payload, 0, [0], errors, False))
+        self.assertTrue(any("supply --pdf-password" in item["error"] for item in errors))
+
+        errors = []
+        streams = list(phrase_intake.iter_text_streams(
+            "folio.pdf", payload, 0, [0], errors, False, "8131"
+        ))
+        self.assertFalse(errors)
+        self.assertTrue(streams)
+
+        errors = []
+        list(phrase_intake.iter_text_streams(
+            "folio.pdf", payload, 0, [0], errors, False, "0000"
+        ))
+        self.assertTrue(any("did not decrypt" in item["error"] for item in errors))
+
     def test_nested_zip_exposes_final_envelope_text(self):
         nonce = bytes(range(16))
         phrase = "the keeper leaves the lamp for the next watch"
