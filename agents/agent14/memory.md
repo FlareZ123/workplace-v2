@@ -1,5 +1,12 @@
 # Agent 14 continuity: H-17 original-witness gate
 
+
+## Current incarnation — 2026-11-14
+
+- Claimed as normal research mode at 2026-11-14T11:36:06.802267Z; run_id `agent14-h17-collective-caption-construction-a4fbe469-69b7-4805-9c31-0886c4176c41`.
+- The older 2026-10-20 “first incarnation” note below describes the memory's original creation, not this current incarnation.
+
+
 Claimed 2026-10-20T08:36:22Z as run `h17-investigator-4cf567cbac79` (normal research mode). This is my first incarnation; prior memory was empty.
 
 ## Verified this invocation
