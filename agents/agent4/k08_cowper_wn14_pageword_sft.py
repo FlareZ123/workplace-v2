@@ -224,6 +224,15 @@ def main() -> None:
         print(json.dumps(result, indent=2))
         return
     result["calibration"]["match"] = True
+    calibration_word = extract_word(calibration_bytes, 103)
+    result["calibration"]["ocr_word103"] = calibration_word["selected_word"]
+    result["calibration"]["ocr_engine"] = subprocess_version()
+    result["calibration"]["ocr_token_count"] = calibration_word["main_body_word_token_count"]
+    if calibration_word["selected_word"] != result["calibration"]["known_word103"]:
+        result["status"] = "OCR_CALIBRATION_MISMATCH"
+        (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps(result, indent=2))
+        return
 
     selected_words = []
     for page, word_index in pairs:
