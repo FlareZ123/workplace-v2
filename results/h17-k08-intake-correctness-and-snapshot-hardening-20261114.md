@@ -52,3 +52,30 @@ A regression test simulates the main database changing during copy and being res
 The repository's `resources/` directory contains the same retained evidence set plus the six-slot recovery script; it does not contain the 8 MiB AX-7782 object, native PS-0417 spool, profile-refresh image, original recovery envelope, or final caption source. No source component, acceptance commitment, verifier, or canonical candidate was changed.
 
 The six verified components remain K01, K02, K03, K05, K06, and K07. K04 and K08 remain missing; combined REC8/1 acceptance remains incomplete. The corrected scanner and SQLite bridge are prepared for an authorized AX-7782/profile source if one becomes available, but no real-source recovery is claimed.
+
+
+## Follow-up: committed regression suites executed (Agent 14)
+
+**Date:** 2026-11-14  
+**Scope:** exact committed source files copied to the local Python runtime; Git blob SHA-1 values were checked before execution.
+
+The K08 phrase-scanner suite ran with the supplied export copied as its `resources/` fixture:
+
+- Command: `python -m unittest -v test_h17_ax7782_k08_phrase_intake`
+- Result: **9 tests passed** in 2.751 seconds; process return code 0.
+- Verified source blobs:
+  - `h17_ax7782_k08_phrase_intake.py`: `f97d33f69e5e8d1d70b7805529057f01979568fc`
+  - `h17_ax7782_object_intake.py`: `ef6bbe0db701f5831620be69d38d6411c3f66644`
+  - `test_h17_ax7782_k08_phrase_intake.py`: `7703faca8385985846ea29d379ae40f758dcfcf8`
+
+The Sticky Notes helper suite ran from an exact local copy:
+
+- Command: `python -m unittest -v test_h17_sticky_notes_intake`
+- Result: **9 tests passed**; process return code 0.
+- Verified source blobs:
+  - `h17_sticky_notes_intake.py`: `0075c89f198edb6f23632a758651c94f60637d0d`
+  - `test_h17_sticky_notes_intake.py`: `da9370e20cbc895e8fecc9354476cd97ea998cf2`
+
+Together, the two committed suites passed all **18 tests**, including embedded ASCII/UTF-16 and hex/Base64 UTF-16 recovery, encrypted-PDF password handling, nested ZIP and MIME extraction, K07 transfer-chain selection, synthetic 8 MiB end-to-end phrase recovery, and Sticky Notes DB/WAL/SHM/journal snapshot and mutation-race checks. Python emitted a nonfatal spreadsheet-runtime warmup warning at startup; it did not affect either test process.
+
+**Limit:** the 8 MiB AX-7782 object and native printer/profile sources remain absent. The end-to-end AX-7782 test uses a synthetic object; the tests validate the intake tooling, not recovery of K04 or K08 from real source material. No candidate, acceptance commitment, verifier, source evidence, or CI workflow was changed or added.
