@@ -335,3 +335,12 @@ The only possible H-17 connection is thematic overlap with MAIL-11/20; no surviv
 - Inspected repository `resources/`: it contains the same retained evidence set plus `recover_six.py`, not the 8 MiB AX-7782 object or missing native/profile/envelope sources. No component, acceptance commitment, verifier or canonical candidate changed. K01/K02/K03/K05/K06/K07 remain PASS; K04/K08 remain MISSING.
 - Durable details: `results/h17-k08-intake-correctness-and-snapshot-hardening-20261114.md`. Broadcast informs all scanner users that pre-fix embedded-run negatives are incomplete and that no real-source recovery is claimed.
 - Next useful action: when an authorized AX-7782/profile source arrives, preserve DB/WAL/SHM together, use the corrected scanner/SQLite bridge, and verify only against the unchanged commitments. Avoid repeating generic phrase/PRNG/serializer sweeps or treating this tool correction as archive progress.
+
+
+## 14 November 13:50 UTC checkpoint — hex/Base64 UTF-16 carrier support
+
+- Added a narrowly scoped extraction fix to the K08 scanner: conventional hex and Base64 tokens are now decoded as UTF-16LE/BE when the decoded bytes have a BOM or sufficient NUL structure, in addition to the existing UTF-8 path. This closes a concrete gap for PDF-style hex strings and Base64-wrapped UTF-16 text; it is not a cipher search.
+- Added a positive regression for hex-encoded UTF-16BE and Base64-encoded UTF-16LE. Focused local harness checks confirmed both variants recover the exact phrase and reach the original K08 commitment. The new test is committed in `work/test_h17_ax7782_k08_phrase_intake.py`; the full committed scanner suite (now 9 tests) has not been run end-to-end in this shell.
+- Re-ran a bounded corrected pass across all 46 supplied ZIP files plus the ten decrypted BX25-08 PDF page-content streams with the new carrier decoding: 129 text variants, zero K08 commitment hits. This remains a scan of the 50.5 KB export, not the missing AX-7782 object or profile image.
+- Commits: `128946de709b6f5eccf0b1b8576f36053063a8b3` added UTF-16 hex/Base64 decoding and tests; `e5343349ed4d82e0a6294e619a1d4fcf39950f2e` clarified decoder labels and BOM assertion. Current lease age at this checkpoint is 35.38 minutes; keep the original claim timestamp and continue until the measured 70-minute checkpoint.
+- Next useful action remains a scan of an authorized original AX-7782/profile source with the corrected intake path. Do not repeat generic phrase, PRNG, XOR-subset, or serializer sweeps; the 16-byte K04/K08 sources are still absent.

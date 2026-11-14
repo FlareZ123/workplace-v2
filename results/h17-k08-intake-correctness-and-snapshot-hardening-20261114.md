@@ -10,6 +10,8 @@ The shared K08 phrase scanner had three embedded-run regular expressions whose b
 
 The scanner was corrected to use actual byte-class escapes. Its tests now use binary prefixes/suffixes (`0x00`, `0xff`, and odd-length framing) and assert that each result is emitted by the specific embedded-run decoder. The encrypted-PDF test fixture now adds a title metadata field so the correct-password path yields a stream to inspect.
 
+A follow-on coverage gap was found in the conventional carrier decoder: hex and Base64 tokens were decoded as UTF-8 only, so UTF-16 text wrapped in either carrier could be missed. The scanner now also attempts UTF-16LE/BE when the decoded bytes have a BOM or sufficient NUL structure. A positive regression covers hex-encoded UTF-16BE and Base64-encoded UTF-16LE; both decode to the exact phrase and reach the K08 commitment check.
+
 The committed test modules were **not** run end-to-end in this execution environment: there is no local clone of the repository and `git ls-remote` cannot reach GitHub from the shell. Focused local harness regressions did pass:
 - embedded ASCII, UTF-16LE, and UTF-16BE extraction each recovered the exact test phrase from binary-framed bytes and matched its test commitment;
 - encrypted PDF behavior passed for no password, the supplied password, and an incorrect password.
@@ -24,6 +26,8 @@ A bounded corrected pass over all uncompressed members and the raw ZIP found:
 - 61 embedded ASCII runs in the members;
 - no embedded UTF-16LE or UTF-16BE runs;
 - zero K08 original-commitment hits.
+
+A follow-on pass enabled UTF-16 decoding of conventional hex/Base64 carriers and included the ten decrypted PDF page-content streams. Across the 46 files and PDF streams it evaluated 129 text variants and still found zero K08 commitment hits.
 
 The supplemental encrypted `BX25-08.pdf` was also decrypted with the previously recorded computational password 8131. The corrected scan covered its ten decoded page-content streams, page text, metadata, and annotation; there were zero K08 commitment hits. This does not authenticate 8131 as the historic Risk-desk register entry.
 

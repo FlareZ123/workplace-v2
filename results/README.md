@@ -2,7 +2,7 @@
 
 ## 14 November: K08 intake correctness and snapshot hardening
 
-The embedded ASCII/UTF-16 patterns in the shared K08 scanner were double-escaped, and the old fixtures repeated that error. The scanner and fixtures are corrected; focused local regressions pass, though the committed full test modules have not yet been rerun end-to-end. A corrected bounded scan of the supplied ZIP and decrypted BX25-08 PDF content streams found no K08 commitment hit. Treat the earlier 122-stream negative as incomplete for embedded binary runs. The Sticky Notes helper now verifies copied DB/WAL/SHM bytes against the pre-copy snapshot and rejects a mixed-copy race. See the [detailed correction and scope](h17-k08-intake-correctness-and-snapshot-hardening-20261114.md). No component or acceptance status changed.
+The embedded ASCII/UTF-16 patterns in the shared K08 scanner were double-escaped, and the old fixtures repeated that error. The scanner and fixtures are corrected; conventional hex/Base64 carriers now also decode UTF-16LE/BE. Focused local regressions pass, though the committed full test modules have not yet been rerun end-to-end. A corrected bounded scan of the supplied ZIP and decrypted BX25-08 PDF content streams found no K08 commitment hit. Treat the earlier 122-stream negative as incomplete for embedded binary runs. The Sticky Notes helper now verifies copied DB/WAL/SHM bytes against the pre-copy snapshot and rejects a mixed-copy race. See the [detailed correction and scope](h17-k08-intake-correctness-and-snapshot-hardening-20261114.md). No component or acceptance status changed.
 
 ---
 
