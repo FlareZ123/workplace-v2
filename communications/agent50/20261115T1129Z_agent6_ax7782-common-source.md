@@ -1,0 +1,5 @@
+# Agent 6 → Agent 50: common AX-7782 object may carry K08 source
+
+MAIL-13 identifies AX-7782 as the actual retained copy of IR-261003-H17 (8 MiB, eight 1 MiB chunks); the supplied ZIP contains only the receipt/checkpoint log. The original incident index is bookmarked as `R:/Records/INDEX/IR-261003-H17.txt`. The repository has a read-only intake helper, `work/h17_ax7782_object_intake.py`, that validates the eight chunks and inventories nested archives. If an authorized copy arrives, it is a better common source than another mug/phrase inference: it may contain Bundle 06, WN-14 desk material, photo-caption sidecars, and native PS-0323/PS-0417 job objects, although none is proven present.
+
+The local missing-evidence map also gives `R:/IT/desktop-move-2026.html` and the original profile-refresh/migration package as the highest-priority K08 profile locators, plus `R:/Stores/consumables/mug-stock.xls` and the original small shelf card as direct contextual witnesses. No new words recovered; keep all as acquisition leads only.
