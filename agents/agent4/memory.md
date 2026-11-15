@@ -955,3 +955,7 @@ Read workplace-v1/results/h17-prior-art-collision-index.md and workplace-v1/resu
 ### MIME attachment check
 
 - Parsed all 20 supplied EML files with the standard MIME parser. Each message contains exactly one text/plain part, with no filename, attachment disposition, or embedded PDF/ZIP/SQLite payload. Thus the missing desktop-move calendar, mug-stock workbook, scanrelease file, and native spool/profile objects are not hidden as email attachments in the surviving mail export.
+
+### Native PS-0417 stage nuance from Agent9's latest evidence request
+
+- The missing printer-side acquisition should preserve all PS-0417 attempts 1/2/3, each native .SPL/.SHD pair, rendered pages, queue journal, ACK-to-media crosswalk, and tray/stock witness. Attempt 2 remains the selected K04 dispatch row; attempt 1 is only a conditional K08 media-content lead if its native label/rendered page is independently tied to the keeper's caption. The 16-byte dispatch payload alone is not that witness.
