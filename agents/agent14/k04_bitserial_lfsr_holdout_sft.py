@@ -36,7 +36,7 @@ def holdout(bits, training=12288):
 def main(path):
     original = pathlib.Path(path).read_bytes()
     assert hashlib.sha256(original).hexdigest() == SHA
-    pattern = re.compile(rb"JOB=PS-261003-(\\d+) ATTEMPT=1 STATE=ACK .* PAYLOAD=([0-9A-F]{32})")
+    pattern = re.compile(rb"JOB=PS-261003-(\d+) ATTEMPT=1 STATE=ACK .* PAYLOAD=([0-9A-F]{32})")
     data = {
         int(job): bytes.fromhex(value.decode("ascii"))
         for job, value in pattern.findall(original)
