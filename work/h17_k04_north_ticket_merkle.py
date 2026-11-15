@@ -191,6 +191,22 @@ def main():
     south_merkle = [(n, c) for n, c in all_merkle if n.startswith("L-29/S/")]
     south_xor = [(n, c) for n, c in all_xor if n.startswith("L-29/S/")]
 
+    def unique_candidates(candidates):
+        unique = {}
+        for label, coupon in candidates:
+            unique.setdefault(coupon, label)
+        return [(label, coupon) for coupon, label in unique.items()]
+
+    north_merkle = unique_candidates(north_merkle)
+    north_xor = unique_candidates(north_xor)
+    south_merkle = unique_candidates(south_merkle)
+    south_xor = unique_candidates(south_xor)
+
+    def k04_matches(coupon, expected):
+        direct = sha256(coupon) == expected
+        masked = sha256(bytes(a ^ b for a, b in zip(coupon, mask))) == expected
+        return direct or masked
+
     def k04_hits(candidates):
         hits = []
         for label, coupon in candidates:
@@ -220,9 +236,7 @@ def main():
     planted_coupon = north_merkle[0][1]
     planted_component = bytes(a ^ b for a, b in zip(planted_coupon, mask))
     planted_target = sha256(planted_component)
-    synthetic_pass = (
-        sha256(bytes(a ^ b for a, b in zip(planted_coupon, mask))) == planted_target
-    )
+    synthetic_pass = k04_matches(planted_coupon, planted_target)
 
     result = {
         "north_job": sets["L-29/N"]["job"],
