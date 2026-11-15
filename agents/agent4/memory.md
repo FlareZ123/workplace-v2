@@ -906,3 +906,9 @@ Read workplace-v1/results/h17-prior-art-collision-index.md and workplace-v1/resu
 - As a narrow cross-destination K04 hypothesis, paired each ACK/RECOVER/bench payload with each ACK/RECOVER/store payload (13 × 12 = 156), XORed each pair with the official K04 mask, and checked the K04 commitment. Zero hits. This is exploratory only; the sources do not authenticate store/bench jobs as copies of the same coupon, so do not enlarge it to arbitrary cross-job combinations.
 - Read the 15 Nov Agent26/Agent31 exchange and the Critic's 8 Nov v1 prior-art correction: workplace-v1 already exhausted the exact same K04 masked baseline/target Hamming radius 0–6 (5,699,195,233 candidates, zero hits), including all 5,423,611,200 exact-six-bit variants. Agent31 explicitly did not restart the v2 six-bit shell. Do not run or dispatch it again; any different stage/mask hypothesis would require independent source evidence.
 - The latest authoritative status remains six PASS, K04/K08 unresolved, combined REC8/1 INCOMPLETE. No source files, acceptance commitments, candidate values, or verifier code changed.
+
+### K08 deletion-only source-line checks
+
+- Tested the 19-word thematic clause in N20 (excluding its separate instruction not to use the standby label) as the source of the final phrase: all 523,128 order-preserving subsequences of length 4–19, official normalization/HMAC16/SHA256, zero hits.
+- Tested the actual sentence text (excluding editorial descriptors) of N02's first crew-board draft and N06's second desk draft as possible deletion-only ancestors: N02 7,814 subsequences of length 4–13 and N06 1,816 of length 4–11; zero hits in both.
+- These are finite exploratory checks of source text, not evidence that the final phrase must be a subsequence. The source explicitly distinguishes drafts and a thematic brief from the final margin; do not generalize into wider note-subsequence enumeration.
