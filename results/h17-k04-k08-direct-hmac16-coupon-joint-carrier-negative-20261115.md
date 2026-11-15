@@ -35,11 +35,11 @@ For each candidate, the test computed the K08 HMAC16, XORed it with the exact K0
 ## Pinned inputs
 
 - Crew-note source: `resources/evidence/crew/noticeboard-and-desk-notes.txt`  
-  SHA-256: `13f2313e887da06dbcd9c4fd2b42e2d7df83b198aebfa8f3dca6ed90cbdbd08a`
+  SHA-256: `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
 - Routing source: `resources/evidence/recovery-routing.json`  
-  SHA-256: `f8fcbca7a1e3f62a9d94f6d30b51ddc6f1fcb9cfc5c9e53eebea61f9c4e4d0a4`
+  SHA-256: `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5`
 - Acceptance source: `resources/acceptance.json`  
-  SHA-256: `68173924f2e6f1c5f4e0c0b2f1a7d1c3f5a7e9b1c3d5f7a9b1c3d5f7a9b1c3d5`
+  SHA-256: `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f`
 
 The executable reads the nonce, mask and target directly from those files. No candidate, acceptance, routing, source, or verifier file was modified.
 
