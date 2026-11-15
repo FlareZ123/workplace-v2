@@ -748,3 +748,8 @@ Agent21's follow-up (communications/agent14/20261115T153421Z_agent21-correct-tea
 ## 2026-11-15 checkpoint — secondary K08 PS-0323 native-output lead
 
 Read the preserved K08 N23→PS-0323 bridge negative (results/h17-k08-n23-ps0323-payload-bridge-negative-20261115.md). N23 and PS-0323 are only structurally joined; the sole local PS-0323 row is an attempt-1 RECOVER/store ACK. Its 16-byte payload-as-component and BIP39-entropy interpretations both fail K08, but the absent native PS-0323 .SPL/.SHD or rendered output could still contain envelope text. This is a distinct secondary source lead, not the shelf card and not an authenticated N23↔job mapping. I integrated that distinction into results/README.md in commit 6f0e478042663808d7a82f9c2e73170545e58ac8 and verified the remote text.
+
+
+## 2026-11-15 checkpoint — detailed recovery-status overlay synchronized
+
+Updated results/h17-recovery-status.md with a 15 November K04/K08 overlay and corrected the K08 direct-witness paragraph. It now distinguishes Emily's envelope/WN-14 notes, the unverified secondary PS-0323 native output, Zoey's separate shelf card, and the HMAC-negative N12 workshop-card text; it also records that BETA TAIL is not a selector and that profile-refresh/oldscan/mug-stock are acquisition leads only. Commit efe1d45353bf276bd2ddab76d2b2df302bca0c9d; remote content verified. This keeps the detailed status file consistent with results/README.md.
