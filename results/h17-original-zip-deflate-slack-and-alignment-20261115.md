@@ -37,3 +37,12 @@ The source-pinned SFT now systematically flips **all 314,288 bits** in the 46 ra
 The 17 interior positions are **individually** decode-inert under zlib. No claim is made that changing them jointly leaves decoding unchanged; changes in compressed code tables can interact. They carry at most 17 directly observed binary values under this extraction, insufficient by themselves to encode an unconstrained 128-bit K04 or K08 component. Their original sequence has no independently specified conversion into an archive component. No new candidate is certified, and there is no evidence of intentional encoding.
 
 This extends the original test from unused terminal bits to the entire compressed stream; it does not alter the negative result for the explicit 176 full-length-channel candidates or the six-pass/two-missing recovery state. The original ZIP and extracted evidence were never modified.
+
+## Source-specific hidden-data discriminator: exact compressor reproduction
+
+A further frozen reproduction compresses each of the **46 original uncompressed member bodies** using standard Python zlib with \`level=6, wbits=-15, memLevel=8, strategy=Z_DEFAULT_STRATEGY\`. It compares the resulting *complete raw compressed byte stream*, rather than only its decompressed output, with the unchanged original ZIP member.
+
+**All 46/46 raw compressed streams match exactly byte-for-byte**, including the two large JSONL files whose compressed output differs under \`memLevel=9\`. This is a much stronger source-specific negative discriminator than checking 170 terminal pad bits: the entire original 314,288-bit compressed representation is reproducible by a stock compressor from the already visible, extracted member bodies. The 17 decode-inert interior bits are therefore also reproduced without deliberate alternative codeword selection in the tested zlib implementation.
+
+This observation does **not** establish that the uncompressed file contents contain no covert code, nor does it prove who built the archive. It removes a concrete motivation to treat the original compressed ZIP bytes themselves as a separately encoded K04/K08 carrier under an altered-DEFLATE-output model. The original 176 complete length-based candidate tests remain negative, and no original acceptance status changes.
+
