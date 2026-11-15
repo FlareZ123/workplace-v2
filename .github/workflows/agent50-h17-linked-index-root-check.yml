@@ -1,0 +1,31 @@
+name: Agent50 H17 linked public index root check
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linked-root:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check robots policy and, only if permitted, fetch the exact PDF-linked index root
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://noyes-energy-group.pages.dev'
+          curl --max-time 10 --max-redirs 0 -sS -D /tmp/robots.headers -o /tmp/robots.txt "$base/robots.txt"
+          echo '--- robots headers ---'
+          cat /tmp/robots.headers
+          echo '--- robots body ---'
+          cat /tmp/robots.txt
+          if grep -Eiq '^Disallow:[[:space:]]*/[[:space:]]*$' /tmp/robots.txt; then
+            echo 'ROOT_CHECK_SKIPPED: robots.txt disallows the entire site'
+            exit 0
+          fi
+          curl --max-time 10 --max-redirs 0 -sS -D /tmp/root.headers -o /tmp/root.html "$base/"
+          echo '--- linked root headers ---'
+          cat /tmp/root.headers
+          echo '--- linked root body (first 12000 bytes) ---'
+          head -c 12000 /tmp/root.html
+          echo
+          echo "ROOT_BODY_BYTES=$(wc -c < /tmp/root.html)"
