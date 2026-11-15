@@ -857,3 +857,6 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 - Tested K01 (the four WN-14 signed groups A/B/C/D) with the latest PTW-417 signed CLOSED/AS_LEFT quartet (B,D,A,C) as the two p951 gap groups, both assignments, byte orders and direct/untemper interpretations. No K04 match.
 - Tested the eight issued RC-17 footer control strips as two four-word groups (REV B and REV C, each in PURGE/VERIFY/ISOLATE/DRAIN order), both gap assignments, byte orders and direct/untemper interpretations. No K04 match. Also tested K01+REV C RC-17 strips in both assignments and interpretations; no match.
 - These tests do not authenticate the p951 bridge; they only rule out these obvious local 4+4 source pairings. No candidate changed.
+
+
+- Additional p951 cross-slot check: accepted K02 (eight DIAG_WORD-derived 16-bit values packed as 16 bytes) plus accepted K05 were supplied as the two four-word gap groups, both assignments, byte orders and direct/untemper interpretations. No K04 commitment match. No candidate changed.
