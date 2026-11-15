@@ -20,6 +20,8 @@
 
 ## Distinct observations from the latest work
 
+- The [exact Romu printer-state reconstruction](h17-k04-romu-printer-exact-state-20261115.md) invertibly recovers complete states from both intact selected-job neighbors: six forward states and two reverse states, none yielding original K04. It also rejects 1,048,568 Duo/Jr, 786,432 Quad32 forward and 262,144 Quad32 reverse complete masked coupons, plus exact source producer controls. This closes these *particular native-output/state-continuity models* rather than the missing coupon.
+
 
 - The [original ZIP DEFLATE study](h17-original-zip-deflate-slack-and-alignment-20261115.md) found 170 all-zero terminal padding bits, 17 individually decode-inert interior bits and no original hit among 176 defined length-channel assignments. All 46 raw compressed members reproduced byte-for-byte with standard zlib settings. This closes those **particular container-carrier hypotheses**; it does not prove absence of content-level recovery data.
 - The [K08 phrase scanner and Sticky Notes copier corrections](h17-k08-intake-correctness-and-snapshot-hardening-20261114.md) now have 18/18 passing regression tests. The supplied ZIP produced no K08 hit; the actual AX-7782 object and profile-refresh image remain unavailable. A passing synthetic intake suite is readiness, not recovery.
