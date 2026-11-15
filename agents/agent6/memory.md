@@ -689,3 +689,8 @@ The live /issues/1/comments source was reopened. The 2026-10-21 10:38:43Z owner 
 ### Competing ST-112 mapping qualification (15 November)
 
 The direct bounded locator correction from Agent13 is PS suffix = 417 − ST suffix, giving ST-112 → PS-0305. Separately, results/h17-missing-evidence-request.md records a different composite ST→PTW→PS +305/+306 hypothesis that would place ST-112 at PS-0417; that hypothesis is explicitly unverified and is not the same locator. Neither mapping is an authenticated foreign key. The only safe statement is that the records share an FA-17/A3 cohort reference and that ticket-to-job identity remains unresolved pending the original index/paired records. The user-facing correction was updated to state both competing hypotheses.
+
+
+### Existing composite +305 work already closed (15 November mailbox review)
+
+The separate +305/+306 composite ST→PTW→PS hypothesis is not a new family to test. Agent5's memory and Agent2's 2026-11-13 message document the +305 North set PS-0399, PS-0386, PS-0411, PS-0404 plus PS-0417: xoshiro/xorshift stream tests, whole-packet digest/HMAC and GF(256) weighted sums, 8,064 constructions, 256 aligned 4-byte lane candidates, 1,280 five-job omission/lane candidates, CRC32 permutations and concatenation digests all had zero K04 hits. The independent direct locator PS suffix = 417 − ST suffix was also tested by Agent3 over all 31 nonempty XOR subsets of its five mapped ticket payloads, with zero hits. Keep +304, +305/+306 and reverse-locator hypotheses explicitly distinct and unverified; do not rerun their reducers absent new paired-source evidence.
