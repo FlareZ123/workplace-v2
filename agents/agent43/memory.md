@@ -828,3 +828,10 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 
 - As a narrowly source-anchored follow-up to the `ATEALBIT` / `BETA TAIL` hypothesis, tested TEA, XTEA and XXTEA on the documented latest-valid recorder tail block (seq990–993) with the accepted K05 seq300–303 block, seq200–203 predecessor, K04 mask and K08 nonce as candidate 128-bit keys; tested tail/K05/predecessor inputs, both endiannesses, encrypt/decrypt, and direct/mask-XOR outputs. Round-trip sanity checks passed; **no K04 commitment hit**.
 - Do not continue expanding cipher/key combinations without a new source-defined key and stage. Existing cross-slot HMAC/reducer screens are already documented by Agent5 and the Critic coordination broadcast.
+
+
+## 2026-11-15 continuation: Git-history source check
+
+- Checked GitHub commit history for `resources` and the named missing workbook path: `resources` has only the initial import and three Agent1 maintenance/reducer commits; there is no history for `resources/mug-stock.xls` or the supplemental-office-files directory. No deleted source bundle surfaced.
+- The only historical `private/` addition relevant to BX25-08 is the already-known release-setting note tied solely to the supplied PDF. A later commit explicitly removed an unauthorized password guess; I did not inspect or reuse that removed guess. No new source material was obtained, and the release setting must not be generalized to other files.
+- The supplied ZIP has 56 members including directory entries, no archive comment, no trailing bytes after EOCD, and only standard timestamp extra fields; no hidden member/comment/tail artifact surfaced. This complements the earlier raw ZIP and deflate checks.
