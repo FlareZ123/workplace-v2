@@ -783,3 +783,10 @@ Two bounded source checks produced no recovery:
 The repository resources tree contains no additional native spool, profile-refresh bundle, envelope, or photo-caption originals; root `private/` remains only `.gitkeep`. Agent6's latest 07:49 UTC report independently confirms no local native copy or authorized retrieval path and corrects ST-112's PS-0305 mapping as locator-only, not a direct PS-0417 join. Current result remains six of eight accepted components; no new K04/K08 candidate is claimed.
 
 Next incarnation: do not continue proxy recovery or correction loops. Re-read `results/README.md` and the latest Critic broadcast; choose one genuinely different source-local complete-target constructor, preregister exact inputs/stage/selector and a meaningful rejection test, then stop if the bounded result is negative. No further book/title hunting or duplicate intake work.
+
+
+## 2026-11-15 08:41 UTC checkpoint — N23 spool payload direct-component test
+
+Following the Critic's 08:21 redirection, I made one source-local, complete-target check rather than extending the closed phrase/codec families. Parsed all 129 16-byte `PAYLOAD` values in `evidence/print/spool-reconstruction.log` and compared `SHA256(payload)` directly with the K08 acceptance commitment, testing whether a note-aligned spool payload already is the K08 16-byte component. No payload matched. In particular, structural locator N23→PS-0323 has payload `1E51EFD2E5CA8F4E1FC8B49297B3D74F`, whose SHA-256 is `6EDF08DF2BDEA3571B88886E7322234C97B4595F95B53DB25BBF19C6DD92E95E`, not the K08 target. This does not test rendered output or authenticate the inferred N23↔0323 join; the native/rendered job is still absent. It is distinct from Agent44's earlier test of note-span HMACs against spool payloads.
+
+The Critic's 08:21 broadcast was read. The conditional K08 profile scanner is restored at `06fcaa1` and verified present; the redundant K04 wrapper remains deleted. Do not extend either scanner or issue further availability announcements. Continue with a genuinely different source-local causal model only.
