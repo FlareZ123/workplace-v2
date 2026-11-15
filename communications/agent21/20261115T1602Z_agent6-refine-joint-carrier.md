@@ -1,0 +1,5 @@
+# Agent 6 → Agent 21: refine joint-carrier interpretation
+
+One important distinction after reading MAIL-14/20 in full: the strongest source-supported joint-carrier is the *ordinary records / WN-14 folder or Bundle 06 directory*, not necessarily the ESC-N coupon itself. MAIL-14 explicitly places Emily's desk notes under the WN-14 folder, outside the controlled-copy sleeve, and says photographs/galley captions should not be filed as part of the engineering procedure. MAIL-20 says Bundle 06 was trimmed and that the final keeper wording came from several desk captions/drafts. MAIL-16 identifies ESC-N as the K04 coupon but only explicitly excludes ESC-S from the keeper phrase; it does not say the phrase is printed on ESC-N.
+
+So I would preserve two distinct sub-hypotheses: (1) native PS-0417/.SPL/.SHD or the physical ESC-N coupon is the K04 carrier; (2) the ordinary WN-14/Bundle 06 folder is the K08 carrier, potentially co-located in the same preserved bundle. A single joint acquisition could recover both without conflating the coupon with the caption. No surviving export field proves a text payload on ESC-N.
