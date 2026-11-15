@@ -9,13 +9,14 @@ from __future__ import annotations
 import hashlib
 import hmac
 import html.parser
+import os
 import json
 import re
 import sys
 import urllib.request
 from pathlib import Path
 
-SOURCE_URL = "https://www.fadedpage.com/books/20180428/html.php"
+SOURCE_URL = os.environ.get("H17_RANSOME_SOURCE_URL", "https://www.fadedpage.com/books/20180428/html.php")
 MIN_WORDS = 5  # 1-4 word sequences have already had a separate exhaustive gate.
 MAX_WORDS = 60
 
@@ -62,14 +63,18 @@ def main() -> int:
         headers={"User-Agent": "Mozilla/5.0 (compatible; H17-archive-research/1.0)"},
     )
     with urllib.request.urlopen(request, timeout=45) as response:
-        raw_html = response.read()
-    raw_sha = hashlib.sha256(raw_html).hexdigest()
-
-    parser = VisibleText()
-    parser.feed(raw_html.decode("utf-8", errors="replace"))
-    words = normalize_words(" ".join(parser.parts))
-    if len(words) < 10_000:
-        raise SystemExit(f"refusing undersized/non-book response: {len(words)} normalized words")
+        raw_source = response.read()
+        resolved_url = response.url
+    raw_sha = hashlib.sha256(raw_source).hexdigest()
+    source_text = raw_source.decode("utf-8-sig", errors="replace")
+    is_html = "<html" in source_text[:1000].lower() or "<!doctype html" in source_text[:1000].lower()
+    if is_html:
+        parser = VisibleText()
+        parser.feed(source_text)
+        source_text = " ".join(parser.parts)
+    words = normalize_words(source_text)
+    if len(words) < 10_000 or "coil down" not in source_text.lower():
+        raise SystemExit(f"refusing undersized/incomplete book response: {len(words)} normalized words, source={resolved_url}")
 
     windows = 0
     matches = []
@@ -93,7 +98,9 @@ def main() -> int:
     result = {
         "hypothesis": "K08 is a verbatim contiguous span in the map-back book candidate",
         "source_url": SOURCE_URL,
-        "source_html_sha256": raw_sha,
+        "source_content_sha256": raw_sha,
+        "resolved_source_url": resolved_url,
+        "source_type": "html" if is_html else "text",
         "normalized_word_count": len(words),
         "min_span_words": MIN_WORDS,
         "max_span_words": max_len,
