@@ -24,6 +24,9 @@ from pathlib import Path
 
 def load_phrase_family(repo_root: Path):
     path = repo_root / "agents/agent9/k08_hmac32_printer_coupling_sft.py"
+    raw = path.read_bytes()
+    git_blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest()
+    assert git_blob == "01680d0aaa88bb0bb36db319f9598f704dcb5caa", git_blob
     spec = importlib.util.spec_from_file_location("agent9_k08_phrase_family", path)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"cannot load phrase family: {path}")
@@ -41,6 +44,16 @@ def main() -> None:
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parents[2]
+    pinned_sources = {
+        "resources/evidence/crew/noticeboard-and-desk-notes.txt": "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb",
+        "resources/evidence/recovery-routing.json": "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5",
+        "resources/acceptance.json": "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f",
+        "resources/evidence/mail/16.eml": "02535cc5966a9215d01ecada4a14b6a403d78ca8d09310a5c3cf1a574f817a08",
+    }
+    for rel, expected in pinned_sources.items():
+        actual = hashlib.sha256((root / rel).read_bytes()).hexdigest()
+        assert actual == expected, (rel, actual)
+    print("PINNED_SOURCE_HASHES_PASS", flush=True)
     routing = json.loads((root / "resources/evidence/recovery-routing.json").read_text())
     acceptance = json.loads((root / "resources/acceptance.json").read_text())
     nonce = bytes.fromhex(routing["K08"]["desk_nonce"])
