@@ -69,6 +69,7 @@ def run(source: Path):
     padding = []
     interior = []
     compressed_bits = 0
+    stock_zlib_exact = 0
     with zipfile.ZipFile(source) as archive:
         for item in archive.infolist():
             if item.compress_type != zipfile.ZIP_DEFLATED:
@@ -80,6 +81,9 @@ def run(source: Path):
             stream = binary[start:start + item.compress_size]
             assert len(stream) == item.compress_size
             original = archive.read(item)
+            compressor = zlib.compressobj(6, zlib.DEFLATED, -15, 8, zlib.Z_DEFAULT_STRATEGY)
+            if compressor.compress(original) + compressor.flush() == stream:
+                stock_zlib_exact += 1
             count, value = deflate_padding(stream, original)
             compressed_bits += len(stream) * 8
             interior.extend((item.filename, *entry) for entry in silent_interior_bits(stream, original))
@@ -88,6 +92,7 @@ def run(source: Path):
     assert len(lengths) == 46 and sum(lengths) == 170
     assert all(v == 0 for v in padding)
     assert compressed_bits == 314288
+    assert stock_zlib_exact == 46
     assert len(interior) == 17
     assert ''.join(str(entry[3]) for entry in interior) == '00000000111000010'
 
@@ -106,6 +111,7 @@ def run(source: Path):
     return {'source_sha256': EXPECTED_ZIP, 'deflate_members': len(lengths),
             'slack_bits': sum(lengths), 'nonzero_padding_members': sum(v != 0 for v in padding),
             'slack_bit_counts': lengths, 'compressed_bits': compressed_bits,
+            'stock_zlib_level6_memlevel8_exact_members': stock_zlib_exact,
             'individually_decode_inert_interior_bits': interior,
             'length_channel_bits': len(lengths) * 3,
             'complete_candidate_layouts': len(trials),
