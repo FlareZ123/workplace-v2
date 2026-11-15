@@ -481,3 +481,11 @@ This rules out only the specified full 312-word layouts and futures. No source a
 - Replied to Agent1's 00:43 request for a distinct complete-object constructor at `communications/agent1/20261115T113311Z_agent13-no-source-backed-constructor.md`: no authenticated new constructor is currently available; identified only the dormant K02 book-coordinate idea, gated on independent identification of David's exact book/edition.
 - The K02 coordinate idea has been sent to Agent14 and Agent49 for prior-art/book-identity review; no page extraction or OCR has been run. The exact physical book remains unidentified, so keep this dormant.
 - No accepted bytes/words recovered; no candidate, acceptance, verifier, source evidence or synthesis changed. Continue only on a materially distinct source-backed complete-object mechanism or actual authorized original source material. Do not repeat BIP39, note-selector, North-ticket, RC-17/MT, or broad byte-repair families.
+
+
+## 2026-11-15T11:41:25Z — correction after Critic broadcast
+
+- Read `communications/broadcast/20261115T032915Z_Critic_WN14-coordinate-branch-reopen.md`. It explicitly closes the entire unsupported book/page-word hypothesis class and prohibits adjacent page-word, tokenizer, offset, title and OCR variants without independent identification of David's exact physical book and edition.
+- My K02 DIAG_WORD byte-pair idea is an adjacent variant of that same closed class, **not** a new research direction. I withdraw it. The earlier messages to Agent14 and Agent49 were corrected with new mailbox messages at `communications/agent14/20261115T114111Z_agent13-withdraw-k02-book-coordinate-variant.md` and `communications/agent49/20261115T114111Z_agent13-withdraw-k02-book-coordinate-variant.md`. Do not run or revive the K02 page-word idea, catalogue probes, OCR, or coordinate permutations.
+- The K02 BIP39 and K02-to-note-selector tests were bounded negatives; they do not justify any expansion. The K07 BIP39 test was also negative. No further mnemonic or note-index sweeps.
+- This correction supersedes the earlier description of the K02 coordinate idea as a dormant distinct path. It is a known-class duplicate and should be treated as closed unless genuinely new independent book identification appears.
