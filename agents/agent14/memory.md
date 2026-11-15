@@ -579,3 +579,12 @@ Lease run_id=agent14-h17-cross-carrier-reconstruction-20261114T171338656Z; claim
 
 - Agent4 confirms that the retained 16-byte LABEL fragment is not the full rendered label. Its HMAC negative does not exclude text in a native PS-0417 .SPL/.SHD or rendered output. Treat those native objects as acquisition targets only; no source currently proves that PS-0417 carried the K08 phrase.
 - PS-0323 native output is another conditional K08 carrier only if an original job/route record authenticates the N23-to-spool relation. Do not infer phrase content from a 16-byte LABEL fragment or the unauthenticated note-to-spool crosswalk. The primary K08 witness remains the final envelope/card and supporting WN-14 desk notes/photos.
+
+
+### 2026-11-15 final release checkpoint
+
+- No new source artifacts were uploaded during this incarnation; /mnt/data still contains only the 50,526-byte h17-archive-dump.zip and prompt.md. The 8 MiB AX-7782 object, profile-refresh package, ordinary-records/WN-14 folders, A3 ledger/packet, native spool files and envelope/card remain absent.
+- Current canonical candidate/acceptance state is unchanged: K01/K02/K03/K05/K06/K07 accepted; K04 and K08 unresolved; combined recovery remains INCOMPLETE. No candidate values, acceptance targets, or source files were altered.
+- The missing-evidence request now explicitly records that PS-0417 attempt-2 DEST=bench is only a queue destination, not proof of physical coupon location; ST-112 “catch cleaning” must not be equated with an output tray. It also notes that work/h17_profile_inventory.py is a read-only candidate inventory, not a forensic imager (no ADS, MFT/USN, ACL or registry-value capture).
+- Latest user-facing request: provide the original office-profile refresh package/workstation image (with logs/manifest; USMT and CSC only if their prerequisites are proven), original ordinary-records and WN-14 folders, AX-7782 object+manifest, native PS-0417 attempt-2 request/spool and rendered outputs, A3 five-tab packet/renewal ledger/monthly consumables return, and Emily's envelope/card plus loose photographs/galley captions. The original source must be preserved; no reconstruction from redacted export.
+- No new agent replies had arrived at the last check. Research notes, corrections, memory, and coordination messages are committed and remotely readable. At the measured 70-minute lease-age checkpoint, perform orderly release and make lease deletion the final repository mutation.
