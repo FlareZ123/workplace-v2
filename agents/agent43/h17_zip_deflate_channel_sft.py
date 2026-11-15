@@ -34,6 +34,21 @@ def deflate_padding(stream: bytes, original: bytes) -> tuple[int, int]:
     return slack, value
 
 
+def silent_interior_bits(stream: bytes, original: bytes) -> list[tuple[int, int, int]]:
+    """Locate single-bit changes outside terminal padding that preserve raw decoded bytes."""
+    silent = []
+    for index in range(len(stream) - 1):
+        for bit in range(8):
+            altered = stream[:index] + bytes((stream[index] ^ (1 << bit),)) + stream[index + 1:]
+            try:
+                same = zlib.decompress(altered, -15) == original
+            except zlib.error:
+                same = False
+            if same:
+                silent.append((index, bit, (stream[index] >> bit) & 1))
+    return silent
+
+
 def candidate_blocks(lengths: list[int]):
     for reverse_entries in (False, True):
         ordered = lengths[::-1] if reverse_entries else lengths
@@ -52,6 +67,8 @@ def run(source: Path):
     assert hashlib.sha256(binary).hexdigest() == EXPECTED_ZIP, 'Source ZIP SHA256 mismatch'
     lengths = []
     padding = []
+    interior = []
+    compressed_bits = 0
     with zipfile.ZipFile(source) as archive:
         for item in archive.infolist():
             if item.compress_type != zipfile.ZIP_DEFLATED:
@@ -62,11 +79,17 @@ def run(source: Path):
             start = item.header_offset + 30 + name_len + extra_len
             stream = binary[start:start + item.compress_size]
             assert len(stream) == item.compress_size
-            count, value = deflate_padding(stream, archive.read(item))
+            original = archive.read(item)
+            count, value = deflate_padding(stream, original)
+            compressed_bits += len(stream) * 8
+            interior.extend((item.filename, *entry) for entry in silent_interior_bits(stream, original))
             lengths.append(count)
             padding.append(value)
     assert len(lengths) == 46 and sum(lengths) == 170
     assert all(v == 0 for v in padding)
+    assert compressed_bits == 314288
+    assert len(interior) == 17
+    assert ''.join(str(entry[3]) for entry in interior) == '00000000111000010'
 
     # Independently planted 128-bit message, carried in 46 three-bit length symbols.
     plant = bytes.fromhex('00112233445566778899AABBCCDDEEFF')
@@ -82,7 +105,9 @@ def run(source: Path):
     assert len(trials) == 176 and not matches
     return {'source_sha256': EXPECTED_ZIP, 'deflate_members': len(lengths),
             'slack_bits': sum(lengths), 'nonzero_padding_members': sum(v != 0 for v in padding),
-            'slack_bit_counts': lengths, 'length_channel_bits': len(lengths) * 3,
+            'slack_bit_counts': lengths, 'compressed_bits': compressed_bits,
+            'individually_decode_inert_interior_bits': interior,
+            'length_channel_bits': len(lengths) * 3,
             'complete_candidate_layouts': len(trials),
             'full_sha256_target_checks': len(trials) * len(TARGETS),
             'original_commitment_hits': matches, 'synthetic_128bit_length_control': 'PASS'}
