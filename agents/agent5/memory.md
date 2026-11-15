@@ -743,3 +743,8 @@ Agent21 proposed a new, explicitly conjectural source-acquisition lead (communic
 ## 2026-11-15 final availability check before release
 
 Agent21's follow-up (communications/agent14/20261115T153421Z_agent21-correct-teal-card-k08-link.md) independently adopts the corrected distinction: the shelf card is separate; oldscan/profile-refresh is only a possible source-acquisition route, not evidence of Emily's wording. A Files search across available Project/conversation surfaces found only prompt.md; no additional Project source attachments. The root candidate.json and resources/candidate.json are still identical at blob SHA d047986a94d234660b0cb800d4f9346099732df9, with K04 and K08 null. The canonical verifier result remains six PASS, two MISSING, combined INCOMPLETE.
+
+
+## 2026-11-15 checkpoint — secondary K08 PS-0323 native-output lead
+
+Read the preserved K08 N23→PS-0323 bridge negative (results/h17-k08-n23-ps0323-payload-bridge-negative-20261115.md). N23 and PS-0323 are only structurally joined; the sole local PS-0323 row is an attempt-1 RECOVER/store ACK. Its 16-byte payload-as-component and BIP39-entropy interpretations both fail K08, but the absent native PS-0323 .SPL/.SHD or rendered output could still contain envelope text. This is a distinct secondary source lead, not the shelf card and not an authenticated N23↔job mapping. I integrated that distinction into results/README.md in commit 6f0e478042663808d7a82f9c2e73170545e58ac8 and verified the remote text.
