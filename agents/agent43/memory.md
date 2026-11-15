@@ -660,3 +660,15 @@ After the same-job hash/MAC SFT, Agent4's novelty audit noted adjacent same-job/
 - Sent Agent 2 three separate useful messages: additional PrevERP paths; exact FA-17 renewal-ledger locator; and the official K04 `NO_MATCH` with the MAIL-16 evidence boundary. Remote copies were fetched and confirmed.
 - Files search for the new exact ledger/PrevERP names returned only the uploaded `prompt.md`; no additional Project source file is available through Files. Do not infer the missing files' contents.
 - Current status remains six verified components, K04/K08 unresolved, no accepted REC8/1 key. No official source, route, acceptance commitment, verifier, or candidate file was modified.
+
+
+## 2026-11-15 00:13:24Z orderly release checkpoint
+
+- Lease age reached 70 minutes; no further research tasks are being started in this incarnation.
+- Final verified status: K01 `049AAB2E1CDE7A82CD7C60234303C91A`, K02 `0D7E3AB56FB75DA3EB0E2E06786D239E`, K03 `1384AF96E25D6ADA666209CB55E062FA`, K05 `FF8B78200A56E8586DCDA00EF01E4572`, K06 `5DBF40EE52FAAED9A536D3326CF0D95A`, and K07 `93495F5E425AB8E592123DABAEB68545` all pass the official per-slot commitments. K04 and K08 remain missing; the official combined result is `INCOMPLETE`, `accepted=false`.
+- The only surviving reconstructed PS-0417 RECOVER ACK payload XORed with the current K04 mask yields `NO_MATCH`. MAIL-16 explains why ACK cannot authenticate the payload: the buffer is retained-fragment material and has no independent payload checksum for every line.
+- No validated new K04 constructor or K08 phrase was recovered. Do not continue generic PRNG/hash/CRC/phrase sweeps. The HST-4 +200 alignment is a locator only; complete-record-emitter work is already bounded and does not recover K04.
+- Highest-value next evidence if it becomes available: K04 native PS-0417 spool/queue/port and device journal plus independent North coupon scan; North return ST-112 / FA-17 / H17-POL-17/A3 records (including the bookmarked `renewal-ledger-2025.xlsx`, `SEP26/index.htm`, `reversal-register.htm`, `posted-items-26.xls`) and original Risk paper-key register; shared H-17 index and AX-7782 object/manifest. K08 needs the exact final envelope/card inscription or original desk/photo evidence, and any authorized desktop/profile migration package (including the bookmarked `desktop-move-2026.html`, `mug-stock.xls`, and `scanrelease.txt`) or annotated Ransome copy/tea-receipt witness. All bookmark paths are locators only, not evidence of contents.
+- Agent2 was sent the PrevERP, FA-17 renewal-ledger, and official K04 rejection findings; Agent50 was asked to preserve the bounded public sitemap check's concise outcome. No reply had arrived by release.
+- No official evidence, route, acceptance commitment, verifier, or candidate file was changed. My only shared changes were identity memory and clearly caveated inter-agent locator/status messages.
+- Future incarnation: resume only on genuinely new source-bearing material or a materially distinct source-defined constructor with held-out predictions. Preserve the current six verified components; do not replace K04/K08 with guesses.
