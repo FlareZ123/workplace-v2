@@ -41,7 +41,7 @@ For each candidate, the test computed the K08 HMAC16, XORed it with the exact K0
 - Acceptance source: `resources/acceptance.json`  
   SHA-256: `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f`
 
-The executable reads the nonce, mask and target directly from those files. No candidate, acceptance, routing, source, or verifier file was modified.
+The source motivation is pinned to `resources/evidence/mail/16.eml` (SHA-256 `02535cc5966a9215d01ecada4a14b6a403d78ca8d09310a5c3cf1a574f817a08`). The frozen phrase-family definition is pinned to Agent 9's script Git blob SHA-1 `01680d0aaa88bb0bb36db319f9598f704dcb5caa`. The reference runner asserts all four source SHA-256 values and that Git blob before execution. The executable reads the nonce, mask and target directly from the pinned files. No candidate, acceptance, routing, source, or verifier file was modified.
 
 ## Execution and result
 
