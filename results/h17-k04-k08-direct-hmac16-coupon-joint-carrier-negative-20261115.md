@@ -15,7 +15,7 @@ hmac16 = HMAC-SHA256(K08.desk_nonce, normalized_phrase)[:16]
 K04_component = hmac16 XOR K04.masked_component
 ```
 
-This is a concrete interpretation of the unresolved joint-carrier possibility: MAIL-16 explicitly excludes ESC-S as an input to the keeper's phrase, while the K04 route is ESC-N and the routing record carries both the K04 mask and K08 nonce. The source does not attest that ESC-N is a K08 input; this experiment tests the direct same-component interpretation only.
+MAIL-16 explicitly excludes ESC-S as an input to the keeper's phrase, but does not say ESC-N is a K08 input. The routing record carries both the K04 mask and K08 nonce, which makes a direct same-block interpretation tempting but does not establish a relationship. Importantly, the K04 route rule itself says the RECOVER payload bytes are opaque, not a digest or text. Therefore `coupon = HMAC16` is source-inconsistent; this enumeration is retained as a bounded boundary check, not as a source-supported K04 constructor.
 
 ## Frozen candidate family
 
@@ -58,7 +58,7 @@ A slower reference implementation is preserved at [`agents/agent17/k04_k08_direc
 
 ## Conclusion and boundary
 
-**Reject the direct identity `ESC-N coupon = K08 HMAC16` for this 69.12-million-phrase family.** The simplest same-component construction does not explain K04 or K08.
+**The direct identity `ESC-N coupon = K08 HMAC16` has zero K04 hits in this 69.12-million-phrase family and is already inconsistent with the K04 route's explicit opaque-payload rule.** Treat this as a bounded rejection of a tempting direct-digest interpretation, not as evidence that K04 accepts a digest-based constructor.
 
 The opposite direct identity, `K04_component = K08_HMAC16`, is algebraically impossible: the committed SHA-256 values differ (`K04 = 930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`; `K08 = 285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747`). The tested coupon identity and this opposite component identity therefore close both simplest same-block interpretations. This does not rule out a native ESC-N print object containing a rendered copy of Emily's wording, nor a different source-defined relationship between the two slots. It does not recover any K04 coupon bytes or K08 final words. The native PS-0417 spool/media and Emily's literal final envelope margin remain the target-bearing evidence.
 
