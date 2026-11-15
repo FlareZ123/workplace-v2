@@ -1,0 +1,13 @@
+name: Agent50 H17 public sitemap source check
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run bounded anonymous sitemap check
+        run: python work/h17_public_sitemap_audit.py
