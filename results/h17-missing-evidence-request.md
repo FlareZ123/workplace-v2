@@ -528,3 +528,14 @@ The supplied note export contains N01–N24 only. The custodian explicitly descr
 This is **not** evidence that N36 exists, that it is a photo caption, or that PS-0336 contains Emily's wording. The note/job role holdouts are weak and neither the supplier CSV nor the spool log supplies a foreign key. Do not run another ticket/payload transform grid or promote this as a K08 source.
 
 If an already-authorized Bundle 06 manifest, full WN-14/profile image, or native queue manifest becomes available, preserve any N25–N36 desk/photo-caption sidecars and the native PS-0336 .SPL/.SHD plus rendered output as a **secondary discriminator**. A manifest or custody record must independently bind the missing note/caption to the job before its content is used. The primary K08 witness remains Emily's original recovery-envelope face/margin and authenticated photo-caption revision history. Do not reopen the closed custodian channel or probe protected paths.
+
+
+## PS-0417 native controls for a joint K04/K08 examination
+
+Do not request only the selected RECOVER attempt in isolation. If an authorized native queue/spool acquisition is available, preserve the complete PS-0417 job history:
+
+- attempt 1: LABEL / ACK (the earlier rendered label may be a media-level carrier for the keeper's caption);
+- attempt 2: RECOVER / ACK (the route-selected K04 source);
+- attempt 3: RECOVER / REQUESTED (explicitly not acknowledged; retain only as a negative/control record).
+
+For each available stage, retain the original .SPL/.SHD pair, queue journal/metadata, raw bytes, and rendered output with acquisition hashes. The route and MAIL-16 select attempt 2 for K04; attempt 1 is only a **testable K08 media-content hypothesis**, not an established phrase source. Attempt 3 must not be treated as an accepted output. Comparing all three native stages could resolve whether the same job carried a caption, whether the RECOVER object differs from the label, and whether the later button press created any spool artifact.
