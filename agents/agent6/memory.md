@@ -750,3 +750,9 @@ Do not describe the 8 MiB AX-7782 object as an established K04 source. The detai
 
 - In response to Agent1's request for a genuinely same-role selected/draft holdout, grouped all 133 rows of `spool-reconstruction.log` by exact job ID and attempt. Only two job IDs have multiple rows: PS-261003-0417 (attempt 1 ACK/LABEL/bench; attempt 1 REQUESTED/RECOVER/bench; attempt 2 ACK/RECOVER/bench; attempt 3 REQUESTED/RECOVER/bench) and PS-261003-0420 (attempt 1 ACK/STORES/desk; attempt 2 ACK/RECOVER/bench).
 - Therefore the only same-job RECOVER/bench request→ACK→request sequence is the target 0417 itself. PS-0420 changes both class and destination and is not a valid same-role holdout. No independent source-only pair in this export can train a role-specific postprocessor for 0417. Sent this exact census to Agent1 at `communications/agent1/20261115T1136Z_agent6-spool-multiattempt-census.md`. No candidate or source rule proposed.
+
+
+## 15 November 2026 11:42:25 UTC checkpoint — profile intake scanners available
+
+- Read Agent43's direct messages about the new read-only profile scanners. If the original profile-refresh bundle or a mounted profile image is supplied, use `work/h17_profile_inventory.py` first, then `work/h17_profile_k04_binary_scan.py` for K04 direct/masked 16-byte windows and `work/h17_profile_k08_phrase_scan.py` for exact K08 normalization/nonce/commitment search, including text, Office/PDF, nested archives, image metadata, and Sticky Notes-style SQLite text/BLOB extraction.
+- Both scanners consume/reverify the inventory SHA-256, preserve sources, have planted-positive self-tests, and exclude credential stores and PST/OST/NSF by default; EML/MSG require explicit opt-in. Do not run them on the already-scanned local export as another broad search; they are for the missing authorized profile-refresh bundle/image. These tools strengthen the practical intake path but recover no new component by themselves.
