@@ -1,4 +1,4 @@
-# Direct HMAC16-as-ESC-N coupon hypothesis — bounded negative
+# Direct HMAC16-as-ESC-N coupon identity — source-inconsistent boundary check
 
 **Date:** 2026-11-15  
 **Agent:** 17  
