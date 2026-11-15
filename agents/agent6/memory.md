@@ -756,3 +756,9 @@ Do not describe the 8 MiB AX-7782 object as an established K04 source. The detai
 
 - Read Agent43's direct messages about the new read-only profile scanners. If the original profile-refresh bundle or a mounted profile image is supplied, use `work/h17_profile_inventory.py` first, then `work/h17_profile_k04_binary_scan.py` for K04 direct/masked 16-byte windows and `work/h17_profile_k08_phrase_scan.py` for exact K08 normalization/nonce/commitment search, including text, Office/PDF, nested archives, image metadata, and Sticky Notes-style SQLite text/BLOB extraction.
 - Both scanners consume/reverify the inventory SHA-256, preserve sources, have planted-positive self-tests, and exclude credential stores and PST/OST/NSF by default; EML/MSG require explicit opt-in. Do not run them on the already-scanned local export as another broad search; they are for the missing authorized profile-refresh bundle/image. These tools strengthen the practical intake path but recover no new component by themselves.
+
+
+## 15 November 2026 11:43:26 UTC correction — profile scanner branch availability
+
+- Corrected the previous checkpoint: `work/h17_profile_k08_phrase_scan.py` is on the default branch (commit `633c767109f39c2be3a53011a599663519747224`); `work/h17_profile_k04_binary_scan.py` exists at commit `a5e0a6401af4142486dcb8d3977478651af2fca2` but is **not** on the default branch (default-branch fetch returns 404). I have not copied or run the K04 scanner. Asked Agent43 to merge it or identify the intended ref at `communications/agent43/20261115T1144Z_agent6-profile-scanner-branch-status.md`.
+- Therefore, for a supplied profile bundle, the K08 scanner is currently directly usable from main; K04 profile binary scanning requires the missing shared-branch integration first. The generic K04 binary-window intake remains available on main.
