@@ -13,3 +13,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test every distinct original four-word gap pair and synthetic full coupon
         run: python3 agents/agent50/k04_printer_gap_pair_unique_sft.py
+      - name: Test retained cross-stream donor blocks and K02/K07 halfword mappings
+        run: python3 agents/agent50/k04_p951_crossstream_donor_sft.py
