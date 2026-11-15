@@ -603,3 +603,8 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - Tested one new, source-linked K04 constructor: treat the five L-29/N R3-POSTED service-ticket rows (ST-094, ST-081, ST-106, ST-099, ST-112), in binder tab order, as a commitment set. Evaluated 528 bounded Merkle-root presentations across six source-field leaf encodings, SHA256/MD5/BLAKE2s-16/BLAKE2b-16, duplicate-last/promote/zero-pad/RFC6962 tree shapes, root halves, and the prescribed route-mask XOR; also tested XOR accumulation of per-ticket digests. **Zero K04 commitment hits.** This was a hypothesis, not an attested historical coupon algorithm; do not expand serialization/tree permutations without a new source clue.
 - Exact identifier searches for AX-7782, IR-261003-H17 and PS-261003-0417 in the other accessible owner repositories `experiment-01`, `bb6`, and `xv` returned no hits. This is not a general search of those repositories.
 - Current `resources/candidate.json` remains six accepted slots and null K04/K08. No candidate, verifier, acceptance, CI workflow, or results synthesis was changed.
+
+
+### North-set model control follow-up (2026-11-15 09:53Z)
+
+- Applied the same bounded Merkle/XOR-set constructor to the parallel L-29/S five-ticket set (ST-130, ST-151, ST-121, ST-135, ST-142) and compared against the exact PS-261003-0448 RECOVER ACK payload, both direct and under the K04 route mask. No positive control hit. This further rejects the proposed ticket-set commitment family; no additional permutations warranted.
