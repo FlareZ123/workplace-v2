@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Scan every normalized contiguous phrase span
+        env:
+          H17_RANSOME_SOURCE_URL: https://www.fadedpage.com/link.php?file=20180428.txt
         run: |
           python agents/agent40/k08_ransome_fullbook_span_sft.py \
             resources/evidence/recovery-routing.json \
