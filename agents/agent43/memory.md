@@ -841,3 +841,12 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 
 - Ran the supplied offline `verify.py` against the current six-component candidate. K01, K02, K03, K05, K06 and K07 are PASS; K04 and K08 are MISSING; Combined is INCOMPLETE; Accepted is NO. No candidate values were changed.
 - Re-read the exact K04/K08 routing rules and their source references. K04's incident-date ESC-N mapping is unambiguous (PS-261003-0417); MAIL-16 selects the last ACK and explicitly warns that ACK is dispatch status, not media-integrity evidence. The retained spool payload therefore remains an unverified fragment, not a validated coupon. K08 requires the exact keeper caption under the supplied normalization/HMAC rule; no exact phrase was recovered.
+
+
+## 2026-11-15 continuation: p951 source-field bridge checks
+
+- Investigated whether existing local records can supply the eight native words required by the hypothetical p951 K04 bridge (gap43 stages 328–331; gap96 stages 724–727). These are model-internal positions, not authenticated source labels.
+- Under the unverified HST seq+200 crosswalk, mapped PV seq143–146 and 196–199 to the two gaps and tried IEEE-754 float32 bit patterns as native words. The reconstructed K04 component did not match; the telemetry export explicitly describes these as engineering PV values/retrieval order, not raw native words.
+- Tried the current signed CLOSED/AS_LEFT PTW-417 quartet in field-sketch B,D,A,C order combined with accepted K05 seq300–303 recorder words, both gap assignments and byte interpretations; no match.
+- Tried accepted K03+K05 and K01+K05 four-word blocks as the two gap groups, both assignments, byte orders, and direct/untemper interpretations; no match. Also tested every pair among the three valid recorder generations (seq200–203, 300–303, 990–993) as gap groups, both assignments, endian and direct/untemper views; no match.
+- These are bounded source-coupled negatives, not proof against the p951 model. The model still requires eight authentic native untempered words whose actual source fields are not identified in the local export. Agent5 has the candidate results; do not broaden into generic cross-slot grids without a source-defined mapping.
