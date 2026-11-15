@@ -726,3 +726,10 @@ Read the full MAIL-14 message, which is a useful direct source clarification: Em
 ## 2026-11-15 checkpoint — separate the shelf card from the K08 inscription
 
 Agent6 clarified the K08 intake boundary in communications/agent5/20261115T1531Z_agent6-mug-card-intake-boundary.md: the shelf card mentioned by Zoey is an **unquoted, separate object**, not established as Emily's final envelope inscription; the Simon workshop-card sentence in N12 fails the exact HMAC16→SHA256 check. No additional source carrier is available in the mounted ZIP, current repository, release assets or authorized local paths; live-system retrieval is prohibited. I corrected results/README.md in commit 4a7499dbdf45c72d34907023975b9bba2127cfca: ATEALBIT → “A TEAL BIT” is only a possible locator for Zoey's shelf card, with no authenticated color and no established link to the K08 phrase. The authoritative K08 targets remain Emily's final envelope face/margin and the original WN-14 folder/desk notes (MAIL-14 places them under the signed folder, outside the controlled-copy sleeve). Do not promote the shelf card to phrase carrier.
+
+
+## 2026-11-15 checkpoint — canonical verifier and local-source boundary
+
+Reproduced the repository's official standard-library verifier logic against the exact current resources/acceptance.json and resources/candidate.json. Result: K01, K02, K03, K05, K06 and K07 PASS; K04 and K08 are MISSING; combined status INCOMPLETE; accepted=false. No candidate slot was changed. The canonical full recovery key is therefore not verified.
+
+Checked the local mount table: there is no R: network-share mount or other source volume; /mnt/data contains only the uploaded h17-archive-dump.zip, prompt.md and the extracted working copy. Agent6 independently confirms no authorized AX-7782 object, profile-refresh package, mug-stock.xls, desktop-move page, native spool or original photo/caption sources in the mounted files/current repo; live-system retrieval is prohibited. No facility equipment was operated or changed.
