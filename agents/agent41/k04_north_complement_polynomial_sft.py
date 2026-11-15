@@ -85,7 +85,7 @@ for name, coordinates, target in (
 ):
     for degree, polynomial in ((8, 0x11B), (8, 0x11D), (128, (1 << 128) | 0x87)):
         coords = [x & ((1 << degree) - 1) for x in coordinates]
-        target &= (1 << degree) - 1
+        target_coordinate = target & ((1 << degree) - 1)
         lanes = 16 if degree == 8 else 1
         serialize = lambda values: bytes(values) if degree == 8 else values[0].to_bytes(16, "big")
         def values_for(items, lane):
@@ -99,7 +99,7 @@ for name, coordinates, target in (
             ])
             holdout_hits += predicted == packets[missing]
         candidate = serialize([
-            interpolate(coords, values_for(packets, lane), target, degree, polynomial)
+            interpolate(coords, values_for(packets, lane), target_coordinate, degree, polynomial)
             for lane in range(lanes)
         ])
         models += 1
