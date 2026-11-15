@@ -860,3 +860,6 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 
 
 - Additional p951 cross-slot check: accepted K02 (eight DIAG_WORD-derived 16-bit values packed as 16 bytes) plus accepted K05 were supplied as the two four-word gap groups, both assignments, byte orders and direct/untemper interpretations. No K04 commitment match. No candidate changed.
+
+
+- Final K02-native-word probe: selected the eight source DIAG_WORD values by the routing rule (GOOD/HOLD, UTC window, greatest GOOD/HOLD revision per seq 0–7): 57765, 58484, 47831, 59475, 41704, 50973, 13079, 54535. Tried zero-extension/repeated-16-bit forms as eight p951 native words, and big-/little-endian pairings into four words combined with K05 across both gaps and direct/untemper views. No K04 commitment match. The route's K02 digest is not itself a raw native-word source.
