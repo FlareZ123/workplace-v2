@@ -1,8 +1,14 @@
 # K08: specific Praeger 1947 North-page extraction hypothesis
 
-**Status: unverified locator hypothesis only; not a K08 phrase candidate and not a recovered component.**
+**Status: RETIRED. Unsupported cross-slot numeric association; do not use as a K08 phrase candidate or locator.**
 
-## Why this is materially different from a generic book-cipher sweep
+## Why the book identification was considered
+
+The map-back clue has a plausible bibliographic match in the 1947 Praeger third edition. That is only a possible identification of David's physical book, not evidence that the book supplies or locates K08 words.
+
+**Critical source-role correction:** the source-role map assigns ESC-N/North to the K04 masked-coupon route. The North L-29 ticket/job arithmetic is therefore K04-side material. No supplied source links that North ticket/job sequence to book pages or to the K08 card/envelope. The South route is explicitly excluded from the K08 phrase, but that does not make the North route a K08 input. Joining the North K04 sequence to the map-backed book was an unsupported cross-slot inference. This page-word construction is retired.
+
+## Exploratory arithmetic (not a valid source relation)
 
 The surviving records contain a specific North ticket list, a stable ticket-to-printer-job offset, and an independent physical-book clue:
 
@@ -15,7 +21,7 @@ The surviving records contain a specific North ticket list, a stable ticket-to-p
 
 This is a plausible identification of the map-backed book, not proof that the physical copy on H-17 was that edition. The exact title/edition still needs confirmation against the physical copy or its inventory record.
 
-## Deterministic coordinate derivation
+## Candidate arithmetic that must not be used
 
 For each North ticket, let (t) be the ticket suffix and (j) the mapped printer-job suffix.
 
@@ -32,23 +38,17 @@ Read the **305th word** on each page, in the explicit North binder-tab order:
 | 4 | ST-099 | PS-0404 | 104 | 305 |
 | 5 | ST-112 | PS-0417 | 117 | 305 |
 
-All five pages lie within the 1947 edition's “The Volcanic North” section (p.62–p.117), ending immediately before “The Silurian Region” at p.118. The North/South distinction therefore has an independent geographic/structural fit. The South values are deliberately excluded because MAIL-16 says ESC-S is not an input to the keeper phrase.
+All five numerical page values happen to lie within the 1947 edition's “The Volcanic North” section (p.62–p.117), but this is not independent source evidence: the numbers came from the K04 ESC-N ticket/job hypothesis itself. The apparent fit is therefore circular and must not be used to validate the cross-slot join.
 
-The page-word construction yields at most a five-word locator sequence. It is not asserted to be the longer final caption described in N20; that caption must be read from the original envelope/card.
+The page-word construction is retired and yields no usable locator sequence. The final caption must be read from the original envelope/card.
 
-## Required use and validation boundary
+## Required next action
 
-The repository's source-role synthesis identifies the book/map as a **locator**, not the direct K08 phrase source. The direct K08 source remains Emily's literal final keeper-envelope face/margin or the small card by the chipped-blue mugs. Therefore:
-
-1. Confirm whether the H-17 map-backed book is actually the 1947 third edition; the external catalogue match alone does not prove the physical copy's identity.
-2. Only if the exact edition is confirmed, obtain pp.86, 99, 104, 111, and 117 and extract the 305th word in the North binder order above as a **possible locator clue**. Record the counting convention (hyphenated words, headers, captions, footnotes, and page numbers).
-3. Do **not** treat the five book words as the keeper phrase, do not run them through the K08 HMAC as a phrase candidate, and do not add paraphrased words. Use them, at most, to locate or identify the missing card/envelope.
-4. Transcribe the actual phrase verbatim from the original keeper-envelope face/margin or the small card by the chipped-blue mugs. Only that independently sourced literal phrase should be passed to `work/h17_check_phrase.py` and checked against the unchanged K08 commitment.
-5. If the page-word locator does not identify the physical card/envelope, stop this branch; do not broaden it into a generic page/word sweep.
+Do not extract these page words, do not use them as a locator, and do not run them through the K08 HMAC. The only K08 source roles supported by the repository are Emily's literal final keeper-envelope face/margin or the small card by the chipped-blue mugs. The Praeger book may be a map-backed physical locator mentioned in MAIL-09, but no source defines a page-word relation from the K04 ESC-N ticket set to that book. If a title-page/bookplate or inventory record independently identifies the book, record that identification separately; it does not supply K08 phrase text. Only verbatim text from the original envelope/card is eligible for `work/h17_check_phrase.py`.
 
 ## Limitations and current state
 
-- No page text from the exact 1947 third edition was available in the local export during this run; no locator words have been extracted, no physical card/envelope has been found, and no K08 phrase candidate is claimed.
+- No page text from the exact 1947 third edition was available in the local export. More importantly, no source links the K04 North ticket/job sequence to the book; the page-word association is retired. No physical card/envelope has been found and no K08 phrase candidate is claimed.
 - Other editions exist and have different pagination: 1937 first edition (394 pp), 1939 second edition (304 pp), 1947 third edition (416 pp), and 1997 reprint (394 pp). The 1939 edition also has a folding map at the end. The map clue alone therefore does not identify the edition; do not substitute another edition for the 1947 third-edition coordinates.
 - MAIL-09 does not name the book, so the title/edition match remains a hypothesis until the physical copy is confirmed.
 - K04 remains unresolved. The selected PS-0417 ACK payload XOR the supplied mask does not meet the K04 commitment; the dispatch ACK is not a media-integrity guarantee. The native PS-0417 spool/coupon or the original AX-7782 object remains the high-value acquisition target.
