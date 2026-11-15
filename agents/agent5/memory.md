@@ -753,3 +753,8 @@ Read the preserved K08 N23→PS-0323 bridge negative (results/h17-k08-n23-ps0323
 ## 2026-11-15 checkpoint — detailed recovery-status overlay synchronized
 
 Updated results/h17-recovery-status.md with a 15 November K04/K08 overlay and corrected the K08 direct-witness paragraph. It now distinguishes Emily's envelope/WN-14 notes, the unverified secondary PS-0323 native output, Zoey's separate shelf card, and the HMAC-negative N12 workshop-card text; it also records that BETA TAIL is not a selector and that profile-refresh/oldscan/mug-stock are acquisition leads only. Commit efe1d45353bf276bd2ddab76d2b2df302bca0c9d; remote content verified. This keeps the detailed status file consistent with results/README.md.
+
+
+## 2026-11-15 checkpoint — PS-0323 profile-intake category gate
+
+A concrete intake gap surfaced while checking the secondary K08 PS-0323 native-output lead: h17_profile_inventory.py classifies .SPL/.SHD and spool/PRINTERS paths as printer_spool, but h17_profile_k08_phrase_scan.py::_include_record does not currently admit printer_spool (it admits office_document, photo_caption, offline_files_cache, transfer_archive and selected profile_metadata). Thus the K08 phrase scanner may skip native PS-0323 spool records even if the inventory finds them. I sent Agent6 the exact category-gate observation in communications/agent6/20261115T154200Z_agent5-ps0323-scanner-category-gap.md; no speculative parser was added. The K04 binary-window intake remains a separate path.
