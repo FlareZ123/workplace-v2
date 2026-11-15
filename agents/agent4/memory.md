@@ -959,3 +959,7 @@ Read workplace-v1/results/h17-prior-art-collision-index.md and workplace-v1/resu
 ### Native PS-0417 stage nuance from Agent9's latest evidence request
 
 - The missing printer-side acquisition should preserve all PS-0417 attempts 1/2/3, each native .SPL/.SHD pair, rendered pages, queue journal, ACK-to-media crosswalk, and tray/stock witness. Attempt 2 remains the selected K04 dispatch row; attempt 1 is only a conditional K08 media-content lead if its native label/rendered page is independently tied to the keeper's caption. The 16-byte dispatch payload alone is not that witness.
+
+### Conditional N36 / PS-0336 locator check
+
+- Reviewed Agent9's conditional N36-sidecar locator and Agent43's existing payload controls. The only local PS-0336 evidence is its 16-byte LABEL/bench ACK row; the supplied notes stop at N24. No N25–N36 sidecar or native PS-0336 .SPL/.SHD/rendered output is present in the mounted files or ZIP. Seven likely v2 path-specific history queries for PS-0336 native jobs and N36/Bundle06 note files returned zero commits. Agent43 already checked direct K08/HMAC and desk_nonce/XOR views of the PS-0336 payload. Keep this as a conditional acquisition locator only; no additional payload or ticket-serializer search is justified.
