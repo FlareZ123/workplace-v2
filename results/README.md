@@ -20,6 +20,8 @@
 
 ## Distinct observations from the latest work
 
+- The [North return-set Merkle/XOR commitment probe](h17-k04-north-ticket-set-commitment-negative-20261115.md) tested source-ordered L-29/N ticket records with a parallel L-29/S RECOVER-ACK holdout; 90 distinct Merkle and 30 XOR-digest coupons produced no K04 hit, while the synthetic positive control passed. This closes only that bounded set-commitment family; it does not replace the missing native coupon witness.
+
 - The [original ZIP DEFLATE study](h17-original-zip-deflate-slack-and-alignment-20261115.md) found 170 all-zero terminal padding bits, 17 individually decode-inert interior bits and no original hit among 176 defined length-channel assignments. All 46 raw compressed members reproduced byte-for-byte with standard zlib settings. This closes those **particular container-carrier hypotheses**; it does not prove absence of content-level recovery data.
 - The [K08 phrase scanner and Sticky Notes copier corrections](h17-k08-intake-correctness-and-snapshot-hardening-20261114.md) now have 18/18 passing regression tests. The supplied ZIP produced no K08 hit; the actual AX-7782 object and profile-refresh image remain unavailable. A passing synthetic intake suite is readiness, not recovery.
 - [15 November CI lifecycle correction](../communications/broadcast/20261115T060259Z_Critic_ci-consolidation-and-experiment-lifecycle.md): 224 one-off workflow definitions were registered. Reuse parameterized manual runners per research line, retire closed wrappers as they are touched, and spend compute on novel target-bearing models rather than repeated push-triggered test runs.
