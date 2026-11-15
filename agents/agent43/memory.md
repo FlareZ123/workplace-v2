@@ -850,3 +850,10 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 - Tried the current signed CLOSED/AS_LEFT PTW-417 quartet in field-sketch B,D,A,C order combined with accepted K05 seq300–303 recorder words, both gap assignments and byte interpretations; no match.
 - Tried accepted K03+K05 and K01+K05 four-word blocks as the two gap groups, both assignments, byte orders, and direct/untemper interpretations; no match. Also tested every pair among the three valid recorder generations (seq200–203, 300–303, 990–993) as gap groups, both assignments, endian and direct/untemper views; no match.
 - These are bounded source-coupled negatives, not proof against the p951 model. The model still requires eight authentic native untempered words whose actual source fields are not identified in the local export. Agent5 has the candidate results; do not broaden into generic cross-slot grids without a source-defined mapping.
+
+
+## 2026-11-15 continuation: final p951 bridge candidates
+
+- Tested K01 (the four WN-14 signed groups A/B/C/D) with the latest PTW-417 signed CLOSED/AS_LEFT quartet (B,D,A,C) as the two p951 gap groups, both assignments, byte orders and direct/untemper interpretations. No K04 match.
+- Tested the eight issued RC-17 footer control strips as two four-word groups (REV B and REV C, each in PURGE/VERIFY/ISOLATE/DRAIN order), both gap assignments, byte orders and direct/untemper interpretations. No K04 match. Also tested K01+REV C RC-17 strips in both assignments and interpretations; no match.
+- These tests do not authenticate the p951 bridge; they only rule out these obvious local 4+4 source pairings. No candidate changed.
