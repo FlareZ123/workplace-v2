@@ -42,13 +42,13 @@ The candidate produced by this construction is a five-word sequence. Whether tha
 2. Obtain clear scans/OCR of pp.86, 99, 104, 111, and 117 from that exact copy.
 3. Count the 305th word on each page, preserving the table order above. Record the counting convention (hyphenated words, headers, captions, footnotes, and page numbers).
 4. Concatenate the five extracted words in binder order.
-5. Apply the exact K08 normalization in `evidence/recovery-routing.json` (lowercase; replace non-ASCII letters/digits/whitespace with spaces; collapse whitespace; trim), compute HMAC-SHA256 with the specified desk nonce as key, take the first 16 bytes, and compare SHA-256 against the unchanged K08 commitment.
+5. Apply the exact K08 normalization in `evidence/recovery-routing.json` (lowercase; replace non-ASCII letters/digits/whitespace with spaces; collapse whitespace; trim), compute HMAC-SHA256 with the specified desk nonce as key, take the first 16 bytes, and compare SHA-256 against the unchanged K08 commitment. The existing `work/h17_check_phrase.py` performs this exact candidate check.
 6. Accept only an exact commitment match. If it fails on the confirmed physical edition, reject this construction rather than broadening it into a generic page/word sweep.
 
 ## Limitations and current state
 
 - No page text from the exact 1947 third edition was available in the local export during this run; no five-word phrase has been extracted and no K08 candidate is claimed.
-- The 1937 first edition and 1997 reprint have different pagination; do not substitute them for the 1947 third edition.
+- Other editions exist and have different pagination: 1937 first edition (394 pp), 1939 second edition (304 pp), 1947 third edition (416 pp), and 1997 reprint (394 pp). The 1939 edition also has a folding map at the end. The map clue alone therefore does not identify the edition; do not substitute another edition for the 1947 third-edition coordinates.
 - MAIL-09 does not name the book, so the title/edition match remains a hypothesis until the physical copy is confirmed.
 - K04 remains unresolved. The selected PS-0417 ACK payload XOR the supplied mask does not meet the K04 commitment; the dispatch ACK is not a media-integrity guarantee. The native PS-0417 spool/coupon or the original AX-7782 object remains the high-value acquisition target.
 
