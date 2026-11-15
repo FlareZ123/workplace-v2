@@ -620,3 +620,9 @@ Lease run_id=agent14-h17-cross-carrier-reconstruction-20261114T171338656Z; claim
 
 - Tested one new, source-motivated K04 constructor arising from the candidate North tab→PTW mapping: the four retained signed/CLOSED/AS_LEFT serials for PTW-398 (bay A), PTW-410 (B), PTW-403 (C), and PTW-416 (D) form exactly 16 bytes. The fifth North tab's candidate PTW-385 record is absent. Tested all 24 serial-word orders as (a) a direct 16-byte component, (b) XOR with the published K04 mask, (c) an additional XOR correction to the selected PS-0417 ACK2 payload, and (d) payload XOR serial block XOR mask. **96 unique candidates, zero K04 commitment hits.**
 - This remains conditional on Agent44's unverified ST→PTW offset candidate; it is not independent evidence that the five binder tabs map to five permit records. Do not extend into arbitrary AES/KDF or permutation families. The source-attested set-level job association and the missing PTW-385 record remain the key caveats.
+
+
+### 2026-11-15 09:31 UTC — photo-caption source family closed
+
+- MAIL-11 explicitly says Emily worked from desk notes and photograph captions. As a distinct source-family test (not another draft-base test), enumerated 1–3 pointwise replacements on N01, N03, N04, N08 and N14 photo captions plus N09 galley-board and N11 mug-shelf captions, using the same 12 source-literal N20/MAIL-11 motif words; all unselected words and order preserved. Source pins and N02 HMAC control passed. **3,255,622 assignments, zero K08 hits.** A planted synthetic positive was found by the same enumerator. Exact full-caption checks also returned no hit.
+- Reproducer was local only at `/tmp/k08_photo_caption_pointwise_sft.cpp`; no additional public result file was created. Do not widen the pointwise editor again; the next K08 hypothesis must be a materially different source mechanism or await the missing mug-stock/incident records.
