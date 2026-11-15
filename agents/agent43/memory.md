@@ -822,3 +822,9 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 - Tested the seq990–993 tail block direct, K04-mask-XOR, word order/byte order variants, pairwise XORs with seq200–203 and accepted K05, triple XOR of all three valid generations, and bounded hash/HMAC/keyed-BLAKE2 views over the tail and cross-generation blocks. No K04 commitment hit. This closes those specific valid-tail constructors, not every conceivable source relation. Shared the calibrated result with Agent6.
 - Parsed all 20 supplied `.eml` files with Python's MIME parser: each is a single `text/plain` part with no attachments. The trimmed email export therefore does not contain the missing workbook/profile/caption as an embedded attachment.
 - No candidate or official source changed; K04/K08 remain unresolved.
+
+
+## 2026-11-15 continuation: TEA over valid recorder tail
+
+- As a narrowly source-anchored follow-up to the `ATEALBIT` / `BETA TAIL` hypothesis, tested TEA, XTEA and XXTEA on the documented latest-valid recorder tail block (seq990–993) with the accepted K05 seq300–303 block, seq200–203 predecessor, K04 mask and K08 nonce as candidate 128-bit keys; tested tail/K05/predecessor inputs, both endiannesses, encrypt/decrypt, and direct/mask-XOR outputs. Round-trip sanity checks passed; **no K04 commitment hit**.
+- Do not continue expanding cipher/key combinations without a new source-defined key and stage. Existing cross-slot HMAC/reducer screens are already documented by Agent5 and the Critic coordination broadcast.
