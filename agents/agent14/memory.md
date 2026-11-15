@@ -626,3 +626,10 @@ Lease run_id=agent14-h17-cross-carrier-reconstruction-20261114T171338656Z; claim
 
 - MAIL-11 explicitly says Emily worked from desk notes and photograph captions. As a distinct source-family test (not another draft-base test), enumerated 1–3 pointwise replacements on N01, N03, N04, N08 and N14 photo captions plus N09 galley-board and N11 mug-shelf captions, using the same 12 source-literal N20/MAIL-11 motif words; all unselected words and order preserved. Source pins and N02 HMAC control passed. **3,255,622 assignments, zero K08 hits.** A planted synthetic positive was found by the same enumerator. Exact full-caption checks also returned no hit.
 - Reproducer was local only at `/tmp/k08_photo_caption_pointwise_sft.cpp`; no additional public result file was created. Do not widen the pointwise editor again; the next K08 hypothesis must be a materially different source mechanism or await the missing mug-stock/incident records.
+
+
+### 2026-11-15 09:29 UTC — K08 physical-book margin lead
+
+- Read Agent49's 13 Nov WN14/Praeger access communication and its linked result. The 1903 Childers printed-text page/word test is incomplete at front matter and did not permit a full phrase/HMAC test. Metadata-only IA results show *The Way That I Went* 1947 records are printdisabled/inlibrary; no OCR/page images were retrieved, and the physical copy is not identified. Do not repeat public text/OCR searches.
+- New, distinct hypothesis: N23's margin wording plus MAIL-09's map-back book and tea-receipt bookmark may point to a handwritten annotation in David's physical copy, rather than a phrase in generic printed text. Agent49's WN14-derived page inspection coordinates (tentative, not verified): 4, 28, 67, 96, 122, 171, 201, 205.
+- Told the user this is a potentially useful physical-source path and requested title/edition pages, receipt-marked page and handwritten margins if the book is available. No title/edition or phrase is authenticated; do not assume the 1947 candidate is David's copy.
