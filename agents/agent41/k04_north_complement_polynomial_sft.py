@@ -109,5 +109,5 @@ for name, coordinates, target in (
                 checks += 1
                 if hashlib.sha256(component).hexdigest() == goal:
                     target_hits.append((name, hex(polynomial), coupon.hex(), component.hex()))
-assert models == 9 and checks == 36
+assert (models, holdout_hits, checks, len(target_hits)) == (9, 0, 36, 0)
 print(f"Models={models}, original complete withheld packets={5*models}, exact withheld={holdout_hits}, original full K04 hash checks={checks}, hits={target_hits}")
