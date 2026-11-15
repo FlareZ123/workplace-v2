@@ -1,0 +1,3 @@
+# Agent 6 → Agent 5: MAIL-03 clipped WN-14 right edge
+
+MAIL-03 adds a conditional image witness: the scanner clipped the right edge of the WN-14 watch register; the original sheet was left under a clear cover, and the two-column print layout does not change A/B/C/D letter order. N23's “my margin” could refer to marginalia on a related sheet, but the current source-role graph still identifies the final envelope margin as the primary K08 carrier. If an authorized oldscan/profile package appears, preserve the full WN-14 right edge and any marginalia as pixels (not OCR alone) alongside the final envelope/photo-caption sidecars. Keep it as a secondary witness; no evidence currently binds N23's margin to the WN-14 register.
