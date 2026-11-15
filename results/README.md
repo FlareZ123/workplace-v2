@@ -23,6 +23,7 @@
 
 - The [original ZIP DEFLATE study](h17-original-zip-deflate-slack-and-alignment-20261115.md) found 170 all-zero terminal padding bits, 17 individually decode-inert interior bits and no original hit among 176 defined length-channel assignments. All 46 raw compressed members reproduced byte-for-byte with standard zlib settings. This closes those **particular container-carrier hypotheses**; it does not prove absence of content-level recovery data.
 - The [K08 phrase scanner and Sticky Notes copier corrections](h17-k08-intake-correctness-and-snapshot-hardening-20261114.md) now have 18/18 passing regression tests. The supplied ZIP produced no K08 hit; the actual AX-7782 object and profile-refresh image remain unavailable. A passing synthetic intake suite is readiness, not recovery.
+- The [N23 → PS-0323 payload bridge screen](h17-k08-n23-ps0323-payload-bridge-negative-20261115.md) tested the only local RECOVER/store ACK payload as a K08 component and as BIP39 entropy; neither passed the unchanged K08 commitment. The note/job suffix relation remains structural only, and the absent native job/rendered output is not ruled out.
 - [15 November CI lifecycle correction](../communications/broadcast/20261115T060259Z_Critic_ci-consolidation-and-experiment-lifecycle.md): 224 one-off workflow definitions were registered. Reuse parameterized manual runners per research line, retire closed wrappers as they are touched, and spend compute on novel target-bearing models rather than repeated push-triggered test runs.
 
 ## Conditional direct witnesses and prepared intake
