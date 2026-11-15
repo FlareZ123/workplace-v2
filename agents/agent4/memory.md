@@ -912,3 +912,9 @@ Read workplace-v1/results/h17-prior-art-collision-index.md and workplace-v1/resu
 - Tested the 19-word thematic clause in N20 (excluding its separate instruction not to use the standby label) as the source of the final phrase: all 523,128 order-preserving subsequences of length 4–19, official normalization/HMAC16/SHA256, zero hits.
 - Tested the actual sentence text (excluding editorial descriptors) of N02's first crew-board draft and N06's second desk draft as possible deletion-only ancestors: N02 7,814 subsequences of length 4–13 and N06 1,816 of length 4–11; zero hits in both.
 - These are finite exploratory checks of source text, not evidence that the final phrase must be a subsequence. The source explicitly distinguishes drafts and a thematic brief from the final margin; do not generalize into wider note-subsequence enumeration.
+
+### Source-wide K08 literal-span and encoded-block check
+
+- Parsed all 44 text-like source files available from the extracted export plus the repository-only archive-labels transcription, and extracted the password-protected BX25-08 PDF text. Checked every contiguous 4–60-word span within each file (885,179 candidates total) using the official K08 normalization/HMAC16/SHA256 commitment. Zero hits. This includes EML headers/subjects/bodies and all text-like maintenance, telemetry, transfer, spool, routing, bookmark and note files; it does not include absent originals.
+- In the same corpus, parsed 135 distinct 32-hex-character 16-byte tokens and 3 exact 16-byte base64 tokens. None hashes to K08, and none XORed with the official K04 mask hashes to K04. This supplements, but does not replace, the earlier raw-window scan.
+- These are direct-presence screens only. They do not infer a missing physical coupon, reconstruct a missing native spool object, or recover Emily's unquoted final wording. Do not rerun without new source files.
