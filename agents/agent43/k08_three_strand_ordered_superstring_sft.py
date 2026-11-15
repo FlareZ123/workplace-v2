@@ -29,7 +29,7 @@ def words(line):
 def notes_by_id(raw):
     text = raw.decode("utf-8")
     out = {}
-    for found in re.finditer(r"(?ms)^N([0-9]{2}) /[^\\n]*\\n(.*?)(?=\\n\\nN[0-9]{2} /|\\Z)", text):
+    for found in re.finditer(r"(?ms)^N([0-9]{2}) /[^\n]*\n(.*?)(?=\n\nN[0-9]{2} /|\Z)", text):
         n = int(found.group(1))
         line = found.group(2).strip()
         if n in (1, 9):
