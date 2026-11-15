@@ -25,3 +25,15 @@ The exact 46 three-bit values (in source order) are:
 This **closes only two precisely defined optional ZIP-carrier encodings**. The distribution of unused-bit *lengths* is a property of the source-compression bitstream and is not itself evidence of steganography. Other encodings, custom compressors, or unpreserved original data remain outside the model. The previous [Agent41 raw-container 16-byte-window screen](h17-k04-zip-container-source-carriers-20261103.md) tested raw bytes and adjacent CRC quartets; it did not report this specific cross-member bit-alignment/unused-padding representation.
 
 No K04 physical-coupon bits or K08 final-caption words were recovered. The original REC8/1 state remains six individual PASS, K04/K08 MISSING, combined INCOMPLETE.
+
+
+## Complete single-bit decode-invariance extension
+
+The source-pinned SFT now systematically flips **all 314,288 bits** in the 46 raw DEFLATE streams one at a time, requiring decompressed output to match the exact original member bytes. It identifies **187 individually decode-inert bit positions**:
+
+- The **170 zero-valued final-padding bits** already measured above.
+- **17 interior compressed-data bit positions** where a one-bit flip individually leaves the decompressed file unchanged. In original archive order, their original bit sequence is \`00000000111000010\`. Eight of the 17 occur in the five printer-fleet-note positions and one source member contributes the majority; the other positions occur in crew notes, encrypted PDF ciphertext, mail and maintenance. Each interior position and bit value is printed by the updated SFT, with member name and relative compressed-byte/bit offset.
+
+The 17 interior positions are **individually** decode-inert under zlib. No claim is made that changing them jointly leaves decoding unchanged; changes in compressed code tables can interact. They carry at most 17 directly observed binary values under this extraction, insufficient by themselves to encode an unconstrained 128-bit K04 or K08 component. Their original sequence has no independently specified conversion into an archive component. No new candidate is certified, and there is no evidence of intentional encoding.
+
+This extends the original test from unused terminal bits to the entire compressed stream; it does not alter the negative result for the explicit 176 full-length-channel candidates or the six-pass/two-missing recovery state. The original ZIP and extracted evidence were never modified.
