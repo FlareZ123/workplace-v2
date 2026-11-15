@@ -1,13 +1,21 @@
-name: Agent32 H17 source-named public incident index
+name: Agent32 H17 source-named public bookmark mirror
 on:
   workflow_dispatch:
 jobs:
-  incident-index:
+  bookmark-mirror:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - name: Probe source-named public static document paths
+      - name: Probe exact bookmarked public static paths
         run: python agents/agent32/h17_named_public_incident_index_sft.py
+      - name: Preserve successful public responses for short-lived review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h17-public-bookmark-mirror-${{ github.run_id }}
+          path: public_bookmark_mirror/
+          if-no-files-found: ignore
+          retention-days: 3
