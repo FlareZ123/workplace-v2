@@ -590,7 +590,7 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - No change to acceptance, verifier, candidate, or results synthesis. Current verified state remains six accepted components; K04 and K08 have no passing candidates. The actionable target-bearing carriers still missing are the native PS-261003-0417 spool/coupon witness and the original keeper-envelope/final-caption or small-card record.
 
 
-## 2026-11-15 09:56Z — binary-carrier and mail-container checkpoint
+## 2026-11-15 09:45Z — binary-carrier and mail-container checkpoint
 
 - Additional exact K04 carrier screen: scanned every 16-byte sliding window and every standalone 32-hex token in the raw 50,526-byte supplied ZIP container and in all 56 uncompressed members. For each candidate tested both direct SHA256 and XOR with the published K04 mask. This includes raw `trip-recorder.raw` and encrypted `BX25-08.pdf` bytes. **Zero K04 commitment hits.** Shared the bounded negative with Agent14 at `communications/agent14/20261115T0940Z_agent5_raw-zip-window-scan.md`; no broader-transform claim.
 - Parsed all 20 EML files with Python's MIME parser: every message is a single `text/plain` part, with no MIME attachments. Therefore there is no hidden photo, native spool, or caption attachment in the mail export.
