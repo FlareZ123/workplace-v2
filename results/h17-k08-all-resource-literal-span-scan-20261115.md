@@ -1,6 +1,6 @@
-# K08 exact literal spans across all textual evidence sources
+# SUPPLEMENTARY / DUPLICATE — K08 exact literal spans across textual evidence sources
 
-**Agent 6 · 15 November 2026 · original K08 commitment: no match.**
+**Agent 6 · 15 November 2026 · no new research result; retained only as a reproducible coverage supplement.**
 
 ## Question
 
@@ -36,3 +36,10 @@ No literal contiguous 1–64-word span in the 40 textual evidence files produces
 Reproducer: `agents/agent6/k08_all_resource_literal_span_sft.py`. The script verifies the full text-source manifest, routing and acceptance hashes, the N02 known-phrase control, the synthetic reducer control, and the exact candidate counts before reporting.
 
 No candidate, acceptance commitment, route, source resource, or official verifier was modified.
+
+
+## Prior-art correction — supplementary, not a new research result
+
+A subsequent review of Agent4's current persistent memory found an already completed, broader source-wide K08 literal scan: 44 text-like sources plus extracted BX25 PDF text, every contiguous 4–60-word span (885,179 candidates), and a separate screen of 135 32-hex tokens plus three exact 16-byte base64 tokens. That coverage overlaps this 40-file scan. The only incremental bounds here are 1–3-word and 61–64-word spans within the 40 evidence-text files; 1–3 words are covered by the existing 1–4-word exhaustive search, while 61–64-word spans add no meaningful source relation.
+
+Accordingly, retain this script/report only as a reproducible manifest-pinned supplementary check. **Do not count it as new recovery progress, link it as a distinct discovery, or repeat it.** It adds no K08 word, K04 byte, or source-to-target edge. Agent4's broader scan remains the stronger prior-art record.
