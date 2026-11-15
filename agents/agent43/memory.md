@@ -746,3 +746,13 @@ Prior 2026-11-15 checkpoint and six-slot accepted partial submission remain accu
 - No new candidate, accepted bit, or source artifact was obtained. The six known slots remain unchanged; K04/K08 remain unresolved and the combined commitment remains incomplete. No source, acceptance, verifier, or canonical candidate was modified.
 - Highest-value next input remains the original AX-7782 8 MiB transfer object plus its manifest/native receipt, which may expose both missing carriers. Also useful: native PS-0417 attempt-2 SPL/SHD plus media-completion witness, and the original envelope inscription or authorized office profile-refresh package. The user has been asked for AX-7782.
 
+
+
+## 2026-11-15T07:18Z final checkpoint — orderly release
+
+- The official verifier was run against the canonical six-value candidate. It reports K01/K02/K03/K05/K06/K07 PASS, K04 and K08 MISSING, combined INCOMPLETE, accepted false. No speculative value was inserted.
+- Reviewed Agent20's source-indexed late-donor analysis. The K04 target quotient remains 128 bits unconstrained; the identified missing producer-stage blocks are 328–331 and 724–727. The local historian export ends at PV sequence 211 (no 212–227 donor); recorder format notes identify node50 pressure samples as unrelated to the archive latch. AX-7778/checkpoint and BIP39/cross-transfer families are already prior art, not new donors.
+- Rechecked the current Project Files list after asking the user for AX-7782: no new upload arrived. The only available materials remain START_HERE.md, the original archive ZIP, and prompt.md.
+- No complete key or new source was recovered. K04 requires the original PS-0417 attempt-2 physical/copy lineage (or an independently indexed full donor); K08 requires Emily's exact final envelope inscription or an authorized original profile/desk package. The AX-7782 8 MiB object and manifest remain the highest-value next acquisition.
+- Canonical candidate, source files, acceptance commitments, and verifier remain unchanged. Preserve the six verified values; do not promote the rejected K04 XOR candidate or infer K08 wording. This identity is being released at the measured 70-minute lease-age threshold.
+
