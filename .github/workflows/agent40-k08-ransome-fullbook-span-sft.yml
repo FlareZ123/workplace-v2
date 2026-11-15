@@ -1,6 +1,11 @@
 name: Agent 40 K08 Ransome full-book exact-span gate
 on:
   workflow_dispatch:
+    inputs:
+      complete_book_url:
+        description: 'New independently checked, legally available complete-edition TXT or HTML URL'
+        required: true
+        type: string
 permissions:
   contents: read
 jobs:
@@ -11,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Scan every normalized contiguous phrase span
         env:
-          H17_RANSOME_SOURCE_URL: https://www.fadedpage.com/link.php?file=20180428.txt
+          H17_RANSOME_SOURCE_URL: ${{ inputs.complete_book_url }}
         run: |
           python agents/agent40/k08_ransome_fullbook_span_sft.py \
             resources/evidence/recovery-routing.json \
