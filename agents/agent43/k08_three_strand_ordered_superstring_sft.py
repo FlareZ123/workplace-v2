@@ -1,11 +1,12 @@
-"""K08: source-ordered shortest-common-superstring test.
+"""K08: source-ordered maximal-overlap caption merge test.
 
 This is a bounded editorial/copy hypothesis distinct from the three-way SCS
 interleaving test. It preserves the N20-described order:
 N01 sea -> N13 end of the night -> N20 voices at the table.
-For each predeclared source-span triple, merge only by maximal suffix/prefix
-overlap (or containment), with no arbitrary interleaving or added vocabulary.
-It is exploratory and does not imply that Emily used this operation.
+For each predeclared source-span triple, append spans in that order using only
+the longest exact suffix/prefix overlap (or containment). No arbitrary
+interleaving, strand reordering or extra vocabulary is allowed. It is
+exploratory and does not imply that Emily used this operation.
 """
 import hashlib
 import hmac
