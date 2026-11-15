@@ -633,3 +633,13 @@ A separate source-grounded alternative treated each (CLASS, DEST) combination as
 Global exact-identifier GitHub code searches for the missing mug-stock workbook, AX-7782 object, spool job, and asset card returned no additional public source outside workplace-v2. Issue #1 supplied no new source link. No new source-bearing K04 or K08 evidence was found.
 
 Next useful work must begin from a new source-attested carrier, a reproducible producer with intact controls, or a genuinely new cross-role invariant. Do not reopen masked-payload BIP39, exact-note HMAC, route-constant HMAC/metadata, global PRNG families, or the per-queue LCG/xorshift tests without new evidence.
+
+## 2026-11-15 checkpoint — transfer-audit control and joint candidate closure
+
+Validated the K07 transfer rule against the accepted K07 commitment. For AX-7782, selecting the greatest attempt per chunk sequence 0–7 and concatenating the eight checkpoint hex values in sequence order yields 8947CEDCB9CC73BAB7E87BE63302C5C9. SHA-256 first 16 bytes is 93495F5E425AB8E592123DABAEB68545; SHA-256 of that component matches the K07 acceptance hash. This is a strong control that the AX-7782 transfer selection and checkpoint serialization are correct.
+
+Used that control to test a distinct joint K04/K08 hypothesis: the eight 16-bit AX-7782 checkpoints form 128-bit entropy, K04 is that vector XOR the K04 mask, and K08 is the BIP39 mnemonic HMACed with the desk nonce. Exhausted all 256 per-chunk attempt selections, both byte orders, and both chunk directions; no K04 or K08 commitment matched. Also tested the selected checkpoint vector as a direct masked K04 payload, its per-chunk retry-delta vector, HMAC under the desk nonce, and BIP39 of the validated K07 component; none matched. The transfer checkpoint chain is therefore a validated K07 source, not a demonstrated K04/K08 bridge.
+
+A separate complete source-record constructor packed the four North repair tickets ST-094, ST-081, ST-106, ST-099 (excluding ST-112 catch-cleaning) as four (uint16 ticket suffix, uint16 amount-cents) records in binder order. Big/little endian and field-order variants, plus ID-only and amount-only 32-bit forms, did not match K04. Do not continue ticket-packing or transfer-checkpoint-vector variants without new source evidence.
+
+Next useful work remains a genuinely new source-attested K04 carrier or an explicit K08 text-revision/assembly source. Avoid generic cryptographic, PRNG, wordlist, or transfer-vector permutations.
