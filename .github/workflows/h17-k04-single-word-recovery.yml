@@ -1,0 +1,39 @@
+name: H17 K04 single-word recovery search
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  search:
+    name: Replace aligned 32-bit word at byte offset ${{ matrix.offset }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        offset: [0, 4, 8, 12]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OpenSSL headers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev
+      - name: Compile deterministic search
+        run: |
+          cc -O3 -march=native -Wno-deprecated-declarations work/h17_k04_single_word_32.c -o /tmp/k04-word-search -lcrypto
+      - name: Verify search implementation
+        run: /tmp/k04-word-search --selftest
+      - name: Search complete 32-bit word space
+        run: |
+          /tmp/k04-word-search "${{ matrix.offset }}" 4294967296 | tee "result-${{ matrix.offset }}.txt"
+      - name: Preserve result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k04-single-word-offset-${{ matrix.offset }}
+          path: result-${{ matrix.offset }}.txt
+          if-no-files-found: ignore
