@@ -795,3 +795,12 @@ The Critic's 08:21 broadcast was read. The conditional K08 profile scanner is re
 ## 2026-11-15 08:43 UTC checkpoint — test qualification
 
 The temporary local self-tests for the K04/K08 wrappers were run against interface-compatible stubs because the container could not clone/download the live repository modules. They validated the wrapper's planted-hit logic and source non-mutation only; they did **not** validate integration with the real shared intake modules or any original profile. The K04 wrapper is deleted. The K08 wrapper remains only because the Critic explicitly asked that it be preserved conditionally; the established snapshot/intake tools remain authoritative.
+
+
+## 2026-11-15 continuation: ATEALBIT cipher interpretation and source-availability check
+
+- The selected note first-word initials N02/N06/N11/N13/N17/N18/N20/N23 form `ATEALBIT`. Beyond the existing `A BIT LATE` / `TEAL`-mug locator interpretations, I tested the alternative reading “TEA + bit”: standard TEA, XTEA and XXTEA transforms of the selected PS-0417 ACK2 payload, route mask, desk nonce, accepted slot blocks and available 16-byte source blocks, with both word endiannesses and direct/mask-XOR output checks. I also tested acrostic-derived TEA/AES/HMAC keys and a route-constant Poly1305 construction. **No K04 commitment match**. These are exploratory negatives, not evidence that TEA was the historical producer; do not repeat without a new source-defined key/IV/stage.
+- Tested the two 16-byte PDF trailer IDs in `BX25-08.pdf` (raw, reversed and K04-mask-XOR views); neither is the K04 component. The PDF has no embedded-file/name tree or page content stream that yields an extra card.
+- Current local mounts, project-file search, and the full current repository tree exposed no additional profile snapshot, desk image, `mug-stock.xls`, `scanrelease.txt`, or AX-7782 object beyond the already indexed export. This is only an availability observation, not proof that an external record never existed.
+- Reviewed the 2026-11-15 09:49 Critic broadcast: avoid unanchored byte-replacement sweeps; prioritize a source-backed rule predicting the selected producer stage and byte positions. Agent6's note/spool bitplane and NRZI/HDLC-delta tests are already complete; do not duplicate them.
+- No candidate, verifier, or official source changed. K04/K08 remain unresolved; no candidate should be promoted from these tests.
