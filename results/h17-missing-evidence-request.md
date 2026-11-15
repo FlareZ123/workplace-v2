@@ -520,3 +520,11 @@ If an authorized custody path or unsolicited source delivery becomes available, 
 5. The original queue manifest or job index proving whether the N01–N24 ↔ 0301–0324 association is causal, plus any missing Bundle 06 trim/omission entries for these jobs.
 
 This is a precise locator and acquisition refinement, not a claim that the reconstructed 16-byte payload contains the phrase. The spool log labels payload integrity unverified, and ACK proves receipt rather than correctness. Keep the existing 21 October custodian channel closed; do not send a new request through it. Preserve the original files and rendered copies without re-encoding.
+
+## Conditional secondary K08 locator: possible N25–N36 / PS-0336 material
+
+The supplied note export contains N01–N24 only. The custodian explicitly describes this as a working preservation export rather than the full incident record and warns that absence of a textual gap marker is not a completeness certificate. The first 24 note IDs structurally align with PS-0301–PS-0324 at five-minute intervals; the next 12 ordinary jobs continue that cadence through PS-0336. Separately, the unverified North ticket-complement locator ST-081 → PS-0336 yields the arithmetic label N36 (job suffix minus 300). PS-0336 is a LABEL/bench ACK with a 16-byte opaque payload.
+
+This is **not** evidence that N36 exists, that it is a photo caption, or that PS-0336 contains Emily's wording. The note/job role holdouts are weak and neither the supplier CSV nor the spool log supplies a foreign key. Do not run another ticket/payload transform grid or promote this as a K08 source.
+
+If an already-authorized Bundle 06 manifest, full WN-14/profile image, or native queue manifest becomes available, preserve any N25–N36 desk/photo-caption sidecars and the native PS-0336 .SPL/.SHD plus rendered output as a **secondary discriminator**. A manifest or custody record must independently bind the missing note/caption to the job before its content is used. The primary K08 witness remains Emily's original recovery-envelope face/margin and authenticated photo-caption revision history. Do not reopen the closed custodian channel or probe protected paths.
