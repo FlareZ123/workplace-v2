@@ -1,6 +1,6 @@
 # K08: specific Praeger 1947 North-page extraction hypothesis
 
-**Status: unverified acquisition/extraction lead; not a recovered component.**
+**Status: unverified locator hypothesis only; not a K08 phrase candidate and not a recovered component.**
 
 ## Why this is materially different from a generic book-cipher sweep
 
@@ -34,20 +34,21 @@ Read the **305th word** on each page, in the explicit North binder-tab order:
 
 All five pages lie within the 1947 edition's “The Volcanic North” section (p.62–p.117), ending immediately before “The Silurian Region” at p.118. The North/South distinction therefore has an independent geographic/structural fit. The South values are deliberately excluded because MAIL-16 says ESC-S is not an input to the keeper phrase.
 
-The candidate produced by this construction is a five-word sequence. Whether that satisfies the “longer than the standby wording” description in the crew notes must be checked; “longer” may refer to character length rather than token count. Do not silently add words or paraphrase.
+The page-word construction yields at most a five-word locator sequence. It is not asserted to be the longer final caption described in N20; that caption must be read from the original envelope/card.
 
-## Required extraction and validation
+## Required use and validation boundary
 
-1. Confirm the actual H-17 book is the 1947 third edition, not another edition or a different map-backed book.
-2. Obtain clear scans/OCR of pp.86, 99, 104, 111, and 117 from that exact copy.
-3. Count the 305th word on each page, preserving the table order above. Record the counting convention (hyphenated words, headers, captions, footnotes, and page numbers).
-4. Concatenate the five extracted words in binder order.
-5. Apply the exact K08 normalization in `evidence/recovery-routing.json` (lowercase; replace non-ASCII letters/digits/whitespace with spaces; collapse whitespace; trim), compute HMAC-SHA256 with the specified desk nonce as key, take the first 16 bytes, and compare SHA-256 against the unchanged K08 commitment. The existing `work/h17_check_phrase.py` performs this exact candidate check.
-6. Accept only an exact commitment match. If it fails on the confirmed physical edition, reject this construction rather than broadening it into a generic page/word sweep.
+The repository's source-role synthesis identifies the book/map as a **locator**, not the direct K08 phrase source. The direct K08 source remains Emily's literal final keeper-envelope face/margin or the small card by the chipped-blue mugs. Therefore:
+
+1. Confirm whether the H-17 map-backed book is actually the 1947 third edition; the external catalogue match alone does not prove the physical copy's identity.
+2. Only if the exact edition is confirmed, obtain pp.86, 99, 104, 111, and 117 and extract the 305th word in the North binder order above as a **possible locator clue**. Record the counting convention (hyphenated words, headers, captions, footnotes, and page numbers).
+3. Do **not** treat the five book words as the keeper phrase, do not run them through the K08 HMAC as a phrase candidate, and do not add paraphrased words. Use them, at most, to locate or identify the missing card/envelope.
+4. Transcribe the actual phrase verbatim from the original keeper-envelope face/margin or the small card by the chipped-blue mugs. Only that independently sourced literal phrase should be passed to `work/h17_check_phrase.py` and checked against the unchanged K08 commitment.
+5. If the page-word locator does not identify the physical card/envelope, stop this branch; do not broaden it into a generic page/word sweep.
 
 ## Limitations and current state
 
-- No page text from the exact 1947 third edition was available in the local export during this run; no five-word phrase has been extracted and no K08 candidate is claimed.
+- No page text from the exact 1947 third edition was available in the local export during this run; no locator words have been extracted, no physical card/envelope has been found, and no K08 phrase candidate is claimed.
 - Other editions exist and have different pagination: 1937 first edition (394 pp), 1939 second edition (304 pp), 1947 third edition (416 pp), and 1997 reprint (394 pp). The 1939 edition also has a folding map at the end. The map clue alone therefore does not identify the edition; do not substitute another edition for the 1947 third-edition coordinates.
 - MAIL-09 does not name the book, so the title/edition match remains a hypothesis until the physical copy is confirmed.
 - K04 remains unresolved. The selected PS-0417 ACK payload XOR the supplied mask does not meet the K04 commitment; the dispatch ACK is not a media-integrity guarantee. The native PS-0417 spool/coupon or the original AX-7782 object remains the high-value acquisition target.
