@@ -1,0 +1,23 @@
+name: Agent 40 K08 Ransome full-book exact-span gate
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan every normalized contiguous phrase span
+        run: |
+          python agents/agent40/k08_ransome_fullbook_span_sft.py \
+            resources/evidence/recovery-routing.json \
+            resources/acceptance.json \
+            /tmp/k08-ransome-fullbook-span-result.json
+      - name: Preserve compact result (no book quotation)
+        uses: actions/upload-artifact@v4
+        with:
+          name: k08-ransome-fullbook-span-result
+          path: /tmp/k08-ransome-fullbook-span-result.json
+          if-no-files-found: error
