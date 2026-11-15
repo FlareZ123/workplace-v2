@@ -201,7 +201,8 @@ def build_candidate_blocks():
     }
     for label, seqs in recorder_groups.items():
         rows = [by_seq[s] for s in seqs]
-        blocks[f"TRP2_{label}"] = b"".join(r["control"] for r in rows)
+        if label != "K05":  # K05 control block is already the K05 slot preimage.
+            blocks[f"TRP2_{label}"] = b"".join(r["control"] for r in rows)
 
         stored = b"".join(r["stored_crc"].to_bytes(4, "little") for r in rows)
         calculated = b"".join(r["calculated_crc"].to_bytes(4, "little") for r in rows)
