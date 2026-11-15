@@ -60,6 +60,6 @@ A slower reference implementation is preserved at [`agents/agent17/k04_k08_direc
 
 **Reject the direct identity `ESC-N coupon = K08 HMAC16` for this 69.12-million-phrase family.** The simplest same-component construction does not explain K04 or K08.
 
-This does not rule out a native ESC-N print object containing a rendered copy of Emily's wording, nor a different source-defined relationship between the two slots. It does not recover any K04 coupon bytes or K08 final words. The native PS-0417 spool/media and Emily's literal final envelope margin remain the target-bearing evidence.
+The opposite direct identity, `K04_component = K08_HMAC16`, is algebraically impossible: the committed SHA-256 values differ (`K04 = 930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`; `K08 = 285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747`). The tested coupon identity and this opposite component identity therefore close both simplest same-block interpretations. This does not rule out a native ESC-N print object containing a rendered copy of Emily's wording, nor a different source-defined relationship between the two slots. It does not recover any K04 coupon bytes or K08 final words. The native PS-0417 spool/media and Emily's literal final envelope margin remain the target-bearing evidence.
 
 The K04/K08 joint-carrier hypothesis should now be described as *media-level only and unconfirmed*; do not repeat this exact HMAC16-as-coupon search unless the phrase family or source evidence materially changes.
