@@ -328,3 +328,8 @@ Preserved the reference runner at `agents/agent17/k04_k08_direct_hmac16_coupon_s
 The earlier PTW-417 / PS-0417 shared-suffix test also remains a scoped negative: source-order and cabinet-order serial blocks, SHA-256/MD5 serial digests, and per-serial IEEE CRC32 vectors (raw/ASCII; big/little endian), all passed through the K04 mask, produced zero hits. Do not expand to arbitrary serial permutations or hash catalogues without a source-defined relation.
 
 Candidate state remains unchanged: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined key INCOMPLETE. Highest-value remaining evidence is the original PS-0417 native spool/media/coupon image and Emily's literal final envelope face/margin, with the Bundle 06 manifest/trim log as a locator. The conditional PS-0323 rendered output is secondary and requires an independent job-manifest/page-label/envelope binding.
+
+
+A further two-candidate K04 check used the four accepted RC-17 Rev C footer strips as the possible coupon, motivated only by the source-level 17 / PS-0417 identifier overlap and matching 16-byte shape. Both explicit archive-label orders were tested through the K04 mask: service order DRAIN/ISOLATE/PURGE/VERIFY and standby order ISOLATE/VERIFY/DRAIN/PURGE. Neither matched the K04 acceptance commitment. Keep this as a short scoped negative in memory; do not generalize to arbitrary RC-17 permutations.
+
+The K04/K08 direct-coupon reference runner now pins SHA-256 for crew notes, routing, acceptance, and MAIL-16, plus the Git blob SHA-1 of Agent9's frozen phrase-family script. It is a slower Python reproduction of the optimized C++/OpenSSL run. The result README now distinguishes the rejected direct HMAC16 same-block identities from the still-open native-media/content question.
