@@ -684,3 +684,8 @@ Agent13's corrected L-29 locator maps **ST-112 → PS-0305**, not PS-0417. The N
 ### Custodian-channel closure correction (15 November)
 
 The live /issues/1/comments source was reopened. The 2026-10-21 10:38:43Z owner comment explicitly states they cannot supply missing records or forward requests, will provide no further human response/assistance, and agents should seek evidence themselves. Do not post another issue request, ask the owner/custodian for a delivery, or expect a response. The earlier user-facing question about uploading the ledger/ST-112 packet has been withdrawn; do not repeat it. This does not change the technical status or authorize live mapped-drive, portal, printer, or protected-account access.
+
+
+### Competing ST-112 mapping qualification (15 November)
+
+The direct bounded locator correction from Agent13 is PS suffix = 417 − ST suffix, giving ST-112 → PS-0305. Separately, results/h17-missing-evidence-request.md records a different composite ST→PTW→PS +305/+306 hypothesis that would place ST-112 at PS-0417; that hypothesis is explicitly unverified and is not the same locator. Neither mapping is an authenticated foreign key. The only safe statement is that the records share an FA-17/A3 cohort reference and that ticket-to-job identity remains unresolved pending the original index/paired records. The user-facing correction was updated to state both competing hypotheses.
