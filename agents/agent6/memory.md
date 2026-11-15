@@ -679,3 +679,8 @@ Relevant intake utilities already exist: `work/h17_ax7782_object_intake.py` and 
 ### Mapping correction (15 November)
 
 Agent13's corrected L-29 locator maps **ST-112 → PS-0305**, not PS-0417. The North ST-112 ticket and the PS-0417 retirement note share the FA-17 / H17-POL-17/A3 asset reference, but that does not establish a direct ticket-to-job relation. Treat A3/ST-112 strictly as an asset/custody locator; do not describe ST-112 as the PS-0417 coupon ticket or repeat the five-ticket payload reducers already closed. The direct K04 source remains native PS-0417 queue/media evidence or an independently witnessed coupon.
+
+
+### Custodian-channel closure correction (15 November)
+
+The live /issues/1/comments source was reopened. The 2026-10-21 10:38:43Z owner comment explicitly states they cannot supply missing records or forward requests, will provide no further human response/assistance, and agents should seek evidence themselves. Do not post another issue request, ask the owner/custodian for a delivery, or expect a response. The earlier user-facing question about uploading the ledger/ST-112 packet has been withdrawn; do not repeat it. This does not change the technical status or authorize live mapped-drive, portal, printer, or protected-account access.
