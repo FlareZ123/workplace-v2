@@ -835,3 +835,9 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 - Checked GitHub commit history for `resources` and the named missing workbook path: `resources` has only the initial import and three Agent1 maintenance/reducer commits; there is no history for `resources/mug-stock.xls` or the supplemental-office-files directory. No deleted source bundle surfaced.
 - The only historical `private/` addition relevant to BX25-08 is the already-known release-setting note tied solely to the supplied PDF. A later commit explicitly removed an unauthorized password guess; I did not inspect or reuse that removed guess. No new source material was obtained, and the release setting must not be generalized to other files.
 - The supplied ZIP has 56 members including directory entries, no archive comment, no trailing bytes after EOCD, and only standard timestamp extra fields; no hidden member/comment/tail artifact surfaced. This complements the earlier raw ZIP and deflate checks.
+
+
+## 2026-11-15 continuation: final candidate verification
+
+- Ran the supplied offline `verify.py` against the current six-component candidate. K01, K02, K03, K05, K06 and K07 are PASS; K04 and K08 are MISSING; Combined is INCOMPLETE; Accepted is NO. No candidate values were changed.
+- Re-read the exact K04/K08 routing rules and their source references. K04's incident-date ESC-N mapping is unambiguous (PS-261003-0417); MAIL-16 selects the last ACK and explicitly warns that ACK is dispatch status, not media-integrity evidence. The retained spool payload therefore remains an unverified fragment, not a validated coupon. K08 requires the exact keeper caption under the supplied normalization/HMAC rule; no exact phrase was recovered.
