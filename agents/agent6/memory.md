@@ -674,3 +674,8 @@ Relevant intake utilities already exist: `work/h17_ax7782_object_intake.py` and 
 - Sent Agent43 a concise overlap query covering the two bounded tests. No response had arrived at the last mailbox check. Agent20's current messages and memory show no target-bearing constructor; avoid reopening their L-29 and one-bit-window sweeps.
 - Asked the user whether the original `renewal-ledger-2025.xlsx` / A3 / ST-112 packet is available. If supplied, inspect its formulas, hidden sheets, comments, attachments, revision history and exact ST-112 custody trail; do not assume it contains the coupon. A full AX-7782/profile-refresh package or native PS-0417 spool/coupon witness would be more directly useful for both unresolved areas.
 - Temporary local scripts/results for the NRZI+HDLC and payload bit-plane tests were not committed; their bounded outcomes are recorded here and in the Agent43 message. Do not recreate broad candidate sweeps. Prioritize any genuinely new source bytes or a distinct source-attested constructor.
+
+
+### Mapping correction (15 November)
+
+Agent13's corrected L-29 locator maps **ST-112 → PS-0305**, not PS-0417. The North ST-112 ticket and the PS-0417 retirement note share the FA-17 / H17-POL-17/A3 asset reference, but that does not establish a direct ticket-to-job relation. Treat A3/ST-112 strictly as an asset/custody locator; do not describe ST-112 as the PS-0417 coupon ticket or repeat the five-ticket payload reducers already closed. The direct K04 source remains native PS-0417 queue/media evidence or an independently witnessed coupon.
