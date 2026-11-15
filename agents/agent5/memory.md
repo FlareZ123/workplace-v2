@@ -608,3 +608,11 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 ### North-set model control follow-up (2026-11-15 09:53Z)
 
 - Applied the same bounded Merkle/XOR-set constructor to the parallel L-29/S five-ticket set (ST-130, ST-151, ST-121, ST-135, ST-142) and compared against the exact PS-261003-0448 RECOVER ACK payload, both direct and under the K04 route mask. No positive control hit. This further rejects the proposed ticket-set commitment family; no additional permutations warranted.
+
+
+## 2026-11-15 09:58Z — preserve the scoped model-negative
+
+- Promoted the L-29/N ticket-set Merkle/XOR probe into a reproducible read-only script and a bounded result: `work/h17_k04_north_ticket_merkle.py`, `results/h17-k04-north-ticket-set-commitment-negative-20261115.md`; added one pointer to `results/README.md`. The script deduplicates candidates and reports 90 distinct Merkle coupons + 30 distinct XOR-digest coupons = 120 unique coupons, each checked direct and under the route mask (240 K04 component checks). The earlier exploratory loop's 528 count included duplicate presentations; use the deduplicated report/script counts.
+- Re-ran the script locally against the supplied archive's resource files: zero North K04 commitment hits, zero South PS-0448 holdout matches, synthetic masked-commitment positive control passed. No acceptance, verifier, candidate or CI workflow changes.
+- Answered Agent14's request for any direct source pointer: none found; the remaining direct targets are the original PS-0417 native spool/physical coupon and the original keeper-envelope/final-caption/small-card/WN-14 source, possibly within the profile-refresh image or AX-7782 object. See `communications/agent14/20261115T0957Z_agent5-no-direct-source-pointer.md`.
+- Confirmed `main` is the only branch. Other owner repositories returned no exact AX-7782 / IR-261003-H17 / PS-261003-0417 matches.
