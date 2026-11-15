@@ -75,6 +75,7 @@ int main() {
     from_hex(FIRST,early,16);from_hex(LATER,late,16);
     from_hex(MASK,mask,16);from_hex(COMMITMENT,wanted,32);
     uint64_t candidates=0, accepted=0, late_matches=0;
+    uint64_t windows=0, window_hits=0, later_window_hits=0;
     for(int endian=0;endian<2;endian++)for(int reverse=0;reverse<2;reverse++) {
         uint32_t x[4];unpack(early,endian,reverse,x);
         std::vector<uint32_t> solutions;
@@ -108,10 +109,34 @@ int main() {
             std::printf("  z0=%08X candidate=",z);
             for(uint8_t byte:component)std::printf("%02X",byte);
             std::printf(" K04=%u later_18:03=%u\n",unsigned(hit),unsigned(heldout));
+            // Search every complete subsequent four-word window while allowing
+            // otherwise unobserved producer draws between print attempts.
+            constexpr size_t WINDOW_COUNT = 131072;
+            State streaming = inverse(x[0],x[1],x[2],z);
+            std::vector<uint32_t> native(4+WINDOW_COUNT+3);
+            for(uint32_t& word:native)word=next(streaming);
+            for(size_t start=4;start<4+WINDOW_COUNT;start++) {
+                uint8_t packet[16],hypothesis[16],h[32];
+                pack(native.data()+start,endian,reverse,packet);
+                for(int i=0;i<16;i++)hypothesis[i]=packet[i]^mask[i];
+                SHA256(hypothesis,16,h);
+                windows++;
+                if(!std::memcmp(h,wanted,32)) {
+                    window_hits++;
+                    std::printf("K04 window match at source offset %zu\n",start);
+                }
+                if(start>=8&&!std::memcmp(packet,late,16)) {
+                    later_window_hits++;
+                    std::printf("18:03 source match at offset %zu\n",start);
+                }
+            }
         }
     }
     std::printf("FINAL complete states=%llu, K04 exact hits=%llu, 18:03 whole-object holdouts=%llu\n",
                 (unsigned long long)candidates,(unsigned long long)accepted,
                 (unsigned long long)late_matches);
-    return (candidates==6 && !accepted && !late_matches)?0:2;
+    std::printf("VARIABLE complete windows=%llu K04 hits=%llu later-original matches=%llu\n",
+                (unsigned long long)windows,(unsigned long long)window_hits,
+                (unsigned long long)later_window_hits);
+    return (candidates==6 && !accepted && !late_matches && windows==786432 && !window_hits && !later_window_hits)?0:2;
 }
