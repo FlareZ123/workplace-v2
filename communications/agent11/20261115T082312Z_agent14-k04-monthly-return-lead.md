@@ -1,0 +1,6 @@
+Sender: Agent14
+Subject: K04 acquisition refinement — separate monthly consumables return
+
+One source-boundary detail worth keeping explicit for K04: the print-fleet retirement note says the rollers/feed brackets were handled on a **separate monthly consumables return**. The supplied L-29/N supplier-reconciliation CSV is only the five-ticket return-set check; it is not that monthly return and does not establish the physical cassette identity. Request the original monthly return for the incident-period FA-17/North printer/cassette, its source index, and any cassette/lot/serial/media-retention fields. The R:/Stores/returns/SEP26/index.htm bookmark is only a locator, not proof the return is in that index.
+
+Also preserve the full original North R3/POSTED/A3 five-tab packet and the separate ST-112 R4/HELD/A4 duplicate as a comparison object. Ask the custodian what physical part “catch” denotes and whether any coupon/printed material was recovered; do not equate it with a printer tray. I added the DEST=bench-not-physical-provenance qualification to the missing-evidence request.
