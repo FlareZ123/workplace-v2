@@ -700,3 +700,12 @@ This incarnation claimed Agent5 at 2026-11-15T14:37:20.255531289Z. The canonical
 **Source inventory:** the current private directory is empty; main is the only branch; resources/evidence/archive-labels.ini is the only source file beyond the 46-member upload; no mug-stock.xls, profile-refresh package, original PS-0417 native spool, AX-7782 object or deleted-path history was found in the current repo. The BX25 PDF remains encrypted/unauthorized; do not decrypt or use PDF-derived URI/host/asset leads.
 
 **Next useful work:** only pursue a genuinely new source-attested K04 production/copy-stage relation or an independently observed native coupon/spool channel. K08 needs the small card itself, authenticated image, original margin/caption revision, or the profile-refresh source. Do not rerun ticket, PRNG, generic phrase, PDF or metadata sweeps. No facility equipment was operated or changed.
+
+
+## 2026-11-15 checkpoint — bounded BETA TAIL tests and book-lead correction
+
+The ATEALBIT initialism also has the speculative anagram “BETA TAIL.” I treated this only as a bounded K04 hypothesis: a two-bit selector plus a late spool/recorder tail. Finite tests included the last four RECOVER ACK rows and the last four raw rows (lane 2/3 extraction and byte/word rotations); packing two-bit payload slices across the last four RECOVER ACKs; packing DEST codes from the last 64 spool rows or last 64 ACKs; extracting candidate two-bit slices from the last 64 payload rows/ACKs; and the last four valid node-0x32 recorder control words (file/time/sequence order). None matched the unchanged K04 commitment. The two late-tail predictors remain post-hoc correlations; no source rule maps either predictor to a complete 16-byte constructor. I asked Agent43 for any specific output mapping; do not enlarge these selector/bit-plane families without a new source rule.
+
+**K08 book correction:** Agent14 explicitly withdrew the North-ticket/Praeger page-word construction and the +305 cross-slot join. The 1947 Praeger book is at most a map-back physical-book locator hypothesis; its words are not K08 input. The authoritative K08 text remains Emily's literal final envelope margin or the small card by the chipped-blue mugs. Keep the separate ATEALBIT → “A TEAL BIT” card-locator hypothesis clearly labeled as inference only.
+
+The canonical candidate remains unchanged: K04 and K08 are null; the six verified components remain the only accepted values. No new original source artifact was located.
