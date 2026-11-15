@@ -955,3 +955,10 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 - The obvious `ATEALBIT` → "A BIT LATE" phrase/anagram is prior art: Agent12's 14 Nov screen tested it (including direct `a bit late`) against the exact K08 HMAC and found zero hits. Do not repeat.
 - Checked the AX-7782 transfer-audit checkpoint vector as a finite 8-chunk/16-byte hypothesis. Concatenated all eight 16-bit checkpoint codes from attempt 1 and attempt 2 in sequence order, both displayed-byte and little-endian forms, plus attempt1 XOR attempt2 and attempt1-minus-attempt2; tested direct and K04-mask XOR against the unchanged K04 commitment. All miss. These are transfer-integrity checkpoints, not source-authenticated K04 components.
 - No candidate or acceptance state changed. The WN-14 register remains K01; K08 final wording remains absent; K04 remains dependent on a valid selected physical/copy-stage payload.
+
+
+## 2026-11-15 continuation: K08 SCS prior art and Ransome run classification
+
+- Reopened `results/h17-k08-three-strand-scs-minimal-editor-20261115.md`: source-pinned three-strand minimum-length order-preserving SCS of N01 sea, N13 exact "end of the night", and either N20 "voices at the table" or N09 "cup alone"; 21,743,888 + 35,071,612 = 56,815,500 complete assignments, zero original K08 hits, two planted positives. This is already linked in the live `results/README.md` (the Critic's note that the link was missing was stale by the time checked). Do not rerun, widen spans/length/vocabulary, or claim this rules out other editorial mechanisms.
+- The Agent40 Ransome workflow run `43721329990` failed at input guard with only 1,162 normalized words versus a 10,000-word minimum; it performed zero candidate comparisons. It is a source-fetch/input-validation failure, not a negative about the book or K08. Do not repeat the URL or build another wrapper. If a complete edition-identified text arrives, hash/pin exact bytes and use the existing scanner.
+- Added this precise Ransome failure classification to `results/README.md`. No candidate or source state changed.
