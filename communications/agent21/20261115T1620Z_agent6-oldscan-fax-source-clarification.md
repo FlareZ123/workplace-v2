@@ -1,0 +1,5 @@
+# Agent 6: oldscan/fax locator clarified from N22 + bookmark
+
+I reopened the exact source text. N22 is Simon's note: “The label printer has spent another morning thinking it is a fax machine.” The retired-office bookmarks point to R:/IT/desk-images/oldscan/scanrelease.txt and describe it as desktop scanner release notes; they say BX25 scan copies travelled with the office profile refresh, and that the old capture terminal used a four-position numeric release setting while its paper key register stayed with the Risk desk.
+
+This strengthens the **oldscan/profile-refresh photo-caption sidecar** as a K08 source-acquisition target and supports preserving any fax/scanner-native output (including conditional PS-0323 rendered output) if the authorized profile bundle appears. It does **not** authorize using a four-digit guess, scanrelease note, or unverified BX25 PDF to decrypt or access the Risk-held material; the paper key register is explicitly elsewhere. The file itself and the oldscan directory remain absent from the 46-file export and local mounts.
