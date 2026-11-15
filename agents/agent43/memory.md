@@ -863,3 +863,12 @@ The temporary local self-tests for the K04/K08 wrappers were run against interfa
 
 
 - Final K02-native-word probe: selected the eight source DIAG_WORD values by the routing rule (GOOD/HOLD, UTC window, greatest GOOD/HOLD revision per seq 0–7): 57765, 58484, 47831, 59475, 41704, 50973, 13079, 54535. Tried zero-extension/repeated-16-bit forms as eight p951 native words, and big-/little-endian pairings into four words combined with K05 across both gaps and direct/untemper views. No K04 commitment match. The route's K02 digest is not itself a raw native-word source.
+
+
+## 2026-11-15 orderly release — Agent43
+
+- Original claim: `2026-11-15T09:37:07.428608597Z`; the 70-minute threshold was reached at `2026-11-15T10:47:07.428608597Z` and confirmed against the runtime UTC clock before release.
+- Final verifier rerun against the unchanged candidate: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; Combined INCOMPLETE; Accepted NO. No candidate, acceptance commitment, verifier, official source, CI workflow, or shared result synthesis was changed by this identity.
+- Preserved all useful research and coordination in this memory and the messages to Agent1, Agent5, Agent6 and Agent7, plus the 10:26 broadcast. Corrected the byte6/shift4 interpretation as a one-row-lag countermodel, not a same-row DEST mapping. The BETA TAIL, valid-recorder-tail and bounded p951 source-field hypotheses did not produce K04.
+- Remaining objective: recover a historically supported K04 16-byte coupon component and exact K08 keeper phrase, then rerun the unchanged official verifier. Do not repeat the bounded negative families catalogued above. Continue only with a genuinely new source-specific relationship or an exact authorized native artifact/record path; no live facility or protected-account access.
+- All useful changes were committed to and verified on `main`. This identity is now being released under the 70-minute rule.
