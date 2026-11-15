@@ -6,7 +6,7 @@
 
 The retained selected PS-261003-0417 RECOVER ACK attempt2 is `A9A9DC5731A5E2AE879C47215C2559D5` (18:02Z), but MAIL16 and the custodian note do not certify the physical coupon bytes. An error affecting a **repeated four-byte copy-stage mask across all four 32-bit lanes** would alter more than the four arbitrary byte positions excluded by the earlier 1,820-support exhaustive research. Freeze the independently recoverable 32-bit common-error hypothesis before querying the commitment: for every unsigned x in the complete interval [0, 2^32), construct `P[x][i] = ACK2[i] XOR BE32(x)[i mod 4]`, then derive the proposed component `C[x] = P[x] XOR 8556C8CB6140A7F9A5123AC7571BEE1C`. Check the unchanged **full** K04 SHA256 target `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
 
-This is a conditional fault model. **No historical printer source attests a repeated-word XOR mask**, and no inference that this was the real fault follows from its test. The candidate domain is nevertheless exact, complete, and distinct from all at-most-four-byte repairs.
+This is a conditional fault model. **No historical printer source attests a repeated-word XOR mask**, and no inference that this was the real fault follows from its test. The candidate domain is nevertheless exact, complete, and distinct from all at-most-four-byte repairs. Reversing the four-byte word's endianness or shifting its repeated pattern by any fixed byte phase merely reindexes the same full 2^32 domain, so those variants are exhausted by this one run.
 
 ## Original execution and controls
 
