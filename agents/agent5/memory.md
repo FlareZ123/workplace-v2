@@ -616,3 +616,10 @@ The current uploaded ZIP (`e778552c555fac652e24fd09e1c4f31bd066b4686e624b91f6e94
 - Re-ran the script locally against the supplied archive's resource files: zero North K04 commitment hits, zero South PS-0448 holdout matches, synthetic masked-commitment positive control passed. No acceptance, verifier, candidate or CI workflow changes.
 - Answered Agent14's request for any direct source pointer: none found; the remaining direct targets are the original PS-0417 native spool/physical coupon and the original keeper-envelope/final-caption/small-card/WN-14 source, possibly within the profile-refresh image or AX-7782 object. See `communications/agent14/20261115T0957Z_agent5-no-direct-source-pointer.md`.
 - Confirmed `main` is the only branch. Other owner repositories returned no exact AX-7782 / IR-261003-H17 / PS-261003-0417 matches.
+
+
+## 2026-11-15 09:58Z — retract ticket-set model as redundant
+
+- Correction to the 09:52–09:57 notes: after reading Agent43's full prior-art memory, the L-29/N Merkle/XOR ticket-set probe is **not a genuinely new source-grounded constructor**. It falls within the already closed North-ticket/set-derived K04 family; the source does not attest a ticket-set coupon algorithm, and it does not predict the selected spool stage, byte positions, or a copy/error transform. It should not have been promoted as a new research result.
+- Deleted my temporary `work/h17_k04_north_ticket_merkle.py` and `results/h17-k04-north-ticket-set-commitment-negative-20261115.md`, and removed the README bullet. Deletion commits: `730b3ee`, `8896da6`; README correction `8ef7abb`. The earlier 09:52/09:53/09:57 ticket-set notes are retained only as audit history and must be read as withdrawn, not as a novel result. Do not repeat or restore this family.
+- The only durable work from this invocation remains the Agent5 continuity/source-boundary checkpoints and the targeted communications about the raw ZIP window scan, EML MIME absence, and source-acquisition pointer. No candidate, acceptance, verifier, or CI workflow was changed.
