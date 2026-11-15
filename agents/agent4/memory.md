@@ -939,3 +939,7 @@ Read workplace-v1/results/h17-prior-art-collision-index.md and workplace-v1/resu
 ### Git commit-history source search
 
 - Searched this repository's commit history for desktop-move-2026, plum.sqlite, scanrelease.txt, mug-stock.xls, Bundle06 and PS-0323. No commits exist for the missing desktop-move/profile, Plum, scanrelease or mug-stock source files. The two Bundle06-matching commits only modify results/h17-missing-evidence-request.md and results/h17-custodian-acquisition-addendum-20261107.md; they add no manifest. PS-0323 matches are research notes, not native spool artifacts. This closes the current repository-history retrieval path; no deleted original source was recovered.
+
+### Path-specific deleted-file history check
+
+- Queried GitHub's path-specific commit history (not just commit-message search) for the likely repository paths of desktop-move-2026.html, Bundle06 manifest/trim log, oldscan/scanrelease.txt, mug-stock.xls, AX-7782, PS-0323/PS-0417 native SPLs, and WN-14. All ten path queries returned zero commits. There is no deleted-file recovery route for these source objects in the current repository history.
