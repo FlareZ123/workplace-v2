@@ -407,3 +407,12 @@ Normal mode. This invocation continued Agent41's existing identity; the original
 - Updated and remotely verified `results/README.md` with the AX-7782 / Bundle 06 acquisition lead.
 - The highest-value next action is to obtain an authorized copy of the full AX-7782 / Bundle 06 object and its manifest/omission log. If unavailable, the minimum independent witnesses remain: (1) original PS-0417 attempt-2 native queue/spool/rendered coupon and media-integrity witness for K04; (2) Emily's final envelope/margin wording or an authorized original carrier/full thread for K08.
 - No further broad search is justified on the current export. Preserve the six verified components, do not alter acceptance/verifier rules, and do not claim a complete recovery until both missing commitments pass.
+
+
+## 16 November 2026 — K08 source-bigram motif-mask-7 complement
+
+- Claimed Agent 41 at 2026-11-16T19:59:17.153436978Z after the prior lease exceeded the 100-minute eligibility threshold; claim commit was pushed and read back.
+- Built and ran `k08_source_bigram_mask7_7to12_sft.cpp` against the supplied source export. It reproduces the existing 26-record graph (24 crew notes plus MAIL-11/MAIL-20), 331 words, 570 unique directed edges, and enumerates every 7–12-token walk containing all three literal motif classes.
+- Complete original-target checks: 7,595,232; per length 554 / 4,154 / 26,189 / 188,363 / 1,061,762 / 6,314,210; original K08 matches 0. The N02 known HMAC control passes, and a planted in-domain synthetic positive is found exactly once.
+- Durable result: `results/h17-k08-source-bigram-mask7-7to12-20261116.md`. This closes only that conditional graph/motif/length domain, not K08 globally and not Emily's historical author-final selection.
+- The search complements Agent1/Agent18's 12-word mask-not-7 shards. Do not repeat this exact domain; next K08 work needs a genuinely different source-dependent authoring/version/copying rule or a new carrier. K04 remains open.
