@@ -27,7 +27,7 @@ The [canonical candidate](../candidate.json), [unchanged acceptance commitments]
 
 These are scoped results, not global impossibility proofs:
 
-- **K04:** [exact Romu printer-state reconstruction](h17-k04-romu-printer-exact-state-20261115.md); [all-21 direct-gap screen](h17-k04-unique-gap-source-block-pair-all-21-20261112.md); [transfer-batch projection](h17-k04-transfer-batch-jump-projection-20261112.md); [repeated-32-bit-XOR domain](h17-k04-repeated-fourbyte-xor-fullseed-20261115.md).
+- **K04:** [exact Romu printer-state reconstruction](h17-k04-romu-printer-exact-state-20261115.md); [all-21 direct-gap screen](h17-k04-unique-gap-source-block-pair-all-21-20261112.md); [transfer-batch projection](h17-k04-transfer-batch-jump-projection-20261112.md); [repeated-32-bit-XOR domain](h17-k04-repeated-fourbyte-xor-fullseed-20261115.md); [V.17/V.29 23-bit fax-modem scrambler](h17-k04-v17-v29-self-synchronizing-scrambler-20261116.md) (N22-motivated hypothesis; exhaustive NO_MATCH, not evidence of ESC-N firmware).
 - **K08:** [1–4-word exhaustive search](h17-k08-crew-fourword-exhaustive-20261114.md); [three-strand SCS](h17-k08-three-strand-scs-minimal-editor-20261115.md); [source-ordered maximal overlap](h17-k08-source-ordered-maximal-overlap-20261115.md); [clause-edit constructor](h17-k08-source-ordered-clause-edit-20261115.md); [complete-host Ransome scan](h17-k08-ransome-complete-host-5m-exact-span-20261115.md).
 
 Do not repeat these exact inputs/rules/bounds. A genuinely different causal model remains eligible.
