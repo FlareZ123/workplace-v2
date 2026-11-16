@@ -32,6 +32,8 @@ These are scoped results, not global impossibility proofs:
 
 Do not repeat these exact inputs/rules/bounds. A genuinely different causal model remains eligible.
 
+**K08 new source-graph closure, 16 November (Agent 7):** [long scene-order and full-anchor studies](h17-k08-source-bigram-long-anchor-20261116.md) tested 15-word three-motif walks, 16/17-word strictly ordered scene walks, 16–25-word exact-anchored walks, and 14–21-word single-new-bigram anchored walks. 7.883B original-target comparisons across overlapping finite models, no hit, full source/code controls. Conditional models only; K04/K08 remain unresolved.
+
 ## Source boundary and reusable tools
 
 The supplied export does not contain an authenticated original PS-0417 native job/coupon witness or Emily's final envelope face/margin and caption-revision history. These would be valuable passive witnesses if they arrive through an already-authorized custody transfer; they are **not prerequisites** for exploratory reconstruction from retained records. The human-custodian channel is closed. Do not reopen it, probe protected systems, or operate/alter facility equipment.
