@@ -86,7 +86,6 @@ def main() -> None:
     orders = {
         "L29_N_tab_order_available": [r["bay"] for r in sorted(chosen, key=lambda x: x["tab"])],
         "PTW417_signed_witness_walk": sketch_order,
-        "natural_bay_order": list("ABCD"),
     }
     results = []
     for order_name, order in orders.items():
