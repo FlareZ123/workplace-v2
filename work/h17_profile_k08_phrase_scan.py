@@ -37,6 +37,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
 import h17_ax7782_k08_phrase_intake as phrase
+from h17_emf_text import extract_emf_text
 
 DEFAULT_CATEGORIES = {
     "notes",
@@ -354,6 +355,12 @@ def scan_inventory(
                     spans_tested += _scan_stream(
                         source, stream_data, nonce, target, max_phrase_words, hits
                     )
+                if ("printer" in (record.get("categories") or []) or path.suffix.casefold() == ".emf") and b" EMF" in data:
+                    for label, stream_data in extract_emf_text(data):
+                        streams_scanned += 1
+                        spans_tested += _scan_stream(
+                            f"{display_name}!/{label}", stream_data, nonce, target, max_phrase_words, hits
+                        )
                 if path.suffix.casefold() in IMAGE_SUFFIXES and phrase.intake.magic(data) not in {"jpeg", "png", "tiff"}:
                     for source, stream_data in _image_fallback_streams(data, display_name, ocr, errors):
                         streams_scanned += 1
