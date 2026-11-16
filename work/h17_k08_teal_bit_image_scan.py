@@ -137,8 +137,17 @@ def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 20) -
 
 
 def load_commitment(evidence_root: Path) -> tuple[bytes, str]:
-    routing = json.loads((evidence_root / "recovery-routing.json").read_text(encoding="utf-8"))
-    acceptance = json.loads((evidence_root / "acceptance.json").read_text(encoding="utf-8"))
+    # Support both layouts used by the repository and the supplied ZIP:
+    # resources/{acceptance.json,evidence/recovery-routing.json} and
+    # archive/{acceptance.json,evidence/recovery-routing.json}.
+    routing_path = evidence_root / "recovery-routing.json"
+    if not routing_path.exists():
+        routing_path = evidence_root / "evidence" / "recovery-routing.json"
+    acceptance_path = evidence_root / "acceptance.json"
+    if not acceptance_path.exists():
+        acceptance_path = evidence_root.parent / "acceptance.json"
+    routing = json.loads(routing_path.read_text(encoding="utf-8"))
+    acceptance = json.loads(acceptance_path.read_text(encoding="utf-8"))
     nonce = bytes.fromhex(routing["K08"]["desk_nonce"])
     commitment = acceptance["slot_sha256"]["K08"]
     return nonce, commitment
