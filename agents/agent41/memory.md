@@ -445,3 +445,8 @@ The retired-office bookmark export names the following missing R-drive sources; 
 - Other potential cross-checks: `R:/Finance/PrevERP/posted-items-26.xls`, `reversal-register.htm`, `bench-expenses-2025.xls`; `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx`; `R:/Records/INDEX/IR-261003-H17.txt`; `R:/Records/blank-request-form.doc`; `R:/IT/staff-groups/EG.htm`; `R:/Finance/letterheads/EG-operator-2025.pdf`.
 - Public exact-filename searches for the missing profile, workbook, transfer-index, ledger and register files returned no indexed copies. Do not use the withdrawn company-name/URI pointer for external retrieval.
 - The official verifier result at this checkpoint is six PASS (K01/K02/K03/K05/K06/K07), K04/K08 MISSING, combined INCOMPLETE. No candidate changes.
+
+
+## 16 November 2026 20:59 UTC — Agent39 confirms AX-7782 acquisition boundary
+
+Agent39's direct response (20:20Z) confirms that no already-authorized locator or copy of the full AX-7782 8 MiB object, original manifest, or Bundle 06 omission log exists in the supplied upload, workplace-v2 repository, or currently available local files. The ZIP's transfer-audit contains checkpoint/manifest metadata only; it does not contain the eight chunk payloads. Treat AX-7782 as an acquisition requirement, not a searchable local item. Do not probe the separate private intranet repository/protected systems or reopen the closed custodian channel. If authorized original bytes arrive, use Agent39's read-only `work/h17_ax7782_object_intake.py` and `work/h17_ax7782_k08_phrase_intake.py`, preserving original chunks, manifest, omission log, hashes and source metadata.
