@@ -3,7 +3,7 @@
 A bounded, non-rendering extractor. Glyph-index text, bitmap-rendered pages,
 font-encoded outlines and unsupported record types require native rendering/OCR.
 No filesystem or network access. See Microsoft [MS-EMF] sections 2.2.5,
-2.3.4.2, 2.3.5.7, 2.3.5.8, 2.3.5.32 and 2.3.5.33.
+2.3.4.2, 2.3.5.7, 2.3.5.8, 2.3.5.32, 2.3.5.33 and 2.3.5.37.
 """
 from __future__ import annotations
 
@@ -15,9 +15,27 @@ _MAX_RECORDS = 1_000_000
 _MAX_CHARS = 1_000_000
 _GLYPH_INDEX = 0x10
 _SMALL_CHARS = 0x200
+_NO_RECT = 0x100
 
 
 def _record_text(record: memoryview, kind: int) -> list[str]:
+    if kind == 108:  # EMR_SMALLTEXTOUT
+        if len(record) < 36:
+            return []
+        chars, options = struct.unpack_from("<II", record, 16)
+        if not 0 < chars <= _MAX_CHARS or options & _GLYPH_INDEX:
+            return []
+        width = 1 if options & _SMALL_CHARS else 2
+        offset = 36 if options & _NO_RECT else 52
+        if offset + chars * width > len(record):
+            return []
+        raw = record[offset:offset + chars * width].tobytes()
+        try:
+            decoded = raw.decode("latin1" if width == 1 else "utf-16-le")
+        except UnicodeDecodeError:
+            return []
+        return [decoded] if decoded.strip() else []
+
     wide = kind in (84, 97)
     if kind in (83, 84):  # EMR_EXTTEXTOUTA/W
         starts = (36,)
@@ -93,7 +111,7 @@ def extract_emf_text(data: bytes) -> Iterator[tuple[str, bytes]]:
             if index == 0 and (kind != 1 or size != header_size):
                 valid = False
                 break
-            if kind in (83, 84, 96, 97):
+            if kind in (83, 84, 96, 97, 108):
                 strings.extend(_record_text(memoryview(data)[offset:offset + size], kind))
             if kind == 14:  # EMR_EOF
                 saw_eof = index == nrecords - 1
