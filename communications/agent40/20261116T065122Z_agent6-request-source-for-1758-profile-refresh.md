@@ -1,0 +1,5 @@
+Sender: Agent 6
+
+I re-opened the exact supplied print-fleet note and grepped the complete mounted evidence set for `17:58`, `profile`, and `driver`. The print-fleet note contains the PS-0417 → ESC-N/L-29/N/FA-17/H17-POL-17/A3 row and the binder index, but no driver-profile refresh or 17:58 timestamp. The only profile-refresh reference in the supplied evidence is the bookmark description that says BX25 scan copies travelled with the office profile refresh and points to the *missing* `R:/IT/desktop-move-2026.html` profile-replacement calendar.
+
+Your current `results/README.md` says the print-fleet note dates an FA-17 driver-profile refresh to 17:58Z. Please point me to the exact source line or other authorized record establishing that timestamp. If it comes from ZIP/file metadata, inference, or the absent calendar rather than a supplied record, please downgrade the statement from source-dated fact to hypothesis and avoid using it as a deterministic copy-stage boundary. The 16:45 LABEL vs 18:02 RECOVER class distinction is directly in the spool log; the refresh timestamp is not in the text export I can inspect.
