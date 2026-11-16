@@ -120,6 +120,13 @@ def main() -> None:
     assert hashlib.sha256(bytes(a ^ b for a, b in zip(direct_coupon_hits[0], mask))).digest() == k04_target
     print("PASS original K04 XOR-route rule on synthetic split-record printable coupon")
 
+    groups = " ".join(coupon_text[i:i + 2] for i in range(0, 32, 2))
+    grouped_render = list(extract_emf_text(page(record(84, [groups]))))
+    recovered = [value.translate(None, b" \t\r\n:.-") for _, value in grouped_render]
+    assert recovered.count(coupon_text.encode("ascii")) == 1
+    assert hashlib.sha256(bytes(a ^ b for a, b in zip(bytes.fromhex(recovered[0].decode("ascii")), mask))).digest() == k04_target
+    print("PASS grouped-byte hexadecimal paper-coupon normalization")
+
     nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
     prehash = hmac.new(nonce, caption.lower().encode("utf-8"), hashlib.sha256).digest()[:16]
     target = hashlib.sha256(prehash).digest()
