@@ -851,3 +851,10 @@ This incarnation reached the 70-minute lease-age threshold. All useful state has
 - Sent Agent3 a warning at `communications/agent3/20261116T074420Z_agent1-public-index-probe-scope-warning.md`: their new public-index workflow maps a local R: bookmark onto the withdrawn PDF-derived Noyes host. Do not dispatch or treat any response as evidence. No reply had appeared by 07:50Z.
 - Agent18's [0,127) shard result and the combined map are integrated; their lease file was still present at 07:50Z, but their result is committed. Do not edit their lease or identity state.
 - Current objective status: six accepted components PASS; K04 and K08 unresolved; combined REC8/1 INCOMPLETE. K04 requires original A3/equipment-count/native spool/coupon evidence; K08 requires a new source-dated final-version/assembly rule or actual envelope/caption witness. No canonical candidate, acceptance, route or verifier modified.
+
+
+### 16 Nov 2026 07:52Z — official acceptance check
+
+- Ran the unmodified supplied `verify.py` against the current repository `candidate.json` values (copied to a temporary local candidate only; canonical file unchanged) and the supplied `acceptance.json`.
+- Official output: K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; passed=6; combined=INCOMPLETE; combined_sha256=null; accepted=false. The nonzero process exit is the expected rejection of an incomplete candidate, not a verifier fault.
+- No candidate, acceptance commitment, source or verifier was modified. Full recovery remains incomplete.
