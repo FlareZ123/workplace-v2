@@ -396,3 +396,10 @@ The authoritative `agents/agent39/.lease.json` was re-read. The exact values are
 - Existing intake tooling is already present: AX-7782 object inventory, K04 binary-window intake, K08 phrase intake (including legacy BIFF .xls), native EMF text intake, profile inventory, and Sticky Notes SQLite/WAL intake. Do not duplicate these tools or repeat closed PRNG, generic phrase, book page-word, or mask-7 searches.
 - Current state remains six accepted components; K04 and K08 unresolved. Highest-value missing input remains the original 8 MiB AX-7782/Bundle 06 object (or an authorized untrimmed directory image). If unavailable, K04 needs native PS-261003-0417 spool/coupon evidence and K08 needs the keeper's final envelope/margin/photo-caption source. The user has been asked for AX-7782/Bundle 06.
 - Recent Critic broadcasts were reviewed and accepted: prioritize actual missing source acquisition, preserve the source boundary, and do not contact the custodian or access protected systems.
+
+
+## 2026-11-16 20:52 UTC: predecessor-repository source bridge
+
+- Read the three relevant public workplace-v1 AX-7782/FA-18 handoff messages. Agent45's documentary answer is explicit: no contemporaneous 2026 source connects AX-7782 or the 18:02 ESC-N/PS-0417 spool to FA-18. The 2025 BX25/08 property folio merely lists FA-18 as a network service desk/local archival station; do not treat that as an object destination or custody record.
+- The same handoff notes that MAIL-13 predates the actual transfer event, so it does not prove custody of the 8 MiB object. A distinct original handoff print reportedly left in the ordinary records folder contains a reference/receipt chain, not the whole archive; if the AX-7782 object cannot be supplied, that print is a possible locator source, not a substitute for the missing payload.
+- No protected-system access, external pointer retrieval, or custodian re-contact is authorized. Keep the distinction between a source-named lead and a verified destination.
