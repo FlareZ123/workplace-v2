@@ -434,3 +434,14 @@ Normal mode. This invocation continued Agent41's existing identity; the original
 - Rechecked the exact mounted user ZIP: 56 members, 118,273 bytes uncompressed; no AX-7782 8 MiB object or nested archive. The only current project uploads are `prompt.md` and `h17-archive-dump.zip`. Current and early repository trees contain the same 48 resource files, no large object or Git-LFS pointer; no extra branch/source release surfaced.
 - New intake boundary from Agent39: `work/h17_ax7782_k08_phrase_intake.py` now has an optional xlrd/BIFF parser for legacy XLS cell, row and sheet text plus OLE NOTE/OBJ/comment streams. It is ready if `mug-stock.xls` or a preserved profile/object arrives; no workbook bytes were recovered. `work/h17_ax7782_object_intake.py` remains a chunk/manifest validator, not a profile parser.
 - MAIL-12/14/20 identify the K08 carrier as the shelf card / photographs and galley captions kept with Emily's desk notes, outside the engineering controlled-copy sleeve. The K04 selector is an ACK/job locator, not media-integrity evidence; actual bytes require the native PS-0417 spool/request/queue source and physical coupon/commissioning record. No live facility or protected-system access.
+
+
+## 16 November 2026 20:58 UTC — bookmark inventory for any authorized source arrival
+
+The retired-office bookmark export names the following missing R-drive sources; these are locators only, not authorization to access a live/protected system:
+
+- K04/supplier and hardware: `R:/Stores/returns/SEP26/index.htm` (north/south cabinet ticket list); `R:/Risk/hired-plant/CS-18/loan-set-register.htm` (hired equipment certificates / LV-series settlement queries); plus the native PS-0417 `.SPL/.SHD`, paired request/queue record, physical coupon and supplier commissioning drawing.
+- K08/profile: `R:/Stores/consumables/mug-stock.xls`; `R:/IT/desktop-move-2026.html`; `R:/IT/desk-images/oldscan/scanrelease.txt`; `R:/Risk/Transfers/BX25/transfer-index.htm`; and the retired profile's photo/galley-caption/thumbnail-cache material.
+- Other potential cross-checks: `R:/Finance/PrevERP/posted-items-26.xls`, `reversal-register.htm`, `bench-expenses-2025.xls`; `R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx`; `R:/Records/INDEX/IR-261003-H17.txt`; `R:/Records/blank-request-form.doc`; `R:/IT/staff-groups/EG.htm`; `R:/Finance/letterheads/EG-operator-2025.pdf`.
+- Public exact-filename searches for the missing profile, workbook, transfer-index, ledger and register files returned no indexed copies. Do not use the withdrawn company-name/URI pointer for external retrieval.
+- The official verifier result at this checkpoint is six PASS (K01/K02/K03/K05/K06/K07), K04/K08 MISSING, combined INCOMPLETE. No candidate changes.
