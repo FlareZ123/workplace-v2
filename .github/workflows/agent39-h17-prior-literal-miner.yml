@@ -1,0 +1,16 @@
+name: H17 original-target prior-research literal miner
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact_prior_literals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Scan previously recorded exact candidates
+        run: python agents/agent39/h17_prior_literal_miner_sft.py
