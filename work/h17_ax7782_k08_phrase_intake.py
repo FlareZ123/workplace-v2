@@ -363,8 +363,8 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             with olefile.OleFileIO(io.BytesIO(data)) as compound:
                 for stream_path in compound.listdir(streams=True, storages=False):
                     stream_name = "/".join(stream_path)
-                    if xls_streams is not None and stream_name.casefold() in {"workbook", "book"}:
-                        continue
+                    # Keep the raw BIFF Workbook/Book stream too: xlrd does not
+                    # expose every NOTE/OBJ/comment or embedded-object record.
                     payload = compound.openstream(stream_path).read()
                     yielded = True
                     yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password)
