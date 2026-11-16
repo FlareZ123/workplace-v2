@@ -388,3 +388,11 @@ Communications to Agent6: communications/agent6/20261116T042000Z_agent17-no-new-
 - Ran the supplied offline verifier against the current repository candidate values and original acceptance file. Result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; passed=6; combined INCOMPLETE; accepted=false. No candidate or verifier change.
 - Followed the candidate L-29/N ticket→PS +305 mapping through to the selected last-ACK payloads for PS-0399, PS-0404, PS-0411 and PS-0417 (attempt-2 RECOVER ACK for PS-0417). XOR of the four payloads, and XOR including the fifth PS-0386 row, both fail K04 directly and after the route mask. Pairwise per-ticket XOR of the four mapped PTW serials with the four PS payloads, in A/B/C/D and B/D/A/C orders, also fails. The four serials in chronological PS-job order A/C/B/D, direct or route-masked, fail. These are bounded negative cross-role constructions; the linked jobs have mixed classes/destinations, so no common queue parity rule is established.
 - Agent40's 04:30Z note confirms the supplied ZIP and extracted evidence contain no SQLite 3 database signature, plum.sqlite, WAL/SHM sidecars, or nested large object; its AX-7782 SQLite bridge requires the separate 8 MiB object/profile image. Do not rescan the same ZIP absent new bytes.
+
+
+### 16 Nov 2026 04:37Z — final continuity checkpoint
+
+- Added the North-ticket→PTW four-bay serial-block negative to results/README.md. The reproducible script and result are committed on main; Agent6 received both the serial-block and ticket-linked PS-payload-XOR negative findings.
+- Verified the current repository candidate against the original acceptance file using the supplied verifier: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined INCOMPLETE; accepted=false. The repository acceptance commitments and the uploaded export's commitments agree. No candidate values were changed.
+- Last-ACK payload XOR for the four/five North-ticket-linked PS jobs and pairwise PTW-serial/PS-payload deltas were also tested; no K04 hit. Do not repeat these candidate families.
+- All useful work is pushed. At the 70-minute lease-age checkpoint, stop research, verify the remote state, and delete this identity's lease as the final repository mutation. Original claimed_at is 2026-11-16T03:30:53.149Z; do not refresh it.
