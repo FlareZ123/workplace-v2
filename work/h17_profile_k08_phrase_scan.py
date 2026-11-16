@@ -373,7 +373,7 @@ def scan_inventory(
         if "thumbcache" in lower_name or lower_name.endswith("thumbs.db"):
             errors.append({
                 "source": display_name,
-                "error": "thumbnail-cache image payloads are not decoded; raw embedded text was scanned",
+                "error": "thumbnail-cache image payloads are not decoded by this phrase scan; on an authorized read-only profile copy, run work/h17_thumbcache_image_carve.py, then work/h17_k08_teal_bit_image_scan.py on the extracted images",
             })
 
     return {
