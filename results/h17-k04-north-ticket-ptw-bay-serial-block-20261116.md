@@ -14,7 +14,7 @@ The North return-register tickets may map to PTW permit IDs by adding 304 to the
 | 04 | ST-099 | PTW-403 | Bay C, SG-CCCCF4B8 |
 | 05 | ST-112 | PTW-416 | Bay D, SG-0C814A5E |
 
-The four available records therefore form one 4-byte serial per bay, A/B/C/D. This is a new complete 16-byte candidate source block, distinct from the PTW-417 quartet already used for K03.
+Under this candidate mapping, the four available receipts form one 4-byte serial per bay (A/B/C/D). That yields a candidate 16-byte block, distinct from PTW-417's K03 quartet; it does not authenticate the ST→PTW mapping.
 
 ## Test
 
@@ -22,11 +22,11 @@ The reproducible script is `work/h17_k04_north_ticket_ptw_bay_block.py`. It extr
 
 - The four serials in available L-29/N tab order (A/B/C/D).
 - The same four serials in the signed PTW-417 witness-walk order (B/D/A/C), read from MAIL-04.
-- Natural A/B/C/D bay order.
+- The natural A/B/C/D order is the same as the available tab order and is not counted separately.
 - For each order: direct 16-byte block and block XOR the K04 route mask.
 - A bounded per-serial CRC32 block using serial bytes, serial ASCII, or permit/bay/serial ASCII; both endian encodings; direct and route-mask-XOR outputs.
 
-There were 42 complete candidates. **No candidate matched** the K04 commitment:
+There were 28 distinct candidates (two distinct orders × fourteen constructions per order). **No candidate matched** the K04 commitment:
 
 `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
 
@@ -36,7 +36,7 @@ The natural/tab-order raw block is `0AEF4A08F8C5E995CCCCF4B80C814A5E`; after the
 
 This result establishes a useful source relationship among four L-29/N tickets and four retained PTW receipts, but **does not establish that the printer coupon is a serialization of those seal serials**. The ST→PTW +304 rule remains a locator hypothesis; ST-081→PTW-385 is absent from the retained qualifying receipts. The shared 417 suffix and the four-bay shape are not sufficient evidence to substitute these serials for the selected PS-0417 payload.
 
-No verifier, acceptance commitment, or existing candidate was changed. The full 42-candidate output and source hashes are reproducible from the script. The K04 slot remains unresolved.
+No verifier, acceptance commitment, or existing candidate was changed. The full 28-candidate output and source hashes are reproducible from the script. The K04 slot remains unresolved.
 
 ## Source hashes
 
