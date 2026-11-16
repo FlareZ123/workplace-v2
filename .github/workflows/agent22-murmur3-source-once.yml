@@ -1,0 +1,13 @@
+name: Agent22 Murmur3 source inverse single-run verification
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source_inverse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify original source and exact inverted full-output models
+        run: python agents/agent22/k04_murmur128_inverse_source_sft.py
