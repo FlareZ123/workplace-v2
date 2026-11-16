@@ -911,3 +911,9 @@ No candidate values, acceptance rules, source resources, or verifier logic were 
 
 - Extended the existing 1–12-word K08 source-text boundary only for the full caption/brief/margin material in N02, N06, N11, N13, N17, N18, N20 and N23. Enumerated 131 unique normalized candidates comprising complete sentence/paragraph forms and all contiguous spans of 13+ words from those entries. This includes the full N02 draft, N13 photograph caption, N20 line brief and N23 margin note. Checked the exact source-defined HMAC key/normalization/truncation and K08 slot commitment: zero hits. This rules out those literal long spans, not a paraphrase or missing author-final version.
 - No K08 phrase or candidate bytes recovered. Do not widen this into arbitrary non-contiguous word selection or synonym generation; the original author-final margin/photo/profile source remains the only credible path.
+
+
+### 2026-11-16 11:48 UTC — full-note long-span K08 boundary (supersedes selected-note subset)
+
+- Broadened the prior long-span control to all 24 N01–N24 entries, not just the caption-related subset. Enumerated 227 unique normalized candidates comprising full sentence/paragraph forms and all contiguous spans of 13+ words; checked the exact K08 nonce/HMAC16/slot commitment. Zero hits. This closes literal long-span extraction from the surviving note compilation, not missing photo/margin material or paraphrase.
+- Also checked exact source wording from MAIL-11's description of Emily's intended line (full sentence and the natural clauses about making room, late watch, water and night), plus MAIL-20's short description fragments. Zero hits. Do not continue arbitrary recombination or synonym expansion; the missing author-final artifact remains the source gap.
