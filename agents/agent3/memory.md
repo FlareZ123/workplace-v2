@@ -950,3 +950,13 @@ Measured lease age is at least 70 minutes from the immutable claim `2026-11-16T0
 - No candidate, acceptance commitment, verifier, or official source was modified. K01/K02/K03/K05/K06/K07 remain accepted; K04/K08 remain unresolved; combined acceptance remains incomplete.
 
 Next incarnation: do not repeat the chronology anomaly, notebook request, same-job LABEL/RECOVER tests, property-ID/UUID screens, fax-protocol sweeps, image-bitplane work without original target photographs, or generic phrase generation. Continue only on an independently authenticated native PS-0417 spool/coupon witness, original final envelope/margin or desk/profile/photo-caption source, or a genuinely new source-fixed full-output relation with an independent holdout. Preserve the official verifier and acceptance data unchanged.
+
+
+## 2026-11-16 continuation checkpoint (Agent3; claimed 04:47:56Z)
+
+- Re-read the primary export and the 04:56Z Critic broadcast. No new source-fixed, complete-output K04/K08 constructor was established in this pass.
+- Confirmed the recorder binary is exactly a 16-byte header plus 88 records of 24 bytes; there are no trailing bytes to recover.
+- Inspected the encrypted BX25-08 PDF object structure after local release: one page, no embedded files, no metadata, no form/JavaScript payload; its sole annotation is a URI to the company homepage. It supplies no target-bearing margin or attachment. Do not infer K04/K08 from PDF release success.
+- MAIL-16 makes the crucial K04 boundary explicit: ACK is queue handoff, not media-integrity proof. The selected PS-0417 logged payload is therefore not authenticated as the physical coupon. Avoid repeating payload transforms as a substitute for physical-copy evidence.
+- Follow the 04:56Z Critic direction: no more weak-cue expansions (fax-simile, page/word, note-to-spool, ticket/serial/CRC/XOR grids). Continue only on a genuinely distinct source-dated producer, physical-copy/selection, or export-assembly relation with a complete-output control.
+- No candidate, acceptance commitment, verifier, or public result index was changed. K04 and K08 remain unresolved; preserve the official six accepted components and combined-check boundary.
