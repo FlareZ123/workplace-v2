@@ -27,6 +27,7 @@ jobs:
               "/H17-POL-17/BX25-transfer-index.pdf",
               "/records/IR-261003-H17.txt",
               "/IT/desk-images/oldscan/scanrelease.txt",
+              "/Stores/returns/SEP26/index.htm",
           ]
 
           class Links(HTMLParser):
