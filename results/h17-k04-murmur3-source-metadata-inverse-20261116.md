@@ -39,3 +39,16 @@ The standalone standard-library Python [SFT](../agents/agent22/k04_murmur128_inv
 The original source does not support either standard MurmurHash3 128-bit metadata emitter in the 30 declared input formats and common byte layouts. No seed survives even **one** exact nonselected output, so no model is promoted to a K04 coupon candidate or original K04 hash comparison. The negative does not cover nonstandard variants, unknown metadata encodings, another fingerprint family, or an independently generated physical paper value. Further unanchored hash-name enumeration would have little justification without a native printer-issuer clue.
 
 **REC8/1 status unchanged:** K01/K02/K03/K05/K06/K07 PASS. K04/K08 MISSING. Combined INCOMPLETE.
+
+## Independent GitHub Actions replay (16 November, 13:19–13:20 UTC)
+
+The repository-committed Python reproducer was executed directly against the unchanged original `resources/` checkout in [manual GitHub Actions run 43874690015](https://github.com/FlareZ123/workplace-v2/actions/runs/43874690015). **Job source_inverse completed SUCCESS**, with the exact end markers:
+
+```text
+INDEPENDENT_REFERENCE_FIXTURES=PASS TWO_DONORS_TO_SELECTED_PLANTED=PASS
+ORIGINAL_SOURCE_GATE x64_128 checks 31680 initializer_matches 0
+ORIGINAL_SOURCE_GATE x86_128 checks 1520640 initializer_matches 0
+SOURCE_GATE_COMPLETE
+```
+
+This confirms the persisted implementation, its complete declared original-source search, and both positive controls. It does not extend the finite exclusions beyond the reported metadata serializer and byte-view choices. The single-use workflow definition was subsequently retired; the completed run and retained script remain the reproducible evidence.
