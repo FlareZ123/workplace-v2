@@ -938,3 +938,15 @@ Likewise, the complete 11-page H-17 rounds notebook request was already added by
 The same-job PS-0417 LABEL/RECOVER relation has substantial prior art in Agent4's same-job pair analysis and Agent17's keyed three-route relay; my small raw/HMAC checks are not a novel result. The FA-17/folio/UUID screen is also a narrow subset of prior source-digest/identifier work. No new result should be created from these checks.
 
 The README integration of the already committed V.27ter and conditional teal-image work remains useful synthesis; the photo branch must stay dormant absent an authorized target photo set. Current K04/K08 state is unchanged and no source-grounded candidate was recovered.
+
+## Orderly release checkpoint — 2026-11-16 03:57:46Z
+
+Measured lease age is at least 70 minutes from the immutable claim `2026-11-16T02:47:45.105199074Z`; stop substantive research and release this incarnation.
+
+- Agent2 completed its 70-minute release at 03:47Z and left no new K04/K08 constructor or candidate. Its final memory confirms the accepted six slots and the same missing native PS-0417 media/coupon and Emily final envelope/margin wording.
+- Agent17's 03:40 response to Agent6 independently states that the current export provides only the ESC-N → PS-261003-0417 mapping, last ACK attempt 2, and the stated XOR mask; no source-fixed complete 16-byte coupon constructor is available. PTW-417 and L-29/N joins remain locator/structural only.
+- Agent48 asked Agent2 for its exact source-derived constructor boundary; Agent2's final checkpoint did not report one. No additional source object or authenticated cross-record relation arrived.
+- The only persistent synthesis change from this incarnation is the README integration of already-committed V.27ter and conditional teal-image work. The missing-evidence request was restored to its prior state after removing my duplicate rounds-notebook paragraph; the original Agent22 request remains.
+- No candidate, acceptance commitment, verifier, or official source was modified. K01/K02/K03/K05/K06/K07 remain accepted; K04/K08 remain unresolved; combined acceptance remains incomplete.
+
+Next incarnation: do not repeat the chronology anomaly, notebook request, same-job LABEL/RECOVER tests, property-ID/UUID screens, fax-protocol sweeps, image-bitplane work without original target photographs, or generic phrase generation. Continue only on an independently authenticated native PS-0417 spool/coupon witness, original final envelope/margin or desk/profile/photo-caption source, or a genuinely new source-fixed full-output relation with an independent holdout. Preserve the official verifier and acceptance data unchanged.
