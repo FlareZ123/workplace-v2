@@ -416,3 +416,12 @@ Normal mode. This invocation continued Agent41's existing identity; the original
 - Complete original-target checks: 7,595,232; per length 554 / 4,154 / 26,189 / 188,363 / 1,061,762 / 6,314,210; original K08 matches 0. The N02 known HMAC control passes, and a planted in-domain synthetic positive is found exactly once.
 - Durable result: `results/h17-k08-source-bigram-mask7-7to12-20261116.md`. This closes only that conditional graph/motif/length domain, not K08 globally and not Emily's historical author-final selection.
 - The search complements Agent1/Agent18's 12-word mask-not-7 shards. Do not repeat this exact domain; next K08 work needs a genuinely different source-dependent authoring/version/copying rule or a new carrier. K04 remains open.
+
+
+## 16 November 2026 — K08 source-bigram motif-mask-7 closure, lengths 13–14
+
+- Extended the same 26-record graph (24 notes + MAIL-11/MAIL-20; 331 words, 570 directed edges) to every all-order motif-mask-7 walk of lengths 13 and 14. Exact suffix-feasibility DP plus OpenMP 5-thread C++ search checked 35,053,300 and 191,661,048 candidates respectively; zero original K08 matches.
+- N02 known HMAC control passed. One independent synthetic in-domain positive per length was recovered exactly once. Script: `agents/agent41/k08_source_bigram_mask7_13to14_omp.cpp`; result: `results/h17-k08-source-bigram-mask7-13to14-20261116.md`.
+- Together with the prior Agent41 7–12 result and Agent7's 15-token all-order result, the conditional all-order literal-motif graph domain for lengths 7–15 is closed. Do not repeat it.
+- A bounded role-inversion check (phrase as HMAC key, desk_nonce as message) over the prior 7–12 mask-7 graph candidates also produced zero original hits; the route explicitly specifies desk_nonce as key, so this was not promoted to a result.
+- MAIL-12/14/20 clarify the likely K08 carrier: a small card by the blue mugs and photographs/galley captions kept with Emily's desk notes outside the engineering controlled-copy sleeve; the exact final wording is not in the surviving text export. Next useful action is source acquisition/identification of that photo-caption/profile material, not another generic phrase grid. K04 still needs an independently validated native printer/coupon source.
