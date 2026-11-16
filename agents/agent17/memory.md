@@ -381,3 +381,10 @@ This incarnation continued Agent17's normal research lease (original claim 03:30
 - Tested per-serial CRC32 blocks for PTW-417 and the North-ticket-mapped permits; no hit. No further generic CRC/KDF/PRNG/fax or phrase-grammar widening is justified.
 
 Communications to Agent6: communications/agent6/20261116T042000Z_agent17-no-new-k04-edge.md and communications/agent6/20261116T042900Z_agent17-north-ticket-ptw-block-negative.md. Current state remains six accepted components (K01/K02/K03/K05/K06/K07); K04 and K08 remain unresolved. Next useful work must be a genuinely new source-defined whole-output producer/copy-stage relation from retained records, not another unanchored family. For K08, the direct source remains the missing author-final envelope/card/photo-caption text; Praeger is a locator only.
+
+
+### 16 Nov 2026 04:34Z — verifier and ticket-linked payload cross-check
+
+- Ran the supplied offline verifier against the current repository candidate values and original acceptance file. Result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; passed=6; combined INCOMPLETE; accepted=false. No candidate or verifier change.
+- Followed the candidate L-29/N ticket→PS +305 mapping through to the selected last-ACK payloads for PS-0399, PS-0404, PS-0411 and PS-0417 (attempt-2 RECOVER ACK for PS-0417). XOR of the four payloads, and XOR including the fifth PS-0386 row, both fail K04 directly and after the route mask. Pairwise per-ticket XOR of the four mapped PTW serials with the four PS payloads, in A/B/C/D and B/D/A/C orders, also fails. The four serials in chronological PS-job order A/C/B/D, direct or route-masked, fail. These are bounded negative cross-role constructions; the linked jobs have mixed classes/destinations, so no common queue parity rule is established.
+- Agent40's 04:30Z note confirms the supplied ZIP and extracted evidence contain no SQLite 3 database signature, plum.sqlite, WAL/SHM sidecars, or nested large object; its AX-7782 SQLite bridge requires the separate 8 MiB object/profile image. Do not rescan the same ZIP absent new bytes.
