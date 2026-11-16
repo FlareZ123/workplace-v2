@@ -58,11 +58,30 @@ def v27_core(bits: list[int], history: int, descramble: bool) -> list[int]:
 def has_45_bit_periodic_guard_sequence(bits: list[int]) -> bool:
     """Necessary detectable 45-bit periodicity used by V.27 guard checks."""
     for stop in range(45, len(bits) + 1):
-        for period in (9, 12):
+        for period in (8, 9, 12):
             if all(bits[j] == bits[j + period]
                    for j in range(stop - 45, stop - period)):
                 return True
     return False
+
+
+def single_guard_flip(bits: list[int], history: int, descramble: bool,
+                      position: int) -> list[int]:
+    """One forced guard inversion at a position whose earlier context is absent."""
+    assert 0 <= position < 45
+    if descramble:
+        altered = bits.copy()
+        altered[position] ^= 1
+        return v27_core(altered, history, True)
+    transmitted = [(history >> j) & 1 for j in range(7)]
+    out: list[int] = []
+    for i, bit in enumerate(bits):
+        emitted = bit ^ transmitted[-6] ^ transmitted[-7]
+        if i == position:
+            emitted ^= 1
+        out.append(emitted)
+        transmitted.append(emitted)
+    return out
 
 
 def run(source: dict[str, bytes]) -> dict[str, object]:
@@ -125,19 +144,58 @@ def run(source: dict[str, bytes]) -> dict[str, object]:
                     guard_window_count += 1
                 attempts += 1
 
+    forced_guard_planted = bytes(
+        x ^ y for x, y in zip(
+            bytes_from_bits(
+                single_guard_flip(bits_from_bytes(copied, True), 93, True, 17),
+                True,
+            ),
+            mask,
+        )
+    )
+    forced_guard_planted_digest = hashlib.sha256(forced_guard_planted).hexdigest()
+    forced_guard_attempts = 0
+    forced_guard_positives = []
+    for order in (True, False):
+        input_bits = bits_from_bytes(copied, order)
+        for descramble in (True, False):
+            for history in range(128):
+                for position in range(45):
+                    coupon = bytes_from_bits(
+                        single_guard_flip(input_bits, history, descramble, position),
+                        order,
+                    )
+                    component = bytes(a ^ b for a, b in zip(coupon, mask))
+                    digest = hashlib.sha256(component).hexdigest()
+                    descriptor = [order, descramble, history, position]
+                    if digest == target:
+                        original_hits.append({
+                            "msb_first": order, "descramble": descramble,
+                            "history": history, "guard_position": position,
+                            "component_hex": component.hex().upper(),
+                        })
+                    if digest == forced_guard_planted_digest:
+                        forced_guard_positives.append(descriptor)
+                    forced_guard_attempts += 1
+
+    assert forced_guard_attempts == 23040
+    assert forced_guard_positives == [[True, True, 93, 17]]
     assert attempts == 512
     assert planted_hits == [{"msb_first": True, "descramble": True, "history": 93}]
     assert original_hits == []
     assert guard_window_count == 0
     return {
-        "model": "ITU V.27ter seven-bit unguarded self-synchronizing polynomial core",
+        "model": "ITU V.27ter seven-bit self-synchronizing core and one early guard inversion",
         "source_checks_passed": len(EXPECTED_SHA256),
-        "complete_original_commitment_checks": attempts,
+        "core_commitment_checks": attempts,
+        "single_early_guard_inversion_checks": forced_guard_attempts,
+        "complete_original_commitment_checks": attempts + forced_guard_attempts,
         "original_matches": original_hits,
         "synthetic_planted_complete_coupon_matches": len(planted_hits),
         "synthetic_inverse_controls": 6,
+        "single_guard_planted_coupon_matches": len(forced_guard_positives),
         "detectable_45bit_guard_periodic_windows": guard_window_count,
-        "scope": "no pre-window guard effects or independent native physical coupon",
+        "scope": "one forced early guard event only; no multi-event history or native coupon",
     }
 
 

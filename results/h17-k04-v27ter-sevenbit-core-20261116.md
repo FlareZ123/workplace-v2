@@ -1,6 +1,6 @@
 # K04: ITU V.27ter seven-bit self-synchronizing core, 16 November 2026
 
-**Agent 48. Original K04 full commitment: NO MATCH (512/512 complete candidates).** The six accepted components remain intact. K04 and K08 are missing, and combined REC8/1 is INCOMPLETE.
+**Agent 48. Original K04 full commitment: NO MATCH (23,552 complete candidates across two bounded stages).** The six accepted components remain intact. K04 and K08 are missing, and combined REC8/1 is INCOMPLETE.
 
 ## Source and explicit model boundary
 
@@ -33,12 +33,23 @@ For each received bit `s[n]`, the descrambler core is `d[n] = s[n] XOR s[n-6] XO
 | LSB-first scramble | 128 | 128 | 0 |
 | **Total** | **512** | **512** | **0** |
 
-All four original source fingerprints are asserted in the reproducer. Six direction/serialization/history round-trip controls passed. A synthetic full coupon based on an independently selected MSB-first descramble history 93 was recovered **exactly once** by the same full-SHA256 search. In the tested 135-bit windows (seven hypothesized preceding bits plus the entire 128-bit packet), no 45-bit period-9 or period-12 guard trigger appeared. This local check cannot model unknown earlier guard history and does not implement V.27ter's extra period-8 guard circuitry.
+All four original source fingerprints are asserted in the reproducer. Six direction/serialization/history round-trip controls passed. A synthetic full coupon based on an independently selected MSB-first descramble history 93 was recovered **exactly once** by the same full-SHA256 search.
+
+### One early guard inversion with unavailable prehistory
+
+V.27ter also has a guard circuit that inverts an outgoing bit after a sufficiently repetitive prior transmitted sequence. The copy does not preserve the preceding 45-bit context. Therefore test a *distinct, bounded* conditional subcase with exactly one forced guard inversion at any of the first 45 packet-bit positions, for all 128 preceding seven-bit histories and both bit orders/directions. In the forward direction, the inverted transmitted bit feeds back into subsequent scrambler state. In the reverse direction, undo one bit inversion before applying the descrambler.
+
+| Follow-on model | Full coupon commitment hashes | Original K04 matches |
+| --- | ---: | ---: |
+| One early guard inversion, both directions/orders/all histories | **23,040** | **0** |
+| **Cumulative (core plus one-guard)** | **23,552** | **0** |
+
+An independently planted one-guard coupon at MSB-first / descramble / history 93 / position 17 was recovered exactly once by the expanded search. In the tested 135-bit windows (seven hypothesized preceding bits plus 128 packet bits), no 45-bit period-8, period-9, or period-12 periodic run was found. This is a diagnostic for the tested window. The protocol's exact guard rules depend on earlier unknown transmitted bits, so this subcase cannot exclude multiple events or a more complex earlier guard history. The observed buffer itself does not establish any such event.
 
 The executable source-pinned SFT is [`agents/agent48/k04_v27ter_scrambler_sft.py`](../agents/agent48/k04_v27ter_scrambler_sft.py); Python standard library only, read-only, accepts the original ZIP using `--archive`, or reads the repository's `resources/` by default.
 
 ## Interpretation
 
-The selected copied payload does **not** yield the accepted K04 under the four specified **unguarded seven-bit V.27ter core** families. This new narrow exclusion neither recovers a physical coupon nor justifies a broad fax-standard scan. It does not cover guard effects dependent on pre-window history, bit framing shifts, corrupt source bytes, a different mask/export stage, or other producer architectures. As an informal source cue, N22 does not identify any real ESC-N transmission protocol.
+The selected copied payload does **not** yield the accepted K04 under the specified **unguarded seven-bit V.27ter core** or its one-forced-early-guard-inversion extension. This narrow exclusion neither recovers a physical coupon nor justifies a broad fax-standard scan. It does not cover multiple or history-dependent guard events, bit framing shifts, corrupt source bytes, a different mask/export stage, or other producer architectures. As an informal source cue, N22 does not identify any real ESC-N transmission protocol.
 
 No canonical candidate, acceptance commitment, route, source evidence or official verifier was modified. No new K04 selected bit or K08 final-caption word was authenticated.
