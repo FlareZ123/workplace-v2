@@ -39,6 +39,19 @@ def small_record(text: str, *, compact: bool = False, no_rect: bool = False, gly
     return bytes(payload)
 
 
+def emfplus_comment(text: str, *, invalid: bool = False) -> bytes:
+    encoded = text.encode("utf-16-le")
+    plus = bytearray(40)
+    plus += encoded
+    plus.extend(bytes(-len(plus) % 4))
+    struct.pack_into("<HHII", plus, 0, 0x401C, 0, len(plus), len(plus) - 12)
+    struct.pack_into("<I", plus, 20, len(text) + (100 if invalid else 0))
+    whole = bytearray(16)
+    whole += plus
+    struct.pack_into("<IIII", whole, 0, 70, len(whole), len(whole) - 12, 0x2B464D45)
+    return bytes(whole)
+
+
 def page(*records: bytes) -> bytes:
     h = bytearray(88)
     struct.pack_into("<II", h, 0, 1, 88)
@@ -67,6 +80,14 @@ def main() -> None:
                for _, value in small_streams), small_streams
     assert list(extract_emf_text(page(small_record("glyph", glyph=True)))) == []
     print("PASS EMR_SMALLTEXTOUT both text widths and bounding rectangle alternatives")
+
+    emfplus = page(emfplus_comment("GDI+ recovery caption"),
+                   emfplus_comment(" and its margin"))
+    plus_streams = list(extract_emf_text(emfplus))
+    assert any(value == b"GDI+ recovery caption and its margin"
+               for _, value in plus_streams), plus_streams
+    assert list(extract_emf_text(page(emfplus_comment("hidden", invalid=True)))) == []
+    print("PASS embedded EMF+ DrawString text and invalid-length rejection")
 
     nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
     prehash = hmac.new(nonce, caption.lower().encode("utf-8"), hashlib.sha256).digest()[:16]
