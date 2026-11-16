@@ -9,8 +9,15 @@
 #include <iterator>
 #include <string>
 using Digest=std::array<unsigned char,32>;
+// Compile with -DROUTE_MASK_DISLOCATION to test independent route-mask
+// transcription loss instead of the selected copied physical coupon loss.
+#if defined(ROUTE_MASK_DISLOCATION)
+static constexpr char source[]="8556C8CB6140A7F9A5123AC7571BEE1C";
+static constexpr unsigned char mask[16]={0xA9,0xA9,0xDC,0x57,0x31,0xA5,0xE2,0xAE,0x87,0x9C,0x47,0x21,0x5C,0x25,0x59,0xD5};
+#else
 static constexpr char source[]="A9A9DC5731A5E2AE879C47215C2559D5";
 static constexpr unsigned char mask[16]={0x85,0x56,0xC8,0xCB,0x61,0x40,0xA7,0xF9,0xA5,0x12,0x3A,0xC7,0x57,0x1B,0xEE,0x1C};
+#endif
 static constexpr unsigned char target[32]={0x93,0x0A,0x52,0xA1,0xBA,0xB9,0x7C,0xA2,0x96,0x63,0x32,0x13,0x7C,0x99,0xE9,0x92,0x98,0xEA,0x61,0x82,0xFB,0x32,0xAB,0x63,0xA3,0x42,0x1D,0xFB,0x4F,0xD8,0xC9,0xE0};
 static std::string read(const std::string&p){std::ifstream f(p,std::ios::binary);if(!f){std::fprintf(stderr,"READ_FAILED %s\n",p.c_str());std::exit(2);}return std::string(std::istreambuf_iterator<char>(f),{});}
 static void pin(const std::string&root,const char*file,const char*expected){
@@ -47,6 +54,12 @@ int main(int argc,char**argv){
     if(std::memcmp(digest.data(),target,32)==0){++found;std::printf("REAL_K04 support=%d insertion=%03X value=",support,v);for(unsigned char x:candidate)std::printf("%02X",x);std::printf("\n");}
    }
  }
- std::printf("THREE_NIBBLE_SEAMS supports=4096 checks=%llu expected=16777216 original=%llu planted=%llu\n",(unsigned long long)tested,(unsigned long long)found,(unsigned long long)positive);
+ std::printf("THREE_NIBBLE_SEAMS mode=%s supports=4096 checks=%llu expected=16777216 original=%llu planted=%llu\n",
+#if defined(ROUTE_MASK_DISLOCATION)
+ "route-mask",
+#else
+ "copied-coupon",
+#endif
+ (unsigned long long)tested,(unsigned long long)found,(unsigned long long)positive);
  return tested==16777216ULL&&positive==1?(found?10:0):2;
 }
