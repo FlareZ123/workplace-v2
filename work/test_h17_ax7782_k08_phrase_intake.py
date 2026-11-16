@@ -219,5 +219,75 @@ class K08PhraseIntakeTests(unittest.TestCase):
             self.assertTrue(result["transfer"]["K07_commitment_pass"])
 
 
+
+    def test_legacy_xls_biff_cells_are_joined_and_scanned(self):
+        import types
+        from unittest import mock
+
+        nonce = bytes(range(16))
+        phrase = "the sea is calm and the watch is over"
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+
+        class FakeCell:
+            def __init__(self, value, ctype=1):
+                self.value = value
+                self.ctype = ctype
+
+        class FakeSheet:
+            name = "Mug stock"
+            nrows = 2
+            ncols = 2
+            cells = [
+                [FakeCell("the sea"), FakeCell("is calm")],
+                [FakeCell("and the"), FakeCell("watch is over")],
+            ]
+
+            def cell(self, row, col):
+                return self.cells[row][col]
+
+        class FakeBook:
+            def sheets(self):
+                return [FakeSheet()]
+
+            def release_resources(self):
+                pass
+
+        class FakeOleFile:
+            def __init__(self, _stream):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                pass
+
+            def listdir(self, streams=True, storages=False):
+                return []
+
+        fake_xlrd = types.SimpleNamespace(
+            XL_CELL_EMPTY=0,
+            XL_CELL_BLANK=6,
+            open_workbook=lambda **_kwargs: FakeBook(),
+        )
+        fake_olefile = types.SimpleNamespace(OleFileIO=FakeOleFile)
+        payload = b"\\xd0\\xcf\\x11\\xe0\\xa1\\xb1\\x1a\\xe1" + b"\\x00" * 32
+        errors = []
+        with mock.patch.dict(sys.modules, {"xlrd": fake_xlrd, "olefile": fake_olefile}):
+            streams = list(phrase_intake.iter_text_streams(
+                "mug-stock.xls", payload, 0, [0], errors, False
+            ))
+
+        self.assertFalse(errors)
+        self.assertTrue(any("the sea is calm" in data.decode("utf-8")
+                            for _source, data in streams))
+        hits = []
+        for source, data in streams:
+            for label, text in phrase_intake.decode_text_variants(data, source):
+                phrase_intake.scan_phrase_spans(
+                    text, nonce, target, source + " [" + label + "]", 16, hits
+                )
+        self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
