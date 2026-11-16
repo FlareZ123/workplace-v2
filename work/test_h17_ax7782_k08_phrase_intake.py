@@ -263,7 +263,10 @@ class K08PhraseIntakeTests(unittest.TestCase):
                 pass
 
             def listdir(self, streams=True, storages=False):
-                return []
+                return [["Workbook"]]
+
+            def openstream(self, _stream_path):
+                return io.BytesIO(b"author margin comment")
 
         fake_xlrd = types.SimpleNamespace(
             XL_CELL_EMPTY=0,
@@ -280,6 +283,8 @@ class K08PhraseIntakeTests(unittest.TestCase):
 
         self.assertFalse(errors)
         self.assertTrue(any("the sea is calm" in data.decode("utf-8")
+                            for _source, data in streams))
+        self.assertTrue(any("author margin comment" in data.decode("utf-8")
                             for _source, data in streams))
         hits = []
         for source, data in streams:
