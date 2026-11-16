@@ -27,6 +27,18 @@ def record(kind: int, pieces: list[str], *, glyph: bool = False, bad_offset: boo
     return bytes(content)
 
 
+def small_record(text: str, *, compact: bool = False, no_rect: bool = False, glyph: bool = False) -> bytes:
+    options = (0x200 if compact else 0) | (0x100 if no_rect else 0) | (0x10 if glyph else 0)
+    encoded = text.encode("latin1" if compact else "utf-16-le")
+    prefix = 36 if no_rect else 52
+    payload = bytearray(prefix)
+    struct.pack_into("<II", payload, 16, len(text), options)
+    payload += encoded
+    payload.extend(bytes(-len(payload) % 4))
+    struct.pack_into("<II", payload, 0, 108, len(payload))
+    return bytes(payload)
+
+
 def page(*records: bytes) -> bytes:
     h = bytearray(88)
     struct.pack_into("<II", h, 0, 1, 88)
@@ -47,6 +59,14 @@ def main() -> None:
     assert caption.encode("utf-8") in [v for _, v in results], results
     assert any(b"west desk" in v for _, v in results), results
     print("PASS embedded Unicode/ASCII EMFSPOOL pages and two-string PolyTextOut")
+
+    small = page(small_record("Café blue mug", compact=True, no_rect=True),
+                 small_record("marée nocturne", compact=False, no_rect=False))
+    small_streams = list(extract_emf_text(small))
+    assert any(value == "Café blue mug marée nocturne".encode("utf-8")
+               for _, value in small_streams), small_streams
+    assert list(extract_emf_text(page(small_record("glyph", glyph=True)))) == []
+    print("PASS EMR_SMALLTEXTOUT both text widths and bounding rectangle alternatives")
 
     nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
     prehash = hmac.new(nonce, caption.lower().encode("utf-8"), hashlib.sha256).digest()[:16]
