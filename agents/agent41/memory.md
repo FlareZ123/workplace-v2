@@ -380,3 +380,30 @@ The connected GitHub account's repository listing showed `workplace-v1` and `wor
 - Reviewed today’s source-recovery boundaries and newest Critic redirection before launching any large computation. Prior work already includes the N22 fax scrambler family, T.4/T.6, HDLC, serial Gray, copied ACK Hamming≤6, multi-seam, Romu/MT/PCG/Murmur issuer families, K08 N20 graph billions and full source punctuation normalization. These are not invitations to repeat them. Source N20 remains a semantic brief, N23 an unquoted final-margin reference; no new independently specified selected coupon producer or final authoring version operator has emerged. No original K04 bit and no final K08 word authenticated in this checkpoint.
 - GitHub search found only `main` in workplace-v2 branch listing and no pull requests; installed relevant workplace repositories remain v1/v2. These checks located no new source and are not proof no external historical original exists. Worker ideation transport was explicitly unavailable (SSE 404), yielding no external research result. Source archive, acceptance, verifier and canonical six-component candidate remain unchanged.
 - Next useful positive work requires a **new complete, source-indexed producer/selector or preserved author-final text**. Avoid rerunning copied-ACK bit repairs, general PRNG/fax families, lexical phrase lotteries and historical site scans just to produce activity. The maintainer confirms solvability; treat inherited interpretations as provisional, but preserve the true acceptance boundary.
+
+
+## 2026-11-16 invocation checkpoint (Agent41)
+
+Normal mode. This invocation continued Agent41's existing identity; the original lease was not refreshed. The local candidate was independently evaluated with the repository verifier: K01, K02, K03, K05, K06 and K07 pass; K04 and K08 are missing; combined recovery remains incomplete. Do not report a complete key.
+
+### New source boundary / acquisition priority
+
+- The transfer audit records a non-dry-run COMMIT for object `IR-261003-H17` on `AX-7782`, with eight 1 MiB chunks. MAIL-13 identifies AX-7782 as the actual retained copy; MAIL-20 says Bundle 06 was staged locally but the supplied export is trimmed.
+- The uploaded ZIP is 50,526 bytes and 118,184 bytes uncompressed. It does not contain the 8 MiB object or the Bundle 06 manifest/omission log. The local upload/project-file inventories and tracked workplace-v2 tree contain no object bytes or authorized locator; the public GitHub exact-ID search found no additional copy.
+- Added this as an unverified high-value acquisition lead to `results/README.md` and sent `communications/broadcast/20261116T180751Z_agent41-AX7782-acquisition-priority.md`. The read-only intake tool is `work/h17_ax7782_object_intake.py`; use it if an authorized object/manifest arrives. The object may contain the missing commissioning note, supplier drawing, spool, or envelope witness, but that content is not established.
+- The original supplier commissioning note (including revisions, worked examples and attachments) and original supplier drawing are separately identified as missing in `results/h17-k04-original-commissioning-and-drawing-source-gates-20261107.md`. `recovery-routing.json` is a transcription, not a substitute for those originals. The drawing may resolve the ESC-N physical media route; the commissioning note may resolve exact K04/K08 selection and normalization semantics.
+
+### Bounded checks completed; do not repeat
+
+- K04: selected PS-0417 attempt-2 payload XOR route mask does not satisfy the K04 commitment. Pairwise XORs among the same-job LABEL/RECOVER attempt payloads also fail. The K07 16-byte transfer checkpoint chain, used as a hypothetical K04 coupon and XORed with the K04 mask, fails. RC-17 B- and D-revision 16-byte control-strip blocks, under the same section order as accepted K06, also fail K04; they are not the printer coupon source.
+- K08: BIP39 mnemonics derived from the K07 checkpoint chain and from the K08 desk nonce both fail the K08 HMAC commitment. Agent34's 536-million-candidate nonminimal three-strand caption/SCS scan also reports no hit. Do not expand into generic phrase, page/word, or image-bitplane permutations without a newly authenticated carrier and source-defined rule.
+- The rendered BX25-08 PDF is not an authorized evidence path. A temporary local render made using a withdrawn derived setting was deleted; do not use or propagate that setting or any conclusions from the render.
+- The root `private/` directory in workplace-v2 contains only `.gitkeep`. The separate private intranet repository remains outside authorized scope; do not inspect it.
+- The v1 candidate also has the same six accepted slots and two missing slots; no additional binary/source artifact was found there.
+
+### Coordination and durable changes
+
+- Requested concrete new source-to-output leads from Agent34, Agent6, Agent40, Agent24 and Agent39 in their mailboxes. At the time of this checkpoint, no replies were present. Agent34's latest bounded SCS result is negative.
+- Updated and remotely verified `results/README.md` with the AX-7782 / Bundle 06 acquisition lead.
+- The highest-value next action is to obtain an authorized copy of the full AX-7782 / Bundle 06 object and its manifest/omission log. If unavailable, the minimum independent witnesses remain: (1) original PS-0417 attempt-2 native queue/spool/rendered coupon and media-integrity witness for K04; (2) Emily's final envelope/margin wording or an authorized original carrier/full thread for K08.
+- No further broad search is justified on the current export. Preserve the six verified components, do not alter acceptance/verifier rules, and do not claim a complete recovery until both missing commitments pass.
