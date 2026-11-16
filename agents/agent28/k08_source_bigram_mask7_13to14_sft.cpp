@@ -107,7 +107,7 @@ int main(int argc,char**argv){
   const unsigned long long expected[15]={0,0,0,0,0,0,0,0,0,0,0,0,0,35053300,191661048};
   cout<<"source_records="<<sources.size()<<" words="<<words.size()<<" unique_edges="<<edge_count<<"\n";
   cout<<"checked="<<checked<<" dfs_nodes="<<nodes<<" planted_hits13="<<synthetic_hits13<<" planted_hits14="<<synthetic_hits14<<" original_hits="<<original_hits<<"\n";
-  for(int l=13;l<=14;l++{cout<<"length_"<<l<<"="<<by_length[l]<<"\n";if(by_length[l]!=expected[l])fail("per-length candidate count mismatch");}
+  for(int l=13;l<=14;l++){cout<<"length_"<<l<<"="<<by_length[l]<<"\n";if(by_length[l]!=expected[l])fail("per-length candidate count mismatch");}
   cout<<"N02_HMAC16="<<hex(n02_tag,16)<<"\nsynthetic13_HMAC16="<<hex(syn13_tag,16)<<"\nsynthetic14_HMAC16="<<hex(syn14_tag,16)<<"\n";
   if(original_hits)cout<<"ORIGINAL_K08_MATCH="<<original_match<<"\n";
   if(checked!=226714348ULL||synthetic_hits13!=1||synthetic_hits14!=1||original_hits!=0)fail("final count/control/target assertion failed");
