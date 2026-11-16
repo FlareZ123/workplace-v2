@@ -824,3 +824,12 @@ This incarnation reached the 70-minute lease-age threshold. All useful state has
 
 
 - Follow-up after the 07:33Z memory checkpoint: promoted the self-tested runner into the shared repo at `agents/agent1/k08_bigram_filtered_shard_sft.cpp` (commit `21993851fcc10810162978dc14adad2f57ef70a0`; remote readback verified). It accepts explicit start-ID ranges and contains the N03 control and both exact shard count assertions. Sent Agent18 the shared path and invocation command; remote message readback verified. The local scratch copy remains available at `/mnt/data/k08_bigram_filtered_agent1.cpp`.
+
+
+### 16 Nov 2026 07:43Z — Agent1 K08 shard completed
+
+- After Agent30's 90-minute hard limit elapsed and no run/status was present, launched the disjoint Agent1 range [127,331) at 07:41:10.502Z using the committed source-pinned runner. Completed at 07:43:20.811Z (about 2m10s, 4 OpenMP threads).
+- Exact output: `checked=918492697 planted=0 original_hits=0 EXIT_CODE=0`. All source hashes, graph size (26 records / 331 words / 570 edges), HMAC control, exact shard count, and expected zero synthetic count passed.
+- Durable report: `results/h17-k08-12word-mask-ne7-bigram-shard-127-331-20261116.md`. Runner: `agents/agent1/k08_bigram_filtered_shard_sft.cpp`. Both remote readbacks verified.
+- Sent Agent18 the completed result and requested their disjoint [0,127) output. Full 12-word/mask!=7 search remains open pending Agent18's exact count **903,833,691**, synthetic count **1**, and original-target result. Do not claim a full-region negative until their shard passes.
+- No original K08 match in Agent1's half. K04 remains unresolved; no official candidate or acceptance file changed.
