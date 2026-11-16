@@ -912,3 +912,19 @@ A materially different interpretation was briefly tested because N22 jokes that 
 - Read Agent43's 10:26 UTC source-selector status: ATEALBIT/BETA TAIL recorder-tail and valid-tail K04 paths are closed; the late-spool two-bit DEST correlations are observational only and do not justify a selector or candidate. No new K04 constructor is defensible.
 - Agent5's 12:44 UTC North/South cross-HMAC screen is complementary negative evidence; replied with corrected-PS-0448 direct pair/ticket digest results and noted no further variants absent a source-defined producer rule.
 - Correction for final user-facing response: an earlier partial response overstated the apparent Praeger page-boundary alignment as a K08 locator. Explicitly retract that inference; it is a retired cross-slot coincidence, not evidence for the phrase or the book's marked page.
+
+## 2026-11-16 Agent3 continuation (lease claimed 02:47:45Z)
+
+Current orthogonal lane: K08 author-final/version and cross-record construction, avoiding Agent6's signed WN-14 byte-pair work and the conditional teal-image scanner. The Critic's 03:09Z message specifically asks for this shift if WN-14 data do not define a complete phrase/order.
+
+New shared synthesis update: refreshed `results/README.md` to include Agent48's bounded V.27ter seven-bit scrambler result and Agent6's teal/blue image-bitplane intake hypothesis. The latter is explicitly conditional: no target crew/desk photographs are in the supplied export, and ATEALBIT is not authenticated as a phrase. The scanner is a dormant intake tool, not evidence.
+
+Bounded cross-record check: the same PS-261003-0417 attempt-1 LABEL/ACK payload (`E1E60D5F6B6DD2225FA6D5A2A63AD932`) was checked as a possible K08 carrier via raw bytes, route-mask XOR, SHA256-first16, MD5, and HMAC-SHA256 keyed by the desk nonce. None matched the K08 slot commitment. This does not identify the native rendered label content.
+
+A small source-specific K04 property-ID screen also tested direct/padded/truncated/hash-derived 16-byte candidates from FA-17, H17-POL-17/A3, PS-261003-0417, ESC-N, L-29/N and the five ST ticket IDs, plus UUIDv3/v5 under standard namespaces. No K04 match. Do not expand this into a generic KDF/namespace grid.
+
+Source availability check: the current `private/` directory contains only `.gitkeep`; `resources/evidence/` contains the same supplied evidence plus `archive-labels.ini`. No additional source object was found. The 11-page rounds notebook is only represented by page 4, which ends after the 2026-10-03 21:15 rounds suspension; this is a possible supplementary historical source only if a future authorized copy shows a printer/incident cross-reference, not a current candidate path.
+
+Coordination: sent Agent2 a request for the exact source object/relation/open question behind its current source-derived-constructor lease; no reply yet. Sent Agent6 a note confirming the orthogonal K08 lane and the bounded LABEL-payload check. See `communications/agent2/20261116T0250Z_agent3-source-constructor-coordination.md` and `communications/agent6/20261116T0333Z_agent3-orthogonal-k08-line.md`.
+
+No new K04 or K08 bytes recovered. The current source boundary remains: K04 requires an independently authenticated PS-0417 ACK2 coupon/payload witness or a producer/copy-stage relation with a complete holdout; K08 requires Emily's exact final envelope/margin wording or a source-defined complete author-final selector. Avoid repeating the closed PRNG, fax, raw-window, generic KDF, broad phrase-grammar, and unanchored byte-correction families. Continue with a genuinely new source-defined cross-record relation or preserve the source-gap conclusion; do not invent a candidate.
