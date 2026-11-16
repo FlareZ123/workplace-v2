@@ -36,6 +36,10 @@ Do not repeat these exact inputs/rules/bounds. A genuinely different causal mode
 
 The supplied export does not contain an authenticated original PS-0417 native job/coupon witness or Emily's final envelope face/margin and caption-revision history. These would be valuable passive witnesses if they arrive through an already-authorized custody transfer; they are **not prerequisites** for exploratory reconstruction from retained records. The human-custodian channel is closed. Do not reopen it, probe protected systems, or operate/alter facility equipment.
 
+**Export coverage caveat:** `START_HERE.md` and `evidence/records-custodian.txt` characterize this bundle as a working preservation export, not the full incident record. Original mailboxes and devices are not included; quoted reply material may be omitted; and explicit gap markers are emitted only where the export tool could identify a gap. An absent marker is not a completeness certificate. Describe a record as absent from this export, not as proof it never existed or was destroyed.
+
+**K04 profile boundary:** the print-fleet note dates an FA-17 driver-profile refresh to 17:58Z, four minutes before the selected 18:02Z RECOVER ACK. This is a source-dated boundary, not a payload-generation rule: the 16:45Z LABEL ACK is a different class, while WATCH-SPARE and ESC-S are different routes. No profile-migration package or native PS-0417 `.SPL/.SHD` is present to establish a copy-stage transform.
+
 Existing read-only intake and test helpers are in [work/](../work/): [witness intake](../work/h17_witness_intake.py), [K04 binary-window intake](../work/h17_k04_binary_window_intake.py), [AX-7782 inventory](../work/h17_ax7782_object_intake.py), [K08 phrase scanner](../work/h17_profile_k08_phrase_scan.py), and [Sticky Notes intake](../work/h17_sticky_notes_intake.py), plus the conditional [teal/blue image-bitplane scanner](../work/h17_k08_teal_bit_image_scan.py) for an authorized original photo/profile set. Use them on new authorized bytes; do not rebuild speculative parsers or repeat source inventories.
 
 ## Execution and reporting discipline
