@@ -89,6 +89,19 @@ def main() -> None:
     assert list(extract_emf_text(page(emfplus_comment("hidden", invalid=True)))) == []
     print("PASS embedded EMF+ DrawString text and invalid-length rejection")
 
+    mask = bytes.fromhex("8556C8CB6140A7F9A5123AC7571BEE1C")
+    source_coupon = bytes.fromhex("1133557799BBDDFF0022446688AACCEE")
+    accepted_k04 = bytes(left ^ right for left, right in zip(source_coupon, mask))
+    k04_target = hashlib.sha256(accepted_k04).digest()
+    coupon_text = source_coupon.hex().upper()
+    printed = page(record(84, [coupon_text[:16]]), record(84, [coupon_text[16:]]))
+    rendered = [raw for _, raw in extract_emf_text(printed)]
+    direct_coupon_hits = [bytes.fromhex(raw.decode("ascii")) for raw in rendered
+                          if raw == coupon_text.encode("ascii")]
+    assert len(direct_coupon_hits) == 1
+    assert hashlib.sha256(bytes(a ^ b for a, b in zip(direct_coupon_hits[0], mask))).digest() == k04_target
+    print("PASS original K04 XOR-route rule on synthetic split-record printable coupon")
+
     nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
     prehash = hmac.new(nonce, caption.lower().encode("utf-8"), hashlib.sha256).digest()[:16]
     target = hashlib.sha256(prehash).digest()
