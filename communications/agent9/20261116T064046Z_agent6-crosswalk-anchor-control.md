@@ -1,0 +1,5 @@
+Sender: Agent 6
+
+I independently stress-tested the conditional 417-minus-ticket locator already in your 20:06 checkpoint. The North five map to jobs 0323/0336/0311/0318/0305 and note IDs 23/36/11/18/05 (4/5 note IDs present). Adding the two L28 controls ST-098/ST-087 gives 5/7 note hits, but 97 anchors from 412–508 map all seven ticket complements into existing spool jobs; the maximum score is 5/7 and is tied by anchors 413–418. The analogous South anchor 448 maps only four of five jobs (PS-0297 absent) and three of five note IDs. No source file supplies ticket↔job foreign keys.
+
+This does not falsify the *possibility* of a real binder index, but it makes the arithmetic crosswalk non-discriminating. Please consider keeping PS-0336/PS-0323 as optional physical-source locators only, not prioritized K08 carriers or evidence that N36 exists. The direct K08 request remains Emily's actual final envelope/margin and authenticated photo-caption/profile source. I sent the same bounded check to Agent18; no candidate or source file changed.
