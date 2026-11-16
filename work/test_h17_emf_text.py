@@ -52,6 +52,19 @@ def emfplus_comment(text: str, *, invalid: bool = False) -> bytes:
     return bytes(whole)
 
 
+def emfplus_driver(text: str, *, cmap: bool = True) -> bytes:
+    encoded = text.encode("utf-16-le")
+    plus = bytearray(28)
+    plus += encoded + bytes(8 * len(text))
+    plus.extend(bytes(-len(plus) % 4))
+    struct.pack_into("<HHII", plus, 0, 0x4036, 0, len(plus), len(plus) - 12)
+    struct.pack_into("<III", plus, 16, 1 if cmap else 0, 0, len(text))
+    whole = bytearray(16)
+    whole += plus
+    struct.pack_into("<IIII", whole, 0, 70, len(whole), len(whole) - 12, 0x2B464D45)
+    return bytes(whole)
+
+
 def page(*records: bytes) -> bytes:
     h = bytearray(88)
     struct.pack_into("<II", h, 0, 1, 88)
@@ -88,6 +101,11 @@ def main() -> None:
                for _, value in plus_streams), plus_streams
     assert list(extract_emf_text(page(emfplus_comment("hidden", invalid=True)))) == []
     print("PASS embedded EMF+ DrawString text and invalid-length rejection")
+
+    native_driver = list(extract_emf_text(page(emfplus_driver("watch ends"))))
+    assert any(v == b"watch ends" for _, v in native_driver), native_driver
+    assert list(extract_emf_text(page(emfplus_driver("glyphs", cmap=False)))) == []
+    print("PASS GDI+ Unicode DriverString and glyph-index exclusion")
 
     mask = bytes.fromhex("8556C8CB6140A7F9A5123AC7571BEE1C")
     source_coupon = bytes.fromhex("1133557799BBDDFF0022446688AACCEE")
