@@ -9,7 +9,7 @@ with the original desk nonce, truncated to 16 bytes, and checked against the
 unchanged K08 SHA-256 commitment. It does not invent or paraphrase wording.
 
 ZIP/TAR/GZIP, PDF text/content/annotations/attachments, image metadata, and
-optional OCR are read in memory. No source is modified or extracted to disk.
+optional OCR are read in memory. Legacy Excel .xls BIFF cell values are decoded when xlrd 2.x is installed; other OLE streams are scanned when olefile is installed. No source is modified or extracted to disk.
 Encrypted PDFs are not password-guessed.
 """
 from __future__ import annotations
@@ -345,7 +345,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                         if sheet_rows:
                             xls_streams.append((
                                 f"{name}!/{sheet.name}!sheet",
-                                "\\n".join(sheet_rows).encode("utf-8", "replace"),
+                                "\n".join(sheet_rows).encode("utf-8", "replace"),
                             ))
                         if cell_budget <= 0:
                             errors.append({"source": name, "error": "legacy .xls cell scan stopped at 250000 cells"})
