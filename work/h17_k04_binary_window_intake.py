@@ -121,6 +121,12 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
             result["hits"].extend(scan_bytes(
                 f"{name}!/{label}", text, target_digest, mask, stride
             ))
+            compact_hex = text.translate(None, b" \t\r\n:.-")
+            if compact_hex != text:
+                result["hits"].extend(scan_bytes(
+                    f"{name}!/{label}-grouped-hex", compact_hex,
+                    target_digest, mask, stride
+                ))
     if depth >= max_depth:
         if result["magic"] in {"zip", "tar", "gzip"}:
             result["scan_limit"] = "max-depth reached"
