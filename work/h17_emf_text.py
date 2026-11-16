@@ -3,7 +3,8 @@
 A bounded, non-rendering extractor. Glyph-index text, bitmap-rendered pages,
 font-encoded outlines and unsupported record types require native rendering/OCR.
 No filesystem or network access. See Microsoft [MS-EMF] sections 2.2.5,
-2.3.4.2, 2.3.5.7, 2.3.5.8, 2.3.5.32, 2.3.5.33 and 2.3.5.37.
+2.3.3, 2.3.4.2, 2.3.5.7, 2.3.5.8, 2.3.5.32, 2.3.5.33
+and 2.3.5.37; plus Microsoft [MS-EMFPLUS] 2.3.4.14.
 """
 from __future__ import annotations
 
@@ -75,6 +76,37 @@ def _record_text(record: memoryview, kind: int) -> list[str]:
     return strings
 
 
+def _emfplus_text(record: memoryview) -> list[str]:
+    """Read UTF-16LE DrawString records inside an EMF+ comment container."""
+    if len(record) < 16:
+        return []
+    data_size, identifier = struct.unpack_from("<II", record, 8)
+    if identifier != 0x2B464D45 or data_size < 4 or data_size + 12 > len(record):
+        return []
+    cursor = 16
+    end = data_size + 12
+    strings: list[str] = []
+    while cursor < end:
+        if cursor + 12 > end:
+            return []
+        kind, _, size, payload_size = struct.unpack_from("<HHII", record, cursor)
+        if (size < 12 or size % 4 or cursor + size > end
+                or payload_size > size - 12):
+            return []
+        if kind == 0x401C and payload_size >= 28:  # EmfPlusDrawString
+            count = struct.unpack_from("<I", record, cursor + 20)[0]
+            if count <= _MAX_CHARS and 28 + count * 2 <= payload_size:
+                raw = record[cursor + 40:cursor + 40 + count * 2].tobytes()
+                try:
+                    value = raw.decode("utf-16-le")
+                except UnicodeDecodeError:
+                    value = ""
+                if value.strip():
+                    strings.append(value)
+        cursor += size
+    return strings
+
+
 def extract_emf_text(data: bytes) -> Iterator[tuple[str, bytes]]:
     """Yield direct, space-joined and unspaced text for complete embedded pages.
 
@@ -113,6 +145,8 @@ def extract_emf_text(data: bytes) -> Iterator[tuple[str, bytes]]:
                 break
             if kind in (83, 84, 96, 97, 108):
                 strings.extend(_record_text(memoryview(data)[offset:offset + size], kind))
+            elif kind == 70:  # EMR_COMMENT_EMFPLUS
+                strings.extend(_emfplus_text(memoryview(data)[offset:offset + size]))
             if kind == 14:  # EMR_EOF
                 saw_eof = index == nrecords - 1
             offset += size
