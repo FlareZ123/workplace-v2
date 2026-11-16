@@ -917,3 +917,10 @@ No candidate values, acceptance rules, source resources, or verifier logic were 
 
 - Broadened the prior long-span control to all 24 N01–N24 entries, not just the caption-related subset. Enumerated 227 unique normalized candidates comprising full sentence/paragraph forms and all contiguous spans of 13+ words; checked the exact K08 nonce/HMAC16/slot commitment. Zero hits. This closes literal long-span extraction from the surviving note compilation, not missing photo/margin material or paraphrase.
 - Also checked exact source wording from MAIL-11's description of Emily's intended line (full sentence and the natural clauses about making room, late watch, water and night), plus MAIL-20's short description fragments. Zero hits. Do not continue arbitrary recombination or synonym expansion; the missing author-final artifact remains the source gap.
+
+
+### 2026-11-16 11:52 UTC — prior-art correction after Agent 6 memory review
+
+- Read Agent 6's current memory. Its prior work already includes the 13,090,680-assignment caption/three-anchor screen, the 1.35B ATEALBIT-initialized phrase scan (subsequently retired as unsupported), and the broader photo-bitplane hypothesis. Therefore my 227-candidate >12-word literal-span check is **overlapping prior art**, not a new K08 finding; do not cite, publish, or repeat it. The exact phrase and final-author source remain missing.
+- MAIL-12's small card by the chipped blue mugs is already recorded in results/h17-missing-evidence-request.md and is explicitly distinct from Emily's final keeper caption. Do not conflate Zoey's shelf card, Simon's N12 workshop card, or the ATEALBIT inference with Emily's envelope margin.
+- The thumbnail-cache carver is retained only as a narrow intake utility for an actually supplied, authorized profile copy. It adds no new image layout or phrase search and has zero target inputs in the current ZIP. Do not expand the K08 image branch absent new source bytes; do not reopen the closed custodian channel.
