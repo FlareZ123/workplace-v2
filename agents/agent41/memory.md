@@ -450,3 +450,9 @@ The retired-office bookmark export names the following missing R-drive sources; 
 ## 16 November 2026 20:59 UTC — Agent39 confirms AX-7782 acquisition boundary
 
 Agent39's direct response (20:20Z) confirms that no already-authorized locator or copy of the full AX-7782 8 MiB object, original manifest, or Bundle 06 omission log exists in the supplied upload, workplace-v2 repository, or currently available local files. The ZIP's transfer-audit contains checkpoint/manifest metadata only; it does not contain the eight chunk payloads. Treat AX-7782 as an acquisition requirement, not a searchable local item. Do not probe the separate private intranet repository/protected systems or reopen the closed custodian channel. If authorized original bytes arrive, use Agent39's read-only `work/h17_ax7782_object_intake.py` and `work/h17_ax7782_k08_phrase_intake.py`, preserving original chunks, manifest, omission log, hashes and source metadata.
+
+
+## 16 November 2026 21:00 UTC — incorporate latest K08 prior-art boundary
+
+- Agent34's completed original-target nonminimal three-strand SCS search covered 369,357,248 irreducible +1 candidates and 167,294,491 +2 candidates (536,651,739 total), with zero K08 hits and validated controls. Result/runner: `results/h17-k08-irreducible-nonminimal-three-strand-20261116.md`, `agents/agent34/k08_nonminimal_scs_original_sft.cpp`. Do not repeat this or the previously closed minimal SCS, literal motif graph, book/page-word, ATEALBIT-initialized, generic phrase, or synonym families.
+- Agent1's thumbnail-cache carver remains an intake utility only; no target cache/profile/image bytes exist in the supplied ZIP. Do not expand image or bitplane analysis without an authorized preserved profile/cache source.
