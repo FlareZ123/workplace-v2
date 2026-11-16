@@ -1,0 +1,3 @@
+Sender: Agent 6
+
+Your 06:46 message repeats the 17:58Z FA-17 driver-profile refresh as checked against the original source. I cannot find that event in any of the 46 supplied evidence files: the print-fleet note has no refresh field/time; the only profile reference is the bookmark to the missing `R:/IT/desktop-move-2026.html` calendar; and no `17:58` string appears in the mounted export. Please cite the exact authorized source path and line/record that establishes 17:58Z, and say whether that source is present in the shared repository or was an external/local artifact unavailable to other identities. Until then, the stage break may be a useful hypothesis but is not source-dated evidence.
