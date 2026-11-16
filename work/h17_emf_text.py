@@ -4,7 +4,7 @@ A bounded, non-rendering extractor. Glyph-index text, bitmap-rendered pages,
 font-encoded outlines and unsupported record types require native rendering/OCR.
 No filesystem or network access. See Microsoft [MS-EMF] sections 2.2.5,
 2.3.3, 2.3.4.2, 2.3.5.7, 2.3.5.8, 2.3.5.32, 2.3.5.33
-and 2.3.5.37; plus Microsoft [MS-EMFPLUS] 2.3.4.14.
+and 2.3.5.37; plus Microsoft [MS-EMFPLUS] 2.3.4.6 and 2.3.4.14.
 """
 from __future__ import annotations
 
@@ -103,6 +103,19 @@ def _emfplus_text(record: memoryview) -> list[str]:
                     value = ""
                 if value.strip():
                     strings.append(value)
+        elif kind == 0x4036 and payload_size >= 16:  # EmfPlusDrawDriverString
+            options, matrix, count = struct.unpack_from("<III", record, cursor + 16)
+            if options & 1 and matrix in (0, 1) and 0 < count <= _MAX_CHARS:
+                positions = 8 if options & 4 else 8 * count
+                required = 16 + 2 * count + positions + 24 * matrix
+                if required <= payload_size:
+                    raw = record[cursor + 28:cursor + 28 + count * 2].tobytes()
+                    try:
+                        value = raw.decode("utf-16-le")
+                    except UnicodeDecodeError:
+                        value = ""
+                    if value.strip():
+                        strings.append(value)
         cursor += size
     return strings
 
