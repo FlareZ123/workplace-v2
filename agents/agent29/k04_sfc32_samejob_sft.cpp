@@ -1,6 +1,6 @@
 // Source-pinned exhaustive H-17 K04 native SFC32 same-job model, Agent29 (2026-11-16).
 // g++ -O3 -std=c++17 -fopenmp agents/agent29/k04_sfc32_samejob_sft.cpp -lcrypto -o /tmp/k04sfc
-// OMP_NUM_THREADS=4 /tmp/k04sfc resources/evidence/print/spool-reconstruction.log [orientation:0..3]
+// OMP_NUM_THREADS=4 /tmp/k04sfc resources/evidence/print/spool-reconstruction.log [orientation:0..3] [ack]
 #include <openssl/sha.h>
 #include <cstdint>
 #include <cassert>
@@ -43,16 +43,21 @@ void controls(){U r=0x7efc3a32;
  for(int i=4;i<=124;i++){auto v=encode(q+i,0);unsigned char d[32];SHA256(v.data(),16,d);
   if(!memcmp(h,d,32)){count++;assert(i==57);}}assert(count==1);
  std::cout<<"SYNTHETIC_PASS 2000_state_inversions 4096_c0_1_whole_positive 121_window_1_positive\n";}
-int main(int argc,char**argv){assert(argc==2||argc==3);controls();std::ifstream f(argv[1],std::ios::binary);assert(f);
+int main(int argc,char**argv){assert(argc==2||argc==3||argc==4);bool ack=(argc==4&&std::string(argv[3])=="ack");assert(argc!=4||ack);controls();std::ifstream f(argv[1],std::ios::binary);assert(f);
  std::string raw((std::istreambuf_iterator<char>(f)),std::istreambuf_iterator<char>());
  unsigned char sha[32];SHA256((unsigned char*)raw.data(),raw.size(),sha);assert(hx(sha,32)==PIN);
  std::istringstream lines(raw);std::string ln,early,late;int first=0,third=0;
- while(std::getline(lines,ln))if(ln.find("JOB=PS-261003-0417")!=std::string::npos&&ln.find("CLASS=RECOVER")!=std::string::npos){
-  if(ln.find("ATTEMPT=1 ")!=std::string::npos){first++;early=ln;}
-  if(ln.find("ATTEMPT=3 ")!=std::string::npos){third++;late=ln;}}
+ while(std::getline(lines,ln)){
+  if(ack){
+   if(ln.find("JOB=PS-261003-0427 ")!=std::string::npos&&ln.find("STATE=ACK ")!=std::string::npos){first++;early=ln;}
+   if(ln.find("JOB=PS-261003-0420 ")!=std::string::npos&&ln.find("ATTEMPT=2 ")!=std::string::npos&&ln.find("STATE=ACK ")!=std::string::npos){third++;late=ln;}
+  }else if(ln.find("JOB=PS-261003-0417")!=std::string::npos&&ln.find("CLASS=RECOVER")!=std::string::npos){
+   if(ln.find("ATTEMPT=1 ")!=std::string::npos){first++;early=ln;}
+   if(ln.find("ATTEMPT=3 ")!=std::string::npos){third++;late=ln;}}
+ }
  assert(first==1&&third==1);auto get=[](std::string line){auto p=line.find("PAYLOAD=");assert(p!=std::string::npos);return dehex(line.substr(p+8,32));};
  auto source1=get(early),source3=get(late),mask=dehex(MASK);
- for(int o=(argc==3?std::stoi(argv[2]):0);o<(argc==3?std::stoi(argv[2])+1:4);o++){
+ for(int o=(argc>=3?std::stoi(argv[2]):0);o<(argc>=3?std::stoi(argv[2])+1:4);o++){
   auto a=decode(source1,o),b=decode(source3,o);W roots=0,whole=0,immediate_hash=0;
   std::vector<U> candidates;
   #pragma omp parallel for schedule(static) reduction(+:roots,whole,immediate_hash)
