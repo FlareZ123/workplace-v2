@@ -299,16 +299,78 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             yield name, data
     elif kind == "ole-compound":
         yielded = False
+        xls_streams = None
+        if PurePosixPath(name.replace("\\", "/")).suffix.casefold() == ".xls":
+            # BIFF8 cell strings are stored in structured records inside the
+            # OLE Workbook stream; raw ASCII/UTF-16 scanning alone can split a
+            # caption across cells. xlrd is optional and read-only.
+            try:
+                import xlrd
+            except ImportError:
+                errors.append({"source": name, "error": "xlrd unavailable; legacy .xls BIFF cell text not decoded"})
+            else:
+                try:
+                    book = xlrd.open_workbook(file_contents=data, on_demand=False)
+                    xls_streams = []
+                    cell_budget = 250_000
+                    empty_types = {xlrd.XL_CELL_EMPTY, getattr(xlrd, "XL_CELL_BLANK", 6)}
+                    for sheet in book.sheets():
+                        sheet_rows = []
+                        for rowx in range(sheet.nrows):
+                            row_values = []
+                            for colx in range(sheet.ncols):
+                                if cell_budget <= 0:
+                                    break
+                                cell_budget -= 1
+                                cell = sheet.cell(rowx, colx)
+                                if cell.ctype in empty_types or cell.value is None:
+                                    continue
+                                value = str(cell.value)
+                                if not value:
+                                    continue
+                                row_values.append(value)
+                                xls_streams.append((
+                                    f"{name}!/{sheet.name}!R{rowx + 1}C{colx + 1}",
+                                    value.encode("utf-8", "replace"),
+                                ))
+                            if row_values:
+                                row_text = " ".join(row_values)
+                                sheet_rows.append(row_text)
+                                xls_streams.append((
+                                    f"{name}!/{sheet.name}!row{rowx + 1}",
+                                    row_text.encode("utf-8", "replace"),
+                                ))
+                            if cell_budget <= 0:
+                                break
+                        if sheet_rows:
+                            xls_streams.append((
+                                f"{name}!/{sheet.name}!sheet",
+                                "\\n".join(sheet_rows).encode("utf-8", "replace"),
+                            ))
+                        if cell_budget <= 0:
+                            errors.append({"source": name, "error": "legacy .xls cell scan stopped at 250000 cells"})
+                            break
+                    book.release_resources()
+                except Exception as exc:
+                    xls_streams = None
+                    errors.append({"source": name, "error": f"legacy .xls BIFF extraction failed: {exc}"})
+        if xls_streams is not None:
+            for source, payload in xls_streams:
+                yielded = True
+                yield source, payload
         try:
             import olefile
             with olefile.OleFileIO(io.BytesIO(data)) as compound:
                 for stream_path in compound.listdir(streams=True, storages=False):
                     stream_name = "/".join(stream_path)
+                    if xls_streams is not None and stream_name.casefold() in {"workbook", "book"}:
+                        continue
                     payload = compound.openstream(stream_path).read()
                     yielded = True
                     yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password)
         except ImportError:
-            errors.append({"source": name, "error": "olefile unavailable; compound document internals not decoded"})
+            if not yielded:
+                errors.append({"source": name, "error": "olefile unavailable; compound document internals not decoded"})
         except Exception as exc:
             errors.append({"source": name, "error": f"OLE extraction failed: {exc}"})
         if not yielded:
@@ -490,7 +552,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
             "Encrypted PDFs are never password-guessed; supply --pdf-password only when authorized.",
             "OCR is optional and may not reliably transcribe handwritten marginalia; visually inspect original images when needed.",
-            "7z, RAR and SQLite internals are not decoded by this path; use authorized format-specific extraction if present. OLE streams are decoded only when olefile is installed.",
+            "7z, RAR and SQLite internals are not decoded by this path; use authorized format-specific extraction if present. Legacy Excel .xls BIFF cell text is decoded when xlrd 2.x is installed; other OLE streams are decoded when olefile is installed.",
             "The K04 payload is handled by work/h17_k04_binary_window_intake.py, not by this phrase scanner.",
         ],
     }
