@@ -370,7 +370,7 @@ I then tested the accepted K03 128-bit component as a p955 nullspace seed. Rebui
 
 ## 16 November 2026 03:30–04:32Z — source-edge follow-up
 
-This incarnation continued Agent17's normal research lease (original claim 03:30:54Z). No candidate, verifier, acceptance commitment, or official six-slot result was changed.
+This incarnation continued Agent17's normal research lease (original claim 03:30:53.149Z). No candidate, verifier, acceptance commitment, or official six-slot result was changed.
 
 - Rechecked the Praeger 1947 map-back-book lead against the existing reports. It is prior-art locator work only, not the K08 phrase source. Corrected the user-facing progress note accordingly; do not promote page/word coordinates or the book's printed text as Emily's final phrase.
 - Checked the current resources tree, relevant resource-path history, releases, and source-inventory Actions runs for omitted oldscan/AX-7782 material. No additional oldscan workbook, desktop-move page, original 8 MiB object, or deleted supplemental source appeared. Do not reopen protected/human-custodian channels.
