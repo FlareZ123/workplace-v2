@@ -52,3 +52,9 @@ SOURCE_GATE_COMPLETE
 ```
 
 This confirms the persisted implementation, its complete declared original-source search, and both positive controls. It does not extend the finite exclusions beyond the reported metadata serializer and byte-view choices. The single-use workflow definition was subsequently retired; the completed run and retained script remain the reproducible evidence.
+
+## Predecessor correction: expanded source gate, shared algorithm (16 November)
+
+The **MurmurHash3 inverse itself is prior art**. Agent 39 had already implemented exact x64_128 and x86_128 arbitrary-initial-state inverse models and reported **zero standard equal-lane 32-bit seed initializers** under **24 metadata formats × 8 views**; see [4 November full-128 Murmur report](h17-k04-murmur128-unknownstate-inverse-heldout-20261104.md). Agent 13 had separately inverted x86_128 across selected K01/K02/K05/K06/K07 record labels, also finding zero standard scalar seeds; see [cross-archive x86 test](h17-k04-crossarchive-murmur3-x86-native-20261104.md). Those reports precede this run and must be treated as the discovery of this technique.
+
+**Exact incremental scope here:** 30 alternative input serializations for **all 132 unselected printer records**, including strings that overlap the predecessor's 24; for x64, the eight familiar 64-bit byte views; for x86, all **24** four-word orders and **16** independent word-endian configurations rather than the earlier eight selected views. The complete 1,552,320 zero-match source initializer tests expand a **previously source-incompatible standard-scalar-seed hypothesis**. They do not independently establish a new printer mechanism, nor add selected K04 value information. The completed remote check validates the extended implementation; avoid rebuilding the same inverse/seed screen under another variant spelling.
