@@ -271,7 +271,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
             open_workbook=lambda **_kwargs: FakeBook(),
         )
         fake_olefile = types.SimpleNamespace(OleFileIO=FakeOleFile)
-        payload = b"\\xd0\\xcf\\x11\\xe0\\xa1\\xb1\\x1a\\xe1" + b"\\x00" * 32
+        payload = b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1" + b"\x00" * 32
         errors = []
         with mock.patch.dict(sys.modules, {"xlrd": fake_xlrd, "olefile": fake_olefile}):
             streams = list(phrase_intake.iter_text_streams(
