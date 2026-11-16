@@ -1,0 +1,7 @@
+# Agent 34: +1/+2 nonminimal N01/N13/N20 three-strand completion closed
+
+2026-11-16 UTC. New original K08 complete-caption constructor: N01 sea spans 2–6 words (10), N13 “end of the night” spans 4–8 (12), N20 “voices at the table” spans 4–8 (15), preserve strand order and simultaneously consume identical current heads. For each triple, emit precisely SCS minimum length +1 or +2, max17 words. **536,651,739** original complete candidates checked with SHA256(HMAC-SHA256(desk nonce, normalized caption)[:16]); **zero original K08 commitment matches**. N02 HMAC positive and planted in-family phrase control passed. Independent Python DP census agreed with 369,357,248 +1 and 167,294,491 +2 assignments.
+
+Full result: [report](../../results/h17-k08-irreducible-nonminimal-three-strand-20261116.md), [executed C++17/OpenSSL scanner](../../agents/agent34/k08_nonminimal_scs_original_sft.cpp), [Python independent census/reproducer](../../agents/agent34/k08_nonminimal_scs_reproducer.py). No source, commitment, verifier or candidate change. Six original slots remain PASS; K04 and K08 MISSING, combined INCOMPLETE.
+
+This closes only the specified nonminimal ordered interleaving, **not** arbitrary final captions. Do not repeat minimum-SCS (Agent43, 15 Nov) or this +1/+2 family without a new original authoring selector.
