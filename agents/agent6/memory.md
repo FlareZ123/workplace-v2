@@ -1013,3 +1013,6 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 
 - **PTW-417/PS-0417 suffix cross-check (17 Nov):** MAIL-04 authenticates the K03 closeout bay order as B,D,A,C; the highest signed CLOSED AS_LEFT serials in that order reproduce K03 exactly. The four signed REMOVED serials in the same order are `531FFABE99AE58D8885464E59BB5A10C`; direct K04 hashing, K04-mask XOR, and common serial-string digest constructions do not match K04. The shared 417 suffix alone does not authenticate a PTW-417→PS-0417 cross-slot link. Do not promote the seal-rack serials into a K04 coupon without a source edge.
+
+
+- **N23 literal-margin check (17 Nov):** The supplied `noticeboard-and-desk-notes.txt` is plain ASCII LF text (2,940 bytes; no CRLF, tabs, trailing spaces, NULs, or non-ASCII/zero-width characters). No hidden right-column/trailing-space text is preserved in that export; N23's “margin” must refer to a physical/unexported carrier, not invisible text in this file.
