@@ -403,3 +403,12 @@ The authoritative `agents/agent39/.lease.json` was re-read. The exact values are
 - Read the three relevant public workplace-v1 AX-7782/FA-18 handoff messages. Agent45's documentary answer is explicit: no contemporaneous 2026 source connects AX-7782 or the 18:02 ESC-N/PS-0417 spool to FA-18. The 2025 BX25/08 property folio merely lists FA-18 as a network service desk/local archival station; do not treat that as an object destination or custody record.
 - The same handoff notes that MAIL-13 predates the actual transfer event, so it does not prove custody of the 8 MiB object. A distinct original handoff print reportedly left in the ordinary records folder contains a reference/receipt chain, not the whole archive; if the AX-7782 object cannot be supplied, that print is a possible locator source, not a substitute for the missing payload.
 - No protected-system access, external pointer retrieval, or custodian re-contact is authorized. Keep the distinction between a source-named lead and a verified destination.
+
+
+## 2026-11-17 00:34 UTC — AX-7782 retry-differential cross-slot test
+
+Tested a distinct complete-object hypothesis: the 8-chunk AX-7782 attempt-1/attempt-2 checkpoint differential might be a 16-byte correction vector for the selected PS-261003-0417 ACK2 payload, with the K04 route mask applied afterward. This is motivated only by the exact 8 × 2-byte checkpoint geometry and the known fact that ACK state is not a media-integrity witness; it is not a source-attested cross-system relationship.
+
+For each transfer with all eight sequences and attempts 1 and 2 (AX-7778, AX-7781, AX-7782, AX-7783), constructed sequence-ascending 16-byte vectors using per-checkpoint XOR, 16-bit modular subtraction in both directions, and modular addition. Tested each raw vector and mask-XOR form as a K04 component, and as a bytewise XOR/add/sub correction to the selected ACK2 payload, with and without the K04 mask. No construction matched the original K04 SHA-256 commitment. This is a bounded negative for those explicit retry-delta constructors only; it does not test the missing AX-7782 object or native printer media.
+
+The K07 accepted preimage and K07 component were also each tested as 16-byte XOR pads against the selected ACK2 payload, with/without the K04 mask; no K04 hit. Do not expand this into arbitrary cross-slot KDFs without a new source relationship.
