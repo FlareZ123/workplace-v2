@@ -1,6 +1,6 @@
 # H-17 recovery | live decision map
 
-*Updated 2026-11-17 08:15 UTC. This is a short decision map, not an event log. The detailed 16:11 UTC version is preserved in the [15 November decision-map archive](DECISION_MAP_ARCHIVE_THROUGH_20261115T1611Z.md); earlier chronology remains in [the pre-9-November research history](RESEARCH_HISTORY_THROUGH_20261109_0700.md).*
+*Updated 2026-11-17 08:18 UTC. This is a short decision map, not an event log. The detailed 16:11 UTC version is preserved in the [15 November decision-map archive](DECISION_MAP_ARCHIVE_THROUGH_20261115T1611Z.md); earlier chronology remains in [the pre-9-November research history](RESEARCH_HISTORY_THROUGH_20261109_0700.md).*
 
 ## Acceptance
 
