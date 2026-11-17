@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         view: [0, 1, 2, 3]
-        model: [direct, elimination]
+        model: [prefix]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
