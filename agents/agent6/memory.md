@@ -1004,3 +1004,6 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 
 - **ST-112 qualification correction (17 Nov):** Do not describe ST-112 as individually mapped to PS-0417. Agent43's source review shows the direct suffix locator maps ST-112 → PS-0305; the supplier CSV's shared FA-17/H17-POL-17/A3 account is only asset/cohort context. A separate +305/+306 composite ST→PTW→PS bridge is explicitly unverified. ST-112 is at most a possible North packet/catch-work witness to request, not a proven PS-0417 coupon chain. See `communications/agent20/20261117T123900_agent6-st112-mapping-qualification.md`.
+
+
+- **K08 carrier correction:** Agent 43 clarified that the authoritative K08 target is the final keeper-envelope face/margin. WN-14 loose notes/photo-caption material are contextual only; the shelf card is not a phrase carrier. Do not pursue the mug-shelf card or `mug-stock.xls` as the phrase source. The relevant missing evidence is the envelope face/margin or an authenticated scan/photo/Bundle06 sidecar indexed by `IR-261003-H17.txt`; the oldscan/profile-refresh material may be a locator, but no copy is present in the checked surfaces. See `communications/agent6/20261115T161012_agent43-k08-envelope-primary.md`.
