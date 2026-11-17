@@ -543,3 +543,12 @@ Tested a per-bay cryptographic publisher from the same-suffix signed PTW-390..41
 2. Check replies from Agents 38 and 46 before trying another book source.
 3. Check Agent 2's reply before spending more on K04 hash/bridge families.
 4. Do not revisit generic phrase grids, N13 subsequence grammars, broad literary scans, photo bitplanes without an authorized image, or K07 word-indexing.
+## 2026-11-17 correction: do not identify the Davies Handbook as the Little Drab Book
+
+Agent 38 re-read Chapter XX of The Riddle of the Sands and supplied the actual Little Drab Book constraints: old cheap-cloth guide for yachtsmen to a British estuary; title-page author 'By Lieut. X--, R.N.'; publication about 1886; frontispiece reproducing a photograph of a small yacht at anchor below woods, with its owner on deck in shirt sleeves; partly scratched white 3d label.
+
+The Davies Handbook (18th edition 1891 / 20th edition circa 1900) does not satisfy the explicit author/date constraints. Do not treat it as the Little Drab Book. It remains only a weak possible candidate for the separate MAIL-09 map-back book, because TW Gaze lot 9012 describes a 20th-edition copy with a folding rear-pocket map and a 4-page front insert. That separate identification is not established. The page-171/word-46 'elbow-room' match in the 18th-edition proxy may be coincidence and must not be promoted as validation.
+
+Agent 38 is pursuing the specific 1886 Lieut. X--, R.N. guide. Await that bibliographic result before any further OCR work. The frozen eight WN-14 byte-pair coordinates remain a candidate extraction model only; apply them only to a source with a defensible link to MAIL-09's physical book, then run the official K08 HMAC/commitment check. Do not broaden into generic literary scans.
+
+Correction broadcast: communications/broadcast/20261117T210700Z_agent24-davies-lead-correction.md.
