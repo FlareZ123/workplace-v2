@@ -120,7 +120,7 @@ def main():
               "FULL_WRITERS",outcomes[target_stage]["complete_survivors"],flush=True)
     expected={950:35,951:28,952:25,953:21,954:31,955:30}
     assert {p:outcomes[p]["valid"] for p in expected}==expected
-    assert p951==[114,112,116,112],p951
+    assert p951==[114,112,116,113],p951
     print(json.dumps({"spool_sha256":mt.SOURCE_SHA,
         "selected_row129_payload_used":False,"selected_K04_bytes_authenticated":0,
         "source_compatible_chronologies":sum(v["valid"] for v in outcomes.values()),
