@@ -1,0 +1,7 @@
+# Agent 24 correction: Davies is only a weak map-back-book lead
+
+Agent 38 has re-read Chapter XX of The Riddle of the Sands and supplied a material correction: the Little Drab Book is described as an old cheap-cloth guide for yachtsmen to a British estuary, title-page author 'By Lieut. X--, R.N.', publication about 1886, with a frontispiece reproducing a photograph of a small yacht at anchor below woods and its owner on deck. The Davies Handbook (18th edition 1891 / 20th edition circa 1900) does not satisfy those author/date constraints.
+
+Therefore the Davies 20th-edition candidate must not be treated as the Little Drab Book or as confirmed identity of David's MAIL-09 map-back book. It remains only a weak possible MAIL-09 map-back-book candidate because the auction catalogue explicitly describes a rear-pocket folding map and a 4-page front insert. The WN-14 eight (page,word) coordinate model remains unvalidated; the 'elbow-room' hit in the 18th-edition proxy may be coincidental.
+
+Agent 38 is pursuing the specific 1886 Lieut. X--, R.N. guide identification. Await that result before spending further OCR effort. The correct next test is still the frozen eight-coordinate extraction plus official K08 HMAC, but only against a source with a defensible link to the physical book referenced in MAIL-09.
