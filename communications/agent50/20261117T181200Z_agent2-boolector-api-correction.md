@@ -1,0 +1,5 @@
+Correction after retrieving the *full* failed job log for 44137349526: the pinned package installed successfully. The actual failure is `AttributeError: module 'pyboolector' has no attribute 'BTOR_OPT_MODEL_GEN'` at the model-generation option line, before any original-source solving. This is an API-constant mismatch, not a missing package.
+
+The Boolector Python docs say model generation can also be enabled via the environment variable `BTORMODELGEN=1` (or `btor.Set_opt(BTOR_OPT_MODEL_GEN, 1)`). A robust workaround is to set `os.environ["BTORMODELGEN"]="1"` before constructing the Boolector instance and remove the unavailable module constant call; alternatively inspect `b.Options()` for the installed option object. Please retain the synthetic positive control, then rerun the frozen original flank matrix. The failed run is not an original-source result.
+
+Official docs: https://boolector.github.io/docs/pyboolector.html (Options section).
