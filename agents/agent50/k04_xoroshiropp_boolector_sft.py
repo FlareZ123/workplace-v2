@@ -60,6 +60,43 @@ def solve_state(first,last,mode):
     assert values[:2]==list(first) and values[4:]==list(last)
     return {"status":"SAT","middle":values[2:4]}
 
+
+def solve_prefix(first,last,max_models=64):
+    """Invert only two adjacent outputs, then prospectively test later source.
+
+    The last 128 source bits are a *held-out* whole-object discriminator.
+    A prefix model alone is never counted as physical coupon recovery.
+    """
+    os.environ["BTORMODELGEN"] = "1"
+    os.environ["BTORINCREMENTAL"] = "1"
+    bt=pyboolector.Boolector()
+    x=bt.Var(bt.BitVecSort(64),"prefix_s0")
+    original_b=bt.Ror(bt.Const(first[0],64)-x,17)-x
+    a,b=x,original_b
+    outputs=[]
+    for _ in range(2):
+        outputs.append(bt.Rol(a+b,17)+a)
+        t=a^b
+        a,b=bt.Rol(a,49)^t^(t<<21),bt.Rol(t,28)
+    bt.Assert(outputs[1]==bt.Const(first[1],64))
+    checked=0
+    for _ in range(max_models):
+        status=bt.Sat()
+        if status==bt.UNSAT:
+            return {"status":"UNSAT_HOLDOUT","prefix_states_checked":checked}
+        if status!=bt.SAT:
+            return {"status":"UNKNOWN","prefix_states_checked":checked}
+        value=int(x.assignment,2)
+        partner=int(original_b.assignment,2)
+        predicted=series(value,partner)
+        assert predicted[:2]==list(first)
+        checked+=1
+        if predicted[4:]==list(last):
+            return {"status":"SAT","prefix_states_checked":checked,
+                    "middle":predicted[2:4]}
+        bt.Assert(x!=bt.Const(value,64))
+    return {"status":"INCOMPLETE_ENUMERATION","prefix_states_checked":checked}
+
 def original_records():
     log=(R/"evidence/print/spool-reconstruction.log").read_bytes()
     assert hashlib.sha256(log).hexdigest()==SPOOL_SHA
@@ -82,19 +119,20 @@ def original_records():
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--view",type=int,choices=range(4),required=True)
-    parser.add_argument("--solver-mode",choices=("direct","elimination"),default="direct")
+    parser.add_argument("--solver-mode",choices=("direct","elimination","prefix"),default="direct")
     parser.add_argument("--control-only",action="store_true")
     args=parser.parse_args()
     before,after=original_records()
     assert encode(decode(bytes(range(16)),args.view),args.view)==bytes(range(16))
     synthetic=series(0x5D1DE1A5CAFEBEEF,0x17A5B3CB69A1CBCA)
     print("PLANTED_CONSTRAINTS",*[f"{synthetic[i]:016X}" for i in (0,1,4,5)],flush=True)
-    positive=solve_state(synthetic[:2],synthetic[4:],args.solver_mode)
+    solving = solve_prefix if args.solver_mode=="prefix" else (lambda x,y:solve_state(x,y,args.solver_mode))
+    positive=solving(synthetic[:2],synthetic[4:])
     assert positive["status"]=="SAT",positive
     assert positive["middle"]==synthetic[2:4],positive
     print("SEEDED_SIX_OUTPUT_CONTROL_PASS",flush=True)
     if args.control_only:return
-    original=solve_state(decode(before,args.view),decode(after,args.view),args.solver_mode)
+    original=solving(decode(before,args.view),decode(after,args.view))
     result={"view":args.view,"mode":args.solver_mode,"original_status":original["status"],"positive":"PASS"}
     if original["status"]=="SAT":
         coupon=encode(original["middle"],args.view)
