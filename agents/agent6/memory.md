@@ -1010,3 +1010,6 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 
 - **K08 carrier acquisition detail:** The strongest surviving locator for the final keeper-envelope face/margin is the missing Bundle06 manifest/trim log and the incident index `R:/Records/INDEX/IR-261003-H17.txt`. The native `PS-0323` `.SPL/.SHD` / print output is also a candidate carrier because the N23→PS-0323 note/spool crosswalk points there, but that association is only a locator hypothesis, not an authenticated foreign key. The 16-byte reconstructed payload itself is not the phrase/HMAC component. Treat the envelope scan/native document bytes as the evidence needed, not more note-text permutations.
+
+
+- **PTW-417/PS-0417 suffix cross-check (17 Nov):** MAIL-04 authenticates the K03 closeout bay order as B,D,A,C; the highest signed CLOSED AS_LEFT serials in that order reproduce K03 exactly. The four signed REMOVED serials in the same order are `531FFABE99AE58D8885464E59BB5A10C`; direct K04 hashing, K04-mask XOR, and common serial-string digest constructions do not match K04. The shared 417 suffix alone does not authenticate a PTW-417→PS-0417 cross-slot link. Do not promote the seal-rack serials into a K04 coupon without a source edge.
