@@ -127,11 +127,13 @@ def metadata_models(
     return survivors, minimum_mismatches
 
 
-def draw_below_three(rng: random.Random) -> int:
+def draw_below_three(rng: random.Random) -> tuple[int, int]:
+    draws = 0
     while True:
         code = rng.getrandbits(2)
+        draws += 1
         if code < 3:
-            return code
+            return code, draws
 
 
 def planted_positive(order: str) -> int:
@@ -148,18 +150,18 @@ def planted_positive(order: str) -> int:
     for row in range(128):
         if row:
             if order == "classdest":
-                class_code = draw_below_three(rng)
-                stage += 1
+                class_code, draws = draw_below_three(rng)
+                stage += draws
                 if class_code == 1:  # RECOVER in the planted codebook.
                     rng.getrandbits(64)
                     stage += 2
-                dest_code = draw_below_three(rng)
-                stage += 1
+                dest_code, draws = draw_below_three(rng)
+                stage += draws
             else:
-                dest_code = draw_below_three(rng)
-                stage += 1
-                class_code = draw_below_three(rng)
-                stage += 1
+                dest_code, draws = draw_below_three(rng)
+                stage += draws
+                class_code, draws = draw_below_three(rng)
+                stage += draws
                 if class_code == 1:
                     rng.getrandbits(64)
                     stage += 2
@@ -203,7 +205,6 @@ def main() -> None:
         )
         for line in lines
     ]
-    assert labels[:128].count(("RECOVER", "bench")) >= 0
     assert sum(job_class == "RECOVER" for job_class, _ in labels[:128]) == 35
 
     max_position = max(starts[-1] for starts in six.GEOMETRIES.values()) + 3
