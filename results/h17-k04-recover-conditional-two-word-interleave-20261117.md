@@ -24,7 +24,7 @@ The finite test contains **170 × 36 × 2 × 2 × 2 = 48,960** configurations.
 
 ## Result
 
-<badge color="success">Synthetic positive controls passed</badge>
+**Synthetic positive controls passed.**
 
 | Baseline geometry | Source-compatible chronologies |
 | --- | ---: |
