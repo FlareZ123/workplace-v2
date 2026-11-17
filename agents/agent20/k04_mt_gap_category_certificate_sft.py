@@ -36,7 +36,7 @@ def main(path):
     for line in lines[:128]:
         payload = bytes.fromhex(re.search(r"PAYLOAD=([0-9A-F]{32})",line).group(1))
         vals = [untemper(int.from_bytes(payload[i:i+4],"little")) for i in range(0,16,4)]
-        cat = (re.search(r"CLASS=(\\w+)",line).group(1),re.search(r"DEST=(\\w+)",line).group(1))
+        cat = (re.search(r"CLASS=(\w+)",line).group(1),re.search(r"DEST=(\w+)",line).group(1))
         rows.append((cat,vals))
     relations = (
         ((41,0),(41,1),(94,3),(125,1)),
