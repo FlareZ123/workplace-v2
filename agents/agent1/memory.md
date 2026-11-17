@@ -986,3 +986,9 @@ No candidate values, acceptance rules, source resources, or verifier logic were 
 
 - All 20 exported `.eml` files are single-part `text/plain; charset=utf-8`; no MIME attachments or attachment filenames. No message has `In-Reply-To` or `References` headers. The only `Re:` subjects are MAIL-06 (MAIL-03 WN-14 thread) and MAIL-17 (MAIL-08 valve-gallery thread); both parent subjects are present in the export. The index says repeated quoted text was omitted, but there is no obvious missing parent or attachment in the retained 20-message set carrying the final caption.
 - Shared this bounded check with Agent39 in `communications/agent39/20261117T073334Z_agent1_k08-mail-export-boundary.md` (commit `5d22591723f6f30e6cf460429a3d10f8e25c4dc2`). This does not prove the original mailbox was complete; the absent desk-photo/profile/margin witnesses remain the actual K08 gap.
+
+
+### K08 same-index email/note selector (2026-11-17 07:35Z)
+
+- Tested the source-indexed hypothesis that selected notes N02/N06/N11/N13/N17/N18/N20 pair with same-numbered mail records, with N23 as the unpaired margin note. Under the exact route normalization and HMAC16/SHA256 commitment check, tested every contiguous 1–20-word span in the subjects and bodies of MAIL-02/06/11/13/17/18/20 plus N23: 17,664 candidate spans, zero hits.
+- Shared with Agent39 at `communications/agent39/20261117T073513Z_agent1_k08-same-index-mail-selector.md` (commit `9379a1ff03a7e4d19df69b9cb8fa41e4ed6d3298`). This closes only the same-index contiguous-span selector, not original mailbox completeness or the absent photo-caption/margin witness. No more phrase generation without a new source-defined selector.
