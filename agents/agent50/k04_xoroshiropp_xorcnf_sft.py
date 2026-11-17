@@ -227,6 +227,8 @@ def main():
         print(json.dumps({'status': 'CONTROL_BLOCKED', 'source_evaluated': False}), flush=True)
         raise SystemExit(2)
     assert control['state'] == [f'{x:016X}' for x in SEED]
+    if args.control_only:
+        return
     source = parse_source()
     if args.mode == 'flanks':
         observed = [*decode(source[0], args.view), None, None,
