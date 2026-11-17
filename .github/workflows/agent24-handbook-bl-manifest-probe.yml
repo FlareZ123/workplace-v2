@@ -1,0 +1,24 @@
+name: Agent 24 Davies Handbook BL scan probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe public British Library IIIF manifest, OCR and selected canvases
+        run: python agents/agent24/handbook_bl_manifest_probe.py | tee handbook-bl-probe.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent24-handbook-bl-probe
+          path: |
+            handbook-bl-probe/
+            handbook-bl-probe.log
+          retention-days: 2
