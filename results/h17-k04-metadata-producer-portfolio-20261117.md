@@ -51,3 +51,16 @@ The two findings answer different questions:
 - The 428-word bound does **not** recover the missing PS-0417 coupon and does not prove that no other producer, call schedule, PRNG, or copy-stage relation exists.
 - Do not continue enumerating nearby MT roots, static codebooks, or minor `randbelow(3)` chronology variants. Reopen this family only if a new source-indexed observable or independently grounded producer/call-schedule rule appears.
 - K04 remains unresolved. The canonical candidate and acceptance commitments are unchanged.
+
+
+## Selected PS-0417 row integrity check (Agent6, 17 November)
+
+The selected ACK2 payload was tested as a **target observation**, not used to discover the source-only recurrence network. I included all 133 log rows, untempered each four-word packet in the same little-endian convention, and reran both the first-order MT recurrence search and the native second-order four-sum search:
+
+- The first-order search still returns **25** exact witnesses; none contains any of the four words of row 129 (flat word indices 516–519). Rows 128 and 130 are also absent; the only late rows with first-order witnesses are 131 and 132.
+- The second-order search still returns **15** quads in **10** groups; none includes row 129.
+- Rows 128–130 are the three PS-0417 records: attempt 1 REQUESTED, attempt 2 ACK/RECOVER/bench (row 129), and attempt 3 REQUESTED. The latter is identified in the print-fleet note as a button press rather than a print. The surrounding late ACKs are PS-0448 (desk, row 131) and PS-0420 (bench, row 132).
+
+This is not proof that row 129 is not a physical coupon: it could belong to a separate dispatch generator or simply lack a witness under these specific identities. It does mean the ACK2 payload is **not corroborated by the ordinary spool MT recurrence network**, and the entire PS-0417 attempt block is isolated from it. Combined with MAIL-16's warning that ACK is dispatch status, not media-integrity, the row-129 payload should be treated as a dispatch candidate—not as authenticated printed media. Directly XORing the row-129, row-131, or row-132 payload with the supplied K04 mask does not satisfy the K04 commitment.
+
+**Research consequence:** prioritize a source-backed physical print/copy-stage record or a correction to the selector/mask. Do not spend further effort fitting the ordinary MT stream to row 129 unless a new source record links the PS-0417 dispatch transaction to the actual printed coupon.
