@@ -1,0 +1,20 @@
+name: Agent9 K04 xoroshiro128++ request-flank inversion
+on:
+  workflow_dispatch:
+jobs:
+  request-flanks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned SMT solver
+        run: python -m pip install z3-solver==4.13.3.0
+      - name: Recover two-output selected-gap candidate under xoroshiro128++
+        run: python agents/agent23/k04_xoroshiro128pp_two_request_sft.py --view ${{ matrix.view }} --variant plusplus --timeout-ms 120000
