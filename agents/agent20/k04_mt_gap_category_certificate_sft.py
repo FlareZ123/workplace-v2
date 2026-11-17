@@ -44,6 +44,12 @@ def main(path):
         ((41,0),(41,1),(94,3),(125,1)),
         ((42,0),(42,1),(95,1),(126,2)),
         ((42,1),(42,2),(95,2),(126,3)),
+        ((12,0),(12,1),(66,1),(96,2)),
+        ((13,0),(13,1),(67,2),(97,3)),
+        ((21,1),(21,2),(74,0),(105,1)),
+        ((22,1),(22,2),(75,0),(106,0)),
+        ((31,0),(31,1),(83,3),(114,1)),
+        ((32,0),(32,1),(84,2),(115,0)),
     )
     def word(loc):
         return rows[loc[0]][1][loc[1]]
@@ -69,14 +75,24 @@ def main(path):
     assert 287-286 == 1
     assert (285-286)-(182-184) == 1
 
+    # Independent metadata-cycle contradiction, using disjoint row indices:
+    # g12-g66=180-179=1, g31-g83=186-187=-1,
+    # g21-g105=288-289=-1. If a fixed class/dest count were valid,
+    # these values would sum 0 around STORES/store -> STORES/bench
+    # -> LABEL/bench -> STORES/store; observed sum is -1.
+    assert rows[12][0] == rows[105][0] == ("STORES","store")
+    assert rows[31][0] == rows[66][0] == ("STORES","bench")
+    assert rows[21][0] == rows[83][0] == ("LABEL","bench")
+    assert (180-179)+(186-187)+(288-289) == -1
+
     rng=Random(20261117)
     synth=[untemper(rng.getrandbits(32)) for _ in range(640)]
     for a,b,c,d in ((0,1,397,624),(7,8,404,631),(8,9,405,632)):
         recur(synth[a],synth[b],synth[c],synth[d])
-    print("SOURCE_SHA_PASS original_fullword_relations=5 synthetic_positives=3")
+    print("SOURCE_SHA_PASS original_fullword_relations=11 synthetic_positives=3")
     print("SOURCE_CONSTRAINT g10_minus_g41=1 g41_minus_g125=1")
     print("SOURCE_CONSTRAINT identical_metadata_rows=10,41,125 label=STORES/store")
-    print("STATIONARY_CLASS_DEST_GAP_MODEL=AT_LEAST_TWO_EXCEPTIONS")
+    print("STATIONARY_CLASS_DEST_GAP_MODEL=AT_LEAST_THREE_EXCEPTIONS")
     print("K04_coupon_authenticated_bits=0")
 
 
