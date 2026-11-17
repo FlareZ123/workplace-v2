@@ -20,10 +20,10 @@ def double_accepted(window,observed):
     for domain in window:
         new=set()
         for count,label in states:
-            if count>=2:continue
             if domain&REJECT:new.add((count,label))
-            for code in domain&ACCEPT:
-                new.add((count+1,code if count==observed else label))
+            if count<2:
+                for code in domain&ACCEPT:
+                    new.add((count+1,code if count==observed else label))
         states=new
     return {label for count,label in states if count==2 and label is not None}
 
@@ -63,9 +63,9 @@ def main():
     assert double_accepted([{2},{15}],0)==set()
     double=[[double_accepted(w,k) for w in windows] for k in (0,1)]
     impossible=[sum(not x for x in candidates) for candidates in double]
-    assert impossible==[22,22],impossible
+    assert impossible==[14,14],impossible
     double_empty=[empties(x,s) for x in double for s in (0,1)]
-    assert double_empty==[9,9,9,9],double_empty
+    assert double_empty==[9,8,9,9],double_empty
 
     twoword=[[{v>>2 for v in domain} for domain in w] for w in windows]
     assert split_possible([{0,2},{3},{1}],2,1)
