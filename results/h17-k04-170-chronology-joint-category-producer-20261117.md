@@ -6,7 +6,7 @@
 
 The existing conditional MT19937 printer histories p950–955 match the 132 undisputed intact 16-byte payloads, but fixed-stage CPython metadata-writer models fail on original CLASS/DEST labels. A source-preserving change in *packet-start chronology* is a different way to challenge that failure. This experiment jointly tests all **six baseline chronologies plus the 164 original-source-consistent single-component shifts** published by Agent44 against a separate CPython category emitter.
 
-**Result:** Among all **170 intact-source-compatible chronologies**, **zero** admit a complete CLASS/DEST writer with two consecutive genuine CPython `randbelow(3)` calls and a consistent three-way label codebook through the first **95** ordinary interpacket gaps, even under optimistic independent free-bit relaxation. Thus none reaches the remaining **32** ordinary gaps used as a source holdout, and none predicts the selected physical PS-0417 coupon. A real seeded Python generator of the stated source model passed a 128-row synthetic positive.
+**Result:** Among all **170 intact-source-compatible chronologies**, **zero** admit a complete CLASS/DEST writer with two consecutive genuine CPython `randbelow(3)` calls and a consistent three-way label codebook through the first **95** ordinary interpacket gaps, even under optimistic independent free-bit relaxation. Thus none reaches the remaining **32** ordinary gaps used as a source holdout, and none predicts the selected physical PS-0417 coupon. The **best-fitting** original chronology, category-call arrangement and codebook still contradict **13 of 95** training gap records, so this finite model's failure cannot be repaired by changing only one or two anomalous metadata rows. A real seeded Python generator of the stated source model passed a 128-row synthetic positive.
 
 This is the original test of *one-root stage perturbations combined with categorical emission*: it is distinct from Agent44's alternate-stage complete-coupon scans and Agent48's fixed-p951 metadata contradictions. It neither establishes a historical MT emitter nor excludes simultaneous multi-root chronology changes or other metadata software.
 
@@ -37,6 +37,7 @@ SOURCE_COMPATIBLE_CHRONOLOGIES 170
 STATIC_THREEWAY_CODEBOOKS_PER_MODEL 36
 METADATA_ARCHITECTURES_PER_CHRONOLOGY 8
 FULL_95_GAP_TRAINING_MODEL_SURVIVORS 0
+MIN_95_GAP_TRAINING_MISMATCHES 13
 HOLDOUT_32_GAPS no model reached holdout
 AUTHENTIC_K04_BITS 0
 ```
