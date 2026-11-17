@@ -70,7 +70,7 @@ def main() -> None:
             f"holdout_short_range={summary[selected]['holdout_gaps_lt3_range']}"
         )
 
-    assert sum(x["valid_variants"] for x in summary.values()) == 547
+    assert sum(x["valid_variants"] for x in summary.values()) == 557
     assert all(x["minimum_first_95_gaps_lt3"] > 0 for x in summary.values())
     print("STRICT_SAME_GAP_CHOICES_PLUS_CHOICE", "FALSIFIED")
     print("SCOPE", "only both consecutive metadata calls in each same inter-payload gap")
