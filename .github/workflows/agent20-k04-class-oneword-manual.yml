@@ -1,0 +1,16 @@
+name: Agent20 H17 original-source conditional-writer SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: One-word class-triggered metadata interleaving, source-only
+        run: python agents/agent20/k04_class_oneword_interleave_sft.py
