@@ -64,3 +64,15 @@ For each of the four whole-packet interpretations, invert the first 16-byte flan
 This is a complete-candidate route with a finite **source-only** failure, distinct from earlier xoshiro256** affine inverses, xoshiro256+ low-bit state fits, Romu and 64-bit xorshift retry tests. It proves that the supplied two REQUESTED flanks cannot both be consecutive two-output packets of the specified persistent Lehmer64 generator within the stated output gap, assuming the flanks were copied correctly. It does not exclude a different multiplier, generator, per-attempt reset, intervening nonsequential packet layout, output index outside the bound, or physical/copy damage. The ordinary printer's MT correlations do not attest a selected-job Lehmer64 issuer.
 
 **No new original K04 byte or exact K08 final word was recovered.** Do not extend this into a blind multiplicative-multiplier grid without a new source clue.
+
+
+## Independent ordinary-printer source control (same invocation)
+
+The original spool also contains exactly 128 ordinary five-minute ACK jobs PS-261003-0300..0427. To check whether this generator could explain the *ordinary* stream, apply the same whole-128-bit-state inverse to every adjacent original packet pair, four byte views, permitting 4..200 native outputs between consecutive packets. All selected ATTEMPT2 bytes remain withheld and the K04 target is not used:
+
+- **508** source-selected adjacent-packet/view brackets.
+- **499** complete 128-bit states compatible with each first packet.
+- **0** matching full second packets over all 4..200 start offsets.
+- Distinct planted source validation: generate 40 consecutive genuine Lehmer64 packets with hidden output gaps 4..23, in each of four byte views. **156/156** adjacent-packet bracket tests recover a true source-matching later packet.
+
+The corroborating original check further disfavors a single persistent Lehmer64 source for the complete ordinary printer spool. It cannot exclude historical hardware implementing a different emitter or independently reseeded request jobs. The following reproducible extension to the committed SFT selects the source rows with job range 0300..0427, parses PAYLOAD, and loops `find(packet[i],packet[i+1],endian,swap,200)` for `i=0..126`, all four views. This addendum adds no historical selected coupon bytes or K08 wording.
