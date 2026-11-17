@@ -57,13 +57,13 @@ def fetch(url: str) -> bytes:
 
 def normalize(text: str) -> str:
     text = text.lower()
-    text = re.sub(r"[^a-z0-9\\s]", " ", text)
-    return re.sub(r"\\s+", " ", text).strip()
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def strip_gutenberg(text: str) -> str:
-    start = re.search(r"\\*\\*\\* START OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\\n]*", text, re.I)
-    end = re.search(r"\\*\\*\\* END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\\n]*", text, re.I)
+    start = re.search(r"\*\*\* START OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\n]*", text, re.I)
+    end = re.search(r"\*\*\* END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\n]*", text, re.I)
     if start:
         text = text[start.end():]
     if end:
@@ -77,7 +77,7 @@ def extract_pdf_text(data: bytes) -> str:
     except ImportError as exc:
         raise RuntimeError("pypdf is required for the Wikimedia PDF fallback") from exc
     reader = PdfReader(BytesIO(data))
-    return "\\n".join(page.extract_text() or "" for page in reader.pages)
+    return "\n".join(page.extract_text() or "" for page in reader.pages)
 
 
 def check_phrase(words: list[str]) -> dict[str, object]:
@@ -171,7 +171,7 @@ def main() -> None:
         report["sources"].append(entry)
 
     out = Path("k08_wn14_absolute_word_offsets_report.json")
-    out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+    out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print("REPORT", out)
     print("ANY_ACCEPTANCE_MATCH", any(
         s.get("any_acceptance_match", False) for s in report["sources"]
