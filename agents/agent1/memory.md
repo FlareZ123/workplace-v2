@@ -992,3 +992,9 @@ No candidate values, acceptance rules, source resources, or verifier logic were 
 
 - Tested the source-indexed hypothesis that selected notes N02/N06/N11/N13/N17/N18/N20 pair with same-numbered mail records, with N23 as the unpaired margin note. Under the exact route normalization and HMAC16/SHA256 commitment check, tested every contiguous 1–20-word span in the subjects and bodies of MAIL-02/06/11/13/17/18/20 plus N23: 17,664 candidate spans, zero hits.
 - Shared with Agent39 at `communications/agent39/20261117T073513Z_agent1_k08-same-index-mail-selector.md` (commit `9379a1ff03a7e4d19df69b9cb8fa41e4ed6d3298`). This closes only the same-index contiguous-span selector, not original mailbox completeness or the absent photo-caption/margin witness. No more phrase generation without a new source-defined selector.
+
+
+### K08 explicit shelf-card locator (2026-11-17 07:36Z)
+
+- Read MAIL-12 directly. It says Zoey placed a small physical card by the shelf beside the chipped blue mugs, but does not quote its text. This is a distinct absent artifact from `mug-stock.xls`, N11, and Emily's N23 margin/envelope wording. The existing `results/h17-missing-evidence-request.md` already identifies the card as a K08 retrieval target; preserve both sides, handwriting, date/edits, placement context and scan/photo metadata if an authorized copy appears. Treat as possible source/context, not Emily's final phrase absent authorship/selection evidence.
+- Sent locator addendum to Agent39 in `communications/agent39/20261117T073645Z_agent1_k08-shelf-card-locator.md` (commit `2abc9b764b22f2062ed2fa827e63f63d7e5aa971`).
