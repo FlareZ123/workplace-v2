@@ -39,6 +39,8 @@ def main(path):
         cat = (re.search(r"CLASS=(\w+)",line).group(1),re.search(r"DEST=(\w+)",line).group(1))
         rows.append((cat,vals))
     relations = (
+        ((10,0),(10,1),(64,0),(94,3)),
+        ((11,0),(11,1),(65,0),(95,2)),
         ((41,0),(41,1),(94,3),(125,1)),
         ((42,0),(42,1),(95,1),(126,2)),
         ((42,1),(42,2),(95,2),(126,3)),
@@ -48,22 +50,35 @@ def main(path):
     for a,b,c,d in relations:
         recur(word(a),word(b),word(c),word(d))
 
-    # With native start s[row], the two original relations imply:
-    #   s125 - s41 = 624+0-1=623
-    #   s126 - s42 = 624+0-2=622
-    # Therefore (s42-s41)-(s126-s125) = 1.
-    # Four payload words per row cancel; hidden draws g41-g125 = 1.
-    assert rows[41][0] == rows[125][0] == ("STORES","store")
-    assert (624+0-1)-(624+0-2) == 1
+    # Witnesses imply exact hypothetical native row-start differences:
+    # s94-s10=621; s95-s11=622
+    # s94-s41=394; s95-s42=396
+    # s125-s41=623; s126-s42=622
+    # With s[r+1]-s[r]=4+g[r], pairwise subtraction yields
+    # g10-g94=-1, g41-g94=-2 and g41-g125=1;
+    # hence g10-g41=1 and g41-g125=1.
+    assert rows[10][0] == rows[41][0] == rows[125][0] == ("STORES","store")
+    assert 621-4*(94-10) == 285
+    assert 622-4*(95-11) == 286
+    assert 394-4*(94-41) == 182
+    assert 396-4*(95-42) == 184
+    assert 623-4*(125-41) == 287
+    assert 622-4*(126-42) == 286
+    assert 285-286 == -1
+    assert 182-184 == -2
+    assert 287-286 == 1
+    assert (285-286)-(182-184) == 1
 
     rng=Random(20261117)
     synth=[untemper(rng.getrandbits(32)) for _ in range(640)]
     for a,b,c,d in ((0,1,397,624),(7,8,404,631),(8,9,405,632)):
         recur(synth[a],synth[b],synth[c],synth[d])
-    print("SOURCE_SHA_PASS fullword_relations=3 synthetic_positives=3")
-    print("SOURCE_CONSTRAINT g41_minus_g125=1 metadata_41_and_125=STORES/store")
-    print("STATIONARY_CLASS_DEST_GAP_MODEL=CONTRADICTED")
+    print("SOURCE_SHA_PASS original_fullword_relations=5 synthetic_positives=3")
+    print("SOURCE_CONSTRAINT g10_minus_g41=1 g41_minus_g125=1")
+    print("SOURCE_CONSTRAINT identical_metadata_rows=10,41,125 label=STORES/store")
+    print("STATIONARY_CLASS_DEST_GAP_MODEL=AT_LEAST_TWO_EXCEPTIONS")
     print("K04_coupon_authenticated_bits=0")
+
 
 if __name__ == "__main__":
     main(Path(sys.argv[1]) if len(sys.argv)>1 else Path("resources/evidence/print/spool-reconstruction.log"))
