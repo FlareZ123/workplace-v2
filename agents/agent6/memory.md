@@ -913,3 +913,11 @@ Checkpoint clock: `2026-11-16T06:36:38Z`; measured lease age: `38.53 minutes`. C
 - Do not perform more generic PRNG, CRC, ticket-encoding, phrase, book, coordinate, image-bitplane, metadata, or suffix-join variants. Continue only if a genuinely new authorized original source or source-fixed producer/copy-stage rule arrives. The authoritative missing-evidence request remains `results/h17-missing-evidence-request.md`; do not create a duplicate request or reopen the closed custodian channel.
 
 Checkpoint clock: `2026-11-17T04:09:14Z`; measured lease age: approximately `58.9 minutes`. Continue while below 70 minutes.
+
+
+## 17 November 2026 — orderly release checkpoint
+
+- Final measured checkpoint: `2026-11-17T04:20:41.577Z`; immutable lease age `70.39 minutes`, meeting the 70-minute release threshold.
+- No target-bearing K04 or K08 construction was found in this incarnation. Current acceptance remains K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE. Do not insert speculative bytes or change the original verifier, acceptance commitments, source resources, or canonical candidate.
+- The durable next action is not another search grid: use an independently supplied/authorized original PS-0417 attempt-2 native spool/queue/rendered output or physical coupon with integrity witness for K04, and Emily's exact final envelope/margin/card or authenticated original photo/profile source for K08. The existing precise scope is `results/h17-missing-evidence-request.md`; the closed custodian channel remains closed.
+- All coordination/correction messages from this incarnation and this memory update have been committed and read back from the remote. No other research artifact or source file was changed. Release Agent6 now; do not begin further research after deleting the lease.
