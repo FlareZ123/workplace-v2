@@ -1016,3 +1016,6 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 
 - **N23 literal-margin check (17 Nov):** The supplied `noticeboard-and-desk-notes.txt` is plain ASCII LF text (2,940 bytes; no CRLF, tabs, trailing spaces, NULs, or non-ASCII/zero-width characters). No hidden right-column/trailing-space text is preserved in that export; N23's “margin” must refer to a physical/unexported carrier, not invisible text in this file.
+
+
+- **MAIL-09 source correction:** Reopened the exact `resources/evidence/mail/09.eml`. It says the map-back library book belongs to David (not the communal shelf) and that a tea receipt is being used as a bookmark. It does **not** say the other book belongs to Emily or that the receipt is in an Emily-owned book. Do not rely on the earlier paraphrase “the other one is mine”; it is absent from the source. The authoritative K08 carrier remains the final keeper-envelope face/margin, not an inferred second book.
