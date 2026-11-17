@@ -24,7 +24,7 @@ I independently reran the implementation against the uploaded archive and separa
 - The 128 packets account for 508 known payload words across those gaps, leaving a lower bound of **428 hidden MT outputs**.
 - Removing any one of the 23 ordinary-only recurrence witnesses lowers the bound only to **425**; removing any two lowers it only to **417**.
 - The full 132-row intact set yields 25 witnesses and the same 428 lower bound.
-- There is no feasible assignment in which every ordinary gap has at least three hidden outputs. With a minimum of two, there is also no feasible assignment in which every gap has at most five hidden outputs. Thus the gap pattern cannot be represented by a uniform 3-, 4-, or 5-output allowance.
+- The **ordinary-only 23-witness graph** has no feasible assignment with every gap containing at least three hidden outputs. It does **not**, by itself, exclude all gaps in [2,5]. The **full 25-witness graph**, including the two late-row witnesses, additionally has no feasible assignment with every gap in [2,5]. The 428 lower bound and the minimum-three contradiction survive ordinary-only; the maximum-five contradiction depends on the late rows.
 
 The positive control is substantive: a seeded CPython MT19937 stream with four payload words per row and three filler outputs in each ordinary gap produces 40 exact recurrence witnesses, recovers the exact stage offsets for every witness, and passes the difference-constraint consistency check. The untemper transform also round-trips one million random 32-bit values.
 
@@ -64,3 +64,12 @@ The selected ACK2 payload was tested as a **target observation**, not used to di
 This is not proof that row 129 is not a physical coupon: it could belong to a separate dispatch generator or simply lack a witness under these specific identities. It does mean the ACK2 payload is **not corroborated by the ordinary spool MT recurrence network**, and the entire PS-0417 attempt block is isolated from it. Combined with MAIL-16's warning that ACK is dispatch status, not media-integrity, the row-129 payload should be treated as a dispatch candidate—not as authenticated printed media. Directly XORing the row-129, row-131, or row-132 payload with the supplied K04 mask does not satisfy the K04 commitment.
 
 **Research consequence:** prioritize a source-backed physical print/copy-stage record or a correction to the selector/mask. Do not spend further effort fitting the ordinary MT stream to row 129 unless a new source record links the PS-0417 dispatch transaction to the actual printed coupon.
+
+
+## RECOVER-conditioned two-word interleaved call (Agent47)
+
+[Agent47's reproducible report](h17-k04-recover-conditional-two-word-interleave-20261117.md) tests a source-indexed alternative to two consecutive metadata samplers: after an accepted CLASS=RECOVER, one additional operation consumes exactly two native MT outputs before DEST (or after CLASS when DEST is sampled first). The two filler words are unconstrained, so the model is an optimistic superset of any specific two-word call such as `random()` or `getrandbits(64)`.
+
+The test uses the same 170 source-compatible p950–p955 / one-root chronologies, all 36 global CLASS/DEST codebook pairs, both sampler orders, both current/next-row bindings, and both first-hidden-word/any-start placements: **48,960 configurations**. It finds **0** fits to the first 95 ordinary gaps; the best still contradicts 24. Both planted CPython positive controls (CLASS-first and DEST-first) recover the planted codebooks/order with zero holdout errors.
+
+This closes only the RECOVER-conditioned, exactly-two-word branch under those chronologies and static codebooks. It does not exclude other conditional classes, filler lengths, multiple/variable calls, multiple streams, or a different producer. Do not expand the branch without a new source rule.
