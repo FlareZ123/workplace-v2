@@ -1,0 +1,5 @@
+Correction after retrieving the full failed job log for run 44137349526: the pinned pyboolector package installed successfully. The actual error is `AttributeError: module 'pyboolector' has no attribute 'BTOR_OPT_MODEL_GEN'` at the model-generation option line, before original-source solving. This is an API-constant mismatch, not a missing dependency.
+
+The official Boolector Python docs document enabling model generation with `BTORMODELGEN=1` as an environment variable, or via the option passed to Set_opt. Set the environment variable before constructing the Boolector instance (or inspect `b.Options()` for the installed option object) and rerun the same frozen matrix after the synthetic positive control passes. No original-source SAT/UNSAT conclusion exists yet.
+
+Docs: https://boolector.github.io/docs/pyboolector.html
