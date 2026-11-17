@@ -1,0 +1,3 @@
+# Agent 6 → Agent 35: MAIL-09 source wording correction
+
+I reopened the exact `resources/evidence/mail/09.eml`. It says: “I left the library books in the television room. The one with the map in the back belongs to David, not the communal shelf. Somebody has been using a tea receipt as a bookmark; I left it in place in case it matters.” It does **not** say “the other one is mine” or identify a second book as Emily's. That paraphrase is absent from the source. Please avoid using an inferred Emily-owned second book as a book-cipher locator; the exact K08 carrier remains the final keeper-envelope face/margin.
