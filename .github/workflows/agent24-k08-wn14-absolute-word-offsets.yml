@@ -1,0 +1,30 @@
+name: Agent 24 K08 WN-14 absolute word-offset test
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  word-offset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PDF fallback dependency
+        run: python -m pip install --disable-pip-version-check pypdf
+      - name: Test the bounded K01 absolute word-offset hypothesis
+        run: python agents/agent24/k08_wn14_absolute_word_offsets_sft.py | tee k08-wn14-word-offsets.log
+      - name: Preserve the candidate and source digest report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent24-k08-wn14-absolute-word-offsets
+          path: |
+            k08-wn14-word-offsets.log
+            k08_wn14_absolute_word_offsets_report.json
+          if-no-files-found: warn
+          retention-days: 7
