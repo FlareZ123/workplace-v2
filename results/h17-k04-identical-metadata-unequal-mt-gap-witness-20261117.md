@@ -68,3 +68,21 @@ Subtract interval equations shifted by one ordinary row:
 Original rows **10 (PS-0310), 41 (PS-0341) and 125 (PS-0425)** have *exactly the same* `CLASS=STORES DEST=store`. Therefore these three hidden-gap values are necessarily distinct and strictly ordered under this MT model. Any model assigning one fixed count to a metadata cell must mark **at least two of these three jobs as exceptions**. The three-row contradiction survives loss of any one purported exceptional assignment among the three. It requires no seed, absolute MT stream phase, rejection probability, chosen source chronology or bound on total hidden output draws. It is conditional on treating the original MT equalities as relationships in one native stream.
 
 This addendum only excludes deterministic metadata-only fixed-gap mechanisms with at most one exceptional ordinary job; it does not exclude the natural variable-consumption rejection sampler, hidden input-dependent operations, stage/session changes, or unrelated physical copier state. **Zero authenticated selected coupon bits follow.** K04/K08 and combined status unchanged.
+
+## Disjoint second metadata-cycle contradiction, strengthened minimum three exceptions
+
+An additional **six independent original fullword MT identities** were recomputed on the untouched printer source, all six PASS (11 total checked by the updated portable SFT). Their row/word tuples are: (12,0/1;66,1;96,2), (13,0/1;67,2;97,3), (21,1/2;74,0;105,1), (22,1/2;75,0;106,0), (31,0/1;83,3;114,1), and (32,0/1;84,2;115,0). Each tuple denotes antecedent, +397 native draw, and +624 native draw.
+
+The same adjacent-interval subtraction used above establishes:
+
+```text
+g12 - g66  = 180 - 179 = +1
+g31 - g83  = 186 - 187 = -1
+g21 - g105 = 288 - 289 = -1
+```
+
+Original metadata: row12 and row105 are each STORES/store; row66 and row31 are each STORES/bench; row83 and row21 are each LABEL/bench. A deterministic gap count `f(CLASS,DEST)` would make the three displayed left sides telescope as `f(A)-f(B) + f(B)-f(C) + f(C)-f(A) = 0`, whereas actual source constraints sum to **-1**. Thus at least **one** of rows 12,66,31,83,21,105 must violate the fixed label-gap rule.
+
+Crucially these **six source rows are disjoint from rows 10,41,125**. The earlier strict three-value constraint already requires **at least two** exceptions among rows 10,41,125. Therefore any hypothesized shared MT19937 printer producer with a stationary per-(CLASS,DEST) gap rule needs **at least three exceptional ordinary job intervals in total**, regardless of gap upper bounds, absolute phase, or assigned category values. This is a necessary source-alignment bound; it does not establish that the historical printer used a shared MT stream or that any particular job was exceptional.
+
+The updated [single source-pinned portable test](../agents/agent20/k04_mt_gap_category_certificate_sft.py) evaluates **all 11 original complete 32bit recurrence equalities**, original SHA, labels and inequalities; a locally run independent source implementation checked the six new identities successfully. No K04 coupon bits/K08 words were recovered.
