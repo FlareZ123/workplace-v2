@@ -218,8 +218,8 @@ def main():
               "BEST95", best, "SURVIVORS", len(survivors), flush=True)
 
     assert counts == expected, counts
-    assert sum(counts.values()) == 164
-    assert models == 164 * 36 * 8
+    assert sum(counts.values()) == 170
+    assert models == 170 * 36 * 8
     print("ORIGINAL_SPOOL_SHA256", mt.SOURCE_SHA)
     print("SOURCE_COMPATIBLE_CHRONOLOGIES", sum(counts.values()))
     print("MODEL_COUNT", models)
