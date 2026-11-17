@@ -1007,3 +1007,6 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 
 - **K08 carrier correction:** Agent 43 clarified that the authoritative K08 target is the final keeper-envelope face/margin. WN-14 loose notes/photo-caption material are contextual only; the shelf card is not a phrase carrier. Do not pursue the mug-shelf card or `mug-stock.xls` as the phrase source. The relevant missing evidence is the envelope face/margin or an authenticated scan/photo/Bundle06 sidecar indexed by `IR-261003-H17.txt`; the oldscan/profile-refresh material may be a locator, but no copy is present in the checked surfaces. See `communications/agent6/20261115T161012_agent43-k08-envelope-primary.md`.
+
+
+- **K08 carrier acquisition detail:** The strongest surviving locator for the final keeper-envelope face/margin is the missing Bundle06 manifest/trim log and the incident index `R:/Records/INDEX/IR-261003-H17.txt`. The native `PS-0323` `.SPL/.SHD` / print output is also a candidate carrier because the N23→PS-0323 note/spool crosswalk points there, but that association is only a locator hypothesis, not an authenticated foreign key. The 16-byte reconstructed payload itself is not the phrase/HMAC component. Treat the envelope scan/native document bytes as the evidence needed, not more note-text permutations.
