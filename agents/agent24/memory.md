@@ -509,3 +509,37 @@ After the local 512-candidate first-byte duplicate/dropout test, exact result re
 - Corrected a first script version that wrongly disallowed **rejected suffix words after two successful calls**. Updated source and report in subsequent commits. Use final [14,14] impossible / [9,8,9,9] empty counts; do not quote withdrawn [22,22]/[9,9,9,9] unless explicitly referring to former narrower rule.
 - This research only excludes conditional producer families; source-selected physical coupon and its copy stage remain unsupported, and K08's exact author-final caption remains unquoted in supplied export. STOP expanding adjacent p951 filler/codebook tests; seek fundamentally new observable linking actual media selection to complete object or genuine author-final version.
 - The initial report and code were committed through connected GitHub; the repository is shared and current updates may appear concurrently. Sources/evidence, original verifier and canonical candidate unchanged.
+## 2026-11-17 checkpoint: K08 Davies edition-specific locator and K04 hash-bridge test
+
+### New K08 model (highest priority)
+A materially different source-to-inscription hypothesis: interpret the 16-byte WN-14 register vector as eight ordered byte pairs (page, word), preserving A-D group order and the two pairs within each 4-byte group:
+
+    (4,154), (171,46), (28,222), (122,130),
+    (205,124), (96,35), (67,3), (201,26)
+
+The source chain is unusually specific:
+- MAIL-03/06 preserve the A-D WN-14 group order.
+- MAIL-09 identifies David's book by its map in the back and the tea-receipt bookmark.
+- TW Gaze's 2020 auction catalogue, lot 9012, identifies a circa-1900 20th-edition copy of G. Christopher Davies, The Handbook to the Rivers and Broads of Norfolk & Suffolk, with a 4-page Jarrolds' Register of Yachts and Boats for Hire pamphlet tipped in at the front and a folding map in the rear pocket. The K01 coordinate values include page 4 and page 205, an unusually good structural fit for this specific copy.
+- On the accessible 18th-edition Project Gutenberg text, printed page 171, word 46 is elbow-room under one-based whitespace tokenization. This matches N20's semantic brief about making room, but is only a proxy: the physical copy appears to be a later 19th/20th edition and the pagination/text may differ.
+
+This is not a recovered phrase. Do not claim the 18th-edition proxy validates the physical copy. The decisive test is to obtain an authenticated OCR/scan/manifest of the 19th/20th edition, extract exactly the eight coordinates in the stated order, apply the official K08 normalization and HMAC with desk_nonce, and compare SHA256(HMAC16) with the K08 acceptance commitment. If the exact extraction fails, close this model rather than expanding to broad literary scans.
+
+Communications:
+- Asked Agent 46 for an authenticated later-edition text/manifest: communications/agent46/20261117T211000Z_agent24-davies-edition-coordinates.md.
+- Asked Agent 38 for the same and a BL/IIIF source: communications/agent38/20261117T210200Z_agent24-davies-ocr-request.md.
+- Broadcast the bounded hypothesis: communications/broadcast/20261117T205930Z_agent24-k08-davies-pageword-hypothesis.md.
+
+### Bounded K08 negatives from this invocation
+- Tested the complete N01 photo-caption copy hypothesis: N10's photograph-after-the-last-cup reference selects N01, The sea looks different when you have finally finished your tea. The official K08 HMAC/commitment check did not match. This is a narrow rejection, not a reason to expand phrase grids.
+- Interpreted the selected AX-7782 16-byte checkpoint chain as UTF-16 text (both endian orders, raw/reversed); no readable phrase. Do not continue broad arbitrary decodings without a source cue.
+
+### K04 bounded new-family test
+Tested a per-bay cryptographic publisher from the same-suffix signed PTW-390..416 serials to one 4-byte word of the corresponding PS-261003-0390..0416 ACK payload. The 27 authentic pairs were used as full controls. Tested raw/reversed serial and ASCII-hex serial with bay, permit and job-ID serializations against SHA-256, SHA-1, MD5, SHA3-256, BLAKE2s and BLAKE2b, every 4-byte digest window, and all consistent bay-to-payload-word permutations: zero exact 27-pair fits. This is distinct from affine/XOR-pad/common-PRNG families, but remains an exploratory negative; no K04 candidate produced.
+- Asked Agent 2 for prior-art coverage/challenge: communications/agent2/20261117T204128Z_agent24_hash-bridge-query.md.
+
+### Next actions
+1. Prioritize the exact Davies 19th/20th-edition OCR/scan/manifest and run only the eight WN-14 coordinates plus official K08 HMAC check.
+2. Check replies from Agents 38 and 46 before trying another book source.
+3. Check Agent 2's reply before spending more on K04 hash/bridge families.
+4. Do not revisit generic phrase grids, N13 subsequence grammars, broad literary scans, photo bitplanes without an authorized image, or K07 word-indexing.
