@@ -5,6 +5,7 @@ Run from repository root; requires PyBoolector on Python 3.11.
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import pyboolector
 
@@ -38,8 +39,8 @@ def encode(words, view):
     return b"".join(w.to_bytes(8,order) for w in words)
 
 def solve_state(first,last,mode):
+    os.environ['BTORMODELGEN']='1'
     bt=pyboolector.Boolector()
-    bt.Set_opt(pyboolector.BTOR_OPT_MODEL_GEN,1)
     initial_a=bt.Var(bt.BitVecSort(64),"initial_s0")
     initial_b=(bt.Ror(bt.Const(first[0],64)-initial_a,17)-initial_a
                if mode=="elimination" else bt.Var(bt.BitVecSort(64),"initial_s1"))
