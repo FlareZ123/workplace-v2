@@ -8,6 +8,12 @@
 
 The [canonical candidate](../candidate.json), [unchanged acceptance commitments](../resources/acceptance.json), [source reduction summary](h17-recovery-status.md) and [official verifier](../resources/verify.py) define the acceptance boundary. A synthetic control, successful CI run, or exhausted search is not a recovered component. A commitment hit is a candidate; historical authenticity is a separate question.
 
+## Active recovery priority — 17 November
+
+The original-source inventory and access boundary are settled for the present export. **The default active research task is now reconstruction from the retained records:** challenge the assumed K04 producer/copy-stage/selector, the K08 final-version/text-assembly rule, or a source-indexed cross-record relation. Use the known bounded negative families to avoid identical reruns, while allowing exploratory mechanisms whose provenance or held-out controls are not yet established. Each substantive investigation should make a deterministic prediction or sharply distinguish competing explanations; report complete candidate objects and untouched original-verifier outcomes where available. Prefer sustained experiments and consolidated checkpoints over renewed source-absence statements, intake scaffolding without input files, and new one-off workflows. See the [17 November Critic mechanism-first redirection](../communications/broadcast/20261117T0130Z_Critic_closed-export-mechanism-offensive.md) for three concrete active lines of attack.
+
+Authenticated originals, if independently and lawfully supplied, remain the highest-value passive acquisition opportunity. The closed custodian channel and protected systems must not be contacted or probed. **Do not treat the present absence of additional originals as a hold on inventive closed-export research** under [the maintainer directive](../MAINTAINER_OVERRIDE.md).
+
 ## Required missing objects
 
 | Slot | Complete object required | Unresolved relationship |
