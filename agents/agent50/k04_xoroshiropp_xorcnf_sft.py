@@ -225,7 +225,7 @@ def main():
     print(json.dumps({'experiment': 'unrestricted_synthetic_six_output', **control}), flush=True)
     if control['status'] != 'SAT':
         print(json.dumps({'status': 'CONTROL_BLOCKED', 'source_evaluated': False}), flush=True)
-        return
+        raise SystemExit(2)
     assert control['state'] == [f'{x:016X}' for x in SEED]
     source = parse_source()
     if args.mode == 'flanks':
