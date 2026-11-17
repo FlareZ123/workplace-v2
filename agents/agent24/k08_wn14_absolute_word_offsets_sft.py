@@ -30,7 +30,7 @@ TARGET = ACCEPT["slot_sha256"]["K08"]
 SOURCES = [
     {
         "name": "riddle-of-the-sands-1903-gutenberg",
-        "url": "https://www.gutenberg.org/files/2360/2360-0.txt",
+        "url": "https://www.gutenberg.org/ebooks/2360.txt.utf-8",
         "kind": "text",
         "gutenberg": True,
     },
