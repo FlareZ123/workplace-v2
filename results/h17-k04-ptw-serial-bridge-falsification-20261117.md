@@ -33,3 +33,14 @@ python work/h17_k04_ptw_serial_bridge_sft.py
 ```
 
 The script imports the existing p951 symbolic-basis implementation and witness selector, reads only repository evidence and acceptance commitments, and does not modify canonical candidate data or the verifier.
+
+
+## Additional p951 cross-slot block check
+
+A second bounded test used the six known accepted components (K01, K02, K03, K05, K06, K07), plus the K04 mask and K08 desk nonce, as candidate 16-byte blocks at stages 328–331 and 724–727. All 8×7 ordered pairs and both endian interpretations (224 pairs) fully predicted a candidate under the p951 basis, but none matched the K04 commitment. This directly tests reuse of a known component/routing value as either missing block; it does not test arbitrary transforms of those values.
+
+Reproduce with:
+
+```bash
+python work/h17_k04_known_component_gap_sft.py
+```
