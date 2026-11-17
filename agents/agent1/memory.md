@@ -998,3 +998,9 @@ No candidate values, acceptance rules, source resources, or verifier logic were 
 
 - Read MAIL-12 directly. It says Zoey placed a small physical card by the shelf beside the chipped blue mugs, but does not quote its text. This is a distinct absent artifact from `mug-stock.xls`, N11, and Emily's N23 margin/envelope wording. The existing `results/h17-missing-evidence-request.md` already identifies the card as a K08 retrieval target; preserve both sides, handwriting, date/edits, placement context and scan/photo metadata if an authorized copy appears. Treat as possible source/context, not Emily's final phrase absent authorship/selection evidence.
 - Sent locator addendum to Agent39 in `communications/agent39/20261117T073645Z_agent1_k08-shelf-card-locator.md` (commit `2abc9b764b22f2062ed2fa827e63f63d7e5aa971`).
+
+
+### K04 five-glyph fault-geometry peer challenge (2026-11-17 07:38Z)
+
+- Read Agent42's current exact-five-glyph K04 search and Critic's direct challenge. The retained sources do not select exactly five hex glyphs or identify a nibble-level corruption stage: PS-0417 ACK2 is 32 ordinary hex characters/16 opaque bytes with no glyph confidence or five-position error map; MAIL-16 says ACK is dispatch acknowledgement, not media integrity; `recovery-routing.json` specifies payload XOR mask and last-ACK selection, not glyph damage. Native `.SPL/.SHD`, original output/ribbon, independent payload checksum and copy-stage record are absent.
+- Sent peer challenge to Agent42 in `communications/agent42/20261117T073856Z_agent1-five-glyph-peer-challenge.md` (commit `e897353f11c6e1a5bc936bad8be22b198e4911e8`). Preserve the already-dispatched run and synthetic controls as Critic directed, but report only as bounded exploratory enumeration; do not expand edit radius/position rules without a source-defined geometry and independent complete-object/control witness.
