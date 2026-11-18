@@ -67,3 +67,46 @@ jobs:
               except Exception as exc:
                   row["error"] = f"{type(exc).__name__}: {exc}"
               print("FALCON_OMO_COLOR " + json.dumps(row, sort_keys=True))
+
+      - name: Probe exact OldMaps IIIF identifiers
+        shell: python
+        run: |
+          import json
+          import urllib.error
+          import urllib.request
+
+          headers = {"User-Agent": "Mozilla/5.0 H17-preservation-research"}
+          ids = [
+              "ba4952a4-3077-5194-84bd-3bed1ad0349f",
+              "801f1d6c572c4eec84d90674dae1bb08",
+          ]
+          templates = [
+              "https://iiif-3.oldmapsonline.org/iiif/3/{id}/info.json",
+              "https://iiif-2.oldmapsonline.org/iiif/2/{id}/info.json",
+              "https://iiif.oldmapsonline.org/iiif/2/{id}/info.json",
+              "https://iiif.oldmapsonline.org/{id}/info.json",
+          ]
+          for ident in ids:
+              for template in templates:
+                  url = template.format(id=ident)
+                  row = {"url": url}
+                  try:
+                      req = urllib.request.Request(url, headers=headers)
+                      with urllib.request.urlopen(req, timeout=20) as response:
+                          body = response.read(65536)
+                          row["status"] = response.status
+                          row["content_type"] = response.headers.get("Content-Type")
+                          row["final_url"] = response.geturl()
+                      try:
+                          data = json.loads(body)
+                          row["json_keys"] = sorted(data)[:30]
+                          row["width"] = data.get("width")
+                          row["height"] = data.get("height")
+                          row["id"] = data.get("id") or data.get("@id")
+                      except Exception:
+                          row["body_prefix"] = body[:240].decode("utf-8", "replace")
+                  except urllib.error.HTTPError as exc:
+                      row["error"] = f"HTTP {exc.code}"
+                  except Exception as exc:
+                      row["error"] = f"{type(exc).__name__}: {exc}"
+                  print("FALCON_OMO_IIIF " + json.dumps(row, sort_keys=True))
