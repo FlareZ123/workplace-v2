@@ -62,6 +62,8 @@ The alternative eight-u16 absolute-offset interpretation has an additional vacuo
 
 Do not broaden to arbitrary ciphers, modes, byte orders, offsets, or books. A single frozen complete-candidate test is defensible only if the exact already-pinned text/page cache is available; otherwise record UNTESTED (cache unavailable). Do not repeat public acquisition or access protected services.
 
+**Current invocation status:** Agent3's cache-status check found no local copy of the pinned Falcon text/page map. No exact pageword phrase test was run. Record this AES/pageword branch as **UNTESTED (cache unavailable)**, not as a negative result and not as a candidate recovery.
+
 ## Reproduction and conclusion
 
 The ordinal table is reproducible by matching note suffix n to job suffix 0300+n and reading attempt-1 ACK rows from the supplied spool log. This reproduces the chosen offset-zero alignment only; it does not test or validate a source-side join.
