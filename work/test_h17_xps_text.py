@@ -93,6 +93,11 @@ def test():
         assert original.read_bytes() == source
     print("PASS: K08 profile phrase scanner recovers planted final caption; source unchanged")
 
+    open_ns = "http://schemas.openxps.org/oxps/v1.0"
+    open_page = f'<FixedPage xmlns="{open_ns}"><Glyphs UnicodeString="watch &amp; water"/></FixedPage>'.encode()
+    assert ("xps-page-1-joined", b"watch & water") in list(extract_xps_text(package([open_page])))
+    print("PASS: ECMA OpenXPS namespace and escaped UnicodeString")
+
     assert list(extract_xps_text(package([page("abc")], opc=False))) == []
     print("PASS: reject ordinary ZIP lacking OPC [Content_Types].xml")
     assert list(extract_xps_text(package([b'<FixedPage><Glyphs UnicodeString="x"/></FixedPage>']))) == []
