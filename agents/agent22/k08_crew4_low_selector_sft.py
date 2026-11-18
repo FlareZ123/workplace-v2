@@ -15,6 +15,10 @@ SOURCE = Path("resources/evidence/crew/noticeboard-and-desk-notes.txt")
 EXPECTED_SHA256 = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
 SEAL_SOURCE = Path("resources/evidence/maintenance/seal-receipts.jsonl")
 SEAL_SHA256 = "c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32"
+MAIL03_SOURCE = Path("resources/evidence/mail/03.eml")
+MAIL03_SHA256 = "3cf886c12e094cb0362999c5a4d93f913c848a64471f833fbddbfdc2d57ff889"
+MAIL09_SOURCE = Path("resources/evidence/mail/09.eml")
+MAIL09_SHA256 = "1bda8bbf1e7b661a04fd58c36c38f2b66d2e2410265c311cc09c8e2bf810f08c"
 MAIL10_SOURCE = Path("resources/evidence/mail/10.eml")
 MAIL10_SHA256 = "ccfc592fe570ca6928a74de813c378443030e841bba169434c0f413721122e48"
 RECORDER_SOURCE = Path("resources/evidence/recorder/trip-recorder.raw")
@@ -263,6 +267,32 @@ def main() -> None:
     k05_component = b"".join(k05_controls)
     assert k05_component == ACCEPTED_K05
 
+    k05_low_bits = [byte & 1 for byte in k05_component]
+    k05_low_bytes = bytes(
+        sum(k05_low_bits[offset + bit] << bit for bit in range(8))
+        for offset in (0, 8)
+    )
+    assert k05_low_bytes == bytes([3, ord("C")])
+
+    mail03_raw = MAIL03_SOURCE.read_bytes()
+    assert hashlib.sha256(mail03_raw).hexdigest() == MAIL03_SHA256
+    mail03 = mail03_raw.decode("utf-8")
+    group_c_match = re.search(r"WN-14 / group C / ([0-9A-F]{8})", mail03)
+    assert group_c_match is not None
+    group_c = bytes.fromhex(group_c_match.group(1))
+    assert group_c == bytes.fromhex("CD7C6023")
+    group_c_low_bits = [byte & 1 for byte in group_c]
+    group_c_selector = sum(bit << index for index, bit in enumerate(group_c_low_bits))
+    assert group_c_low_bits == [1, 0, 0, 1]
+    assert group_c_selector == 9
+
+    mail09_raw = MAIL09_SOURCE.read_bytes()
+    assert hashlib.sha256(mail09_raw).hexdigest() == MAIL09_SHA256
+    mail09 = mail09_raw.decode("utf-8")
+    assert "X-Records-Reference: MAIL-09" in mail09
+    assert "map in\nthe back belongs to David" in mail09
+    assert "tea receipt as a bookmark" in mail09
+
     selected_headings = [
         (number, heading(notes[number - 1][2]))
         for number in selected_notes
@@ -317,6 +347,12 @@ def main() -> None:
     print("K05_SELECTED_SEQUENCES", ",".join(map(str, k05_sequences)))
     print("K05_COMPONENT", k05_component.hex().upper())
     print("K05_ACCEPTED_CALIBRATION", "PASS")
+    print("K05_LOW_BITS", "".join(map(str, k05_low_bits)))
+    print("K05_LOW_BYTES", f"{k05_low_bytes[0]:02d}", chr(k05_low_bytes[1]), "MAIL-03/group-C")
+    print("MAIL03_GROUP_C", group_c.hex().upper())
+    print("GROUP_C_LOW_BITS", "".join(map(str, group_c_low_bits)))
+    print("GROUP_C_SELECTOR", group_c_selector, "MAIL-09")
+    print("MAIL09_CORROBORATION", "David", "tea-receipt-bookmark")
     print("UNIQUE_M_HEADING", "N11", "Mug shelf")
 
 
