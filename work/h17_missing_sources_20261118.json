@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "updated": "2026-11-18T06:16:00Z",
+  "status": "source-blocked",
+  "k04": {
+    "target_commitment": "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0",
+    "primary_sources": [
+      "original commissioning/property-card records for FA-17 / H17-POL-17/A3",
+      "native PS-261003-0417 print-host/output/media or integrity record"
+    ],
+    "secondary_source": "AX-7782 native object plus manifest/handoff evidence, only if provenance binds it to the selected K04 stage",
+    "do_not_promote": [
+      "retained 2-byte AX-7782 transfer checkpoints",
+      "retained PS-0417 ACK payloads as if they were the missing authenticated coupon"
+    ]
+  },
+  "k08": {
+    "target_commitment": "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747",
+    "primary_sources": [
+      "Emily's final keeper-envelope/margin/photo-caption carrier",
+      "authenticated native PS-0323 output if it carries the final wording"
+    ],
+    "do_not_promote": [
+      "generic literary quotations",
+      "unverified page/word coordinates",
+      "caption permutations without a source witness"
+    ]
+  },
+  "intake": {
+    "native_xps": "work/h17_witness_intake.py",
+    "current_xps_gate": "results/h17-native-xps-dualslot-intake-20261118.md"
+  }
+}
