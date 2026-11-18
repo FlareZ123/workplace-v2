@@ -170,9 +170,8 @@ def validate_manifest() -> tuple[dict[str, Any], dict[int, dict[str, Any]]]:
         response_query = parse_qs(response_url.query)
         if response_url.hostname != parsed.hostname or response_url.path != parsed.path:
             raise RuntimeError(f"scan index {index} captured response host/path mismatch")
-        for key in ("id", "pg", "zoom", "sig"):
-            if response_query.get(key) != query.get(key):
-                raise RuntimeError(f"scan index {index} captured response query mismatch: {key}")
+        if response_query != query:
+            raise RuntimeError(f"scan index {index} captured response query differs from signed image URL")
         if record.get("response_status") != 200:
             raise RuntimeError(f"scan index {index} viewer image response was not HTTP 200")
         if not str(record.get("content_type", "")).startswith("image/"):
