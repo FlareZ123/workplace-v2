@@ -136,6 +136,29 @@ def candidate_words(
     return words
 
 
+def candidate_contexts(
+    coordinate_set: list[tuple[int, int]], page_tokens: dict[int, list[str]]
+) -> list[dict[str, Any]]:
+    """Preserve each selected body word and its local OCR-token context."""
+    contexts = []
+    for page, word_position in coordinate_set:
+        tokens = page_tokens[page]
+        if not 1 <= word_position <= len(tokens):
+            raise RuntimeError(
+                f"printed page {page} has {len(tokens)} body tokens; requested {word_position}"
+            )
+        contexts.append({
+            "printed_page": page,
+            "body_word_position_1based": word_position,
+            "body_word_count": len(tokens),
+            "selected_word": tokens[word_position - 1],
+            "context_tokens_up_to_4_before_2_after": tokens[
+                max(0, word_position - 4):word_position + 3
+            ],
+        })
+    return contexts
+
+
 def write_report(report: dict[str, Any]) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "summary.json").write_text(
@@ -200,6 +223,15 @@ def main() -> int:
         "ps0323_row": ps0323_row,
         "ps0323_payload_hex": ps0323_packet.hex().upper(),
         "coordinate_sets": {name: coords for name, coords in coordinate_sets.items()},
+        "body_word_rule": {
+            "position_base": 1,
+            "word_pattern": falcon.WORD_PATTERN.pattern,
+            "preprocessing": (
+                "Agent10 clean_body_lines(): remove standalone numeric folios, title/running "
+                "heads and all-uppercase display lines; join line-wrap hyphenation."
+            ),
+            "context": "up to four preceding tokens, selected token, and two following tokens",
+        },
         "unique_printed_pages": unique_pages,
         "naive_scan_window_fetches": naive_scan_fetches,
         "unique_scan_indices_in_union": len(unique_scan_indices),
@@ -252,6 +284,25 @@ def main() -> int:
             name: [word for p, word in coords if p == page]
             for name, coords in coordinate_sets.items()
         }
+        selected_context_by_set: dict[str, list[dict[str, Any]]] = {}
+        for name, coords in coordinate_sets.items():
+            rows = []
+            for requested_page, word_position in coords:
+                if requested_page != page:
+                    continue
+                if not 1 <= word_position <= len(tokens):
+                    raise RuntimeError(
+                        f"printed page {page} has {len(tokens)} body tokens; requested {word_position}"
+                    )
+                rows.append({
+                    "body_word_position_1based": word_position,
+                    "selected_word": tokens[word_position - 1],
+                    "context_tokens_up_to_4_before_2_after": tokens[
+                        max(0, word_position - 4):word_position + 3
+                    ],
+                })
+            if rows:
+                selected_context_by_set[name] = rows
         report["page_results"][str(page)] = {
             "printed_page": page,
             "google_books_scan_index": scan_index,
@@ -270,6 +321,7 @@ def main() -> int:
             "body_sha256": sha256(body.encode("utf-8")),
             "body_word_count": len(tokens),
             "requested_word_positions": requested,
+            "selected_word_context": selected_context_by_set,
         }
         report["cache_stats"] = vars(cache_stats)
         write_report(report)
@@ -280,6 +332,7 @@ def main() -> int:
         result = falcon.verify_phrase(words)
         report["candidate_results"][name] = {
             **result,
+            "selected_word_context": candidate_contexts(coords, page_tokens),
             "status": "MATCH" if result["acceptance_match"] else "NO_MATCH_ON_EXACT_1889_GOOGLE_BOOKS_COPY",
         }
         print("CANDIDATE_RESULT " + name + " " + json.dumps(report["candidate_results"][name], sort_keys=True), flush=True)
