@@ -101,7 +101,7 @@ def main() -> None:
     low = count_decodes[selected_author]
     assert low == "LOW"
 
-    lowered: list[tuple[int, int, str]] = []
+    lowered: list[tuple[int, int, str, str, str]] = []
     for position, original in enumerate(emily_note_numbers):
         candidate = emily_note_numbers.copy()
         candidate[position] += 1
@@ -111,10 +111,21 @@ def main() -> None:
             body_words(notes[number - 1][2])[0][0].upper()
             for number in candidate
         )
-        lowered.append((original, candidate[position], initials))
+        count_letters = "".join(
+            chr(ord("A") + count) if 0 <= count < 26 else "?"
+            for count in (
+                len(body_words(notes[number - 1][2]))
+                for number in candidate
+            )
+        )
+        low_bit_instruction = initials[0] + count_letters[1:4] + initials[5:8]
+        lowered.append(
+            (original, candidate[position], initials, count_letters, low_bit_instruction)
+        )
 
     exact = [item for item in lowered if item[2] == "ATEALBIT"]
-    assert exact == [(10, 11, "ATEALBIT")]
+    assert exact == [(10, 11, "ATEALBIT", "NLOWIF?V", "ALOWBIT")]
+    assert [item for item in lowered if item[4] == "ALOWBIT"] == exact
 
     selected_notes = emily_note_numbers.copy()
     selected_notes[2] = 11
@@ -153,9 +164,17 @@ def main() -> None:
     print("DAVID_BODY_WORD_COUNTS", ",".join(map(str, david_body_counts)))
     print("DAVID_COUNT_DECODE", low)
     print("EMILY_HEADS", emily_heads)
-    for original, replacement, initials in lowered:
-        print("LOWER_ONE_ROW", f"N{original:02d}->N{replacement:02d}", initials)
+    for original, replacement, initials, count_letters, instruction in lowered:
+        print(
+            "LOWER_ONE_ROW",
+            f"N{original:02d}->N{replacement:02d}",
+            initials,
+            count_letters,
+            instruction,
+        )
     print("UNIQUE_ATEALBIT_LOWER", "N10->N11")
+    print("SELECTED_COUNT_DECODE", "NLOWIF?V")
+    print("SELECTED_MIXED_INSTRUCTION", "ALOWBIT")
     print("ATEALBIT_LOW_BITS", "".join(map(str, low_bits)))
     print("ATEALBIT_LOW_BYTE", f"0x{low_byte:02X}", chr(low_byte))
     print("UNIQUE_M_HEADING", "N11", "Mug shelf")
