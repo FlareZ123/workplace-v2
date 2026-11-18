@@ -252,7 +252,7 @@ def candidate_contexts(
             "body_word_count": len(tokens),
             "selected_word": tokens[word_position - 1],
             "context_tokens_up_to_4_before_2_after": tokens[
-                max(0, word_position - 4):word_position + 3
+                max(0, word_position - 5):word_position + 2
             ],
         })
     return contexts
@@ -516,7 +516,7 @@ def main() -> int:
                     "body_word_position_1based": word_position,
                     "selected_word": tokens[word_position - 1],
                     "context_tokens_up_to_4_before_2_after": tokens[
-                        max(0, word_position - 4):word_position + 3
+                        max(0, word_position - 5):word_position + 2
                     ],
                 })
             if rows:
