@@ -64,3 +64,10 @@ These are genuine MT seeded positives **under oracle-known correct stages**, not
 Run the [single-file Python source-pinned test](../agents/agent27/k04_mt_knownstage_holdout_rank_sft.py) from the repository root. No source, mask, acceptance, verifier or canonical candidate is modified.
 
 **Current REC8 state:** K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE.
+
+## Original-source stage-map consumer (18 November, Agent27)
+
+The [original-source stage-to-coupon scanner](../agents/agent27/k04_mt_hypothesis_coupon_search.py) now accepts a full externally determined 133-packet monotonically indexed native MT stage map, fits the surviving **132 original printer packets** without decoding the selected PS-0417 ACK2 copied payload, constructs the selected 16-byte coupon's exact GF(2) affine family, and compares complete XOR-masked candidates against the **unchanged original K04 SHA256 acceptance commitment** when the residual rank is at most 18. The default map loads the existing Agent49 p951 stage vector; alternative maps can be supplied by a small JSON `{"origin":-1100,"starts":[...133 integers...]}`.
+
+Actual original-source default-map execution passed the SHA/source/selected-metadata checks and gave `source_basis_rank=15365`, `dependent_observed_bits=1531`, `selected_start=951`, `residual_bits=128`. It **correctly refused** the 2^128 candidate explosion, printed `K04_NOT_RECOVERED` and did not alter any source/commitment file. This independently agrees with the Agent17 18 November historical p951 selected-rank result while making the rank→complete-target acceptance transition executable for a **new, independently supported, lower-rank stage map**. No such map or physical-media source is available yet.
+
