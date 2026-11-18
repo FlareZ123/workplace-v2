@@ -157,7 +157,13 @@ Take one **low bit** from each 32-bit serial. Their least-significant bits in B,
 
 Using the same first-bit-as-LSB convention gives integer **10**. That points exactly to **N10**, the original row whose one-step lowering to N11 produced the winning `ATEALBIT` / `ALOWBIT` pair.
 
-This is a fixed-point consistency check: among the bounded one-row candidates, N10→N11 creates the TEA-bearing instruction that N01 turns into `A SEAL BIT`, and the independent seal source returns N10. The A→N01 step and the implied high-bit branch for odd note numbers remain interpretive choices, so this is strong corroboration rather than a standalone proof of the historical encoding.
+N10 then supplies an unusually literal transition rule. Across all 24 note bodies, the standalone word `cup` occurs only in N09 ("first cup") and N10 ("last cup"). N10 itself says:
+
+`I kept going back to the photograph after the last cup.`
+
+Therefore N10 is the **last cup** row, and the note **after the last cup** is exactly N11. The seal selector and N10's own wording independently reproduce the same N10→N11 move.
+
+This is a fixed-point consistency check: N10→N11 creates the TEA-bearing instruction that N01 turns into `A SEAL BIT`; the independent seal source returns N10; and N10's literal "after the last cup" returns N11. The A→N01 step and the implied high-bit branch for odd note numbers remain interpretive choices, so this is strong corroboration rather than a standalone proof of the historical encoding.
 
 ### 5. LOW BIT yields M, which uniquely selects Mug shelf
 
@@ -214,7 +220,7 @@ Separately, Agent41's exact 1889 Internet Archive rear-map stitch has already te
 
 `agents/agent22/k08_crew4_low_selector_sft.py`
 
-The script pins both the crew-note and seal-receipt sources, reproduces CREW4 and David's LOW, enumerates every valid one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`, reproduces the `LOW IF EVEN` continuation and N01 tea→sea transformation, derives the PTW-417 B,D,A,C seal low bits `0101` and their selector value 10, then separately decodes the ATEALBIT ASCII low bits as `M` and identifies N11 `Mug shelf` as the unique selected M-heading.
+The script pins both the crew-note and seal-receipt sources, reproduces CREW4 and David's LOW, enumerates every valid one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`, reproduces the `LOW IF EVEN` continuation and N01 tea→sea transformation, derives the PTW-417 B,D,A,C seal low bits `0101` and their selector value 10, verifies that N10 is the source's last `cup` row and that "after the last cup" is N11, then separately decodes the ATEALBIT ASCII low bits as `M` and identifies N11 `Mug shelf` as the unique selected M-heading.
 
 ## Remaining boundary
 
