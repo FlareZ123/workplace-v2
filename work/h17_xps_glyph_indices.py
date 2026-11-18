@@ -507,6 +507,10 @@ def extract_xps_glyph_streams(data: bytes) -> list[tuple[str, bytes]]:
     object; an empty stream list is not proof of a complete negative scan.
     """
     result = extract_xps_glyph_indices(data)
+    coverage = result.get("coverage", {})
+    if not coverage.get("complete", False):
+        reasons = ", ".join(coverage.get("reasons", [])) or "unknown coverage gap"
+        raise ValueError(f"incomplete XPS glyph extraction: {reasons}")
     return [
         (f"xps-glyph:{stream['page']}:{stream['label']}", stream["text"].encode("utf-8"))
         for stream in result.get("streams", [])
