@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned native bitvector solver
-        run: python -m pip install --only-binary=:all: bitwuzla==0.9.1
+        run: python -m pip install --only-binary bitwuzla bitwuzla==0.9.1
       - name: Validate full middle coupon with genuine seeded flanks
         run: python agents/agent8/k04_xoroshiropp_bitwuzla_sft.py --phase positive --view 0 --limit-seconds 100
 
@@ -44,6 +44,6 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned native bitvector solver
-        run: python -m pip install --only-binary=:all: bitwuzla==0.9.1
+        run: python -m pip install --only-binary bitwuzla bitwuzla==0.9.1
       - name: Source-constrained full-coupon Bitwuzla inversion
         run: python agents/agent8/k04_xoroshiropp_bitwuzla_sft.py --phase original --view ${{ matrix.view }} --limit-seconds 360
