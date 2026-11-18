@@ -4,12 +4,17 @@ on:
     paths:
       - agents/agent43/k08_ps0323_falcon_aes_offsets_sft.py
   workflow_dispatch:
+    inputs:
+      archive_source:
+        description: Preserve verified 1889 Falcon wordstream as a public source file
+        type: boolean
+        default: false
 jobs:
   falcon-aes:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     permissions:
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,3 +31,8 @@ jobs:
           path: work/agent43-falcon-aes/
           if-no-files-found: warn
           retention-days: 7
+      - name: Preserve source corpus beyond artifact expiry
+        if: github.event_name == 'workflow_dispatch' && inputs.archive_source
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python agents/agent43/archive_falcon_wordstream.py
