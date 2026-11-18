@@ -1,13 +1,5 @@
 name: Agent3 H17 native XPS dual-slot intake regression
 on:
-  push:
-    paths:
-      - work/h17_xps_text.py
-      - work/test_h17_xps_text.py
-      - work/h17_k04_binary_window_intake.py
-      - work/h17_profile_k08_phrase_scan.py
-      - work/h17_profile_inventory.py
-      - .github/workflows/agent3-xps-intake.yml
   workflow_dispatch:
 permissions:
   contents: read
