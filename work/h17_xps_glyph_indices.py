@@ -29,6 +29,7 @@ except ImportError:  # optional dependency
 MAX_PACKAGE_ENTRIES = 10000
 MAX_PART_BYTES = 32 * 1024 * 1024
 MAX_FONT_BYTES = 16 * 1024 * 1024
+MAX_TOTAL_FONT_BYTES = 64 * 1024 * 1024
 MAX_TOTAL_XML_BYTES = 128 * 1024 * 1024
 CONTENT_TYPES_LIMIT = 1024 * 1024
 CONTENT_TYPES_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
@@ -179,6 +180,7 @@ def _decode_glyph_run(
     element: ET.Element,
     package: zipfile.ZipFile,
     font_cache: dict[str, tuple[dict[int, list[str]], int] | Exception],
+    font_budget: list[int],
 ) -> dict[str, Any]:
     font_uri = element.attrib.get("FontUri", "")
     indices = element.attrib.get("Indices", "")
@@ -193,7 +195,10 @@ def _decode_glyph_run(
             info = package.getinfo(font_part)
             if info.file_size > MAX_FONT_BYTES:
                 raise ValueError("font part exceeds size limit")
+            if font_budget[0] + info.file_size > MAX_TOTAL_FONT_BYTES:
+                raise ValueError("total embedded-font budget exceeded")
             raw = package.read(font_part)
+            font_budget[0] += info.file_size
             decoded = deobfuscate_odttf(raw, font_part)
             font_cache[font_part] = _font_glyph_map(decoded)
         except Exception as exc:
@@ -252,6 +257,7 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
         return {"status": "fontTools-unavailable", "runs": []}
     runs: list[dict[str, Any]] = []
     font_cache: dict[str, tuple[dict[int, list[str]], int] | Exception] = {}
+    font_budget = [0]
     with zipfile.ZipFile(io.BytesIO(data)) as package:
         infos = package.infolist()
         if len(infos) > MAX_PACKAGE_ENTRIES:
@@ -288,7 +294,7 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
                     continue
                 if "Indices" not in element.attrib:
                     continue
-                runs.append(_decode_glyph_run(name, element, package, font_cache))
+                runs.append(_decode_glyph_run(name, element, package, font_cache, font_budget))
     decoded = [r for r in runs if r.get("text")]
     if not runs:
         status = "no-glyph-index-only-runs"
