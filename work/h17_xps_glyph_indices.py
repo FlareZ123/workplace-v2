@@ -14,6 +14,7 @@ ligatures/clusters. Install fontTools to enable font parsing.
 from __future__ import annotations
 
 import io
+import math
 import posixpath
 import uuid
 import zipfile
@@ -43,6 +44,12 @@ CONTENT_TYPES_LIMIT = 1024 * 1024
 CONTENT_TYPES_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
 FIXED_PAGE_MIME = "application/vnd.ms-package.xps-fixedpage+xml"
 MAX_GLYPHS_PER_RUN = 100000
+MAX_RUNS_PER_PACKAGE = 10000
+MAX_TOTAL_GLYPHS = 2000000
+XPS_NAMESPACES = {
+    "http://schemas.microsoft.com/xps/2005/06",
+    "http://schemas.openxps.org/oxps/v1.0",
+}
 
 
 def _safe_part_name(name: str) -> str:
@@ -140,6 +147,9 @@ def parse_indices(indices: str) -> list[dict[str, Any]]:
                     continue
                 cluster_units = int(parts[0])
                 cluster_glyphs = int(parts[1]) if len(parts) == 2 else 1
+                if cluster_units < 1 or cluster_glyphs < 1:
+                    out.append({"position": position, "glyph_id": None, "error": "cluster counts must be positive"})
+                    continue
             token = token[close + 1:]
         # The first field is GlyphIndex; following comma fields are metrics.
         glyph_field = token.split(",", 1)[0].strip()
@@ -193,11 +203,37 @@ def _font_glyph_map(font_data: bytes) -> tuple[dict[int, list[str]], int]:
         font.close()
 
 
+def _split_tag(tag: str) -> tuple[str, str]:
+    if tag.startswith("{"):
+        namespace, local = tag[1:].split("}", 1)
+        return namespace, local
+    return "", tag
+
+
+def _page_has_transform(root: ET.Element, namespace: str) -> bool:
+    """Conservatively reject spatial ordering if any page transform is present."""
+    transform_names = {
+        "MatrixTransform", "TranslateTransform", "ScaleTransform",
+        "RotateTransform", "SkewTransform",
+    }
+    for element in root.iter():
+        element_namespace, local = _split_tag(element.tag)
+        if element_namespace != namespace:
+            continue
+        if ("RenderTransform" in element.attrib
+                or "RenderTransformOrigin" in element.attrib
+                or local in transform_names
+                or local.endswith(".RenderTransform")):
+            return True
+    return False
+
+
 def _coordinate(element: ET.Element, name: str) -> float | None:
     try:
-        return float(element.attrib[name])
+        value = float(element.attrib[name])
     except (KeyError, ValueError):
         return None
+    return value if math.isfinite(value) else None
 
 
 def _decode_glyph_run(
@@ -233,7 +269,18 @@ def _decode_glyph_run(
         return {"page": page_part, "font_uri": font_uri, "font_part": font_part,
                 "status": "font-unavailable", "error": str(font_entry)}
     gid_map, glyph_count = font_entry
-    parsed = parse_indices(indices)
+    try:
+        parsed = parse_indices(indices)
+    except ValueError as exc:
+        return {
+            "page": page_part,
+            "font_uri": font_uri,
+            "font_part": font_part,
+            "status": "malformed-indices",
+            "error": str(exc),
+            "text": "",
+            "unresolved": [],
+        }
     chars: list[str] = []
     unresolved: list[dict[str, Any]] = []
     skip_cluster_glyphs = 0
@@ -277,12 +324,40 @@ def _decode_glyph_run(
 
 
 def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
-    """Extract glyph-index-only text runs from an XPS/OXPS ZIP package."""
+    """Extract complete glyph-index-only text runs from an XPS/OXPS ZIP package.
+
+    Partial runs remain diagnostic-only: they are never compacted into candidate
+    text streams. The returned coverage object distinguishes a complete scan
+    from pages/runs skipped because of malformed data or resource limits.
+    """
     if len(data) > 256 * 1024 * 1024:
         raise ValueError("XPS package exceeds size limit")
+    coverage: dict[str, Any] = {
+        "complete": True,
+        "reasons": [],
+        "pages_seen": 0,
+        "pages_processed": 0,
+        "runs_seen": 0,
+        "glyphs_seen": 0,
+    }
+
+    def mark_incomplete(reason: str) -> None:
+        coverage["complete"] = False
+        if reason not in coverage["reasons"]:
+            coverage["reasons"].append(reason)
+
     if TTFont is None:
-        return {"status": "fontTools-unavailable", "runs": [], "streams": [], "text": ""}
+        mark_incomplete("fontTools-unavailable")
+        return {
+            "status": "fontTools-unavailable",
+            "runs": [],
+            "streams": [],
+            "text": "",
+            "coverage": coverage,
+        }
+
     runs: list[dict[str, Any]] = []
+    by_page: dict[str, list[dict[str, Any]]] = defaultdict(list)
     font_cache: dict[str, tuple[dict[int, list[str]], int] | Exception] = {}
     font_budget = [0]
     with zipfile.ZipFile(io.BytesIO(data)) as package:
@@ -291,60 +366,107 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
             raise ValueError("too many XPS package entries")
         names = {item.filename for item in infos}
         if "[Content_Types].xml" not in names:
-            return {"status": "no-opc-content-types", "runs": [], "streams": [], "text": ""}
+            return {
+                "status": "no-opc-content-types",
+                "runs": [],
+                "streams": [],
+                "text": "",
+                "coverage": coverage,
+            }
         explicit, extensions = _declared_fixed_pages(package)
         total_xml_bytes = 0
         for info in infos:
-            name = _safe_part_name(info.filename)
             suffix = info.filename.rsplit(".", 1)[-1].lower()
             is_page = (info.filename.lower().endswith(".fpage")
                        or info.filename in explicit or suffix in extensions)
             if info.is_dir() or info.filename == "[Content_Types].xml" or not is_page:
                 continue
+
+            coverage["pages_seen"] += 1
+            name = _safe_part_name(info.filename)
             if info.file_size > MAX_PART_BYTES:
+                mark_incomplete("page-size-limit")
                 continue
-            total_xml_bytes += info.file_size
-            if total_xml_bytes > MAX_TOTAL_XML_BYTES:
+            if total_xml_bytes + info.file_size > MAX_TOTAL_XML_BYTES:
+                mark_incomplete("total-xml-budget")
                 break
+            total_xml_bytes += info.file_size
             raw = package.read(info)
             if b"<!DOCTYPE" in raw.upper() or b"<!ENTITY" in raw.upper():
+                mark_incomplete("page-xml-entity-declaration")
                 continue
             try:
                 root = ET.fromstring(raw)
             except ET.ParseError:
+                mark_incomplete("page-xml-parse-error")
                 continue
+
+            namespace, local = _split_tag(root.tag)
+            if namespace not in XPS_NAMESPACES or local != "FixedPage":
+                continue
+            coverage["pages_processed"] += 1
+            transformed = _page_has_transform(root, namespace)
+            page_runs: list[dict[str, Any]] = []
+            page_overflow = False
             for element in root.iter():
-                if element.tag.rsplit("}", 1)[-1] != "Glyphs":
+                element_namespace, element_local = _split_tag(element.tag)
+                if element_namespace != namespace or element_local != "Glyphs":
                     continue
                 unicode_string = element.attrib.get("UnicodeString", "")
                 if unicode_string not in ("", "{}"):
                     continue
                 if "Indices" not in element.attrib:
                     continue
-                runs.append(_decode_glyph_run(name, element, package, font_cache, font_budget))
-    decoded = [r for r in runs if r.get("text")]
-    if not runs:
-        status = "no-glyph-index-only-runs"
-    elif all(r.get("status") == "decoded" for r in runs):
-        status = "decoded"
-    elif decoded:
-        status = "partial"
-    else:
-        status = "glyph-runs-found"
+                if coverage["runs_seen"] >= MAX_RUNS_PER_PACKAGE:
+                    mark_incomplete("run-count-limit")
+                    page_overflow = True
+                    break
 
-    by_page: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for run in decoded:
-        by_page[run["page"]].append(run)
+                coverage["runs_seen"] += 1
+                try:
+                    run = _decode_glyph_run(name, element, package, font_cache, font_budget)
+                except Exception as exc:
+                    run = {
+                        "page": name,
+                        "status": "malformed-run",
+                        "error": str(exc),
+                        "text": "",
+                        "unresolved": [],
+                    }
+                run["spatial_allowed"] = not transformed
+                glyph_count = int(run.get("glyphs", 0) or 0)
+                if coverage["glyphs_seen"] + glyph_count > MAX_TOTAL_GLYPHS:
+                    mark_incomplete("total-glyph-limit")
+                    page_overflow = True
+                    break
+                coverage["glyphs_seen"] += glyph_count
+
+                if run.get("status") != "decoded":
+                    mark_incomplete("run-" + str(run.get("status", "unknown")))
+                page_runs.append(run)
+                runs.append(run)
+
+            if page_runs and not page_overflow:
+                by_page[name] = page_runs
+
     streams: list[dict[str, str]] = []
+    complete_text: list[str] = []
     for page, page_runs in sorted(by_page.items()):
+        # Never join around an unresolved/partial run: that would invent adjacency.
+        if not page_runs or any(run.get("status") != "decoded" or not run.get("text")
+                                for run in page_runs):
+            continue
         texts = [run["text"] for run in page_runs]
         streams.extend((
             {"page": page, "label": "lines", "text": "\n".join(texts)},
             {"page": page, "label": "spaced", "text": " ".join(texts)},
             {"page": page, "label": "joined", "text": "".join(texts)},
         ))
-        if all(run.get("origin_x") is not None and run.get("origin_y") is not None
-               for run in page_runs):
+        complete_text.append("\n".join(texts))
+        spatial_allowed = all(run.get("spatial_allowed", False) for run in page_runs)
+        if (spatial_allowed
+                and all(run.get("origin_x") is not None and run.get("origin_y") is not None
+                        for run in page_runs)):
             spatial = sorted(page_runs, key=lambda run: (run["origin_y"], run["origin_x"]))
             spatial_texts = [run["text"] for run in spatial]
             if spatial_texts != texts:
@@ -352,16 +474,38 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
                     {"page": page, "label": "spatial-spaced", "text": " ".join(spatial_texts)},
                     {"page": page, "label": "spatial-joined", "text": "".join(spatial_texts)},
                 ))
+
+    if coverage["reasons"]:
+        if any(reason in coverage["reasons"] for reason in
+               ("page-size-limit", "total-xml-budget", "run-count-limit", "total-glyph-limit")):
+            status = "truncated"
+        elif streams:
+            status = "partial"
+        else:
+            status = "glyph-runs-found"
+    elif not runs:
+        status = "no-glyph-index-only-runs"
+    elif all(run.get("status") == "decoded" for run in runs):
+        status = "decoded"
+    elif streams:
+        status = "partial"
+    else:
+        status = "glyph-runs-found"
+
     return {
         "status": status,
         "runs": runs,
         "streams": streams,
-        "text": "\n".join(r["text"] for r in decoded),
+        "text": "\n".join(complete_text),
+        "coverage": coverage,
     }
 
-
 def extract_xps_glyph_streams(data: bytes) -> list[tuple[str, bytes]]:
-    """Return (label, UTF-8 bytes) variants compatible with extract_xps_text()."""
+    """Return only complete-page (label, UTF-8 bytes) candidate variants.
+
+    Call extract_xps_glyph_indices() as well when a caller needs the coverage
+    object; an empty stream list is not proof of a complete negative scan.
+    """
     result = extract_xps_glyph_indices(data)
     return [
         (f"xps-glyph:{stream['page']}:{stream['label']}", stream["text"].encode("utf-8"))
