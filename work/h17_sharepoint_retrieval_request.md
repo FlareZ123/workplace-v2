@@ -38,3 +38,7 @@ Run `work/h17_missing_source_intake.py` against the recovered tree, then use the
 - R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx
 
 Prioritize the first three because the surviving bookmark set directly points to the old-scan release register, BX25 transfer index, and mug-stock workbook. They are source-side joins, not replacements for the missing native coupon or final margin.
+
+## Additional K08 native-label discriminator
+
+The current synthesis identifies PS-261003-0300 (07:00Z LABEL/store, five minutes before N01→PS0301) as an orphan recovery-envelope-label candidate. Retrieve its native .SPL/.SHD/EMF/PRN or rendered output, queue/job/dispatch manifest, and any physical shelf card/label with collection receipt. Keep PS-0323 as the N23-associated possible print witness, not an authenticated label. Do not infer the join from the five-minute sequence alone.
