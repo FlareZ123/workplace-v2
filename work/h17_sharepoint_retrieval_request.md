@@ -27,6 +27,10 @@ For the exact job, retain every record for `PS-261003-0417`; the published selec
 
 Return original file contents/bytes where possible. The K08 verifier normalizes the recovered phrase, computes HMAC-SHA256 with desk nonce `5F933DA6A1BD03C32DA5CBC25344F497`, keeps the first 16 bytes, then SHA-256s those 16 bytes against the acceptance commitment.
 
+## AX-7782 / IR-261003-H17 native transfer object (joint K04/K08 locator)
+
+If the user already has an independently authorized local copy, include the native object from `R:/Risk/Transfers/AX-7782/Bundle06`, all eight 1 MiB chunk files, the original manifest and per-chunk hashes, omission/retry log, transfer/queue receipt, and handoff print. Preserve transfer ID, sequence, attempt, dry_run, COMMIT/ABORT state, and source path for every file. The surviving transfer audit records an 8×1 MiB COMMIT for AX-7782 / IR-261003-H17, but the supplied export has only 2-byte checkpoints; those checkpoints are not chunk contents and must not be promoted to coupon bytes. Do not access the protected R-drive or repeat public acquisition.
+
 ## After retrieval: full coverage, no silent negative
 
 Preserve each original and its source path, container lineage, and hash. Treat `work/h17_missing_source_intake.py` as a **narrow dispatch-ACK / named-plain-text triage**, not a complete source-intake or a certification that K04/K08 are absent. Its K04 path inspects a limited set of text-log filenames and rechecks only the masked ACK payload; it does not extract the physical coupon from native print media. Its K08 path searches 1–64-word contiguous spans in files whose path contains selected keywords; unnamed images, workbooks, archive members, and other sidecars can be missed.
