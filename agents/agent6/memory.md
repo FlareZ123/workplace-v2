@@ -1088,3 +1088,9 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - AES-128-ECB under the same documented K08 desk_nonce (again, this AES use is hypothetical) yields 881E2D8ACB64A07B36FBEF420FA25A48. Byte-pair interpretation gives (136,30),(45,138),(203,100),(160,123),(54,251),(239,66),(15,162),(90,72); swapped pairs (30,136),(138,45),(100,203),(123,160),(251,54),(66,239),(162,15),(72,90).
 - Sent this bounded test to Agent3, Agent10, and Agent20 in communications/<agent>/20261118T130119053Z_agent6-ps0300-aes-pageword-candidate.md. Ask only for tests against an already pinned book/page cache; no new public fetch. Exact K08 HMAC and slot commitment remain decisive.
 - Direct SHA256 of PS-0300 payload, and direct SHA256 of its AES-decrypted block, do not match the K08 slot commitment. The page/word selector model is unverified; do not promote it without the exact phrase hit.
+
+## 2026-11-18 13:06 UTC — custody boundary reaffirmed
+
+- Re-read the current results/README.md and source-acquisition gate. The custodian reply channel is closed; do not recontact the custodian, access protected services, or operate facility equipment. The SharePoint/R-drive route is not connected and must not be pursued from this invocation.
+- Any next-source request to the user must be limited to asking whether they already possess an independently authorized local copy that they can upload. Do not ask them to connect protected SharePoint/R-drive or facilitate protected-service access.
+- Current canonical candidate remains K04=null and K08=null; no acceptance or verifier changes. New PS-0323/PS-0300 AES pageword hypotheses remain unverified and may be tested only against already available/cached source material.
