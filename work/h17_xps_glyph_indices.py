@@ -15,6 +15,7 @@ import io
 import posixpath
 import uuid
 import zipfile
+import unicodedata
 from urllib.parse import unquote
 from collections import defaultdict
 from pathlib import PurePosixPath
@@ -25,6 +26,11 @@ try:
     from fontTools.ttLib import TTFont
 except ImportError:  # optional dependency
     TTFont = None
+
+try:
+    from fontTools import agl
+except ImportError:  # optional glyph-name fallback
+    agl = None
 
 MAX_PACKAGE_ENTRIES = 10000
 MAX_PART_BYTES = 32 * 1024 * 1024
@@ -160,16 +166,26 @@ def _font_glyph_map(font_data: bytes) -> tuple[dict[int, list[str]], int]:
     try:
         glyph_order = font.getGlyphOrder()
         reverse: dict[int, list[str]] = defaultdict(list)
-        for table in font["cmap"].tables:
-            if not table.isUnicode():
-                continue
-            for codepoint, glyph_name in table.cmap.items():
-                if not isinstance(codepoint, int) or not (0 <= codepoint <= 0x10FFFF):
+        if "cmap" in font:
+            for table in font["cmap"].tables:
+                if not table.isUnicode():
                     continue
-                gid = font.getGlyphID(glyph_name)
-                char = chr(codepoint)
-                if char not in reverse[gid]:
-                    reverse[gid].append(char)
+                for codepoint, glyph_name in table.cmap.items():
+                    if not isinstance(codepoint, int) or not (0 <= codepoint <= 0x10FFFF):
+                        continue
+                    gid = font.getGlyphID(glyph_name)
+                    char = chr(codepoint)
+                    if char not in reverse[gid]:
+                        reverse[gid].append(char)
+        # Some subset fonts omit cmap but retain Adobe/uni-style glyph names.
+        # Use that fallback only when cmap supplied no mapping for the glyph.
+        if agl is not None:
+            for gid, glyph_name in enumerate(glyph_order):
+                if reverse.get(gid):
+                    continue
+                text = agl.toUnicode(glyph_name)
+                if text and all(unicodedata.category(ch)[0] not in ("C",) for ch in text):
+                    reverse[gid].append(text)
         return dict(reverse), len(glyph_order)
     finally:
         font.close()
@@ -234,7 +250,7 @@ def _decode_glyph_run(
         if len(options) == 1:
             chars.append(options[0])
         elif len(options) == 0:
-            unresolved.append({**item, "reason": "glyph has no Unicode cmap entry"})
+            unresolved.append({**item, "reason": "glyph has no Unicode cmap or AGL mapping"})
         else:
             unresolved.append({**item, "reason": "ambiguous cmap entry", "unicode_options": options})
     return {
