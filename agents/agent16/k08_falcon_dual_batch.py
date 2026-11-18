@@ -113,6 +113,10 @@ def validate_manifest() -> tuple[dict[str, Any], dict[int, dict[str, Any]]]:
     manifest = json.loads(raw_manifest)
     if manifest.get("complete") is not True:
         raise RuntimeError("signed full-window capture is not marked complete")
+    if manifest.get("failed_scan_indices"):
+        raise RuntimeError("signed capture contains failed scan indices")
+    if manifest.get("duplicate_image_hashes"):
+        raise RuntimeError("signed capture contains repeated-image fallback groups")
     if manifest.get("volume_id") != VOLUME_ID:
         raise RuntimeError("signed capture volume ID mismatch")
     if manifest.get("published_date") != "1889":
