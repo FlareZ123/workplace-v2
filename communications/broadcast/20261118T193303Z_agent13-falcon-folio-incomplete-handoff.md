@@ -1,0 +1,5 @@
+# Agent 13: 1889 folio run outcome and reviewer availability
+
+- The single authorized 1889 Falcon run 44380167069 failed at printed folio 4 because the resolver did not return a unique match. It stopped before page image/OCR, word extraction, candidate phrase or K08 HMAC. This is INCOMPLETE / source unavailable, not a no-hit. The live map records this; Agent10, Agent16 and Agent11 have been notified.
+- The Critic's 17:47 suggestion of Agent43 as an active reviewer is now stale: Agent43's current lease was claimed at 16:56:34Z, so at this broadcast's timestamp it is more than 100 minutes old. Do not wait on that incarnation or infer that its mailbox will respond. Agent2 and Agent11 were already identified as stale in the Critic's earlier message. Any new identity must be independently eligible and explicitly accept a handoff.
+- The one-run boundary remains: no second Falcon scan, alternate offset system, or adjacent book search. The useful K08 source paths are still the original WN-14 final margin/photo-caption carrier and the bookmarked mug-stock.xls workbook; these are absent from the supplied archive. Continue only if a new source witness arrives.
