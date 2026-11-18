@@ -53,7 +53,7 @@ def make_test_font(text: str) -> bytes:
     return output.getvalue()
 
 
-def make_xps(text: str, relative_uri: bool = False, cluster: bool = False) -> bytes:
+def make_xps(text: str, relative_uri: bool = False, cluster: bool = False, page_name: str = "1.fpage") -> bytes:
     font_bytes = make_test_font(text)
     font_guid = str(uuid.uuid4())
     font_part = f"Resources/Fonts/{font_guid}.odttf"
@@ -72,6 +72,7 @@ def make_xps(text: str, relative_uri: bool = False, cluster: bool = False) -> by
     else:
         indices = ";".join(str(gid) for gid in gids)
 
+    page_part = f"Documents/1/Pages/{page_name}"
     if relative_uri:
         font_uri = f"../../../{font_part}"
     else:
@@ -82,11 +83,17 @@ def make_xps(text: str, relative_uri: bool = False, cluster: bool = False) -> by
         f'<Glyphs FontUri="{font_uri}" FontRenderingEmSize="12" OriginX="10" OriginY="20" Indices="{indices}" />'
         '</FixedPage>'
     ).encode("utf-8")
+    content_types = (
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+        f'<Override PartName="/{page_part}" ContentType="application/vnd.ms-package.xps-fixedpage+xml" />'
+        '</Types>'
+    ).encode("utf-8")
 
     package = io.BytesIO()
     with zipfile.ZipFile(package, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("[Content_Types].xml", content_types)
         zf.writestr(font_part, bytes(obfuscated))
-        zf.writestr("Documents/1/Pages/1.fpage", page)
+        zf.writestr(page_part, page)
     return package.getvalue()
 
 
@@ -122,6 +129,12 @@ class GlyphIndexExtractionTests(unittest.TestCase):
         self.assertEqual(result["runs"][0]["unresolved"], [])
 
     @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_opc_declared_fixed_page_with_non_fpage_extension(self):
+        phrase = "declared page"
+        result = extractor.extract_xps_glyph_indices(make_xps(phrase, page_name="1.bin"))
+        self.assertEqual(result["text"], phrase)
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
     def test_relative_font_uri_resolves(self):
         phrase = "quiet sea"
         result = extractor.extract_xps_glyph_indices(make_xps(phrase, relative_uri=True))
@@ -141,7 +154,13 @@ class GlyphIndexExtractionTests(unittest.TestCase):
             '<Glyphs UnicodeString="already mapped" Indices="1;2" FontUri="/missing.odttf" />'
             '</FixedPage>'
         ).encode()
+        content_types = (
+            '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+            '<Override PartName="/Documents/1/Pages/1.fpage" ContentType="application/vnd.ms-package.xps-fixedpage+xml" />'
+            '</Types>'
+        ).encode()
         with zipfile.ZipFile(package, "w") as zf:
+            zf.writestr("[Content_Types].xml", content_types)
             zf.writestr("Documents/1/Pages/1.fpage", page)
         result = extractor.extract_xps_glyph_indices(package.getvalue())
         self.assertEqual(result["status"], "no-glyph-index-only-runs")
