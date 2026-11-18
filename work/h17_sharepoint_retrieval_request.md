@@ -28,3 +28,13 @@ Return original file contents/bytes where possible. The K08 verifier normalizes 
 ## After retrieval
 
 Run `work/h17_missing_source_intake.py` against the recovered tree, then use the repository's unchanged canonical verifier. Do not edit acceptance commitments or verifier logic.
+
+## Additional source-side join files explicitly referenced by the retained bookmarks
+
+- R:/IT/desk-images/oldscan/scanrelease.txt
+- R:/Risk/Transfers/BX25/transfer-index.htm
+- R:/Stores/consumables/mug-stock.xls
+- R:/IT/desktop-move-2026.html
+- R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx
+
+Prioritize the first three because the surviving bookmark set directly points to the old-scan release register, BX25 transfer index, and mug-stock workbook. They are source-side joins, not replacements for the missing native coupon or final margin.
