@@ -75,7 +75,7 @@ _CATEGORY_TOKENS = {
     ),
 }
 _CATEGORY_EXTENSIONS = {
-    "printer": {".spl", ".shd", ".prn", ".emf", ".evtx"},
+    "printer": {".spl", ".shd", ".prn", ".emf", ".evtx", ".xps", ".oxps"},
     "mail": {".pst", ".ost", ".nst", ".msg", ".eml", ".mbox"},
     "notes": {".one", ".onecache", ".onepkg", ".snt"},
     "photo_caption": {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".heic", ".heif", ".webp", ".bmp", ".gif", ".psd", ".xmp", ".cr2", ".nef", ".arw", ".dng", ".orf", ".raf", ".rw2"},
