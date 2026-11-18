@@ -66,7 +66,7 @@ def stage_map(filename=None):
     assert all(isinstance(s, int) and not isinstance(s, bool) for s in starts)
     assert all(starts[i + 1] >= starts[i] + 4 for i in range(132))
     assert origin <= starts[0]
-    shifted = [s - origin for s in starts]
+    shifted = [s - origin + 624 for s in starts]  # Enforce MT's 19,937-bit transition image.
     return origin, starts, shifted
 
 
