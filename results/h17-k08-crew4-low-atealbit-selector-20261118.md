@@ -91,13 +91,41 @@ Exactly one one-row lowering gives the independently observed sequence **ATEALBI
 
 This is the previously preferred set, now reached from the source-fixed Emily set by a single bounded directional operation rather than chosen from the six ATEALBIT subsequences.
 
+### 4. LOW BIT yields M, which uniquely selects Mug shelf
+
+Read `LOW` literally once more as an instruction to take the low bit of each of the eight `ATEALBIT` letters. The ASCII least-significant bits are:
+
+`1 0 1 1 0 0 1 0`
+
+Pack those eight bits using the same first-bit-as-least-significant convention already used in the `CREW4` decode:
+
+`0b01001101 = 0x4D = "M"`
+
+Among the eight selected notes, the explicit colon-prefix headings are:
+
+- N02: `First draft for the crew board`
+- N06: `Second desk draft`
+- N11: `Mug shelf`
+- N17: `Standby envelope label`
+- N18: `Commissioning envelope label`
+
+N13, N20 and N23 have no colon-prefix heading. Therefore N11 is the **unique selected heading beginning M**.
+
+This yields a deterministic local locator chain:
+
+**CREW4 -> David -> LOW -> ATEALBIT -> low bit -> M -> N11 Mug shelf**
+
+MAIL-12 independently says the chipped blue mugs belong to two night-crew members and that Zoey put **a small card by the shelf**. Its SHA-256 is `4cadd373aa676f97e64690a631eea3f3993e0908eaac0aacb86e76ed0c2c68fd`.
+
+The card text itself is absent from the supplied export, and MAIL-12 does not quote it. The chain therefore locates a missing physical/source object; it does not recover the K08 keeper phrase.
+
 ## What this changes
 
-The earlier objection that the preferred ATEALBIT note set had no reproducible selection rule is materially weakened. The chain
+The earlier objection that the preferred ATEALBIT note set had no reproducible selection rule is materially weakened. The extended chain
 
-**Emily authorship -> CREW4 -> David -> LOW -> one-row lowering -> ATEALBIT**
+**Emily authorship -> CREW4 -> David -> LOW -> one-row lowering -> ATEALBIT -> low-bit M -> N11 Mug shelf**
 
-is entirely derived from the supplied 24-note source and contains no K08 target digest feedback.
+is derived from the supplied crew-note source plus the independently surviving MAIL-12 shelf-card statement and contains no K08 target digest feedback.
 
 It does **not** establish that `A TEAL BIT` is the keeper phrase. Literal `a teal bit`, note-vocabulary phrase families, and other text readings have already failed the unchanged K08 commitment. The stronger use remains as a locator or extraction instruction.
 
@@ -122,7 +150,7 @@ Separately, Agent41's exact 1889 Internet Archive rear-map stitch has already te
 
 `agents/agent22/k08_crew4_low_selector_sft.py`
 
-The script pins the source SHA, reproduces CREW4, selects David by first-appearance crew order, reproduces LOW from David body counts, derives Emily's ATTALBIT, enumerates every valid single one-row lowering, and asserts that N10->N11 is the unique ATEALBIT result.
+The script pins the source SHA, reproduces CREW4, selects David by first-appearance crew order, reproduces LOW from David body counts, derives Emily's ATTALBIT, enumerates every valid single one-row lowering, asserts that N10->N11 is the unique ATEALBIT result, decodes the ATEALBIT ASCII low bits as `M`, and asserts that N11 `Mug shelf` is the unique selected M-heading.
 
 ## Remaining boundary
 
