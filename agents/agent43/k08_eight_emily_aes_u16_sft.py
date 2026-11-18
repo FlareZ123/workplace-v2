@@ -26,6 +26,7 @@ ROUTING = ROOT / "resources/evidence/recovery-routing.json"
 ACCEPTANCE = ROOT / "resources/acceptance.json"
 BOOK = ROOT / "work/h17_falcon_1889_normalized_words.txt"
 
+SPOOL_SHA256 = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 BOOK_WORD_COUNT = 81_392
 BOOK_JOINED_SHA256 = "36997e8cf827a0c0ddade6104b8d63c5e462e69749653ce009e5e50ce4fcce66"
 
@@ -103,6 +104,17 @@ def main() -> int:
             f"Unexpected pinned book text: words={len(raw_words)}, sha256={joined_sha}"
         )
 
+    spool_sha = hashlib.sha256(SPOOL.read_bytes()).hexdigest()
+    if spool_sha != SPOOL_SHA256:
+        raise ValueError(f"Unexpected pinned spool: sha256={spool_sha}")
+
+    # Known-answer control: the exact N02 draft phrase is independently
+    # recorded in the K08 route evidence and must reproduce its HMAC16.
+    known_n02 = "a good watch leaves the room ready for the next pair of hands"
+    known_n02_mac = hmac.new(nonce, normalize_phrase(known_n02).encode("utf-8"), hashlib.sha256).digest()[:16]
+    if known_n02_mac.hex().upper() != "BF889359B0303F2B2B2FD96AE841210B":
+        raise ValueError("N02 HMAC known-answer control failed")
+
     payloads = load_ack_payloads()
     plaintexts: dict[str, bytes] = {}
     offsets_by_note: dict[str, dict[str, list[int]]] = {}
@@ -118,6 +130,15 @@ def main() -> int:
                 "kind": kind,
                 "notes": notes,
                 "jobs": jobs,
+                "source_rows": [
+                    {
+                        "note": note,
+                        "job": f"PS-261003-{dict(NOTE_JOBS)[note]}",
+                        "class": payloads[note][0],
+                        "dest": payloads[note][1],
+                    }
+                    for note in notes
+                ],
                 "selector": selector,
                 "endian": endian,
                 "base": base,
@@ -202,7 +223,9 @@ def main() -> int:
         json.dumps(
             {
                 "test": "eight-Emily-job AES-ECB unsigned-u16 whole-book and cross-note candidates",
+                "spool_sha256": spool_sha,
                 "book_word_count": len(raw_words),
+                "N02_HMAC16_control": known_n02_mac.hex().upper(),
                 "book_joined_sha256": joined_sha,
                 "candidate_count": len(candidates),
                 "match_count": sum(row["match"] for row in candidates),
