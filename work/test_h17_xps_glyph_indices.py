@@ -170,6 +170,15 @@ class GlyphIndexExtractionTests(unittest.TestCase):
         self.assertEqual(result["text"], phrase)
 
     @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_scanner_compatible_stream_adapter(self):
+        phrase = "the sea is quiet"
+        streams = extractor.extract_xps_glyph_streams(
+            make_xps(phrase, split_at=7, reverse_runs=True)
+        )
+        self.assertTrue(any(label.endswith("spatial-joined") and data.decode("utf-8") == phrase
+                            for label, data in streams))
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
     def test_glyph_runs_join_and_spatial_order(self):
         phrase = "the sea is quiet"
         result = extractor.extract_xps_glyph_indices(make_xps(phrase, split_at=7, reverse_runs=True))
