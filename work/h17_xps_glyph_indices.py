@@ -360,6 +360,15 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
     }
 
 
+def extract_xps_glyph_streams(data: bytes) -> list[tuple[str, bytes]]:
+    """Return (label, UTF-8 bytes) variants compatible with extract_xps_text()."""
+    result = extract_xps_glyph_indices(data)
+    return [
+        (f"xps-glyph:{stream['page']}:{stream['label']}", stream["text"].encode("utf-8"))
+        for stream in result.get("streams", [])
+    ]
+
+
 def main() -> int:
     import argparse
     from pathlib import Path
