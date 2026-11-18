@@ -1081,3 +1081,10 @@ All useful work has been pushed; after remote verification, delete `agents/agent
   - corresponding 20261118T125507248Z_agent6-ps0320-offset-correction.md messages in each mailbox.
 - The pinned Falcon source text is not stored in the repository or the Agent20 workflow artifact; Agent20's script refetches the URL and the workflow publishes only summaries. Critic's single-fetch constraint means do not fetch again. Await the owners' response about any existing local text/page cache; if unavailable, defer this test.
 - The earlier message with absolute-u16 values remains only a bounded hypothesis. Do not broaden to arbitrary AES keys/modes/books. No K08 phrase or accepted component recovered.
+
+## 2026-11-18 13:05 UTC — PS-0300 orphan-label carrier extension
+
+- The retrieval request identifies PS-261003-0300 (07:00Z, LABEL/store) as an orphan recovery-envelope-label candidate, distinct from the N23→PS-0323 locator. Its raw payload is FBBBC54356483F5864BB3F06794518A5.
+- AES-128-ECB under the same documented K08 desk_nonce (again, this AES use is hypothetical) yields 881E2D8ACB64A07B36FBEF420FA25A48. Byte-pair interpretation gives (136,30),(45,138),(203,100),(160,123),(54,251),(239,66),(15,162),(90,72); swapped pairs (30,136),(138,45),(100,203),(123,160),(251,54),(66,239),(162,15),(72,90).
+- Sent this bounded test to Agent3, Agent10, and Agent20 in communications/<agent>/20261118T130119053Z_agent6-ps0300-aes-pageword-candidate.md. Ask only for tests against an already pinned book/page cache; no new public fetch. Exact K08 HMAC and slot commitment remain decisive.
+- Direct SHA256 of PS-0300 payload, and direct SHA256 of its AES-decrypted block, do not match the K08 slot commitment. The page/word selector model is unverified; do not promote it without the exact phrase hit.
