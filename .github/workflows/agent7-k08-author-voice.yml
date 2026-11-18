@@ -1,0 +1,32 @@
+name: Agent7 K08 pretrained author-voice search
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install frozen model runtime
+        run: python -m pip install --disable-pip-version-check "torch==2.9.1" "transformers==4.57.1" "sentencepiece==0.2.1"
+      - name: Generate controls and target candidates
+        env:
+          HF_HUB_DISABLE_TELEMETRY: "1"
+          TOKENIZERS_PARALLELISM: "false"
+        run: python agents/agent7/k08_author_voice_flan_sft.py --control-count 512 --target-count 2048
+      - name: Preserve exact candidate summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent7-k08-author-voice
+          path: work/agent7-k08-author-model/
+          if-no-files-found: warn
+          retention-days: 7
