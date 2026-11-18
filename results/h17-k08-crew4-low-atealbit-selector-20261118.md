@@ -59,6 +59,19 @@ Using the same A=0 convention gives:
 
 Result: **LOW**.
 
+As a bounded specificity control, apply the same body-word-count/A=0 mapping to every author in first-appearance order:
+
+| Author | Body-count decode |
+|---|---|
+| Jason | `LNJ` |
+| Emily | `NLZWIF?V` |
+| Zoey | `MNLK` |
+| David | **`LOW`** |
+| Gabriel | `OOL` |
+| Simon | `MLN` |
+
+The `?` is Emily's 30-word N20 body, outside A=0..Z=25. David is the only one of the six named authors whose complete count sequence yields a clean English directive. This is a finite source-local comparison rather than a dictionary search over transformations.
+
 This count domain is source-local: N04 itself says "Count..." and the counts are taken from the note bodies rather than metadata labels. The interpretation of `LOW` as a row-direction instruction remains a linguistic inference, not an explicit source statement.
 
 ### 3. LOW uniquely repairs Emily's ATTALBIT to ATEALBIT
