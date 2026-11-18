@@ -44,3 +44,17 @@ The 25 witnesses are a meaningful signal of **MT-like native-output relationship
 The result **does not prove** a particular p950–p955 chronology, CPython initialization scheme, printer firmware, copied ACK media integrity, or cross-record seed provenance. It establishes **zero** independent bits of the selected 128-bit physical coupon. The original selected-stage p951 source quotient remains fully free under the published conditional model; the original 18:02 physical coupon and exact author-final K08 inscription are still absent. The next decisive event is a source-anchored *complete* selected coupon or author-terminal text, with an unchanged commitment hit.
 
 No evidence, route, mask, acceptance target, original verifier or canonical candidate was changed.
+
+
+## Independent C++ source-view cross-check (18 November, 14:01 UTC)
+
+[Independent original-source C++17 reproducer](../agents/agent17/k04_native_mt_view_crosscheck.cpp), commit `7a59ea3ec5c967a913ce0928e43e728b41532bce`, rebuilds the exact four-tuple witness search without calling the Python SFT. It reads the original 133 packet lines, excludes the selected 18:02 ACK2 row before decoding, and repeats the same strict distinct-later-row geometry in four fully specified byte/output interpretations:
+
+| Source word interpretation | Original exact recurrence witnesses |
+| --- | ---: |
+| 32-bit little-endian **native MT untempered** | **25** |
+| 32-bit little-endian raw bytes (no untemper) | 0 |
+| 32-bit big-endian native MT untempered | 0 |
+| 32-bit big-endian raw bytes (no untemper) | 0 |
+
+All four C++ tests executed successfully against the original source copy. The independent Python SHA pin validates those same source bytes. This sharpens the claim: the recurrence signal depends on the **native MT untemper and original little-endian word convention**; it is not a generic property of the 16-byte packet values or an arbitrary byte-order artifact. It remains a source-family discriminator and recovers **no** selected physical output or K08 wording. The source-to-target producer/stage mapping remains unproved.
