@@ -74,8 +74,12 @@ def read_flanks(root: Path) -> tuple[bytes, bytes]:
         raise ValueError("source spool SHA256 mismatch")
     found = {}
     for line in data.decode("utf-8").splitlines():
-        if "JOB=PS-261003-0417" not in line:
+        # This job identifier also occurs in an unrelated 16:45 LABEL cohort.
+        # Select the two actual RECOVER requests by exact UTC event timestamps.
+        if not line.startswith(("2026-10-03T18:01:00Z ", "2026-10-03T18:03:00Z ")):
             continue
+        if "JOB=PS-261003-0417" not in line:
+            raise ValueError("event-local job identity changed")
         # Only requests are parsed. The selected ACK2 payload is *not* read.
         if "ATTEMPT=1 " not in line and "ATTEMPT=3 " not in line:
             continue
