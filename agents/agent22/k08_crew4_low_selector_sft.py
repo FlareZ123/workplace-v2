@@ -186,6 +186,17 @@ def main() -> None:
     assert seal_selector == 10
     assert seal_selector == exact[0][0]
 
+    cup_notes = [
+        number
+        for number, _, content in notes
+        if "cup" in [word.lower() for word in body_words(content)]
+    ]
+    assert cup_notes == [9, 10]
+    assert "after the last cup" in notes[seal_selector - 1][2].lower()
+    after_last_cup = seal_selector + 1
+    assert after_last_cup == 11
+    assert after_last_cup == exact[0][1]
+
     selected_headings = [
         (number, heading(notes[number - 1][2]))
         for number in selected_notes
@@ -229,6 +240,8 @@ def main() -> None:
     print("SEAL_SERIALS_BDAC", ",".join(seal_serials))
     print("SEAL_LOW_BITS", "".join(map(str, seal_bits)))
     print("SEAL_SELECTOR_NOTE", f"N{seal_selector:02d}")
+    print("CUP_NOTES", ",".join(f"N{number:02d}" for number in cup_notes))
+    print("AFTER_LAST_CUP", f"N{seal_selector:02d}->N{after_last_cup:02d}")
     print("ATEALBIT_LOW_BITS", "".join(map(str, low_bits)))
     print("ATEALBIT_LOW_BYTE", f"0x{low_byte:02X}", chr(low_byte))
     print("UNIQUE_M_HEADING", "N11", "Mug shelf")
