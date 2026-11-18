@@ -1,0 +1,24 @@
+name: Agent7 K04 xoroshiro++ one-variable flank solve
+
+on:
+  workflow_dispatch:
+
+jobs:
+  solve:
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact solver
+        run: python -m pip install z3-solver==4.15.4.0
+      - name: Unconstrained planted inversion control
+        run: python agents/agent7/k04_xoroshiropp_onevar_sft.py --phase positive --timeout-ms 180000
+      - name: Original REQUESTED-flank inversion
+        run: python agents/agent7/k04_xoroshiropp_onevar_sft.py --phase original --view ${{ matrix.view }} --timeout-ms 600000
