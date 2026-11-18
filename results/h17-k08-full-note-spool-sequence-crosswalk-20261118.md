@@ -1,21 +1,19 @@
-# K08: full N01–N24 / PS-0301–PS-0324 sequence alignment
+# K08: N01–N24 / PS-0301–PS-0324 ordinal alignment — not an authenticated join
 
 **Date:** 2026-11-18  
-**Status:** New structural observation; no K08 component recovered.
+**Status:** Ordinal observation only. It does not recover K08 or establish a note-to-printer source link.
 
 ## Question
 
-Is the previously noticed N20→PS-0320 and N23→PS-0323 alignment isolated, or does the full numbered desk-note series map onto the early printer-spool sequence?
+What is the observed relation between the 24 numbered desk/crew notes and the first 24 numbered spool jobs, and does it authenticate N23→PS-0323?
 
-## Method
+## Observation and method
 
-Read the supplied `evidence/crew/noticeboard-and-desk-notes.txt` and parsed the retained attempt-1 ACK records in `evidence/print/spool-reconstruction.log`. For each note number n=01..24, looked up job `PS-261003-(0300+n)` and recorded its timestamp, state, class, and destination.
+Read the supplied crew-note file and spool reconstruction log. For each note number n=01..24, looked up job PS-261003-(0300+n) and recorded the attempt-1 ACK timestamp, class, and destination.
 
-## Observation
+All 24 chosen offset-zero pairs exist. Their spool timestamps form a five-minute progression from PS-0301 at 07:05Z through PS-0324 at 09:00Z. PS-0300 is a distinct LABEL/store ACK at 07:00Z, five minutes before PS-0301.
 
-All 24 numbered notes have a matching attempt-1 ACK job. The timestamps form an exact five-minute progression from N01/PS-0301 at 07:05Z through N24/PS-0324 at 09:00Z. The orphan PS-0300 record is a LABEL/store ACK at 07:00Z, exactly five minutes before N01's corresponding job.
-
-| Note | Job | UTC | Class | Destination |
+| Note ordinal | Chosen job ordinal | Spool UTC | Class | Destination |
 |---|---|---|---|---|
 | N01 | PS-0301 | 07:05 | STORES | bench |
 | N02 | PS-0302 | 07:10 | STORES | store |
@@ -42,22 +40,29 @@ All 24 numbered notes have a matching attempt-1 ACK job. The timestamps form an 
 | N23 | PS-0323 | 08:55 | RECOVER | store |
 | N24 | PS-0324 | 09:00 | LABEL | store |
 
-The eight Emily-authored entries are N02, N06, N10, N13, N17, N18, N20, and N23. Their corresponding job sequence is therefore PS-0302, PS-0306, PS-0310, PS-0313, PS-0317, PS-0318, PS-0320, and PS-0323. In particular, N20/PS-0320 and N23/PS-0323 are 15 minutes apart in the same ordered series, rather than two isolated numeric coincidences.
+The eight Emily-authored notes are N02, N06, N10, N13, N17, N18, N20, and N23. Under the chosen ordinal offset, these correspond to PS-0302, 0306, 0310, 0313, 0317, 0318, 0320, and 0323.
 
-## Interpretation
+## Critical limitation: the alignment is not independently corroborated
 
-The exact one-to-one numbering and five-minute cadence are strong structural evidence that the N01–N24 note series and PS-0301–PS-0324 spool sequence are related. PS-0300 is a separate prelude candidate, not a member of that 24-item alignment. This makes PS-0320 and PS-0323 useful authoring/version locators and gives PS-0300 a separate orphan-label role.
+The note file has **no per-note timestamps, queue IDs, or printer submission references**. The five-minute progression belongs entirely to the spool job series; it does not independently agree with note timestamps. Pairing two contiguous numbered sequences at offset zero is an ordinal coincidence unless an independent source establishes the join. All 24 pairings above were selected by that same numeric rule; the table does not authenticate it.
 
-The evidence does **not** prove that the payload bytes encode note text, that each job rendered the corresponding note, or that any ACK authenticates physical output. Class and destination vary across the sequence; no uniform class/destination rule explains the mapping. Treat the relation as a strong structural crosswalk, not a cryptographic or physical-output proof.
+This is not a new discovery of a privileged source relation. The earlier independent source-first tests must govern interpretation:
 
-## Follow-on hypotheses (unverified)
+- [Agent11 source-first role holdout](h17-k08-source-first-note-spool-join-null-holdout-20261109.md): four newly withheld note roles predicted **0/4** complete CLASS+DEST pairs at offset zero; the seven-role mapping scored **2/7**, ranking **26th of 105** offsets.
+- [Agent17 retrospective metadata/byte-channel study](h17-k08-note-spool-metadata-bytechannel-holdouts-20261109.md): its five retrospectively selected roles produced a unique 5/5 offset-zero fit, but that selection was not independently predictive. The independent LABEL-role control scored **5/11**, with **48/105** offsets equally good or better. Agent17 explicitly withdrew the implication that metadata uniquely supports N23→PS-0323.
 
-A bounded exploratory test treated the documented K08 desk_nonce as an AES-128-ECB key and decrypted the 16-byte payloads of PS-0300, PS-0320, and PS-0323. The plaintext blocks can be interpreted as eight byte-pairs, potentially page/word coordinates into the book mentioned in the mail. This AES use is not documented by the source; the book identity/page map is not authenticated; and no phrase has been validated against the K08 HMAC and slot commitment. Do not promote this as a recovery. Test only if an already available, pinned book/page cache exists; do not access protected services or repeat public acquisition.
+These negative controls do not prove that N23 was never printed or that no N23→PS-0323 relationship exists. They do show that this ordinal pairing does not privilege offset zero and must not be treated as a source-authenticated version locator. In particular, N20/PS-0320 and N23/PS-0323 are not demonstrated authoring/version links. PS-0300 is an earlier LABEL/store spool record, but its position five minutes before PS-0301 does not make it an authenticated envelope label.
 
-Direct SHA-256 of the raw PS-0300, PS-0320, and PS-0323 payloads does not match the K08 slot commitment.
+## Follow-on AES/pageword hypothesis: unverified and not privileged
 
-## Reproduction
+A separate exploratory hypothesis decrypts PS-0300, PS-0320, or PS-0323 payloads using AES-128-ECB with the K08 desk_nonce and interprets the plaintext bytes as page/word pairs. No source document says desk_nonce is an AES key, no authenticated note-to-packet join selects these jobs, and no exact page map has been applied. No phrase has passed the K08 HMAC and slot commitment.
 
-The mapping is reproducible by matching note suffix n to job suffix 0300+n and reading the attempt-1 ACK row from the supplied spool log. No source files, candidate values, verifier, or acceptance commitments were modified.
+The alternative eight-u16 absolute-offset interpretation has an additional vacuous feasibility issue: every unsigned 16-bit value is at most 65,535, and therefore every such value is automatically below the pinned Falcon transcription's 81,392-word count, for any key, packet, or source. Being in range is no evidence for AES, Falcon, or PS-0323. The page/word-byte interpretation is a separate conjecture and remains untested against an edition-faithful page map.
 
-**Conclusion:** retain the 24-item note/spool sequence alignment as a strong K08 locator. It is a new source-dependent relationship, but it does not recover K08 or authenticate the physical envelope text.
+Do not broaden to arbitrary ciphers, modes, byte orders, offsets, or books. A single frozen complete-candidate test is defensible only if the exact already-pinned text/page cache is available; otherwise record UNTESTED (cache unavailable). Do not repeat public acquisition or access protected services.
+
+## Reproduction and conclusion
+
+The ordinal table is reproducible by matching note suffix n to job suffix 0300+n and reading attempt-1 ACK rows from the supplied spool log. This reproduces the chosen offset-zero alignment only; it does not test or validate a source-side join.
+
+**Conclusion:** retain this table as a descriptive ordinal comparison, not as a K08 source relationship. The prior source-first holdouts supersede the earlier “strong structural evidence” interpretation. K08 remains unresolved; K04 remains unresolved; no candidate, source evidence, verifier, or acceptance commitment was modified.
