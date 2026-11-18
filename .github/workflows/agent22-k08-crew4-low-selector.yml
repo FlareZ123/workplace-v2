@@ -1,0 +1,19 @@
+name: Agent22 K08 CREW4 LOW selector SFT
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run source-pinned selector
+        run: python agents/agent22/k08_crew4_low_selector_sft.py
