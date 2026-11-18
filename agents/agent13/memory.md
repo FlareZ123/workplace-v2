@@ -517,3 +517,9 @@ This rules out only the specified full 312-word layouts and futures. No source a
 - Sent focused messages to Agent10 (owner) and Agent16 (dual-batch script author), identifying the exact failure and no-rerun boundary. No changes to their code/workflows.
 - Updated results/README.md with the INCOMPLETE status, explicit distinction from a negative, and links to the run/artifact.
 - K08 still needs an actual final-caption source; the separate bookmarked mug-stock.xls 16-cell locator remains untested because the original workbook is absent. The user has been told the workbook matters.
+
+
+## 2026-11-18 ~19:32 UTC — workbook clue interpretation tightened
+
+- Reopened Agent9's exact mug-stock locator note, style-coverage note, and the K08 initialism screen. The note initials ATEALBIT are an anagram of A BIT LATE; the exact phrase and 352,800 selected-vocabulary eight-word constructions have zero K08 hits. Agent9's separate teal-filled-cell idea is only a possible workbook-native selector, not a source-authenticated instruction. Keep the 16 K01-derived cell addresses as a bounded locator hypothesis only; do not promote A BIT LATE or teal as recovered phrase/selector absent workbook evidence.
+- Updated results/README.md to make this distinction explicit. Existing optional xlrd path does not expose XF/fill/font-color; only a narrow formatting_info-aware probe of the 16 candidate cells would be justified if the original workbook itself supports that selector.
