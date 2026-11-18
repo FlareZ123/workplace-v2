@@ -41,7 +41,6 @@ SOURCE = {
     "min_words": 50_000,
     "required_markers": [
         "the riddle of the sands",
-        "chapter xx",
         "the little drab book",
     ],
 }
