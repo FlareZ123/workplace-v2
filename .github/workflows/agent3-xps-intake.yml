@@ -1,0 +1,28 @@
+name: Agent3 H17 native XPS dual-slot intake regression
+on:
+  push:
+    paths:
+      - work/h17_xps_text.py
+      - work/test_h17_xps_text.py
+      - work/h17_k04_binary_window_intake.py
+      - work/h17_profile_k08_phrase_scan.py
+      - work/h17_profile_inventory.py
+      - .github/workflows/agent3-xps-intake.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dual-slot-xps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exercise native fixed-page extractor and both original intake paths
+        run: python work/test_h17_xps_text.py
+      - name: Confirm existing read-only K04 and K08 positive controls
+        run: |
+          python work/h17_k04_binary_window_intake.py --self-test
+          python work/h17_profile_k08_phrase_scan.py --self-test
