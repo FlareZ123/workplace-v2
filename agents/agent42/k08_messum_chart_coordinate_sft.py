@@ -16,7 +16,7 @@ from __future__ import annotations
 import io
 import urllib.request
 from dataclasses import dataclass
-from PIL import Image
+from PIL import Image, ImageDraw
 
 COORDS = [
     (4, 154), (171, 46), (28, 222), (122, 130),
@@ -153,6 +153,21 @@ for number, url in enumerate(URLS, 108821):
         f"bbox={box} teal_index={teal} teal_rgb={teal_rgb}"
     )
     sheets.append(Sheet(number, im.convert("RGB"), box, q, teal, teal_rgb))
+
+# Low-resolution contact sheet for visual source-role classification only.
+thumbs = []
+for sheet in sheets:
+    thumb = sheet.image.copy()
+    thumb.thumbnail((180, 220))
+    canvas = Image.new("RGB", (190, 250), "white")
+    canvas.paste(thumb, ((190 - thumb.width) // 2, 22))
+    ImageDraw.Draw(canvas).text((5, 5), str(sheet.number), fill="black")
+    thumbs.append(canvas)
+contact = Image.new("RGB", (190 * 4, 250 * 3), "white")
+for i, thumb in enumerate(thumbs):
+    contact.paste(thumb, ((i % 4) * 190, (i // 4) * 250))
+contact.save("messum-contact.jpg", quality=60, optimize=True)
+print("CONTACT_SHEET messum-contact.jpg")
 
 rows = []
 for frame_name in ("full", "ink"):
