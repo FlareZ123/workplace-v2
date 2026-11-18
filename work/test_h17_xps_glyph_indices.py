@@ -22,7 +22,7 @@ except ImportError:
     TTFont = None
 
 
-def make_test_font(text: str) -> bytes:
+def make_test_font(text: str, include_cmap: bool = True) -> bytes:
     chars = sorted(set(text))
     names = [".notdef", "space"] + [f"uni{ord(c):04X}" for c in chars if c != " "]
     builder = FontBuilder(1000, isTTF=True)
@@ -50,11 +50,19 @@ def make_test_font(text: str) -> bytes:
     builder.setupMaxp()
     output = io.BytesIO()
     builder.save(output)
-    return output.getvalue()
+    font_data = output.getvalue()
+    if not include_cmap:
+        font = TTFont(io.BytesIO(font_data))
+        del font["cmap"]
+        stripped = io.BytesIO()
+        font.save(stripped)
+        font.close()
+        font_data = stripped.getvalue()
+    return font_data
 
 
-def make_xps(text: str, relative_uri: bool = False, cluster: bool = False, page_name: str = "1.fpage") -> bytes:
-    font_bytes = make_test_font(text)
+def make_xps(text: str, relative_uri: bool = False, cluster: bool = False, page_name: str = "1.fpage", include_cmap: bool = True) -> bytes:
+    font_bytes = make_test_font(text, include_cmap=include_cmap)
     font_guid = str(uuid.uuid4())
     font_part = f"Resources/Fonts/{font_guid}.odttf"
     key = uuid.UUID(font_guid).bytes_le[::-1]
@@ -63,8 +71,11 @@ def make_xps(text: str, relative_uri: bool = False, cluster: bool = False, page_
         obfuscated[i] ^= key[i % 16]
 
     font = TTFont(io.BytesIO(font_bytes))
-    cmap = font.getBestCmap()
-    gids = [font.getGlyphID(cmap[ord(ch)]) for ch in text]
+    if include_cmap:
+        cmap = font.getBestCmap()
+        gids = [font.getGlyphID(cmap[ord(ch)]) for ch in text]
+    else:
+        gids = [font.getGlyphID("space" if ch == " " else f"uni{ord(ch):04X}") for ch in text]
     font.close()
 
     if cluster:
@@ -127,6 +138,12 @@ class GlyphIndexExtractionTests(unittest.TestCase):
         self.assertEqual(result["status"], "decoded")
         self.assertEqual(result["text"], phrase)
         self.assertEqual(result["runs"][0]["unresolved"], [])
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_glyph_name_fallback_when_cmap_is_missing(self):
+        phrase = "named glyphs"
+        result = extractor.extract_xps_glyph_indices(make_xps(phrase, include_cmap=False))
+        self.assertEqual(result["text"], phrase)
 
     @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
     def test_opc_declared_fixed_page_with_non_fpage_extension(self):
