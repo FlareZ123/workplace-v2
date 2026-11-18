@@ -27,15 +27,14 @@ def coordinates(component_hex: str) -> list[tuple[int, int]]:
     return [(raw[i], raw[i + 1]) for i in range(0, 16, 2)]
 
 
-def orient(x: int, y: int, width: int, height: int, code: int) -> tuple[int, int]:
-    """Eight D4 orientations. bit2 swaps axes, bits0/1 flip x/y afterward."""
+def orient_byte(x: int, y: int, code: int) -> tuple[int, int]:
+    """Eight D4 orientations in the native unsigned-byte coordinate square."""
     if code & 4:
         x, y = y, x
-        width, height = height, width
     if code & 1:
-        x = width - 1 - x
+        x = 255 - x
     if code & 2:
-        y = height - 1 - y
+        y = 255 - y
     return x, y
 
 
@@ -50,12 +49,12 @@ def sample_byte(
     width, height = image.size
     bits: list[int] = []
     for x0, y0 in coords:
+        x0, y0 = orient_byte(x0, y0, orientation)
         if mapping == "scaled":
             x = round(x0 * (width - 1) / 255)
             y = round(y0 * (height - 1) / 255)
         else:
             x, y = x0, y0
-        x, y = orient(x, y, width, height, orientation)
         if not (0 <= x < width and 0 <= y < height):
             raise ValueError("coordinate fell outside the image")
         bits.append((image.getpixel((x, y)) >> bitplane) & 1)
