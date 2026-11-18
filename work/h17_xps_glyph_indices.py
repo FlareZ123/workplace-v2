@@ -30,6 +30,9 @@ MAX_PACKAGE_ENTRIES = 10000
 MAX_PART_BYTES = 32 * 1024 * 1024
 MAX_FONT_BYTES = 16 * 1024 * 1024
 MAX_TOTAL_XML_BYTES = 128 * 1024 * 1024
+CONTENT_TYPES_LIMIT = 1024 * 1024
+CONTENT_TYPES_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
+FIXED_PAGE_MIME = "application/vnd.ms-package.xps-fixedpage+xml"
 MAX_GLYPHS_PER_RUN = 100000
 
 
@@ -46,6 +49,36 @@ def _resolve_font_part(page_part: str, font_uri: str) -> str:
     if uri.startswith("/"):
         return _safe_part_name(uri)
     return _safe_part_name(posixpath.join(posixpath.dirname(page_part), uri))
+
+
+def _declared_fixed_pages(package: zipfile.ZipFile) -> tuple[set[str], set[str]]:
+    """Read OPC FixedPage part declarations, including arbitrary part names."""
+    try:
+        info = package.getinfo("[Content_Types].xml")
+        if info.file_size > CONTENT_TYPES_LIMIT:
+            return set(), set()
+        raw = package.read(info)
+        if b"<!DOCTYPE" in raw.upper() or b"<!ENTITY" in raw.upper():
+            return set(), set()
+        root = ET.fromstring(raw)
+    except (KeyError, ET.ParseError, OSError, RuntimeError):
+        return set(), set()
+    if root.tag != f"{{{CONTENT_TYPES_NS}}}Types":
+        return set(), set()
+    explicit: set[str] = set()
+    extensions: set[str] = set()
+    for element in root:
+        if element.get("ContentType") != FIXED_PAGE_MIME:
+            continue
+        if element.tag == f"{{{CONTENT_TYPES_NS}}}Override":
+            name = element.get("PartName", "")
+            if name.startswith("/"):
+                explicit.add(_safe_part_name(name[1:]))
+        elif element.tag == f"{{{CONTENT_TYPES_NS}}}Default":
+            extension = element.get("Extension", "").lower().lstrip(".")
+            if extension:
+                extensions.add(extension)
+    return explicit, extensions
 
 
 def deobfuscate_odttf(data: bytes, part_name: str) -> bytes:
@@ -223,10 +256,17 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
         infos = package.infolist()
         if len(infos) > MAX_PACKAGE_ENTRIES:
             raise ValueError("too many XPS package entries")
+        names = {item.filename for item in infos}
+        if "[Content_Types].xml" not in names:
+            return {"status": "no-opc-content-types", "runs": [], "text": ""}
+        explicit, extensions = _declared_fixed_pages(package)
         total_xml_bytes = 0
         for info in infos:
             name = _safe_part_name(info.filename)
-            if not name.lower().endswith((".fpage", ".xml")):
+            suffix = info.filename.rsplit(".", 1)[-1].lower()
+            is_page = (info.filename.lower().endswith(".fpage")
+                       or info.filename in explicit or suffix in extensions)
+            if info.is_dir() or info.filename == "[Content_Types].xml" or not is_page:
                 continue
             if info.file_size > MAX_PART_BYTES:
                 continue
