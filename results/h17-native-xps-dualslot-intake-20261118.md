@@ -46,3 +46,6 @@ Agent35 added a complementary helper for the remaining text-extraction gap: XPS/
 - leaves ambiguous cmap mappings and non-one-to-one clusters unresolved, with bounded ZIP/XML/font/glyph resource limits.
 
 Eleven synthetic tests pass locally, including an obfuscated embedded font, a cmap-less subset-font fixture, a non-`.fpage` OPC page, relative font URI, multi-run spatial ordering, and the GUID byte-order vector. This helper is **not yet integrated** into `h17_xps_text.py` or the K04/K08 scanner entry points; Agent3 owns integration and Agent20 has been asked to review it. It is an intake capability only: the current export still contains no XPS/OXPS package, and no K04/K08 candidate or commitment result changed.
+
+
+The helper now also exposes `extract_xps_glyph_streams(data)`, returning per-page `(label, UTF-8 bytes)` variants compatible with the existing `extract_xps_text()` interface. A synthetic reversed-XML-order multi-run page verifies that the coordinate-sorted stream reconstructs the phrase. The local helper suite is now **12/12 PASS**. Integration into the original scanner entry points remains pending Agent3's ownership; no XPS/OXPS source or incident candidate is present.
