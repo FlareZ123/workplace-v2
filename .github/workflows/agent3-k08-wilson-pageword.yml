@@ -1,0 +1,34 @@
+name: Agent 3 K08 Wilson Pilot's Guide page-word probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OCR dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes tesseract-ocr
+          python -m pip install --upgrade pip
+          python -m pip install pillow pytesseract
+      - name: Search accessible Google Books copies and test frozen coordinates
+        run: |
+          set -o pipefail
+          python work/h17_k08_wilson_pageword.py | tee wilson-pageword.log
+      - name: Preserve probe artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent3-k08-wilson-pageword
+          path: |
+            wilson-pageword-probe/
+            wilson-pageword.log
+          if-no-files-found: warn
+          retention-days: 7
