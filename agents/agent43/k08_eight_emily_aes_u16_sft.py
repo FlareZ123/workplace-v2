@@ -44,8 +44,8 @@ NOTE_JOBS = (
 
 def normalize_phrase(value: str) -> str:
     value = value.lower()
-    value = re.sub(r"[^a-z0-9\\s]", " ", value)
-    return re.sub(r"\\s+", " ", value).strip()
+    value = re.sub(r"[^a-z0-9\s]", " ", value)
+    return re.sub(r"\s+", " ", value).strip()
 
 
 def decrypt_aes_ecb(ciphertext: bytes, key: bytes) -> bytes:
@@ -74,9 +74,9 @@ def load_ack_payloads() -> dict[str, tuple[str, str, bytes]]:
     found: dict[str, tuple[str, str, bytes]] = {}
     for note, job in NOTE_JOBS:
         pattern = re.compile(
-            rf"JOB=PS-261003-{job}\\s+ATTEMPT=(\\d+)\\s+STATE=ACK"
-            rf"\\s+CLASS=([^\\s]+)\\s+PAYLOAD=([0-9A-Fa-f]{{32}})"
-            rf"\\s+DEST=([^\\s]+)"
+            rf"JOB=PS-261003-{job}\s+ATTEMPT=(\d+)\s+STATE=ACK"
+            rf"\s+CLASS=([^\s]+)\s+PAYLOAD=([0-9A-Fa-f]{32})"
+            rf"\s+DEST=([^\s]+)"
         )
         matches = list(pattern.finditer(text))
         if len(matches) != 1:
