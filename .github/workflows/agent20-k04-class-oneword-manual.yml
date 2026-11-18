@@ -1,6 +1,16 @@
-name: Agent20 H17 original-source conditional-writer SFT
+name: Agent20 H17 source-holdout and complete-candidate SFT
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Select original-source test or Falcon word source acquisition/evaluation
+        required: true
+        default: k04-metadata
+        type: choice
+        options:
+          - k04-metadata
+          - k08-falcon-acquire
+          - k08-falcon-eval
 permissions:
   contents: read
 jobs:
@@ -12,5 +22,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: One-word class-triggered metadata interleaving, source-only
+      - name: Class-triggered metadata interleaving (prior original-source control)
+        if: ${{ inputs.mode == 'k04-metadata' }}
         run: python agents/agent20/k04_class_oneword_interleave_sft.py
+      - name: Acquire entire Falcon text; publish source digest before acceptance evaluation
+        if: ${{ inputs.mode == 'k08-falcon-acquire' }}
+        run: python agents/agent20/k08_falcon_1889_absolute_words_sft.py --acquire-only
+      - name: Test four source-pinned Falcon K08 complete candidates
+        if: ${{ inputs.mode == 'k08-falcon-eval' }}
+        run: python agents/agent20/k08_falcon_1889_absolute_words_sft.py
