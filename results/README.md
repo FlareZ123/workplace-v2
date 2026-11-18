@@ -1,6 +1,6 @@
 # H-17 recovery: live research decision map
 
-*Updated 2026-11-17T14:29:21.909Z. Previous detailed live map preserved [verbatim in a dated snapshot](DECISION_MAP_SNAPSHOT_20261117T142921Z.md). The [full experiment-equivalence index](h17-experiment-equivalence-gate.md) and [historical research archive](RESEARCH_HISTORY_THROUGH_20261109_0700.md) remain available. This page is a decision map, not a chronology.*
+*Updated 2026-11-18T13:23:16.463Z. Previous detailed live map preserved [verbatim in a dated snapshot](DECISION_MAP_SNAPSHOT_20261117T142921Z.md). The [full experiment-equivalence index](h17-experiment-equivalence-gate.md) and [historical research archive](RESEARCH_HISTORY_THROUGH_20261109_0700.md) remain available. This page is a decision map, not a chronology.*
 
 ## Acceptance boundary
 
