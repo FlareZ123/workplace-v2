@@ -8,6 +8,7 @@ import unittest
 import uuid
 import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_xps_glyph_indices as extractor
@@ -72,6 +73,10 @@ def make_xps(
     split_at: int | None = None,
     reverse_runs: bool = False,
     ambiguous_cmap: bool = False,
+    namespace: str = "http://schemas.microsoft.com/xps/2005/06",
+    unknown_glyph: bool = False,
+    transform: bool = False,
+    nonfinite_coordinates: bool = False,
 ) -> bytes:
     font_bytes = make_test_font(text, include_cmap=include_cmap, ambiguous_cmap=ambiguous_cmap)
     font_guid = str(uuid.uuid4())
@@ -88,6 +93,8 @@ def make_xps(
     else:
         gids = [font.getGlyphID("space" if ch == " " else f"uni{ord(ch):04X}") for ch in text]
     font.close()
+    if unknown_glyph:
+        gids = gids[:2] + [max(gids, default=0) + 1000] + gids[2:]
 
     if cluster:
         glyph_runs = [(f"(2:1){gids[0]}", 10.0)]
@@ -107,12 +114,17 @@ def make_xps(
     else:
         font_uri = f"/{font_part}"
 
+    def coord(value):
+        return "NaN" if nonfinite_coordinates else str(value)
+
     glyph_xml = "".join(
-        f'<Glyphs FontUri="{font_uri}" FontRenderingEmSize="12" OriginX="{x}" OriginY="20" Indices="{indices}" />'
+        f'<Glyphs FontUri="{font_uri}" FontRenderingEmSize="12" OriginX="{coord(x)}" OriginY="20" Indices="{indices}" />'
         for indices, x in glyph_runs
     )
+    if transform:
+        glyph_xml = f'<Canvas RenderTransform="1,0,0,1,10,0">{glyph_xml}</Canvas>'
     page = (
-        '<FixedPage xmlns="http://schemas.microsoft.com/xps/2005/06" Width="816" Height="1056">'
+        f'<FixedPage xmlns="{namespace}" Width="816" Height="1056">'
         f'{glyph_xml}'
         '</FixedPage>'
     ).encode("utf-8")
@@ -235,6 +247,97 @@ class GlyphIndexExtractionTests(unittest.TestCase):
         self.assertEqual(result["status"], "no-glyph-index-only-runs")
         self.assertEqual(result["runs"], [])
 
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_accepts_openxps_fixedpage_namespace(self):
+        result = extractor.extract_xps_glyph_indices(
+            make_xps("open xps", namespace="http://schemas.openxps.org/oxps/v1.0")
+        )
+        self.assertEqual(result["status"], "decoded")
+        self.assertEqual(result["text"], "open xps")
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_rejects_foreign_fixedpage_namespace(self):
+        result = extractor.extract_xps_glyph_indices(
+            make_xps("not xps", namespace="urn:foreign:fake-xps")
+        )
+        self.assertEqual(result["status"], "no-glyph-index-only-runs")
+        self.assertEqual(result["runs"], [])
+        self.assertEqual(result["streams"], [])
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_partial_glyph_run_is_diagnostic_only(self):
+        result = extractor.extract_xps_glyph_indices(make_xps("the sea is quiet", unknown_glyph=True))
+        self.assertEqual(result["runs"][0]["status"], "partial")
+        self.assertTrue(result["runs"][0]["text"])  # diagnostic text is retained
+        self.assertEqual(result["streams"], [])
+        self.assertEqual(result["text"], "")
+        self.assertFalse(result["coverage"]["complete"])
+
+    def test_zero_cluster_counts_are_rejected(self):
+        parsed = extractor.parse_indices("(0:1)12;(1:0)13")
+        self.assertTrue(all("error" in item for item in parsed))
+        self.assertTrue(all("positive" in item["error"] for item in parsed))
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_nonfinite_coordinates_disable_spatial_order(self):
+        result = extractor.extract_xps_glyph_indices(
+            make_xps("the sea is quiet", split_at=7, reverse_runs=True, nonfinite_coordinates=True)
+        )
+        labels = [stream["label"] for stream in result["streams"]]
+        self.assertNotIn("spatial-joined", labels)
+        self.assertNotIn("spatial-spaced", labels)
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_transformed_page_disables_spatial_order(self):
+        result = extractor.extract_xps_glyph_indices(
+            make_xps("the sea is quiet", split_at=7, reverse_runs=True, transform=True)
+        )
+        labels = [stream["label"] for stream in result["streams"]]
+        self.assertNotIn("spatial-joined", labels)
+        self.assertNotIn("spatial-spaced", labels)
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_malformed_indices_are_isolated_per_run(self):
+        with patch.object(extractor, "MAX_GLYPHS_PER_RUN", 6):
+            result = extractor.extract_xps_glyph_indices(
+                make_xps("the sea is quiet", split_at=4)
+            )
+        self.assertEqual([run["status"] for run in result["runs"]], ["decoded", "malformed-indices"])
+        self.assertEqual(result["streams"], [])
+        self.assertFalse(result["coverage"]["complete"])
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_total_xml_budget_exhaustion_is_explicit(self):
+        with patch.object(extractor, "MAX_TOTAL_XML_BYTES", 1):
+            result = extractor.extract_xps_glyph_indices(make_xps("budget"))
+        self.assertEqual(result["status"], "truncated")
+        self.assertFalse(result["coverage"]["complete"])
+        self.assertIn("total-xml-budget", result["coverage"]["reasons"])
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_package_run_budget_exhaustion_is_explicit(self):
+        with patch.object(extractor, "MAX_RUNS_PER_PACKAGE", 1):
+            result = extractor.extract_xps_glyph_indices(
+                make_xps("the sea is quiet", split_at=7)
+            )
+        self.assertEqual(result["status"], "truncated")
+        self.assertIn("run-count-limit", result["coverage"]["reasons"])
+        self.assertEqual(result["streams"], [])
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_total_glyph_budget_exhaustion_is_explicit(self):
+        with patch.object(extractor, "MAX_TOTAL_GLYPHS", 5):
+            result = extractor.extract_xps_glyph_indices(make_xps("the sea is quiet"))
+        self.assertEqual(result["status"], "truncated")
+        self.assertIn("total-glyph-limit", result["coverage"]["reasons"])
+        self.assertEqual(result["streams"], [])
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_candidate_adapter_fails_closed_on_incomplete_coverage(self):
+        with patch.object(extractor, "MAX_TOTAL_XML_BYTES", 1):
+            with self.assertRaisesRegex(ValueError, "incomplete XPS glyph extraction"):
+                extractor.extract_xps_glyph_streams(make_xps("budget"))
 
 if __name__ == "__main__":
     unittest.main()
