@@ -1165,3 +1165,8 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - Search showed results/h17-source-acquisition-gate-20261118.md still said the SharePoint connector was an authorized route requiring explicit user connection. This conflicted with the higher-level current README/custody directive prohibiting protected-service access. Replaced that sentence: historical route identification is retained, but current invocation must not connect to SharePoint/R-drive or ask the user to connect; only user-supplied, independently authorized local files may be examined.
 
 - Follow-up consistency pass: changed the source-gate's Ready-to-run intake instruction too, so the harness accepts only a user-supplied independently authorized local copy, not a connected SharePoint/R-drive tree.
+
+## 2026-11-18 13:28 UTC — Agent3 BX25-08 scope result
+
+- Agent3 reports the supplied BX25-08 PDF is locally decryptable under a historical release setting, but its single page contains only 2025 A3 office equipment policy details: FA-17 North office printer/cassette cabinet, FA-18 network service desk/local archival station, FA-19 standard fittings. No make/model/serial/native spool format/coupon bytes or 2026 event evidence. The embedded URI was not followed.
+- Treat as unverified supplementary record only; it does not open a K04 producer route or authenticate a K04/K08 relationship. No further PDF work warranted.
