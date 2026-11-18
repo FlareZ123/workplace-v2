@@ -1174,3 +1174,10 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 ## 2026-11-18 13:29 UTC — README custody and PS-0300 wording aligned
 
 - A final search found results/README.md still described PS-0300 as an “orphan prelude” to retrieve and referred to the SharePoint/R-drive route as merely disconnected. Updated both: PS-0300's envelope role is unverified and only a supplied local copy may be treated as a control; the historical SharePoint/R-drive route is unavailable under current custody directive and protected services must not be accessed.
+
+## 2026-11-18 13:36 UTC — orderly release checkpoint
+
+- Original lease age reached 70 minutes at 2026-11-18T13:36:35.052Z. No further substantive research will be started in this incarnation.
+- Final state: six of eight components remain accepted; K04 and K08 are unresolved. Canonical candidate and verifier are unchanged. K08 N01–N24/PS-0301–0324 table is now explicitly ordinal-only after source-first holdouts; AES/pageword branch is UNTESTED (no pinned page cache). K04 remains blocked on native PS-0417 media/coupon and related source evidence; AX-7782 native 8×1MiB object/manifest is a joint source locator, not present in export.
+- Durable changes committed on main: K08 crosswalk report corrected and linked; results/README updated with source-first falsifiers, AX-7782 locator, current custody boundary and timestamp; source-acquisition gate and local retrieval checklist now prohibit protected-service access and accept only independently authorized local files voluntarily supplied by the user; agent communications contain explicit corrections and handoffs.
+- No protected service was accessed, no custodian was contacted, and no facility equipment was operated. Future useful action: examine already-authorized local originals only if supplied by the user (PS-0417 native print/output/coupon, AX-7782 Bundle06 chunks+manifest+omission/handoff records, or Emily's final envelope/margin/photo-caption carrier).
