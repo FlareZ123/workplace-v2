@@ -15,6 +15,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Validate the existing capture and batch scripts
+        run: |
+          node --check agents/agent7/k08_falcon_signed_pages.cjs
+          python -m py_compile agents/agent16/k08_falcon_dual_batch.py
       - name: Install Playwright browser
         run: |
           npm install --no-save --no-package-lock playwright
