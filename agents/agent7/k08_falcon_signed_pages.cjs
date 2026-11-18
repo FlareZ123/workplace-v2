@@ -36,6 +36,37 @@ function sha256(data) {
   return crypto.createHash("sha256").update(data).digest("hex");
 }
 
+function buildManifest(records, permitComplete) {
+  const failures = records.filter((row) => row.error);
+  const byHash = new Map();
+  for (const row of records) {
+    if (row.error) continue;
+    const prior = byHash.get(row.sha256) || [];
+    prior.push(row.scan_index);
+    byHash.set(row.sha256, prior);
+  }
+  const duplicateImageHashes = [...byHash.entries()]
+    .filter(([, indices]) => indices.length > 1)
+    .map(([sha256Value, indices]) => ({ sha256: sha256Value, scan_indices: indices }));
+  const structurallyComplete = failures.length === 0 &&
+    duplicateImageHashes.length === 0 &&
+    records.length === SCAN_INDICES.length;
+  return {
+    volume_id: VOLUME,
+    published_date: "1889",
+    page_count: PAGE_COUNT,
+    zoom: 3,
+    scan_index_ranges: SCAN_RANGES,
+    scan_indices: SCAN_INDICES,
+    target_printed_pages: TARGET_PRINTED_PAGES,
+    records,
+    failed_scan_indices: failures.map((row) => row.scan_index),
+    duplicate_image_hashes: duplicateImageHashes,
+    complete: permitComplete && structurallyComplete,
+    captured_at: new Date().toISOString()
+  };
+}
+
 async function captureScanIndex(page, scanIndex) {
   const viewerUrl = "https://books.google.com/books?id=" + VOLUME + "&pg=PA" + scanIndex;
   const row = { scan_index: scanIndex, viewer_url: viewerUrl, zoom: 3 };
@@ -111,6 +142,9 @@ async function captureScanIndex(page, scanIndex) {
     }
 
     const responseUrl = new URL(imageResponse.url());
+    if (responseUrl.hostname !== signedUrl.hostname || responseUrl.pathname !== signedUrl.pathname) {
+      throw new Error("captured viewer response host/path differs from the inspected signed URL");
+    }
     for (const key of ["id", "pg", "zoom", "sig"]) {
       if (responseUrl.searchParams.get(key) !== signedUrl.searchParams.get(key)) {
         throw new Error("captured viewer response identity differs for query field " + key);
@@ -163,36 +197,12 @@ async function captureScanIndex(page, scanIndex) {
     const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
     for (const scanIndex of SCAN_INDICES) {
       records.push(await captureScanIndex(page, scanIndex));
+      atomicWrite("manifest.json", JSON.stringify(buildManifest(records, false), null, 2) + "\n");
     }
 
+    const manifest = buildManifest(records, true);
     const failures = records.filter((row) => row.error);
-    const byHash = new Map();
-    for (const row of records) {
-      if (row.error) continue;
-      const prior = byHash.get(row.sha256) || [];
-      prior.push(row.scan_index);
-      byHash.set(row.sha256, prior);
-    }
-    const duplicateImageHashes = [...byHash.entries()]
-      .filter(([, indices]) => indices.length > 1)
-      .map(([sha256Value, indices]) => ({ sha256: sha256Value, scan_indices: indices }));
-
-    const manifest = {
-      volume_id: VOLUME,
-      published_date: "1889",
-      page_count: PAGE_COUNT,
-      zoom: 3,
-      scan_index_ranges: SCAN_RANGES,
-      scan_indices: SCAN_INDICES,
-      target_printed_pages: TARGET_PRINTED_PAGES,
-      records,
-      failed_scan_indices: failures.map((row) => row.scan_index),
-      duplicate_image_hashes: duplicateImageHashes,
-      complete: failures.length === 0 &&
-        duplicateImageHashes.length === 0 &&
-        records.length === SCAN_INDICES.length,
-      captured_at: new Date().toISOString()
-    };
+    const duplicateImageHashes = manifest.duplicate_image_hashes;
     atomicWrite("manifest.json", JSON.stringify(manifest, null, 2) + "\n");
     console.log("FALCON_SIGNED_SCAN_MANIFEST " + JSON.stringify({
       volume_id: VOLUME,
