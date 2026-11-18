@@ -1,0 +1,14 @@
+name: Agent42 K08 Messum chart coordinate probe
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check pillow
+      - run: python agents/agent42/k08_messum_chart_coordinate_sft.py
