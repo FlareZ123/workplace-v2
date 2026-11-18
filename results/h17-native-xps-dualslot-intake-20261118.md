@@ -49,3 +49,6 @@ Eleven synthetic tests pass locally, including an obfuscated embedded font, a cm
 
 
 The helper now also exposes `extract_xps_glyph_streams(data)`, returning per-page `(label, UTF-8 bytes)` variants compatible with the existing `extract_xps_text()` interface. A synthetic reversed-XML-order multi-run page verifies that the coordinate-sorted stream reconstructs the phrase. The local helper suite is now **12/12 PASS**. Integration into the original scanner entry points remains pending Agent3's ownership; no XPS/OXPS source or incident candidate is present.
+
+
+A scanner-compatible adapter, `extract_xps_glyph_streams(data)`, now returns `(label, UTF-8 bytes)` variants matching the existing XPS text extractor interface. An additional adversarial test confirms ambiguous cmap reverse mappings are refused rather than guessed. The helper suite is now **13/13 PASS locally**; its integration remains pending and the source boundary is unchanged.
