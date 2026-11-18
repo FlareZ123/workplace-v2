@@ -40,7 +40,27 @@ async function captureScanIndex(page, scanIndex) {
   const viewerUrl = "https://books.google.com/books?id=" + VOLUME + "&pg=PA" + scanIndex;
   const row = { scan_index: scanIndex, viewer_url: viewerUrl, zoom: 3 };
   try {
+    const responsePromise = page.waitForResponse((response) => {
+      try {
+        const url = new URL(response.url());
+        return url.pathname.includes("/books/content") &&
+          url.searchParams.get("id") === VOLUME &&
+          url.searchParams.get("pg") === "PA" + scanIndex &&
+          url.searchParams.get("zoom") === "3" &&
+          url.searchParams.has("sig");
+      } catch {
+        return false;
+      }
+    }, { timeout: 30000 }).then(
+      (response) => ({ response }),
+      (error) => ({ error })
+    );
     await page.goto(viewerUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
+    const responseResult = await responsePromise;
+    if (responseResult.error) {
+      throw responseResult.error;
+    }
+    const imageResponse = responseResult.response;
     await page.waitForFunction((index) => {
       const images = [...document.querySelectorAll('img[src*="/books/content"]')];
       return images.some((element) => {
@@ -90,18 +110,17 @@ async function captureScanIndex(page, scanIndex) {
       throw new Error("viewer did not expose the required full-resolution zoom=3 image");
     }
 
-    const response = await page.context().request.get(signedUrl.toString(), {
-      timeout: 30000,
-      headers: { referer: viewerUrl }
-    });
-    if (!response.ok()) {
-      throw new Error("signed image request returned HTTP " + response.status());
+    if (imageResponse.url() !== signedUrl.toString()) {
+      throw new Error("captured viewer response URL differs from the inspected signed URL");
     }
-    const contentType = response.headers()["content-type"] || "";
+    if (!imageResponse.ok()) {
+      throw new Error("signed viewer image response returned HTTP " + imageResponse.status());
+    }
+    const contentType = imageResponse.headers()["content-type"] || "";
     if (!contentType.startsWith("image/")) {
-      throw new Error("signed image request returned " + contentType);
+      throw new Error("signed viewer response returned " + contentType);
     }
-    const data = await response.body();
+    const data = await imageResponse.body();
     if (data.length < MIN_IMAGE_BYTES) {
       throw new Error("placeholder-sized signed image response: " + data.length + " bytes");
     }
