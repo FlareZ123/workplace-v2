@@ -31,6 +31,10 @@ def body_words(content: str) -> list[str]:
     return re.findall(r"[A-Za-z0-9]+(?:-[A-Za-z0-9]+)?", body)
 
 
+def heading(content: str) -> str | None:
+    return content.split(":", 1)[0].strip() if ":" in content else None
+
+
 def decode_a0_lsb(bits: list[int]) -> tuple[str, int]:
     letters: list[str] = []
     full = len(bits) // 5
@@ -92,6 +96,32 @@ def main() -> None:
     exact = [item for item in lowered if item[2] == "ATEALBIT"]
     assert exact == [(10, 11, "ATEALBIT")]
 
+    selected_notes = emily_note_numbers.copy()
+    selected_notes[2] = 11
+    selected_heads = "".join(
+        body_words(notes[number - 1][2])[0][0].upper()
+        for number in selected_notes
+    )
+    assert selected_heads == "ATEALBIT"
+
+    low_bits = [ord(letter) & 1 for letter in selected_heads]
+    low_byte = sum(bit << index for index, bit in enumerate(low_bits))
+    assert low_bits == [1, 0, 1, 1, 0, 0, 1, 0]
+    assert low_byte == 0x4D
+    assert chr(low_byte) == "M"
+
+    selected_headings = [
+        (number, heading(notes[number - 1][2]))
+        for number in selected_notes
+        if heading(notes[number - 1][2]) is not None
+    ]
+    m_headings = [
+        (number, label)
+        for number, label in selected_headings
+        if label is not None and label.upper().startswith("M")
+    ]
+    assert m_headings == [(11, "Mug shelf")]
+
     print("SOURCE_SHA256", EXPECTED_SHA256)
     print("AUTHOR_BITS", "".join(map(str, emily_bits)))
     print("AUTHOR_BITS_DECODE", f"{word}{crew_number}")
@@ -103,6 +133,9 @@ def main() -> None:
     for original, replacement, initials in lowered:
         print("LOWER_ONE_ROW", f"N{original:02d}->N{replacement:02d}", initials)
     print("UNIQUE_ATEALBIT_LOWER", "N10->N11")
+    print("ATEALBIT_LOW_BITS", "".join(map(str, low_bits)))
+    print("ATEALBIT_LOW_BYTE", f"0x{low_byte:02X}", chr(low_byte))
+    print("UNIQUE_M_HEADING", "N11", "Mug shelf")
 
 
 if __name__ == "__main__":
