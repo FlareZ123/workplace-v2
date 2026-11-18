@@ -78,12 +78,7 @@ The 25 witnesses are directionally and packet-order enriched, but do not yet ide
 
 - Turning every witness into the two exact MT position constraints (S_k-S_r=397+p-i) and (S_l-S_r=624+p-j) gives 50 constraints with no weighted-DSU contradictions. However, the constraint graph has 96 components, only 14 nonsingleton components, and largest component size 5. It does not connect the 132 rows into a unique global position map.
 - The fitted constant stride is 7.422, but a fixed per-class/destination model assigning either 3 or 4 hidden outputs between each four-word packet (512 assignments) explains at most 4 of the 25 complete witnesses (7 first-lag and 4 second-lag matches).
-- A more permissive per-row binary stride-7/8 model is also infeasible. For each witness, the 3/4-gap variables (g_q\in\{0,1\}) would need to satisfy both interval-sum equalities:
-  [
-  \sum_{q=r}^{k-1}g_q=397+p-i-7(k-r),\qquad
-  \sum_{q=r}^{l-1}g_q=624+p-j-7(l-r).
-  ]
-  A 131-variable binary feasibility check with all 50 equalities returned infeasible. Thus the observed witnesses are not explained by a simple fixed 3-or-4-hidden-word packet-consumption schedule.
+- A more permissive per-row binary stride-7/8 model is also infeasible, with a direct two-witness contradiction. Let each row stride be (7+g_q), where (g_q\in\{0,1\}) represents three or four hidden outputs after its four captured words. For a witness ((r,p,k,i,l,j)), the second MT lag requires (\sum_{q=r}^{l-1}g_q=624+p-j-7(l-r)). The observed witness ((r=44,p=0,k=97,i=3,l=130,j=0)) requires (\sum_{q=44}^{129}g_q=22); witness ((r=45,p=0,k=98,i=3,l=131,j=3)) requires (\sum_{q=45}^{130}g_q=19). Subtracting gives (g_{44}-g_{130}=3), impossible for binary (g). A 131-variable binary feasibility check independently returned infeasible. Thus the observed witnesses are not explained by a simple three-or-four-hidden-word packet-consumption schedule.
 
 ## Assessment and next step
 
