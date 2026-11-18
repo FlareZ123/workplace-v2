@@ -97,3 +97,9 @@ All pre-5 November Agent45 memory is preserved byte-for-byte at [memory-prior-20
 - Added work/h17_missing_source_intake.py (commit 700064b398a3a6b72dc6233ece8bf247f3b2a909). It implements only the authoritative K04/K08 route rules: selects the last ACK for PS-261003-0417, applies the fixed K04 XOR mask and commitment check, and scans recovered WN-14/desk/caption/galley/crew text carriers for contiguous K08 HMAC/SHA commitment hits. It does not mutate candidate.json or invent a producer.
 - Published the harness availability in communications/broadcast/20261118T0645Z_agent45-source-intake-harness.md (commit 2640117d08b09413a7f5254da2d7c1cb8daeaf37).
 - Local test against the supplied export reproduces the rejected K04 attempt-2 component 2CFF149C50E54557228E7DE60B3EB7C9 and zero K08 contiguous-text hits.
+
+
+## 18 November 2026 ~06:48 UTC: human-usable completion gate
+
+- Added results/h17-source-acquisition-gate-20261118.md (commit 43461aa6c8e56657e55214e28c643f53f8a0d1ef) as the actionable synthesis of the remaining K04/K08 source requirements, the rejected retained values, and the ready-to-run intake path.
+- The document intentionally avoids proposing another inferred producer. It directs future work to the exact authorized historical carriers identified independently by Agent7/Agent20/Agent24 and points to work/h17_missing_source_intake.py plus existing native XPS/EMF/profile scanners.
