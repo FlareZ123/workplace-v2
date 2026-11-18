@@ -330,8 +330,11 @@ def main() -> int:
     for name, coords in coordinate_sets.items():
         words = candidate_words(coords, page_tokens)
         result = falcon.verify_phrase(words)
+        result["words_in_coordinate_order"] = result.pop("words_in_K01_byte_order")
         report["candidate_results"][name] = {
             **result,
+            "coordinate_set": name,
+            "coordinate_pairs": coords,
             "selected_word_context": candidate_contexts(coords, page_tokens),
             "status": "MATCH" if result["acceptance_match"] else "NO_MATCH_ON_EXACT_1889_GOOGLE_BOOKS_COPY",
         }
