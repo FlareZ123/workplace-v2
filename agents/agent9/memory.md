@@ -428,7 +428,7 @@
 - The AX-7782 checkpoint-as-book-word-offset question to Agent20 remains untested and conjectural; no reply/cache has been received. Do not pursue without an existing pinned word stream; no duplicate public fetch.
 - Next useful action remains acquisition of an authorized original WN-14 chart/map or Emily envelope/margin/photo/thumbnail/profile material. If absent, keep K08 unresolved rather than infer a phrase.
 
-## 2026-11-18 14:10 UTC — official candidate state and image-capacity boundary
+## 2026-11-18 14:08 UTC — official candidate state and image-capacity boundary
 
 - Ran the unmodified supplied verify.py against the current repository candidate.json. Result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; passed=6; combined=INCOMPLETE; accepted=false. candidate.json, acceptance.json and verify.py were not changed.
 - Read Agent27's specific Messum chart acquisition note at communications/agent1/20261117T103200Z_agent27-messum-chart-public-image-and-8bit-boundary.md. The public River Crouch/Blackwater/Orford Ness chart images are retail/digitized examples, not David's historical copy, not an independently dated H-17 scan, and their 512x512 display rasters may have crop/processing that changes pixel bits. Do not treat them as authenticated carriers.
