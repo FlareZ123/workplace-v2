@@ -5,6 +5,8 @@ This is a conservative fallback for XPS/OXPS packages whose FixedPage XML
 contains Glyphs/Indices but no UnicodeString. It deobfuscates embedded .odttf
 fonts using the GUID-derived OpenXPS key, reads their cmap tables with
 fontTools, and maps glyph IDs back to Unicode only when the mapping is unique.
+It emits per-page lines/spaced/joined variants and a coordinate-sorted variant
+when every run has OriginX/OriginY, so existing K04/K08 scanners can consume it.
 
 It does not rasterize pages, infer text from outlines, or guess ambiguous
 ligatures/clusters. Install fontTools to enable font parsing.
@@ -191,6 +193,13 @@ def _font_glyph_map(font_data: bytes) -> tuple[dict[int, list[str]], int]:
         font.close()
 
 
+def _coordinate(element: ET.Element, name: str) -> float | None:
+    try:
+        return float(element.attrib[name])
+    except (KeyError, ValueError):
+        return None
+
+
 def _decode_glyph_run(
     page_part: str,
     element: ET.Element,
@@ -257,6 +266,8 @@ def _decode_glyph_run(
         "page": page_part,
         "font_uri": font_uri,
         "font_part": font_part,
+        "origin_x": _coordinate(element, "OriginX"),
+        "origin_y": _coordinate(element, "OriginY"),
         "status": "decoded" if not unresolved else "partial",
         "glyph_count": glyph_count,
         "glyphs": len(parsed),
@@ -270,7 +281,7 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
     if len(data) > 256 * 1024 * 1024:
         raise ValueError("XPS package exceeds size limit")
     if TTFont is None:
-        return {"status": "fontTools-unavailable", "runs": []}
+        return {"status": "fontTools-unavailable", "runs": [], "streams": [], "text": ""}
     runs: list[dict[str, Any]] = []
     font_cache: dict[str, tuple[dict[int, list[str]], int] | Exception] = {}
     font_budget = [0]
@@ -280,7 +291,7 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
             raise ValueError("too many XPS package entries")
         names = {item.filename for item in infos}
         if "[Content_Types].xml" not in names:
-            return {"status": "no-opc-content-types", "runs": [], "text": ""}
+            return {"status": "no-opc-content-types", "runs": [], "streams": [], "text": ""}
         explicit, extensions = _declared_fixed_pages(package)
         total_xml_bytes = 0
         for info in infos:
@@ -320,9 +331,31 @@ def extract_xps_glyph_indices(data: bytes) -> dict[str, Any]:
         status = "partial"
     else:
         status = "glyph-runs-found"
+
+    by_page: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for run in decoded:
+        by_page[run["page"]].append(run)
+    streams: list[dict[str, str]] = []
+    for page, page_runs in sorted(by_page.items()):
+        texts = [run["text"] for run in page_runs]
+        streams.extend((
+            {"page": page, "label": "lines", "text": "\n".join(texts)},
+            {"page": page, "label": "spaced", "text": " ".join(texts)},
+            {"page": page, "label": "joined", "text": "".join(texts)},
+        ))
+        if all(run.get("origin_x") is not None and run.get("origin_y") is not None
+               for run in page_runs):
+            spatial = sorted(page_runs, key=lambda run: (run["origin_y"], run["origin_x"]))
+            spatial_texts = [run["text"] for run in spatial]
+            if spatial_texts != texts:
+                streams.extend((
+                    {"page": page, "label": "spatial-spaced", "text": " ".join(spatial_texts)},
+                    {"page": page, "label": "spatial-joined", "text": "".join(spatial_texts)},
+                ))
     return {
         "status": status,
         "runs": runs,
+        "streams": streams,
         "text": "\n".join(r["text"] for r in decoded),
     }
 
