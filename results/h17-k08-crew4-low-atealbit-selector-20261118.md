@@ -128,17 +128,19 @@ Thus the same target-blind row choice yields both **A TEAL BIT** in note heads a
 
 The exact normalized phrase `a low bit` was checked once under the unchanged K08 desk nonce and route normalization. Its HMAC16 component is `3301765E937F40CE02707DCE602AEF3E`; SHA-256 is `bcc2405b9995bc184ee698ca522c16e91abf58b82a8e297331572fa158a0518c`, so it is **NO_MATCH** for the original K08 commitment. Treat it as an instruction, not keeper wording.
 
-### 4. LOW IF EVEN closes a seal-bit fixed point on N10
+### 4. A SEAL BIT closes a source-only fixed point on N10
 
-The winning selected count string is `NLOWIF?V`. Positions 2–6 therefore read **LOWIF**, and the replacement row N11 begins with the literal first word **Even**. Together they give a second instruction:
+The winning selected count string is `NLOWIF?V`. Positions 2–6 read **LOWIF**, and replacement row N11 begins with the literal word **Even**, giving the secondary internal cue **LOW IF EVEN**. Applying that cue to the aligned ASCII heads by note-number parity produces `0x41 = A`, but that parity complement is interpretive and is not needed for the stronger loop below.
 
-**LOW IF EVEN**
+Among all seven valid one-row lowering outputs, **only N10→N11 contains the contiguous substring `TEA`**, inside `ATEALBIT`. N10 itself says:
 
-Apply it to the eight `ATEALBIT` ASCII letters using their selected note-number parity: take the low ASCII bit when the note number is even and the high ASCII bit when it is odd. The selected note numbers are `2,6,11,13,17,18,20,23`, producing bits:
+`I kept going back to the photograph after the last cup.`
 
-`1 0 0 0 0 0 1 0`
+The source has exactly four explicit photograph-labelled notes, N01/N04/N08/N14. Of those, **only N01 contains the word `tea`**, and N01 explicitly contrasts it with **sea**:
 
-Packed first-bit-as-LSB, as in the CREW4 construction, this is `0x41 = A`. Reading A as the first note points to N01, whose body explicitly contrasts **sea** and **tea**: "The sea looks different when you have finally finished your tea." Applying that literal substitution to `A TEA L BIT` yields:
+`The sea looks different when you have finally finished your tea.`
+
+Applying that source-local tea→sea substitution to `A TEA L BIT` yields:
 
 **A SEAL BIT**
 
@@ -163,7 +165,7 @@ N10 then supplies an unusually literal transition rule. Across all 24 note bodie
 
 Therefore N10 is the **last cup** row, and the note **after the last cup** is exactly N11. The seal selector and N10's own wording independently reproduce the same N10→N11 move.
 
-This is a fixed-point consistency check: N10→N11 creates the TEA-bearing instruction that N01 turns into `A SEAL BIT`; the independent seal source returns N10; and N10's literal "after the last cup" returns N11. The A→N01 step and the implied high-bit branch for odd note numbers remain interpretive choices, so this is strong corroboration rather than a standalone proof of the historical encoding.
+This is a fixed-point consistency check: N10→N11 is the only lowering that creates the TEA-bearing instruction; N10 points back to the unique tea-bearing photograph N01; N01 turns TEA into SEA; the independent seal source returns N10; and N10's literal "after the last cup" returns N11. The tea→sea wordplay is still an inferred decoder, so this is strong corroboration rather than a standalone proof of the historical encoding.
 
 ### 5. LOW BIT yields M, which uniquely selects Mug shelf
 
@@ -220,7 +222,7 @@ Separately, Agent41's exact 1889 Internet Archive rear-map stitch has already te
 
 `agents/agent22/k08_crew4_low_selector_sft.py`
 
-The script pins both the crew-note and seal-receipt sources, reproduces CREW4 and David's LOW, enumerates every valid one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`, reproduces the `LOW IF EVEN` continuation and N01 tea→sea transformation, derives the PTW-417 B,D,A,C seal low bits `0101` and their selector value 10, verifies that N10 is the source's last `cup` row and that "after the last cup" is N11, then separately decodes the ATEALBIT ASCII low bits as `M` and identifies N11 `Mug shelf` as the unique selected M-heading.
+The script pins both the crew-note and seal-receipt sources, reproduces CREW4 and David's LOW, enumerates every valid one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`, reproduces the `LOW IF EVEN` secondary cue, proves N10→N11 is the only lowering containing `TEA`, identifies N01 as the only tea-bearing photograph-labelled note, applies the N01 tea→sea transformation, derives the PTW-417 B,D,A,C seal low bits `0101` and their selector value 10, verifies that N10 is the source's last `cup` row and that "after the last cup" is N11, then separately decodes the ATEALBIT ASCII low bits as `M` and identifies N11 `Mug shelf` as the unique selected M-heading.
 
 ## Remaining boundary
 
