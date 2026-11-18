@@ -4,11 +4,14 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 from pathlib import Path
 
 SOURCE = Path("resources/evidence/crew/noticeboard-and-desk-notes.txt")
 EXPECTED_SHA256 = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
+SEAL_SOURCE = Path("resources/evidence/maintenance/seal-receipts.jsonl")
+SEAL_SHA256 = "c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32"
 
 
 def parse_notes(text: str) -> list[tuple[int, str, str]]:
@@ -141,6 +144,48 @@ def main() -> None:
     assert low_byte == 0x4D
     assert chr(low_byte) == "M"
 
+    assert "LOWIF" == exact[0][3][1:6]
+    assert body_words(notes[10][2])[0].upper() == "EVEN"
+
+    conditional_bits = [
+        (ord(letter) & 1) if number % 2 == 0 else ((ord(letter) >> 7) & 1)
+        for number, letter in zip(selected_notes, selected_heads)
+    ]
+    conditional_byte = sum(bit << index for index, bit in enumerate(conditional_bits))
+    assert conditional_bits == [1, 0, 0, 0, 0, 0, 1, 0]
+    assert conditional_byte == ord("A")
+
+    selector_note = conditional_byte - ord("A") + 1
+    assert selector_note == 1
+    note1_words = [word.lower() for word in body_words(notes[selector_note - 1][2])]
+    assert "sea" in note1_words and "tea" in note1_words
+    seal_instruction = selected_heads.replace("TEA", "SEA", 1)
+    assert seal_instruction == "ASEALBIT"
+
+    seal_raw = SEAL_SOURCE.read_bytes()
+    assert hashlib.sha256(seal_raw).hexdigest() == SEAL_SHA256
+    seal_records = [json.loads(line) for line in seal_raw.decode("utf-8").splitlines()]
+    qualified = [
+        row for row in seal_records
+        if row.get("permit") == "PTW-417"
+        and row.get("state") == "CLOSED"
+        and row.get("fitment") == "AS_LEFT"
+        and row.get("signed") is True
+    ]
+    bay_best = {}
+    for row in qualified:
+        bay = row["bay"]
+        if bay not in bay_best or row["revision"] > bay_best[bay]["revision"]:
+            bay_best[bay] = row
+    witness_order = ["B", "D", "A", "C"]
+    seal_serials = [bay_best[bay]["serial"].removeprefix("SG-") for bay in witness_order]
+    assert seal_serials == ["D7DAD6BC", "9714519B", "7DAD0AD4", "BE8E87FD"]
+    seal_bits = [int(serial, 16) & 1 for serial in seal_serials]
+    seal_selector = sum(bit << index for index, bit in enumerate(seal_bits))
+    assert seal_bits == [0, 1, 0, 1]
+    assert seal_selector == 10
+    assert seal_selector == exact[0][0]
+
     selected_headings = [
         (number, heading(notes[number - 1][2]))
         for number in selected_notes
@@ -175,6 +220,15 @@ def main() -> None:
     print("UNIQUE_ATEALBIT_LOWER", "N10->N11")
     print("SELECTED_COUNT_DECODE", "NLOWIF?V")
     print("SELECTED_MIXED_INSTRUCTION", "ALOWBIT")
+    print("COUNT_CONTINUATION", "LOWIF", "EVEN")
+    print("LOW_IF_EVEN_BITS", "".join(map(str, conditional_bits)))
+    print("LOW_IF_EVEN_BYTE", f"0x{conditional_byte:02X}", chr(conditional_byte))
+    print("A_SELECTOR_NOTE", f"N{selector_note:02d}", "tea->sea")
+    print("SEA_TEA_INSTRUCTION", seal_instruction)
+    print("SEAL_SOURCE_SHA256", SEAL_SHA256)
+    print("SEAL_SERIALS_BDAC", ",".join(seal_serials))
+    print("SEAL_LOW_BITS", "".join(map(str, seal_bits)))
+    print("SEAL_SELECTOR_NOTE", f"N{seal_selector:02d}")
     print("ATEALBIT_LOW_BITS", "".join(map(str, low_bits)))
     print("ATEALBIT_LOW_BYTE", f"0x{low_byte:02X}", chr(low_byte))
     print("UNIQUE_M_HEADING", "N11", "Mug shelf")
