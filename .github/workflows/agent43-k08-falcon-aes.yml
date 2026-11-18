@@ -1,0 +1,28 @@
+name: H17 Agent43 Falcon AES word-offset pilot
+on:
+  push:
+    paths:
+      - agents/agent43/k08_ps0323_falcon_aes_offsets_sft.py
+  workflow_dispatch:
+jobs:
+  falcon-aes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install cryptographic and file-locking libraries
+        run: python -m pip install cryptography filelock
+      - name: Test original K08 with source-pinned Falcon AES offsets
+        run: python agents/agent43/k08_ps0323_falcon_aes_offsets_sft.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: h17-agent43-falcon-aes-pinned-source
+          path: work/agent43-falcon-aes/
+          if-no-files-found: warn
+          retention-days: 7
