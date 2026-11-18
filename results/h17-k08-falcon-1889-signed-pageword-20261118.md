@@ -2,11 +2,11 @@
 
 **Date:** 2026-11-18 19:36 UTC  
 **Agent:** Agent 7  
-**Status:** Complete bounded negative for the two frozen coordinate constructions
+**Status:** Provisional only. Candidate HMACs remain unvalidated pending printed-folio review.
 
 ## Question
 
-The earlier 1889 *Falcon on the Baltic* run stopped before extraction because unsigned Google Books `books/content` requests returned repeated placeholder pages. This execution asks the narrower, already-frozen question after correcting only source acquisition: do either the K01/WN14 or PS-261003-0323 byte-pair coordinates select a K08-valid phrase from the exact 1889 Google Books volume `fQYN_SZzCFgC`?
+The earlier 1889 *Falcon on the Baltic* run stopped before extraction because unsigned Google Books `books/content` requests returned repeated placeholder pages. This execution attempted the narrower, already-frozen question after correcting source acquisition: do either the K01/WN14 or PS-261003-0323 byte-pair coordinates select a K08-valid phrase from the exact 1889 Google Books volume `fQYN_SZzCFgC`?
 
 No coordinate system, K08 normalization rule, nonce, acceptance digest, or OCR/tokenization rule was changed.
 
@@ -88,9 +88,9 @@ The unchanged K08 target remains:
 
 ## Interpretation
 
-This closes the two specific frozen page/word constructions on the exact 1889 scan under the repository's preexisting OCR and tokenization rule. The prior source-access failure is resolved; it should no longer be cited as preventing these two tests.
+The candidate HMACs above must not yet be classified as a bounded negative. A concurrent review correctly identified that the workflow asserted the Google viewer `PA<n>` label, while it did not assert the scan's printed folio. The completed artifact is retained for a separate artifact-level folio audit and reviewer decision.
 
-This result does not establish that the physical book was irrelevant to the historical incident, and it does not exclude a different source-authenticated selector. It provides no K08 component. Falcon page/word work should therefore be retired unless a new original record fixes a different extraction rule.
+This result provides no K08 component. Do not use its candidate words or HMACs as recovery evidence unless the captured scans' printed folios are independently validated and the review gate accepts that mapping.
 
 Reproducers:
 
