@@ -33,7 +33,7 @@ This is a sensitivity extension of that result, **not** a new discovery of the 2
 
 Group-size histogram: \`{1: 3, 11: 2, 12: 2, 13: 1, 14: 1, 16: 1, 17: 1, 23: 1}\`.
 
-The three singleton groups are the two \`REQUESTED\` attempts and the late \`RECOVER/bench/ACK/ATTEMPT=2\` packet at row 132. The 18-triple graph includes rows 131 and 132; row 132 is therefore fixed at its original final position under this stricter null, making its associated precedence relation automatically forward. Even with that conditioning, no trial orients all 18 triples forward. The late row 131 remains permutable within its 13-member full-metadata group.
+The three singleton groups are the two \`REQUESTED\` attempts and the late \`RECOVER/bench/ACK/ATTEMPT=2\` packet at row 132. The 18-triple graph includes rows 131 and 132; row 132 is therefore fixed at its original final position under this stricter null. In its triple, the parent-before-row-132 half is automatic, but the parent-before-row-98 half remains randomized. Even with that conditioning, no trial orients all 18 triples forward. The late row 131 remains permutable within its 13-member full-metadata group.
 
 For comparison, Agent17's \`CLASS/DEST\` null reported mean 7.417120, maximum 16, and 0/200,000 all-forward trials. Preserving \`STATE\` and \`ATTEMPT\` therefore does not remove the observed chronology enrichment. The small mean shift is descriptive, not a separate significance claim.
 
