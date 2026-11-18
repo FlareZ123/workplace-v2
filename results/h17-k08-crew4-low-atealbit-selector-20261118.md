@@ -126,6 +126,8 @@ This relationship is unique across the same seven valid one-row lowerings:
 
 Thus the same target-blind row choice yields both **A TEAL BIT** in note heads and **A LOW BIT** from the aligned count/head features. This materially strengthens the interpretation of `LOW` as a bit-significance instruction.
 
+The exact normalized phrase `a low bit` was checked once under the unchanged K08 desk nonce and route normalization. Its HMAC16 component is `3301765E937F40CE02707DCE602AEF3E`; SHA-256 is `bcc2405b9995bc184ee698ca522c16e91abf58b82a8e297331572fa158a0518c`, so it is **NO_MATCH** for the original K08 commitment. Treat it as an instruction, not keeper wording.
+
 ### 4. LOW BIT yields M, which uniquely selects Mug shelf
 
 Read `LOW` literally once more as an instruction to take the low bit of each of the eight `ATEALBIT` letters. The ASCII least-significant bits are:
