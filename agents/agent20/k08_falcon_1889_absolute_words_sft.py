@@ -18,7 +18,7 @@ from urllib.request import Request, urlopen
 
 SOURCE_URL = "https://soul-trade.com/sailing/falcon/falcon_frames.htm"
 # Freeze after source-only acquisition and source-text inspection.
-SOURCE_SHA256 = None
+SOURCE_SHA256 = "2741b1054d1369a7dcfc51b32da1f4b4931c5ca8a10c9b200cee548db496176e"
 K01_HEX = "049AAB2E1CDE7A82CD7C60234303C91A"
 NONCE_HEX = "5F933DA6A1BD03C32DA5CBC25344F497"
 K08_SHA256 = "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747"
@@ -90,6 +90,7 @@ def main() -> None:
         "last_20": words[-20:],
     }
     print("SOURCE", json.dumps(meta, sort_keys=True))
+    assert word_hash == "36997e8cf827a0c0ddade6104b8d63c5e462e69749653ce009e5e50ce4fcce66", "word stream changed"
     if args.acquire_only:
         print("SOURCE_ONLY_NO_TARGET_CHECK")
         return
