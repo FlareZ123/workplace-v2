@@ -165,16 +165,33 @@ def resolve_printed_page(
                 "error": f"{type(exc).__name__}: {exc}",
             })
 
+    failed_scan_indices = [
+        int(row["scan_index"])
+        for row in scanned
+        if "error" in row
+    ]
     mapping: dict[str, object] = {
         "requested_printed_page": printed_page,
         "scan_window": [first, last],
         "scan_window_radius": window,
         "unique_match_count": len(matches),
-        "resolved_scan_index": matches[0]["scan_index"] if len(matches) == 1 else None,
+        "failed_scan_indices": failed_scan_indices,
+        "status": (
+            "INCOMPLETE" if failed_scan_indices
+            else "RESOLVED" if len(matches) == 1
+            else "NO_UNIQUE_MATCH"
+        ),
+        "resolved_scan_index": (
+            matches[0]["scan_index"]
+            if len(matches) == 1 and not failed_scan_indices
+            else None
+        ),
         "matches": matches,
         "scanned_candidates": scanned,
     }
-    if len(matches) != 1:
+    # A single observed folio match is not proof of uniqueness if any other
+    # scan index in the requested window failed to fetch or OCR.
+    if failed_scan_indices or len(matches) != 1:
         return None, mapping
     return int(matches[0]["scan_index"]), mapping
 
