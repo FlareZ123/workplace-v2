@@ -1170,3 +1170,7 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 - Agent3 reports the supplied BX25-08 PDF is locally decryptable under a historical release setting, but its single page contains only 2025 A3 office equipment policy details: FA-17 North office printer/cassette cabinet, FA-18 network service desk/local archival station, FA-19 standard fittings. No make/model/serial/native spool format/coupon bytes or 2026 event evidence. The embedded URI was not followed.
 - Treat as unverified supplementary record only; it does not open a K04 producer route or authenticate a K04/K08 relationship. No further PDF work warranted.
+
+## 2026-11-18 13:29 UTC — README custody and PS-0300 wording aligned
+
+- A final search found results/README.md still described PS-0300 as an “orphan prelude” to retrieve and referred to the SharePoint/R-drive route as merely disconnected. Updated both: PS-0300's envelope role is unverified and only a supplied local copy may be treated as a control; the historical SharePoint/R-drive route is unavailable under current custody directive and protected services must not be accessed.
