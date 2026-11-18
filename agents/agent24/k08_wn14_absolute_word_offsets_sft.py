@@ -13,6 +13,7 @@ all four offset interpretations before emitting a verdict.
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import hmac
 import json
@@ -30,6 +31,7 @@ ACCEPTANCE_PATH = ROOT / "resources/acceptance.json"
 EXPECTED_ROUTING_SHA256 = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
 EXPECTED_ACCEPTANCE_SHA256 = "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
 EXPECTED_N02_HMAC16 = "BF889359B0303F2B2B2FD96AE841210B"
+EXPECTED_SOURCE_SHA256 = ""  # populated only after a source-only acquisition run
 
 SOURCE = {
     "name": "riddle-of-the-sands-1903-ajhw-full-text",
@@ -144,6 +146,10 @@ def phrase_check(words: list[str], nonce: bytes, target: str) -> dict[str, objec
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--acquire-only", action="store_true", help="fetch, validate, and hash the source without testing offsets")
+    args = parser.parse_args()
+
     report_path = Path("k08_wn14_absolute_word_offsets_report.json")
     report: dict[str, object] = {
         "hypothesis": "K01 as eight ordered absolute normalized-word offsets into one identified book text",
@@ -209,6 +215,20 @@ def main() -> int:
             "required_markers_passed": SOURCE["required_markers"],
         })
         report["source_available"] = True
+
+        if args.acquire_only:
+            report["verdict"] = "SOURCE_ACQUIRED_NOT_TESTED"
+            report["experiment_complete"] = False
+            print(json.dumps(report, indent=2, sort_keys=True))
+            report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            print(f"REPORT {report_path}")
+            return 0
+
+        if not EXPECTED_SOURCE_SHA256:
+            raise RuntimeError("source digest is not pinned; run --acquire-only first")
+        if report["source"]["raw_sha256"] != EXPECTED_SOURCE_SHA256:
+            raise RuntimeError("fetched source SHA-256 does not match the pinned source copy")
+        report["source"]["source_sha256_pin_passed"] = True
 
         for endian, fmt in (("big", ">8H"), ("little", "<8H")):
             offsets = list(struct.unpack(fmt, k01))
