@@ -13,6 +13,7 @@ uses one image-adaptive eight-color palette whose most blue-green cluster is the
 """
 from __future__ import annotations
 
+import base64
 import io
 import urllib.request
 from dataclasses import dataclass
@@ -158,15 +159,17 @@ for number, url in enumerate(URLS, 108821):
 thumbs = []
 for sheet in sheets:
     thumb = sheet.image.copy()
-    thumb.thumbnail((180, 220))
-    canvas = Image.new("RGB", (190, 250), "white")
-    canvas.paste(thumb, ((190 - thumb.width) // 2, 22))
+    thumb.thumbnail((100, 125))
+    canvas = Image.new("RGB", (110, 145), "white")
+    canvas.paste(thumb, ((110 - thumb.width) // 2, 18))
     ImageDraw.Draw(canvas).text((5, 5), str(sheet.number), fill="black")
     thumbs.append(canvas)
-contact = Image.new("RGB", (190 * 4, 250 * 3), "white")
+contact = Image.new("RGB", (110 * 4, 145 * 3), "white")
 for i, thumb in enumerate(thumbs):
-    contact.paste(thumb, ((i % 4) * 190, (i // 4) * 250))
-contact.save("messum-contact.jpg", quality=60, optimize=True)
+    contact.paste(thumb, ((i % 4) * 110, (i // 4) * 145))
+contact.save("messum-contact.jpg", quality=35, optimize=True)
+with open("messum-contact.jpg", "rb") as fh:
+    print("CONTACT_B64=" + base64.b64encode(fh.read()).decode("ascii"))
 print("CONTACT_SHEET messum-contact.jpg")
 
 rows = []
@@ -217,7 +220,7 @@ for frame_name in ("full", "ink"):
                         )
                     )
 
-for score, pred, order, bs in sorted(rows, reverse=True)[:80]:
+for score, pred, order, bs in sorted(rows, reverse=True)[:20]:
     print(
         f"DECODE quality={score} pred={pred} order={order} "
         f"hex={bs.hex().upper()} repr={bs!r}"
