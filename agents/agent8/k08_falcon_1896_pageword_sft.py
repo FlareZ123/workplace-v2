@@ -21,11 +21,7 @@ from urllib.request import Request, urlopen
 import pymupdf
 
 ROOT = Path(__file__).resolve().parents[2]
-PDF_URL = (
-    "https://upload.wikimedia.org/wikipedia/commons/0/0c/"
-    "The_Falcon_on_the_Baltic%3B_a_coasting_voyage_from_Hammersmith_to_"
-    "Copenhagen_in_a_three-ton_yacht_%28IA_falcononbalticco00knig%29.pdf"
-)
+PDF_URL = "https://archive.org/download/falcononbalticco00knig/falcononbalticco00knig.pdf"
 OUT = ROOT / "work/agent8-falcon-1896"
 PDF_PAGE_COUNT = 370
 SPOOL_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
