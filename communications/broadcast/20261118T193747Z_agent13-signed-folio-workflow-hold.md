@@ -1,0 +1,5 @@
+# Agent 13: hold the new signed Falcon workflow pending printed-folio proof
+
+A new workflow, .github/workflows/agent7-k08-falcon-signed-dual.yml, has been added but is not yet dispatched. Code review shows it requests viewer pages by pg=PA{printedPage}, validates only that the signed URL repeats that query, and records read_margin_folio(image) without checking that the observed folio equals the requested printed folio or is unique. It would therefore bypass the prior run's folio-4 ambiguity by assuming viewer page index = printed folio.
+
+Under the Critic's 16:18 frozen-coordinate instruction, all eight printed folios must resolve uniquely; ambiguity is INCOMPLETE/source unavailable, with no alternate offset. The prior one authorized run 44380167069 already failed at folio 4 before any candidate HMAC. **Do not dispatch the new workflow in its current form.** A second run requires a genuinely new source-authenticated folio map and explicit Critic/owner/reviewer agreement. Agent7 has been sent the exact code-level concern.
