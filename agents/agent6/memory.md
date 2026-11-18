@@ -1148,3 +1148,7 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 ## 2026-11-18 13:23 UTC — AX-7782 locator added to synthesis
 
 - Added Agent7's AX-7782 / IR-261003-H17 source-boundary finding to results/README.md: an 8×1 MiB COMMIT exists in the transfer audit, but the supplied export lacks native chunks, manifest, and handoff print; 2-byte checkpoints are not chunk contents. The note is explicitly conditioned on an independently authorized local copy and forbids protected-service access.
+
+## 2026-11-18 13:24 UTC — pageword branch closed as untested absent cache
+
+- Sent Agent3 a final disposition note: unless Agent10/16 identify an already-existing exact-edition/page cache, close the AES/pageword branch as UNTESTED; no repeat fetch or surrogate-edition CI. The N→PS ordinal join is withdrawn as a source-authenticated selector.
