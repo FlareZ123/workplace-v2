@@ -1,6 +1,6 @@
 name: Agent 8 K04 Bitwuzla native BV blind-middle comparison
 
-on:
+'on':
   workflow_dispatch:
     inputs:
       level:
