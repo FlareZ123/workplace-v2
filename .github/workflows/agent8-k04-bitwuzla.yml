@@ -1,0 +1,49 @@
+name: Agent 8 K04 Bitwuzla native BV blind-middle comparison
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        description: Positive calibration first, full flanks if validated
+        required: true
+        type: choice
+        options:
+          - positive
+          - full
+        default: positive
+
+permissions:
+  contents: read
+
+jobs:
+  planted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned native bitvector solver
+        run: python -m pip install --only-binary=:all: bitwuzla==0.9.1
+      - name: Validate full middle coupon with genuine seeded flanks
+        run: python agents/agent8/k04_xoroshiropp_bitwuzla_sft.py --phase positive --view 0 --limit-seconds 100
+
+  original:
+    needs: planted
+    if: inputs.level == 'full'
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned native bitvector solver
+        run: python -m pip install --only-binary=:all: bitwuzla==0.9.1
+      - name: Source-constrained full-coupon Bitwuzla inversion
+        run: python agents/agent8/k04_xoroshiropp_bitwuzla_sft.py --phase original --view ${{ matrix.view }} --limit-seconds 360
