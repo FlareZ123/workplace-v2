@@ -145,10 +145,16 @@ async function captureScanIndex(page, scanIndex) {
     if (responseUrl.hostname !== signedUrl.hostname || responseUrl.pathname !== signedUrl.pathname) {
       throw new Error("captured viewer response host/path differs from the inspected signed URL");
     }
-    for (const key of ["id", "pg", "zoom", "sig"]) {
-      if (responseUrl.searchParams.get(key) !== signedUrl.searchParams.get(key)) {
-        throw new Error("captured viewer response identity differs for query field " + key);
-      }
+    const responseParameters = [...responseUrl.searchParams.entries()]
+      .sort(([leftKey, leftValue], [rightKey, rightValue]) =>
+        leftKey.localeCompare(rightKey) || leftValue.localeCompare(rightValue)
+      );
+    const signedParameters = [...signedUrl.searchParams.entries()]
+      .sort(([leftKey, leftValue], [rightKey, rightValue]) =>
+        leftKey.localeCompare(rightKey) || leftValue.localeCompare(rightValue)
+      );
+    if (JSON.stringify(responseParameters) !== JSON.stringify(signedParameters)) {
+      throw new Error("captured viewer response query differs from the image element signed URL");
     }
     if (!imageResponse.ok()) {
       throw new Error("signed viewer image response returned HTTP " + imageResponse.status());
