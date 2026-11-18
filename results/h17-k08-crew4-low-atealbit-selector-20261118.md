@@ -195,6 +195,39 @@ MAIL-12 independently says the chipped blue mugs belong to two night-crew member
 
 The card text itself is absent from the supplied export, and MAIL-12 does not quote it. The chain therefore locates a missing physical/source object; it does not recover the K08 keeper phrase.
 
+### 6. M + 10 names MAIL-10 and reproduces accepted K05
+
+The two independently derived outputs can also be read together:
+
+- `ATEALBIT` ASCII low bits -> **M**
+- PTW-417 B,D,A,C seal low bits -> **10**
+
+That gives **M10**, which has an exact archive referent: **MAIL-10**.
+
+MAIL-10 is unusually specific. It says the wanted recorder node is `0x31`, the four-byte control words are opaque byte strings copied exactly as stored, CRC failures must be ignored even when their sequence is higher, and the route sheet supplies the event and freeze window.
+
+Those instructions are sufficient to reproduce the already-accepted K05 route without using K05's accepted value as a selector:
+
+1. parse the pinned TRP2 export;
+2. retain CRC-valid records only;
+3. node `0x31 = 49`;
+4. event `0x52 = 82` from the route sheet;
+5. UTC window `21:14:00 <= t < 21:14:08`;
+6. greatest sequence per latch 0..3;
+7. concatenate each four-byte control word exactly as stored.
+
+The selected sequences are `300,301,302,303` and the resulting component is:
+
+`FF8B78200A56E8586DCDA00EF01E4572`
+
+This equals the independently accepted **K05** component exactly.
+
+MAIL-10 SHA-256 is `ccfc592fe570ca6928a74de813c378443030e841bba169434c0f413721122e48`; the TRP2 source SHA-256 is `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba`.
+
+This is the strongest calibration in the chain because it lands on a complete, previously accepted archive component rather than merely readable English. It still does not reveal K08's terminal wording. The mapping `M10 -> MAIL-10` is a compact archive-reference interpretation and should be treated as corroboration unless another source explicitly states that convention.
+
+Reproducibility workflow run **44424382364** passes the complete current SFT, including this K05 known-answer calibration.
+
 ## What this changes
 
 The earlier objection that the preferred ATEALBIT note set had no reproducible selection rule is materially weakened. Two source-local continuations now converge on the same row choice: the seal-bit fixed point returns N10, while the low-bit M path resolves to N11 `Mug shelf` and MAIL-12's small shelf card. These constructions use the unchanged K08 digest only for direct phrase rejection, never to choose the row, seal serials or note sequence.
@@ -222,7 +255,7 @@ Separately, Agent41's exact 1889 Internet Archive rear-map stitch has already te
 
 `agents/agent22/k08_crew4_low_selector_sft.py`
 
-The script pins both the crew-note and seal-receipt sources, reproduces CREW4 and David's LOW, enumerates every valid one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`, reproduces the `LOW IF EVEN` secondary cue, proves N10→N11 is the only lowering containing `TEA`, identifies N01 as the only tea-bearing photograph-labelled note, applies the N01 tea→sea transformation, derives the PTW-417 B,D,A,C seal low bits `0101` and their selector value 10, verifies that N10 is the source's last `cup` row and that "after the last cup" is N11, then separately decodes the ATEALBIT ASCII low bits as `M` and identifies N11 `Mug shelf` as the unique selected M-heading.
+The script pins the crew-note, seal-receipt, MAIL-10 and TRP2 sources; reproduces CREW4 and David's LOW; enumerates every valid one-row lowering; asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`; proves N10→N11 is the only lowering containing `TEA`; identifies N01 as the only tea-bearing photograph-labelled note; applies the N01 tea→sea transformation; derives the PTW-417 B,D,A,C seal low bits `0101` and selector value 10; verifies that N10 is the source's last `cup` row and that "after the last cup" is N11; decodes the ATEALBIT ASCII low bits as `M`; and finally checks that `M10 -> MAIL-10` reproduces the complete accepted K05 component under MAIL-10's own byte-order/CRC instructions.
 
 ## Remaining boundary
 
