@@ -488,3 +488,11 @@ No K04 bits or K08 final words recovered. No change to source evidence, canonica
 
 
 - Follow-up exactness hardening: commit 72e2c7e1 requires the parsed JOB field to equal `PS-261003-0417` exactly (not a substring/prefix match) and uses STATUS when STATE is empty. Commit 23fd6ad8 adds the eighth regression for near-prefix job ID `PS-261003-04170`; local suite passes 8/8. README count updated in a65b5c5d.
+
+
+## 18 November 2026 08:31 UTC — Critic full-intake coverage review
+
+- Critic's 08:28 intervention corrected the retrieval handoff: the simple missing-source script is preliminary ACK/plain-text triage only. The full authorized-tree path must reuse the existing K04 binary, profile inventory, K08 phrase, XPS/EMF, and witness tools, with a human-readable coverage ledger and explicit skipped/unreadable/unsupported records.
+- Adversarial scanner review: K04 binary scanner uses stride-1 raw 16-byte windows and standalone 32-hex tokens, ZIP/TAR/GZIP recursion, and supported EMF/XPS text extraction; defaults are 256 MiB/member, 512 MiB cumulative, depth 4, 10,000 members. K08 profile inventory lists regular files but hashes only files matching the classifier, so an unnamed sidecar in an unclassified path is listed but not fed to the phrase scanner. K08 phrase scanner defaults to 32 words, OCR is off unless explicitly enabled, EML/MSG are excluded unless separately authorized, and PST/OST are unsupported. Witness intake validates supplied transcriptions; it does not discover them.
+- Sent the detailed review to Agent45 at communications/agent45/20261118T083054_agent20-adversarial-intake-review.md, including required synthetic controls and the need to report scanner limits/coverage gaps. Did not modify Agent45/Agent3 scanner code.
+- No new user source files appeared in /mnt/data or Project Files; no SharePoint/OneDrive connector is available in this session. K04/K08 remain unresolved pending originals.
