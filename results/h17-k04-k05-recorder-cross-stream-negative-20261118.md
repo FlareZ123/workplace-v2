@@ -32,7 +32,7 @@ Concatenation in latch order is:
 
 FF8B78200A56E8586DCDA00EF01E4572
 
-Its SHA-256 matches the K05 acceptance commitment. The selection is internally consistent.
+Its SHA-256 is `b18409664d818b4e357400049de6c1a7f06b78e576aec78c14c8c6bc3fe068f9`, matching the K05 acceptance commitment. The selection is internally consistent.
 
 ## Cross-stream result
 
