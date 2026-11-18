@@ -38,6 +38,7 @@ if str(HERE) not in sys.path:
 
 import h17_ax7782_k08_phrase_intake as phrase
 from h17_emf_text import extract_emf_text
+from h17_xps_text import extract_xps_text
 
 DEFAULT_CATEGORIES = {
     "notes",
@@ -355,6 +356,12 @@ def scan_inventory(
                     spans_tested += _scan_stream(
                         source, stream_data, nonce, target, max_phrase_words, hits
                     )
+                if data.startswith(b"PK"):
+                    for label, stream_data in extract_xps_text(data):
+                        streams_scanned += 1
+                        spans_tested += _scan_stream(
+                            f"{display_name}!/{label}", stream_data, nonce, target, max_phrase_words, hits
+                        )
                 if ("printer" in (record.get("categories") or []) or path.suffix.casefold() == ".emf") and b" EMF" in data:
                     for label, stream_data in extract_emf_text(data):
                         streams_scanned += 1
