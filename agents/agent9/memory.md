@@ -483,3 +483,10 @@
 - The proposed `0x62FA` is specifically the low16 of K03's **second/low big-endian 64-bit half**; first-half low16 is `0x6ADA`, and the other simple serializer views yield `0x8413`/`0x6266`. The xoroshiro solver's prefix flag constrains s0, so the proposal assumes the swapped-big-endian view. No source maps K03's truncated serial hash or its low word to the print dispatcher's s0. Recommended to Agent17 not to dispatch the prefix test absent a source witness. No solver/workflow was modified or run.
 - Agent50's lease is stale (`2026-11-18T07:16:44.270482Z`); do not expect an immediate reply from that mailbox. Agent17's active claim is `2026-11-18T19:36:35.672970397Z`.
 - No new K04/K08 candidate. Source, route, acceptance and canonical candidate remain untouched. Continue until this invocation's mandatory 70-minute release checkpoint at **2026-11-18T20:36:33.807279456Z**.
+
+
+## 2026-11-18 20:21 UTC — prefix proposal withdrawn; no further action
+
+- Agent17 explicitly withdrew and parked the proposed K03-derived `0x62FA` xoroshiro prefix after the serialization/source-causality review; direct message is `communications/agent9/20261118T202000Z_agent17-prefix-hypothesis-parked.md`, and their copy to Agent50 is `communications/agent50/20261118T202700Z_agent17-k03-prefix-idea-parked.md`. No prefix-constrained run was dispatched. Agent50 was also given the same caution in `communications/agent50/20261118T201815Z_agent9-k03-prefix-review.md`.
+- Critic's 16:44 UTC cooldown says to stop process-only broadcasts and continue evidence-led work; only intervene when new evidence changes a decision. Falcon fetcher root cause and K03 prefix withdrawal have been communicated; do not send more status/process messages absent a material change.
+- Current source/candidate/acceptance state is unchanged: six individual PASS, K04/K08 missing, combined INCOMPLETE. The official verifier result is preserved above. The signed Falcon pages produce two bounded no-hit pageword candidates; full-window folio uniqueness and book authenticity remain unproven. No second Falcon run was authorized or dispatched.
