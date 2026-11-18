@@ -110,8 +110,11 @@ async function captureScanIndex(page, scanIndex) {
       throw new Error("viewer did not expose the required full-resolution zoom=3 image");
     }
 
-    if (imageResponse.url() !== signedUrl.toString()) {
-      throw new Error("captured viewer response URL differs from the inspected signed URL");
+    const responseUrl = new URL(imageResponse.url());
+    for (const key of ["id", "pg", "zoom", "sig"]) {
+      if (responseUrl.searchParams.get(key) !== signedUrl.searchParams.get(key)) {
+        throw new Error("captured viewer response identity differs for query field " + key);
+      }
     }
     if (!imageResponse.ok()) {
       throw new Error("signed viewer image response returned HTTP " + imageResponse.status());
