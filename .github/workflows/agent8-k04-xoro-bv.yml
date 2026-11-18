@@ -1,0 +1,46 @@
+name: Agent 8 K04 xoroshiro128++ word-BV blind-middle inversion
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        description: Positive-only solver calibration or full original source
+        required: true
+        type: choice
+        options:
+          - positive
+          - full
+        default: positive
+
+jobs:
+  planted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned Z3 Python API
+        run: python -m pip install z3-solver==4.15.5.0
+      - name: Recover whole planted middle coupon from two heldout flanks
+        run: python agents/agent8/k04_xoroshiropp_bv_bracket_sft.py --phase positive --view 0 --timeout-ms 120000
+
+  original:
+    needs: planted
+    if: inputs.level == 'full'
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned Z3 Python API
+        run: python -m pip install z3-solver==4.15.5.0
+      - name: Blindly invert source flanks and compare complete middle coupon
+        run: python agents/agent8/k04_xoroshiropp_bv_bracket_sft.py --phase original --view ${{ matrix.view }} --timeout-ms 360000
