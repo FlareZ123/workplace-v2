@@ -185,6 +185,7 @@ async function captureScanIndex(page, scanIndex) {
 (async () => {
   fs.rmSync(OUT, { recursive: true, force: true });
   fs.mkdirSync(OUT, { recursive: true });
+  atomicWrite("manifest.json", JSON.stringify(buildManifest([], false), null, 2) + "\n");
   const lockPath = path.join(OUT, ".capture.lock");
   const lockFd = fs.openSync(lockPath, "wx");
   let browser = null;
