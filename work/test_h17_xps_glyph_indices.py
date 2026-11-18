@@ -22,7 +22,7 @@ except ImportError:
     TTFont = None
 
 
-def make_test_font(text: str, include_cmap: bool = True) -> bytes:
+def make_test_font(text: str, include_cmap: bool = True, ambiguous_cmap: bool = False) -> bytes:
     chars = sorted(set(text))
     names = [".notdef", "space"] + [f"uni{ord(c):04X}" for c in chars if c != " "]
     builder = FontBuilder(1000, isTTF=True)
@@ -31,6 +31,8 @@ def make_test_font(text: str, include_cmap: bool = True) -> bytes:
     for char in chars:
         if char != " ":
             cmap[ord(char)] = f"uni{ord(char):04X}"
+    if ambiguous_cmap and "a" in text and "b" in text:
+        cmap[ord("b")] = cmap[ord("a")]
     builder.setupCharacterMap(cmap)
     glyf = {}
     for name in names:
@@ -69,8 +71,9 @@ def make_xps(
     include_cmap: bool = True,
     split_at: int | None = None,
     reverse_runs: bool = False,
+    ambiguous_cmap: bool = False,
 ) -> bytes:
-    font_bytes = make_test_font(text, include_cmap=include_cmap)
+    font_bytes = make_test_font(text, include_cmap=include_cmap, ambiguous_cmap=ambiguous_cmap)
     font_guid = str(uuid.uuid4())
     font_part = f"Resources/Fonts/{font_guid}.odttf"
     key = uuid.UUID(font_guid).bytes_le[::-1]
@@ -162,6 +165,13 @@ class GlyphIndexExtractionTests(unittest.TestCase):
         self.assertEqual(result["status"], "decoded")
         self.assertEqual(result["text"], phrase)
         self.assertEqual(result["runs"][0]["unresolved"], [])
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_ambiguous_cmap_is_not_guessed(self):
+        result = extractor.extract_xps_glyph_indices(make_xps("ab", ambiguous_cmap=True))
+        self.assertEqual(result["runs"][0]["text"], "")
+        self.assertTrue(any("ambiguous cmap" in item["reason"]
+                            for item in result["runs"][0]["unresolved"]))
 
     @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
     def test_glyph_name_fallback_when_cmap_is_missing(self):
