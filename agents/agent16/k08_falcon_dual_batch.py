@@ -12,6 +12,8 @@ import hashlib
 import importlib.util
 import json
 import re
+import subprocess
+import sys
 from io import BytesIO
 from pathlib import Path
 from types import ModuleType
@@ -269,6 +271,61 @@ def candidate_contexts(
             ],
         })
     return contexts
+
+
+def run_original_verifier(
+    candidate_name: str,
+    canonical_candidate: dict[str, Any],
+    derived_k08_hex: str,
+    expected_k08_pass: bool,
+) -> dict[str, Any]:
+    candidate_for_verifier = {
+        f"K{index:02d}": canonical_candidate.get(f"K{index:02d}")
+        for index in range(1, 9)
+    }
+    candidate_for_verifier["K08"] = derived_k08_hex.upper()
+    for name, value in candidate_for_verifier.items():
+        if isinstance(value, str):
+            candidate_for_verifier[name] = value.upper()
+    candidate_path = OUT / f"candidate-K08-{candidate_name}.json"
+    candidate_path.write_text(
+        json.dumps(candidate_for_verifier, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    verifier = ROOT / "resources/verify.py"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(verifier),
+            "--candidate",
+            str(candidate_path),
+            "--json",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if completed.returncode not in (0, 1):
+        raise RuntimeError(
+            "original verifier errored: " +
+            json.dumps({"returncode": completed.returncode, "stderr": completed.stderr})
+        )
+    outcome = json.loads(completed.stdout)
+    expected_slot = "PASS" if expected_k08_pass else "NO_MATCH"
+    if outcome.get("slots", {}).get("K08") != expected_slot:
+        raise RuntimeError("original verifier K08 result differs from the direct commitment result")
+    if outcome.get("slots", {}).get("K04") != "MISSING":
+        raise RuntimeError("original verifier did not preserve K04 as missing")
+    if outcome.get("combined") != "INCOMPLETE":
+        raise RuntimeError("original verifier unexpectedly reports a complete combined key")
+    return {
+        "candidate_path": str(candidate_path.relative_to(ROOT)),
+        "verifier_path": str(verifier.relative_to(ROOT)),
+        "exit_code": completed.returncode,
+        "stdout_json": outcome,
+        "stderr": completed.stderr,
+    }
 
 
 def main() -> int:
@@ -561,11 +618,18 @@ def main() -> int:
         words = candidate_words(coordinates, page_tokens)
         result = falcon.verify_phrase(words)
         result["words_in_coordinate_order"] = result.pop("words_in_K01_byte_order")
+        original_verifier = run_original_verifier(
+            name,
+            candidate,
+            result["derived_K08_component_hex"],
+            result["acceptance_match"],
+        )
         report["candidate_results"][name] = {
             **result,
             "coordinate_set": name,
             "coordinate_pairs": coordinates,
             "selected_word_context": candidate_contexts(coordinates, page_tokens),
+            "original_verifier_outcome": original_verifier,
             "status": (
                 "MATCH" if result["acceptance_match"]
                 else "NO_MATCH_ON_EXACT_1889_GOOGLE_BOOKS_COPY"
