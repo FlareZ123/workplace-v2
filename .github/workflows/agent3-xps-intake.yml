@@ -14,6 +14,10 @@ jobs:
           python-version: '3.11'
       - name: Exercise native fixed-page extractor and both original intake paths
         run: python work/test_h17_xps_text.py
+      - name: Install optional font parser for glyph-index fallback tests
+        run: python -m pip install fonttools
+      - name: Exercise coverage-safe Glyphs/Indices fallback
+        run: python work/test_h17_xps_glyph_indices.py
       - name: Confirm existing read-only K04 and K08 positive controls
         run: |
           python work/h17_k04_binary_window_intake.py --self-test
