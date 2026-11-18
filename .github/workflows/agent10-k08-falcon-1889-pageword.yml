@@ -20,7 +20,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install pillow pytesseract
       - name: Fetch exact 1889 Google Books pages and test frozen WN-14 coordinates
-        run: python agents/agent10/k08_falcon_1889_pageword.py | tee falcon-1889-pageword.log
+        run: |
+          set -o pipefail
+          python agents/agent10/k08_falcon_1889_pageword.py | tee falcon-1889-pageword.log
       - name: Preserve exact page images, OCR and commitment result
         if: always()
         uses: actions/upload-artifact@v4
