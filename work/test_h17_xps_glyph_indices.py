@@ -61,7 +61,15 @@ def make_test_font(text: str, include_cmap: bool = True) -> bytes:
     return font_data
 
 
-def make_xps(text: str, relative_uri: bool = False, cluster: bool = False, page_name: str = "1.fpage", include_cmap: bool = True) -> bytes:
+def make_xps(
+    text: str,
+    relative_uri: bool = False,
+    cluster: bool = False,
+    page_name: str = "1.fpage",
+    include_cmap: bool = True,
+    split_at: int | None = None,
+    reverse_runs: bool = False,
+) -> bytes:
     font_bytes = make_test_font(text, include_cmap=include_cmap)
     font_guid = str(uuid.uuid4())
     font_part = f"Resources/Fonts/{font_guid}.odttf"
@@ -79,9 +87,16 @@ def make_xps(text: str, relative_uri: bool = False, cluster: bool = False, page_
     font.close()
 
     if cluster:
-        indices = f"(2:1){gids[0]}"
+        glyph_runs = [(f"(2:1){gids[0]}", 10.0)]
+    elif split_at is not None:
+        glyph_runs = [
+            (";".join(str(g) for g in gids[:split_at]), 10.0),
+            (";".join(str(g) for g in gids[split_at:]), 100.0),
+        ]
+        if reverse_runs:
+            glyph_runs.reverse()
     else:
-        indices = ";".join(str(gid) for gid in gids)
+        glyph_runs = [(";".join(str(g) for g in gids), 10.0)]
 
     page_part = f"Documents/1/Pages/{page_name}"
     if relative_uri:
@@ -89,9 +104,13 @@ def make_xps(text: str, relative_uri: bool = False, cluster: bool = False, page_
     else:
         font_uri = f"/{font_part}"
 
+    glyph_xml = "".join(
+        f'<Glyphs FontUri="{font_uri}" FontRenderingEmSize="12" OriginX="{x}" OriginY="20" Indices="{indices}" />'
+        for indices, x in glyph_runs
+    )
     page = (
         '<FixedPage xmlns="http://schemas.microsoft.com/xps/2005/06" Width="816" Height="1056">'
-        f'<Glyphs FontUri="{font_uri}" FontRenderingEmSize="12" OriginX="10" OriginY="20" Indices="{indices}" />'
+        f'{glyph_xml}'
         '</FixedPage>'
     ).encode("utf-8")
     content_types = (
@@ -149,6 +168,15 @@ class GlyphIndexExtractionTests(unittest.TestCase):
         phrase = "named glyphs"
         result = extractor.extract_xps_glyph_indices(make_xps(phrase, include_cmap=False))
         self.assertEqual(result["text"], phrase)
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_glyph_runs_join_and_spatial_order(self):
+        phrase = "the sea is quiet"
+        result = extractor.extract_xps_glyph_indices(make_xps(phrase, split_at=7, reverse_runs=True))
+        joined = next(s["text"] for s in result["streams"] if s["label"] == "joined")
+        spatial = next(s["text"] for s in result["streams"] if s["label"] == "spatial-joined")
+        self.assertNotEqual(joined, phrase)
+        self.assertEqual(spatial, phrase)
 
     @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
     def test_opc_declared_fixed_page_with_non_fpage_extension(self):
