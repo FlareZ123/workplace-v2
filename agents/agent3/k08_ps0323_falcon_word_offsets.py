@@ -62,12 +62,12 @@ def fetch_book() -> tuple[bytes, list[str]]:
     parser = PlainText()
     parser.feed(raw.decode("utf-8"))
     text = " ".join(parser.blocks)
-    start = re.search(r"\\bIN\\s+the\\s+summer\\s+of\\s+['’]86", text)
-    end = re.search(r"October\\s+2nd,\\s+1888\\.", text)
+    start = re.search(r"\bIN\s+the\s+summer\s+of\s+['’]86", text)
+    end = re.search(r"October\s+2nd,\s+1888\.", text)
     if not start or not end or end.end() <= start.start():
         raise RuntimeError("Falcon body boundaries not found")
     book_text = text[start.start():end.end()]
-    if not re.search(r"CHAPTER\\s+XV\\s+COPENHAGEN\\s+AND\\s+HOME", book_text, re.I):
+    if not re.search(r"CHAPTER\s+XV\s+COPENHAGEN\s+AND\s+HOME", book_text, re.I):
         raise RuntimeError("Falcon Chapter XV marker missing")
     words = re.findall(r"[a-z0-9]+", book_text.lower())
     if sha256(raw) != SOURCE_SHA256:
@@ -84,9 +84,9 @@ def spool_packets() -> dict[str, dict[str, str]]:
     if sha256(raw) != SPOOL_SHA256:
         raise RuntimeError(f"spool source SHA changed: {sha256(raw)}")
     pattern = re.compile(
-        r"(?P<timestamp>\\S+) JOB=(?P<job>\\S+) ATTEMPT=(?P<attempt>\\d+) "
-        r"STATE=(?P<state>\\w+) CLASS=(?P<class>\\w+) "
-        r"PAYLOAD=(?P<payload>[A-F0-9]{32}) DEST=(?P<dest>\\S+)"
+        r"(?P<timestamp>\S+) JOB=(?P<job>\S+) ATTEMPT=(?P<attempt>\d+) "
+        r"STATE=(?P<state>\w+) CLASS=(?P<class>\w+) "
+        r"PAYLOAD=(?P<payload>[A-F0-9]{32}) DEST=(?P<dest>\S+)"
     )
     rows = {}
     for line in raw.decode("utf-8").splitlines():
@@ -109,8 +109,8 @@ def spool_packets() -> dict[str, dict[str, str]]:
 
 def normalize_phrase(text: str) -> str:
     text = text.lower()
-    text = re.sub(r"[^a-z0-9\\s]", " ", text)
-    return re.sub(r"\\s+", " ", text).strip()
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def main() -> int:
@@ -184,7 +184,7 @@ def main() -> int:
         }
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+    OUT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2, sort_keys=True))
     print("ORIGINAL_K08_PASS" if report["matches"] else "NO_K08_MATCH")
     return 0
