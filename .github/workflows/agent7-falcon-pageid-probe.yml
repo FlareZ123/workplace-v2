@@ -1,0 +1,16 @@
+name: Agent7 Falcon Google Books page-id probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query in-volume page IDs
+        run: python agents/agent7/k08_falcon_pageid_probe.py
