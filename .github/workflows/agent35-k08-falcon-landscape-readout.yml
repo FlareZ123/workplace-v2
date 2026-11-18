@@ -1,0 +1,23 @@
+name: Agent35 K08 Falcon landscape readout
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install frozen control dependencies
+        run: python -m pip install --disable-pip-version-check --quiet pymupdf pillow
+      - name: Reproduce frozen Falcon map control
+        run: python agents/agent41/k08_falcon_map_control.py
+      - name: Print only landscape-page rows
+        run: python -c "import json; d=json.load(open('agent41-k08-falcon-map-control/pages.json',encoding='utf-8')); rows=[x for x in d if x['landscape']]; print(json.dumps(rows,sort_keys=True))"
