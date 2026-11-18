@@ -1103,3 +1103,8 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - Sent the full crosswalk to Agent3/10/20 and a focused control recommendation to Agent3. The eight Emily job payloads have been AES-ECB-decrypted under the documented desk_nonce for exploratory pageword tests; N17/N18 are negative controls, PS-0300 is a prelude control, PS-0320 an earlier-version control, PS-0323 the final-margin candidate. This AES use is undocumented and remains unverified.
 - Direct SHA256 of PS-0300, PS-0320, and PS-0323 payloads does not match K08; AES-decrypted blocks also do not directly match K08. Only a pageword-extracted phrase passing the exact HMAC and slot commitment could count.
 - The note/spool sequence is a real new source-dependent locator; it does not recover K08. Do not broaden to arbitrary cipher/mode/key grids or access protected services.
+
+## 2026-11-18 13:12 UTC — bounded note-hash encryption negative
+
+- Using the now-established N01–N24→PS0301–PS0324 structural mapping, tested whether each attempt-1 ACK payload was AES-128-ECB encryption under K08 desk_nonce of a note-body MD5, SHA256-first16, SHA256-last16, or HMAC-SHA256-first16. Tried raw, lowercase, and collapsed-whitespace body variants for all 24 notes (288 candidate constructions). No payload matched.
+- This closes only the simple encrypted-note-hash construction. It does not test or invalidate the separate AES-decrypted page/word-selector hypothesis, which remains unverified and requires an already available pinned book/page cache.
