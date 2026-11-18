@@ -39,7 +39,7 @@ For 132 rows, this geometry tests:
 
 possible equalities.
 
-**Independent C++ result:** 25 unique witness tuples, exactly reproducing Agent 17's count. All 132 retained payloads are unique and all 528 untempered words are unique. The 25 witnesses involve 50 distinct source rows and 50 distinct job IDs; all participating rows are ACKs, spanning all three classes (LABEL, RECOVER, STORES) and all three destinations (bench, desk, store). Neither REQUESTED attempt participates. The 25 tuples overlap in their row references (75 row references across 50 distinct rows), so they are not 25 independent replications. Re-running on the 130 ACK-only rows still gives 25 witnesses. Reversing the chronological row order gives zero.
+**Independent C++ result:** 25 unique witness tuples, exactly reproducing Agent 17's count. All 132 retained payloads are unique and all 528 untempered words are unique. The 25 witnesses involve 50 distinct source rows and 50 distinct job IDs; all participating rows are ACKs, spanning all three classes (LABEL, RECOVER, STORES) and all three destinations (bench, desk, store). Neither REQUESTED attempt participates. The 25 tuples overlap in their row references (75 row references across 50 distinct rows), so they are not 25 independent replications. Fourteen of 25 include at least one RECOVER row, but only 3 have the pair-source row `r` in RECOVER; only 5 include any RECOVER/bench row, none has RECOVER/bench as `r`, and none has all three rows in RECOVER. The signal therefore is not specifically anchored to the selected RECOVER/bench path. Re-running on the 130 ACK-only rows still gives 25 witnesses. Reversing the chronological row order gives zero.
 
 ### Witness geometry
 
