@@ -464,10 +464,8 @@ def main() -> int:
         # Recheck the selected full-resolution image from the exact cached bytes.
         if sha256(raw) != evidence["source_image_sha256"]:
             raise RuntimeError(f"selected page {printed_page} full-resolution SHA changed")
-        with Image.open(BytesIO(raw)) as selected_source:
-            selected_source.load()
-            selected_dimensions = list(selected_source.size)
-            selected_image = selected_source.convert("RGB")
+        selected_image = source["image"]
+        selected_dimensions = list(selected_image.size)
         if selected_dimensions != evidence["image_dimensions"]:
             raise RuntimeError(f"selected page {printed_page} full-resolution dimensions changed")
         matching_zones = [
