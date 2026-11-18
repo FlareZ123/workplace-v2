@@ -134,6 +134,8 @@ def main():
     parser.add_argument('--limit-seconds', type=float, default=90)
     parser.add_argument('--self-test', action='store_true')
     parser.add_argument('--control-only', action='store_true')
+    parser.add_argument('--control-prefix-bits', type=int, choices=range(0, 21), default=16)
+    parser.add_argument('--control-negative', action='store_true')
     parser.add_argument('--prefix-bits', type=int, default=0, choices=range(0, 21))
     parser.add_argument('--prefix', type=lambda x: int(x, 0), default=0)
     args = parser.parse_args()
@@ -142,12 +144,17 @@ def main():
         return
     samples = stream(SEED)
     planted = [*samples[:2], None, None, *samples[4:]]
-    planted_bits = max(16, args.prefix_bits)
-    control = solve(planted, args.limit_seconds, planted_bits,
-                    SEED[0] & ((1 << planted_bits) - 1))
-    print(json.dumps({'experiment': 'seeded_prefix_positive',
-                      'prefix_bits': planted_bits, **control}), flush=True)
-    if control['status'] != 'SAT' or control['middle'] != [f'{x:016X}' for x in samples[2:4]]:
+    planted_bits = args.control_prefix_bits
+    selected_prefix = (SEED[0] & ((1 << planted_bits) - 1)) ^ int(args.control_negative)
+    control = solve(planted, args.limit_seconds, planted_bits, selected_prefix)
+    print(json.dumps({'experiment': 'seeded_prefix_negative' if args.control_negative
+                      else 'seeded_prefix_positive',
+                      'prefix_bits': planted_bits, 'prefix': selected_prefix,
+                      **control}), flush=True)
+    if args.control_negative:
+        if control['status'] != 'UNSAT':
+            raise SystemExit(2)
+    elif control['status'] != 'SAT' or control['middle'] != [f'{x:016X}' for x in samples[2:4]]:
         raise SystemExit(2)
     if args.control_only:
         return
