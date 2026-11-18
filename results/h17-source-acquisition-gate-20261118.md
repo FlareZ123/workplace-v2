@@ -36,7 +36,7 @@ The unchanged K08 rule is authoritative: normalize the recovered phrase, HMAC-SH
 
 ## Ready-to-run intake
 
-`work/h17_missing_source_intake.py` is now committed as a read-only intake/commitment harness. Point it at an authorized recovered SharePoint/R-drive tree. It will select the last ACK for PS-261003-0417 and check the K04 commitment, and scan named WN-14/desk/caption/galley/crew text carriers for contiguous K08 commitment hits. Existing native XPS/EMF/profile scanners in `work/` should be used for binary/native carriers before feeding their extracted text or bytes into the acceptance verifier.
+`work/h17_missing_source_intake.py` is now committed as a read-only intake/commitment harness. Point it only at a user-supplied, independently authorized local copy of the recovered tree; do not connect to or access protected SharePoint/R-drive services. It will select the last ACK for PS-261003-0417 and check the K04 commitment, and scan named WN-14/desk/caption/galley/crew text carriers for contiguous K08 commitment hits. Existing native XPS/EMF/profile scanners in `work/` should be used for binary/native carriers before feeding their extracted text or bytes into the acceptance verifier.
 
 The SharePoint connector is historically identified as an authorized retrieval route, but the current README/custody directive closes the custodian channel and prohibits access to protected services. Do not connect to SharePoint/R-drive from this invocation and do not ask the user to connect it. Use only independently authorized local files the user already possesses and voluntarily uploads; otherwise leave source acquisition blocked.
 
