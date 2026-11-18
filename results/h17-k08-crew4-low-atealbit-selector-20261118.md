@@ -128,7 +128,38 @@ Thus the same target-blind row choice yields both **A TEAL BIT** in note heads a
 
 The exact normalized phrase `a low bit` was checked once under the unchanged K08 desk nonce and route normalization. Its HMAC16 component is `3301765E937F40CE02707DCE602AEF3E`; SHA-256 is `bcc2405b9995bc184ee698ca522c16e91abf58b82a8e297331572fa158a0518c`, so it is **NO_MATCH** for the original K08 commitment. Treat it as an instruction, not keeper wording.
 
-### 4. LOW BIT yields M, which uniquely selects Mug shelf
+### 4. LOW IF EVEN closes a seal-bit fixed point on N10
+
+The winning selected count string is `NLOWIF?V`. Positions 2–6 therefore read **LOWIF**, and the replacement row N11 begins with the literal first word **Even**. Together they give a second instruction:
+
+**LOW IF EVEN**
+
+Apply it to the eight `ATEALBIT` ASCII letters using their selected note-number parity: take the low ASCII bit when the note number is even and the high ASCII bit when it is odd. The selected note numbers are `2,6,11,13,17,18,20,23`, producing bits:
+
+`1 0 0 0 0 0 1 0`
+
+Packed first-bit-as-LSB, as in the CREW4 construction, this is `0x41 = A`. Reading A as the first note points to N01, whose body explicitly contrasts **sea** and **tea**: "The sea looks different when you have finally finished your tea." Applying that literal substitution to `A TEA L BIT` yields:
+
+**A SEAL BIT**
+
+This phrase is itself a K08 direct negative: normalized `a seal bit` gives HMAC16 `B0204E96F94447A103FD495595D70154` and component SHA-256 `c7ec5846db20b1fe953bd93ef85aa6ac5f06d4badf0a9c3887f0bd33676ebe68`.
+
+The seal instruction nevertheless gives an independent source check. From `resources/evidence/maintenance/seal-receipts.jsonl` (SHA-256 `c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32`), apply the already-established K03 receipt rule: PTW-417, signed, CLOSED, AS_LEFT, greatest revision per bay, witness order B,D,A,C. The four serials are:
+
+- B: `D7DAD6BC`
+- D: `9714519B`
+- A: `7DAD0AD4`
+- C: `BE8E87FD`
+
+Take one **low bit** from each 32-bit serial. Their least-significant bits in B,D,A,C order are:
+
+`0 1 0 1`
+
+Using the same first-bit-as-LSB convention gives integer **10**. That points exactly to **N10**, the original row whose one-step lowering to N11 produced the winning `ATEALBIT` / `ALOWBIT` pair.
+
+This is a fixed-point consistency check: among the bounded one-row candidates, N10→N11 creates the TEA-bearing instruction that N01 turns into `A SEAL BIT`, and the independent seal source returns N10. The A→N01 step and the implied high-bit branch for odd note numbers remain interpretive choices, so this is strong corroboration rather than a standalone proof of the historical encoding.
+
+### 5. LOW BIT yields M, which uniquely selects Mug shelf
 
 Read `LOW` literally once more as an instruction to take the low bit of each of the eight `ATEALBIT` letters. The ASCII least-significant bits are:
 
@@ -158,11 +189,7 @@ The card text itself is absent from the supplied export, and MAIL-12 does not qu
 
 ## What this changes
 
-The earlier objection that the preferred ATEALBIT note set had no reproducible selection rule is materially weakened. The extended chain
-
-**Emily authorship -> CREW4 -> David -> LOW -> one-row lowering -> ATEALBIT -> low-bit M -> N11 Mug shelf**
-
-is derived from the supplied crew-note source plus the independently surviving MAIL-12 shelf-card statement and contains no K08 target digest feedback.
+The earlier objection that the preferred ATEALBIT note set had no reproducible selection rule is materially weakened. Two source-local continuations now converge on the same row choice: the seal-bit fixed point returns N10, while the low-bit M path resolves to N11 `Mug shelf` and MAIL-12's small shelf card. These constructions use the unchanged K08 digest only for direct phrase rejection, never to choose the row, seal serials or note sequence.
 
 It does **not** establish that `A TEAL BIT` is the keeper phrase. Literal `a teal bit`, note-vocabulary phrase families, and other text readings have already failed the unchanged K08 commitment. The stronger use remains as a locator or extraction instruction.
 
@@ -187,7 +214,7 @@ Separately, Agent41's exact 1889 Internet Archive rear-map stitch has already te
 
 `agents/agent22/k08_crew4_low_selector_sft.py`
 
-The script pins the source SHA, reproduces CREW4, selects David by first-appearance crew order, reproduces LOW from David body counts with all-author specificity controls, derives Emily's ATTALBIT, enumerates every valid single one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and the aligned mixed instruction `ALOWBIT`, decodes the ATEALBIT ASCII low bits as `M`, and asserts that N11 `Mug shelf` is the unique selected M-heading.
+The script pins both the crew-note and seal-receipt sources, reproduces CREW4 and David's LOW, enumerates every valid one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`, reproduces the `LOW IF EVEN` continuation and N01 tea→sea transformation, derives the PTW-417 B,D,A,C seal low bits `0101` and their selector value 10, then separately decodes the ATEALBIT ASCII low bits as `M` and identifies N11 `Mug shelf` as the unique selected M-heading.
 
 ## Remaining boundary
 
