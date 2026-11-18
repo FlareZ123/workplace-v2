@@ -41,15 +41,15 @@ async function captureScanIndex(page, scanIndex) {
   const row = { scan_index: scanIndex, viewer_url: viewerUrl, zoom: 3 };
   try {
     await page.goto(viewerUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
-    await page.waitForFunction((index, minWidth, minHeight) => {
+    await page.waitForFunction((index) => {
       const images = [...document.querySelectorAll('img[src*="/books/content"]')];
       return images.some((element) => {
         if (!(element instanceof HTMLImageElement)) return false;
         const url = new URL(element.src, location.href);
         return url.searchParams.get("pg") === "PA" + index &&
           element.complete &&
-          element.naturalWidth > minWidth &&
-          element.naturalHeight > minHeight;
+          element.naturalWidth > 500 &&
+          element.naturalHeight > 700;
       });
     }, scanIndex, { timeout: 30000, polling: 250 });
 
