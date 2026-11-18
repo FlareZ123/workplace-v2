@@ -14,14 +14,21 @@ SPEC.loader.exec_module(INTAKE)
 
 
 def record(attempt, state="ACK", cls="RECOVER", payload="A" * 32,
-           timestamp="2026-10-03T18:02:00Z", dest="bench"):
+           timestamp="2026-10-03T18:02:00Z", dest="bench", job="PS-261003-0417"):
     return (
-        f"{timestamp} JOB=PS-261003-0417 ATTEMPT={attempt} STATE={state} "
+        f"{timestamp} JOB={job} ATTEMPT={attempt} STATE={state} "
         f"CLASS={cls} PAYLOAD={payload} DEST={dest}\n"
     )
 
 
 class K04AckSelectionTests(unittest.TestCase):
+    def test_job_identifier_must_match_exactly(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "spool-reconstruction.log"
+            p.write_text(record(2, payload="A" * 32, job="PS-261003-04170"))
+            parsed = INTAKE.print_rows(p)
+        self.assertEqual(parsed, [])
+
     def test_later_requested_attempt_does_not_displace_ack(self):
         rows = [
             record(1, cls="LABEL", payload="1" * 32),
