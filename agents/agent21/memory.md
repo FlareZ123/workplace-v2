@@ -252,3 +252,43 @@ Agent27 messaged via communications/agent21/20261103T0118Z_agent27-aux-event-min
   - Single target catch-ticket rows ST-112/ST-142 under the same digest family gave 0/48 North commitment hits and 0/48 South payload hits. North/South per-row and whole-set digest deltas, plus per-row CRC32 support vectors, also failed.
 - These are bounded negatives, not evidence that all cross-record models are impossible. Do not repeat them or the existing five-row North/South digest SFT (results/h17-k04-north-l29-row-digest-constructor-20261113.md). The source-derived lead still worth pursuing is an actually acquired PS-0417 native spool/coupon/scan or ST-112/A3 original packet; no such source copy exists in the current Project files, local mount, repository history, or public search examined this run.
 - Current shared synthesis is results/README.md. Keep BX25-08 opaque pending independent Risk-desk release authority; do not use the deleted private password guess.
+
+
+---
+
+## 2026-11-18 continuation (run `gpt6-agent21-h17-archive-reconstruction-20261118T225712Z`)
+
+### Invocation and claim
+
+- Random mode draw selected normal research mode.
+- Claimed Agent21 at `2026-11-18T22:57:12.968487Z`; lease is not to be refreshed. The 70-minute release threshold is `2026-11-19T00:07:12.968487Z`.
+- Current source package: user-uploaded `h17-archive-dump.zip`, extracted locally to `/tmp/h17-upload`. It contains the same surviving evidence family as repository `resources/`; no `mug-stock.xls`, shelf-card scan, crew photo archive, native PS-0417 spool/render, or native PS-0311 spool/render is present.
+- Recovery accounting remains six accepted (K01,K02,K03,K05,K06,K07), K04/K08 missing, combined REC8/1 incomplete. Do not edit candidate.json, acceptance.json, or original verifier.
+
+### Work performed
+
+1. Confirmed and pushed Agent21's identity claim.
+2. Read current decision map, K04/K08 gate, current Critic directions, Agent21 prior memory, and the recent Agent7/Agent9/Agent22 work. Avoid re-running the extensive K04 MT/PRNG/metadata/fragment families described above.
+3. Sent Agent7 a source/edition confirmation for the *1889 W.H. Allen Falcon on the Baltic* candidate and the two frozen 8-pair coordinate sets:
+   - K01/WN-14: `(4,154),(171,46),(28,222),(122,130),(205,124),(96,35),(67,3),(201,26)`
+   - PS-0323: `(30,81),(239,210),(229,202),(143,78),(31,200),(180,146),(151,179),(215,79)`
+   This confirms the frozen candidate and coordinate inputs only; it does not authenticate David's exact physical copy, K01-as-book-index, or N23→PS-0323.
+4. Flagged a bounded post-pass hypothesis to Agent7: David's N04 caption says “Count the heads twice”; if the approved full-window body-word pass is negative, this may support testing running-head tokens counted twice on the same 16 already-verified page images. This is speculative and must not alter/delay the approved run or widen source/coordinates.
+5. Reviewed Agent22's new source-local CREW4→LOW→ATEALBIT→ALOWBIT→M selector chain. The report `results/h17-k08-crew4-low-atealbit-selector-20261118.md` pins the note source hash and reproduces:
+   - Emily author bits over N01–N24 → CREW4; first-appearance crew member 4 is David.
+   - David body-word counts 11/14/22 → LOW (A=0).
+   - Emily's fixed-note heads ATTALBIT; the unique valid one-row lowering N10→N11 yields ATEALBIT and the aligned ALOWBIT instruction.
+   - ASCII low bits of ATEALBIT packed first-bit-as-LSB yield 0x4D = M; N11's “Mug shelf” is the unique selected M heading.
+   - MAIL-12 independently says Zoey placed a small card by that shelf. Literal “a low bit” itself fails the original K08 commitment; this is a locator/extraction instruction, not the keeper phrase.
+   This chain materially improves the shelf-card locator but does not recover K08.
+6. Updated `results/README.md` to integrate the CREW4→LOW→M shelf-card selector and preserve the boundary that the physical card and `mug-stock.xls` are absent. Commit: `6556190a7e89adb929f9b8fc6b786894f99ec8c0`; remote readback confirmed.
+7. Sent Agent9 a possible N11→PS-0311 card-print control (the row is STORES/desk at 07:55Z), then checked the already-existing source-first holdout result `h17-k08-full-note-spool-sequence-crosswalk-20261118.md`. That result invalidates the ordinal mapping as a privileged join (0/4 withheld role predictions; rank 26/105). Sent a correction: do not elevate or request PS-0311, and do not infer the card was printed by it. Keep PS-0300/0311/0312 as conditional controls only unless a native document-name/host/rendered-output record independently joins one to the card.
+8. A raw 16-byte window/hex scan across supplied archive files found no K04 commitment preimage, including candidate bytes and mask-XOR variants. Direct raw PTW-417 as-left/removed serial concatenations and simple mask-XOR variants also did not match K04. These are narrow negatives only, not a reason to reopen generic search families.
+
+### Current collaboration / next actions
+
+- Agent7 owns the single corrected Falcon full-window pass. Agent13 is the adversarial reviewer. Agent7's PR #2 was not approved at last review; it needed to fix output-before-lock race, integrate Agent35's top-band resolver, add zoom-3 positive controls, and rebase. No corrected full-window workflow had been dispatched at the last check. Do not launch another run or widen the two frozen coordinate sets.
+- Agent9 has claimed a source-led K08 lane and received Agent22's CREW4→LOW shelf-card handoff plus Agent21's PS-0311 correction. If the actual shelf card or `mug-stock.xls` becomes available as an independently authorized local file, preserve the card front/back/handwriting/date/edits and the workbook's native XLS structure (sheets, hidden sheets, formulas, XF/fills, comments, names, embedded objects, metadata). The eight K01 byte pairs may be tested only as the already-noted two address orientations; K01's official route still defines ink control groups, not spreadsheet coordinates.
+- Do not contact the custodian, access the closed R-drive/SharePoint, or operate facility equipment. The only usable path for missing artifacts is independently authorized local material voluntarily supplied by the user.
+- K04's highest-value missing evidence remains native PS-0417 queue/rendered/coupon material plus FA-17/property-card records and the source-dependent Bundle06 object if an authorized local copy exists. The current archive's spool payload is not media-integrity proof. Avoid more generic MT/PRNG/seed/metadata/copy-fault variants without a new source witness.
+- Continue useful work until the measured 70-minute lease-age checkpoint. After every checkpoint, read the original lease timestamp and actual system clock; only release at ≥70 minutes, after memory and all useful state are pushed, with lease deletion as the final repository operation.
