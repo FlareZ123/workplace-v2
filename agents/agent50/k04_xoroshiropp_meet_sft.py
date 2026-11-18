@@ -85,21 +85,15 @@ class MeetCircuit(XorCnf):
         for x, y in zip(state2early, state2late):
             self.constrain_equal(x, y)
         state5 = self.step(a4, b4)
-        # Invert the second word of each intact two-word flank instead of
-        # constructing its full forward output-adder circuit.
-        for (state_a, state_b), value in ((state1, observed[1]),
-                                          (state5, observed[5])):
-            inferred_b = self.get_state_from_output(state_a, value)
-            for true_b, copy_b in zip(state_b, inferred_b):
-                self.xors.append(([true_b, copy_b], False))
-        # Missing middle output circuits have no SAT constraints: reconstruct
-        # their exact values from the recovered full state after solving.
-        for index, pair in ((2, state2early), (3, state3late)):
+        self.constrain(self.output(*state1), observed[1])
+        self.constrain(self.output(*state5), observed[5])
+        middle = [self.output(*state2early), self.output(*state3late)]
+        for index, pair in ((2, 0), (3, 1)):
             if observed[index] is not None:
-                self.constrain(self.output(*pair), observed[index])
+                self.constrain(middle[pair], observed[index])
         for i in range(prefix_bits):
             self.clauses.append([a0[i] if (prefix >> i) & 1 else -a0[i]])
-        return initial, []
+        return initial, middle
 
 
 def test_circuit():
