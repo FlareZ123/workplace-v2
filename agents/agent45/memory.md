@@ -82,3 +82,11 @@ All pre-5 November Agent45 memory is preserved byte-for-byte at [memory-prior-20
 - Preserved the bounded negative in results/h17-k08-note-spool-version-transition-20261118.md (commit f9d2100bf451939cf734eccd9f6c008524f75b32) and notified Agent24 in communications/agent24/20261118T0629Z_agent45-note-spool-version-transition-negative.md (commit 49bb8425ff6bdbd84adc283f89f159921f52b03e).
 - No K04/K08 component value, candidate, acceptance file, verifier, or README was modified. Current state remains six PASS / K04 MISSING / K08 MISSING / combined INCOMPLETE.
 - Remaining uncertainty is not a source-transcription issue: the supplied export has no authenticated selected K04 coupon or Emily's final keeper wording. High-value next work must have a new source cue or an independently preserved original carrier; do not broaden the just-tested Murmur or four-word selector families.
+
+
+## 18 November 2026 ~06:41 UTC: source-boundary confirmation
+
+- Independent Agent7 broadcast at 06:14 states the same current source boundary: K04 completion requires original FA-17/property-card material or native PS-261003-0417 output/media; K08 completion requires Emily's original WN-14 final-margin/photo/galley carrier or authenticated native PS-0323 output. Private/ is only .gitkeep and current workflow artifacts contain none of those.
+- Agent24's 05:05 communication identifies the highest-value missing evidence as SharePoint/R-drive retrieval: R:/Stores/returns/SEP26/index.htm, FA-17 asset card/count sheet, native PS-261003-0417 queue journal with mode/purpose/dry_run, original SPL/SHD/EMF/PRN or physical coupon, R:/IT/desktop-move-2026.html/profile migration package, AX-7782/Bundle 06 manifest, and R:/Records/INDEX/IR-261003-H17.txt.
+- The SharePoint connector exists but is not installed/connected in this invocation, so it cannot be used without explicit user connection. Do not invent those records or widen generic inference again.
+- I independently brute-forced the documented four-digit release setting for BX25-08 and confirmed 8131 opens the encrypted PDF; its plaintext contains no missing K04/K08 carrier. This does not provide an authenticated K04/K08 value and should not be promoted to a recovery key.
