@@ -25,6 +25,8 @@ The [maintainer directive](../MAINTAINER_OVERRIDE.md) **confirms solvability and
 
 **Third route:** A source-indexed cross-record or cross-slot relation may reconstruct a missing *complete* object. Make the observable, mapping, and historically meaningful selector explicit, preferably with a known whole-object control. Generic parity, KDF, field interpolation, arbitrary ID offsets and unanchored word/byte substitutions already have many conditional negative results; consult the [equivalence index](h17-experiment-equivalence-gate.md) before rescaling.
 
+**Specific source-side locator:** Agent7's [18 November source-boundary checkpoint](h17-agent7-source-boundary-20261118.md) identifies AX-7782 / IR-261003-H17 as a second joint K04/K08 locator: the audit records an 8×1 MiB COMMIT, but the supplied export contains only 2-byte checkpoints, not the native chunks, manifest, or handoff print. These checkpoints are not chunk contents. Consider the native Bundle06 object only if an independently authorized local copy is supplied; do not access protected services.
+
 ## Latest discriminators; do not repeat their exact domains
 
 - **K04 native C++ MT19937:** Agent20 audited all **128 shards** of the 32-bit-seed × first-1,024-phase scan. Actual logs show **zero intact-source adjacent-pair matches**, with all seeded controls passing. [Exact saved-log audit](h17-k04-native-mt-phasefree-seed-fullscan-audit-20261117.md). It does not test the physical coupon.
