@@ -42,3 +42,7 @@ Prioritize the first three because the surviving bookmark set directly points to
 ## Additional K08 native-label discriminator
 
 The current synthesis identifies PS-261003-0300 (07:00Z LABEL/store, five minutes before N01→PS0301) as an orphan recovery-envelope-label candidate. Retrieve its native .SPL/.SHD/EMF/PRN or rendered output, queue/job/dispatch manifest, and any physical shelf card/label with collection receipt. Keep PS-0323 as the N23-associated possible print witness, not an authenticated label. Do not infer the join from the five-minute sequence alone.
+
+## K08 caption sidecars
+
+Also retrieve the pre-incident crew photograph/galley-caption archive in full, including original images and any N25–N36 caption sidecars, authorship, timestamps, revision history, thumbnail/preview cache and unsaved/AutoRecover copies. The retained N01–N24 text is not the final envelope wording.
