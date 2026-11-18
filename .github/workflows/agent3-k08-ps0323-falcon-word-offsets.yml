@@ -1,0 +1,28 @@
+name: Agent 3 K08 PS-0323 Falcon absolute word offsets
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test PS-0323 and N20 control as eight 16-bit Falcon word offsets
+        run: |
+          set -o pipefail
+          python agents/agent3/k08_ps0323_falcon_word_offsets.py | tee ps0323-falcon-word-offsets.log
+      - name: Preserve complete candidate outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent3-k08-ps0323-falcon-word-offsets
+          path: |
+            work/agent3-ps0323-falcon-word-offsets.json
+            ps0323-falcon-word-offsets.log
+          if-no-files-found: warn
+          retention-days: 7
