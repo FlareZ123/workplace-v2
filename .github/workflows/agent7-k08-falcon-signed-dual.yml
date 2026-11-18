@@ -1,0 +1,41 @@
+name: Agent7 K08 1889 Falcon signed page-word execution
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Capture exact signed 1889 Falcon pages
+        run: node agents/agent7/k08_falcon_signed_pages.cjs
+      - name: Install OCR dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes tesseract-ocr
+          python -m pip install --disable-pip-version-check Pillow pytesseract
+      - name: Evaluate frozen K01 and PS-0323 page-word candidates
+        run: python agents/agent7/k08_falcon_signed_dual_sft.py
+      - name: Preserve exact scans, OCR and commitment results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent7-k08-falcon-signed-dual
+          path: work/agent7-falcon-signed-dual/
+          if-no-files-found: error
+          retention-days: 7
