@@ -6,12 +6,21 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import struct
+import zlib
+from datetime import datetime, timezone
 from pathlib import Path
 
 SOURCE = Path("resources/evidence/crew/noticeboard-and-desk-notes.txt")
 EXPECTED_SHA256 = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
 SEAL_SOURCE = Path("resources/evidence/maintenance/seal-receipts.jsonl")
 SEAL_SHA256 = "c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32"
+MAIL10_SOURCE = Path("resources/evidence/mail/10.eml")
+MAIL10_SHA256 = "ccfc592fe570ca6928a74de813c378443030e841bba169434c0f413721122e48"
+RECORDER_SOURCE = Path("resources/evidence/recorder/trip-recorder.raw")
+RECORDER_SHA256 = "5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba"
+ROUTE_SOURCE = Path("resources/evidence/recovery-routing.json")
+ACCEPTED_K05 = bytes.fromhex("FF8B78200A56E8586DCDA00EF01E4572")
 
 
 def parse_notes(text: str) -> list[tuple[int, str, str]]:
@@ -213,6 +222,47 @@ def main() -> None:
     assert after_last_cup == 11
     assert after_last_cup == exact[0][1]
 
+    mail10_raw = MAIL10_SOURCE.read_bytes()
+    assert hashlib.sha256(mail10_raw).hexdigest() == MAIL10_SHA256
+    mail10 = mail10_raw.decode("utf-8")
+    assert "X-Records-Reference: MAIL-10" in mail10
+    assert "The node we want is 0x31." in mail10
+    assert "copied exactly as stored" in mail10
+    assert "CRC failures are expected" in mail10
+
+    recorder_raw = RECORDER_SOURCE.read_bytes()
+    assert hashlib.sha256(recorder_raw).hexdigest() == RECORDER_SHA256
+    magic, version, record_size, record_count = struct.unpack_from("<8sHHI", recorder_raw, 0)
+    assert (magic, version, record_size, record_count) == (b"TRP2DUMP", 2, 24, 88)
+    route = json.loads(ROUTE_SOURCE.read_text("utf-8"))["K05"]
+    assert route["node"] == 49 == 0x31
+    assert route["event"] == 82 == 0x52
+    start = datetime.fromisoformat(route["start_utc"])
+    end = datetime.fromisoformat(route["end_utc_exclusive"])
+
+    k05_rows: dict[int, tuple[int, bytes]] = {}
+    for index in range(record_count):
+        offset = 16 + index * 24
+        row = recorder_raw[offset : offset + 24]
+        assert len(row) == 24
+        stored_crc = struct.unpack_from("<I", row, 20)[0]
+        if zlib.crc32(row[:20]) & 0xFFFFFFFF != stored_crc:
+            continue
+        timestamp, node, event, latch, sequence = struct.unpack_from("<IHBBI", row, 0)
+        when = datetime.fromtimestamp(timestamp, timezone.utc)
+        if node != route["node"] or event != route["event"] or not (start <= when < end):
+            continue
+        control = row[12:16]
+        if latch not in k05_rows or sequence > k05_rows[latch][0]:
+            k05_rows[latch] = (sequence, control)
+
+    assert sorted(k05_rows) == [0, 1, 2, 3]
+    k05_sequences = [k05_rows[latch][0] for latch in range(4)]
+    k05_controls = [k05_rows[latch][1] for latch in range(4)]
+    assert k05_sequences == [300, 301, 302, 303]
+    k05_component = b"".join(k05_controls)
+    assert k05_component == ACCEPTED_K05
+
     selected_headings = [
         (number, heading(notes[number - 1][2]))
         for number in selected_notes
@@ -262,6 +312,11 @@ def main() -> None:
     print("AFTER_LAST_CUP", f"N{seal_selector:02d}->N{after_last_cup:02d}")
     print("ATEALBIT_LOW_BITS", "".join(map(str, low_bits)))
     print("ATEALBIT_LOW_BYTE", f"0x{low_byte:02X}", chr(low_byte))
+    print("M_PLUS_SEAL_SELECTOR", f"{chr(low_byte)}{seal_selector}", "MAIL-10")
+    print("MAIL10_SOURCE_SHA256", MAIL10_SHA256)
+    print("K05_SELECTED_SEQUENCES", ",".join(map(str, k05_sequences)))
+    print("K05_COMPONENT", k05_component.hex().upper())
+    print("K05_ACCEPTED_CALIBRATION", "PASS")
     print("UNIQUE_M_HEADING", "N11", "Mug shelf")
 
 
