@@ -41,25 +41,35 @@ async function captureScanIndex(page, scanIndex) {
   const row = { scan_index: scanIndex, viewer_url: viewerUrl, zoom: 3 };
   try {
     await page.goto(viewerUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
-    const selector = 'img[src*="books/content"][src*="pg=PA' + scanIndex + '"]';
-    const locator = page.locator(selector).first();
-    await locator.waitFor({ state: "attached", timeout: 30000 });
-    await page.waitForFunction((sel, minWidth, minHeight) => {
-      const element = document.querySelector(sel);
-      return element instanceof HTMLImageElement &&
-        element.complete &&
-        element.naturalWidth > minWidth &&
-        element.naturalHeight > minHeight;
-    }, selector, MIN_WIDTH, MIN_HEIGHT, { timeout: 30000 });
+    await page.waitForFunction((index, minWidth, minHeight) => {
+      const images = [...document.querySelectorAll('img[src*="/books/content"]')];
+      return images.some((element) => {
+        if (!(element instanceof HTMLImageElement)) return false;
+        const url = new URL(element.src, location.href);
+        return url.searchParams.get("pg") === "PA" + index &&
+          element.complete &&
+          element.naturalWidth > minWidth &&
+          element.naturalHeight > minHeight;
+      });
+    }, scanIndex, { timeout: 30000, polling: 250 });
 
-    const imageInfo = await locator.evaluate((element) => ({
-      src: element instanceof HTMLImageElement ? element.src : "",
-      naturalWidth: element instanceof HTMLImageElement ? element.naturalWidth : 0,
-      naturalHeight: element instanceof HTMLImageElement ? element.naturalHeight : 0,
-      complete: element instanceof HTMLImageElement ? element.complete : false
-    }));
-    if (!imageInfo.src || !imageInfo.complete) {
-      throw new Error("viewer image element is incomplete");
+    const imageInfo = await page.evaluate((index) => {
+      const images = [...document.querySelectorAll('img[src*="/books/content"]')];
+      const element = images.find((candidate) => {
+        if (!(candidate instanceof HTMLImageElement)) return false;
+        const url = new URL(candidate.src, location.href);
+        return url.searchParams.get("pg") === "PA" + index;
+      });
+      if (!(element instanceof HTMLImageElement)) return null;
+      return {
+        src: element.src,
+        naturalWidth: element.naturalWidth,
+        naturalHeight: element.naturalHeight,
+        complete: element.complete
+      };
+    }, scanIndex);
+    if (!imageInfo || !imageInfo.src || !imageInfo.complete) {
+      throw new Error("viewer image element is incomplete or absent");
     }
 
     const signedUrl = new URL(imageInfo.src, page.url());
@@ -80,7 +90,10 @@ async function captureScanIndex(page, scanIndex) {
       throw new Error("viewer did not expose the required full-resolution zoom=3 image");
     }
 
-    const response = await page.request.get(signedUrl.toString(), { timeout: 30000 });
+    const response = await page.context().request.get(signedUrl.toString(), {
+      timeout: 30000,
+      headers: { referer: viewerUrl }
+    });
     if (!response.ok()) {
       throw new Error("signed image request returned HTTP " + response.status());
     }
@@ -118,13 +131,14 @@ async function captureScanIndex(page, scanIndex) {
   fs.mkdirSync(OUT, { recursive: true });
   const lockPath = path.join(OUT, ".capture.lock");
   const lockFd = fs.openSync(lockPath, "wx");
-  const browser = await chromium.launch({
-    headless: true,
-    args: ["--disable-blink-features=AutomationControlled"]
-  });
-  const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
+  let browser = null;
   const records = [];
   try {
+    browser = await chromium.launch({
+      headless: true,
+      args: ["--disable-blink-features=AutomationControlled"]
+    });
+    const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
     for (const scanIndex of SCAN_INDICES) {
       records.push(await captureScanIndex(page, scanIndex));
     }
@@ -175,7 +189,7 @@ async function captureScanIndex(page, scanIndex) {
     }
     console.log("FALCON_SIGNED_SCAN_SET_COMPLETE " + SCAN_INDICES.length);
   } finally {
-    await browser.close();
+    if (browser) await browser.close();
     fs.closeSync(lockFd);
     fs.unlinkSync(lockPath);
   }
