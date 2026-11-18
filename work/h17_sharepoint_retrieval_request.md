@@ -1,6 +1,8 @@
-# H-17 retrieval request for the missing two components
+# H-17 retrieval checklist for the missing two components
 
-Use the connected SharePoint/R-drive source and search these exact historical paths/names first. Do not substitute public web pages or paraphrases.
+**Current custody constraint:** Do not access protected SharePoint/R-drive services and do not recontact the custodian. This is a checklist only for records already independently authorized and supplied as local files by the user. Do not ask the user to connect protected services. If no such local copy is available, leave source acquisition blocked. Do not substitute public web pages or paraphrases.
+
+If an independently authorized local copy is supplied, search these exact historical paths/names first.
 
 ## K04 / ESC-N
 
