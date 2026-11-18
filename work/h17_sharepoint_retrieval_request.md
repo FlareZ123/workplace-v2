@@ -55,7 +55,7 @@ Prioritize the first three because the surviving bookmark set directly points to
 
 ## Additional K08 native-label discriminator
 
-The current synthesis identifies PS-261003-0300 (07:00Z LABEL/store, five minutes before N01→PS0301) as an orphan recovery-envelope-label candidate. Retrieve its native .SPL/.SHD/EMF/PRN or rendered output, queue/job/dispatch manifest, and any physical shelf card/label with collection receipt. Keep PS-0323 as the N23-associated possible print witness, not an authenticated label. Do not infer the join from the five-minute sequence alone.
+PS-261003-0300 is a 07:00Z LABEL/store spool record preceding the numbered spool series; its role as an envelope label is unverified, and the five-minute ordinal proximity does not authenticate that role. If an independently authorized local copy is supplied, retain its native .SPL/.SHD/EMF/PRN or rendered output, queue/job/dispatch manifest, and any physical shelf card/label with collection receipt. Keep PS-0323 as an unverified payload candidate; the N23→PS0323 join is not source-authenticated.
 
 ## K08 caption sidecars
 
