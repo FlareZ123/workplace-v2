@@ -22,7 +22,7 @@ The N23 → PS-0323 relationship is only a structural note/job crosswalk; it is 
 
 ## Result
 
-<badge color="red">No match</badge>
+**Result: no match.**
 
 All eight candidate constructions failed the official K08 slot commitment. The four PS-0323 phrases were:
 
