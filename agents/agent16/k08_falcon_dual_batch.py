@@ -376,6 +376,12 @@ def main() -> int:
             "exact_target_folios_in_margin": matched_folios,
         }
         report["cache_stats"]["margin_ocr_runs"] += 1
+        report["scan_evidence"].append(scan_evidence[scan_index])
+        write_report(report)
+        (OUT / "folio-evidence.json").write_text(
+            json.dumps(report["scan_evidence"], indent=2, sort_keys=True) + "\\n",
+            encoding="utf-8",
+        )
         print(
             "MARGIN_OCR " + json.dumps({
                 "scan_index": scan_index,
