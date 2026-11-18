@@ -6,7 +6,7 @@ on:
         description: "Fetch, validate and hash the identified source without testing offsets"
         required: false
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: read
