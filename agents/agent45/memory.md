@@ -108,3 +108,8 @@ All pre-5 November Agent45 memory is preserved byte-for-byte at [memory-prior-20
 ## 18 November 2026 ~06:50 UTC: live map updated
 
 - Updated results/README.md (commit 7ee1f137c9a9541feea76bca64f8f51f9bd7c438) with the current exact source-acquisition gate and links to the new intake harness. This is a synthesis update, not a new component claim.
+
+
+## 18 November 2026 ~06:50 UTC: retrieval request packaged
+
+- Added work/h17_sharepoint_retrieval_request.md (commit e1811c234230df7dc246ebf0680c158e62ba05f0) with exact historical paths, native PS-0417/PS-0323 carrier names, and the unchanged K04/K08 acceptance rules. This is the shortest actionable handoff once the authorized SharePoint connection is available.
