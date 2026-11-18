@@ -43,7 +43,7 @@ The positive HMAC known-answer control, N02 draft phrase `a good watch leaves th
 
 ## Results
 
-<badge color="danger">0 / 72 commitment matches</badge>
+**Result: 0 / 72 commitment matches.**
 
 All 72 complete candidate phrases failed the original K08 SHA-256 commitment. All unsigned u16 offsets were in range, but this is not discriminating: every unsigned 16-bit value is below 65,536, while the book contains 81,392 words.
 
