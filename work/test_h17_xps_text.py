@@ -49,6 +49,50 @@ def test():
     assert hashlib.sha256(source).hexdigest() == original_hash
     print("PASS: synthetic 2-page package, split 16-byte K04 and split whole-phrase K08")
 
+    # Actual archival scanner integration: whole coupon in joined XPS glyph runs.
+    from h17_k04_binary_window_intake import scan_member
+    expected_component = bytes(a ^ b for a, b in zip(coupon, MASK))
+    source_result = scan_member(
+        "synthetic.xps", source, 0, [0, 16 * 1024 * 1024, 0, 100],
+        hashlib.sha256(expected_component).digest(), MASK, 1, 8 * 1024 * 1024, 3
+    )
+    assert any(
+        item["kind"] == "payload_xor_route_mask"
+        and item["component_hex"] == expected_component.hex().upper()
+        and "xps-page-1-joined" in item["source"]
+        for item in source_result["hits"]
+    ), source_result["hits"]
+    print("PASS: K04 native archive scanner recovers a planted whole XPS coupon")
+
+    # An authorized profile scan can check the exact original K08 HMAC rule.
+    from h17_profile_k08_phrase_scan import scan_inventory
+    import json
+    import tempfile
+    with tempfile.TemporaryDirectory() as folder:
+        source_root = Path(folder) / "source"
+        source_root.mkdir()
+        original = source_root / "synthetic.xps"
+        original.write_bytes(source)
+        manifest = Path(folder) / "inventory.json"
+        manifest.write_text(json.dumps({
+            "schema": "h17-profile-inventory/v1",
+            "source_root": str(source_root),
+            "files": [{
+                "path": "synthetic.xps",
+                "size": len(source),
+                "sha256": original_hash,
+                "categories": ["printer"],
+            }],
+        }), encoding="utf-8")
+        report = scan_inventory(
+            manifest, NONCE, hashlib.sha256(expected_k08).digest(),
+            max_phrase_words=16, max_file_bytes=8 * 1024 * 1024,
+            max_total_bytes=16 * 1024 * 1024
+        )
+        assert any("xps-page-2-joined" in hit["source"] for hit in report["hits"]), report["hits"]
+        assert original.read_bytes() == source
+    print("PASS: K08 profile phrase scanner recovers planted final caption; source unchanged")
+
     assert list(extract_xps_text(package([page("abc")], opc=False))) == []
     print("PASS: reject ordinary ZIP lacking OPC [Content_Types].xml")
     assert list(extract_xps_text(package([b'<FixedPage><Glyphs UnicodeString="x"/></FixedPage>']))) == []
