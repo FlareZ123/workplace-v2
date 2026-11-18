@@ -1,10 +1,20 @@
 name: H17 K04 xoroshiro128++ bidirectional state reconstruction
 on:
   workflow_dispatch:
+    inputs:
+      experiment:
+        description: "Run source flanks or test SAT prefix costs"
+        type: choice
+        required: true
+        default: source
+        options:
+          - source
+          - calibrate
 permissions:
   contents: read
 jobs:
   synthetic-control:
+    if: inputs.experiment == 'source'
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
@@ -19,6 +29,7 @@ jobs:
       - name: Plant authentic seed with missing middle and invert 16-bit state-prefix
         run: python agents/agent50/k04_xoroshiropp_meet_sft.py --control-only --limit-seconds 100
   source-brackets:
+    if: inputs.experiment == 'source'
     needs: synthetic-control
     runs-on: ubuntu-latest
     timeout-minutes: 9
@@ -35,3 +46,25 @@ jobs:
         run: python -m pip install pycryptosat==5.14.7
       - name: Reconstruct masked physical-coupon candidate from source flanks
         run: python agents/agent50/k04_xoroshiropp_meet_sft.py --view ${{ matrix.view }} --limit-seconds 240
+  prefix-calibration:
+    if: inputs.experiment == 'calibrate'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    strategy:
+      fail-fast: false
+      matrix:
+        bits: [8, 10, 12, 14, 16]
+        sign: [positive, negative]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install XOR SAT engine
+        run: python -m pip install pycryptosat==5.14.7
+      - name: Recover planted missing-middle bracket at fixed true prefix
+        if: matrix.sign == 'positive'
+        run: python agents/agent50/k04_xoroshiropp_meet_sft.py --control-only --control-prefix-bits ${{ matrix.bits }} --limit-seconds 60
+      - name: Reject planted bracket under wrong prefix
+        if: matrix.sign == 'negative'
+        run: python agents/agent50/k04_xoroshiropp_meet_sft.py --control-only --control-prefix-bits ${{ matrix.bits }} --control-negative --limit-seconds 60
