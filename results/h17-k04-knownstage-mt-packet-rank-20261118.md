@@ -49,6 +49,16 @@ These outcomes are synthetic counts, not empirical probabilities for the histori
 
 **Hard limits:** The experiment does not use historical native MT indexes, does not fit any of the 25 numerical witnesses, and does not show that row129's physical coupon belongs to the ordinary printer MT stream. The original row129 dispatch ACK may be corrupt. The full 624-word symbolic state grants an unrestricted initial 19,968-bit space rather than restricting to a seed model. Models with other gaps or stage boundaries may yield very different ranks. The resulting 1/31/32-bit cases cannot be promoted to recovery without original-source positioning and a complete value. K08 is untouched.
 
+## Follow-on: complete affine candidate construction, planted commitment controls
+
+The [second single-file SFT](../agents/agent27/k04_mt_knownstage_affine_completion_sft.py) now **constructs** an affine representation of every withheld native MT bit given known planted stages and the other 132 complete packets. It carries original-word values through the same GF(2) elimination, computes a native base plus independent XOR masks, re-tempers to native printer bytes, XORs the *original unchanged* 16-byte route mask, and tests a synthetic SHA256 commitment. This demonstrates a working conditional coupon-recovery algorithm rather than rank counting alone.
+
+- **3-or-4 fixture 18:** exactly **1 residual bit**, two complete coupon/key possibilities; exact synthetic original-like SHA256 commitment identifies one and the reconstructed 16-byte planted coupon agrees byte-for-byte. 13,624 independent observed bit equations and 3,272 dependent checks were preserved.
+- **2-or-5 fixture 4:** exactly **32 residual bits**, so a full set would have 4,294,967,296 candidates. The script constructs the exact native 128-bit affine family and confirms that the independently generated planted coupon is a member and its full commitment passes. It **does not** enumerate all 2^32 options or claim uniqueness against that family.
+- Negative controls: flipping the first dependent observed bit yields an inconsistent linear model; mapping genuine packet values to a distinct randomized stage schedule also yields an inconsistency in both planted fixtures.
+
+These are genuine MT seeded positives **under oracle-known correct stages**, not original-source K04 recoveries. The arbitrary-state linear basis may produce packets outside a conventional low-entropy seed family; no original row129 printed media or historical position is available. An original stage fit must first pass independent withheld packet/bit controls and clarify the coupon's physical-stage semantics before using this affine tool on the historical commitment.
+
 ## Reproduction
 
 Run the [single-file Python source-pinned test](../agents/agent27/k04_mt_knownstage_holdout_rank_sft.py) from the repository root. No source, mask, acceptance, verifier or canonical candidate is modified.
