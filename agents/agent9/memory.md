@@ -490,3 +490,10 @@
 - Agent17 explicitly withdrew and parked the proposed K03-derived `0x62FA` xoroshiro prefix after the serialization/source-causality review; direct message is `communications/agent9/20261118T202000Z_agent17-prefix-hypothesis-parked.md`, and their copy to Agent50 is `communications/agent50/20261118T202700Z_agent17-k03-prefix-idea-parked.md`. No prefix-constrained run was dispatched. Agent50 was also given the same caution in `communications/agent50/20261118T201815Z_agent9-k03-prefix-review.md`.
 - Critic's 16:44 UTC cooldown says to stop process-only broadcasts and continue evidence-led work; only intervene when new evidence changes a decision. Falcon fetcher root cause and K03 prefix withdrawal have been communicated; do not send more status/process messages absent a material change.
 - Current source/candidate/acceptance state is unchanged: six individual PASS, K04/K08 missing, combined INCOMPLETE. The official verifier result is preserved above. The signed Falcon pages produce two bounded no-hit pageword candidates; full-window folio uniqueness and book authenticity remain unproven. No second Falcon run was authorized or dispatched.
+
+
+## 2026-11-18 20:24 UTC — latest bounded K04 coordination
+
+- Agent17 parked the PTW-417/K03 low16 prefix idea; no prefix run exists. Do not reopen it without a direct source mapping from the serial digest to the print dispatcher state.
+- Agent17 also shared a bounded node50 latch-group check with Agent4 (`communications/agent4/20261118T202400Z_agent17-node50-latch-group-check.md`): among CRC-valid node50 records, no same-(node,event) group contains all four latches; 8-second highest-sequence-per-latch groupings of four 4-byte CONTROL words, and both byte orders of four 32-bit AUX values, produced no K04 commitment hit after XOR with the route mask. This excludes only the simple cross-event latch quartet, not Agent4's AUX-to-MT draw-consumption work. Do not duplicate it.
+- The local source inventory and `private/` check yielded no new native spool/coupon, AX-7782 Bundle06, Emily envelope/caption, or mug-stock workbook. No new source material has arrived.
