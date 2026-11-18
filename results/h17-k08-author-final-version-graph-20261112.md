@@ -94,26 +94,3 @@ The script checks source SHA-256 pins, the six mail timestamps, note roles, expl
 - `evidence/h17-supplemental-office-files/retired-office-bookmarks.html`: `b9261ac17524e66bb5a6e3f3ce4996df65737aa34564b6d29a87ebab681a6096`
 
 
-## Complete-text copy screen of the surviving caption nodes (18 November 2026)
-
-MAIL-11 says Emily used desk notes and photograph captions as wording inputs. A materially simple version-selection hypothesis is that she copied one complete caption into the final recovery-envelope inscription without editing. The four explicit caption-labeled note texts were checked against the unchanged K08 commitment using the exact routing normalization (lowercase; replace non-ASCII-alphanumeric/non-whitespace characters with spaces; collapse whitespace), HMAC-SHA256 keyed by the original desk nonce, first 16 bytes, then SHA-256.
-
-| Source node | Role / author | Normalized complete text | K08 HMAC16 | SHA-256 of HMAC16 | Result |
-|---|---|---|---|---|---|
-| N01 | Empty-bench photo caption / Jason | `the sea looks different when you have finally finished your tea` | `4D9BAD0C7C773568B09DD8C80795096C` | `d3a899102cfd1598245d91f0ced97a0a111da547b439082a086e297acfa00dbb` | NO_MATCH |
-| N08 | Window-photo caption / Jason | `by daylight the water gives back most of the colors it borrowed overnight` | `148AA88C6C2775E435D934A00A2295AF` | `5f0b88ea331fb531f33c4f6b9efcc680a15f80760d520e636c8652d632eecc5f` | NO_MATCH |
-| N09 | Galley-board caption / Zoey | `nobody should have to make their first cup alone after a bad night` | `FCCD17F08A1C558E344613EDD0BE0B19` | `46301e45e023f7321b4d9b7b332b1a9308e43c65a349caf6bcc5770b2c0b2b2c` | NO_MATCH |
-| N14 | Sunrise-photo caption / Gabriel | `if the horizon has disappeared the boat has probably brought the rain with it` | `1ADE017164A9549BAE2CBFA02FC2A423` | `db4ea05259784e82412d669586cb5d6e16d1d2d687c2708c25fa3bfa4d4a7f0f` | NO_MATCH |
-
-N01's exact check is preserved in [the N01 caption commitment test](h17-k08-n01-caption-commitment-test-20261107.md). N09's exact check and component are preserved in Agent46's [whole-text copy test](../communications/agent24/20261117T2015Z_agent46-K08-whole-text-copy-test.md). Agent24 independently checked the previously untested exact N08 and N14 strings directly from the uploaded source export; both miss the original target `285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747`.
-
-**Interpretation:** the final K08 inscription is not a verbatim copy of any of these four surviving caption-labeled texts. This closes only that finite complete-text copy model. It does not exclude Emily editing or combining source captions, copying an omitted photograph/sidecar, or writing a distinct final margin/envelope text. The next useful model must specify a concrete edit/selection operation or identify a different retained source node; another unrestricted paraphrase or synonym grid is not justified by this result.
-
-Reproduction for the two new literals uses the existing [phrase checker](../work/h17_check_phrase.py):
-
-```bash
-python work/h17_check_phrase.py "By daylight the water gives back most of the colors it borrowed overnight."
-python work/h17_check_phrase.py "If the horizon has disappeared, the boat has probably brought the rain with it."
-```
-
-Original source files, K08 nonce, acceptance commitment, route and verifier were not modified.
