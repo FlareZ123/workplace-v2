@@ -14,7 +14,7 @@ It was integrated with the *unchanged* archival acceptance rules:
 - [K08 profile scanner](../work/h17_profile_k08_phrase_scan.py): pass recovered text to the original normalized-phrase HMAC-SHA256 and K08 SHA-256 commitment path.
 - [Profile inventory](../work/h17_profile_inventory.py): classify native .xps and .oxps print files.
 
-The parser requires an OPC package, permits both official FixedPage namespaces, bounds page size at 4 MiB and all pages at 32 MiB, caps pages at 4,096, and rejects DTD/entity markers and unsupported XML roots. It does not decode bitmap glyphs, outlines, glyph IDs without UnicodeString, proprietary non-OPC spool framing, or print order across pages. Joined run variants are candidate-generation hypotheses; only original acceptance can approve any proposed K04/K08 component.
+The parser requires an OPC package, including ZIP content after a short (at most 4 KiB) native spool preamble. It permits both official FixedPage namespaces, bounds page size at 4 MiB and all pages at 32 MiB, caps pages at 4,096, and rejects DTD/entity markers and unsupported XML roots. It does not decode bitmap glyphs, outlines, glyph IDs without UnicodeString, proprietary non-OPC spool framing, or print order across pages. Joined run variants are candidate-generation hypotheses; only original acceptance can approve any proposed K04/K08 component.
 
 ## Positive and negative controls
 
@@ -24,7 +24,7 @@ The [dual-slot SFT](../work/test_h17_xps_text.py) generates a synthetic two-page
 2. Page two contains an entire synthetic late-watch caption split across glyph runs. The **existing K08 profile scanner** matches the planted exact normalized caption using the original desk nonce, HMAC, and SHA-256 commitment path. The source package is byte-identical afterward.
 3. Negative controls reject ordinary ZIP without OPC metadata, wrong namespace, truncated XML, DTD, oversized inflated page, and nonpackage input.
 
-The standalone parser's seven regression groups passed locally. Full end-to-end integration and the existing scanner self-tests all completed **SUCCESS** in [GitHub Actions run 44244205543](https://github.com/FlareZ123/workplace-v2/actions/runs/44244205543), using [the bounded workflow](../.github/workflows/agent3-xps-intake.yml) at commit f495972d10f368dbd7dc9fbdd54418ea97a9b5a8.
+The standalone parser's eight regression groups passed locally, including ZIP after a synthetic spool preamble. Full end-to-end integration and the existing scanner self-tests all completed **SUCCESS** in [GitHub Actions run 44244205543](https://github.com/FlareZ123/workplace-v2/actions/runs/44244205543). The extended original K04 acceptance path for a prefix-wrapped synthetic spool file also passed in [GitHub Actions run 44244769617](https://github.com/FlareZ123/workplace-v2/actions/runs/44244769617), commit 3c0da666b32d63c30299051bd5cd8a045cb6a728. The [bounded regression workflow](../.github/workflows/agent3-xps-intake.yml) was then made manual-only to avoid repeated routine CI.
 
 Microsoft documents the [Glyphs UnicodeString XPS field](https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/xpsanalyzer-rules) and the [XPS printing path](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/documents/printing-overview).
 
