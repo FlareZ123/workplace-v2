@@ -107,10 +107,10 @@ def test_circuit():
                       'xor_clauses': len(circuit.xors)}), flush=True)
 
 
-def solve(observed, seconds, prefix_bits=0, prefix=0):
+def solve(observed, seconds, prefix_bits=0, prefix=0, check_uniqueness=False):
     from pycryptosat import Solver
     circuit = MeetCircuit()
-    initial, _ = circuit.build_meet(observed, prefix_bits=prefix_bits, prefix=prefix)
+    initial, middle = circuit.build_meet(observed, prefix_bits=prefix_bits, prefix=prefix)
     solver = Solver(time_limit=float(seconds), threads=1)
     circuit.emit_to(solver)
     start = time.monotonic()
@@ -125,6 +125,16 @@ def solve(observed, seconds, prefix_bits=0, prefix=0):
         assert all(x is None or x == y for x, y in zip(observed, values))
         result['state'] = [f'{w:016X}' for w in state]
         result['middle'] = [f'{w:016X}' for w in values[2:4]]
+        if check_uniqueness:
+            # Exclude this exact 128-bit middle OUTPUT, rather than just
+            # the recovered initial state. Every alternative remains viable.
+            bits = middle[0] + middle[1]
+            solver.add_clause([-v if assignment[v] else v for v in bits])
+            alternative, _ = solver.solve()
+            result['middle_unique'] = (
+                True if alternative is False else
+                False if alternative is True else None
+            )
     return result
 
 
@@ -161,7 +171,8 @@ def main():
     rows = parse_source()
     observed = [*decode(rows[0], args.view), None, None,
                 *decode(rows[2], args.view)]
-    original = solve(observed, args.limit_seconds, args.prefix_bits, args.prefix)
+    original = solve(observed, args.limit_seconds, args.prefix_bits, args.prefix,
+                     check_uniqueness=True)
     result = {'experiment': 'original_REQUESTED_flanks', 'view': args.view,
               'prefix_bits': args.prefix_bits, 'prefix': args.prefix,
               'full_domain_tested': args.prefix_bits == 0,
