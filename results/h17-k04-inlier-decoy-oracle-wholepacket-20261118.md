@@ -42,6 +42,17 @@ A supplemental source-independent exact test adds **624 prehistory native words 
 
 This is a source-compatible *maximal linear MT state* result. It does not incorporate potentially shorter or nonlinear historical seed initialization (for which lower-entropy target recovery could still be possible), nor authenticate p951 as the actual writer's stage chronology.
 
+### Constructive ambiguity for the full 128-bit selected coupon
+
+The preceding zero-predictable-coordinate statement has now been upgraded to a **joint rank test**: adding all 128 individual native selected-coupon bit equations to the source rank-15,365 system increases GF(2) rank by **exactly 128**, with **zero linear relations among the selected 128 bits**, even after enforcing the exact 19,937-dimensional state image. To make the conclusion concrete, solve the full observation system twice using deterministic Gaussian-elimination back-substitution. Both solutions reproduce **every one of the 132 original intact spool packets byte-for-byte**, yet one outputs a selected 16-byte coupon of all-zero bytes while the other outputs 16 bytes of `FF`. These are mathematical *counterfactual coupons*, never claimed to be historical originals.
+
+The two fully constrained precursor-state hashes (SHA256 of the 624 native 32-bit precursor words serialized little endian) are:
+
+- Selected `00000000000000000000000000000000`: `c5573be0bab756e9590803759acf94d33ba2ff22546d9ff2642d0615e2d52e1f`.
+- Selected `FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF`: `86ec6ab6ece2ace0b35896b637ffcdb9fe878690325f5bc6be203017bb53c041`.
+
+Both cases are independently reconstructed and checked against the held-out selected-coupon assignment by the same single-file SFT, without reading any selected ACK2 payload. Since all 128 target directions extend source rank independently, **every** hypothetical 16-byte coupon can be fitted by *some* maximal-state MT history satisfying these same original 132 packets under the p951 chronology. This is a constructive non-identifiability certificate for the source-only stage model. A source-specific, shorter initialization or independent physical-copy constraint is still potentially discriminating.
+
 ## Decision
 
 This is a measured **negative full-object prediction test**: even when granted the allegedly correct p951 stage of each observed packet, its source-only linear recurrence cannot predict any intact whole 16-byte heldout object, and leaves the disputed selected event wholly unconstrained. The 25 original exact numerical witnesses may be important evidence for printer MT-like organization, but a stage-only maximum-consensus procedure cannot bridge this 128-bit selected target gap. A source-selected low-entropy initialization, new native record, authentic producer framing, or independently linked physical-copy observable is needed. K08 remains an exact-wording problem. Original six slots PASS; K04/K08 missing, combined incomplete. No evidence, canonical candidate, acceptance or verifier changed.

@@ -190,6 +190,57 @@ def scan_original_complete_windows(packets, words):
           'original_k04_full_commitment_hits', 0)
 
 
+def constructive_coupon_ambiguity(packets, words):
+    """Exhibit two different valid MT precursor states with identical originals."""
+    outcomes = {}
+    for selected_coupon in (bytes(16), b'\xff'*16):
+        basis = basis_for(packets, words, {129})
+        old_rank = basis.rank
+        for lane in range(4):
+            native = mt.untemper(int.from_bytes(
+                selected_coupon[4*lane:4*lane+4], 'little'))
+            for bit, vec in enumerate(proper_get(words, mt.STARTS[129]+lane)):
+                basis.insert(vec, (native >> bit) & 1)
+        assert old_rank == 15365 and basis.rank == old_rank + 128
+        # Each reduced equation is pivot XOR lower bits = its observed RHS.
+        # Free native precursor coordinates are fixed to 0 for one witness.
+        precursor = 0
+        for pivot, (equation, rhs) in sorted(basis.rows.items()):
+            value = rhs ^ (((equation ^ (1 << pivot)) & precursor)
+                           .bit_count() & 1)
+            precursor |= value << pivot
+        assert all(((equation & precursor).bit_count() & 1) == rhs
+                   for equation, rhs in basis.rows.values())
+
+        def packet_at(stage):
+            data = []
+            for lane in range(4):
+                native = sum(((vec & precursor).bit_count() & 1) << bit
+                             for bit, vec in
+                             enumerate(proper_get(words, stage+lane)))
+                tempered = mt.temper([(native >> bit) & 1 for bit in range(32)])
+                data.append(sum(x << bit for bit, x in enumerate(tempered))
+                            .to_bytes(4, 'little'))
+            return b''.join(data)
+
+        for row, packet in enumerate(packets):
+            if row == 129:
+                continue
+            assert packet_at(mt.STARTS[row]) == packet
+        assert packet_at(mt.STARTS[129]) == selected_coupon
+        digest = sha256(precursor.to_bytes(624*4, 'little')).hexdigest()
+        outcomes[selected_coupon.hex().upper()] = digest
+    assert outcomes == {
+        '00000000000000000000000000000000':
+            'c5573be0bab756e9590803759acf94d33ba2ff22546d9ff2642d0615e2d52e1f',
+        'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF':
+            '86ec6ab6ece2ace0b35896b637ffcdb9fe878690325f5bc6be203017bb53c041',
+    }
+    print('CONSTRUCTIVE_SOURCE_AMBIGUITY', 'joint_extra_target_rank', 128,
+          'two_distinct_coupon_states', outcomes,
+          'each_reproduces_all_132_intact_packets', True)
+
+
 def links(rows):
     words = [(r, j, x) for r, row in enumerate(rows) for j, x in enumerate(row)]
     by_value = defaultdict(list)
@@ -275,6 +326,7 @@ def main():
     all_heldouts(original, words, 'original_source_oracle_stage')
     one_bit_commitment_positive(original, words)
     scan_original_complete_windows(original, words)
+    constructive_coupon_ambiguity(original, words)
     print('PASS: original evidence and acceptance untouched; no selected coupon recovered')
 
 
