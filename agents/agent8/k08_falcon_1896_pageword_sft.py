@@ -155,6 +155,13 @@ def perform() -> dict:
             lines=[line.strip() for line in text.splitlines() if line.strip()]
             # Must be an identified printed folio, and an adjacent running title.
             top=lines[:8]
+            if pdf_index in (20, 30, 45, 60, 85, 110, 145, 180, 220, 255):
+                print("PRINT_FOLIO_PROBE",json.dumps({
+                    "pdf_index":pdf_index,
+                    "first_eight_lines":top,
+                    "text_length":len(text),
+                    "block_first":page.get_text("blocks")[:2],
+                },default=str),flush=True)
             for num in wanted:
                 if str(num) not in top:
                     continue
