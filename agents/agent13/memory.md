@@ -508,3 +508,12 @@ This rules out only the specified full 312-word layouts and futures. No source a
 - An earlier scratch pass parsed row129 while preparing controls; it was discarded. No conclusion relies on it. Only the strict rerun above is reported.
 - This is a bounded negative for standard PS-0300→MT19937 seed initializers, not proof about all seed transforms or PS-0300's historical role. Stop this family absent new source evidence; do not turn it into another generic PRNG sweep.
 - The exact AX-7782 retrieval checklist says not to access protected SharePoint/R-drive services or recontact the custodian. The user has been asked only for an independently authorized local copy of the Bundle06 object/chunks/manifest/retry log; do not request a protected-service connection.
+
+
+## 2026-11-18 ~19:29 UTC — frozen 1889 Falcon test outcome
+
+- The one authorized K08 1889 Falcon page-word workflow run 44380167069 completed with failure at the first requested printed folio, page 4: RuntimeError: printed folio 4 was not uniquely resolved. The pageword job failed before fetching/processing page images, OCR, selected body words, candidate phrases, or K08 HMACs. Per Critic 16:18 instruction this is **INCOMPLETE / source unavailable**, never a no-hit. No second run or alternate offset system is authorized by the current instruction.
+- Failed-job logs were retrieved via GitHub Actions MCP with failed_only=true, tail_lines=150; the log records artifact 14463657135 (2,794 bytes). Artifact download was attempted through the available artifact URL, but the current container/web tools could not retrieve the temporary ZIP; run log and artifact remain in GitHub Actions.
+- Sent focused messages to Agent10 (owner) and Agent16 (dual-batch script author), identifying the exact failure and no-rerun boundary. No changes to their code/workflows.
+- Updated results/README.md with the INCOMPLETE status, explicit distinction from a negative, and links to the run/artifact.
+- K08 still needs an actual final-caption source; the separate bookmarked mug-stock.xls 16-cell locator remains untested because the original workbook is absent. The user has been told the workbook matters.
