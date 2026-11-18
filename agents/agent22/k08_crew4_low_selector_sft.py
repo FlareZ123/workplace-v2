@@ -74,11 +74,31 @@ def main() -> None:
     )
     assert emily_heads == "ATTALBIT"
 
+    count_decodes: dict[str, str] = {}
+    for author in first_appearance:
+        counts = [
+            len(body_words(content))
+            for _, note_author, content in notes
+            if note_author == author
+        ]
+        count_decodes[author] = "".join(
+            chr(ord("A") + count) if 0 <= count < 26 else "?"
+            for count in counts
+        )
+    assert count_decodes == {
+        "Jason": "LNJ",
+        "Emily": "NLZWIF?V",
+        "Zoey": "MNLK",
+        "David": "LOW",
+        "Gabriel": "OOL",
+        "Simon": "MLN",
+    }
+
     david_notes = [(number, content) for number, author, content in notes if author == selected_author]
     assert [number for number, _ in david_notes] == [4, 11, 19]
     david_body_counts = [len(body_words(content)) for _, content in david_notes]
     assert david_body_counts == [11, 14, 22]
-    low = "".join(chr(ord("A") + count) for count in david_body_counts)
+    low = count_decodes[selected_author]
     assert low == "LOW"
 
     lowered: list[tuple[int, int, str]] = []
@@ -127,6 +147,9 @@ def main() -> None:
     print("AUTHOR_BITS_DECODE", f"{word}{crew_number}")
     print("CREW_ORDER", ",".join(first_appearance))
     print("SELECTED_AUTHOR", selected_author)
+    print("AUTHOR_COUNT_DECODES", ",".join(
+        f"{author}:{count_decodes[author]}" for author in first_appearance
+    ))
     print("DAVID_BODY_WORD_COUNTS", ",".join(map(str, david_body_counts)))
     print("DAVID_COUNT_DECODE", low)
     print("EMILY_HEADS", emily_heads)
