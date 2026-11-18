@@ -202,6 +202,8 @@ def validate_manifest() -> tuple[dict[str, Any], dict[int, dict[str, Any]]]:
         seen_hashes.setdefault(image_sha, []).append(index)
         by_index[index] = {
             "scan_index": index,
+            "viewer_url": record["viewer_url"],
+            "final_viewer_url": record["final_viewer_url"],
             "signed_image_url": url,
             "content_type": record["content_type"],
             "bytes": len(image_bytes),
@@ -445,6 +447,8 @@ def main() -> int:
         })
         scan_evidence[scan_index] = {
             "scan_index": scan_index,
+            "viewer_url": source["viewer_url"],
+            "final_viewer_url": source["final_viewer_url"],
             "source_url": source["signed_image_url"],
             "image_content_type": source["content_type"],
             "source_image_bytes": source["bytes"],
@@ -605,6 +609,8 @@ def main() -> int:
             "google_books_scan_index": scan_index,
             "unique_folio_match_count": 1,
             "folio_verified_zones": matching_zones,
+            "viewer_url": evidence["viewer_url"],
+            "final_viewer_url": evidence["final_viewer_url"],
             "source_url": evidence["source_url"],
             "image_content_type": evidence["image_content_type"],
             "source_image_path": str((CAPTURE / source["filename"]).relative_to(ROOT)),
