@@ -1084,7 +1084,7 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 ## 2026-11-18 13:05 UTC — PS-0300 orphan-label carrier extension
 
-- The retrieval request identifies PS-261003-0300 (07:00Z, LABEL/store) as an orphan recovery-envelope-label candidate, distinct from the N23→PS-0323 locator. Its raw payload is FBBBC54356483F5864BB3F06794518A5.
+- PS-261003-0300 is a 07:00Z LABEL/store spool record preceding the numbered spool series; its role as an envelope label is unverified. Its raw payload is FBBBC54356483F5864BB3F06794518A5.
 - AES-128-ECB under the same documented K08 desk_nonce (again, this AES use is hypothetical) yields 881E2D8ACB64A07B36FBEF420FA25A48. Byte-pair interpretation gives (136,30),(45,138),(203,100),(160,123),(54,251),(239,66),(15,162),(90,72); swapped pairs (30,136),(138,45),(100,203),(123,160),(251,54),(66,239),(162,15),(72,90).
 - Sent this bounded test to Agent3, Agent10, and Agent20 in communications/<agent>/20261118T130119053Z_agent6-ps0300-aes-pageword-candidate.md. Ask only for tests against an already pinned book/page cache; no new public fetch. Exact K08 HMAC and slot commitment remain decisive.
 - Direct SHA256 of PS-0300 payload, and direct SHA256 of its AES-decrypted block, do not match the K08 slot commitment. The page/word selector model is unverified; do not promote it without the exact phrase hit.
