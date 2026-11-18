@@ -1,55 +1,49 @@
-"""Source-pinned 1896 Falcon printed-page OCR candidate builder, independent of 1889 Google edition."""
+"""Acquire exact Commons-hosted 1896 Falcon scan and probe its printed-folio layout."""
 from __future__ import annotations
 import hashlib
-from html.parser import HTMLParser
 import json
+from pathlib import Path
 import re
+import subprocess
 import sys
 from urllib.request import Request, urlopen
-from xml.etree import ElementTree as ET
 
-BASENAME = "falcononbalticco00knig"
-SOURCE = f"https://archive.org/download/{BASENAME}/{BASENAME}_djvu.xml"
-RAW_SHA256 = None
-COORDINATES = [(4,154),(171,46),(28,222),(122,130),(205,124),(96,35),(67,3),(201,26)]
-K08_EXPECTED="285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747"
-DESK_NONCE="5F933DA6A1BD03C32DA5CBC25344F497"
+SOURCE=("https://upload.wikimedia.org/wikipedia/commons/0/0c/"
+"The_Falcon_on_the_Baltic%3B_a_coasting_voyage_from_Hammersmith_to_Copenhagen"
+"_in_a_three-ton_yacht_%28IA_falcononbalticco00knig%29.pdf")
+PATH=Path("falcon-1896.pdf")
+RAW_SHA256=None
 
 
-def acquire() -> tuple[bytes,ET.Element]:
-    req=Request(SOURCE,headers={"User-Agent":"H17-source-study/1.0","Accept":"application/xml,text/xml,*/*"})
-    with urlopen(req,timeout=60) as h:
-        raw=h.read(35_000_000)
-        status=h.status
-        ctype=h.headers.get("Content-Type")
-    root=ET.fromstring(raw)
-    print("SOURCE",json.dumps({"url":SOURCE,"status":status,"content_type":ctype,"bytes":len(raw),
-        "sha256":hashlib.sha256(raw).hexdigest(),"root":root.tag,
-        "objects":len(root.findall(".//OBJECT")),
-        "pages":len(root.findall(".//page")),
-        "word_tags":len(root.findall(".//WORD"))},sort_keys=True),flush=True)
-    return raw,root
-
-
-def text_for_object(obj:ET.Element)->str:
-    return " ".join((w.text or "") for w in obj.iter() if w.tag.upper()=="WORD")
+def run(*args:str)->str:
+    p=subprocess.run(args,check=True,text=True,capture_output=True,timeout=90)
+    return p.stdout
 
 
 def main()->None:
-    raw,root=acquire()
-    obj=root.findall(".//OBJECT")
-    if not obj:
-        print("STRUCTURE","no OBJECT, first tags", [e.tag for e in list(root)[:20]],flush=True)
-        return
-    for i in (0,1,2,10,16,18,20,28,29,30,40,100,171,172,205,206,209,220,230,240,250,300,350):
-        if i>=len(obj):continue
-        page=text_for_object(obj[i]);w=re.findall(r"[a-z0-9]+",page.lower())
-        print("PAGE_SAMPLE",json.dumps({"scan":i,"num_tokens":len(w),"first":w[:25],
-            "last":w[-20:],"raw_head":page[:160]},sort_keys=True),flush=True)
-    if "--acquire-only" in sys.argv: return
-    if not RAW_SHA256 or hashlib.sha256(raw).hexdigest()!=RAW_SHA256:raise RuntimeError("Source digest unpinned")
-    # Authentic folios must be independently assigned before acceptance.
-    raise RuntimeError("Printed folio-to-scan mapping has not been frozen")
+    req=Request(SOURCE,headers={"User-Agent":"H17-historical-source-audit/1.0",
+        "Accept":"application/pdf"})
+    with urlopen(req,timeout=45) as h:
+        size=0
+        with PATH.open("wb") as output:
+            while (block:=h.read(1_000_000)):
+                size+=len(block)
+                if size>30_000_000: raise RuntimeError("PDF exceeds 30MB bound")
+                output.write(block)
+    digest=hashlib.sha256(PATH.read_bytes()).hexdigest()
+    pages=re.search(r"(?m)^Pages:\s*(\d+)",run("pdfinfo",str(PATH)))
+    assert pages, "pdfinfo page count missing"
+    count=int(pages.group(1))
+    assert count==370,count
+    print("SOURCE",json.dumps({"url":SOURCE,"bytes":size,"sha256":digest,"pdf_pages":count}),flush=True)
+    for page in [10,11,12,13,14,15,18,29,30,31,35,40,50,90,110,160,190,205,206,220,230,240,250,360]:
+        if page>count:continue
+        t=run("pdftotext","-f",str(page),"-l",str(page),"-layout",str(PATH),"-")
+        print("PAGE_TEXT",json.dumps({"pdf_page":page,"bytes":len(t),
+             "head":" ".join(t[:220].split()),"tail":" ".join(t[-120:].split())}),flush=True)
+    if "--acquire-only" in sys.argv:return
+    assert RAW_SHA256 is not None and digest==RAW_SHA256
+    raise RuntimeError("Exact printed folio controls are not yet established")
 
 
 if __name__=="__main__":
