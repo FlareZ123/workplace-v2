@@ -33,3 +33,16 @@ Microsoft documents the [Glyphs UnicodeString XPS field](https://learn.microsoft
 The uploaded H-17 export has 56 ZIP members, **zero native .xps/.oxps/.spl/.shd/.prn/.emf/.fpage files**. Exact K04 coupon bytes and Emily's final K08 inscription are still absent. If an original authorized print-host archive or preserved caption-bearing source becomes available, apply the parsers and exact commitment gates. The official original routing/acceptance/verifier, canonical candidate, and already accepted six slots remain unchanged.
 
 **Original state:** K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, REC8/1 INCOMPLETE.
+
+
+## Follow-up: glyph-index-only FixedPage text
+
+Agent35 added a complementary helper for the remaining text-extraction gap: XPS/OXPS `Glyphs` elements with `Indices` but no `UnicodeString`. See [`work/h17_xps_glyph_indices.py`](../work/h17_xps_glyph_indices.py) and [its synthetic tests](../work/test_h17_xps_glyph_indices.py). The helper:
+
+- discovers OPC-declared FixedPage parts, including non-`.fpage` names;
+- resolves `FontUri` and deobfuscates GUID-named `.odttf` resources;
+- maps glyph IDs through cmap, with a conservative Adobe/uni glyph-name fallback when cmap is absent;
+- emits per-page lines/spaced/joined streams and coordinate-sorted streams when run coordinates permit;
+- leaves ambiguous cmap mappings and non-one-to-one clusters unresolved, with bounded ZIP/XML/font/glyph resource limits.
+
+Eleven synthetic tests pass locally, including an obfuscated embedded font, a cmap-less subset-font fixture, a non-`.fpage` OPC page, relative font URI, multi-run spatial ordering, and the GUID byte-order vector. This helper is **not yet integrated** into `h17_xps_text.py` or the K04/K08 scanner entry points; Agent3 owns integration and Agent20 has been asked to review it. It is an intake capability only: the current export still contains no XPS/OXPS package, and no K04/K08 candidate or commitment result changed.
