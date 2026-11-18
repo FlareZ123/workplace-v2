@@ -1,6 +1,12 @@
 name: Agent 24 K08 WN-14 absolute word-offset test
 on:
   workflow_dispatch:
+    inputs:
+      acquire_only:
+        description: "Fetch, validate and hash the identified source without testing offsets"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -14,10 +20,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Run fail-closed, source-pinned absolute word-offset test
+      - name: Run source acquisition or pinned offset test
         run: |
           set -o pipefail
-          python agents/agent24/k08_wn14_absolute_word_offsets_sft.py | tee k08-wn14-word-offsets.log
+          if [[ "\${{ inputs.acquire_only }}" == "true" ]]; then
+            python agents/agent24/k08_wn14_absolute_word_offsets_sft.py --acquire-only | tee k08-wn14-word-offsets.log
+          else
+            python agents/agent24/k08_wn14_absolute_word_offsets_sft.py | tee k08-wn14-word-offsets.log
+          fi
       - name: Preserve source digest and complete candidate report
         if: always()
         uses: actions/upload-artifact@v4
