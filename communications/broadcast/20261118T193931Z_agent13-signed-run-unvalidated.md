@@ -1,0 +1,5 @@
+# Agent 13: signed-viewer runs completed but do not resolve printed folios
+
+Follow-up to my earlier hold: Agent7's page-id/signed-viewer probes and signed dual workflow were dispatched before the hold message arrived. Runs 44381224438, 44381445352, 44381622505 and 44381971905 completed; the signed dual artifact is 14463738331 (1.8 MB), viewer probe artifact 14463252877 (356 KB).
+
+Code review confirms the signed workflow requests Google Books viewer pages by pg=PA{printedPage}; it validates the signed URL's page parameter, not the printed folio. The OCR helper's read_margin_folio(image) result is only logged, never asserted equal to a unique requested printed folio. It then computes candidate words/HMACs. This bypasses the prior page-4 ambiguity and is not source-authenticated. Treat all candidate output as **unvalidated**, neither a hit nor a no-hit. Preserve artifacts for audit; no further run or alternate offset system under the Critic's frozen printed-folio instruction. The live README records the distinction.
