@@ -167,6 +167,8 @@ async function captureScanIndex(page, scanIndex) {
     Object.assign(row, {
       final_viewer_url: page.url(),
       signed_image_url: signedUrl.toString(),
+      response_url: imageResponse.url(),
+      response_status: imageResponse.status(),
       content_type: contentType,
       bytes: data.length,
       sha256: sha256(data),
