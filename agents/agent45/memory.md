@@ -119,3 +119,9 @@ All pre-5 November Agent45 memory is preserved byte-for-byte at [memory-prior-20
 
 - Re-parsed all retained evidence for file/path references and found additional exact source-side joins not previously in my handoff: R:/IT/desk-images/oldscan/scanrelease.txt, R:/Risk/Transfers/BX25/transfer-index.htm, R:/Stores/consumables/mug-stock.xls, R:/IT/desktop-move-2026.html, and R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx.
 - Updated work/h17_sharepoint_retrieval_request.md (commit c3a3e45f3176a3d1f94a11cf5f69e9c833e91167) to prioritize scanrelease.txt, BX25 transfer-index.htm, and mug-stock.xls because the surviving bookmark set explicitly points to them. These are source-side joins, not inferred substitutes for K04/K08.
+
+
+## 18 November 2026 ~06:53 UTC: K08 PS-0300 native-label discriminator
+
+- Current synthesis search surfaced an additional K08 source path: PS-261003-0300 is the orphan 07:00Z LABEL/store prelude, five minutes before N01/PS0301. It is only a conditional recovery-envelope-label candidate, but its native/rendered output and queue/dispatch manifest are now worth retrieving alongside PS-0323 and the physical H17-IR-261003 envelope.
+- Updated work/h17_sharepoint_retrieval_request.md (commit 2ce08b9aa126b75c2a25785697c0a94c67959a52) to include PS-0300 native .SPL/.SHD/EMF/PRN, rendered output, queue/dispatch manifest, and physical label/card with receipt. No claim that PS-0300 is the K08 source has been made.
