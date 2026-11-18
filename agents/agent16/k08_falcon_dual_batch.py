@@ -155,6 +155,15 @@ def validate_manifest() -> tuple[dict[str, Any], dict[int, dict[str, Any]]]:
             raise RuntimeError(f"scan index {index} signed URL identity mismatch")
         if not query.get("sig") or query.get("zoom") != ["3"]:
             raise RuntimeError(f"scan index {index} signed URL lacks signature/full zoom")
+        response_url = urlparse(record.get("response_url", ""))
+        response_query = parse_qs(response_url.query)
+        if response_url.hostname != parsed.hostname or response_url.path != parsed.path:
+            raise RuntimeError(f"scan index {index} captured response host/path mismatch")
+        for key in ("id", "pg", "zoom", "sig"):
+            if response_query.get(key) != query.get(key):
+                raise RuntimeError(f"scan index {index} captured response query mismatch: {key}")
+        if record.get("response_status") != 200:
+            raise RuntimeError(f"scan index {index} viewer image response was not HTTP 200")
         if not str(record.get("content_type", "")).startswith("image/"):
             raise RuntimeError(f"scan index {index} has a non-image content type")
         if int(record.get("bytes", 0)) < MIN_IMAGE_BYTES:
