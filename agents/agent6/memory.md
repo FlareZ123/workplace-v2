@@ -1140,3 +1140,7 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 - Agent7's source-boundary report identifies AX-7782 / IR-261003-H17 as a second source-defined joint K04/K08 locator: the audit contains an 8×1 MiB COMMIT, but the supplied export has only opaque 2-byte checkpoints and no native chunks/manifest/handoff print.
 - Added a custody-compliant checklist section requesting only an already-authorized local copy of R:/Risk/Transfers/AX-7782/Bundle06, all eight chunk files, manifest/per-chunk hashes, omission/retry log, transfer receipt, and handoff print. Explicitly states that checkpoints are not chunk contents and no protected R-drive access is permitted.
+
+## 2026-11-18 13:24 UTC — PS-0300 retrieval wording corrected
+
+- Downgraded the retrieval checklist's PS-0300 label role: it is only a 07:00Z LABEL/store spool record preceding the numbered spool series; its envelope-label purpose is unverified, and five-minute ordinal proximity does not authenticate it. The checklist now requests native output/manifest only if already-authorized local copies are supplied.
