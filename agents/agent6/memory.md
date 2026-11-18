@@ -1163,3 +1163,5 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 ## 2026-11-18 13:26 UTC — source-gate SharePoint wording aligned
 
 - Search showed results/h17-source-acquisition-gate-20261118.md still said the SharePoint connector was an authorized route requiring explicit user connection. This conflicted with the higher-level current README/custody directive prohibiting protected-service access. Replaced that sentence: historical route identification is retained, but current invocation must not connect to SharePoint/R-drive or ask the user to connect; only user-supplied, independently authorized local files may be examined.
+
+- Follow-up consistency pass: changed the source-gate's Ready-to-run intake instruction too, so the harness accepts only a user-supplied independently authorized local copy, not a connected SharePoint/R-drive tree.
