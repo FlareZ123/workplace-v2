@@ -129,6 +129,7 @@ def main() -> None:
     exact = [item for item in lowered if item[2] == "ATEALBIT"]
     assert exact == [(10, 11, "ATEALBIT", "NLOWIF?V", "ALOWBIT")]
     assert [item for item in lowered if item[4] == "ALOWBIT"] == exact
+    assert [item for item in lowered if "TEA" in item[2]] == exact
 
     selected_notes = emily_note_numbers.copy()
     selected_notes[2] = 11
@@ -157,8 +158,23 @@ def main() -> None:
 
     selector_note = conditional_byte - ord("A") + 1
     assert selector_note == 1
-    note1_words = [word.lower() for word in body_words(notes[selector_note - 1][2])]
+
+    photograph_notes = [
+        number
+        for number, _, content in notes
+        if heading(content) is not None and "photograph" in heading(content).lower()
+    ]
+    assert photograph_notes == [1, 4, 8, 14]
+    tea_photographs = [
+        number
+        for number in photograph_notes
+        if "tea" in [word.lower() for word in body_words(notes[number - 1][2])]
+    ]
+    assert tea_photographs == [1]
+    note1_words = [word.lower() for word in body_words(notes[0][2])]
     assert "sea" in note1_words and "tea" in note1_words
+    assert "photograph" in notes[9][2].lower()
+    assert "after the last cup" in notes[9][2].lower()
     seal_instruction = selected_heads.replace("TEA", "SEA", 1)
     assert seal_instruction == "ASEALBIT"
 
@@ -235,6 +251,8 @@ def main() -> None:
     print("LOW_IF_EVEN_BITS", "".join(map(str, conditional_bits)))
     print("LOW_IF_EVEN_BYTE", f"0x{conditional_byte:02X}", chr(conditional_byte))
     print("A_SELECTOR_NOTE", f"N{selector_note:02d}", "tea->sea")
+    print("PHOTOGRAPH_NOTES", ",".join(f"N{number:02d}" for number in photograph_notes))
+    print("UNIQUE_TEA_PHOTOGRAPH", "N01")
     print("SEA_TEA_INSTRUCTION", seal_instruction)
     print("SEAL_SOURCE_SHA256", SEAL_SHA256)
     print("SEAL_SERIALS_BDAC", ",".join(seal_serials))
