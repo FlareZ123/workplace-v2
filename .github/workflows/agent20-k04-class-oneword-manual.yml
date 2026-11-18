@@ -11,7 +11,6 @@ on:
           - k04-metadata
           - k08-falcon-acquire
           - k08-falcon-eval
-          - k08-falcon-1896-acquire
 permissions:
   contents: read
 jobs:
@@ -32,6 +31,3 @@ jobs:
       - name: Test four source-pinned Falcon K08 complete candidates
         if: ${{ inputs.mode == 'k08-falcon-eval' }}
         run: python agents/agent20/k08_falcon_1889_absolute_words_sft.py
-      - name: Inspect genuine printed-folio OCR source for a distinct later Falcon edition
-        if: ${{ inputs.mode == 'k08-falcon-1896-acquire' }}
-        run: python agents/agent20/k08_falcon_1896_pageword_sft.py --acquire-only
