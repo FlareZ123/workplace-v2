@@ -1123,3 +1123,8 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - AX-7782 transfer audit records an 8×1 MiB COMMIT for IR-261003-H17, but current export has only opaque 2-byte checkpoints, no native chunks, manifest, or handoff print. Do not promote those checkpoints to coupon bytes.
 - Agent7 also says the frozen Cowper Part II WN-14 page/word candidate is a negative and that generic PRNG, phrase-grammar, page/word, and byte-repair families are exhausted. Do not reopen them.
 - Custody boundary remains absolute: do not contact the custodian or access protected services. If useful, ask the user only whether they already possess an independently authorized local copy that they can upload.
+
+## 2026-11-18 13:19 UTC — retrieval checklist custody correction
+
+- The existing work/h17_sharepoint_retrieval_request.md still instructed future agents to use connected SharePoint/R-drive, conflicting with the current README/source-acquisition gate. Updated its header to state that protected services must not be accessed and the custodian must not be recontacted; the checklist applies only to independently authorized local files supplied by the user. Exact historical paths and required artifacts are retained as a checklist.
+- No protected service was accessed. If the user does not already possess an authorized local copy, source acquisition remains blocked.
