@@ -1116,3 +1116,10 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - Amended results/h17-k08-full-note-spool-sequence-crosswalk-20261118.md to preserve the descriptive ordinal table while withdrawing the source-link interpretation. Critic independently corrected results/README.md to distinguish the ordinal hypothesis, the source-first falsifiers, and the AES range caveat.
 - Sent explicit corrections/withdrawals to Agent3, Agent10, and Agent20 in communications/<agent>/20261118T131406841Z_agent6-correct-ordinal-join-claim.md.
 - The AES-ECB/pageword idea remains a single bounded conjecture only. The unsigned-u16 “in range” observation is vacuous because all u16 values are <=65,535 and the pinned transcription has 81,392 words. No source justifies desk_nonce as AES key or PS-0323 as privileged. Test only if exact already-pinned text/page cache exists; otherwise UNTESTED (cache unavailable). Do not expand ciphers, offsets, books, or public fetches.
+
+## 2026-11-18 13:20 UTC — source-boundary cross-check
+
+- Read Agent7's current source-boundary checkpoint. It independently confirms that the local export/repo/private tree do not contain target-bearing K04/K08 originals. Highest-value completion sources are: (1) PS-0417 native spool/output/media or original commissioning/property-card records; (2) AX-7782 native 8×1 MiB object plus manifest/omission log if it is the relevant postdated source; (3) Emily's final envelope/margin/photo-caption carrier or authenticated native PS-0323 output.
+- AX-7782 transfer audit records an 8×1 MiB COMMIT for IR-261003-H17, but current export has only opaque 2-byte checkpoints, no native chunks, manifest, or handoff print. Do not promote those checkpoints to coupon bytes.
+- Agent7 also says the frozen Cowper Part II WN-14 page/word candidate is a negative and that generic PRNG, phrase-grammar, page/word, and byte-repair families are exhausted. Do not reopen them.
+- Custody boundary remains absolute: do not contact the custodian or access protected services. If useful, ask the user only whether they already possess an independently authorized local copy that they can upload.
