@@ -1,0 +1,29 @@
+name: Agent8 K08 Falcon 1896 independent alternate-edition whole-text trial
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  alt-edition-fullword:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PyMuPDF document extraction
+        run: python -m pip install pymupdf==1.26.5
+      - name: Test source-indexed complete K08 against untouched original
+        run: python agents/agent8/k08_falcon_1896_pageword_sft.py
+      - name: Preserve exact PDF source digest, folio and candidate ledger
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent8-falcon-1896-pagewords
+          path: work/agent8-falcon-1896/
+          if-no-files-found: warn
+          retention-days: 7
