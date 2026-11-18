@@ -15,7 +15,6 @@ import hashlib
 import hmac
 import json
 import re
-import time
 from io import BytesIO
 from pathlib import Path
 from urllib.error import HTTPError, URLError
@@ -31,7 +30,6 @@ COORDINATES = [
     (205, 124), (96, 35), (67, 3), (201, 26),
 ]
 DESK_NONCE = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
-EXPECTED_K01_SHA256 = "7e8e3f7f4b7a2c5e5e6f3c5f8d0f8a9b"
 EXPECTED_N02_HMAC16 = "BF889359B0303F2B2B2FD96AE841210B"
 EXPECTED_K08_SHA256 = "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747"
 OUT = Path("falcon-1889-pageword-probe")
@@ -198,6 +196,8 @@ def main() -> int:
         page_tokens: dict[int, list[str]] = {}
         for page in sorted({p for p, _ in COORDINATES}):
             image_bytes, content_type, source_url = fetch_page_image(page)
+            source_image_path = OUT / "images" / f"source-page-{page}.bin"
+            source_image_path.write_bytes(image_bytes)
             image_path = OUT / "images" / f"page-{page}.png"
             image = Image.open(BytesIO(image_bytes)).convert("RGB")
             image.save(image_path, format="PNG")
@@ -211,6 +211,7 @@ def main() -> int:
                 "printed_page": page,
                 "source_url": source_url,
                 "image_content_type": content_type,
+                "source_image_path": str(source_image_path),
                 "source_image_bytes": len(image_bytes),
                 "source_image_sha256": sha256(image_bytes),
                 "normalized_png_sha256": sha256(image_path.read_bytes()),
