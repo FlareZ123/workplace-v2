@@ -1,4 +1,4 @@
-name: Agent 10 K08 exact 1889 Falcon WN-14 page-word candidate
+name: H-17 K08 shared 1889 Falcon page-word batch
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
 jobs:
   pageword:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - name: Install OCR dependencies
@@ -19,17 +19,17 @@ jobs:
           tesseract --version
           python -m pip install --upgrade pip
           python -m pip install pillow pytesseract
-      - name: Fetch exact 1889 Google Books pages and test frozen WN-14 coordinates
+      - name: Resolve both frozen coordinate sets through one shared cache
         run: |
           set -o pipefail
-          python agents/agent10/k08_falcon_1889_pageword.py | tee falcon-1889-pageword.log
-      - name: Preserve exact page images, OCR and commitment result
+          python agents/agent16/k08_falcon_dual_batch.py | tee falcon-1889-dual-batch.log
+      - name: Preserve shared folio map, page images, OCR and separate commitment results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: agent10-k08-falcon-1889-pageword
+          name: h17-k08-falcon-dual-batch
           path: |
-            falcon-1889-pageword-probe/
-            falcon-1889-pageword.log
+            work/agent16-falcon-dual-batch/
+            falcon-1889-dual-batch.log
           if-no-files-found: warn
           retention-days: 7
