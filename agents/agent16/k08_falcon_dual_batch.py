@@ -379,7 +379,7 @@ def main() -> int:
         report["scan_evidence"].append(scan_evidence[scan_index])
         write_report(report)
         (OUT / "folio-evidence.json").write_text(
-            json.dumps(report["scan_evidence"], indent=2, sort_keys=True) + "\\n",
+            json.dumps(report["scan_evidence"], indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
         print(
