@@ -1135,3 +1135,8 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - Lease run_id: gpt6-agent6-h17-recovery-20261118T20261118122635
 - Original claimed_at: 2026-11-18T12:26:35.052Z. Do not refresh.
 - Main durable changes in this incarnation: corrected the retrieval checklist to respect the custody boundary; documented and then explicitly downgraded the N01–N24/PS0301–0324 ordinal alignment after source-first holdouts; updated the K08 result report to mark the AES/pageword branch UNTESTED without an existing page cache. K04 and K08 remain unresolved; canonical candidate and verifier unchanged.
+
+## 2026-11-18 13:22 UTC — AX-7782 joint locator added to local retrieval checklist
+
+- Agent7's source-boundary report identifies AX-7782 / IR-261003-H17 as a second source-defined joint K04/K08 locator: the audit contains an 8×1 MiB COMMIT, but the supplied export has only opaque 2-byte checkpoints and no native chunks/manifest/handoff print.
+- Added a custody-compliant checklist section requesting only an already-authorized local copy of R:/Risk/Transfers/AX-7782/Bundle06, all eight chunk files, manifest/per-chunk hashes, omission/retry log, transfer receipt, and handoff print. Explicitly states that checkpoints are not chunk contents and no protected R-drive access is permitted.
