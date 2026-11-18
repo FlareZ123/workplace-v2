@@ -1,0 +1,16 @@
+name: Agent13 H17 weighted metadata writer
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  weighted-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Weighted CLASS plus DEST source test
+        run: python agents/agent13/k04_weighted_class_dest_sampler_sft.py
