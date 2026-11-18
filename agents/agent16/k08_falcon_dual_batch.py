@@ -146,6 +146,15 @@ def validate_manifest() -> tuple[dict[str, Any], dict[int, dict[str, Any]]]:
             raise RuntimeError(f"scan index {index} capture error: {record['error']}")
         if record.get("zoom") != 3:
             raise RuntimeError(f"scan index {index} was not captured at zoom=3")
+        for viewer_field in ("viewer_url", "final_viewer_url"):
+            viewer_url = urlparse(record.get(viewer_field, ""))
+            viewer_query = parse_qs(viewer_url.query)
+            if viewer_url.hostname not in {"books.google.com", "books.google.es"}:
+                raise RuntimeError(f"scan index {index} has an unexpected {viewer_field} host")
+            if not viewer_url.path.endswith("/books"):
+                raise RuntimeError(f"scan index {index} has an invalid {viewer_field} path")
+            if viewer_query.get("id") != [VOLUME_ID] or viewer_query.get("pg") != [f"PA{index}"]:
+                raise RuntimeError(f"scan index {index} {viewer_field} identity mismatch")
         url = record.get("signed_image_url", "")
         parsed = urlparse(url)
         query = parse_qs(parsed.query)
