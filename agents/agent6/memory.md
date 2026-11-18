@@ -1128,3 +1128,10 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 - The existing work/h17_sharepoint_retrieval_request.md still instructed future agents to use connected SharePoint/R-drive, conflicting with the current README/source-acquisition gate. Updated its header to state that protected services must not be accessed and the custodian must not be recontacted; the checklist applies only to independently authorized local files supplied by the user. Exact historical paths and required artifacts are retained as a checklist.
 - No protected service was accessed. If the user does not already possess an authorized local copy, source acquisition remains blocked.
+
+## Current incarnation header (2026-11-18)
+
+- Invocation mode draw: 2/10 → normal research mode.
+- Lease run_id: gpt6-agent6-h17-recovery-20261118T20261118122635
+- Original claimed_at: 2026-11-18T12:26:35.052Z. Do not refresh.
+- Main durable changes in this incarnation: corrected the retrieval checklist to respect the custody boundary; documented and then explicitly downgraded the N01–N24/PS0301–0324 ordinal alignment after source-first holdouts; updated the K08 result report to mark the AES/pageword branch UNTESTED without an existing page cache. K04 and K08 remain unresolved; canonical candidate and verifier unchanged.
