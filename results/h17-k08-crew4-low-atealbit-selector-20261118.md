@@ -226,7 +226,40 @@ MAIL-10 SHA-256 is `ccfc592fe570ca6928a74de813c378443030e841bba169434c0f41372112
 
 This is the strongest calibration in the chain because it lands on a complete, previously accepted archive component rather than merely readable English. It still does not reveal K08's terminal wording. The mapping `M10 -> MAIL-10` is a compact archive-reference interpretation and should be treated as corroboration unless another source explicitly states that convention.
 
-Reproducibility workflow run **44424382364** passes the complete current SFT, including this K05 known-answer calibration.
+Reproducibility workflow run **44424382364** passes the K05 known-answer calibration.
+
+### 7. Accepted K05 low bits address MAIL-03 / group C, then MAIL-09
+
+MAIL-10 explicitly says the selected K05 controls are byte strings whose stored order must be preserved. Apply the already decoded **LOW BIT** operation to each of the 16 accepted K05 bytes, in that canonical order, and pack each eight-bit group first-bit-as-LSB:
+
+`FF 8B 78 20 0A 56 E8 58  6D CD A0 0E F0 1E 45 72`
+-> low bits
+`1 1 0 0 0 0 0 0  1 1 0 0 0 0 1 0`
+-> packed bytes
+`0x03 0x43`
+
+The second byte is ASCII **C**, so this yields the exact archive address **03C = MAIL-03 / group C**.
+
+MAIL-03 contains:
+
+`WN-14 / group C / CD7C6023`
+
+Take one low bit from each of those four stored bytes:
+
+`CD 7C 60 23 -> 1 0 0 1`
+
+Packed first-bit-as-LSB this is integer **9**. Under the mail-number convention already calibrated by `M10 -> MAIL-10`, this points to **MAIL-09**.
+
+MAIL-09 then independently says:
+- the book with the map in the back belongs to **David**;
+- somebody used a **tea receipt as a bookmark**, and it was left in place.
+
+That returns both earlier source-derived motifs, David from `CREW4` and TEA from the unique N10→N11 lowering, while landing on the exact physical-carrier record that names David's map-back book. It does **not** identify the title or authenticate any current Falcon/Ransome/Davies candidate as David's copy.
+
+Current full SFT workflow run **44424673330** succeeds with the complete chain:
+`CREW4 -> David -> LOW -> N10->N11 -> ATEALBIT/ALOWBIT -> A SEAL BIT -> seal 10 -> M10/MAIL-10 -> K05 PASS -> 03C -> MAIL-03 group C -> 9 -> MAIL-09 -> David + tea-receipt map-back book`.
+
+The `03C` and bare `9` archive-address readings remain compact interpretive conventions. Their significance is strengthened by the accepted K05 calibration and by MAIL-09 returning two independently derived motifs, but they are not direct quotations of an encoding specification.
 
 ## What this changes
 
@@ -255,7 +288,7 @@ Separately, Agent41's exact 1889 Internet Archive rear-map stitch has already te
 
 `agents/agent22/k08_crew4_low_selector_sft.py`
 
-The script pins the crew-note, seal-receipt, MAIL-10 and TRP2 sources; reproduces CREW4 and David's LOW; enumerates every valid one-row lowering; asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`; proves N10→N11 is the only lowering containing `TEA`; identifies N01 as the only tea-bearing photograph-labelled note; applies the N01 tea→sea transformation; derives the PTW-417 B,D,A,C seal low bits `0101` and selector value 10; verifies that N10 is the source's last `cup` row and that "after the last cup" is N11; decodes the ATEALBIT ASCII low bits as `M`; and finally checks that `M10 -> MAIL-10` reproduces the complete accepted K05 component under MAIL-10's own byte-order/CRC instructions.
+The script pins the crew-note, seal-receipt, MAIL-03, MAIL-09, MAIL-10 and TRP2 sources; reproduces CREW4 and David's LOW; enumerates every valid one-row lowering; asserts that N10->N11 uniquely yields both `ATEALBIT` and `ALOWBIT`; proves N10→N11 is the only lowering containing `TEA`; identifies N01 as the only tea-bearing photograph-labelled note; applies the N01 tea→sea transformation; derives the PTW-417 B,D,A,C seal low bits `0101` and selector value 10; verifies that N10 is the source's last `cup` row and that "after the last cup" is N11; decodes the ATEALBIT ASCII low bits as `M`; checks that `M10 -> MAIL-10` reproduces the complete accepted K05 component under MAIL-10's own byte-order/CRC instructions, then follows K05 low bits `03C` to MAIL-03/group C and that group's low-bit selector 9 to MAIL-09, which independently names David and the tea-receipt bookmark in his map-back book.
 
 ## Remaining boundary
 
