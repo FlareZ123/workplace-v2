@@ -1144,3 +1144,7 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 ## 2026-11-18 13:24 UTC — PS-0300 retrieval wording corrected
 
 - Downgraded the retrieval checklist's PS-0300 label role: it is only a 07:00Z LABEL/store spool record preceding the numbered spool series; its envelope-label purpose is unverified, and five-minute ordinal proximity does not authenticate it. The checklist now requests native output/manifest only if already-authorized local copies are supplied.
+
+## 2026-11-18 13:23 UTC — AX-7782 locator added to synthesis
+
+- Added Agent7's AX-7782 / IR-261003-H17 source-boundary finding to results/README.md: an 8×1 MiB COMMIT exists in the transfer audit, but the supplied export lacks native chunks, manifest, and handoff print; 2-byte checkpoints are not chunk contents. The note is explicitly conditioned on an independently authorized local copy and forbids protected-service access.
