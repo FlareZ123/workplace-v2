@@ -104,6 +104,24 @@ def test():
     giant = package([page("X" * (4*1024*1024))])
     assert list(extract_xps_text(giant)) == []
     print("PASS: reject over-limit inflated page")
+    wrapped = b"NATIVE-SPOOL-PREFIX" + source
+    assert any(
+        value.decode() == encoded
+        for name, value in extract_xps_text(wrapped)
+        if name == "xps-page-1-joined"
+    )
+    wrapped_result = scan_member(
+        "synthetic.spl", wrapped, 0, [0, 16 * 1024 * 1024, 0, 100],
+        hashlib.sha256(expected_component).digest(), MASK, 1,
+        8 * 1024 * 1024, 3
+    )
+    assert any(
+        "xps-page-1-joined" in hit["source"]
+        and hit["component_hex"] == expected_component.hex().upper()
+        for hit in wrapped_result["hits"]
+    ), wrapped_result["hits"]
+    print("PASS: prefix-wrapped spool package reaches original K04 acceptance")
+
     assert list(extract_xps_text(b"not an xps")) == []
     print("PASS: reject nonpackage input")
 
