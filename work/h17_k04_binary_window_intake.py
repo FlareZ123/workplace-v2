@@ -25,6 +25,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 from h17_emf_text import extract_emf_text
+from h17_xps_text import extract_xps_text
 
 DEFAULT_TARGET = "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0"
 DEFAULT_MASK = "8556C8CB6140A7F9A5123AC7571BEE1C"
@@ -118,6 +119,17 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
     if b" EMF" in data and any(name.casefold().endswith(suffix)
                                for suffix in (".spl", ".prn", ".emf")):
         for label, text in extract_emf_text(data):
+            result["hits"].extend(scan_bytes(
+                f"{name}!/{label}", text, target_digest, mask, stride
+            ))
+            compact_hex = text.translate(None, b" \t\r\n:.-")
+            if compact_hex != text:
+                result["hits"].extend(scan_bytes(
+                    f"{name}!/{label}-grouped-hex", compact_hex,
+                    target_digest, mask, stride
+                ))
+    if data.startswith(b"PK"):
+        for label, text in extract_xps_text(data):
             result["hits"].extend(scan_bytes(
                 f"{name}!/{label}", text, target_digest, mask, stride
             ))
