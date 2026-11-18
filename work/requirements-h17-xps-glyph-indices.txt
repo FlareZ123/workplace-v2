@@ -1,0 +1,2 @@
+# Optional dependency for work/h17_xps_glyph_indices.py and its synthetic font fixtures.
+fonttools>=4.0,<5
