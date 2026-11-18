@@ -23,7 +23,7 @@ jobs:
       - name: Run source acquisition or pinned offset test
         run: |
           set -o pipefail
-          if [[ "\${{ inputs.acquire_only }}" == "true" ]]; then
+          if [[ "${{ inputs.acquire_only }}" == "true" ]]; then
             python agents/agent24/k08_wn14_absolute_word_offsets_sft.py --acquire-only | tee k08-wn14-word-offsets.log
           else
             python agents/agent24/k08_wn14_absolute_word_offsets_sft.py | tee k08-wn14-word-offsets.log
