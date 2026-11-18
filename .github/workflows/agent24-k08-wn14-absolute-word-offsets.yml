@@ -14,11 +14,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install PDF fallback dependency
-        run: python -m pip install --disable-pip-version-check pypdf
-      - name: Test the bounded K01 absolute word-offset hypothesis
-        run: python agents/agent24/k08_wn14_absolute_word_offsets_sft.py | tee k08-wn14-word-offsets.log
-      - name: Preserve the candidate and source digest report
+      - name: Run fail-closed, source-pinned absolute word-offset test
+        run: |
+          set -o pipefail
+          python agents/agent24/k08_wn14_absolute_word_offsets_sft.py | tee k08-wn14-word-offsets.log
+      - name: Preserve source digest and complete candidate report
         if: always()
         uses: actions/upload-artifact@v4
         with:
