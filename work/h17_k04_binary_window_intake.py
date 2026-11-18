@@ -25,7 +25,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 from h17_emf_text import extract_emf_text
-from h17_xps_text import extract_xps_text
+from h17_xps_text import could_contain_xps, extract_xps_text
 
 DEFAULT_TARGET = "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0"
 DEFAULT_MASK = "8556C8CB6140A7F9A5123AC7571BEE1C"
@@ -128,7 +128,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                     f"{name}!/{label}-grouped-hex", compact_hex,
                     target_digest, mask, stride
                 ))
-    if data.startswith(b"PK"):
+    if could_contain_xps(data):
         for label, text in extract_xps_text(data):
             result["hits"].extend(scan_bytes(
                 f"{name}!/{label}", text, target_digest, mask, stride
