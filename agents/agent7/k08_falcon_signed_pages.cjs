@@ -92,17 +92,20 @@ async function captureScanIndex(page, scanIndex) {
       throw responseResult.error;
     }
     const imageResponse = responseResult.response;
-    await page.waitForFunction((index) => {
+    await page.waitForFunction(({ index, minWidth, minHeight }) => {
       const images = [...document.querySelectorAll('img[src*="/books/content"]')];
       return images.some((element) => {
         if (!(element instanceof HTMLImageElement)) return false;
         const url = new URL(element.src, location.href);
         return url.searchParams.get("pg") === "PA" + index &&
           element.complete &&
-          element.naturalWidth > 500 &&
-          element.naturalHeight > 700;
+          element.naturalWidth > minWidth &&
+          element.naturalHeight > minHeight;
       });
-    }, scanIndex, { timeout: 30000, polling: 250 });
+    }, { index: scanIndex, minWidth: MIN_WIDTH, minHeight: MIN_HEIGHT }, {
+      timeout: 30000,
+      polling: 250
+    });
 
     const imageInfo = await page.evaluate((index) => {
       const images = [...document.querySelectorAll('img[src*="/books/content"]')];
