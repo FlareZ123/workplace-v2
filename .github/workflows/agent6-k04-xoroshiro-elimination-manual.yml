@@ -1,0 +1,35 @@
+name: Agent6 K04 xoroshiro elimination source test
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  positive-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned Boolector
+        run: python -m pip install pyboolector==3.2.4.19199673826
+      - name: Require planted complete-state and unique-middle control
+        run: python agents/agent6/k04_xoroshiro_elimination_sft.py --view 0 --control-only
+  source:
+    needs: positive-control
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned Boolector
+        run: python -m pip install pyboolector==3.2.4.19199673826
+      - name: Solve source flanks, require unique middle and original K04 commitment
+        run: python agents/agent6/k04_xoroshiro_elimination_sft.py --view ${{ matrix.view }}
