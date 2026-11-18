@@ -1,0 +1,38 @@
+name: Agent35 BL 1889 Falcon map locator
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  locate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Query British Library Flickr tag surfaces
+        shell: python
+        run: |
+          import json, re, urllib.request
+          urls = [
+              "https://www.flickr.com/services/feeds/photos_public.gne?tags=sysnum001988826,map&tagmode=all&format=json&nojsoncallback=1",
+              "https://www.flickr.com/photos/britishlibrary/tags/sysnum001988826",
+              "https://www.flickr.com/search/?m=tags&q=sysnum001988826+map&w=12403504%40N02",
+          ]
+          headers = {"User-Agent": "Mozilla/5.0 H17-preservation-research"}
+          for url in urls:
+              print("BL_FLICKR_URL", url)
+              try:
+                  req = urllib.request.Request(url, headers=headers)
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      data = response.read().decode("utf-8", "replace")
+                  print("STATUS_BYTES", len(data))
+                  ids = sorted(set(re.findall(r"/photos/(?:britishlibrary|12403504@N02)/(\d+)", data)))
+                  print("PHOTO_IDS", json.dumps(ids))
+                  for line in data.splitlines():
+                      low = line.lower()
+                      if "sysnum001988826" in low or ("map" in low and ("photo" in low or "title" in low)):
+                          print("MATCH", line[:1200])
+              except Exception as exc:
+                  print("ERROR", repr(exc))
