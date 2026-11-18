@@ -1,0 +1,31 @@
+name: Agent35 K08 exact-1889 Falcon rear foldout capture
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Capture exact signed rear-range images
+        run: node agents/agent35/k08_falcon_rear_foldout_capture.cjs
+      - name: Preserve landscape candidates and signed manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent35-k08-falcon-rear-foldout
+          path: work/agent35-falcon-rear-foldout/
+          if-no-files-found: error
+          retention-days: 7
