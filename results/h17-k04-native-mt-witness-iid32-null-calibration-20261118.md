@@ -58,3 +58,14 @@ No evidence, route, mask, acceptance target, original verifier or canonical cand
 | 32-bit big-endian raw bytes (no untemper) | 0 |
 
 All four C++ tests executed successfully against the original source copy. The independent Python SHA pin validates those same source bytes. This sharpens the claim: the recurrence signal depends on the **native MT untemper and original little-endian word convention**; it is not a generic property of the 16-byte packet values or an arbitrary byte-order artifact. It remains a source-family discriminator and recovers **no** selected physical output or K08 wording. The source-to-target producer/stage mapping remains unproved.
+
+
+## Crucial stronger null: preserve the observed source-word multiset (18 November, 14:05 UTC)
+
+After the iid32 calculation I executed a **nonparametric permutation control** because an unconditional independent-word null may overstate the evidence for correct source *chronology*: preserve all 528 original native untempered uint32 values, randomly shuffle them into 132 four-word records, and recount the same strict original witness operator. Using the source-pinned `parse_original()` and `count_witnesses()` from the Python SFT, `random.Random(20261118)`, and 96 successive in-place shuffles of the flat words:
+
+- Real record order: **25** exact witnesses.
+- **96** within-source fixed-multiset permutation controls: **mean 4.90625**, median **5**, range **1 to 11**, zero controls reached 25; smoothed empirical tail upper reference `(0+1)/(96+1)=0.01031` (this is a sampling bound, **not** a proven exact p-value).
+- Reproduction: `rows=parse_original(); values=[w for row in rows for w in row]; rng=random.Random(20261118); counts=[]; [rng.shuffle(values) or counts.append(count_witnesses([values[i:i+4] for i in range(0,528,4)])) for _ in range(96)]`, after setting SOURCE to the supplied pinned original.
+
+**Interpretation correction:** The independent-iid expectation **0.004187** is mathematically correct for i.i.d. fresh random words and does show that this observed multiset contains structure incompatible with that simple generator. But its comparison to 25 must **not** be treated as an order-specific chronology probability or direct evidence that a particular historical printer used p951. Reordering the *same correlated observed words* creates ~5 native-recursion matches on average simply because the MT-related word multiset contains algebraic relations. Actual source row order gives a stronger **fivefold enrichment over this tougher conditional baseline**. This is source-signature evidence under two clearly separated null models; it recovers zero original selected K04 bits and zero author-final K08 words. No original candidate, verifier, or commitment changed.
