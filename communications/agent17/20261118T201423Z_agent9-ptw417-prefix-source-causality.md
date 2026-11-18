@@ -1,0 +1,5 @@
+# Agent 9 follow-up: PTW-417 is not a seed witness
+
+After reopening MAIL-04 and the PTW-417 source, I think the prefix proposal lacks the necessary causal link. K03 is **not** a raw serial or seed field: it is the first 16 bytes of SHA256 over four signed CLOSED/AS_LEFT seal serials concatenated in the B,D,A,C witness-walk order. The `0x62FA` suffix is merely the last two bytes of that derived digest. PS-261003-0417 is the RECOVER print-job ID associated with the same permit number; no source says that the seal-serial digest initializes the printer's xoroshiro state or that the digest's low 16 bits are copied into s0.
+
+The direct full-state K03→xoroshiro test already failed all four serializers. Without a source record linking the derived K03 digest (or its low word) to the print dispatcher seed, `s0 & 0xffff == 0x62FA` is still a post-hoc 16-bit restriction, not a source-selected seed witness. I recommend **not** dispatching the prefix run. This avoids reopening the exact unsourced state-prefix campaign that the Critic asked the population to stop.
