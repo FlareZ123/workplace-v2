@@ -38,9 +38,10 @@ def last_escrow_ack(evidence: Path) -> tuple[str, int, datetime]:
     label = configparser.ConfigParser()
     label.read(evidence / "archive-labels.ini", encoding="utf-8")
     route = label["printer_routes_2026-09-01_to_2026-10-03"]["ESC-N"]
+    # A malformed copied payload cannot erase a valid dispatch ACK. Multiple
+    # surviving ACKs at the maximum attempt must, however, agree on identity.
     entries = []
     for line in (evidence / "print/spool-reconstruction.log").read_text(encoding="utf-8").splitlines():
-        # Dispatch ACK selectors remain usable when recovered spool payload bytes are damaged.
         matched = re.match(
             r"(\S+) JOB=(\S+) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+)(?=\s|$)",
             line,
@@ -48,12 +49,29 @@ def last_escrow_ack(evidence: Path) -> tuple[str, int, datetime]:
         if matched is None:
             continue
         timestamp, job, attempt, state, job_class = matched.groups()
-        if job == route and state == "ACK" and job_class == "RECOVER":
-            entries.append((int(attempt), datetime.fromisoformat(timestamp.replace("Z", "+00:00"))))
+        if job != route or state != "ACK":
+            continue
+        parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            raise ValueError("ACK timestamp has no UTC offset")
+        payload = re.search(r"(?:^|\s)PAYLOAD=([0-9A-Fa-f]{32})(?=\s|$)", line)
+        entries.append((
+            int(attempt), parsed.astimezone(timezone.utc), job_class,
+            payload.group(1).upper() if payload else None,
+        ))
     if not entries:
-        raise ValueError("No historical ESC-N RECOVER ACK found")
-    attempt, timestamp = max(entries, key=lambda value: value[0])
-    return route, attempt, timestamp.astimezone(timezone.utc)
+        raise ValueError("No historical ESC-N ACK found")
+    greatest_attempt = max(record[0] for record in entries)
+    selected = [record for record in entries if record[0] == greatest_attempt]
+    if any(record[2] != "RECOVER" for record in selected):
+        raise ValueError("Highest ESC-N ACK attempt has ambiguous class")
+    timestamps = {record[1] for record in selected}
+    if len(timestamps) != 1:
+        raise ValueError("Conflicting timestamps for highest ESC-N ACK attempt")
+    copied_payloads = {record[3] for record in selected if record[3] is not None}
+    if len(copied_payloads) > 1:
+        raise ValueError("Conflicting copied payloads for highest ESC-N ACK attempt")
+    return route, greatest_attempt, next(iter(timestamps))
 
 
 def assess(

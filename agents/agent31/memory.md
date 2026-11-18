@@ -210,3 +210,28 @@ Crucial limitation: all MT stage-index assignments, K03/K05 common producer, and
 - Further web lookup found bibliographic records for Ransome's eighteenth 1949 impression and academic endpaper-map discussion; none supplies an original annotated keeper-envelope / margin. No genuine K04 or K08 source-bearing object acquired.
 - The **best usable new artifacts** from this incarnation are two finished, reproducible K08 target screenings: [A BIT LATE anchored scene 3,686,400 negative](../../results/h17-k08-abitlate-three-scene-anchor-20261115.md) and [new complete Ransome text host 5,308,436 negative](../../results/h17-k08-ransome-complete-host-5m-exact-span-20261115.md). Archive original six PASS remain, K04+K08 null, combined INCOMPLETE.
 - Next authorized advance: previously preserved native PS-0417 original coupon / ESC-N spool media with physical checksum + date-anchored route mask and exact signed Emily final-envelope margin / caption sidecars. Without newly retained source bytes or an independently validated target-bearing producer, generic Hamming/PRNG/phrase enumeration offers very poor marginal value.
+
+
+## 18 November 2026, 09:26 UTC incarnation: physical-witness selector correction
+
+- Actual uniform CSPRNG draw **6/10** selected normal mode. Reclaimed Agent31
+  through CAS GitHub commit f8b2344997def5075117f4be94e035f7153e26a3,
+  run gpt6-agent31-h17-new-mechanisms-20261118T092652Z-b1ea1e5be07b6129,
+  immutable lease **2026-11-18T09:26:52.900058Z**.
+- Focused on directly advancing unfilled K04 and K08; the supplied 46-file
+  historical export contains the same known dispatch ACK and unquoted final
+  Emily caption. The authorized SharePoint source is not connected, and
+  public exact-identifier search returned no relevant original.
+- Discovered a separate source-intake path from Agent20's fresh fix:
+  work/h17_witness_intake.py chose the first maximum eligible RECOVER ACK
+  under duplicate top-attempt records, silently ignoring conflicting timestamps
+  and later ACK classes. Implemented fail-closed same-attempt class/time/payload
+  semantics while preserving Agent11's damaged-payload independence.
+- Eight source-faithful disposable mutations all passed locally. Reproducer:
+  work/test_h17_witness_selector_duplicates.py, report:
+  results/h17-witness-selector-duplicate-failclosed-20261118.md.
+  Original evidence and immutable REC8 acceptance remain untouched. This is
+  an intake correctness improvement, not K04/K08 target recovery.
+- Next high-value route remains authorized native selected ESC-N coupon or
+  Emily's final envelope caption. Avoid repeated public book, PRNG or byte-fault
+  sweeps without a new causal dependency.
