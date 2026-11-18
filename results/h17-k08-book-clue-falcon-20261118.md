@@ -43,3 +43,5 @@ Public source used:
 - Public text transcription: https://soul-trade.com/sailing/falcon/falcon_frames.htm
 
 No K08 acceptance commitment was claimed or modified by this result.
+
+Additional edition evidence (public catalog): an 1889 W. H. Allen & Co physical-copy listing describes `(2 pp), 309 pages, (advertising leaf), 10 plates by Arthur Shephard, folded map at rear`. This is a direct independent match to the MAIL-09 map-back physical-book clue, but it still does not establish that this exact copy was David's or that WN-14 addresses this book.
