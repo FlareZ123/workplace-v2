@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
 from pathlib import Path
 import sys
 import urllib.parse
@@ -37,14 +38,19 @@ def fetch_json(url: str) -> dict:
 
 
 def download(url: str, path: Path) -> None:
-    request = urllib.request.Request(url, headers=HEADERS)
-    with urllib.request.urlopen(request, timeout=120) as response:
-        with path.open("wb") as handle:
-            while True:
-                chunk = response.read(1024 * 1024)
-                if not chunk:
-                    break
-                handle.write(chunk)
+    subprocess.run(
+        [
+            "curl", "-fL",
+            "--retry", "4",
+            "--retry-all-errors",
+            "--connect-timeout", "30",
+            "--max-time", "300",
+            "--user-agent", HEADERS["User-Agent"],
+            "--output", str(path),
+            url,
+        ],
+        check=True,
+    )
 
 
 def choose_pdf(meta: dict) -> str:
