@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned Z3 Python API
-        run: python -m pip install z3-solver==4.15.5.0
+        run: python -m pip install z3-solver==4.15.4.0
       - name: Recover whole planted middle coupon from two heldout flanks
         run: python agents/agent8/k04_xoroshiropp_bv_bracket_sft.py --phase positive --view 0 --timeout-ms 120000
 
@@ -41,6 +41,6 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned Z3 Python API
-        run: python -m pip install z3-solver==4.15.5.0
+        run: python -m pip install z3-solver==4.15.4.0
       - name: Blindly invert source flanks and compare complete middle coupon
         run: python agents/agent8/k04_xoroshiropp_bv_bracket_sft.py --phase original --view ${{ matrix.view }} --timeout-ms 360000
