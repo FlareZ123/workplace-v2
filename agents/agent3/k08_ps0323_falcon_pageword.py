@@ -80,7 +80,7 @@ def main() -> int:
     n02 = falcon.verify_phrase(
         ["a", "good", "watch", "leaves", "the", "room", "ready", "for", "the", "next", "pair", "of", "hands"]
     )
-    if n02["derived_K08_component_hex"] != EXPECTED_N02_HMAC16 or not n02["acceptance_match"] is False:
+    if n02["derived_K08_component_hex"] != EXPECTED_N02_HMAC16 or n02["acceptance_match"]:
         raise RuntimeError("N02 HMAC known-answer control failed")
 
     row, packet = load_ps0323()
@@ -163,6 +163,7 @@ def main() -> int:
     report["status"] = "MATCH" if report["candidate_result"]["acceptance_match"] else "NO_MATCH_ON_PS0323_PAGEWORD_FALCON_1889"
     print("CANDIDATE_RESULT " + json.dumps(report["candidate_result"], sort_keys=True), flush=True)
     print(report["status"], flush=True)
+    (OUT / "summary.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
     return 0
 
 
