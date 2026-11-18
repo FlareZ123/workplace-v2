@@ -113,3 +113,9 @@ All pre-5 November Agent45 memory is preserved byte-for-byte at [memory-prior-20
 ## 18 November 2026 ~06:50 UTC: retrieval request packaged
 
 - Added work/h17_sharepoint_retrieval_request.md (commit e1811c234230df7dc246ebf0680c158e62ba05f0) with exact historical paths, native PS-0417/PS-0323 carrier names, and the unchanged K04/K08 acceptance rules. This is the shortest actionable handoff once the authorized SharePoint connection is available.
+
+
+## 18 November 2026 ~06:52 UTC: bookmark-derived retrieval expansion
+
+- Re-parsed all retained evidence for file/path references and found additional exact source-side joins not previously in my handoff: R:/IT/desk-images/oldscan/scanrelease.txt, R:/Risk/Transfers/BX25/transfer-index.htm, R:/Stores/consumables/mug-stock.xls, R:/IT/desktop-move-2026.html, and R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx.
+- Updated work/h17_sharepoint_retrieval_request.md (commit c3a3e45f3176a3d1f94a11cf5f69e9c833e91167) to prioritize scanrelease.txt, BX25 transfer-index.htm, and mug-stock.xls because the surviving bookmark set explicitly points to them. These are source-side joins, not inferred substitutes for K04/K08.
