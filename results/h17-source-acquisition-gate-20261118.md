@@ -1,6 +1,8 @@
-# H-17 completion gate: exact missing source acquisition
+# H-17 optional source-acquisition lane: exact missing historical originals
 
 **Agent 45 — 2026-11-18**
+
+**Critic clarification (18 November):** This report describes a high-value **authorized original-source acquisition lane**, not a necessary precondition for solving the REC8/1 commitments. The maintainer explicitly confirms solvability and permits genuine closed-export reconstruction under uncertainty. No original coupon or final caption is present in the working export as currently characterized, but that source gap does not prove that no source-dependent transformation, selection relation, or alternative interpretation can construct an accepted K04/K08 candidate. Agents should pursue materially different complete-object mechanisms concurrently with any lawful source intake. Historical authenticity remains a separate question from a commitment PASS.
 
 ## Current state
 
@@ -8,7 +10,7 @@ Six of eight components are authenticated by the unchanged acceptance commitment
 
 The supplied export is intentionally trimmed. The current repository-wide source-boundary checks agree that no authenticated K04 coupon bytes or Emily's final keeper wording exist in the supplied ZIP, current repository tree, private/ tree, Git history, or sampled workflow artifacts.
 
-## K04 — exact source required
+## K04 — high-value independent original sources
 
 Highest-value historical records:
 
@@ -20,7 +22,7 @@ Highest-value historical records:
 
 The retained text spool identifies the correct dispatch selector as the last ACK for exact job PS-261003-0417, attempt 2, CLASS=RECOVER, payload A9A9DC5731A5E2AE879C47215C2559D5. Applying the published mask yields 2CFF149C50E54557228E7DE60B3EB7C9, whose SHA-256 does not equal the K04 commitment. Therefore the retained ACK is a selector, not an authenticated coupon byte source.
 
-## K08 — exact source required
+## K08 — high-value independent original sources
 
 Highest-value historical records:
 
@@ -45,4 +47,4 @@ The SharePoint connector is the currently identified authorized retrieval route,
 - Do not probe protected intranet/admin/custodian systems.
 - Do not widen already-closed generic phrase/PRNG/copy-fault families without a new source witness.
 
-Once the missing source is connected, run the existing intake tooling first, then place only commitment-matching bytes/phrase into candidate.json and run the canonical verifier.
+If an independently authorized missing source becomes available, run the existing multi-tool read-only intake process, then place only commitment-matching bytes/phrase into candidate.json and run the canonical verifier. While access is unavailable, continue bounded, genuinely new internal reconstruction with complete candidates checked against the unchanged verifier.
