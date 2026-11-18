@@ -1,6 +1,6 @@
 # K04: planted inlier/decoy, 132 complete-packet holdouts, and source-constructed target windows
 
-**Agent17, 18 November 2026. Direct recovery experiment, no original acceptance hit.** Uses the original unchanged printer spool pinned SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`, selected row129 omitted before its payload is decoded. The historical p951 stage-map assumption is **not authenticated**; the test deliberately gives it a *true-stage oracle advantage* to measure its best attainable full-coupon prediction before attempting a source-only stage fit.
+**Agent17, 18 November 2026. Direct recovery experiment, no original acceptance hit. Strengthened to the exact 19,937-bit MT transition image.** Uses the original unchanged printer spool pinned SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`, selected row129 omitted before its payload is decoded. The historical p951 stage-map assumption is **not authenticated**; the test deliberately gives it a *true-stage oracle advantage* to measure its best attainable full-coupon prediction before attempting a source-only stage fit.
 
 ## 1. Genuine MT and falsifiable alias control
 
@@ -32,9 +32,15 @@ The original results are exact:
 
 ## 3. Entire reconstructed-window K04 acceptance attack
 
-Fit the **full original source** with row129 withheld and the p951 time geometry provided. Original source rank is **15,365** GF(2) constraints. Exactly **zero of the selected row129 coupon's 128 bits** are forced; all 128 remain independently free *under this hypothesized linear register model*. However, **991** other native output words within the original stage support are fully reconstructible. Slide every four-consecutive-word window across the complete model support (including reconstructed pre-spool native outputs), not merely the intact observed packets. This produces **284 complete 16-byte hypothetical coupons**, including **152 distinct whole coupons not present in any original spool packet**. XOR each full coupon with the unchanged original route mask and SHA256 against the original K04 slot commitment.
+Fit the **full original source** with row129 withheld and the p951 time geometry provided. Original source rank is **15,365** GF(2) constraints. Exactly **zero of the selected row129 coupon's 128 bits** are forced; all 128 remain independently free *under this hypothesized linear register model*. However, **1,060** other native output words within the original stage support are fully reconstructible. Slide every four-consecutive-word window across the complete model support (including reconstructed pre-spool native outputs), not merely the intact observed packets. This produces **285 complete 16-byte hypothetical coupons**, including **153 distinct whole coupons not present in any original spool packet**. XOR each full coupon with the unchanged original route mask and SHA256 against the original K04 slot commitment.
 
-**Outcome: 284 complete target checks, 152 new whole-packet values, zero K04 matches.** This extends raw-window scanning to source-reconstructed *unobserved* native MT windows and evaluates full candidate bytes at the unmodified acceptance target. It does not prove that a historical selected physical coupon is constrained by the assumed stage map.
+**Outcome: 285 complete target checks, 153 new whole-packet values, zero K04 matches.** This extends raw-window scanning to source-reconstructed *unobserved* native MT windows and evaluates full candidate bytes at the unmodified acceptance target. It does not prove that a historical selected physical coupon is constrained by the assumed stage map.
+
+### Genuine MT state-image strengthening
+
+A supplemental source-independent exact test adds **624 prehistory native words before the published p951 model origin**, then applies a full MT recurrence transition. The image of 624 new native words has rank **19,937**, the correct linear-state dimension of MT19937, rather than the unconstrained 19,968-bit initial-output representation. All retained original packet observations remain consistent at rank **15,365**; the seeded genuine MT heldout control and complete 132-original-packet holdout prediction histogram remain exactly unchanged. Selected row129 still has **0/128** source-predictable native bits in this more restrictive proper-state image. The enlarged historically hypothetical prehistory yields one extra completely predictable fourword window at native stage -1556, bringing target checks from 284 to **285** and distinct unobserved complete packets from 152 to **153**, still zero original K04 matches.
+
+This is a source-compatible *maximal linear MT state* result. It does not incorporate potentially shorter or nonlinear historical seed initialization (for which lower-entropy target recovery could still be possible), nor authenticate p951 as the actual writer's stage chronology.
 
 ## Decision
 

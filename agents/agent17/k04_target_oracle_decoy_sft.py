@@ -21,6 +21,41 @@ spec = spec_from_file_location('h17_p951',
 mt = module_from_spec(spec)
 spec.loader.exec_module(mt)
 
+# Enforce the genuine 19937-dimensional MT state image: allow one complete
+# native twist before the original p951 fitting origin. The first 624 raw
+# words (19968 bits) map to a 19937-rank 624-word transition image.
+PROPER_ORIGIN = mt.ORIGIN - 624
+
+
+def proper_words():
+    states = [[1 << (32*i+j) for j in range(32)] for i in range(624)]
+    for i in range(624, mt.LAST - PROPER_ORIGIN + 1):
+        p = i - 624
+        states.append([
+            states[p+397][j]
+            ^ (states[p][31] if j == 30 else
+               states[p+1][j+1] if j < 30 else 0)
+            ^ (states[p+1][0] if (0x9908B0DF >> j) & 1 else 0)
+            for j in range(32)
+        ])
+    basis = {}
+    for word in states[624:1248]:
+        for vector in word:
+            while vector:
+                top = vector.bit_length() - 1
+                if top in basis:
+                    vector ^= basis[top]
+                else:
+                    basis[top] = vector
+                    break
+    assert len(basis) == 19937
+    return states
+
+
+def proper_get(words, stage):
+    assert PROPER_ORIGIN <= stage <= mt.LAST
+    return words[stage - PROPER_ORIGIN]
+
 
 def spool():
     raw = SOURCE.read_bytes()
@@ -43,13 +78,13 @@ def spool():
 def synthetic():
     rng = Random(20261118)
     native_outputs = [rng.getrandbits(32)
-                      for _ in range(mt.LAST - mt.ORIGIN + 8)]
+                      for _ in range(mt.LAST - PROPER_ORIGIN + 8)]
     packets = []
     for i, start in enumerate(mt.STARTS):
         if i == 129:
             packets.append(b'')
             continue
-        packets.append(b''.join(native_outputs[start - mt.ORIGIN + j]
+        packets.append(b''.join(native_outputs[start - PROPER_ORIGIN + j]
                                  .to_bytes(4, 'little') for j in range(4)))
     return packets
 
@@ -61,14 +96,14 @@ def basis_for(packets, words, omit):
             continue
         for lane in range(4):
             native = mt.untemper(int.from_bytes(packet[4*lane:4*lane+4], 'little'))
-            for bit, vec in enumerate(mt.get(words, start + lane)):
+            for bit, vec in enumerate(proper_get(words, start + lane)):
                 basis.insert(vec, (native >> bit) & 1)
     return basis
 
 
 def predicted_bits(basis, words, start):
     return [basis.predict(vec) for lane in range(4)
-            for vec in mt.get(words, start + lane)]
+            for vec in proper_get(words, start + lane)]
 
 
 def actual_bits(packet):
@@ -129,15 +164,15 @@ def scan_original_complete_windows(packets, words):
     selected = predicted_bits(basis, words, mt.STARTS[129])
     assert selected.count(None) == 128
     full_words = []
-    for stage in range(mt.ORIGIN, mt.LAST+1):
-        bits = [basis.predict(bit) for bit in mt.get(words, stage)]
+    for stage in range(PROPER_ORIGIN, mt.LAST+1):
+        bits = [basis.predict(bit) for bit in proper_get(words, stage)]
         full_words.append(None if None in bits else
                           sum(x << j for j, x in
                               enumerate(mt.temper(bits))).to_bytes(4, 'little'))
     intact = set(packets)
     all_windows, unseen = 0, set()
-    for stage in range(mt.ORIGIN, mt.LAST - 2):
-        block = full_words[stage-mt.ORIGIN:stage-mt.ORIGIN+4]
+    for stage in range(PROPER_ORIGIN, mt.LAST - 2):
+        block = full_words[stage-PROPER_ORIGIN:stage-PROPER_ORIGIN+4]
         if any(w is None for w in block):
             continue
         coupon = b''.join(block)
@@ -146,8 +181,8 @@ def scan_original_complete_windows(packets, words):
             unseen.add(coupon)
         component = bytes(x ^ y for x, y in zip(coupon, MASK))
         assert sha256(component).hexdigest() != TARGET, stage
-    assert sum(w is not None for w in full_words) == 991
-    assert all_windows == 284 and len(unseen) == 152
+    assert sum(w is not None for w in full_words) == 1060
+    assert all_windows == 285 and len(unseen) == 153
     print('original_source_rank', basis.rank,
           'selected_known_bits', 0, 'selected_unconstrained_bits', 128,
           'source_reconstructed_complete_windows', all_windows,
@@ -234,7 +269,7 @@ def planted_alias_decoy():
 
 def main():
     original = spool()
-    words = mt.words()
+    words = proper_words()
     planted_alias_decoy()
     all_heldouts(synthetic(), words, 'planted_MT_oracle_stage')
     all_heldouts(original, words, 'original_source_oracle_stage')
