@@ -46,13 +46,18 @@ def _texts(page: bytes) -> list[str]:
     return texts
 
 
+def could_contain_xps(data: bytes) -> bool:
+    """Recognize an OPC ZIP header with an optional short spool preamble."""
+    return data.find(b"PK\x03\x04", 0, 4096) >= 0
+
+
 def extract_xps_text(data: bytes) -> Iterator[tuple[str, bytes]]:
     """Yield page-local line/spaced/joined UTF-8 texts from an OPC XPS ZIP.
 
     FixedPage order uses the package member order. Consumers must not assume
     this represents the final printed order across different pages.
     """
-    if len(data) < 4 or not data.startswith(b"PK"):
+    if not could_contain_xps(data):
         return
     try:
         with zipfile.ZipFile(io.BytesIO(data)) as package:
