@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Bounded K08 hypothesis: K01's eight 16-bit byte-pairs are absolute word
-indices into a source book, yielding the eight-word keeper phrase.
+"""Fail-closed K08 experiment: interpret K01 as eight absolute word offsets.
 
-This is distinct from page/word extraction. It tests only two source-motivated
-books (the named Riddle of the Sands and the 1887 second-edition Land of the
-Broads candidate), both byte orders, and zero-/one-based indexing. It does not
-search arbitrary wordlists or mutate any source/acceptance files.
+This is an exploratory, bounded candidate test against one identified public
+text transcription of *The Riddle of the Sands* (1903). It tests exactly four
+interpretations: big/little-endian 16-bit offsets, each zero-/one-based. It
+does not claim that David's physical map-back book was this novel.
+
+A source retrieval/quality failure is INCOMPLETE, never NO_MATCH. The script
+pins the original route and acceptance files, validates the known K01 and N02
+controls, hashes the fetched source, requires a complete text, and evaluates
+all four offset interpretations before emitting a verdict.
 """
 from __future__ import annotations
 
@@ -15,44 +19,69 @@ import json
 import re
 import struct
 import urllib.request
-from io import BytesIO
+from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-CANDIDATE = json.loads((ROOT / "resources/candidate.json").read_text(encoding="utf-8"))
-ROUTE = json.loads((ROOT / "resources/evidence/recovery-routing.json").read_text(encoding="utf-8"))
-ACCEPT = json.loads((ROOT / "resources/acceptance.json").read_text(encoding="utf-8"))
+CANDIDATE_PATH = ROOT / "resources/candidate.json"
+ROUTING_PATH = ROOT / "resources/evidence/recovery-routing.json"
+ACCEPTANCE_PATH = ROOT / "resources/acceptance.json"
 
-K01 = bytes.fromhex(CANDIDATE["K01"])
-NONCE = bytes.fromhex(ROUTE["K08"]["desk_nonce"])
-TARGET = ACCEPT["slot_sha256"]["K08"]
+EXPECTED_ROUTING_SHA256 = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
+EXPECTED_ACCEPTANCE_SHA256 = "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
+EXPECTED_K01_SHA256 = "f6e7e44b0c0b9a4d7e4c1d8a9f8f2c0e"  # replaced below by acceptance value
+EXPECTED_N02_HMAC16 = "BF889359B0303F2B2B2FD96AE841210B"
 
-SOURCES = [
-    {
-        "name": "riddle-of-the-sands-1903-gutenberg",
-        "url": "https://www.gutenberg.org/ebooks/2360.txt.utf-8",
-        "kind": "text",
-        "gutenberg": True,
-    },
-    {
-        "name": "land-of-the-broads-1887-second-edition",
-        "url": "https://archive.org/download/landofbroadsprat00suffrich/landofbroadsprat00suffrich_djvu.txt",
-        "kind": "text",
-        "fallback_pdf": "https://upload.wikimedia.org/wikipedia/commons/d/d5/The_land_of_the_Broads_-_a_pratical_and_illustrated_guide_to_the_extensive_but_little-known_district_of_the_broads_of_Norfolk_and_Suffolk_%28IA_landofbroadsprat00suffrich%29.pdf",
-    },
-]
+SOURCE = {
+    "name": "riddle-of-the-sands-1903-ajhw-full-text",
+    "edition_note": "Public full-text transcription of Erskine Childers, The Riddle of the Sands (1903)",
+    "url": "https://www.ajhw.co.uk/books/book160/book160.html",
+    "min_bytes": 100_000,
+    "min_words": 50_000,
+    "required_markers": [
+        "the riddle of the sands",
+        "chapter xx",
+        "the little drab book",
+    ],
+}
 
 
-def fetch(url: str) -> bytes:
-    req = urllib.request.Request(
-        url,
-        headers={"User-Agent": "H17-Archive-Research/1.0 (public-domain text probe)"},
-    )
-    with urllib.request.urlopen(req, timeout=90) as response:
-        data = response.read()
-        if response.status != 200 or not data:
-            raise RuntimeError(f"HTTP {response.status}, {len(data)} bytes")
-        return data
+class VisibleText(HTMLParser):
+    """Extract visible body text; omit scripts, styles, and non-text payloads."""
+    SKIP = {"script", "style", "noscript", "svg"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self.skip_depth = 0
+        self.body_seen = False
+        self.in_body = False
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        tag = tag.lower()
+        if tag == "body":
+            self.body_seen = True
+            self.in_body = True
+        if tag in self.SKIP:
+            self.skip_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        if tag in self.SKIP and self.skip_depth:
+            self.skip_depth -= 1
+        if tag == "body":
+            self.in_body = False
+
+    def handle_data(self, data: str) -> None:
+        if self.skip_depth == 0 and (self.in_body or not self.body_seen):
+            self.parts.append(data)
+
+    def text(self) -> str:
+        return "\n".join(self.parts)
+
+
+def sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
 
 
 def normalize(text: str) -> str:
@@ -61,122 +90,167 @@ def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def strip_gutenberg(text: str) -> str:
-    start = re.search(r"\*\*\* START OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\n]*", text, re.I)
-    end = re.search(r"\*\*\* END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\n]*", text, re.I)
-    if start:
-        text = text[start.end():]
-    if end:
-        text = text[:end.start()]
-    return text
+def fetch_source(url: str) -> tuple[bytes, str, str]:
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; H17-Archive-Research/1.0)",
+            "Accept": "text/html,application/xhtml+xml,*/*",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=90) as response:
+        raw = response.read()
+        status = getattr(response, "status", 200)
+        final_url = response.geturl()
+        content_type = response.headers.get("Content-Type", "")
+        if status != 200 or not raw:
+            raise RuntimeError(f"HTTP {status}; bytes={len(raw)}")
+        charset = response.headers.get_content_charset() or "cp1252"
+    if len(raw) < SOURCE["min_bytes"]:
+        raise RuntimeError(f"source too small: {len(raw)} bytes")
+    if "html" not in content_type.lower() and b"<html" not in raw[:8192].lower():
+        raise RuntimeError(f"unexpected content type: {content_type!r}")
+    decoded = raw.decode(charset, errors="replace")
+    parser = VisibleText()
+    parser.feed(decoded)
+    visible = parser.text()
+    normalized = normalize(visible)
+    tokens = normalized.split()
+    if len(tokens) < SOURCE["min_words"]:
+        raise RuntimeError(
+            f"incomplete text: {len(tokens)} normalized words; "
+            f"minimum is {SOURCE['min_words']}"
+        )
+    missing = [
+        marker for marker in SOURCE["required_markers"]
+        if marker not in normalized
+    ]
+    if missing:
+        raise RuntimeError(f"required book markers missing: {missing}")
+    return raw, visible, final_url
 
 
-def extract_pdf_text(data: bytes) -> str:
-    try:
-        from pypdf import PdfReader
-    except ImportError as exc:
-        raise RuntimeError("pypdf is required for the Wikimedia PDF fallback") from exc
-    reader = PdfReader(BytesIO(data))
-    return "\n".join(page.extract_text() or "" for page in reader.pages)
-
-
-def check_phrase(words: list[str]) -> dict[str, object]:
+def phrase_check(words: list[str], nonce: bytes, target: str) -> dict[str, object]:
     phrase = normalize(" ".join(words))
-    component = hmac.new(NONCE, phrase.encode("utf-8"), hashlib.sha256).digest()[:16]
-    digest = hashlib.sha256(component).hexdigest()
+    component = hmac.new(nonce, phrase.encode("utf-8"), hashlib.sha256).digest()[:16]
+    digest = sha256(component)
     return {
-        "words": words,
+        "selected_words": words,
         "normalized_phrase": phrase,
-        "derived_K08_component": component.hex().upper(),
-        "derived_K08_sha256": digest,
-        "acceptance_match": digest == TARGET,
+        "hmac16_hex": component.hex().upper(),
+        "component_sha256": digest,
+        "target_sha256": target,
+        "commitment_match": digest == target,
     }
 
 
-def main() -> None:
-    assert len(K01) == 16
-    assert hashlib.sha256(K01).hexdigest() == ACCEPT["slot_sha256"]["K01"]
-    control = "a good watch leaves the room ready for the next pair of hands"
-    control_hmac = hmac.new(NONCE, control.encode("utf-8"), hashlib.sha256).digest()[:16]
-    assert control_hmac.hex().upper() == "BF889359B0303F2B2B2FD96AE841210B"
-
-    print("K01", K01.hex().upper())
-    print("K01_BYTE_PAIRS", [K01[i:i+2].hex().upper() for i in range(0, 16, 2)])
-    print("K08_TARGET_SHA256", TARGET)
+def main() -> int:
+    report_path = Path("k08_wn14_absolute_word_offsets_report.json")
     report: dict[str, object] = {
-        "hypothesis": "eight K01 16-bit byte-pairs are absolute normalized-word offsets into a source book",
-        "K01": K01.hex().upper(),
-        "byte_pairs": [K01[i:i+2].hex().upper() for i in range(0, 16, 2)],
-        "target_K08_sha256": TARGET,
-        "sources": [],
+        "hypothesis": "K01 as eight ordered absolute normalized-word offsets into one identified book text",
+        "source": {
+            "name": SOURCE["name"],
+            "edition_note": SOURCE["edition_note"],
+            "requested_url": SOURCE["url"],
+        },
+        "experiment_complete": False,
+        "source_available": False,
+        "interpretations": [],
     }
 
-    for source in SOURCES:
-        entry: dict[str, object] = {"name": source["name"], "url": source["url"]}
-        try:
-            try:
-                raw = fetch(source["url"])
-                source_url = source["url"]
-                if source.get("kind") == "pdf":
-                    text = extract_pdf_text(raw)
-                else:
-                    text = raw.decode("utf-8-sig", errors="replace")
-            except Exception as primary_error:
-                fallback = source.get("fallback_pdf")
-                if not fallback:
-                    raise
-                raw = fetch(fallback)
-                source_url = fallback
-                text = extract_pdf_text(raw)
-                entry["primary_fetch_error"] = f"{type(primary_error).__name__}: {primary_error}"
-            if source.get("gutenberg"):
-                text = strip_gutenberg(text)
-            normalized = normalize(text)
-            tokens = normalized.split()
-            entry.update({
-                "used_url": source_url,
-                "source_bytes": len(raw),
-                "source_sha256": hashlib.sha256(raw).hexdigest(),
-                "normalized_word_count": len(tokens),
-            })
-            results = []
-            for endian, fmt in (("big", ">8H"), ("little", "<8H")):
-                indexes = list(struct.unpack(fmt, K01))
-                for base in (0, 1):
-                    positions = [i - base for i in indexes]
-                    if any(i < 0 or i >= len(tokens) for i in positions):
-                        results.append({
-                            "endian": endian,
-                            "index_base": base,
-                            "indexes": indexes,
-                            "status": "OUT_OF_RANGE",
-                        })
-                        continue
-                    words = [tokens[i] for i in positions]
-                    result = check_phrase(words)
-                    result.update({
-                        "endian": endian,
-                        "index_base": base,
-                        "indexes": indexes,
-                    })
-                    results.append(result)
-                    print(json.dumps({"source": source["name"], **result}, sort_keys=True))
-            entry["results"] = results
-            entry["any_acceptance_match"] = any(
-                isinstance(r, dict) and r.get("acceptance_match") for r in results
-            )
-        except Exception as exc:
-            entry["error"] = f"{type(exc).__name__}: {exc}"
-            print(json.dumps({"source": source["name"], "error": entry["error"]}, sort_keys=True))
-        report["sources"].append(entry)
+    try:
+        routing_bytes = ROUTING_PATH.read_bytes()
+        acceptance_bytes = ACCEPTANCE_PATH.read_bytes()
+        if sha256(routing_bytes) != EXPECTED_ROUTING_SHA256:
+            raise RuntimeError("recovery-routing.json SHA-256 pin mismatch")
+        if sha256(acceptance_bytes) != EXPECTED_ACCEPTANCE_SHA256:
+            raise RuntimeError("acceptance.json SHA-256 pin mismatch")
 
-    out = Path("k08_wn14_absolute_word_offsets_report.json")
-    out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print("REPORT", out)
-    print("ANY_ACCEPTANCE_MATCH", any(
-        s.get("any_acceptance_match", False) for s in report["sources"]
-    ))
+        routing = json.loads(routing_bytes)
+        acceptance = json.loads(acceptance_bytes)
+        candidate = json.loads(CANDIDATE_PATH.read_text(encoding="utf-8"))
+        k01 = bytes.fromhex(candidate["K01"])
+        nonce = bytes.fromhex(routing["K08"]["desk_nonce"])
+        target = acceptance["slot_sha256"]["K08"]
+        k01_target = acceptance["slot_sha256"]["K01"]
+
+        if len(k01) != 16:
+            raise RuntimeError(f"K01 length is {len(k01)}, expected 16")
+        if sha256(k01) != k01_target:
+            raise RuntimeError("K01 does not pass its original acceptance commitment")
+
+        control = "a good watch leaves the room ready for the next pair of hands"
+        control_hmac = hmac.new(nonce, control.encode("utf-8"), hashlib.sha256).digest()[:16]
+        if control_hmac.hex().upper() != EXPECTED_N02_HMAC16:
+            raise RuntimeError("original N02 HMAC known-answer control failed")
+
+        report.update({
+            "routing_sha256": sha256(routing_bytes),
+            "acceptance_sha256": sha256(acceptance_bytes),
+            "K01_hex": k01.hex().upper(),
+            "K01_sha256": sha256(k01),
+            "K08_target_sha256": target,
+            "N02_control": {
+                "phrase": control,
+                "hmac16_hex": control_hmac.hex().upper(),
+                "passed": True,
+            },
+        })
+
+        raw, visible, final_url = fetch_source(SOURCE["url"])
+        normalized = normalize(visible)
+        tokens = normalized.split()
+        report["source"].update({
+            "resolved_url": final_url,
+            "raw_bytes": len(raw),
+            "raw_sha256": sha256(raw),
+            "visible_text_sha256": sha256(visible.encode("utf-8")),
+            "normalized_text_sha256": sha256(normalized.encode("utf-8")),
+            "normalized_word_count": len(tokens),
+            "required_markers_passed": SOURCE["required_markers"],
+        })
+        report["source_available"] = True
+
+        for endian, fmt in (("big", ">8H"), ("little", "<8H")):
+            offsets = list(struct.unpack(fmt, k01))
+            for base in (0, 1):
+                positions = [offset - base for offset in offsets]
+                interpretation: dict[str, object] = {
+                    "endian": endian,
+                    "index_base": base,
+                    "encoded_offsets": offsets,
+                    "token_positions": positions,
+                }
+                if any(position < 0 or position >= len(tokens) for position in positions):
+                    interpretation["status"] = "OUT_OF_RANGE"
+                else:
+                    words = [tokens[position] for position in positions]
+                    interpretation.update(phrase_check(words, nonce, target))
+                    interpretation["status"] = (
+                        "MATCH" if interpretation["commitment_match"] else "NO_MATCH"
+                    )
+                report["interpretations"].append(interpretation)
+
+        if len(report["interpretations"]) != 4:
+            raise RuntimeError("not all four endian/base interpretations were evaluated")
+        report["experiment_complete"] = True
+        report["verdict"] = (
+            "CANDIDATE_MATCH"
+            if any(x.get("commitment_match") for x in report["interpretations"])
+            else "NO_MATCH"
+        )
+        print(json.dumps(report, indent=2, sort_keys=True))
+        report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"REPORT {report_path}")
+        return 0
+    except Exception as exc:
+        report["verdict"] = "SOURCE_OR_INPUT_INCOMPLETE"
+        report["error"] = f"{type(exc).__name__}: {exc}"
+        print(json.dumps(report, indent=2, sort_keys=True))
+        report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"REPORT {report_path}")
+        return 2
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
