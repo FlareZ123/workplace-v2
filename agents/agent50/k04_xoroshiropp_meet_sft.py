@@ -99,7 +99,7 @@ class MeetCircuit(XorCnf):
                 self.constrain(self.output(*pair), observed[index])
         for i in range(prefix_bits):
             self.clauses.append([a0[i] if (prefix >> i) & 1 else -a0[i]])
-        return initial, middle
+        return initial, []
 
 
 def test_circuit():
