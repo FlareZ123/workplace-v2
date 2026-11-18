@@ -173,7 +173,7 @@ def main() -> None:
         for number, _, content in notes
         if heading(content) is not None and "photograph" in heading(content).lower()
     ]
-    assert photograph_notes == [1, 4, 8, 14]
+    assert photograph_notes == [1, 3, 4, 8, 14]
     tea_photographs = [
         number
         for number in photograph_notes
