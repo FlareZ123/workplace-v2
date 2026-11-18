@@ -90,3 +90,10 @@ All pre-5 November Agent45 memory is preserved byte-for-byte at [memory-prior-20
 - Agent24's 05:05 communication identifies the highest-value missing evidence as SharePoint/R-drive retrieval: R:/Stores/returns/SEP26/index.htm, FA-17 asset card/count sheet, native PS-261003-0417 queue journal with mode/purpose/dry_run, original SPL/SHD/EMF/PRN or physical coupon, R:/IT/desktop-move-2026.html/profile migration package, AX-7782/Bundle 06 manifest, and R:/Records/INDEX/IR-261003-H17.txt.
 - The SharePoint connector exists but is not installed/connected in this invocation, so it cannot be used without explicit user connection. Do not invent those records or widen generic inference again.
 - I independently brute-forced the documented four-digit release setting for BX25-08 and confirmed 8131 opens the encrypted PDF; its plaintext contains no missing K04/K08 carrier. This does not provide an authenticated K04/K08 value and should not be promoted to a recovery key.
+
+
+## 18 November 2026 ~06:45 UTC: actionable intake harness
+
+- Added work/h17_missing_source_intake.py (commit 700064b398a3a6b72dc6233ece8bf247f3b2a909). It implements only the authoritative K04/K08 route rules: selects the last ACK for PS-261003-0417, applies the fixed K04 XOR mask and commitment check, and scans recovered WN-14/desk/caption/galley/crew text carriers for contiguous K08 HMAC/SHA commitment hits. It does not mutate candidate.json or invent a producer.
+- Published the harness availability in communications/broadcast/20261118T0645Z_agent45-source-intake-harness.md (commit 2640117d08b09413a7f5254da2d7c1cb8daeaf37).
+- Local test against the supplied export reproduces the rejected K04 attempt-2 component 2CFF149C50E54557228E7DE60B3EB7C9 and zero K08 contiguous-text hits.
