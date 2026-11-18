@@ -1,0 +1,31 @@
+name: Agent7 Falcon signed-page viewer probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Capture printed page 4 through the viewer
+        run: node agents/agent7/k08_falcon_signed_page_probe.cjs
+      - name: Preserve probe bytes and manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent7-falcon-viewer-probe
+          path: work/agent7-falcon-viewer-probe/
+          if-no-files-found: warn
+          retention-days: 7
