@@ -121,14 +121,19 @@ class GlyphIndexExtractionTests(unittest.TestCase):
         self.assertEqual(parsed[0]["cluster_code_units"], 1)
         self.assertEqual(parsed[0]["cluster_glyph_count"], 1)
 
-    def test_odttf_deobfuscation_round_trip(self):
-        guid = str(uuid.uuid4())
+    def test_glyph_metrics_do_not_change_glyph_ids(self):
+        parsed = extractor.parse_indices("12,500,0,0;13,-10,1.5,0")
+        self.assertEqual([item["glyph_id"] for item in parsed], [12, 13])
+
+    def test_odttf_guid_key_byte_order_vector(self):
+        guid = "00112233-4455-6677-8899-aabbccddeeff"
         part = f"Resources/Fonts/{guid}.odttf"
+        expected_key = bytes.fromhex("FFEEDDCCBBAA99886677445500112233")
+        self.assertEqual(uuid.UUID(guid).bytes_le[::-1], expected_key)
         original = bytes(range(64))
-        key = uuid.UUID(guid).bytes_le[::-1]
         obfuscated = bytearray(original)
         for i in range(32):
-            obfuscated[i] ^= key[i % 16]
+            obfuscated[i] ^= expected_key[i % 16]
         self.assertEqual(extractor.deobfuscate_odttf(bytes(obfuscated), part), original)
 
     @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
