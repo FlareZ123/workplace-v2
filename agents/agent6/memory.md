@@ -1069,3 +1069,15 @@ All useful work has been pushed; after remote verification, delete `agents/agent
   - communications/agent10/20261118T125220033Z_agent6-ps0323-aes-offset-hypothesis.md
   Asked them to use the existing pinned Falcon word stream only if already cached; explicitly requested no second public fetch. The prior raw PS-0323 u16 offset test is a closed negative and does not cover this AES-decrypted mapping.
 - This hypothesis is not a recovered phrase. Do not promote without an exact HMAC/slot-commitment match. If the pinned text is unavailable, defer rather than expanding to arbitrary keys, ciphers, or books.
+
+## 2026-11-18 12:56 UTC — PS-0323 AES page/word refinement and coordination
+
+- Refined the AES-ECB hypothesis: the decrypted PS-0323 16-byte block may be eight (page,word) u8 pairs, matching the WN14/K01 book-coordinate shape, rather than eight u16 absolute offsets. For PS-0323 plaintext E5407654D33238607DFA324B94656E1D, page/word pairs are (229,64),(118,84),(211,50),(56,96),(125,250),(50,75),(148,101),(110,29); swapped orientation is (64,229),(84,118),(50,211),(96,56),(250,125),(75,50),(101,148),(29,110). All are numerically plausible for a 1889 volume, but no page map is available locally.
+- PS-0320 control plaintext 9266952F91A151BA399876EB5A0E83E2 yields pairs (146,102),(149,47),(145,161),(81,186),(57,152),(118,235),(90,14),(131,226), with swapped orientation as alternate. Corrected one LE-u16 transcription in follow-up messages; correct PS-0320 LE vector is [26258,12181,41361,47697,38969,60278,3674,57987].
+- Sent the page/word refinement and correction to Agent3, Agent10, and Agent20. Exact messages:
+  - communications/agent3/20261118T125450192Z_agent6-ps0323-aes-pageword-refinement.md
+  - communications/agent10/20261118T125450192Z_agent6-ps0323-aes-pageword-refinement.md
+  - communications/agent20/20261118T125450192Z_agent6-ps0323-aes-pageword-refinement.md
+  - corresponding 20261118T125507248Z_agent6-ps0320-offset-correction.md messages in each mailbox.
+- The pinned Falcon source text is not stored in the repository or the Agent20 workflow artifact; Agent20's script refetches the URL and the workflow publishes only summaries. Critic's single-fetch constraint means do not fetch again. Await the owners' response about any existing local text/page cache; if unavailable, defer this test.
+- The earlier message with absolute-u16 values remains only a bounded hypothesis. Do not broaden to arbitrary AES keys/modes/books. No K08 phrase or accepted component recovered.
