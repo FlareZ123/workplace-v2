@@ -112,6 +112,8 @@ def main() -> None:
     component = b"".join(record["control"] for record in selected)
     digest = hashlib.sha256(component).hexdigest()
     target = acceptance["slot_sha256"]["K05"]
+    if digest != target:
+        raise ValueError(f"K05 route selection does not match acceptance: {digest} != {target}")
     known = known_tempered_outputs(basis, symbolic)
 
     selected_summary = []
@@ -133,8 +135,12 @@ def main() -> None:
         )
 
     selected_indices = {record["index"] for record in selected}
+    family = [
+        record for record in valid
+        if record["node"] == int(k05["node"]) and record["event"] == int(k05["event"])
+    ]
     apparent_stale_matches = []
-    for record in eligible:
+    for record in family:
         if record["index"] in selected_indices:
             continue
         summary = match_summary(int.from_bytes(record["control"], "little"), known)
@@ -152,8 +158,21 @@ def main() -> None:
                 }
             )
 
+    basis_after_stale = mt.Basis()
+    basis_after_stale.rows = dict(basis.rows)
+    basis_after_stale.rank = basis.rank
+    for match in apparent_stale_matches:
+        record = next(r for r in family if r["index"] == match["record_index"])
+        if len(match["exact_stages"]) != 1:
+            raise ValueError(f"expected unique exact stage for stale match: {match}")
+        stage = match["exact_stages"][0]
+        native = mt.untemper(int.from_bytes(record["control"], "little"))
+        for bit, expr in enumerate(mt.get(symbolic, stage)):
+            basis_after_stale.insert(expr, (native >> bit) & 1)
+
     result = {
         "basis_rank": basis.rank,
+        "rank_after_adding_nonselected_exact_words": basis_after_stale.rank,
         "symbolic_stage_range": [mt.ORIGIN, mt.LAST],
         "recorder_records": len(records),
         "crc_valid_records": len(valid),
@@ -162,7 +181,7 @@ def main() -> None:
         "K05_component_sha256": digest,
         "K05_acceptance_sha256": target,
         "K05_acceptance_match": digest == target,
-        "nonselected_exact_matches_inside_K05_window": apparent_stale_matches,
+        "nonselected_exact_matches_in_node_event_family": apparent_stale_matches,
         "interpretation": (
             "The authoritative K05 selection is not an exact raw-output anchor "
             "for this printer-only MT basis in the scanned stage range. Exact "
