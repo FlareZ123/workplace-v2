@@ -104,6 +104,28 @@ Exactly one one-row lowering gives the independently observed sequence **ATEALBI
 
 This is the previously preferred set, now reached from the source-fixed Emily set by a single bounded directional operation rather than chosen from the six ATEALBIT subsequences.
 
+The selected rows contain a second, independent-looking instruction. Decode each selected note's body-word count with A=0. The eight count letters are:
+
+`NLOWIF?V`
+
+Rows 2–4 are exactly **LOW**. The first selected body head is `A`; the final three selected body heads are `BIT`. Replacing the middle `TEAL` segment of the head string with the count-derived directive therefore yields:
+
+**A LOW BIT**
+
+This relationship is unique across the same seven valid one-row lowerings:
+
+| Lowering | Head string | Count string | A + count[2:4] + final BIT-position heads |
+|---|---|---|---|
+| N02 -> N03 | `STTALBIT` | `MLZWIF?V` | `SLZWBIT` |
+| N06 -> N07 | `APTALBIT` | `NMZWIF?V` | `AMZWBIT` |
+| **N10 -> N11** | **`ATEALBIT`** | **`NLOWIF?V`** | **`ALOWBIT`** |
+| N13 -> N14 | `ATTILBIT` | `NLZOIF?V` | `ALZOBIT` |
+| N18 -> N19 | `ATTALSIT` | `NLZWIW?V` | `ALZWSIT` |
+| N20 -> N21 | `ATTALBPT` | `NLZWIFKV` | `ALZWBPT` |
+| N23 -> N24 | `ATTALBIE` | `NLZWIF?L` | `ALZWBIE` |
+
+Thus the same target-blind row choice yields both **A TEAL BIT** in note heads and **A LOW BIT** from the aligned count/head features. This materially strengthens the interpretation of `LOW` as a bit-significance instruction.
+
 ### 4. LOW BIT yields M, which uniquely selects Mug shelf
 
 Read `LOW` literally once more as an instruction to take the low bit of each of the eight `ATEALBIT` letters. The ASCII least-significant bits are:
@@ -163,7 +185,7 @@ Separately, Agent41's exact 1889 Internet Archive rear-map stitch has already te
 
 `agents/agent22/k08_crew4_low_selector_sft.py`
 
-The script pins the source SHA, reproduces CREW4, selects David by first-appearance crew order, reproduces LOW from David body counts, derives Emily's ATTALBIT, enumerates every valid single one-row lowering, asserts that N10->N11 is the unique ATEALBIT result, decodes the ATEALBIT ASCII low bits as `M`, and asserts that N11 `Mug shelf` is the unique selected M-heading.
+The script pins the source SHA, reproduces CREW4, selects David by first-appearance crew order, reproduces LOW from David body counts with all-author specificity controls, derives Emily's ATTALBIT, enumerates every valid single one-row lowering, asserts that N10->N11 uniquely yields both `ATEALBIT` and the aligned mixed instruction `ALOWBIT`, decodes the ATEALBIT ASCII low bits as `M`, and asserts that N11 `Mug shelf` is the unique selected M-heading.
 
 ## Remaining boundary
 
