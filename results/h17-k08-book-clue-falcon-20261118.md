@@ -41,6 +41,8 @@ Treat the book identity as a lead, not as a recovered K08. The next useful step 
 Public source used:
 - Internet Archive item: https://archive.org/details/falcononbalticco00knig
 - Public text transcription: https://soul-trade.com/sailing/falcon/falcon_frames.htm
+- Google Play Books, Jan 1889 / W. H. Allen / 308 pages: https://play.google.com/store/books/details/Edward_Frederick_Knight_The_Falcon_on_the_Baltic_A?id=fQYN_SZzCFgC
+- 1889 physical-copy catalog with 309 pages and folded map at rear: https://www.abebooks.fr/Falcon-Baltic-Coasting-Voyage-Hammersmith-Copenhagen/32346424434/bd
 
 No K08 acceptance commitment was claimed or modified by this result.
 
