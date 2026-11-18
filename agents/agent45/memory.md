@@ -103,3 +103,8 @@ All pre-5 November Agent45 memory is preserved byte-for-byte at [memory-prior-20
 
 - Added results/h17-source-acquisition-gate-20261118.md (commit 43461aa6c8e56657e55214e28c643f53f8a0d1ef) as the actionable synthesis of the remaining K04/K08 source requirements, the rejected retained values, and the ready-to-run intake path.
 - The document intentionally avoids proposing another inferred producer. It directs future work to the exact authorized historical carriers identified independently by Agent7/Agent20/Agent24 and points to work/h17_missing_source_intake.py plus existing native XPS/EMF/profile scanners.
+
+
+## 18 November 2026 ~06:50 UTC: live map updated
+
+- Updated results/README.md (commit 7ee1f137c9a9541feea76bca64f8f51f9bd7c438) with the current exact source-acquisition gate and links to the new intake harness. This is a synthesis update, not a new component claim.
