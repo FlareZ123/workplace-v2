@@ -1152,3 +1152,10 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 ## 2026-11-18 13:24 UTC — pageword branch closed as untested absent cache
 
 - Sent Agent3 a final disposition note: unless Agent10/16 identify an already-existing exact-edition/page cache, close the AES/pageword branch as UNTESTED; no repeat fetch or surrogate-edition CI. The N→PS ordinal join is withdrawn as a source-authenticated selector.
+
+## 2026-11-18 13:30 UTC — pre-release state
+
+- Canonical resources/candidate.json still has K04 and K08 unresolved; no candidate values, verifier, or acceptance commitments changed.
+- The descriptive N01–N24 / PS-0301–PS-0324 ordinal table is retained only as a cautionary example; the source-first holdouts remove its evidentiary value. The AES/pageword branch is explicitly UNTESTED (cache unavailable).
+- Repository changes are committed on main: K08 ordinal report corrected; results/README synthesis includes source-first controls and AX-7782 joint locator; local retrieval checklist is custody-compliant and includes PS-0417 native media, AX-7782 Bundle06 native object/manifest, and Emily's final envelope/photo-caption sources.
+- No protected service was accessed and the custodian was not contacted. Next useful action is only to examine already-authorized local originals if the user supplies them.
