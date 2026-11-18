@@ -30,11 +30,13 @@ def print_rows(p):
         return []
     out = []
     for line_no, line in enumerate(lines, 1):
-        if f'JOB={K04_JOB}' not in line or 'PAYLOAD=' not in line:
+        if 'PAYLOAD=' not in line:
             continue
         tokens = line.split()
         timestamp = tokens[0] if tokens and re.match(r'^\d{4}-\d\d-\d\dT', tokens[0]) else ''
         f = {k: v for k, v in (tok.split('=', 1) for tok in tokens if '=' in tok)}
+        if f.get('JOB') != K04_JOB:
+            continue
         try:
             attempt = int(f['ATTEMPT'])
         except (KeyError, ValueError):
@@ -50,7 +52,7 @@ def print_rows(p):
             'class': f.get('CLASS', ''),
             'dest': f.get('DEST', ''),
             'attempt': attempt,
-            'state': f.get('STATE', f.get('STATUS', '')),
+            'state': f.get('STATE') or f.get('STATUS', ''),
             'payload': payload,
         })
     return out
