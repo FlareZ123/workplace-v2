@@ -1,36 +1,27 @@
-name: H17 K04 xoroshiro128++ native-XOR recovery experiment
+name: H17 K04 xoroshiro128++ bidirectional state reconstruction
 on:
   workflow_dispatch:
-    inputs:
-      bracket_mode:
-        description: "Observed packets for generator state constraints"
-        required: true
-        default: flanks
-        type: choice
-        options:
-          - flanks
-          - dispatch
 permissions:
   contents: read
 jobs:
   synthetic-control:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install native XOR SAT solver
+      - name: Install XOR SAT engine
         run: python -m pip install pycryptosat==5.14.7
-      - name: Check all generated CNF and XOR clauses
-        run: python agents/agent50/k04_xoroshiropp_xorcnf_sft.py --self-test
-      - name: Recover hidden synthetic state before reading original source
-        run: python agents/agent50/k04_xoroshiropp_xorcnf_sft.py --control-only --limit-seconds 240
+      - name: Independent circuit witness and bidirectional transition checks
+        run: python agents/agent50/k04_xoroshiropp_meet_sft.py --self-test
+      - name: Plant authentic seed with missing middle and invert 16-bit state-prefix
+        run: python agents/agent50/k04_xoroshiropp_meet_sft.py --control-only --limit-seconds 100
   source-brackets:
     needs: synthetic-control
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 9
     strategy:
       fail-fast: false
       matrix:
@@ -40,7 +31,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install native XOR SAT solver
+      - name: Install XOR SAT engine
         run: python -m pip install pycryptosat==5.14.7
-      - name: Recover whole middle coupon from source bracket, then check original commitment
-        run: python agents/agent50/k04_xoroshiropp_xorcnf_sft.py --view ${{ matrix.view }} --mode ${{ inputs.bracket_mode }} --limit-seconds 300
+      - name: Reconstruct masked physical-coupon candidate from source flanks
+        run: python agents/agent50/k04_xoroshiropp_meet_sft.py --view ${{ matrix.view }} --limit-seconds 240
