@@ -1,0 +1,23 @@
+name: Agent22 Praeger search-within P212 probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query bounded Google Books search-within metadata
+        run: python agents/agent22/k08_praeger_searchwithin_p212.py
+      - name: Upload response evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent22-praeger-searchwithin-p212
+          path: praeger-searchwithin.json
+          if-no-files-found: warn
