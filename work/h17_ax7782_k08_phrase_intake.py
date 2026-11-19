@@ -484,6 +484,10 @@ def scan_phrase_spans(text: str, nonce: bytes, target: bytes, source: str,
         for end in range(start, min(len(words), start + max_words)):
             phrase_words.append(words[end])
             phrase = " ".join(phrase_words)
+            if len(phrase) > 96:
+                break
+            if len(phrase) < 8:
+                continue
             tested += 1
             component = k08_component(nonce, phrase)
             if hashlib.sha256(component).digest() == target:
@@ -496,7 +500,7 @@ def scan_phrase_spans(text: str, nonce: bytes, target: bytes, source: str,
 
 
 def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
-                   ocr: bool = False, max_phrase_words: int = 32,
+                   ocr: bool = False, max_phrase_words: int = 48,
                    pdf_password: str | None = None) -> dict:
     selected, transfer_meta = intake.select_chain(resources, transfer_id)
     if not transfer_meta.get("handoff_email_confirms_retained_object"):
@@ -565,7 +569,7 @@ def main() -> None:
     parser.add_argument("--transfer", default="AX-7782")
     parser.add_argument("--ocr", action="store_true", help="optional OCR for images/scanned PDFs")
     parser.add_argument("--pdf-password", help="optional password for encrypted PDFs; never guessed")
-    parser.add_argument("--max-phrase-words", type=int, default=32)
+    parser.add_argument("--max-phrase-words", type=int, default=48)
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
     if not 1 <= args.max_phrase_words <= 256:

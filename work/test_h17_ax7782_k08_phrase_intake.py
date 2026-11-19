@@ -162,6 +162,27 @@ class K08PhraseIntakeTests(unittest.TestCase):
                 phrase_intake.scan_phrase_spans(text, nonce, target, source + " [" + label + "]", 16, hits)
         self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
 
+    def test_full_96_character_phrase_domain(self):
+        nonce = bytes(range(16))
+        phrase = " ".join(chr(ord("a") + (i % 26)) for i in range(48))
+        self.assertEqual(len(phrase), 95)
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+        hits = []
+        tested = phrase_intake.scan_phrase_spans(
+            "prefix " + phrase + " suffix", nonce, target, "48-word-positive", 48, hits
+        )
+        self.assertGreater(tested, 0)
+        self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
+
+        too_long = " ".join(chr(ord("a") + (i % 26)) for i in range(49))
+        self.assertEqual(len(too_long), 97)
+        long_target = hashlib.sha256(phrase_intake.k08_component(nonce, too_long)).digest()
+        long_hits = []
+        phrase_intake.scan_phrase_spans(
+            too_long, nonce, long_target, "49-word-out-of-domain", 49, long_hits
+        )
+        self.assertEqual(long_hits, [])
+
     def test_original_ax7782_transfer_chain_is_selected(self):
         import h17_ax7782_object_intake as object_intake
         selected, meta = object_intake.select_chain(SOURCE_ROOT, "AX-7782")

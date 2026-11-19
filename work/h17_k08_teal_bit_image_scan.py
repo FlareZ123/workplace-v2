@@ -36,7 +36,7 @@ def normalize_phrase(value: str) -> str:
 
 def k08_matches(value: str, nonce: bytes, commitment: str) -> bool:
     normalized = normalize_phrase(value)
-    if not normalized:
+    if not 8 <= len(normalized) <= 96:
         return False
     component = hmac.new(nonce, normalized.encode("utf-8"), hashlib.sha256).digest()[:16]
     return hashlib.sha256(component).hexdigest().lower() == commitment.lower()
@@ -56,16 +56,20 @@ def _runs_from_bytes(data: bytes) -> Iterator[str]:
             yield match.group(0)
 
 
-def _ngrams(text: str, max_words: int = 20) -> Iterator[str]:
+def _ngrams(text: str, max_words: int = 48) -> Iterator[str]:
     words = WORD.findall(text.lower())
-    # Avoid quadratic blow-up on a full-page OCR or a long image payload.
-    if len(words) > 300:
-        words = words[:300]
+    # K08 accepts normalized phrases of 8–96 characters. The maximum possible
+    # word count in that domain is 48 (48 one-character tokens plus 47 spaces).
+    # Scan every start position; bound each span by both constraints.
     for start in range(len(words)):
-        for width in range(2, min(max_words, len(words) - start) + 1):
-            yield " ".join(words[start : start + width])
-    if words:
-        yield " ".join(words)
+        phrase_words: list[str] = []
+        for end in range(start, min(len(words), start + max_words)):
+            phrase_words.append(words[end])
+            phrase = " ".join(phrase_words)
+            if len(phrase) > 96:
+                break
+            if len(phrase) >= 8:
+                yield phrase
 
 
 def _bit_variants(image: Image.Image) -> Iterator[tuple[str, np.ndarray]]:
@@ -107,7 +111,7 @@ def _candidate_texts(bits: np.ndarray) -> Iterator[str]:
                 yield from _runs_from_bytes(payload)
 
 
-def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 20) -> list[dict]:
+def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 48) -> list[dict]:
     matches: list[dict] = []
     with Image.open(path) as opened:
         frames = getattr(opened, "n_frames", 1)
@@ -120,7 +124,6 @@ def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 20) -
                 for run in _candidate_texts(bits):
                     # Keep only short runs likely to be a caption; long random
                     # printable regions are not useful phrase candidates.
-                    run = run[:4096]
                     for candidate in _ngrams(run, max_words=max_words):
                         normalized = normalize_phrase(candidate)
                         if normalized in seen:
@@ -157,7 +160,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--images", type=Path, required=True, help="directory containing authorized source images")
     parser.add_argument("--evidence-root", type=Path, required=True, help="directory containing recovery-routing.json and acceptance.json")
-    parser.add_argument("--max-words", type=int, default=20)
+    parser.add_argument("--max-words", type=int, default=48)
     args = parser.parse_args()
     nonce, commitment = load_commitment(args.evidence_root)
     files = sorted(p for p in args.images.rglob("*") if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES)

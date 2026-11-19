@@ -266,7 +266,7 @@ def scan_inventory(
     inventory_path: Path,
     nonce: bytes,
     target: bytes,
-    max_phrase_words: int = 32,
+    max_phrase_words: int = 48,
     max_file_bytes: int = DEFAULT_MAX_FILE_BYTES,
     max_total_bytes: int = DEFAULT_MAX_TOTAL_BYTES,
     max_sqlite_rows: int = DEFAULT_MAX_SQLITE_ROWS,
@@ -474,7 +474,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--inventory", type=Path, help="JSON output from h17_profile_inventory.py")
     parser.add_argument("--resources", type=Path, help="extracted H-17 resources root containing evidence/ and acceptance.json")
-    parser.add_argument("--max-phrase-words", type=int, default=32)
+    parser.add_argument("--max-phrase-words", type=int, default=48)
     parser.add_argument("--max-file-bytes", type=int, default=DEFAULT_MAX_FILE_BYTES)
     parser.add_argument("--max-total-bytes", type=int, default=DEFAULT_MAX_TOTAL_BYTES)
     parser.add_argument("--max-sqlite-rows", type=int, default=DEFAULT_MAX_SQLITE_ROWS)
