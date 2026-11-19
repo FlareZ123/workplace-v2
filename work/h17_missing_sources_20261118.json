@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-18T06:16:00Z",
+  "updated": "2026-11-19T02:28:42.233Z",
   "status": "source-blocked",
   "k04": {
     "target_commitment": "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0",
@@ -23,7 +23,56 @@
     "do_not_promote": [
       "generic literary quotations",
       "unverified page/word coordinates",
-      "caption permutations without a source witness"
+      "caption permutations without a source witness",
+      "P212 as a printed book page without title/edition evidence",
+      "K01 byte pairs as workbook coordinates or the 0x4D cell-bit prediction without the native mug-stock.xls"
+    ],
+    "secondary_locator_hypotheses": [
+      {
+        "source": "R:/Stores/consumables/mug-stock.xls",
+        "bookmark": "retired-office-bookmarks.html bookmark #3: Tea-room stock sheets",
+        "anchor": "P212 (candidate Excel A1 cell, column P row 212)",
+        "coordinate_interpretation": "K01 byte pairs as row,column in source order",
+        "cells": [
+          "EX4",
+          "AT171",
+          "HN28",
+          "DZ122",
+          "DT205",
+          "AI96",
+          "C67",
+          "Z201"
+        ],
+        "swapped_orientation": [
+          "D154",
+          "FO46",
+          "AB222",
+          "DR130",
+          "GW124",
+          "CR35",
+          "BO3",
+          "GS26"
+        ],
+        "pre_registered_bit_test": {
+          "condition": "only if the relevant cells are numeric and teal-filled",
+          "extraction": "value & 1, in listed source order; pack first bit as least-significant bit",
+          "expected_hex": "4D",
+          "expected_ascii": "M",
+          "expected_bits_lsb_first": [
+            1,
+            0,
+            1,
+            1,
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "direct_cell_test": "Normalize textual P212 value under the unchanged K08 rule and compare HMAC commitment; inspect formula/comment/style/hidden-sheet context.",
+        "status": "hypothesis only; native workbook and sheet dimensions absent; K01 route itself defines ink groups, not cell coordinates",
+        "result_reference": "results/h17-k08-p212-book-candidate-crosscheck-20261119.md"
+      }
     ]
   },
   "intake": {
