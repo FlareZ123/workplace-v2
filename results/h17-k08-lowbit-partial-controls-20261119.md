@@ -38,7 +38,7 @@ The source-derived A / LOW / BIT selector positions are fixed at 1, 6, 2. All or
 | Selected lower-half selector | 7 |
 | Selected upper-half low-bit bytes | `04 83 F9` (non-printing) |
 
-The readable YEA output is unique, but the downstream pipeline uses its low-bit selector 7, not the literal word. **24 of 120** ordered assignments reach that operational endpoint. Thus the word-level hit is 1/120 while the actual K07 selector endpoint is 20%; do not use 1/120 as the component-stage endpoint rate. This remains conditional on the already-derived selectors 1/6/2 and lower-half/byte-LSB convention.
+The readable YEA output is unique, but the downstream pipeline uses its low-bit selector 7, not the literal word. **24 of 120** ordered assignments reach that operational endpoint. Thus the word-level hit is 1/120 while the actual K07 selector endpoint is 20%; do not use 1/120 as the component-stage endpoint rate. This remains conditional on the already-derived selectors 1/6/2 and lower-half/byte-LSB convention. The four components with odd lower-half character LSBs are K01, K02, K05, and K06; the other two are even. Consequently the 24 selector-7 assignments are exactly the 4P3 permutations of those four odd components. Across all 120 assignments, selector counts are 1:8, 2:8, 3:24, 4:8, 5:24, 6:24, 7:24 (selector 0:0).
 
 ### 2. Transfer retry-mask controls
 
