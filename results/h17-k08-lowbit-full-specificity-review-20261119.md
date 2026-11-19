@@ -181,6 +181,12 @@ Marginal stage hits (not independent and not to be multiplied):
 
 The observed note-ID arrangement is unusual under this conservative within-author shuffle, but the result is conditional on the observed author labels and fixed LOW BIT/operator choices. It does not account for post-hoc selection of the mechanism, splice positions, byte/hex conventions, or the separate component/transfer/bookmark choices. It is not a global p-value.
 
+## 8. Direct adoption from LOW BIT-selected carriers
+
+A separate source-to-final hypothesis was tested: the LOW BIT route selects a retained text carrier whose complete body or complete sentence was copied verbatim to the final envelope. The candidate family was frozen to full bodies and every complete sentence from N09/N10/N11/N12/N13/N14/N20/N23, the source-stage and accepted-stage route strings (“Workshop to shelf” and “Workshop to desk”), and the concatenated N12→N11→N13→N09 HMAC cycle. These carriers are selected by the existing workshop/shelf/desk role transition, four-note cycle and N14 Sunrise-photo convergence; no paraphrase, word edit or phrase grammar was added.
+
+**Result: 22 candidates, 0 K08 commitment matches.** Full normalized text, HMAC16 and component SHA-256 for each candidate are in results/h17-k08-lowbit-carrier-candidate-check-20261119.json; reproducer: agents/agent9/k08_lowbit_carrier_candidate_check.py. This falsifies direct adoption from the retained note text and route strings only. It does not rule out a separate N10 desk-copy original, N14 photograph/caption original, the absent R:/Stores/consumables/mug-stock.xls workbook, or an edit/copy operation not represented in the surviving notes.
+
 ## Decision and next work
 
 The benchmark supports a **specific source-local routing hypothesis**, not a recovered K08 phrase. The N20/N23 placement and HMAC route are more discriminating than the selector-only stages, but several upstream and operator choices remain post hoc or ambiguous: the ALOWBIT splice has two constructions; source-map conventions have 16 tested variants; selector 7 is common across component orders under some half/bit choices; transfer selector 11 is reachable under many counterfactual masks and alternate renderings; and bookmark reverse ordinal is inferred.
