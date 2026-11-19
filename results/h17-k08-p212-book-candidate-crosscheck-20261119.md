@@ -17,6 +17,15 @@ The eight K01 byte pairs can be read as candidate worksheet coordinates:
 
 For BIFF8 `.xls`, the 256-column limit is A–IV, so both orientations fit the column limit. The first orientation has rows no greater than 205; the swapped orientation reaches row 222. If the missing workbook's relevant sheet has exactly 212 rows, the first orientation fits and the swapped one does not, with `P212` as a cell in the final row. This is a useful structural discriminator **only if** the workbook's actual dimensions support it.
 
+The K01 source has four named ink groups A–D, each four bytes long; split each group into its two row/column pairs and the address list naturally groups as:
+
+- Group A: `EX4, AT171`
+- Group B: `HN28, DZ122`
+- Group C: `DT205, AI96`
+- Group D: `C67, Z201`
+
+Because the bookmark describes “Tea-room stock sheets” (plural), a further **conditional** test is whether the workbook has four corresponding sheets A–D (or unambiguous A–D group labels). If so, inspect only each group's two listed cells on its matching sheet first; otherwise record the actual sheet names and test the listed addresses without inventing a group-to-sheet permutation. The A–D sheet mapping is a hypothesis, not an authenticated join.
+
 The eight-cell interpretation also has a **pre-registered output check**. The existing note-chain low-bit extraction gives `0x4D` = `M`; in first-bit-as-LSB order, that requires the eight selected cell-value LSBs to be exactly `1,0,1,1,0,0,1,0`. If the workbook is supplied and these addresses are numeric teal-filled cells on a relevant sheet, take only `value & 1` in the listed K01 source order and pack first-bit-as-LSB. A result other than `0x4D`, or no teal/numeric support at those exact cells, weakens this specific cell-bit hypothesis. Do not switch to high bits, reverse order, first-character LSBs, or other nearby encodings after seeing the data. Independently test whether P212 contains text/formula/comment content that, when normalized under the unchanged K08 rule, passes the original HMAC commitment.
 
 This cell reading is more source-adjacent than a page-only reading because the mirror loop returns to the workbook bookmark. It also gives a bounded future test: preserve the native BIFF workbook and inspect **P212 plus these eight addresses in both orientations**, including hidden sheets/rows/columns, fills, formulas, comments, names, objects and embedded images. The `ATEALBIT` / `ALOWBIT` instructions could be consistent with a teal-style/low-bit carrier. The predicted eight-cell LSB output `0x4D` is falsifiable, but neither the cell mapping nor the style/bit extraction is authenticated.
