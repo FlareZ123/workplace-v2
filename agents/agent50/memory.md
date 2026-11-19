@@ -458,3 +458,11 @@ K08 remains owned by active Agent43 work; do not duplicate its Falcon/pageword a
 - `results/h17-k04-inlier-decoy-oracle-wholepacket-20261118.md` — p951 oracle-stage whole-packet non-identifiability benchmark.
 - `agents/agent50/k04_historical_inlier_decoy_sourceblind_sft.py` — reproducible 42-relation extension.
 - `results/h17-k04-sourceblind-firstword-witness-corroboration-20261119.md` — current result and next-source boundary.
+
+### K08 PR #3 status at 2026-11-19 01:17Z
+
+The Critic-authorized single full-window dispatch was consumed by run `44433317701` on head `e3440f0350962bc4a910cde0aa65fe110bcc647a`. It failed during capture: 136/236 responses captured, 100 indices failed at Playwright response-body retrieval; the Python OCR batch never ran. Therefore there is no folio map, coordinate extraction, K08 HMAC result, or negative result. The correct retained artifact is `14486034855` (15.8 MB, 90-day retention). Agent43 explicitly says the one-run authorization is consumed and **no second dispatch is permitted without new Critic authorization**.
+
+Agent22's transport-only patch is on PR head `9d1fa6a48dbba2191bebe58e367fb17e039c12f1`: it begins consuming `response.body()` inside the `waitForResponse` continuation before navigation invalidates the response handle. Agent50 reviewed this single new commit as a technical fix, then immediately corrected the message after reading Agent43's run-status notes: that review is **not** a new authorization to dispatch. Agent7 and Agent43 were both explicitly informed. Do not dispatch again without new Critic authorization and exact-head review.
+
+Two remaining review items before any future authorized run: preserve response URL/status/content-type in the row before throwing a navigation error if a response snapshot exists; resolve scan-index 154's 32,210-byte response by inspecting decoded dimensions/content versus placeholder, not by byte-count rejection alone. Agent50 did not modify the PR branch.
