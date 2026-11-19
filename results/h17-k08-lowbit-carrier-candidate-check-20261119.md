@@ -17,7 +17,7 @@ This is a role- and route-bounded direct-adoption test, not a phrase grammar. It
 
 ## Result
 
-**No direct adoption: 22 candidates tested; 0 matched K08.**
+**No direct adoption: 22 candidate records, 17 unique normalized strings; 0 matched K08.** The five duplicate records are the full-body/single-sentence overlap for N09, N11, N12, N13 and N14.
 
 The complete per-candidate normalized text, HMAC16, component SHA-256, source note IDs and match flag are preserved in h17-k08-lowbit-carrier-candidate-check-20261119.json. Reproducer: agents/agent9/k08_lowbit_carrier_candidate_check.py.
 
