@@ -24,7 +24,7 @@ No arbitrary substring windows, word permutations, or cross-message assembly are
 
 ## Results
 
-<badge color="success">Source checks passed</badge>
+**Source checks:** passed
 
 | Candidate form | Raw candidates |
 |---|---:|
@@ -36,7 +36,7 @@ No arbitrary substring windows, word permutations, or cross-message assembly are
 | Sentence | 182 |
 | **Total raw** | **560** |
 
-<badge color="danger">0 HMAC matches</badge>
+**HMAC result:** 0 matches
 
 The 560 raw candidates reduce to **482 unique normalized strings**. None reproduces the K08 commitment.
 
