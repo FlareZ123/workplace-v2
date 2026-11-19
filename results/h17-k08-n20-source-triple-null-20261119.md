@@ -8,7 +8,7 @@ Reproducer: agents/agent9/k08_n20_source_triple_null.py
 
 The script pins all 20 mail messages, the 24-note file, and the authoritative recovery-routing JSON. It tokenizes each email body and every string value in the routing file with the same ASCII word tokenizer used in the existing N20 SFT.
 
-For every contiguous three-word window, it applies the established ASCII-character-LSB selector to each word. Windows whose three selectors all fall within N20's one-based word range are then used to index N20. No source phrase is selected manually.
+For every contiguous three-word window, it applies the established ASCII-character-LSB selector to each word. Windows whose three selectors all fall within N20's one-based word range are then used to index N20. No source phrase is selected manually. The JSON output retains every one of the 1,054 valid source windows, not just the two target hits.
 
 ## Result
 
