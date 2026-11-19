@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
-"""Source-pinned K08 low-bit two-cell, SEAT and IF-EVEN transition.
+"""Source-pinned K08 low-bit routing continuation.
 
-Reproduces the established source-stage LOW BIT bridge and target-blind
-continuations:
+Target-blind closures:
   ATEALBIT -> M, TEA -> row 10       => M10
   A LOW BIT -> THE END OF; NIGHT -> T
   SEA -> row 11                       => T11
   ends(SEA,NIGHT,VOICES,TABLE)=ATSE; wrap2 -> SEAT -> K07 -> N11
   TEA + M -> TEAM -> N14, while SEAT -> N11; body heads -> IF EVEN
+  THE END OF VOICES -> S; SEAT+S -> SEATS -> N23 final-wording witness
+  K08 route literals independently map KEEPER->23, LATE->10, WATCH->11,
+  DESK->14, CREW->13 and TITLE->18.
 """
 from __future__ import annotations
-import hashlib, re
+import hashlib, json, re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 NOTES = ROOT / "resources/evidence/crew/noticeboard-and-desk-notes.txt"
+ROUTING = ROOT / "resources/evidence/recovery-routing.json"
 NOTES_SHA256 = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
+ROUTING_SHA256 = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
 
 K01 = bytes.fromhex("049AAB2E1CDE7A82CD7C60234303C91A")
 K02_RAW = bytes.fromhex("E1A5E474BAD7E853A2E8C71D3317D507")
@@ -57,8 +61,10 @@ def rotate_left(text: str, distance: int) -> str:
 
 def main() -> None:
     assert hashlib.sha256(NOTES.read_bytes()).hexdigest() == NOTES_SHA256
+    assert hashlib.sha256(ROUTING.read_bytes()).hexdigest() == ROUTING_SHA256
     note_text = NOTES.read_text(encoding="utf-8")
     notes = parse_notes(note_text)
+    routing = json.loads(ROUTING.read_text(encoding="utf-8"))
 
     source = {1: K01, 2: K02_RAW, 5: K05, 6: K06, 7: K07_RAW}
     source_map = {k: source_selector(v) for k, v in source.items()}
@@ -91,9 +97,7 @@ def main() -> None:
     column_t = n20[12][-1].upper()
     assert column_t == "T"
     assert f"{column_t}{sea_row}" == "T11"
-
-    shifted = chr(ord(column_m) + low_value("SEA"))
-    assert shifted == column_t
+    assert chr(ord(column_m) + low_value("SEA")) == column_t
 
     witnesses = []
     for number, text in notes.items():
@@ -131,6 +135,38 @@ def main() -> None:
         words(body(notes[seat_row]))[0].upper(),
     )) == "IF EVEN"
 
+    # THE END OF VOICES gives the plural suffix exactly.
+    plural_suffix = "VOICES"[-1]
+    assert plural_suffix == "S"
+    seats = seat + plural_suffix
+    assert seats == "SEATS"
+    assert not re.search(r"\bseats\b", note_text, re.IGNORECASE)
+    assert low_value(seats) == 23
+    assert "words I finally put on it" in notes[23]
+
+    # The authoritative K08 route text independently selects the same loci.
+    k08_source = routing["K08"]["source"]
+    k08_rule = routing["K08"]["rule"]
+    for token in ("keeper", "desk", "crew"):
+        assert re.search(rf"\b{token}\b", k08_source, re.IGNORECASE)
+    for token in ("late", "watch", "title"):
+        assert re.search(rf"\b{token}\b", k08_rule, re.IGNORECASE)
+    route_literals = {
+        "KEEPER": 23,
+        "DESK": 14,
+        "CREW": 13,
+        "LATE": 10,
+        "WATCH": 11,
+        "TITLE": 18,
+    }
+    assert {k: low_value(k) for k in route_literals} == route_literals
+    assert notes[23].startswith("The wording in my margin")
+    assert notes[14].startswith("Sunrise photograph:")
+    assert notes[13].startswith("At the end of the night")
+    assert notes[10].startswith("The desk copy")
+    assert notes[11].startswith("Mug shelf:")
+    assert notes[18].startswith("Commissioning envelope label:")
+
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
     print("TEA->K06->N10 => M10")
@@ -146,6 +182,9 @@ def main() -> None:
     print("TEA+M=TEAM; LOW_BIT(TEAM)=14->N14_IF")
     print("SEAT->K07->N11_EVEN")
     print("TEAM_SEAT_HEADS=IF EVEN")
+    print("THE_END_OF(VOICES)=S; SEAT+S=SEATS")
+    print("LOW_BIT(SEATS)=23->N23_FINAL_WORDING")
+    print("ROUTE_LITERALS=KEEPER23,DESK14,CREW13,LATE10,WATCH11,TITLE18")
     print("PASS")
 
 if __name__ == "__main__":
