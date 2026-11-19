@@ -227,6 +227,44 @@ def main() -> None:
     assert n12_hmac_selector == 11
     assert notes[n12_hmac_selector].startswith("Mug shelf:")
 
+    # Broader routing-file control: run the same transform over every string
+    # value, retaining only intermediate strings of 1..8 letters so LOW BIT
+    # stays within the already used ASCII-bit width.
+    route_string_controls: list[tuple[str, str, int]] = []
+
+    def walk_strings(value: object) -> None:
+        if isinstance(value, dict):
+            for child in value.values():
+                walk_strings(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk_strings(child)
+        elif isinstance(value, str):
+            selectors = [
+                low_value(token)
+                for token in re.findall(r"[A-Za-z0-9]+", value)
+                if 1 <= low_value(token) <= 24
+            ]
+            letters = "".join(
+                chr(ord("A") + len(words(body(notes[n]))))
+                for n in selectors
+            )
+            if 1 <= len(letters) <= 8:
+                route_string_controls.append(
+                    (value, letters, low_value(letters))
+                )
+
+    walk_strings(routing)
+    assert len(route_string_controls) == 15
+    special_controls = [
+        (value, letters, selector)
+        for value, letters, selector in route_string_controls
+        if "LOW" in letters or selector == 12
+    ]
+    assert special_controls == [
+        (routing["K08"]["source"], "VLOWL", 12)
+    ]
+
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
     print("TEA->K06->N10 => M10")
@@ -250,6 +288,7 @@ def main() -> None:
     print("ROUTE_SOURCE_K08=VLOWL->12->N12_WORKSHOP")
     print("ROUTE_SOURCE_LOW_UNIQUE=K08_ONLY")
     print("N12_HMAC_LOW=11->N11_MUG_SHELF")
+    print("ROUTING_STRING_CONTROL=15_ELIGIBLE; UNIQUE_LOW_OR_12=K08_SOURCE")
     print("PASS")
 
 if __name__ == "__main__":
