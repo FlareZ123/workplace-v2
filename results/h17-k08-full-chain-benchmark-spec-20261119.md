@@ -58,7 +58,7 @@ The benchmark must calculate the exact joint numerator by enumerating/factorizin
 
 ## Matched controls to include in the same output
 
-- K05: all 16 retained latch-retry masks, including the LOW IF EVEN selection.
+- K05: enumerate all 16 retained latch-retry masks as matched controls. The route-selected K05 component is mask 15 (greatest sequence at each latch), which matches the accepted K05 bytes. LOW IF EVEN selects mask 10 and is a separate note-derived control; mask 8 also yields the same 0A4D/M10 output. Neither 8 nor 10 replaces the route-selected K05 source.
 - K07: all 256 retry masks for each of the four transfer IDs; identify mask 255 as the source-valid K07 mask.
 - Bookmark loop: all 60 mappings and the two MAIL-13 mappings, distinguishing the tea-room bookmark.
 - Note HMAC: 48 full/post-label checks (24 notes × 2 forms).
