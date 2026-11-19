@@ -1,0 +1,1 @@
+Precision correction to the carrier test: it produced 22 labeled candidate records but only **17 unique normalized strings**; five records duplicate a one-sentence full body (N09, N11, N12, N13, N14). All 17 unique strings fail the K08 commitment. The script and JSON now report both counts, and the README/main report have been corrected.
