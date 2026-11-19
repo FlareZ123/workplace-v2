@@ -52,7 +52,7 @@ This is a source-backed version-history path, not a claim that the missing phras
 
 The available export supports the identity and role of the missing text, and it supports a concrete version-selection procedure if the native caption record is recovered. It does **not** support the exact words. No further phrase grammar, note-ID locator, book scan, or workbook-coordinate branch can supply the missing authored wording without an additional source field.
 
-The retired-profile bookmark paths `R:/IT/desk-images/oldscan/scanrelease.txt` and `R:/IT/desktop-move-2026.html` are contextual leads only. The property annex identifies FA-18 as a network service desk/local archival station, but does not prove that the photograph or caption history is stored there; Agent 50 independently found no source mapping `DEST=bench` to FA-18. Do not infer a storage mapping, reconnect to a protected share, or contact the closed custodian channel.
+The retired-profile bookmark paths `R:/IT/desk-images/oldscan/scanrelease.txt` and `R:/IT/desktop-move-2026.html` are contextual leads only. Any FA-18 description obtained by locally decrypting BX25-08 is exploratory content, not authenticated by the Risk-desk paper key register and not authoritative for host identity or storage mapping. Agent 50 independently found no source mapping `DEST=bench` to FA-18. Do not infer a storage mapping, reconnect to a protected share, or contact the closed custodian channel.
 
 ## Required next input
 
@@ -69,4 +69,4 @@ Until one of these source objects is available, K08 must remain unresolved. Do n
 
 - **High:** K08 is a personal recovery-envelope caption; N17/N18 are excluded; the supplied notes do not state the final inscription.
 - **Medium:** the original photograph's caption metadata/version history may preserve the final wording.
-- **Low:** FA-18 is the storage location for that photograph or history; the current evidence does not establish this.
+- **Low:** any FA-18 storage relationship; the locally decrypted property-PDF content is not paper-register-authenticated and does not establish a host/storage mapping.
