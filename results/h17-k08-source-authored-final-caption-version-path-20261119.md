@@ -40,6 +40,8 @@ The existing note-to-spool crosswalk supplies a second, more direct candidate fo
 
 The PS-0323 16-byte payload itself is not the K08 component: its SHA-256 does not match the K08 slot commitment. Keep PS-0317 (standby label), PS-0318 (commissioning label), PS-0320 (semantic brief), and PS-0306 (desk draft) as controls. PS-0324 is a sequence-aligned label job, not an envelope witness. The note/job association remains structural until the native manifest confirms it.
 
+For a recovered native print object, reuse the existing bounded read-only parsers: `work/h17_emf_text.py` for EMF/EMFSPOOL, `work/h17_xps_text.py` for XPS/OXPS UnicodeString runs, and `work/h17_xps_glyph_indices.py` for XPS glyph-index-only runs where UnicodeString is absent. Preserve the original spool bytes and the extractor's coverage/status. These tools do not recover bitmap-only or outline-only text; an empty/incomplete extraction is not a complete negative. Use the historical renderer and/or OCR only when the native text records do not contain the caption.
+
 ## Conditional source-authored correspondence-version path
 
 The redacted MAIL-11/MAIL-20 exports are not complete native threads: the supplied EMLs are single-part text/plain, omit usable References/In-Reply-To headers and attachments, and the records-custodian note says repeated quoted reply material was omitted. The incident-date Message-ID tokens in the export are templated/prepublication identifiers, not authenticated native mailbox keys.
