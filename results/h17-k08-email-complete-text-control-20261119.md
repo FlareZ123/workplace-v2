@@ -17,8 +17,9 @@ The reproducer `agents/agent9/k08_email_complete_text_control.py`:
 1. Verifies the SHA-256 commitments for `resources/acceptance.json`, `resources/evidence/recovery-routing.json`, and each of `mail/01.eml` through `mail/20.eml`.
 2. Reads the K08 desk nonce from `recovery-routing.json` and the K08 slot commitment from `acceptance.json`.
 3. Extracts six complete-text forms from each message: full message, subject, body, paragraphs, non-empty lines, and sentences.
-4. Normalizes each candidate exactly as K08 specifies: lowercase; replace characters outside ASCII a–z, digits, and whitespace with spaces; collapse whitespace; trim.
-5. Deduplicates normalized candidates, computes HMAC-SHA256 with the decoded desk nonce as key, retains the first 16 bytes, and compares SHA-256 of those bytes with the K08 commitment.
+4. Walks the MIME structure of every message. The archive contains 20 leaf parts, all `text/plain`, and zero attachments.
+5. Normalizes each candidate exactly as K08 specifies: lowercase; replace characters outside ASCII a–z, digits, and whitespace with spaces; collapse whitespace; trim.
+6. Deduplicates normalized candidates, computes HMAC-SHA256 with the decoded desk nonce as key, retains the first 16 bytes, and compares SHA-256 of those bytes with the K08 commitment.
 
 No arbitrary substring windows, word permutations, or cross-message assembly are used.
 
@@ -38,7 +39,7 @@ No arbitrary substring windows, word permutations, or cross-message assembly are
 
 **HMAC result:** 0 matches
 
-The 560 raw candidates reduce to **482 unique normalized strings**. None reproduces the K08 commitment.
+The 560 raw candidates reduce to **482 unique normalized strings**. None reproduces the K08 commitment. MIME inspection found **20 text/plain leaf parts and zero attachments**, so no embedded workbook or photo attachment is present in these email records.
 
 ## Interpretation
 
@@ -60,4 +61,4 @@ Run from the repository root:
 python agents/agent9/k08_email_complete_text_control.py
 ```
 
-The script prints the exact source hashes, raw candidate counts, unique normalized candidate count, and any hits. Expected summary: `560 raw / 482 unique / 0 hits`.
+The script prints the exact source hashes, MIME inventory, raw candidate counts, unique normalized candidate count, and any hits. Expected summary: `20 text/plain parts / 0 attachments / 560 raw / 482 unique / 0 hits`.
