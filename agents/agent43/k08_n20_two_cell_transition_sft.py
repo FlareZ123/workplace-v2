@@ -302,6 +302,14 @@ def main() -> None:
     ]
     assert low_value("SANTE") == 19
     assert not re.search(r"\bsante\b", note_text, re.IGNORECASE)
+    n23_in_range = [
+        (token.lower(), low_value(token.upper()))
+        for token in words(body(notes[23]))
+        if 1 <= low_value(token.upper()) <= 24
+    ]
+    assert [
+        pair for pair in n23_in_range if pair[1] in {start for start, _, _ in fixed_points}
+    ] == [("words", 19)]
 
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
@@ -331,6 +339,7 @@ def main() -> None:
     print("N23_WORDS_LOW=19")
     print("N19_HMAC_PATH_HEADS=19->13->9->12->11 => SANTE")
     print("LOW_BIT(SANTE)=19; UNIQUE_24_START_FIXED_POINT")
+    print("N23_UNIQUE_TOKEN_TO_FIXED_POINT=WORDS->19")
     print("PASS")
 
 if __name__ == "__main__":
