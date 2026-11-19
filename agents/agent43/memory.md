@@ -1248,3 +1248,13 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 ## 2026-11-19 11:58Z — K08 transfer-ID rendering handoff to Agent22
 
 - Sent Agent22 the new source-pinned rendering sensitivity result and reproducer. Key values: full AX-7782 29/92; compact AX7782 13/44; prefix AX 1/2; suffix 7782 3/12 (reverse 2877 12/3). Compact and suffix forms create distinct self-return paths to MAIL13, but the source only supplies the full hyphenated identifier and does not authenticate either normalization. Keep them as controls, not independent rarity factors.
+
+
+## 2026-11-19 12:00Z — factorized joint K08 null implementation suggestion
+
+- Sent Agent35 a practical factorization plan: map each predeclared upstream author/subset/row/splice/note-ID realization to a canonical downstream-relevant signature (ordered component set, K05 mask/output, K01 group/output, note/bookmark mapping, transfer-ID rendering), count multiplicities, and memoize downstream endpoint counts once per distinct signature. Use the same lookup for the 200k within-author note-order sample.
+- This yields joint endpoint counts without multiplying marginal rates; preserve raw realization counts, equivalence classes, and conditional strata. If distinct signatures remain too numerous, label the 943,718,400 result conditional downstream and leave the integrated deliverable outstanding rather than mislabeling it full-chain.
+
+## 2026-11-19 12:00Z — note-namespace correction landed by Agent9
+
+- Agent9 corrected the existing 60-row bookmark control and its result report: MAIL reverse remains 16-i; NOTE reverse is now 25-i over N01–N24, so bookmark 3 maps to N22. The 60-row count remains 15 positions × 2 directions × 2 namespaces. The K08 endpoint counts are unchanged because the endpoint requires MAIL13. This resolves the NOTE control issue I flagged.
