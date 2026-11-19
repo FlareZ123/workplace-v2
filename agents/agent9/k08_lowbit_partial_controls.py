@@ -71,24 +71,36 @@ def component_controls() -> dict:
 
     lower = []
     upper = []
+    all_assignments = []
     for slots in itertools.permutations(SLOTS, 3):
         lower_text = "".join(half_char(values[s], True) for s in slots)
         upper_text = "".join(half_char(values[s], False) for s in slots)
         lower.append((slots, lower_text))
         upper.append((slots, upper_text))
+        all_assignments.append({
+            "order": list(slots), "lower_text": lower_text,
+            "lower_selector": low_value(lower_text), "upper_text": upper_text,
+            "upper_selector": low_value(upper_text),
+            "upper_lowpack_hex": " ".join(low_pack(values[s][:8]).hex().upper() for s in slots),
+        })
 
     selected = ("K01", "K06", "K02")
     selected_lower = "".join(half_char(values[s], True) for s in selected)
     selected_upper = " ".join(low_pack(values[s][:8]).hex().upper() for s in selected)
+    selector_counts = Counter(row["lower_selector"] for row in all_assignments)
     return {
         "assignments": len(lower),
         "exact_YEA_lower_assignments": [list(slots) for slots, value in lower if value.upper() == "YEA"],
+        "selector_7_lower_assignments": [row["order"] for row in all_assignments if row["lower_selector"] == 7],
+        "lower_selector_counts": {str(k): selector_counts[k] for k in sorted(selector_counts)},
         "printable_alpha_lower_assignments": sum(value.isascii() and value.isalpha() for _, value in lower),
         "exact_YEA_upper_assignments": [list(slots) for slots, value in upper if value.upper() == "YEA"],
         "selected_order": list(selected),
         "selected_lower": selected_lower,
+        "selected_lower_selector": low_value(selected_lower),
         "selected_upper_lowpack_hex": selected_upper,
         "lower_half_chars": {s: half_char(values[s], True) for s in SLOTS},
+        "all_120_assignment_outputs": all_assignments,
     }
 
 
@@ -119,6 +131,10 @@ def transfer_controls() -> dict:
             "masks_to_exact_53D5": len(exact_53d5),
             "exact_53D5_masks": exact_53d5,
             "mixed_even_odd_mask170": next({"lowpack": r[1], "selector": r[2]} for r in mask_rows if r[0] == 170),
+            "all_256_mask_outputs": [
+                {"mask": r[0], "lowpack": r[1], "selector": r[2], "raw_hex": r[3].hex().upper()}
+                for r in mask_rows
+            ],
         }
         if transfer == "AX-7782":
             candidate = json.loads((ROOT / "candidate.json").read_text(encoding="utf-8"))
@@ -157,6 +173,7 @@ def print_controls() -> dict:
             for r in recover_fives
         ],
         "late_job_rows": selected_rows,
+        "all_133_payload_outputs": rows,
     }
 
 
