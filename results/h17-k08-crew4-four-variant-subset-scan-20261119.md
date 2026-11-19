@@ -63,6 +63,25 @@ The A0_MSB `CREW4` subset has no valid `+1` edit that produces both strings.
 
 Thus the exact bridge survives the four-variant subset sensitivity scan: **2 CREW4 hits, but only 1 full ATEALBIT/ALOWBIT bridge hit** across 2,941,884 variant/subset pairs.
 
+### Joint upstream null with variant and edit choices
+
+The script also evaluates one explicit joint upstream randomization model rather than multiplying the existing stage-wise rates:
+
+1. Choose uniformly from all pooled `(8-position subset, 4 encoding variant, valid +1 edit)` triples.
+2. Choose David's three note positions uniformly from the 560 possible triples among the 16 non-Emily positions.
+3. Assign the remaining four author labels uniformly among the 1,201,200 assignments preserving their observed counts.
+4. Count the event that the exact CREW4/ATEALBIT/ALOWBIT bridge is selected and David is fourth with the LOW word-count triple (11,14,22).
+
+There are **3,922,512** valid `+1` subset/edit pairs across all 8-subsets (exactly `23 × C(22,7)`). The seven David LOW triples are `(1,5,19)`, `(1,11,19)`, `(1,14,19)`, `(4,5,19)`, `(4,11,19)`, `(4,14,19)`, and `(12,14,19)`; only the three beginning at N04 admit David-fourth assignments, with 970,200 assignments each. The numerator is therefore 2,910,600 and the denominator is 10,554,255,968,256,000.
+
+The exact **joint upstream** probability under this specific model is:
+
+`3 / 10,878,433,280` (reciprocal approximately 3.626 billion).
+
+The same David LOW triples are obtained when hyphenated words are split instead of preserved, so that tokenizer sensitivity does not change this upstream count for this source snapshot.
+
+This is not a calibrated global p-value: the codebook is held fixed to the observed first-appearance order, and the model covers only A0/A1 × LSB/MSB plus valid `+1` edits. It does not include other grouping/tail conventions or any downstream component, half, bit-order, bookmark, or transfer choices. It is an upstream joint-null component, not the full K08 chain.
+
 ## Interpretation and limits
 
 This is a useful upstream filter: the A0_MSB alternative creates a second `CREW4` hit, but it does not survive the observed one-row `+1` and text bridge.
