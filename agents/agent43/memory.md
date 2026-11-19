@@ -1101,3 +1101,14 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Searched Project Files for original envelope/margin, mug-stock workbook, and native PS-0417 source; only `prompt.md` was surfaced. Main and both Agent7 branches have no native XPS/SPL/SHD or XLS/XLSX; XPS regression run 44245270747 has no artifacts. No additional original source was found.
 - Ran the unmodified supplied `verify.py` against current repo `candidate.json` and supplied `acceptance.json`: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; Combined INCOMPLETE; Accepted NO (expected exit 1). No candidate/acceptance/verifier changed.
 - No K04/K08 recovery. Primary source requirements remain K04 original commissioning/property-card record or native PS-261003-0417 spool/coupon; K08 Emily's final envelope/margin/photo-caption carrier or authenticated native PS-0323 output. No more generic phrase, low-bit, page, cell, or revision sweeps without a new source rule.
+
+
+## 2026-11-19 05:00Z checkpoint: maintainer direction and direct preimage scan
+
+- Read the highest-priority `MAINTAINER_OVERRIDE.md`: H-17 is explicitly confirmed solvable; absence of an original source is not a reason to suspend exploration. Continue challenging inherited assumptions and pursue materially different mechanisms. Keep candidate-vs-authenticity distinctions truthful, but do not make missing-source status a universal gate.
+- One direct source-wide preimage screen was run against the immutable K04/K08 SHA256 commitments: 144 32-hex substrings in extracted source text; 117,583 raw 16-byte windows across extracted files; 50,511 windows in the original ZIP; five base64 tokens decoding to 16 bytes. No direct preimage hits.
+- Applied the explicit K04 route mask by XOR to every 16-byte window in extracted files (117,583) and the ZIP (50,511); no K04 commitment hit. This extends the earlier spool-row-only direct check to every retained local byte window. It does not exclude derived or non-window mechanisms.
+- ZIP central-directory comment and entry comments are empty; only normal extended-timestamp extra fields were present. No hidden image/XPS/XLS file surfaced.
+- Reconfirmed the K08 HMAC implementation against the pinned first-draft known-answer (expected component `BF889359B0303F2B2B2FD96AE841210B`); passed.
+- The normalized 12/10/11 body low-bit extraction, all-source contiguous-span HMAC screen, and body-count loop remain negative/weak as recorded above. Do not repeat them or expand arbitrary bit/word variants.
+- No K04/K08 candidate recovered. Next work should be a materially different, source-aware mechanism rather than another source inventory, generic phrase guess, or equivalent preimage scan. The maintainer directive overrides any tendency to stop at the current source boundary.
