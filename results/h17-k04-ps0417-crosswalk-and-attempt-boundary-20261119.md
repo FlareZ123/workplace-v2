@@ -30,7 +30,7 @@ leaves the current chronology bounds unchanged:
 - row129: [917, 971]
 - row130: [921, 975]
 
-The p951 witness already assigns starts 947/951/955, so the attempt-chain condition adds no discriminator. The 42-edge graph does not directly constrain row129. However, zero witness participation is not unique to row129; many intact RECOVER ACK rows also have no fullword/firstword witness. Do not infer a special producer from row129's isolation alone.
+The p951 witness already assigns starts 947/951/955, so the attempt-chain condition adds no discriminator. The 42-relation graph does not directly constrain row129. However, zero witness participation is not unique to row129; many intact RECOVER ACK rows also have no fullword/firstword witness. Do not infer a special producer from row129's isolation alone.
 
 Destination is not a sufficient discriminator either: PS-0417 and PS-0420 are both DEST=bench; PS-0448 is DEST=desk. PS-0420 row132 has one fullword plus one firstword witness, while selected row129 has none, but this is only a control observation.
 
@@ -38,7 +38,7 @@ Underlying stage-fit and symbolic-basis references: results/h17-k04-historical-w
 
 ## 3. Payload integrity and remaining source
 
-MAIL-16 states that the ACK field came from the dispatch log and must not be read as a media-integrity flag; it also says the retained-fragment export has no independent payload checksum for every line (resources/evidence/mail/16.eml). Therefore the selected PS-0417 attempt-2 RECOVER payload in spool-reconstruction.log is not independently authenticated. Applying the documented K04 mask to that local payload does not pass the unchanged K04 acceptance commitment.
+MAIL-16 states that the ACK field came from the dispatch log and must not be read as a media-integrity flag; it also says the retained-fragment export has no independent payload checksum for every line (resources/evidence/mail/16.eml). The custodian note independently says this is a working preservation export, not the full incident record; raw spool payloads are not all independently validated; ACK proves receipt, not correctness; and absence of a gap marker is not a completeness certificate (resources/evidence/records-custodian.txt). Therefore the selected PS-0417 attempt-2 RECOVER payload in spool-reconstruction.log is not independently authenticated. Applying the documented K04 mask to that local payload does not pass the unchanged K04 acceptance commitment.
 
 Additional bounded checks in this invocation did not produce a K04 hit: the signed PTW-417 revision-4 CLOSED REMOVED serial quartet; the four prior North-tab spool payloads as XOR/hash/window/CRC/seed-sequence inputs; and the North/South catch-family pair. These are scoped negatives, not reasons to broaden into generic seed, PRNG, or arbitrary payload algebra.
 
