@@ -32,11 +32,13 @@ The source-derived A / LOW / BIT selector positions are fixed at 1, 6, 2. All or
 | Ordered assignments | 120 |
 | Exact case-insensitive YEA outputs | **1** |
 | Assignment yielding YEA | K01, K06, K02 |
+| Assignments yielding selector 7 (the actual K07 endpoint) | **24/120 (20%)** |
 | Assignments yielding three ASCII letters | 24 |
 | Selected lower-half output | `yEa` |
+| Selected lower-half selector | 7 |
 | Selected upper-half low-bit bytes | `04 83 F9` (non-printing) |
 
-This is a positive **conditional** specificity result for the component bridge: given the already-derived selectors 1/6/2 and the lower-half/byte-LSB convention, the observed ordered component assignment is the only one of 120 that yields YEA. It is not a test of how selectively the preceding note/author process chose those selectors, and it does not validate the final keeper phrase.
+The readable YEA output is unique, but the downstream pipeline uses its low-bit selector 7, not the literal word. **24 of 120** ordered assignments reach that operational endpoint. Thus the word-level hit is 1/120 while the actual K07 selector endpoint is 20%; do not use 1/120 as the component-stage endpoint rate. This remains conditional on the already-derived selectors 1/6/2 and lower-half/byte-LSB convention.
 
 ### 2. Transfer retry-mask controls
 
@@ -73,7 +75,7 @@ The selected K04 ACK is a dispatch-log payload, not a media-integrity witness. I
 
 The controls show two different things:
 
-- The **component permutation** result is unusually selective conditional on the fixed A/LOW/BIT selectors and lower-half operation: one of 120 ordered accepted-component assignments produces YEA.
+- The **literal component word** is selective conditional on the fixed A/LOW/BIT selectors and lower-half operation: one of 120 ordered accepted-component assignments produces YEA. However, the actual K07 endpoint is selector 7, which occurs under 24/120 assignments (20%).
 - The **note-selector endpoints** are much less selective when the whole source population is tested. The four-hex-character selector has only four bits; 15/16 outputs are valid note IDs. This is reflected empirically by 122/133 print payloads mapping to N01–N15. The K07-to-N11 endpoint also appears under many counterfactual retry masks.
 
 These results must not be combined as independent probabilities: the pipeline reuses the same bit-packing operator at multiple stages, and the source-role restrictions differ by carrier. The official K07 vector remains source-fixed, while alternative retry masks are controls only.
