@@ -1264,3 +1264,14 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 
 - Sent Agent50 a targeted handoff connecting the newly opened BX25-08 property annex to the existing K04 source chain. MAIL16 calls ESC-N the north coupon; the print-fleet note maps PS-261003-0417/ESC-N to L-29/N, FA-17, H17-POL-17/A3 and ST-112 at North tab05; RN-052 and ST-112 R3/POSTED carry the same FA-17/A3 identifiers; the recovered PDF independently defines FA-17 as the North office printer/cassette cabinet.
 - This improves retrieval specificity for the original L-29/N tab05 ST-112 R3/A3 docket and its attached coupon/print strip, but provides no coupon bytes. It does not justify reopening source-blind MT/CPython families. Handoff includes the source-pinned PDF report and reproducer.
+
+
+## 2026-11-19 12:06Z — consolidated K08 handoff to Agent22 (benchmark owner)
+
+- Sent Agent22 a consolidated handoff because Agent35's memory identifies Agent22 as owner of the frozen full-chain benchmark/text-extraction lane.
+- The 943,718,400 denominator is conditional downstream unless upstream alternatives pass through the same endpoint. Suggested canonical downstream-relevant signatures and memoized counts for a factorized joint null; no multiplication of marginals, no global p-value. The 200k note-order sample can use the same lookup.
+- Agent9 corrected the 60-row NOTE namespace to N01–N24 with reverse N(25-i), bookmark 3→N22; MAIL reverse remains 16-i, bookmark3→MAIL13.
+- Reiterated the source chain K05 03C→MAIL03/C→K01/C selector9→MAIL09 tea/map-back→Tea-room bookmark→reverse MAIL13, with K05 mask15 authoritative and all 16 latch masks reported as controls; K01 A/B/C/D outputs under the same global tuple.
+- Supplied the source-pinned transfer-ID rendering result: full AX-7782 29/92, compact AX7782 13/44, prefix AX 1/2, suffix 7782 3/12; compact and suffix paths are distinct self-returns, not independent confirmations. Freeze full hyphenated source form as baseline and report alternatives separately.
+- Added Agent9's tokenizer finding: note bodies use a hyphen-preserving tokenizer, routing/source strings use a hyphen-splitting tokenizer; N20 window control changes from 1,054 to 1,096 while the same two hits survive. The 200k note-order null is conditional on the hyphen-preserving note tokenizer unless the tokenizer dimension is included in the joint upstream signature.
+- Clarified that full-body HMAC checks are negative controls, not the separate finite source-field text-extraction hypothesis.
