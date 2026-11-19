@@ -46,10 +46,23 @@ def main():
     note_no=pack(seal_bits)
     assert note_no==10
 
+
+    # The five mail subjects visited by the closed route carry their own checksum.
+    mail_chain=[10,3,9,13,4]
+    subjects=[]
+    for n in mail_chain:
+        text=(ROOT/f"evidence/mail/{n:02d}.eml").read_text()
+        sm=re.search(r"(?m)^Subject:\\s*(.*)$",text)
+        assert sm
+        subjects.append(sm.group(1))
+    initials="".join(s[0].upper() for s in subjects)
+    assert initials=="TWRAP"
+    assert pack([ord(c)&1 for c in initials])==10
+
     notes=(ROOT/"evidence/crew/noticeboard-and-desk-notes.txt").read_text()
     assert "N10 / Emily" in notes and "after the last cup" in notes
     assert "N11 / David" in notes and "Mug shelf:" in notes
-    print("PASS AX-7782 -> P212 -> MAIL-04 -> PTW-417 B,D,A,C -> N10")
+    print("PASS AX-7782 -> P212 -> MAIL-04 -> PTW-417 B,D,A,C -> N10; mail subjects TWRAP -> N10")
 
 if __name__=="__main__":
     main()
