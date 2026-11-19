@@ -66,7 +66,7 @@ def main():
         results.append({"label":candidate["label"],"source_ids":candidate["source_ids"],
                         "normalized":normalized,"hmac16":digest.hex().upper(),
                         "component_sha256":component_sha,"matches_K08":component_sha==target})
-    assert len(results)==22 and not any(x["matches_K08"] for x in results)
+    assert len(results)==22 and len({x["normalized"] for x in results})==17 and not any(x["matches_K08"] for x in results)
     print(json.dumps({
         "hypothesis":"direct complete-body/sentence adoption from LOW BIT-selected note carriers or literal route instruction",
         "selected_note_ids":selected,"candidate_count":len(results),
