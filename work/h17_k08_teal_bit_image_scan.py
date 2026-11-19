@@ -77,6 +77,20 @@ def _bit_variants(image: Image.Image) -> Iterator[tuple[str, np.ndarray]]:
     # Include hue as a separate channel: a literal "teal bit" may refer to the
     # green/blue balance rather than one raw RGB channel.
     hsv = np.asarray(image.convert("HSV"), dtype=np.uint8)
+
+    # Source-literal bounded branch: "A TEAL BIT" + "LOW IF EVEN".
+    # Select teal/cyan pixels once, in row-major image order. Absolute pixel
+    # index parity chooses the green/blue bit plane: bit 0 for even, bit 1 for odd.
+    teal_mask = (
+        (hsv[:, :, 0] >= 110) & (hsv[:, :, 0] <= 150)
+        & (hsv[:, :, 1] >= 64) & (hsv[:, :, 2] >= 32)
+    )
+    teal_indices = np.flatnonzero(teal_mask.ravel(order="C"))
+    bit_positions = (teal_indices & 1).astype(np.uint8)
+    for channel_name, channel in (("green", rgba[:, :, 1]), ("blue", rgba[:, :, 2])):
+        values = channel.ravel(order="C")[teal_indices]
+        bits = ((values >> bit_positions) & 1).astype(np.uint8)
+        yield f"teal-mask-{channel_name}-low-if-even", bits
     channels = {
         "green": rgba[:, :, 1],
         "blue": rgba[:, :, 2],
