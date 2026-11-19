@@ -47,3 +47,15 @@ The factorial result makes the endpoint frequencies explicit under a predeclared
 The operational K07 selector is reached by 24/120 component assignments; literal YEA is only 1/120. The selected tea bookmark maps to MAIL13 only under reverse order and MAIL namespace. The source-valid AX-7782 vector yields N11, but many counterfactual masks and alternate renderings also hit the same small selector space.
 
 No K08 phrase is recovered. The N23 margin/envelope wording and mug-stock workbook remain absent. No protected-service access or new dispatch was used.
+
+
+## 19 November erratum — NOTE namespace covers all 24 notes
+
+The original 60-row mapping implementation applied the 15-mail formula `mapped = index` forward / `16-index` reverse to both namespaces. That incorrectly truncated the NOTE control to N01–N15 and omitted N16–N24. The reproducer has been corrected and now source-pins `crew/noticeboard-and-desk-notes.txt`, validates the complete N01–N24 stack, and uses:
+
+- MAIL: forward position `i → MAIL-i`; reverse `i → MAIL-(16-i)`.
+- NOTE: forward position `i → N-i`; reverse `i → N-(25-i)`.
+
+Thus bookmark 3 maps to MAIL13 under reverse MAIL order (the tea-room endpoint), but to N22 under reverse NOTE order. The 60 raw control rows remain 15 positions × 2 directions × 2 namespaces. The downstream endpoint counts printed above are unchanged because its required tea-bookmark join is specifically to MAIL13; the NOTE matched-control identities and equivalence coverage are corrected. The result remains a conditional downstream factorial, not an upstream end-to-end null.
+
+Reproducer correction: `agents/agent9/k08_downstream_factorial_endpoint_null.py` (Agent 9 commit `62336d68e4be8febc3ae8201732c2d70cf12b077`, regex correction `aece6243ee44fbc510ead8fc33b582eac5b6b43a`).
