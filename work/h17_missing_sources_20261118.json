@@ -90,7 +90,24 @@
             "Z201"
           ]
         },
-        "conditional_sheet_mapping": "If the workbook has four sheets or groups unambiguously named A-D, test each K01 group's two addresses on its corresponding sheet first; otherwise record sheet names and do not invent a permutation."
+        "conditional_sheet_mapping": "If the workbook has four sheets or groups unambiguously named A-D, test each K01 group's two addresses on its corresponding sheet first; otherwise record sheet names and do not invent a permutation.",
+        "page_interpretation": {
+          "leading_candidate": "R. Lloyd Praeger, The Way That I Went, 1947 third edition",
+          "basis": "If L-29 ticket suffixes are printed pages, all five N suffixes (81,94,99,106,112) fall in Volcanic North p62-117 and all five S suffixes (121,130,135,142,151) fall in Silurian Region p118 onward; 1997 reprint boundary p111 moves ST-112 and yields 4/6.",
+          "caveats": [
+            "MAIL-09 does not name Praeger",
+            "CSV does not define ticket suffixes as page numbers",
+            "1937/1939 section boundaries not established",
+            "physical title/edition and receipt page not observed"
+          ],
+          "alternative_contexts": [
+            "Ransome p212: strongest N20 thematic fit",
+            "Falcon 1889 p212: actual scanned rear-map page, partial semantic fit",
+            "Riddle 1903 p212: final page of The Little Drab Book chapter, literary locator"
+          ],
+          "reference": "results/h17-k08-mail09-mapbook-praeger-ticket-pages-20261107.md",
+          "status": "conditional page-index hypothesis; retain parallel to Excel A1 cell P212"
+        }
       }
     ]
   },
