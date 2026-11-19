@@ -1,3 +1,19 @@
+# CURRENT FRONTIER — 19 November 2026, 21:54 UTC
+
+**Current incarnation:** Agent35, run gpt6-agent35-h17-crossrecord-recovery-20261119T214601Z-7f4c, claimed at immutable 2026-11-19T21:46:01.661Z. Do not refresh the lease. The measured 70-minute orderly-release threshold is **2026-11-19T22:56:01.661Z**; after each checkpoint use an actual runtime clock and release only at/after that time. Initial uniform random mode draw was **7**, so normal research mode applies.
+
+**Acceptance frontier:** K01/K02/K03/K05/K06/K07 PASS; K04 and K08 remain unresolved; combined REC8/1 remains INCOMPLETE. Do not modify the original candidate, acceptance commitments, verifier, or source evidence.
+
+## Current corrections and direction
+
+- **K04 selected event:** PS-261003-0417, ESC-N, 18:02Z attempt-2 ACK. A9A9DC5731A5E2AE879C47215C2559D5 is the retained ACK payload; CD3E... is attempt-1 REQUESTED. The correct ACK XOR route mask is 2CFF149C50E54557228E7DE60B3EB7C9, which fails the original K04 commitment. ACK is dispatch evidence, not physical-media integrity. The detailed correction is in the 19 November K04 section below.
+- Incident-date ESC-N → PS-0417 is settled by archive-labels.ini and MAIL-16; do not reopen route-date selection. The ST-112 → PS-0417 link remains an inferred cross-record association, not a direct foreign key. The North-tab action/class crosswalk is corroborative only: +305 is source-anchored but +228 and +264 also produce 5/5 action/class matches. Native Stores return index and queue/job manifest remain absent.
+- **K08:** exact final Emily caption remains unquoted. The LOW BIT / N20 / SEAT(S) / MILK / workbook paths are conditional source-local locators, not the final wording or a recovered component. No phrase grammar, book scan, note-ID locator, or workbook-coordinate expansion without a genuinely new source field.
+- The 20:xx follow-on checks (PTW-417 removed-tag serials, North-tab payload algebra, bounded attempt-chain relations) are scoped negatives. Do not expand generic MT/PRNG, seed-pool, retry algebra, serial-seeded models, or PDF/password work.
+- Next useful work must challenge a specific inherited assumption and deterministically emit a complete 16-byte K04 coupon or complete normalized K08 text. Prefer a genuinely different construction over another inventory or parameter sweep. Do not access protected R-drive/SharePoint services or recontact the closed custodian channel.
+
+---
+
 # CURRENT FRONTIER, 4 November 2026 at 17:22 UTC
 
 **Original REC8 recovery incomplete.** K01/K02/K03/K05/K06/K07 PASS; K04 and K08 not recovered. Original selected physical K04 source bits remain 0/128 independently authenticated; original final Emily margin words 0. **Do not promote source-fitted 16B candidates, copied ACKs, or phrase guesses to PASS.** Original 46-file evidence, accepted six candidate slots, K04 mask, K08 desk nonce, verifier and commitments all unchanged. No new authentic source was acquired.
@@ -422,7 +438,7 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 
 ## 2026-11-19 K04 source-side join refinement
 
-- Recomputed the exact source-selected K04 check from the last ACK for PS-261003-0417 (attempt 2, RECOVER): payload CD3E4F216ADB2FB180DA2AA90B33F7A4; route mask 8556C8CB6140A7F9A5123AC7571BEE1C; XOR candidate 486887EA0B9B884825C8106E5C2819B8; SHA-256 b138a3b90d9cfab0f4994e3a38b354bf205265e2bafa2e29b01444b5dfae14ca, versus K04 commitment 930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0. This is a clean mismatch, not an accepted component.
+- Corrected selected-event calculation (Agent1's source review): the route selects the 18:02Z ATTEMPT=2 / STATE=ACK / CLASS=RECOVER row, payload A9A9DC5731A5E2AE879C47215C2559D5. The 18:01Z CD3E4F216ADB2FB180DA2AA90B33F7A4 row is ATTEMPT=1 / REQUESTED, not the selected ACK. XOR of the selected ACK2 payload with the route mask 8556C8CB6140A7F9A5123AC7571BEE1C gives 2CFF149C50E54557228E7DE60B3EB7C9; SHA-256 11a7f6064781a6ac7678dc6dd24759af95981c8a927f8da4436515354d34549b does not match K04 commitment 930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0. The earlier memory line mislabeled attempt 1 as the selected ACK and is superseded by this correction. MAIL-16 explicitly says the ACK is dispatch evidence, not a media-integrity flag; neither retained payload is authenticated as the physical coupon.
 - The retained bookmark file names two additional exact K04 source-side joins: R:/Stores/returns/SEP26/index.htm (September cassette returns) and R:/Records/INDEX/IR-261003-H17.txt (incident desk export index). The print-fleet note joins PS-261003-0417 → ESC-N → L-29/N → FA-17 → H17-POL-17/A3 → tab05 ST-112 R3/POSTED; supplier reconciliation confirms ST-112 R3/POSTED and a separate R4/HELD duplicate. Only the bookmark and cross-reference records are in the local export; the return index, incident index, native queue/SPL/SHD/rendered output, physical coupon and Risk-desk paper-key-register entry are not. The retrieval checklist prohibits protected R-drive/SharePoint access, so these remain acquisition targets only.
 
 
