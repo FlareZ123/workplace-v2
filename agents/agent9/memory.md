@@ -655,3 +655,5 @@
 - Precision correction to carrier direct-adoption result: 22 labeled candidate records represent 17 unique normalized strings; five are duplicate full-body/sentence records for N09/N11/N12/N13/N14. All 17 unique strings fail K08. Script and JSON now report both counts; README and reports distinguish records from unique strings.
 
 - Added work/requirements_h17_legacy_office_intake.txt (openpyxl>=3.1,<4) and documented installation; LibreOffice is required for legacy .xls conversion. This avoids a silent undeclared dependency for future workbook intake.
+
+- ST-112 retrieval caveat: the crosswalk supports prioritizing the R3/POSTED/A3 docket, but explicitly does not prove the docket or any underlay contains the 16-byte K04 coupon. The source-acquisition gate now states this.
