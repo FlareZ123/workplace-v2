@@ -65,11 +65,15 @@ class LegacyOfficeIntakeTests(unittest.TestCase):
                 wb=__import__("openpyxl").load_workbook(path)
                 wb["Visible"]["A1"]="the end of the"
                 wb["Visible"]["B1"]=bytes(range(16)).hex().upper()
+                wb["Visible"]["B1"].comment=Comment("the end of the","test")
+                wb["Hidden"]["A1"]="the end of the"
                 wb.save(path)
                 result=mod.extract_one(path,64,True)
                 self.assertEqual([s["state"] for s in result["sheets"]],["visible","hidden"])
                 self.assertGreaterEqual(result["cell_text_count"],5)
-                self.assertTrue(any(h["sheet"]=="Visible" and h["cell"]=="A1" for h in result["K08_commitment_hits"]))
+                self.assertTrue(any(h["sheet"]=="Visible" and h["cell"]=="A1" and h["kind"]=="formula_or_value" for h in result["K08_commitment_hits"]))
+                self.assertTrue(any(h["sheet"]=="Hidden" and h["cell"]=="A1" for h in result["K08_commitment_hits"]))
+                self.assertTrue(any(h["sheet"]=="Visible" and h["cell"]=="B1" and h["kind"]=="comment" for h in result["K08_commitment_hits"]))
                 self.assertTrue(any(h["sheet"]=="Visible" and h["cell"]=="B1" for h in result["K04_hex_candidates"]))
                 self.assertEqual(result["K04_matching_candidates"],[])
         finally:
