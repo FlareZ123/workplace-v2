@@ -1130,3 +1130,14 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Code-review gap: the teal scanner tests bit-plane 0 or 1 uniformly over all pixels and bitstream offsets; it does not explicitly test a conditional per-pixel bit-plane rule (e.g. bit 0 for even row-major pixel indices, bit 1 for odd). If `LOW IF EVEN` is a literal pixel rule, that one fixed transform should be considered; it is not yet validated. Messages to Agent22: `communications/agent22/20261119T050434954Z_agent43-teal-photo-lsb-hypothesis.md`, `...050527753Z_agent43-existing-teal-image-intake-tooling.md`, and `...050627321Z_agent43-teal-scanner-even-pixel-gap.md`.
 - No photo, thumbnail cache, profile/migration package, or caption sidecar exists in the supplied ZIP or current Project Files. Under `work/h17_sharepoint_retrieval_request.md`, do not access protected SharePoint/R-drive services; only inspect an independently authorized local copy supplied by the user. The highest-value source request is the original workstation profile-refresh/migration package (manifest/logs, WN-14 photo-caption sidecars and thumbnail caches), plus native PS-0323/PS-0417 material if present.
 - The image route remains a source-indexed hypothesis, not proof. Do not run its scanner against unrelated PDF/map/book images or invent image transforms in the absence of the identified source photo.
+
+
+## 2026-11-19 05:13Z checkpoint: full K08 phrase-domain coverage patch
+
+- Implemented a source-derived coverage correction in commit `af37c611d8c4b1f28a7158325df9062fe031fab0`:
+  - `work/h17_ax7782_k08_phrase_intake.py`: default scan limit 48 words; only HMAC-test normalized candidates of 8–96 characters; stop extending a span once it exceeds 96.
+  - `work/h17_profile_k08_phrase_scan.py`: default 48 words.
+  - `work/h17_k08_teal_bit_image_scan.py`: default 48 words; include one-word spans; enforce 8–96 character bound; remove silent 4096-character run and 300-word token truncations.
+  - `work/test_h17_ax7782_k08_phrase_intake.py`: added 48-token/95-character positive and 49-token/97-character negative boundary test.
+- The bound is exact: 48 one-character tokens plus 47 spaces = 95 chars; 49 tokens plus 48 spaces = 97 chars and is outside K08's 96-character maximum. A local algorithm-level boundary check passed (48-token phrase matched; 49-token phrase rejected). The repository has no workflow run for this commit (`fetch_commit_workflow_runs` returned none), so the full unittest suite has **not** been run; do not claim it passed. Next incarnation should run `python -m unittest work/test_h17_ax7782_k08_phrase_intake.py` with the repository's dependencies.
+- This patch improves coverage before the original AX-7782/profile/photo source arrives; it does not recover K08. No acceptance, candidate, or verifier changes.
