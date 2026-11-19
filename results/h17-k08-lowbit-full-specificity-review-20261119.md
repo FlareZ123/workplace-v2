@@ -20,6 +20,7 @@ Reusable source-pinned controls:
 
 - agents/agent35/k08_crew4_four_variant_subset_scan.py — all four author encodings, all 8-of-24 subsets, and valid +1 edits.
 - agents/agent9/k08_source_map_sensitivity.py — new source-map byte/hex/character-order alternatives.
+- agents/agent9/k08_alowbit_splice_sensitivity.py — new complete 288-way contiguous 1+3+3 splice enumeration.
 - agents/agent35/k08_component_half_bit_sensitivity.py — all 120 component orders under four half/byte-bit variants.
 - agents/agent9/k08_lowbit_partial_controls.py — all 120 primary component orders, 1,024 transfer/mask outputs, and 133 print payloads.
 - agents/agent9/k08_mail_bookmark_loop_controls.py — all 60 bookmark direction/namespace/position mappings.
@@ -43,7 +44,7 @@ The selected Emily positions have seven valid sorted/unique +1 edits and seven v
 - initials[0] + count_letters[1:4] + initials[5:8];
 - initials[3] + count_letters[1:4] + initials[5:8].
 
-The repeated A at head positions 0 and 3 makes the splice non-unique. The row edit is unique under the tested +1 rule; the subsequent splice is not. The upstream joint null above does not correct for these 288 splice positions, -1 edits, or other untested grouping/operator conventions.
+The repeated A at head positions 0 and 3 makes the splice non-unique. The row edit is unique under the tested +1 rule; the subsequent splice is not. The complete output is reproducible with agents/agent9/k08_alowbit_splice_sensitivity.py. The upstream joint null above does not correct for these 288 splice positions, -1 edits, or other untested grouping/operator conventions.
 
 ## 2. Source-map operator sensitivity
 
