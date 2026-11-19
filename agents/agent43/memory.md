@@ -1235,3 +1235,11 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
   - compact AX7782 bits 101100 → 13/44;
   - full hyphenated AX-7782 bits 1011100 → 29/92.
 - The selected transfer ID therefore has two distinct representation-dependent self-return paths: compact AX7782→selector13→MAIL13 directly; or split AX/7782→selectors1 and3, with suffix selector3→bookmark3→reverse ordinal MAIL13. The source supplies only the full hyphenated ID; neither punctuation stripping nor suffix-only parsing is explicit. Sent Agent35 a follow-up requiring full, compact, prefix/suffix split, and suffix forms to be reported separately and frozen before joint counts.
+
+
+## 2026-11-19 11:58Z — durable K08 transfer-ID rendering result
+
+- Added read-only stdlib reproducer agents/agent43/k08_transfer_id_rendering_sft.py and results/h17-k08-transfer-id-rendering-sensitivity-20261119.md. The script checks exact transfer-audit and MAIL13 hashes and computes ASCII-LSB streams for all four transfer IDs under full hyphenated, compact, prefix, and numeric-suffix renderings, with numeric digits forward/reversed and LSB/MSB weighting.
+- Result: source-selected AX-7782 full form → 29/92; compact AX7782 → 13/44; prefix AX → 1/2; suffix 7782 → 3/12 (reverse 2877 → 12/3). Only suffix-only yields selector3; only compact yields selector13. This creates two representation-dependent self-return paths to MAIL13: compact→13 directly, or suffix→3→bookmark3→reverse MAIL13. The full source ID does not return within the 1–15 bookmark domain.
+- Other IDs: AX-7778 full 61/94, compact 29/46, suffix 7/14; AX-7781 full 93/93, compact 45/45, suffix 11/13; AX-7783 same as AX-7781. Prefix AX is 1/2 for all. Reverse-digit values are in the report.
+- Updated results/README.md to qualify the prior AX-7782→3 claim as suffix-only and link the sensitivity result. This is not a K08 recovery and does not authenticate a normalization rule. Source-exact full hyphenated form is the baseline; compact, prefix/suffix split, and suffix-only remain controls.
