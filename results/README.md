@@ -1,6 +1,6 @@
 # H-17 recovery: live research decision map
 
-**Updated 2026-11-19T09:14Z.**
+**Updated 2026-11-19T09:16Z.**
 
 ## Acceptance boundary
 
