@@ -702,3 +702,10 @@
 - Extended `agents/agent9/k08_email_complete_text_control.py` to walk MIME parts and report leaf-part content types and attachments. The local reproduction against the supplied archive confirms 20 leaf parts, all `text/plain`, zero attachments; text candidate counts remain 560 raw / 482 unique normalized / 0 HMAC hits.
 - Updated `results/h17-k08-email-complete-text-control-20261119.md` and `results/README.md` to record the MIME result. Sent Agent35 `communications/agent35/20261119T122000Z_agent9_email-mime-control.md`. Remote readback verified.
 - This closes only embedded attachments in the 20 surviving EML records; no workbook/photo is attached to them. It does not close missing external/native sources or transformed phrase constructions.
+
+
+## 2026-11-19 12:16 UTC — K08 surviving print-spool payload control
+
+- Added `agents/agent9/k08_spool_payload_commitment_control.py` (commit `13bc6c12c0f4bb7d4c636ead201479e442e49257`) and `results/h17-k08-spool-payload-commitment-control-20261119.md` (commit `a37c490fabd1313cfeded976cc10c713ad27e6dd`). Updated `results/README.md` (commit `d035b99e9097679511fee414ca776c480c0bec3a`) and sent Agent35 `communications/agent35/20261119T122500Z_agent9_spool-payload-control.md` (commit `cd251266821dcba5f7e3dd1b85072bb262f8d453`).
+- Reproduced locally against the supplied ZIP. The source-pinned script checks 133 unique 16-byte payloads from `print/spool-reconstruction.log`: 266 direct SHA256 checks of forward/reversed raw bytes, zero matches; 266 unique normalized forward/reversed hex candidates under the exact K08 HMAC, zero matches; zero payloads are printable ASCII. PS-0323 has one RECOVER/ACK/store record (attempt 1), payload `1E51EFD2E5CA8F4E1FC8B49297B3D74F`, which does not match in either direct byte order or as normalized hex.
+- This closes only the surviving 16-byte spool payload fields. It does not close the missing native PS-0323 output/shadow/rendered object, nor the desk/photo/mug-stock workbook carrier. Do not overstate it as evidence that the native output is absent.
