@@ -19,6 +19,7 @@ Highest-value historical records:
 1. Native print-host material for PS-261003-0417: .SPL, .SHD, EMF/PRN, or equivalent rendered output/media.
 2. The native queue journal/export for PS-261003-0417, including mode, purpose, and dry_run.
 3. FA-17 / H17-POL-17/A3 asset card and September 2026 equipment-count/commissioning material.
+4. The bookmarked original property ledger R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx (not present in the 46-file export), to resolve the property-side joins around FA-17 and the ST-112 R3/A3 docket.
 4. The physical escrow coupon or an independently authenticated copy.
 5. R:/Stores/returns/SEP26/index.htm and R:/IT/desktop-move-2026.html/profile-migration package are useful source-side joins.
 
@@ -30,7 +31,7 @@ Highest-value historical records:
 
 1. Emily's original WN-14 final envelope/margin or desk-note stack containing the final caption.
 2. The separate photo/galley-caption carrier referenced by the preserved correspondence.
-3. The referenced mug-stock workbook and any preserved thumbnail/cache copy.
+3. The bookmarked original R:/Stores/consumables/mug-stock.xls workbook and any preserved thumbnail/cache copy (not present in the 46-file export).
 4. Native PS-0323 rendered/print output, if it exists.
 5. R:/Records/INDEX/IR-261003-H17.txt and the related profile migration package.
 
