@@ -310,6 +310,16 @@ def main() -> None:
     assert [
         pair for pair in n23_in_range if pair[1] in {start for start, _, _ in fixed_points}
     ] == [("words", 19)]
+    low19_body_hits = [
+        (number, index, token.lower())
+        for number in range(1, 25)
+        for index, token in enumerate(words(body(notes[number])), 1)
+        if low_value(token.upper()) == 19
+    ]
+    assert low19_body_hits == [
+        (20, 2, "wanted"),
+        (23, 16, "words"),
+    ]
 
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
@@ -340,6 +350,7 @@ def main() -> None:
     print("N19_HMAC_PATH_HEADS=19->13->9->12->11 => SANTE")
     print("LOW_BIT(SANTE)=19; UNIQUE_24_START_FIXED_POINT")
     print("N23_UNIQUE_TOKEN_TO_FIXED_POINT=WORDS->19")
+    print("ALL_BODY_LOW19_TOKENS=N20:WANTED,N23:WORDS")
     print("PASS")
 
 if __name__ == "__main__":
