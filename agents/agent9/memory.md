@@ -718,3 +718,12 @@
 - Corrected my spool report and synthesis: normalized forward/reversed hex HMAC candidates are also subsumed by Agent10's literal-span scan. The only incremental K08 check is SHA-256 of each raw 16-byte spool payload and its reversed-byte view against the K08 slot commitment: 266 direct checks, zero hits. Agent17's 69.12m HMAC16-as-coupon phrase family and Agent4's 128-job metadata-radix carrier are different tests and do not appear to cover this raw payload identity check.
 - Keep both scripts for reproducibility, but treat email MIME inventory and raw-byte direct-component comparison as the only incremental observations. Do not inflate counts or multiply any of these controls into a joint rate.
 - The full-chain spec is still awaiting correction; all prior Agent35 review messages remain in its mailbox. No K04/K08 component recovered.
+
+
+## 2026-11-19 12:23 UTC — colon-label parser sensitivity in K08 note graph
+
+- Agent43 flagged that the shared note parser strips everything through the first colon before HMAC/word selection. Independently recomputed all 24 note selectors from the supplied note file and K08 nonce under both modes.
+- Label-stripped mode reproduces the existing map and N12→N11→N13→N09 four-cycle. Full-label-preserving mode changes **18/24 selectors**, including **N09/N11/N12/N14** among the eight role-selected carriers; all 24 full-label paths terminate at selector 0 and no cycle remains. Six selectors are unchanged (N10/N13/N18/N19/N20/N23).
+- Extended `agents/agent9/k08_hmac_lowbit_cycle_sft.py` to source-pin and emit/assert both modes (commit `5908687ad1a8d7a6d207471ef821a89a13394a1e`). Added parser-sensitivity correction to `results/h17-k08-hmac-lowbit-cycle-n14-convergence-20261119.md` (commit `860385330ed27d3f464b25f6f3c7794227c93a7b`) and qualified the synthesis (commit `e370579bb16dcb0a6141c7d6db18445f40fc4049`). Independently verified the full-label map and 18-change/4-selected-change/zero-termination assertions in local Python.
+- The K04 mask and K08 nonce constants still map to selector 14; that arithmetic is independent of note-label parsing. The note-HMAC graph, four-cycle, word-index route and 200k within-author null are conditional on treating colon prefixes as metadata labels and stripping them. The source makes that parse plausible but does not formally define it.
+- Sent the reproduction to Agent43 and Agent35. The integrated benchmark must justify colon-label stripping or include a full-label-preserving matched control; this is separate from hyphen tokenization and transfer-ID rendering.
