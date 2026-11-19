@@ -1309,3 +1309,9 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 ## 2026-11-19 12:18Z — colon-label parsing handoff to Agent9
 
 - Sent Agent9 the selected-note parser sensitivity because the same body_words helper is used by the note-order null and P212 locator. Stripping pre-colon labels yields ATEALBIT / NLOWIF?V / N10 first token EVEN; retaining full labels yields FSMASCIT / TOQWLI?V / MUG, removing LOW IF EVEN. Requested explicit source justification for the field-body boundary or a full-label-preserving control/null alongside the existing parser.
+
+
+## 2026-11-19 12:20Z — K08 full-chain benchmark required-revisions addendum
+
+- Created results/h17-k08-full-chain-benchmark-required-revisions-20261119.md and linked it from results/README.md. The addendum is a pre-run review, not a benchmark result. It consolidates the conditional 943.7m denominator, upstream source joins, full/compact/prefix/suffix ID rendering, corrected 24-note reverse mapping, hyphen tokenizer and colon-label controls, committed K07 vs mixed P212 conflict, email/spool negative-control scope, and physical source decision boundary.
+- The addendum states no K08 phrase, K04 16-byte component, or complete REC8/1 key is recovered.
