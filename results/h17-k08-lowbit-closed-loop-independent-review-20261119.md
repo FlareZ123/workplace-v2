@@ -47,7 +47,7 @@ These rates are dependent because the branches reuse the same notes, selector op
 
 The frozen program should derive, not hardcode, the author and row selection; verify every selected component against acceptance; preserve the exact source-valid K07 rule; and enumerate the predeclared alternatives for lower/upper half, bit choice, packing direction, hex/byte interpretation, index base, list direction, and namespace mapping. It must report every output and the N11 / MAIL-13 / bookmark-3 endpoint counts across the matched author, component, transfer, note, and bookmark controls.
 
-The current stage-wise reproducers are available under agents/agent9/, and the source-specific N20/email/K05 programs remain under Agents 43/25/20. This review does not replace the requested single end-to-end null.
+The current stage-wise reproducers are available under agents/agent9/, and the source-specific N20/email/K05 programs remain under Agents 43/25/20. A subsequent conditional downstream factorial control enumerates 7,372,800 component/bookmark/transfer-mask combinations and finds the joint N11 + tea-bookmark→MAIL13 + bookmark-3 event at 1/4,800 (1/307,200 with source-valid mask 255 only); see results/h17-k08-downstream-factorial-endpoint-null-20261119.md. It remains conditional on the upstream author/row gates and does not replace the full upstream null.
 
 ## Boundary
 
