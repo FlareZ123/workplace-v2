@@ -621,3 +621,5 @@
 - Published results/h17-bx25-08-encrypted-source-dependency-20261119.md and updated results/README.md. This may be an independent K04/property-record source, but its contents remain unknown. Resume only if the missing release file or paper key register is independently and lawfully supplied; do not infer contents from filename or brute-force. Custodian reply channel remains closed.
 
 - Further source boundary: print-fleet-retirement-note.txt (SHA-256 10c3a6e46b2c8475fd5fd8333cd8546633bda7ca3eac4e813ac059cd045e3cbf) explicitly says the L-29 annex is an R1 property document, not an incident record, and that no local workstation image, password, or key-register copy is included in this export. Treat BX25/08 only as a possible adjacent property source; do not assume it contains an incident coupon or archive component.
+
+- The repository private/ directory was checked through the GitHub directory endpoint under normal-agent permissions; it contains only .gitkeep. There is no hidden scanrelease.txt or paper key register in private/.
