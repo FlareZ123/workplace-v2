@@ -37,16 +37,16 @@ Thus the firstword relations join 13 additional components and tighten the lower
 
 ### Firstword inlier/decoy assessment
 
-Using only the 25 fullword relations as anchors, the 17 firstword relations divide as follows:
+Using only the 25 fullword relations as anchors, the 17 firstword relations have the following graph-implied offset status:
 
 | Assessment against fullword anchors | Count |
 | --- | ---: |
-| Both expected destination-stage offsets independently implied | **10** |
+| Both expected destination-stage offsets implied by the fullword graph | **10** |
 | Exactly one destination-stage offset implied | **1** |
 | Neither destination-stage offset implied | **6** |
 | Contradictory offsets | **0** |
 
-This is independent stage-offset corroboration, not full recurrence authentication: the predecessor word whose MSB distinguishes each 31-bit alias is absent from the observed words in the relevant equality component. **0/17** predecessor MSBs are independently observed, even after all 42 relations are included. No historical relation is contradicted by the monotone graph, but the six uncorroborated relations remain unclassified rather than being promoted or rejected.
+These are graph-implied offsets, not independent confirmations. A dependence audit finds that only **3/10** both-offset relations remain supported after deletion of any single fullword anchor; the other **7/10** each depend on one particular fullword anchor. **0/10** remain supported when all anchors touching any of the firstword relation's three packet rows are excluded. All 10 remain graph-implied if only exact word-occurrence overlaps are excluded, but this is not packet-independent: the same packet rows and adjacent lanes remain in play. The predecessor word whose MSB distinguishes each 31-bit alias is absent from the observed words in the relevant equality component. **0/17** predecessor MSBs are independently observed, even after all 42 relations are included. No historical relation is contradicted by the monotone graph, but the six uncorroborated relations remain unclassified rather than being promoted or rejected.
 
 ## Whole-packet permutation controls
 
@@ -64,9 +64,9 @@ The secondary statistic of at least 10 firstword relations with both offsets sup
 
 ## Interpretation and recovery boundary
 
-**Computational result:** The original packet chronology is substantially more aligned with this MT recurrence operator than either whole-packet metadata-preserving shuffle. Ten of the 17 partial firstword relations also agree with exact stage offsets already implied by the fullword anchors. This strengthens the evidence for a shared MT-like organization in the intact printer records.
+**Computational result:** The original packet chronology is substantially more aligned with this MT recurrence operator than either whole-packet metadata-preserving shuffle. Ten of the 17 partial firstword relations have offsets implied by the fullword graph, but the dependence audit shows this is packet-overlapping rather than independent confirmation. The principal evidence is the 42-relation count exceeding both 200,000-trial null maxima.
 
-**What this does not establish:** It does not authenticate a particular MT implementation, determine a unique historical stage map, validate the 17 unknown predecessor MSBs, or predict any selected physical coupon bytes. The selected row 129 is absent from the recurrence graph; its start offset remains a 55-position interval, and its 128 coupon bits remain unobserved. This is not a K04 candidate or acceptance hit.
+**What this does not establish:** It does not authenticate a particular MT implementation, determine a unique historical stage map, independently validate the graph-implied firstword offsets, validate the 17 unknown predecessor MSBs, or predict any selected physical coupon bytes. The selected row 129 is absent from the recurrence graph; its start offset remains a 55-position interval, and its 128 coupon bits remain unobserved. This is not a K04 candidate or acceptance hit.
 
 The earlier [oracle-stage whole-packet benchmark](h17-k04-inlier-decoy-oracle-wholepacket-20261118.md) shows why even a supplied stage map is insufficient under the maximal linear MT model: the selected coupon remains 128 bits unconstrained. The earlier [historical stage-fit preflight](h17-k04-historical-witness-stage-fit-20261119.md) used the 25 fullword edges; this report adds the 17 firstword-edge corroboration and a much larger whole-packet null for the resulting 42-relation statistic.
 
