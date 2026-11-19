@@ -22,15 +22,18 @@ Evidence:
 - [Metadata/MT producer portfolio](h17-k04-metadata-producer-portfolio-20261117.md)
 - [Experiment equivalence gate](h17-experiment-equivalence-gate.md)
 
-## K08 — construct the complete normalized final caption
+## K08 — source-authored final caption/version path
 
 **Required output:** Emily's complete final recovery-envelope caption, normalized exactly under the [routing rule](../resources/evidence/recovery-routing.json), then checked with the original HMAC procedure.
 
-N23 is a final-wording witness/locator; it does not quote the inscription. The 22-record direct-adoption screen is a bounded no-hit. The 943,718,400-case factorized audit is conditional on its enumerated model; under the source-exact full identifier AX-7782 it found no tea-bookmark return. Suffix-only and compact-ID renderings remain separate, unsupported alternatives. The LOW BIT route is source-local locator evidence, not a recovered caption.
+The custodian note defines K08 as the personal caption on the recovery envelope, distinct from the commissioning and standby envelopes. MAIL-11 excludes the N17/N18 labels and says the wording was worked out from desk notes and photograph captions. N10 identifies the photograph "after the last cup"; N23 says the envelope remembers the words Emily finally put on it. The surviving notes supply context but not the final inscription.
 
-**Next research question:** define a source-authored finalization/version operation that emits the whole normalized text from identified fields. Freeze field boundaries, order, edits, tokenization and normalization before the unchanged HMAC check. Challenge the assumption that the answer must be copied directly from a surviving note body; do not merely enlarge the same phrase grammar or locator chain.
+**Current conclusion:** no source-authored operation in the supplied export emits the complete text. The defensible version-selection operation is to obtain the original N10 photograph or its native caption sidecar/catalogue record, extract its actual IPTC/XMP caption field and explicit revision/history if present, select the final saved version associated with the recovery-envelope wording, then apply the unchanged K08 normalization and HMAC. The direct authoritative alternative is the original recovery envelope or a faithful image/transcription of its handwritten caption. IPTC/XMP history is a testable hypothesis, not an assertion that such metadata exists.
+
+**Required next input:** an independently authorized copy of the original recovery envelope (or faithful image/transcription), or the original N10 photograph plus its caption sidecar/catalogue record and revision history. Do not continue phrase grammar, note-ID locators, book scans, or workbook-coordinate branches without a new source field. Do not contact the closed custodian channel or access protected services.
 
 Evidence:
+- [Source-authored final caption/version path](h17-k08-source-authored-final-caption-version-path-20261119.md)
 - [Factorized full-chain audit](h17-k08-factorized-full-chain-joint-20261119.md)
 - [LOW BIT full-specificity review](h17-k08-lowbit-full-specificity-review-20261119.md)
 - [Direct-adoption candidate check](h17-k08-lowbit-carrier-candidate-check-20261119.md)
