@@ -69,8 +69,10 @@ def main():
     assert len(results)==22 and not any(x["matches_K08"] for x in results)
     print(json.dumps({
         "hypothesis":"direct complete-body/sentence adoption from LOW BIT-selected note carriers or literal route instruction",
-        "selected_note_ids":selected,"candidate_count":len(results),"K08_target_sha256":target,
-        "matches":sum(x["matches_K08"] for x in results),"results":results,
+        "selected_note_ids":selected,"candidate_count":len(results),
+        "unique_normalized_count":len({x["normalized"] for x in results}),
+        "duplicate_candidate_records":len(results)-len({x["normalized"] for x in results}),
+        "K08_target_sha256":target,"matches":sum(x["matches_K08"] for x in results),"results":results,
         "scope":"Exact full bodies and complete sentences from N09/N10/N11/N12/N13/N14/N20/N23 plus source-stage/accepted-stage route strings and the full HMAC-cycle concatenation. No paraphrase or phrase grammar; a negative result rejects only direct adoption from these retained text carriers."
     },indent=2,sort_keys=True))
 
