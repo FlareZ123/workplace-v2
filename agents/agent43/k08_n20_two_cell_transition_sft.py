@@ -18,8 +18,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 NOTES = ROOT / "resources/evidence/crew/noticeboard-and-desk-notes.txt"
 ROUTING = ROOT / "resources/evidence/recovery-routing.json"
+MAIL11 = ROOT / "resources/evidence/mail/11.eml"
 NOTES_SHA256 = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
 ROUTING_SHA256 = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
+MAIL11_SHA256 = "f4e1b8440582d494fa098d4726d9ad7995d24b7f48f8dc6336364b0c8cf51d29"
 
 K01 = bytes.fromhex("049AAB2E1CDE7A82CD7C60234303C91A")
 K02_RAW = bytes.fromhex("E1A5E474BAD7E853A2E8C71D3317D507")
@@ -62,6 +64,7 @@ def rotate_left(text: str, distance: int) -> str:
 def main() -> None:
     assert hashlib.sha256(NOTES.read_bytes()).hexdigest() == NOTES_SHA256
     assert hashlib.sha256(ROUTING.read_bytes()).hexdigest() == ROUTING_SHA256
+    assert hashlib.sha256(MAIL11.read_bytes()).hexdigest() == MAIL11_SHA256
     note_text = NOTES.read_text(encoding="utf-8")
     notes = parse_notes(note_text)
     routing = json.loads(ROUTING.read_text(encoding="utf-8"))
@@ -108,6 +111,17 @@ def main() -> None:
         if any(w[j:j + 3] == tri for j in range(len(w) - 2)):
             witnesses.append((number, " ".join(tri)))
     assert witnesses == [(20, "the end of")]
+
+    # Independent source-prose calibration of the same N20 positional rule.
+    mail11_text = MAIL11.read_text(encoding="utf-8").lower()
+    assert "long watch, with" in mail11_text
+    mail11_selector = [low_value(w) for w in ("LONG", "WATCH", "WITH")]
+    route_selector = [low_value(w) for w in ("LATE", "WATCH", "RATHER")]
+    assert mail11_selector == [10, 11, 3]
+    assert route_selector == [10, 11, 18]
+    assert "late watch, rather" in routing["K08"]["rule"].lower()
+    assert " ".join(n20_lower[i - 1] for i in mail11_selector) == "end of the"
+    assert " ".join(n20_lower[i - 1] for i in route_selector) == "end of the"
 
     motifs = ("sea", "night", "voices", "table")
     positions = [n20_lower.index(motif) + 1 for motif in motifs]
@@ -176,6 +190,8 @@ def main() -> None:
     print("M + LOW_BIT(SEA)=M+7=T")
     print("CELL_TRANSITION=M10->T11")
     print("UNIQUE_N20_SELF_CONTIGUOUS=THE END OF")
+    print("MAIL11_LONG_WATCH_WITH=10,11,3->END OF THE")
+    print("ROUTE_LATE_WATCH_RATHER=10,11,18->END OF THE")
     print("MOTIF_ENDS=ATSE")
     print("WRAP_LOW_BIT(BIT)=2 => SEAT")
     print("LOW_BIT(SEAT)=7->K07->N11_MUG_SHELF")
