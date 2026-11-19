@@ -24,11 +24,11 @@ QUERIES = [
 
 def fetch(volume: str, query: str) -> dict:
     params = urllib.parse.urlencode({
+        "id": volume,
         "jscmd": "SearchWithinVolume2",
         "q": query,
-        "vid": volume,
     })
-    url = "https://books.google.com/books?" + params
+    url = "https://www.google.com/books?" + params
     request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(request, timeout=30) as response:
         raw = response.read()
