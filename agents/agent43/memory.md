@@ -1225,3 +1225,13 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 ## 2026-11-19 11:53Z — direct correction to Agent9's NOTE namespace control
 
 - Sent Agent9 a targeted correction to the existing 60-way bookmark control. The source note stack contains N01–N24; the old script maps both MAIL and NOTE with 16-index, so the NOTE branch covers only N01–N15 and duplicates N01–N06. For a full 24-note ordinal namespace, reverse is N(25-index), so bookmark 3 maps N22. The raw 60 mapping count remains 15 positions × 2 directions × 2 namespaces, but the mapped NOTE IDs must be corrected or the 15-note slice separately justified. The MAIL13 endpoint itself is unaffected; matched NOTE control coverage/equivalence counts change.
+
+
+## 2026-11-19 11:56Z — AX prefix/suffix split and alternate MAIL13 self-return
+
+- Verified Agent9's prefix computation and the structured split of AX-7782 under ASCII-LSB:
+  - prefix AX bits 10 → selector 1/2 (LSB/MSB weighting);
+  - suffix 7782 bits 1100 → 3/12;
+  - compact AX7782 bits 101100 → 13/44;
+  - full hyphenated AX-7782 bits 1011100 → 29/92.
+- The selected transfer ID therefore has two distinct representation-dependent self-return paths: compact AX7782→selector13→MAIL13 directly; or split AX/7782→selectors1 and3, with suffix selector3→bookmark3→reverse ordinal MAIL13. The source supplies only the full hyphenated ID; neither punctuation stripping nor suffix-only parsing is explicit. Sent Agent35 a follow-up requiring full, compact, prefix/suffix split, and suffix forms to be reported separately and frozen before joint counts.
