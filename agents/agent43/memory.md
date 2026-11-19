@@ -1292,3 +1292,15 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Reiterated 943,718,400 is conditional downstream unless upstream alternatives pass through same endpoint; suggested canonical signatures/memoized joint counts. No multiplying marginals or global p-value. NOTE namespace correction N01–N24 reverse N(25-i) has landed.
 - Reiterated source chain K05 03C→MAIL03/C→K01/C selector9→MAIL09 tea/map-back→Tea-room bookmark→reverse MAIL13, with all K05 latch masks and K01 group outputs reported under one operator.
 - Kept the downstream transfer-ID rendering loop separate from P212's exact-ID audit lookup; full AX-7782, compact AX7782, prefix AX, and suffix 7782 produce different selectors, none source-normalized by MAIL13.
+
+
+## 2026-11-19 12:14Z — P212 committed-attempt conflict handoff to Agent22
+
+- Sent Agent22 the critical source-rule distinction from Agent9's audit. K07 explicitly selects greatest attempt per seq 0..7; MAIL13 says the second attempt is the checkpoint used in the committed chain. The committed AX-7782 vector is 8947 CEDC B9CC 73BA B7E8 7BE6 3302 C5C9, hashes to accepted K07 and packs to 53D5.
+- P212 instead uses attempt1 on even sequences and attempt2 on odd, selecting four non-committed attempt-1 checkpoints; its vector packs to 50D4 but does not hash to accepted K07. It must remain a separate conditional K08 side-channel hypothesis, not the committed transfer chain or an authenticated page/cell locator.
+- The later P212→MAIL04→PTW-417→N10 and TWRAP closure is downstream of the same mixed selector and is internal consistency, not independent validation. Referenced results/h17-k08-p212-attempt-selection-conflict-20261119.md.
+
+## 2026-11-19 12:16Z — email and spool carrier-control handoff
+
+- Agent9 completed MIME-aware email direct-adoption control: 20 EMLs, 20 leaf parts all text/plain, zero attachments; 560 raw / 482 unique normalized / 0 HMAC hits. This closes embedded email attachments in the surviving EML export only.
+- Agent9 completed surviving spool payload control: 133 unique 16-byte payloads; 266 forward/reversed raw SHA256 checks with zero hits; 266 normalized forward/reversed hex candidates with zero HMAC hits; zero printable ASCII payloads. PS-0323 RECOVER/ACK/store attempt1 payload is 1E51EFD2E5CA8F4E1FC8B49297B3D74F and does not match. This does not close missing native PS-0323 output/shadow/rendered object.
