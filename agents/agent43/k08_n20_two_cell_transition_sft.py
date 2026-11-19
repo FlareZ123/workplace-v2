@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Source-pinned K08 low-bit two-cell transition.
+"""Source-pinned K08 low-bit two-cell and SEAT transition.
 
-Reproduces the established source-stage LOW BIT bridge and a new target-blind
-continuation:
+Reproduces the established source-stage LOW BIT bridge and target-blind
+continuations:
   ATEALBIT -> M, TEA -> row 10       => M10
   A LOW BIT -> THE END OF; NIGHT -> T
   SEA -> row 11                       => T11
-The resulting M10 -> T11 move mirrors TEA -> SEA / N10 -> N11.
+  ends(SEA,NIGHT,VOICES,TABLE)=ATSE; wrap2 -> SEAT -> K07 -> N11
 """
 from __future__ import annotations
 import hashlib, re
@@ -50,9 +50,14 @@ def parse_notes(text: str) -> dict[int, str]:
 def body(text: str) -> str:
     return text.split(":", 1)[1].strip() if ":" in text else text
 
+def rotate_left(text: str, distance: int) -> str:
+    distance %= len(text)
+    return text[distance:] + text[:distance]
+
 def main() -> None:
     assert hashlib.sha256(NOTES.read_bytes()).hexdigest() == NOTES_SHA256
-    notes = parse_notes(NOTES.read_text(encoding="utf-8"))
+    note_text = NOTES.read_text(encoding="utf-8")
+    notes = parse_notes(note_text)
 
     source = {1: K01, 2: K02_RAW, 5: K05, 6: K06, 7: K07_RAW}
     source_map = {k: source_selector(v) for k, v in source.items()}
@@ -77,10 +82,11 @@ def main() -> None:
     directive_positions = [source_map[k] for k in directive_components]
     assert directive_positions == [12, 10, 11]
     n20 = words(body(notes[20]))
-    extracted = " ".join(n20[i - 1].lower() for i in directive_positions)
+    n20_lower = [w.lower() for w in n20]
+    extracted = " ".join(n20_lower[i - 1] for i in directive_positions)
     assert extracted == "the end of"
 
-    assert [w.lower() for w in n20[8:13]] == ["the", "end", "of", "the", "night"]
+    assert n20_lower[8:13] == ["the", "end", "of", "the", "night"]
     column_t = n20[12][-1].upper()
     assert column_t == "T"
     assert f"{column_t}{sea_row}" == "T11"
@@ -98,6 +104,21 @@ def main() -> None:
             witnesses.append((number, " ".join(tri)))
     assert witnesses == [(20, "the end of")]
 
+    # N20 fixes the four content anchors in source order.
+    motifs = ("sea", "night", "voices", "table")
+    positions = [n20_lower.index(motif) + 1 for motif in motifs]
+    assert positions == [8, 13, 16, 19]
+    ends = "".join(motif[-1] for motif in motifs).upper()
+    assert ends == "ATSE"
+    wrap_distance = low_value("BIT")
+    assert wrap_distance == 2
+    seat = rotate_left(ends, wrap_distance)
+    assert seat == "SEAT"
+    assert not re.search(r"\bseat\b", note_text, re.IGNORECASE)
+    assert low_value(seat) == 7
+    assert source_map[low_value(seat)] == 11
+    assert notes[11].startswith("Mug shelf:")
+
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
     print("TEA->K06->N10 => M10")
@@ -107,6 +128,9 @@ def main() -> None:
     print("M + LOW_BIT(SEA)=M+7=T")
     print("CELL_TRANSITION=M10->T11")
     print("UNIQUE_N20_SELF_CONTIGUOUS=THE END OF")
+    print("MOTIF_ENDS=ATSE")
+    print("WRAP_LOW_BIT(BIT)=2 => SEAT")
+    print("LOW_BIT(SEAT)=7->K07->N11_MUG_SHELF")
     print("PASS")
 
 if __name__ == "__main__":
