@@ -75,15 +75,15 @@ This is a positive locator result to include in the full LOW BIT assessment. It 
 
 The original table above is specifically the **numeric-suffix, LSB-first** control. MAIL-13 and the transfer audit preserve the full hyphenated ID `AX-7782`; no source rule explicitly says to discard its prefix or hyphen. The reproducer now reports full, compact, prefix, numeric-suffix and reversed-suffix forms under both first-character LSB/MSB weight conventions.
 
-| Transfer | Full hyphenated ID LSB/MSB | Compact ID LSB/MSB | Prefix AX LSB/MSB | Numeric suffix LSB/MSB | Reversed suffix LSB/MSB |
-|---|---:|---:|---:|---:|---:|
-| AX-7778 | 61 / 94 | 29 / 46 | 1 / 2 | 7 / 14 | 14 / 7 |
-| AX-7781 | 93 / 93 | 45 / 45 | 1 / 2 | 11 / 13 | 13 / 11 |
-| AX-7782 | 29 / 92 | **13 / 44** | 1 / 2 | **3 / 12** | 12 / 3 |
-| AX-7783 | 93 / 93 | 45 / 45 | 1 / 2 | 11 / 13 | 13 / 11 |
+| Transfer | Full ID forward LSB/MSB | Full ID reversed digits LSB/MSB | Compact forward LSB/MSB | Compact reversed digits LSB/MSB | Prefix AX LSB/MSB | Suffix forward LSB/MSB | Suffix reversed LSB/MSB |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| AX-7778 | 61 / 94 | 117 / 87 | 29 / 46 | 57 / 39 | 1 / 2 | 7 / 14 | 14 / 7 |
+| AX-7781 | 93 / 93 | 109 / 91 | 45 / 45 | 53 / 43 | 1 / 2 | 11 / 13 | 13 / 11 |
+| AX-7782 | 29 / 92 | 101 / 83 | **13 / 44** | 49 / 35 | 1 / 2 | **3 / 12** | 12 / 3 |
+| AX-7783 | 93 / 93 | 109 / 91 | 45 / 45 | 53 / 43 | 1 / 2 | 11 / 13 | 13 / 11 |
 
 For AX-7782, compact `AX7782` gives selector 13, a direct return to MAIL13; numeric suffix `7782` gives selector 3, returning to bookmark 3 and then reverse MAIL13. Tokenizing the hyphenated ID into `AX` and `7782` gives selectors 1 and 3. These are alternate renderings of one identifier and are **not independent confirmations**. The source-exact full hyphenated value gives 29/92, outside the 1–15 bookmark domain.
 
 Accordingly, the `1/60` toy rate above applies only to the suffix-only selector-3 model. It is representation-dependent and remains an illustrative conditional control, not a source-authenticated probability. The compact-ID self-return is a separate matched rendering control, not a replacement primary rule.
 
-Updated reproducer: `agents/agent9/k08_mail_bookmark_loop_controls.py` (commit `6e99f610c455e0373cec1a34e3119b779605dc10`). The local calculation was reproduced against all four transfer IDs in the supplied transfer audit; the exact values are preserved above.
+Updated reproducer: `agents/agent9/k08_mail_bookmark_loop_controls.py` (commit `6e99f610c455e0373cec1a34e3119b779605dc10`; full/compact reversed-digit expansion `9d20a31090a1239e574290fa92413503ade38355`). The local calculation was reproduced against all four transfer IDs in the supplied transfer audit; the exact values are preserved above. Agent43 independently preserved the same full rendering table in `h17-k08-transfer-id-rendering-sensitivity-20261119.md`.
