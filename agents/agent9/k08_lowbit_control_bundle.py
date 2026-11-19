@@ -46,6 +46,9 @@ def main():
  assert p['components']['assignments']==120 and len(p['components']['exact_YEA_lower_assignments'])==1\n assert len(p['components']['selector_7_lower_assignments'])==24
  assert p['transfers']['AX-7782']['masks_to_selector_11']==64
  assert p['transfers']['AX-7781']['masks_to_selector_11']==72
+ assert sum(v['masks_to_selector_11'] for v in p['transfers'].values())==136
+ assert sum(v['official_selector']==11 for v in p['transfers'].values())==1
+ assert p['print_payloads']['selector_counts']['11']==5
  assert p['print_payloads']['rows']==133 and p['print_payloads']['valid_note_ids_1_to_15']==122
  assert b['bookmark_count']==15 and b['reverse_ordinal_transfer_receipt_hits']==1
  assert b['transfer_id_lowbit_controls']['AX-7782']==3
@@ -62,6 +65,9 @@ def main():
   'assignments_yielding_YEA':len(p['components']['exact_YEA_lower_assignments']),\n  'assignments_yielding_selector7':len(p['components']['selector_7_lower_assignments']),
   'AX7782_masks_to_N11_selector':'64/256',
   'AX7781_masks_to_N11_selector':'72/256',
+  'N11_all_transfer_retry_masks':'136/1024',
+  'N11_source_valid_transfer_vectors':'1/4',
+  'N11_print_payloads':'5/133',
   'print_payloads_in_N01_to_N15':'122/133',
   'print_payloads_to_N05':'13/133',
   'bookmark_reverse_ordinal_transfer_receipt':'1/15',
