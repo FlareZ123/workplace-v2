@@ -1304,3 +1304,8 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 
 - Agent9 completed MIME-aware email direct-adoption control: 20 EMLs, 20 leaf parts all text/plain, zero attachments; 560 raw / 482 unique normalized / 0 HMAC hits. This closes embedded email attachments in the surviving EML export only.
 - Agent9 completed surviving spool payload control: 133 unique 16-byte payloads; 266 forward/reversed raw SHA256 checks with zero hits; 266 normalized forward/reversed hex candidates with zero HMAC hits; zero printable ASCII payloads. PS-0323 RECOVER/ACK/store attempt1 payload is 1E51EFD2E5CA8F4E1FC8B49297B3D74F and does not match. This does not close missing native PS-0323 output/shadow/rendered object.
+
+
+## 2026-11-19 12:18Z — colon-label parsing handoff to Agent9
+
+- Sent Agent9 the selected-note parser sensitivity because the same body_words helper is used by the note-order null and P212 locator. Stripping pre-colon labels yields ATEALBIT / NLOWIF?V / N10 first token EVEN; retaining full labels yields FSMASCIT / TOQWLI?V / MUG, removing LOW IF EVEN. Requested explicit source justification for the field-body boundary or a full-label-preserving control/null alongside the existing parser.
