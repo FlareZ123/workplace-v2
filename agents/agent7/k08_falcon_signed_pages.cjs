@@ -83,10 +83,13 @@ async function captureScanIndexAttempt(page, scanIndex, attempt) {
       } catch {
         return false;
       }
-    }, { timeout: 60000 }).then(
-      (response) => ({ response }),
-      (error) => ({ error })
-    );
+    }, { timeout: 60000 }).then(async (response) => ({
+      responseUrl: response.url(),
+      responseStatus: response.status(),
+      responseHeaders: response.headers(),
+      responseOk: response.ok(),
+      data: await response.body()
+    })).catch((error) => ({ error }));
     let navigationError = null;
     try {
       await page.goto(viewerUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
@@ -100,12 +103,11 @@ async function captureScanIndexAttempt(page, scanIndex, attempt) {
     if (responseResult.error) {
       throw responseResult.error;
     }
-    const imageResponse = responseResult.response;
-    row.response_url = imageResponse.url();
-    row.response_status = imageResponse.status();
-    row.response_content_type = imageResponse.headers()["content-type"] || "";
-    if (!imageResponse.ok()) {
-      throw new Error("signed viewer image response returned HTTP " + imageResponse.status());
+    row.response_url = responseResult.responseUrl;
+    row.response_status = responseResult.responseStatus;
+    row.response_content_type = responseResult.responseHeaders["content-type"] || "";
+    if (!responseResult.responseOk) {
+      throw new Error("signed viewer image response returned HTTP " + responseResult.responseStatus);
     }
     await page.waitForFunction(({ index, minWidth, minHeight }) => {
       const images = [...document.querySelectorAll('img[src*="/books/content"]')];
@@ -159,7 +161,7 @@ async function captureScanIndexAttempt(page, scanIndex, attempt) {
       throw new Error("viewer did not expose the required full-resolution zoom=3 image");
     }
 
-    const responseUrl = new URL(imageResponse.url());
+    const responseUrl = new URL(responseResult.responseUrl);
     if (responseUrl.hostname !== signedUrl.hostname || responseUrl.pathname !== signedUrl.pathname) {
       throw new Error("captured viewer response host/path differs from the inspected signed URL");
     }
@@ -174,11 +176,11 @@ async function captureScanIndexAttempt(page, scanIndex, attempt) {
     if (JSON.stringify(responseParameters) !== JSON.stringify(signedParameters)) {
       throw new Error("captured viewer response query differs from the image element signed URL");
     }
-    const contentType = imageResponse.headers()["content-type"] || "";
+    const contentType = responseResult.responseHeaders["content-type"] || "";
     if (!contentType.startsWith("image/")) {
       throw new Error("signed viewer response returned " + contentType);
     }
-    const data = await imageResponse.body();
+    const data = responseResult.data;
     if (data.length < MIN_IMAGE_BYTES) {
       throw new Error("placeholder-sized signed image response: " + data.length + " bytes");
     }
@@ -188,8 +190,8 @@ async function captureScanIndexAttempt(page, scanIndex, attempt) {
     Object.assign(row, {
       final_viewer_url: page.url(),
       signed_image_url: signedUrl.toString(),
-      response_url: imageResponse.url(),
-      response_status: imageResponse.status(),
+      response_url: responseResult.responseUrl,
+      response_status: responseResult.responseStatus,
       content_type: contentType,
       bytes: data.length,
       sha256: sha256(data),
@@ -207,7 +209,8 @@ async function captureScanIndexAttempt(page, scanIndex, attempt) {
 function isTransientCaptureError(message) {
   return /\bHTTP (?:429|500|502|503|504)\b/.test(message) ||
     /net::ERR_(?:CONNECTION_RESET|TIMED_OUT|NETWORK_CHANGED|INTERNET_DISCONNECTED|CONNECTION_CLOSED|CONNECTION_ABORTED|NAME_NOT_RESOLVED|ADDRESS_UNREACHABLE|ABORTED)/i.test(message) ||
-    /\b(?:ECONNRESET|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT)\b|socket hang up|connection reset|connection closed|Timeout \d+ms exceeded|Navigation timeout of \d+ms exceeded/i.test(message);
+    /\b(?:ECONNRESET|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT)\b|socket hang up|connection reset|connection closed|Timeout \d+ms exceeded|Navigation timeout of \d+ms exceeded/i.test(message) ||
+    /Response body is not available for a response that was navigated away from|Protocol error \(Network\.getResponseBody\): No resource with given identifier found/i.test(message);
 }
 
 async function captureScanIndex(page, scanIndex) {
