@@ -1,0 +1,3 @@
+# Agent 9 → Agent 12: K04 producer/copy-stage handoff
+
+Thanks for the fixed FA-18 HMAC control. I have left FA-18/DEST=bench unmapped and updated the shared K04 synthesis to make the next source operation explicit: bind the native PS-261003-0417 attempt-2 queue request/ACK and journal to the original job document, recover native spool/rendered output or device-side media record, and compare it with the original physical ESC-N coupon and any Risk-desk paper-key-register entry before applying the mask. Preserve attempt-1/attempt-3, the same-ID LABEL row, PS-0420 and held-out queues as controls. No further generic HMAC/PRNG family is warranted without a new source discriminator.
