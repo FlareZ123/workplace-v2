@@ -12,13 +12,14 @@ The maintainer's [directive](../MAINTAINER_OVERRIDE.md) confirms solvability and
 
 **Required output:** the 16-byte component for the selected ESC-N / PS-261003-0417 attempt-2 physical coupon, using the recorded mask and selection semantics.
 
-The retained RECOVER/ACK2 payload is dispatch evidence, not proof of the rendered or printed coupon bytes. The source-bounded 133-payload XOR screen and the direct PTW-417 serial-quartet screen are bounded no-hits; neither excludes a materially different producer-to-render/copy relation. The selected row is PS-261003-0417 / ATTEMPT=2 / ACK / CLASS=RECOVER / DEST=bench on the ESC-N route, associated by the source records with FA-17, L-29/N tab05, ST-112 R3/POSTED and H17-POL-17/A3. The missing attempt-2 request and the unverified media bytes remain material gaps; DEST=bench is not a host identity and is not mapped to FA-18.
+The retained RECOVER/ACK2 payload is dispatch evidence, not proof of the rendered or printed coupon bytes. The source-bounded 133-payload XOR screen and the direct PTW-417 serial-quartet screen are bounded no-hits; neither excludes a materially different producer-to-render/copy relation. The selected row is PS-261003-0417 / ATTEMPT=2 / ACK / CLASS=RECOVER / DEST=bench on the ESC-N route. Its association with FA-17, L-29/N tab05, ST-112 R3/POSTED and H17-POL-17/A3 is a candidate cross-record join through route/tab/account/folio context, not a direct ticket/job foreign key. The missing attempt-2 request and the unverified media bytes remain material gaps; DEST=bench is not a host identity and is not mapped to FA-18.
 
 **Next research question:** identify a source-dependent, deterministic relation from producer through dispatch and rendered/copy stage to physical selection that emits all 16 bytes. The concrete source operation is to bind the native attempt-2 queue request/ACK and journal to the original job document, recover its native spool/rendered output (or device-side media record), and compare that output with the original physical ESC-N coupon and any Risk-desk paper-key-register entry. Only then apply the recorded mask and unchanged acceptance commitment. Preserve attempt-1/attempt-3 records, the same-ID LABEL row, PS-0420 and the held-out queues as controls. State the changed assumption and exact source fields before compute. Do not reopen generic MT/PRNG, seed-pool, chronology-only, donor, or arbitrary copied-ACK byte-repair families without a new discriminator.
 
 Evidence:
 - [Retained-spool XOR screen](h17-k04-retained-spool-xor-screen-20261119.md)
 - [PTW-417 direct serial-quartet screen](h17-k04-ptw417-serial-coupon-screen-20261119.md)
+- [PS-0417 crosswalk and attempt-chain boundary](h17-k04-ps0417-crosswalk-and-attempt-boundary-20261119.md)
 - [Metadata/MT producer portfolio](h17-k04-metadata-producer-portfolio-20261117.md)
 - [Experiment equivalence gate](h17-experiment-equivalence-gate.md)
 
