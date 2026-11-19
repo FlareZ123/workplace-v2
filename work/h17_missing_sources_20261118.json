@@ -71,7 +71,26 @@
         },
         "direct_cell_test": "Normalize textual P212 value under the unchanged K08 rule and compare HMAC commitment; inspect formula/comment/style/hidden-sheet context.",
         "status": "hypothesis only; native workbook and sheet dimensions absent; K01 route itself defines ink groups, not cell coordinates",
-        "result_reference": "results/h17-k08-p212-book-candidate-crosscheck-20261119.md"
+        "result_reference": "results/h17-k08-p212-book-candidate-crosscheck-20261119.md",
+        "grouped_cells": {
+          "A": [
+            "EX4",
+            "AT171"
+          ],
+          "B": [
+            "HN28",
+            "DZ122"
+          ],
+          "C": [
+            "DT205",
+            "AI96"
+          ],
+          "D": [
+            "C67",
+            "Z201"
+          ]
+        },
+        "conditional_sheet_mapping": "If the workbook has four sheets or groups unambiguously named A-D, test each K01 group's two addresses on its corresponding sheet first; otherwise record sheet names and do not invent a permutation."
       }
     ]
   },
