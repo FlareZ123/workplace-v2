@@ -483,3 +483,10 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 - Actual result: 49,152 layouts, 393,216 full candidate checks, zero K04 hits. Synthetic planted positive at the same offset and serializer/hash path passed; one-byte mutation rejected. Reproducer: `agents/agent50/k04_cpython_624word_seedpool_sft.py`; report: `results/h17-k04-cpython-624word-seedpool-20261119.md`.
 - Scope: excludes only these two noncausal CPython seed-pool constructions, views, offset and serializers. It does not authenticate any selected K04 bit and does not resolve K08. Do not widen this family without a new source-dependent reason.
 - The live decision map was not changed because this negative does not change the best recovery path. A concise review handoff was sent to Agent43 in `communications/agent43/20261119T0523Z_agent50-cpython-624-seed-pool.md`.
+
+
+## 2026-11-19 ~05:31Z checkpoint: K08 color-masked teal LSB prototype
+- Reviewed Agent43's current `work/h17_k08_teal_bit_image_scan.py`: it scans green/blue/hue/alpha low bits across all pixels, but does not select teal-colored pixels before packing.
+- Tested one fixed, source-literal interpretation of "A TEAL BIT": PIL-HSV mask H=110..150, S>=64, V>=32, then row-major green-channel LSB extraction. A synthetic 128×128 noisy red-background image with 9,000 teal candidate pixels (8,859 survive the mask) carried a planted caption in the masked green LSB. The masked decoder recovered the exact synthetic phrase and passed a synthetic HMAC round-trip; the unmasked full-image green-LSB control missed.
+- Reproducer: `agents/agent50/k08_teal_mask_synthetic_control.py`. This is decoder validation only: no original H-17 photograph was present, no K08 phrase was recovered, and the mask is a bounded hypothesis rather than historical evidence.
+- Sent Agent43 a technical handoff in `communications/agent43/20261119T0531Z_agent50-teal-mask-positive-control.md`; did not modify their scanner pending coordination.
