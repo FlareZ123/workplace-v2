@@ -590,3 +590,21 @@
 - README decision map last updated 2026-11-19T09:25Z; candidate status remains K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE. No candidate, acceptance, verifier, or source record changed.
 - Critic communications record: no custodian recontact, no R-drive/SharePoint access, no new dispatch. Existing intake is only for an independently authorized local copy. No Critic reassignment or Agent43 image-batch response arrived before release.
 - On release: preserve this memory and all results already pushed; delete only this identity's .lease.json as the final repository mutation; verify the lease is absent; then exit.
+
+
+## 2026-11-19 — K08 full specificity review (Agent 9 continuation)
+
+- Claimed the released Agent9 identity at 2026-11-19T09:53:36.375882429Z. Continue this identity; do not refresh the lease. The 70-minute release threshold is 2026-11-19T11:03:36Z; after every checkpoint compare the original lease timestamp to the actual runtime clock.
+- Published results/h17-k08-lowbit-full-specificity-review-20261119.md and updated results/README.md. New reproducible programs:
+  - agents/agent9/k08_source_map_sensitivity.py: reconstructs K02 raw from source telemetry and K07 raw from source-valid AX-7782, verifies accepted hashes, and enumerates 16 byte/packed-byte/hex/character-order conventions. Baseline map K01→12, K02→11, K05→10, K06→10, K07→11 appears in 2/16 conventions.
+  - agents/agent9/k08_note_order_null.py: 200,000 within-author body-to-note-ID permutations (four seeds 20261119–22), preserving author labels/counts and every source body. Result: 0 full-chain hits; rule-of-three 95% upper bound 1.5e-5 under this conditional shuffle only. Summary: results/h17-k08-note-order-null-20261119.json.
+- New specificity corrections:
+  - N10→N11 remains the unique valid +1 Emily edit among seven that produces ATEALBIT and the fixed ALOWBIT splice, but the generic contiguous 1+3+3 splice search has 2/288 ALOWBIT hits because the head string contains A at positions 0 and 3. The Agent35 upstream joint null 3/10,878,433,280 does not correct for this extra splice-position multiplicity.
+  - Component selector 7 occurs 24/120 lower/LSB orders, 60/120 upper/LSB, 6/120 upper/MSB, and 0/120 lower/MSB. Literal YEA is 1/120 only in lower/LSB.
+  - Source-valid AX-7782 mask 255 still reproduces accepted K07 and lowpacks to 53D5. Selector 11 occurs under 64/256 AX-7782 masks and 72/256 AX-7781 dry-run masks; only one AX-7782 mask is source-valid. Alternate renderings of the same bytes yield selectors 13, 14, 3, or 13; do not treat them as independent confirmation.
+  - The bookmark control has two MAIL13 mappings; only reverse position 3 is the Tea-room stock sheets bookmark. Reverse ordinal remains inferred.
+  - Across 1,054 email/routing source windows, two map N20 to “end of the” (MAIL11 “long watch with” and K08 rule “late watch rather”). Fixed 12/10/11 yields “the end of” only at N20; N13 contains those words elsewhere, so phrase occurrence itself is not unique.
+  - K08/source is the only one of 8 slot-source fields / 26 routing strings to reduce to VLOWL→12. HMAC note graph has unique N19/SANTE path 19→13→9→12→11; N23 “words” and N20 “wanted” are the only LOW19 tokens.
+- Use existing results/h17-k08-downstream-factorial-endpoint-null-20261119.md for the 7,372,800-combination conditional factorial (joint endpoint 1/4,800; source-valid mask only 1/307,200; exact 53D5 1/38,400). Do not multiply upstream/downstream/note-order stage rates into a global p-value.
+- Decision: LOW BIT remains a source-local locator hypothesis, not a K08 recovery. No complete final Emily wording candidate passes the unchanged K08 commitment. K04/K08 remain missing; combined REC8/1 incomplete. Do not add another locator chain or rotate to another phrase without a new source witness. Highest-value next evidence remains an independently authorized local copy of N23's final margin/envelope or the associated native caption/profile/workbook material. Custodian reply channel is closed; no protected-service access or equipment operation.
+- No candidate.json, acceptance.json, verifier, or original evidence was changed. Commits added only the two reproducers, review/null result, and research-map update.
