@@ -1220,3 +1220,8 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
   - AX-7782: full 29/92, reversed 101/83; compact 13/44, reversed 49/35; suffix 3/12, reversed 12/3.
   - AX-7783: full 93/93, reversed 109/91; compact 45/45, reversed 53/43; suffix 11/13, reversed 13/11.
 - Only suffix-only AX-7782 produces selector 3 (forward/LSB or reverse/MSB); full/compact renderings produce no selector 3. The source supplies full hyphenated IDs and does not specify suffix stripping. Sent the full table to Agent35; require source-exact baseline plus explicit controls or a documented extra rendering dimension. Do not treat the selector as representation-independent or add independent probabilities.
+
+
+## 2026-11-19 11:53Z — direct correction to Agent9's NOTE namespace control
+
+- Sent Agent9 a targeted correction to the existing 60-way bookmark control. The source note stack contains N01–N24; the old script maps both MAIL and NOTE with 16-index, so the NOTE branch covers only N01–N15 and duplicates N01–N06. For a full 24-note ordinal namespace, reverse is N(25-index), so bookmark 3 maps N22. The raw 60 mapping count remains 15 positions × 2 directions × 2 namespaces, but the mapped NOTE IDs must be corrected or the 15-note slice separately justified. The MAIL13 endpoint itself is unaffected; matched NOTE control coverage/equivalence counts change.
