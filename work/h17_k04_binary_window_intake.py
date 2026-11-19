@@ -26,6 +26,7 @@ from pathlib import Path, PurePosixPath
 
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
+from h17_xps_glyph_indices import extract_xps_glyph_streams
 
 DEFAULT_TARGET = "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0"
 DEFAULT_MASK = "8556C8CB6140A7F9A5123AC7571BEE1C"
@@ -139,6 +140,26 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                     f"{name}!/{label}-grouped-hex", compact_hex,
                     target_digest, mask, stride
                 ))
+        # Glyphs/Indices pages require font mapping; the adapter refuses
+        # incomplete or ambiguous coverage instead of emitting guessed text.
+        try:
+            glyph_streams = extract_xps_glyph_streams(data)
+        except Exception as exc:
+            result.setdefault("extraction_errors", []).append({
+                "extractor": "xps-glyph-indices",
+                "error": f"{type(exc).__name__}:{exc}",
+            })
+        else:
+            for label, text in glyph_streams:
+                result["hits"].extend(scan_bytes(
+                    f"{name}!/{label}", text, target_digest, mask, stride
+                ))
+                compact_hex = text.translate(None, b" \t\r\n:.-")
+                if compact_hex != text:
+                    result["hits"].extend(scan_bytes(
+                        f"{name}!/{label}-grouped-hex", compact_hex,
+                        target_digest, mask, stride
+                    ))
     if depth >= max_depth:
         if result["magic"] in {"zip", "tar", "gzip"}:
             result["scan_limit"] = "max-depth reached"
@@ -242,7 +263,7 @@ def run_scan(root: Path, target_hex: str, mask_hex: str, stride: int,
             "stride": stride, "files": files, "files_scanned": len(files),
             "bytes_scanned_or_decompressed": budget[0], "members_scanned": budget[2],
             "max_members": max_members, "hits": all_hits, "skipped": skipped,
-            "interpretation": "A direct hit is a 16-byte component. A masked hit is a 16-byte source payload whose XOR with the published route mask hashes to the K04 commitment. No hit means only that the scanned bytes/containers did not expose either representation."}
+            "interpretation": "A direct hit is a 16-byte component. A masked hit is a 16-byte source payload whose XOR with the published route mask hashes to the K04 commitment. XPS/OXPS UnicodeString and unambiguous glyph-index text are scanned; inspect per-file extraction_errors and scan_limit fields. No hit does not exclude incomplete glyph mapping, bitmap/outline-only text, or unsupported print framing."}
 
 
 def self_test():
