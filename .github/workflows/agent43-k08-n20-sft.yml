@@ -1,0 +1,16 @@
+name: Agent43 K08 N20 source-route SFT
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run source-pinned K08 N20 routing SFT
+        run: python agents/agent43/k08_n20_two_cell_transition_sft.py
