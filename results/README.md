@@ -8,6 +8,12 @@
 
 The maintainer's [directive](../MAINTAINER_OVERRIDE.md) confirms solvability and permits exploratory mechanisms under uncertainty. A candidate commitment hit is valuable experimental evidence; historical authenticity is a separate question. Do not turn provenance requirements into a universal barrier to testing.
 
+## Common retained source: AX-7782 / Bundle06
+
+MAIL-13 and the transfer queue note identify **AX-7782 / IR-261003-H17 / Bundle06** as the actual retained copy; the handoff print is only a reference/receipt chain. The transfer audit describes eight 1 MiB chunks, but the supplied export contains only the 2-byte checkpoint fields—not the 8 MiB object, original manifest, or per-chunk hashes. The object itself has not been inspected, so no claim is made about its contents. It is the highest-value shared source path for the two unresolved slots.
+
+If an independently authorized local copy already possessed by the user is supplied, preserve the original bytes and sidecars and begin with [the read-only AX-7782 intake](../work/h17_ax7782_object_intake.py) and [the local-only retrieval checklist](../work/h17_sharepoint_retrieval_request.md). Do not access protected R-drive/SharePoint services or recontact the closed custodian channel. Keep the jobs distinct: **PS-261003-0417** is the K04 coupon job; **PS-261003-0323** is only a conditional K08 recovery-envelope render candidate, usable only if an authenticated queue/job manifest binds it to the envelope. For K08, also preserve the WN-14/N23 margin stack and separate pre-incident photo-caption archive. The relevant detailed paths are [K04's PS-0417 crosswalk](h17-k04-ps0417-crosswalk-and-attempt-boundary-20261119.md) and [K08's source-authored caption/render path](h17-k08-source-authored-final-caption-version-path-20261119.md).
+
 ## K04 — construct the complete selected 16-byte object
 
 **Required output:** the 16-byte component for the selected ESC-N / PS-261003-0417 attempt-2 physical coupon, using the recorded mask and selection semantics.
