@@ -39,6 +39,16 @@ class LegacyOfficeIntakeTests(unittest.TestCase):
         self.assertEqual(hits[0]["component_hex"],expected.hex().upper())
         self.assertEqual(hits[0]["component_sha256"],hashlib.sha256(expected).hexdigest())
         self.assertFalse(hits[0]["matches_K04"])
+        old_commit=mod.K04_COMMIT
+        try:
+            component=bytes(range(16))
+            payload=bytes(a^b for a,b in zip(component,mod.K04_MASK))
+            mod.K04_COMMIT=hashlib.sha256(component).hexdigest()
+            matching=[]
+            mod.scan_hex(payload.hex().upper(),{"sheet":"S","cell":"B1"},matching)
+            self.assertTrue(matching[0]["matches_K04"])
+        finally:
+            mod.K04_COMMIT=old_commit
 
     def make_workbook(self,path):
         wb=Workbook()
