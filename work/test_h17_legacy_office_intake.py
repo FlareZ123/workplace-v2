@@ -97,16 +97,31 @@ class LegacyOfficeIntakeTests(unittest.TestCase):
             out=root/"out"
             out.mkdir()
             self.make_workbook(xlsx)
+            wb=__import__("openpyxl").load_workbook(xlsx)
+            wb["Visible"]["A1"]="the end of the"
+            wb["Visible"]["B1"]=bytes(range(16)).hex().upper()
+            wb["Visible"]["B1"].comment=Comment("the end of the","test")
+            wb["Hidden"]["A1"]="the end of the"
+            wb.save(xlsx)
             subprocess.run(["libreoffice","--headless","--norestore","--nodefault","--nofirststartwizard",
                             "--convert-to","xls","--outdir",str(out),str(xlsx)],
                            capture_output=True,text=True,check=True,timeout=60)
             xls=out/"test.xls"
             before=hashlib.sha256(xls.read_bytes()).hexdigest()
-            result=mod.extract_one(xls,64,True)
+            old_nonce,old_commit=mod.K08_NONCE,mod.K08_COMMIT
+            try:
+                mod.K08_NONCE=b"test-nonce-0123456789012345678901"
+                digest=__import__("hmac").new(mod.K08_NONCE,b"the end of the",hashlib.sha256).digest()[:16]
+                mod.K08_COMMIT=hashlib.sha256(digest).hexdigest()
+                result=mod.extract_one(xls,64,True)
+            finally:
+                mod.K08_NONCE,mod.K08_COMMIT=old_nonce,old_commit
             after=hashlib.sha256(xls.read_bytes()).hexdigest()
             self.assertEqual(before,after)
             self.assertEqual(len(result["sheets"]),2)
             self.assertIn("hidden",[s["state"] for s in result["sheets"]])
+            self.assertTrue(result["K08_commitment_hits"])
+            self.assertTrue(result["K04_hex_candidates"])
 
 if __name__=="__main__":
     unittest.main()
