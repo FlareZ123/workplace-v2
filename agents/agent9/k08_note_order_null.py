@@ -32,19 +32,20 @@ def low_pack(raw: bytes) -> bytes:
     bits=[b&1 for b in raw]
     return bytes(sum(bits[i+j]<<j for j in range(min(8,len(bits)-i))) for i in range(0,len(bits),8))
 
-def words(s: str) -> list[str]:
-    return TOKEN.findall(s)
+def words(s: str, split_hyphens: bool = False) -> list[str]:
+    return re.findall(r"[A-Za-z0-9]+", s) if split_hyphens else TOKEN.findall(s)
 
 def normalize(s: str) -> str:
     return " ".join(re.sub(r"[^a-z0-9\s]"," ",s.lower()).split())
 
-def parse_notes(path: Path, nonce: bytes) -> dict[int,dict]:
+def parse_notes(path: Path, nonce: bytes, strip_colon_labels: bool = True, split_hyphens: bool = False) -> dict[int,dict]:
     raw=path.read_text(encoding="utf-8")
     out={}
     for num,author,text in re.findall(r"(?ms)^N(\d\d) / ([^\n]+)\n(.+?)(?=\n\nN\d\d /|\Z)",raw):
         body=text.strip()
-        body=body.split(":",1)[1].strip() if ":" in body else body
-        toks=words(body)
+        if strip_colon_labels and ":" in body:
+            body=body.split(":",1)[1].strip()
+        toks=words(body,split_hyphens=split_hyphens)
         digest=hmac.new(nonce,normalize(body).encode(),"sha256").digest()[:16]
         low19=[(i,t.lower()) for i,t in enumerate(toks,1) if low_value(t.upper())==19]
         self_repeat=False
@@ -77,6 +78,8 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--trials",type=int,default=50000)
     ap.add_argument("--seed",type=int,default=20261119)
+    ap.add_argument("--preserve-colon-labels",action="store_true",help="Keep colon-prefixed labels in note bodies")
+    ap.add_argument("--split-hyphenated-tokens",action="store_true",help="Split hyphenated note-body tokens")
     args=ap.parse_args()
     for rel,expected in EXPECTED.items():
         actual=hashlib.sha256((E/rel).read_bytes()).hexdigest()
@@ -84,7 +87,9 @@ def main():
             raise AssertionError(f"source hash mismatch: {rel}")
     routing=json.loads((E/"recovery-routing.json").read_text())
     nonce=bytes.fromhex(routing["K08"]["desk_nonce"])
-    base=parse_notes(E/"crew/noticeboard-and-desk-notes.txt",nonce)
+    base=parse_notes(E/"crew/noticeboard-and-desk-notes.txt",nonce,
+                     strip_colon_labels=not args.preserve_colon_labels,
+                     split_hyphens=args.split_hyphenated_tokens)
     authors=[base[n]["author"] for n in range(1,25)]
     first_order=list(dict.fromkeys(authors))
     groups={a:[n for n in range(1,25) if base[n]["author"]==a] for a in first_order}
@@ -182,7 +187,7 @@ def main():
         }
 
     observed=evaluate(base)
-    if not all(observed.values()):
+    if not all(observed.values()) and not args.preserve_colon_labels:
         raise AssertionError(f"observed source chain failed: {observed}")
     rng=random.Random(args.seed)
     counts=Counter()
@@ -201,13 +206,16 @@ def main():
             counts["FULL_CHAIN"]+=1
     result={
         "trials":args.trials,"seed":args.seed,
+        "parser_mode":{"colon_labels":"preserved" if args.preserve_colon_labels else "stripped",
+                       "note_body_tokenizer":"split-hyphen" if args.split_hyphenated_tokens else "hyphen-preserving"},
+        "observed_pass_count":sum(observed.values()),
         "possible_within_author_permutations":prod(factorial(len(ids)) for ids in groups.values()),
         "observed_flags":observed,
         "stage_hits":{k:{"hits":counts[k],"rate":counts[k]/args.trials} for k in sorted(counts)},
         "full_chain_hits":counts["FULL_CHAIN"],
         "full_chain_rate":counts["FULL_CHAIN"]/args.trials,
         "zero_hit_95pct_upper_bound_rule_of_three":3/args.trials if counts["FULL_CHAIN"]==0 else None,
-        "scope":"Conditional matched null: permute complete note bodies only among IDs with the same author. Preserves authorship, author counts, all source texts, and body properties; disrupts only body-to-note-ID assignment. Not a global p-value and not corrected for post-hoc LOW BIT mechanism selection.",
+        "scope":"Conditional matched null: permute complete note bodies only among IDs with the same author. Parser mode is explicit in parser_mode. Preserves authorship, author counts, all source texts, and body properties; disrupts only body-to-note-ID assignment. Not a global p-value and not corrected for post-hoc LOW BIT mechanism selection.",
     }
     print(json.dumps(result,indent=2,sort_keys=True))
 
