@@ -1,22 +1,32 @@
-# K08 12/10/11 common-target text extraction: N13 rejected
+# K08 MAIL-12/N10/N11 email-body routing control: N13 is non-discriminating
 
-**Agent 25 | 19 November 2026 | finite, source-pinned extraction test**
+**Agent 25 | 19 November 2026 | null calibration, not a new phrase candidate**
 
-## Question and pre-registered rule
+## Prior-art correction
 
-Can the 12/10/11 selector set, applied to the retained MAIL-12, N10 and N11 text fields, recover a complete candidate phrase without free-form phrase generation?
+The exact normalized N13 caption below was already rejected by Agent6 on 7 November:
 
-Before consulting the K08 commitment, the test fixed the following operation:
+- `results/h17-k08-n13-exact-caption-candidate-negative-20261107.md`
 
-1. Use source order **MAIL-12 → N10 → N11**, corresponding to selectors 12/10/11.
-2. Normalize each complete source body using the existing K08 lowercase/alphanumeric-whitespace normalizer.
-3. Apply the existing K08 HMAC16 → low-bit-pack → uppercase-hex → low-value reducer to each body. For MAIL-12 this is an explicit extension of the note router to an email body; it is a hypothesis, not an authenticated historical rule.
-4. Follow each resulting note selector through the existing HMAC note graph until the first note common to all three paths.
-5. Use that common note's complete body as the sole candidate. Do not splice, paraphrase, reorder, or repair it.
+The note edges N10→N13 and N11→N13, and the common four-note cycle, were already established by Agent9:
 
-MAIL-12's physical-card statement is retained as context: it says a small card was placed by the shelf. N10 is Emily's desk-copy/photo-reference note; N11 is David's mug-shelf note. No text from the physical card is inferred.
+- `communications/broadcast/20261119T0550Z_agent9-k08-hmac-lowbit-cycle.md`
 
-## Frozen route and candidate
+Therefore neither the N13 wording nor those note-graph edges are new findings. This report's only additional contribution is a matched-control test of extending the same HMAC-low-bit reducer to the selected MAIL-12 email body and to all 20 email bodies.
+
+## Frozen control
+
+The source order is **MAIL-12 → N10 → N11**, corresponding to selectors 12/10/11. The fixed operation is:
+
+1. Normalize each complete source body with the existing K08 lowercase/alphanumeric-whitespace normalizer.
+2. Apply the existing K08 HMAC16 → low-bit-pack → uppercase-hex → low-value reducer to each body.
+3. For MAIL-12, this is an explicit extension of the note router to an email body, not an authenticated historical rule.
+4. Follow each output through the already-known note graph.
+5. Report the first common note and apply the unchanged K08 commitment to its complete body. No phrase edits or variants are permitted.
+
+MAIL-12 says a small card was placed by the shelf. N10 is Emily's desk-copy/photo-reference note; N11 is David's mug-shelf note. The email body is used only for this reducer control; its content does not establish the physical card's words.
+
+## Route and already-known candidate
 
 | Source | HMAC16 | Low-bit packed hex | Selector | Path to common note |
 |---|---|---|---:|---|
@@ -24,22 +34,20 @@ MAIL-12's physical-card statement is retained as context: it says a small card w
 | N10 body | `8FAF682BE3F69E63BB7361661AE4DDFB` | `9BC7` | 13 | 13 |
 | N11 body | `0A0146B670268BCF17BD9810128B95FB` | `C2E3` | 13 | 13 |
 
-The first common note is **N13**, an Emily-authored scene note. Its complete normalized body is the candidate:
+The first common note is N13. Its complete normalized body is the previously rejected candidate:
 
 `at the end of the night the mugs stood beside the window and somebody had remembered to leave the little lamp on`
 
-The unchanged K08 computation gives:
+The already-known K08 computation is:
 
 - Candidate HMAC16: `26076C5426016BDB768A2B83E9F36857`
 - SHA-256 of candidate HMAC16: `33e430295cb8ba51e8432fdab4a4da518c89ea8ee71dd2d3dc9fe09ee74f3d20`
 - Required K08 SHA-256: `285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747`
-- **Outcome: no match.**
+- Outcome: **no match**, as Agent6 already recorded.
 
-The full phrase was fixed before the acceptance comparison. No candidate or verifier file was modified.
+## New specificity control
 
-## Specificity control
-
-The same HMAC extension was applied once to each of the 20 retained email bodies, then each output was followed through the unchanged note graph. **19 of 20** email bodies reach N13. The edge-distance distribution is:
+The same email-body extension was applied once to each of the 20 retained email bodies, then each selector was followed through the unchanged note graph. **19 of 20** email bodies reach N13.
 
 | Edges to N13 | Email bodies |
 |---:|---:|
@@ -50,18 +58,18 @@ The same HMAC extension was applied once to each of the 20 retained email bodies
 | 4 | 2 |
 | 5 | 1 |
 
-The selected MAIL-12 path is therefore not a discriminating locator: the note graph's common cycle causes nearly every email control to reach the same target. The N10/N11 convergence is deterministic but does not identify the final envelope wording.
+This is the new observation. The MAIL-12→N06→N10→N13 path is not a discriminating locator: almost every email control reaches the same target because the note graph converges on its common cycle. The email-body extension therefore supplies no evidence for the final envelope wording.
 
 ## Evidence pins and limits
 
-The reproducer pins the following SHA-256 values, all matching the supplied archive and repository resource blobs:
+The reproducer pins these SHA-256 values, matching the supplied archive and repository resource blobs:
 
 - `evidence/crew/noticeboard-and-desk-notes.txt`: `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`
 - `evidence/mail/12.eml`: `4cadd373aa676f97e64690a631eea3f3993e0908eaac0aacb86e76ed0c2c68fd`
 - `evidence/recovery-routing.json`: `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5`
 - `acceptance.json`: `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f`
 
-This test does **not** establish that MAIL-12 is a valid HMAC note node, that N13 is an envelope version, or that the physical shelf card contains N13's text. It only rejects this one complete, deterministic candidate. K08 remains MISSING; K04 remains independently unresolved; REC8/1 remains INCOMPLETE.
+This test does not establish that MAIL-12 is a valid HMAC note node, that N13 is an envelope version, or that the physical shelf card contains N13's text. It only demonstrates that applying the note reducer to email bodies produces a generic convergence. K08 remains MISSING; K04 remains independently unresolved; REC8/1 remains INCOMPLETE.
 
 ## Reproduction
 
@@ -71,6 +79,6 @@ From the repository root:
 python agents/agent25/k08_12_10_11_common_target_sft.py
 ```
 
-The script reads the original routing and acceptance files, validates the pinned evidence, emits all three selected routes, the complete normalized candidate, the original commitment outcome, and the 20-email control distribution. It does not write to source evidence, `candidate.json`, or `verify.py`.
+The script validates the pinned evidence, emits the three selected routes, the previously rejected candidate's commitment outcome, and the 20-email control distribution. It does not write to source evidence, `candidate.json`, or `verify.py`.
 
-**Decision:** close this N13 extraction hypothesis. Do not add more email-body routing variants or promote the common-cycle convergence as independent evidence. A future K08 text result must be an independently discriminating complete phrase or an authenticated native carrier, not another traversal of the same note cycle.
+**Decision:** retain this only as a null-calibration result. Do not count N13 or the note-graph convergence as a new recovery, and do not add more email-body routing variants. A future K08 result must come from an independently discriminating complete phrase or an authenticated native carrier.
