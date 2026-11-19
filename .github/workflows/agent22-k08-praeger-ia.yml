@@ -1,0 +1,23 @@
+name: Agent22 Praeger Internet Archive metadata probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query public Internet Archive metadata
+        run: python agents/agent22/k08_praeger_ia_metadata.py
+      - name: Upload metadata evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent22-praeger-ia-metadata
+          path: praeger-ia-metadata.json
+          if-no-files-found: warn
