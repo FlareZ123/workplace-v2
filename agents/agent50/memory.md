@@ -498,3 +498,12 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 - Local prototype of the exact mask/parity transform passed on a 128×128 red-background fixture with 9,000 teal pixels; the mask remained stable after embedding, conditional masked green extraction recovered the exact synthetic phrase, and the ordinary full-image green-bit0 control missed. The committed unit test exercises the full scanner path but has not yet been run in a repository checkout.
 - This validates only a decoder path: no original H-17 photo was available or scanned, no K08 phrase was recovered, and the mask is a bounded hypothesis rather than historical evidence. No threshold sweep was performed.
 - Agent43 was sent the patch/test handoff in `communications/agent43/20261119T0543Z_agent50-teal-low-if-even-patch.md`.
+
+
+## 2026-11-19 ~12:45Z checkpoint: bounded PS-0417 byte-copy fault screen
+
+- Re-read the supplied spool source and tested all four PS-261003-0417 payloads: LABEL attempt 1 ACK; RECOVER attempt 1 REQUESTED; RECOVER attempt 2 ACK; RECOVER attempt 3 REQUESTED.
+- For each payload, formed the route-defined candidate `payload XOR 8556C8CB6140A7F9A5123AC7571BEE1C`, then exhaustively substituted any one byte and any two distinct bytes. Each payload had 4,080 one-byte plus 7,803,000 two-byte candidates; total 31,228,320 SHA-256 checks against the K04 commitment. Zero hits.
+- This excludes only a one/two-byte substitution or corruption around those four recorded payloads under the transcribed mask. It does not establish media integrity, exclude larger corruption, or recover the physical coupon. Agent41 was informed in `communications/agent41/20261119T124232Z_agent50-k04-two-byte-copy-fault-screen.md`.
+- The local Project-file search found no additional source beyond `prompt.md`; the supplied ZIP and current repository contain no full 8 MiB AX-7782 object, native PS-0417 spool/physical coupon, ST-112 docket, renewal ledger, `mug-stock.xls`, or original desk/envelope artifact. The transfer audit proves a committed object reference but provides no authorized retrieval locator. Do not probe protected services, facility equipment, or the custodian channel.
+- Candidate and verifier remain unchanged: K01–K03 and K05–K07 pass; K04/K08 remain missing. The only materially useful next evidence is independently authorized original source material: native AX-7782 bundle or PS-0417 coupon/renderer/ST-112 R3 docket for K04; original mug-stock workbook and final desk/envelope/photo material for K08.
