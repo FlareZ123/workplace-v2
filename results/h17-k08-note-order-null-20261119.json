@@ -1,0 +1,52 @@
+{
+  "benchmark": "K08 within-author note-ID permutation null",
+  "trials": 200000,
+  "seeds": [20261119, 20261120, 20261121, 20261122],
+  "possible_within_author_permutations": 1254113280,
+  "observed_flags": {
+    "K08_route_string_unique": true,
+    "K08_source_VLOWL_to_12": true,
+    "K08_source_unique_across_slots": true,
+    "MAIL11_and_route_calibration": true,
+    "N12_HMAC_to_11_even": true,
+    "N20_WANTED_to_19": true,
+    "N20_motif_ATSE_to_SEAT": true,
+    "N20_positions_12_10_11_the_end_of": true,
+    "N20_unique_self_repeat": true,
+    "N23_WORDS_to_19": true,
+    "N23_unique_token_to_fixedpoint": true,
+    "SEATS_to_N23": true,
+    "WANTED_WORDS_only_LOW19_pair": true,
+    "david_LOW": true,
+    "unique_Emily_plus_one_ALOWBIT": true,
+    "unique_N19_SANTE_fixedpoint": true
+  },
+  "stage_hits": {
+    "K08_route_string_unique": {"hits": 808, "rate": 0.00404},
+    "K08_source_VLOWL_to_12": {"hits": 834, "rate": 0.00417},
+    "K08_source_unique_across_slots": {"hits": 35117, "rate": 0.175585},
+    "MAIL11_and_route_calibration": {"hits": 25121, "rate": 0.125605},
+    "N12_HMAC_to_11_even": {"hits": 66448, "rate": 0.33224},
+    "N20_WANTED_to_19": {"hits": 25121, "rate": 0.125605},
+    "N20_motif_ATSE_to_SEAT": {"hits": 25121, "rate": 0.125605},
+    "N20_positions_12_10_11_the_end_of": {"hits": 25121, "rate": 0.125605},
+    "N20_unique_self_repeat": {"hits": 25121, "rate": 0.125605},
+    "N23_WORDS_to_19": {"hits": 24957, "rate": 0.124785},
+    "N23_unique_token_to_fixedpoint": {"hits": 301, "rate": 0.001505},
+    "SEATS_to_N23": {"hits": 3497, "rate": 0.017485},
+    "WANTED_WORDS_only_LOW19_pair": {"hits": 3497, "rate": 0.017485},
+    "david_LOW": {"hits": 33156, "rate": 0.16578},
+    "unique_Emily_plus_one_ALOWBIT": {"hits": 10, "rate": 0.00005},
+    "unique_N19_SANTE_fixedpoint": {"hits": 196, "rate": 0.00098}
+  },
+  "full_chain_hits": 0,
+  "full_chain_rate": 0.0,
+  "zero_hit_95pct_upper_bound_rule_of_three": 0.000015,
+  "scope": "Conditional matched null: permute complete note bodies only among IDs with the same author. Preserves authorship, author counts, all source texts, and body properties; disrupts only body-to-note-ID assignment. Not a global p-value and not corrected for post-hoc LOW BIT mechanism selection.",
+  "batches": [
+    {"seed": 20261119, "trials": 50000, "full_chain_hits": 0},
+    {"seed": 20261120, "trials": 50000, "full_chain_hits": 0},
+    {"seed": 20261121, "trials": 50000, "full_chain_hits": 0},
+    {"seed": 20261122, "trials": 50000, "full_chain_hits": 0}
+  ]
+}
