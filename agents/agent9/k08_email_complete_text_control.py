@@ -86,11 +86,11 @@ def main() -> None:
                 continue
             mime_leaf_part_count += 1
             mime_types[part.get_content_type()] += 1
-            filename = part.get_filename()
+            attachment_filename = part.get_filename()
             disposition = part.get_content_disposition()
-            if filename or disposition == "attachment":
+            if attachment_filename or disposition == "attachment":
                 payload = part.get_payload(decode=True) or b""
-                attachments.append({"source": filename, "message": filename, "part": part_index,
+                attachments.append({"email": filename, "attachment_filename": attachment_filename, "part": part_index,
                                     "content_type": part.get_content_type(), "disposition": disposition,
                                     "size_bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()})
         parts = re.split(r"\r?\n\r?\n", raw, maxsplit=1)
