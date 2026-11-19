@@ -12,12 +12,15 @@ const crypto = require("node:crypto");
 const { spawnSync } = require("node:child_process");
 const { chromium } = require("playwright");
 
-const VOLUME = "uT5RAQAAIAAJ";
+const VOLUME = process.env.PRAEGER_VOLUME || "uT5RAQAAIAAJ";
+const EDITION = process.env.PRAEGER_EDITION || "Methuen 1947 third edition";
 const COORDS = [
   [4, 154], [171, 46], [28, 222], [122, 130],
   [205, 124], [96, 35], [67, 3], [201, 26],
 ];
-const OUT = path.resolve("work/agent22-praeger-1947");
+const LOCATOR_PAGE = 212;
+const CAPTURE_PAGES = [...new Set([...COORDS.map(([page]) => page), LOCATOR_PAGE])];
+const OUT = path.resolve("work", "agent22-praeger-" + VOLUME);
 const ROUTE = JSON.parse(fs.readFileSync("resources/evidence/recovery-routing.json", "utf8"));
 const ACCEPTANCE = JSON.parse(fs.readFileSync("resources/acceptance.json", "utf8"));
 const NONCE = Buffer.from(ROUTE.K08.desk_nonce, "hex");
@@ -87,7 +90,7 @@ function bodyCrop(imagePath, cropPath) {
   /** @type {Array<Record<string, unknown>>} */
   const manifest = [];
   try {
-    for (const [printedPage] of COORDS) {
+    for (const printedPage of CAPTURE_PAGES) {
       /** @type {Record<string, unknown>} */
       const row = {
         printed_page: printedPage,
@@ -148,8 +151,8 @@ function bodyCrop(imagePath, cropPath) {
 
   atomicWrite("manifest.json", JSON.stringify(manifest, null, 2) + "\n");
   const successes = manifest.filter((row) => !row.error);
-  console.log(`PRAEGER_CAPTURE_COMPLETE ${successes.length}/${COORDS.length}`);
-  if (successes.length !== COORDS.length) {
+  console.log(`PRAEGER_CAPTURE_COMPLETE ${successes.length}/${CAPTURE_PAGES.length}`);
+  if (successes.length !== CAPTURE_PAGES.length) {
     process.exitCode = 2;
     return;
   }
@@ -161,9 +164,11 @@ function bodyCrop(imagePath, cropPath) {
 
   /** @type {Record<string, string[]>} */
   const viewTokens = { full: [], body: [] };
+  /** @type {Record<string, unknown> | null} */
+  let locator212 = null;
   /** @type {Array<Record<string, unknown>>} */
   const ocrTrace = [];
-  for (const [printedPage, wordIndex] of COORDS) {
+  for (const printedPage of CAPTURE_PAGES) {
     const imagePath = path.join(OUT, `p${printedPage}.png`);
     const cropPath = path.join(OUT, `p${printedPage}.body.png`);
     const crop = bodyCrop(imagePath, cropPath);
@@ -172,6 +177,21 @@ function bodyCrop(imagePath, cropPath) {
     atomicWrite(`p${printedPage}.full.txt`, fullText);
     atomicWrite(`p${printedPage}.body.txt`, bodyText);
 
+    if (printedPage === LOCATOR_PAGE) {
+      locator212 = {
+        printed_page: printedPage,
+        crop,
+        full_token_count: tokens(fullText).length,
+        body_token_count: tokens(bodyText).length,
+        full_preview: tokens(fullText).slice(0, 24).join(" "),
+        body_preview: tokens(bodyText).slice(0, 24).join(" "),
+      };
+      continue;
+    }
+
+    const coord = COORDS.find(([pageNumber]) => pageNumber === printedPage);
+    if (!coord) throw new Error("missing frozen coordinate for page " + printedPage);
+    const wordIndex = coord[1];
     /** @type {Record<string, unknown>} */
     const trace = { printed_page: printedPage, word_index: wordIndex, crop };
     for (const [name, text] of [["full", fullText], ["body", bodyText]]) {
@@ -185,13 +205,13 @@ function bodyCrop(imagePath, cropPath) {
     }
     ocrTrace.push(trace);
   }
-
   const evaluations = Object.fromEntries(
     Object.entries(viewTokens).map(([name, selected]) => [name, evaluatePhrase(selected.join(" "))])
   );
   const result = {
     volume_id: VOLUME,
-    edition: "Methuen 1947 third edition",
+    edition: EDITION,
+    locator_page_212: locator212,
     coordinates: COORDS,
     ocr_trace: ocrTrace,
     evaluations,
