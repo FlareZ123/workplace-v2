@@ -6,7 +6,7 @@
 
 The official route transcription maps ESC-N to PS-261003-0417, ESC-S to PS-261003-0448, and WATCH-SPARE to PS-261003-0420 (resources/evidence/archive-labels.ini). The print-fleet note associates those jobs with L-29/N + FA-17 + H17-POL-17/A3, L-29/S + LV-42 + CS-18/5, and L-29/W + ST-09 + STORES/FLT respectively (resources/evidence/h17-supplemental-office-files/print-fleet-retirement-note.txt).
 
-The supplier reconciliation has ST-112 R3/POSTED at FA-17 / H17-POL-17/A3; the North binder list places ST-112 at tab05. It also has ST-142 R3/POSTED and ST-151 R3/POSTED at LV-42 / CS-18/5; the South binder list places ST-142 at tab04 and ST-151 at tab05 (resources/evidence/h17-supplemental-office-files/supplier-reconciliation-L29.csv and print-fleet-retirement-note.txt).
+The supplier reconciliation has ST-112 R3/POSTED at FA-17 / H17-POL-17/A3; the North binder list places ST-112 at tab05. It also has ST-142 R3/POSTED and ST-151 R3/POSTED at LV-42 / CS-18/5; the South binder list places ST-142 at tab05 and ST-151 at tab02 (resources/evidence/h17-supplemental-office-files/supplier-reconciliation-L29.csv and print-fleet-retirement-note.txt).
 
 **Important join limit:** there is no explicit ST-112→PS-0417 foreign-key field in the local export. The association is inferred through route, binder, account, and folio context. The candidate North suffix offset +305 gives five action/class correspondences in the retained spool:
 - ST-094 lid plate / return → PS-0399 ACK/LABEL
@@ -17,7 +17,7 @@ The supplier reconciliation has ST-112 R3/POSTED at FA-17 / H17-POL-17/A3; the N
 
 This is corroborative, not independently discriminating: a bounded offset sweep from 0 through 500 also found five class matches at +228 and +264. The +305 mapping remains a candidate cross-record join supported by the route/folio anchors, not an authenticated ticket/job key. The native Stores return index and queue/job manifest are absent.
 
-The South +306 mapping is only partially represented: ST-121→PS-0427 and ST-142→PS-0448 are present; South tab05 ST-151 would predict PS-0457, which is absent from the retained spool. PS-0448 is South tab04, not tab05. The tested PS-0417 versus PS-0448 comparison is therefore a cross-route catch-family comparison (North tab05 catch cleaning versus South tab04 catch pin), not a same-tab05 pair. Raw, XOR, bytewise add/subtract, and bounded digest-of-pair constructions did not pass the K04 commitment.
+The South +306 mapping is only partially represented: ST-121→PS-0427 (tab03) and ST-142→PS-0448 (tab05) are present; South tab02 ST-151 would predict PS-0457, which is absent from the retained spool. The tested PS-0417 versus PS-0448 comparison is a same-tab05 cross-route catch-family comparison (North catch cleaning versus South catch retain), not an identical action or byte source. Raw, XOR, bytewise add/subtract, and bounded digest-of-pair constructions did not pass the K04 commitment.
 
 ## 2. Attempt-chain stage constraint
 
