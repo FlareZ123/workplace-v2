@@ -226,6 +226,11 @@ def main() -> None:
     n12_hmac_selector = low_value(low_pack(n12_digest).hex().upper())
     assert n12_hmac_selector == 11
     assert notes[n12_hmac_selector].startswith("Mug shelf:")
+    workshop_row = source_reductions["K08"][1]
+    assert workshop_row == 12 and workshop_row % 2 == 0
+    low_if_even_row = workshop_row - 1 if workshop_row % 2 == 0 else workshop_row
+    assert low_if_even_row == 11
+    assert notes[low_if_even_row].startswith("Mug shelf:")
 
     # Broader routing-file control: run the same transform over every string
     # value, retaining only intermediate strings of 1..8 letters so LOW BIT
@@ -288,6 +293,7 @@ def main() -> None:
     print("ROUTE_SOURCE_K08=VLOWL->12->N12_WORKSHOP")
     print("ROUTE_SOURCE_LOW_UNIQUE=K08_ONLY")
     print("N12_HMAC_LOW=11->N11_MUG_SHELF")
+    print("LOW_IF_EVEN(12)=11->N11_MUG_SHELF")
     print("ROUTING_STRING_CONTROL=15_ELIGIBLE; UNIQUE_LOW_OR_12=K08_SOURCE")
     print("PASS")
 
