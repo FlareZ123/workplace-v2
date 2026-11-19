@@ -5,7 +5,9 @@ The profile inventory is produced by work/h17_profile_inventory.py. This
 scanner consumes only hashed, K04/K08-relevant inventory entries, verifies
 each file's SHA-256 before reading it, and searches decoded text, Office/PDF
 content, JPEG/PNG/TIFF metadata and optional OCR, ZIP/TAR/GZIP members, and
-SQLite text/BLOB columns (notably Sticky Notes' plum.sqlite). Pillow is used
+SQLite text/BLOB columns (notably Sticky Notes' plum.sqlite). XPS/OXPS
+Glyphs/Indices runs are decoded through embedded fonts when mapping is unambiguous.
+Pillow is used
 as a fallback for other supported image formats. It never writes to source files,
 does not inspect credential stores, and does not guess PDF passwords.
 
@@ -39,6 +41,7 @@ if str(HERE) not in sys.path:
 import h17_ax7782_k08_phrase_intake as phrase
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
+from h17_xps_glyph_indices import extract_xps_glyph_streams
 
 DEFAULT_CATEGORIES = {
     "notes",
@@ -362,6 +365,22 @@ def scan_inventory(
                         spans_tested += _scan_stream(
                             f"{display_name}!/{label}", stream_data, nonce, target, max_phrase_words, hits
                         )
+                    # Glyphs/Indices pages require font mapping. The adapter
+                    # fails closed on ambiguous or incomplete page coverage.
+                    try:
+                        glyph_streams = extract_xps_glyph_streams(data)
+                    except Exception as exc:
+                        errors.append({
+                            "source": display_name,
+                            "error": f"xps-glyph-indices:{type(exc).__name__}:{exc}",
+                        })
+                    else:
+                        for label, stream_data in glyph_streams:
+                            streams_scanned += 1
+                            spans_tested += _scan_stream(
+                                f"{display_name}!/{label}", stream_data,
+                                nonce, target, max_phrase_words, hits
+                            )
                 if ("printer" in (record.get("categories") or []) or path.suffix.casefold() == ".emf") and b" EMF" in data:
                     for label, stream_data in extract_emf_text(data):
                         streams_scanned += 1
