@@ -97,15 +97,17 @@ async function captureScanIndexAttempt(page, scanIndex, attempt) {
       navigationError = error;
     }
     const responseResult = await responsePromise;
+    if (!responseResult.error) {
+      row.response_url = responseResult.responseUrl;
+      row.response_status = responseResult.responseStatus;
+      row.response_content_type = responseResult.responseHeaders["content-type"] || "";
+    }
     if (navigationError) {
       throw navigationError;
     }
     if (responseResult.error) {
       throw responseResult.error;
     }
-    row.response_url = responseResult.responseUrl;
-    row.response_status = responseResult.responseStatus;
-    row.response_content_type = responseResult.responseHeaders["content-type"] || "";
     if (!responseResult.responseOk) {
       throw new Error("signed viewer image response returned HTTP " + responseResult.responseStatus);
     }
