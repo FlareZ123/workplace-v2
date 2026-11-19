@@ -647,3 +647,5 @@
 - Pinned notes, routing and acceptance; tested 22 candidates: full bodies and every complete sentence from N09/N10/N11/N12/N13/N14/N20/N23, both route strings, and the concatenated four-note cycle. Result 0/22 K08 commitment matches. The script asserts this negative result and emits normalized candidate, HMAC16, component SHA-256 and source IDs.
 - Interpretation: direct adoption from these retained text carriers is falsified. This does not rule out a separate N10 desk-copy original, N14 photo/caption original, missing mug-stock.xls workbook, or an edit/copy operation not represented in the surviving note text. Do not expand into paraphrase or word-edit grammar without a new source witness.
 - README updated. No candidate/acceptance/verifier/source changed.
+
+- Integrated the 0/22 selected-carrier direct-adoption result into section 8 of results/h17-k08-lowbit-full-specificity-review-20261119.md. The main synthesis now links the specific falsified source-to-final model rather than leaving it as a detached atomic result.
