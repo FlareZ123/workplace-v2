@@ -320,6 +320,10 @@ def main() -> None:
         (20, 2, "wanted"),
         (23, 16, "words"),
     ]
+    n19_path = fixed_points[0][1]
+    a1_path = "".join(chr(ord("A") + n - 1) for n in n19_path)
+    assert a1_path == "SMILK"
+    assert a1_path[1:] == "MILK"
 
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
@@ -351,6 +355,7 @@ def main() -> None:
     print("LOW_BIT(SANTE)=19; UNIQUE_24_START_FIXED_POINT")
     print("N23_UNIQUE_TOKEN_TO_FIXED_POINT=WORDS->19")
     print("ALL_BODY_LOW19_TOKENS=N20:WANTED,N23:WORDS")
+    print("N19_PATH_A1Z26=SMILK; CYCLE_SUFFIX=MILK")
     print("PASS")
 
 if __name__ == "__main__":
