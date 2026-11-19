@@ -1,7 +1,16 @@
-name: Agent22 Praeger 1947 signed page-word probe
+name: Agent22 Praeger signed page-word probe
 
 on:
   workflow_dispatch:
+    inputs:
+      volume_id:
+        description: Google Books volume ID
+        required: true
+        default: uT5RAQAAIAAJ
+      edition:
+        description: Edition label
+        required: true
+        default: Methuen 1947 third edition
 
 permissions:
   contents: read
@@ -10,6 +19,9 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      PRAEGER_VOLUME: ${{ inputs.volume_id }}
+      PRAEGER_EDITION: ${{ inputs.edition }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,6 +39,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: agent22-praeger-1947
-          path: work/agent22-praeger-1947
+          name: agent22-praeger-${{ inputs.volume_id }}
+          path: work/agent22-praeger-${{ inputs.volume_id }}
           if-no-files-found: warn
