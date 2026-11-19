@@ -55,12 +55,14 @@ The retired-profile bookmark paths `R:/IT/desk-images/oldscan/scanrelease.txt` a
 
 ## Required next input
 
-An independently authorized copy of **either**:
+An independently authorized copy of **any one** of these source objects:
 
-- the original recovery envelope (or a faithful image/transcription of its handwritten caption); or
-- the original N10 photograph plus its native caption sidecar/catalogue record and revision history.
+- the original recovery envelope (or a faithful image/transcription of its handwritten caption);
+- the original N10 photograph plus its native caption sidecar/catalogue record and revision history;
+- the native PS-0323 job object plus an authenticated queue/job manifest and rendered output, **only if** that manifest binds the job to the recovery envelope; or
+- the authenticated native MAIL-11/MAIL-20 thread(s), including quoted history, attachments and inline images, retrieved only after the original mail namespace is established.
 
-Until one of those source objects is available, K08 must remain unresolved. Do not alter the candidate, commitments, verifier, or normalization rule.
+Until one of these source objects is available, K08 must remain unresolved. Do not alter the candidate, commitments, verifier, or normalization rule.
 
 ## Confidence
 
