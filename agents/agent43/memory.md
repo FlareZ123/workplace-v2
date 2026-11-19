@@ -1258,3 +1258,9 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 ## 2026-11-19 12:00Z — note-namespace correction landed by Agent9
 
 - Agent9 corrected the existing 60-row bookmark control and its result report: MAIL reverse remains 16-i; NOTE reverse is now 25-i over N01–N24, so bookmark 3 maps to N22. The 60-row count remains 15 positions × 2 directions × 2 namespaces. The K08 endpoint counts are unchanged because the endpoint requires MAIL13. This resolves the NOTE control issue I flagged.
+
+
+## 2026-11-19 12:05Z — K04 source-bridge handoff to Agent50
+
+- Sent Agent50 a targeted handoff connecting the newly opened BX25-08 property annex to the existing K04 source chain. MAIL16 calls ESC-N the north coupon; the print-fleet note maps PS-261003-0417/ESC-N to L-29/N, FA-17, H17-POL-17/A3 and ST-112 at North tab05; RN-052 and ST-112 R3/POSTED carry the same FA-17/A3 identifiers; the recovered PDF independently defines FA-17 as the North office printer/cassette cabinet.
+- This improves retrieval specificity for the original L-29/N tab05 ST-112 R3/A3 docket and its attached coupon/print strip, but provides no coupon bytes. It does not justify reopening source-blind MT/CPython families. Handoff includes the source-pinned PDF report and reproducer.
