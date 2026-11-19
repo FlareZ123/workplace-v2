@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Test one finite K08 text-extraction hypothesis from selectors 12/10/11.
+"""Measure the specificity of the MAIL-12/N10/N11 K08 email-body route.
+
+The N13 caption and N10/N11 note edges are known prior art. The only new
+result is the matched control distribution across all 20 email bodies.
 
 Run from the workplace-v2 repository root:
     python agents/agent25/k08_12_10_11_common_target_sft.py
