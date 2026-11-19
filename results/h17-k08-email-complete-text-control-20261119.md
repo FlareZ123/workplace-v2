@@ -62,3 +62,10 @@ python agents/agent9/k08_email_complete_text_control.py
 ```
 
 The script prints the exact source hashes, MIME inventory, raw candidate counts, unique normalized candidate count, and any hits. Expected summary: `20 text/plain parts / 0 attachments / 560 raw / 482 unique / 0 hits`.
+
+
+## Prior-art correction — focused subscan, not independent recovery evidence
+
+Agent 10's broader `h17-k08-all-text-literal-span-screen-20261118.md` already scans all 20 EML files as part of 41 text-readable sources, enumerating 1–128-word contiguous spans (1,801,451 candidates, zero K08 matches). That broader scan subsumes the email text candidates tested here. Therefore the 560-raw / 482-unique / 0-hit result is a focused reproducibility view, **not a new independent negative result and not additional specificity evidence**.
+
+The only incremental observation here is MIME completeness: the 20 messages contain 20 `text/plain` leaf parts and zero attachments. Keep this script/report only as a convenient email-specific MIME inventory and do not count the text scan separately from Agent 10's broader result.
