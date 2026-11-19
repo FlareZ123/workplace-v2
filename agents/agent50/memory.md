@@ -430,3 +430,31 @@ Freshly examined `agents/agent18/memory.md`, which contains an *earlier* complet
 - Re-inspected original bundled K08 N01..N24 and MAIL11/20 and focused author-final version graph; it confirms no complete final Emily margin text or eligible whole-text final-caption control. Agent24's source-linked late Davies book hypothesis was corrected by its own author/date counterevidence, and no authenticated corresponding printed edition is in supplied material. Do not invent words.
 - Created portable **user-downloadable partial artifact** \`/mnt/data/h17-partial-verified-candidate.json\` with six previously accepted components and K04/K08 null, tested using *unmodified original ZIP* \`verify.py\` and \`acceptance.json\`: exit1, K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE. No canonical GitHub candidate edit was needed. Exact user sandbox path verified by local runtime. This is handoff usability, not an original recovery increment.
 - Current K04/K08 remain unresolved. The focused result \`results/h17-k04-native-xor-bidirectional-flank-solver-20261118.md\` and broadcast \`communications/broadcast/20261118T0024Z_agent50-xoroshiropp-native-xor-solver-calibration.md\` contain actual controls, source UNKNOWN and cost counterevidence. Avoid rerunning identical domains.
+
+## 2026-11-19 incarnation: source-blind K04 witness extension
+
+Claimed this identity at `2026-11-19T00:16:41.569Z` (`gpt6-agent50-h17-reconstruction-20261119T001641569Z`). The original archive ZIP and current repository resources contain the same bounded export; `private/` has no additional source records. The unresolved acceptance state remains K04 and K08; do not change candidate, acceptance commitments, or verifier.
+
+### Durable result
+
+Added `agents/agent50/k04_historical_inlier_decoy_sourceblind_sft.py` and `results/h17-k04-sourceblind-firstword-witness-corroboration-20261119.md`; added a synthesis pointer to `results/README.md`.
+
+The SFT excludes selected PS-0417 row129 before parsing its payload, and reads no p951 stage vector, K04 mask, acceptance digest, or selected ACK bytes. It expands the earlier 25 fullword MT19937 recurrence witnesses with 17 lane-0/31-bit firstword relations. Against the 25 fullword anchors, 10/17 firstword relations have both destination-stage offsets implied, 1 has one, 6 have neither, and none conflict. The omitted predecessor MSB is not observed for any of the 17, even after all relations are included; therefore the 10 are stage-offset corroborated, not fully authenticated inliers.
+
+All 42 relations are monotone-feasible. The equality graph has 83 components; row129 remains isolated and its source-only start interval is 917–971. Two deterministic 200,000-trial whole-packet shuffle nulls (CLASS×DEST and CLASS×DEST×STATE×ATTEMPT) each have maximum 37 total relations; zero reach 42. This is stronger source-order evidence for an MT-like structure, not a K04 recovery. The report gives group sizes, seeds, statistics, assumptions, and limitations.
+
+Agent43 had independently completed the 25-fullword stage-fit preflight and explicitly requested no duplication. I sent Agent43 the distinct firstword extension for adversarial review; see `communications/agent43/20261119T005701033Z_agent50-firstword-extension-review.md`. Do not repeat the 25-edge stage-fit. Do not widen generic PRNG/sampler searches without a new source witness.
+
+### Remaining uncertainty and next action
+
+The selected 128-bit coupon is still absent. The historical recurrence relations do not connect row129; the source-only stage interval is too wide, and no predecessor MSBs are independently observed. A genuine next step requires a selected-event discriminator: native PS-0417 attempt-2 REQUESTED/ACK journal, driver/renderer output, physical coupon/media witness, or independently authorized AX-7782 native object plus manifest/handoff binding. Use the existing read-only intake tooling if a user-supplied local original arrives.
+
+K08 remains owned by active Agent43 work; do not duplicate its Falcon/pageword acquisition. An exploratory AX-checkpoint byte-pair/pageword check against the unauthenticated public 1889 Falcon scan did not hit the K08 commitment, but the physical copy/edition is not authenticated; this is not admissible evidence and must not be repeated absent a custody-based edition link.
+
+### Useful files
+
+- `results/README.md` — current research map and acceptance state.
+- `results/h17-k04-historical-witness-stage-fit-20261119.md` — Agent43's distinct 25-fullword preflight.
+- `results/h17-k04-inlier-decoy-oracle-wholepacket-20261118.md` — p951 oracle-stage whole-packet non-identifiability benchmark.
+- `agents/agent50/k04_historical_inlier_decoy_sourceblind_sft.py` — reproducible 42-relation extension.
+- `results/h17-k04-sourceblind-firstword-witness-corroboration-20261119.md` — current result and next-source boundary.
