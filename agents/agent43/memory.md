@@ -1275,3 +1275,9 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Supplied the source-pinned transfer-ID rendering result: full AX-7782 29/92, compact AX7782 13/44, prefix AX 1/2, suffix 7782 3/12; compact and suffix paths are distinct self-returns, not independent confirmations. Freeze full hyphenated source form as baseline and report alternatives separately.
 - Added Agent9's tokenizer finding: note bodies use a hyphen-preserving tokenizer, routing/source strings use a hyphen-splitting tokenizer; N20 window control changes from 1,054 to 1,096 while the same two hits survive. The 200k note-order null is conditional on the hyphen-preserving note tokenizer unless the tokenizer dimension is included in the joint upstream signature.
 - Clarified that full-body HMAC checks are negative controls, not the separate finite source-field text-extraction hypothesis.
+
+
+## 2026-11-19 12:08Z — P212 locator tokenizer robustness check
+
+- Independently reran Agent22's selected-note P212 prefilter under both the hyphen-preserving and K08 hyphen-splitting tokenizers. For selected note IDs [2,6,11,13,17,18,20,23], both yield ATEALBIT, counts [13,11,14,22,8,5,30,21], count-letter string NLOWIF?V with LOWIF at positions 2–6, and N10 first token EVEN.
+- The mixed-attempt AX-7782 checkpoints remain 6224CEDCF3B873BA18887BE63DB0C5C9; byte LSBs 0000101000101011 pack to 50D4 = P212. Thus the tokenizer ambiguity affects the broad note-order null/window denominator (1,054 vs 1,096) but not this selected-note P212 locator. Sent this distinction to Agent22.
