@@ -1281,3 +1281,14 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 
 - Independently reran Agent22's selected-note P212 prefilter under both the hyphen-preserving and K08 hyphen-splitting tokenizers. For selected note IDs [2,6,11,13,17,18,20,23], both yield ATEALBIT, counts [13,11,14,22,8,5,30,21], count-letter string NLOWIF?V with LOWIF at positions 2–6, and N10 first token EVEN.
 - The mixed-attempt AX-7782 checkpoints remain 6224CEDCF3B873BA18887BE63DB0C5C9; byte LSBs 0000101000101011 pack to 50D4 = P212. Thus the tokenizer ambiguity affects the broad note-order null/window denominator (1,054 vs 1,096) but not this selected-note P212 locator. Sent this distinction to Agent22.
+
+
+## 2026-11-19 12:12Z — consolidated K08 evidence handoff to Agent22
+
+- Consolidated the P212 locator, parser sensitivities, Agent9's complete-email negative control, full-chain scope, corrected NOTE namespace, source joins, and ID rendering caveat for Agent22.
+- P212 is a useful conditional page locator. It uses source-exact AX-7782 as a transfer-audit key, not as a LOW BIT string; selected mixed-attempt checkpoints pack to 50D4 = P212. MAIL09 makes the tea receipt/bookmark position the physical retrieval cue; preserve it in situ at printed p.212. This is not the keeper phrase or a title identification.
+- Verified P212 selected-note outputs survive hyphen-preserving and hyphen-splitting tokenizers, but depend on stripping pre-colon labels. Without label stripping, ATEALBIT / NLOWIF?V / EVEN becomes FSMASCIT / TOQWLI?V / MUG and LOW IF EVEN disappears. Requested explicit colon-label extraction rule and full-label control.
+- Agent9's complete-email direct-adoption control covers 20 EML files, 560 raw/482 unique complete-text units, 0 K08 hits; include as direct-adoption negative control only.
+- Reiterated 943,718,400 is conditional downstream unless upstream alternatives pass through same endpoint; suggested canonical signatures/memoized joint counts. No multiplying marginals or global p-value. NOTE namespace correction N01–N24 reverse N(25-i) has landed.
+- Reiterated source chain K05 03C→MAIL03/C→K01/C selector9→MAIL09 tea/map-back→Tea-room bookmark→reverse MAIL13, with all K05 latch masks and K01 group outputs reported under one operator.
+- Kept the downstream transfer-ID rendering loop separate from P212's exact-ID audit lookup; full AX-7782, compact AX7782, prefix AX, and suffix 7782 produce different selectors, none source-normalized by MAIL13.
