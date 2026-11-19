@@ -32,15 +32,17 @@ The custodian note defines K08 as the personal caption on the recovery envelope,
 
 1. **Conditional print/render path:** the note-to-spool crosswalk structurally associates N23 with PS-261003-0323 (ATTEMPT=1 / ACK / CLASS=RECOVER / DEST=store). If an authenticated native queue/job manifest confirms that this is the recovery-envelope job, recover the original document bytes and rendered output from its native spool object (`.SPL/.SHD` or equivalent) or retained physical output; extract the complete printed caption, then apply the unchanged K08 normalization and HMAC. The 16-byte spool `PAYLOAD` is only a token, not the caption or K08 component; its SHA-256 does not match the K08 commitment. The N23→0323 association remains sequence-based, and queue acceptance does not prove paper collection.
 2. **Photo-caption version path:** obtain the original N10 photograph or its native photo-manager record and sidecar; extract the actual IPTC/XMP caption field(s) and any explicit revision/history; select the final saved caption associated with the recovery-envelope wording. IPTC/XMP history is a testable hypothesis, not an assertion that such metadata exists.
-3. **Direct authoritative path:** obtain the original recovery envelope or a faithful image/transcription of its handwritten caption.
+3. **Native correspondence-version path:** if an authenticated native mail/archive copy is supplied, establish the original namespace and retrieve MAIL-11/MAIL-20 by verified folder/UID, original Message-ID/thread ID, or authenticated archive record. Preserve raw RFC822/MIME, delivery headers, quoted history, attachments and inline images; select the final authored caption/version if present. The supplied EML Message-ID tokens are templated/prepublication and must not be used as native lookup keys.
+4. **Direct authoritative path:** obtain the original recovery envelope or a faithful image/transcription of its handwritten caption.
 
 Keep PS-0317 (standby label), PS-0318 (commissioning label), PS-0320 (semantic brief), PS-0306 (desk draft), and PS-0324 (sequence-aligned label job) as controls. Do not substitute N17/N18, infer that PS-0323 printed the envelope without the native manifest, or continue phrase grammar, note-ID locators, book scans, or workbook-coordinate branches without a new source field.
 
-**Required next input:** an independently authorized native PS-0323 job object plus queue/job manifest and rendered output (if the manifest binds it to the recovery envelope), or the original recovery envelope, or the original N10 photograph plus its caption sidecar/catalogue record and revision history. Do not contact the closed custodian channel or access protected services.
+**Required next input:** an independently authorized native PS-0323 job object plus queue/job manifest and rendered output (if the manifest binds it to the recovery envelope), the original recovery envelope, the original N10 photograph plus its caption sidecar/catalogue record and revision history, or authenticated native MAIL-11/MAIL-20 threads including quoted history and attachments. Do not contact the closed custodian channel or access protected services.
 
 Evidence:
 - [Source-authored final caption/version path](h17-k08-source-authored-final-caption-version-path-20261119.md)
 - [Note-to-spool sequence crosswalk](h17-k08-note-spool-sequence-crosswalk-20261107.md)
+- [Mail namespace/prepublication review](h17-mail-incident-namespace-prepublication-20261104.md)
 - [Factorized full-chain audit](h17-k08-factorized-full-chain-joint-20261119.md)
 - [LOW BIT full-specificity review](h17-k08-lowbit-full-specificity-review-20261119.md)
 - [Direct-adoption candidate check](h17-k08-lowbit-carrier-candidate-check-20261119.md)
