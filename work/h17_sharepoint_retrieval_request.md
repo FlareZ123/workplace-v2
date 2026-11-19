@@ -11,6 +11,7 @@ If an independently authorized local copy is supplied, search these exact histor
 3. FA-17 / H17-POL-17/A3 asset card and September 2026 equipment-count / commissioning material
 4. Native queue journal for `PS-261003-0417` with mode, purpose, dry_run, attempt, state, class, destination, and payload
 5. Native print/rendered files for `PS-261003-0417`: `.SPL`, `.SHD`, `.EMF`, `.PRN`, or equivalent
+   - For `.SHD`, `work/h17_shd_triage.py` provides offset-preserving ASCII/UTF-16LE ASCII-subset string triage only; it is not a structural parser and cannot authenticate job/document fields without the native queue/job manifest.
 6. Physical escrow/recovery coupon or an authenticated scan/photo
 7. `R:/IT/desktop-move-2026.html` and its profile-migration package
 
