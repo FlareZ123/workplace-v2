@@ -46,9 +46,9 @@ Using only the 25 fullword relations as anchors, the 17 firstword relations have
 | Neither destination-stage offset implied | **6** |
 | Contradictory offsets | **0** |
 
-These are graph-implied offsets, not independent confirmations. A dependence audit finds that only **3/10** both-offset relations remain supported after deletion of any single fullword anchor; the other **7/10** each depend on one particular fullword anchor. **0/10** remain supported when all anchors touching any of the firstword relation's three packet rows are excluded. All 10 remain graph-implied if only exact word-occurrence overlaps are excluded, but this is not packet-independent: the same packet rows and adjacent lanes remain in play.
+These are graph-implied offsets, not independent confirmations. A dependence audit finds that only **3/10** both-offset relations remain supported after deletion of any single fullword anchor; the other **7/10** each depend on one particular fullword anchor. **0/10** remain supported when all anchors touching any of the firstword relation's three packet rows are excluded. Only **3/10** remain supported when exact recurrence input words are disjoint. A fullword anchor at source lane j uses both source words at lanes j−1 and j; each of the seven fragile anchors therefore reuses the firstword relation's lane-0 source word as the predecessor of its lane-1 anchor.
 
-The seven single-anchor dependencies are especially revealing: each is paired with a fullword relation over the **same three packet rows**, with all three lane indices advanced by one. The row/lane tuples (0-based) are:
+The seven single-anchor dependencies are especially revealing: each is paired with a fullword relation over the **same three packet rows**, with all three recorded lane indices advanced by one. Because the fullword recurrence also consumes the preceding source lane j−1, each such anchor shares the firstword relation's lane-0 source word. The row/lane tuples (0-based) are:
 
 | Firstword relation | Necessary fullword anchor |
 | --- | --- |
@@ -60,7 +60,7 @@ The seven single-anchor dependencies are especially revealing: each is paired wi
 | (41,0) → (94,2) → (125,0) | (41,1) → (94,3) → (125,1) |
 | (45,0) → (98,2) → (132,2) | (45,1) → (98,3) → (132,3) |
 
-The three firstword relations that survive every single-anchor deletion are (8,0)→(62,0)→(92,1), (12,0)→(66,0)→(96,1), and (42,0)→(95,0)→(126,1). Even these remain packet-overlapping; none has row-disjoint support. The predecessor word whose MSB distinguishes each 31-bit alias is absent from the observed words in the relevant equality component. **0/17** predecessor MSBs are independently observed, even after all 42 relations are included. No historical relation is contradicted by the monotone graph, but the six uncorroborated relations remain unclassified rather than being promoted or rejected.
+The three firstword relations that survive every single-anchor deletion **and** exact recurrence-input-word exclusion are (8,0)→(62,0)→(92,1), (12,0)→(66,0)→(96,1), and (42,0)→(95,0)→(126,1). Even these remain packet-overlapping; none has row-disjoint support. The predecessor word whose MSB distinguishes each 31-bit alias is absent from the observed words in the relevant equality component. **0/17** predecessor MSBs are independently observed, even after all 42 relations are included. No historical relation is contradicted by the monotone graph, but the six uncorroborated relations remain unclassified rather than being promoted or rejected.
 
 ## Whole-packet permutation controls
 
@@ -78,7 +78,7 @@ The secondary statistic of at least 10 firstword relations with both offsets sup
 
 ## Interpretation and recovery boundary
 
-**Computational result:** The original packet chronology is substantially more aligned with this MT recurrence operator than either whole-packet metadata-preserving shuffle. Ten of the 17 partial firstword relations have offsets implied by the fullword graph, but the dependence audit shows this is packet-overlapping rather than independent confirmation. The principal evidence is the 42-relation count exceeding both 200,000-trial null maxima.
+**Computational result:** The original packet chronology is substantially more aligned with this MT recurrence operator than either whole-packet metadata-preserving shuffle. Ten of the 17 partial firstword relations have offsets implied by the fullword graph, but the dependence audit shows only 3/17 remain both-offset supported after excluding anchors that reuse exact recurrence-input words; none has row-disjoint support. The principal evidence is the 42-relation count exceeding both 200,000-trial null maxima.
 
 **What this does not establish:** It does not authenticate a particular MT implementation, determine a unique historical stage map, independently validate the graph-implied firstword offsets, validate the 17 unknown predecessor MSBs, or predict any selected physical coupon bytes. The selected row 129 is absent from the recurrence graph; its start offset remains a 55-position interval, and its 128 coupon bits remain unobserved. This is not a K04 candidate or acceptance hit.
 
