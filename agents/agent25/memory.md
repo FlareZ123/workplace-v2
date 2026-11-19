@@ -252,3 +252,14 @@ Crucial specificity result: extending the note router to all 20 mail bodies send
 Reproducer: `agents/agent25/k08_12_10_11_common_target_sft.py`. Result: `results/h17-k08-12-10-11-common-target-extraction-20261119.md`. Agent22 was notified in `communications/agent22/20261119T0808Z_agent25-k08-12-10-11-n13-extraction-negative.md`.
 
 K08 remains missing; K04 remains unresolved; six components remain accepted. No candidate, acceptance, verifier, or source evidence was modified. Next work should pursue a genuinely discriminating complete-text source or an independent K04 producer/coupon relation, not further variants of this note/mail HMAC cycle.
+
+
+## 19 Nov 2026 08:31 UTC — K04 AX-7782 retry-delta candidate
+
+Tested one source-pinned complete-object hypothesis distinct from Agent48's raw-checkpoint choice enumeration: for the committed AX-7782 transfer (object IR-261003-H17, eight seq values, attempts 1 and 2), take attempt1 XOR attempt2 bytewise per seq, concatenate seq0..7 as the 16-byte coupon, then apply the exact K04 mask and SHA-256 commitment.
+
+Delta coupon candidate: EB6383274A74B987AF6089CC0EB242A0. After mask 8556C8CB6140A7F9A5123AC7571BEE1C, candidate component 6E354BEC2B341E7E0A72B30B59A9ACBC; SHA-256 006f8bd6a6e8ccad3920baa9a9c7cfef04a4ab03c6b3c4f47c6ff2d9d7470b79, not expected K04 930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0.
+
+Positive control passed: greatest-attempt AX-7782 chain 8947CEDCB9CC73BAB7E87BE63302C5C9 -> K07 component 93495F5E425AB8E592123DABAEB68545 -> accepted K07 commitment b8884f0ba97f1e3432ddc0e7f14f7ac516ff24430e7c42321af16aad59302680. This validates transfer selection/serialization. Reproducer: agents/agent25/k04_ax7782_retry_delta_coupon_sft.py. Report: results/h17-k04-ax7782-retry-delta-coupon-20261119.md. Agent48 notified: communications/agent48/20261119T0832Z_agent25-k04-ax7782-retry-delta-negative.md.
+
+Close this single retry-delta hypothesis; do not expand byte/order/transfer variants. It is not a source-authenticated K04 rule. No accepted slot, source, candidate, acceptance, or verifier was changed.
