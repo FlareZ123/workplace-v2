@@ -183,21 +183,71 @@ def graph_summary(relations):
 
 
 def firstword_support(fullword, firstword, all_relations, flat):
-    uf = build_uf(fullword)
-    assert not uf.bad
+    def support_against(relation, anchors):
+        anchor_uf = build_uf(anchors)
+        if anchor_uf.bad:
+            return None
+        row, lane, middle_row, middle_lane, final_row, final_lane, _ = relation
+        root, base = anchor_uf.find(row)
+        middle_root, middle_base = anchor_uf.find(middle_row)
+        final_root, final_base = anchor_uf.find(final_row)
+        mid = None if root != middle_root else (
+            middle_base - base == 396 + lane - middle_lane
+        )
+        fin = None if root != final_root else (
+            final_base - base == 623 + lane - final_lane
+        )
+        return mid, fin
+
     both = one = none = conflict = 0
-    for row, lane, middle_row, middle_lane, final_row, final_lane, _ in firstword:
-        root, base = uf.find(row)
-        middle_root, middle_base = uf.find(middle_row)
-        final_root, final_base = uf.find(final_row)
-        expected_middle = 396 + lane - middle_lane
-        expected_final = 623 + lane - final_lane
-        mid = None if root != middle_root else middle_base - base == expected_middle
-        fin = None if root != final_root else final_base - base == expected_final
+    single_anchor_robust = single_anchor_fragile = 0
+    row_disjoint_both = word_disjoint_both = 0
+    fragile_dependencies = []
+    for relation in firstword:
+        status = support_against(relation, fullword)
+        mid, fin = status
         if mid is False or fin is False:
             conflict += 1
         elif mid is True and fin is True:
             both += 1
+            failures = []
+            for index, anchor in enumerate(fullword):
+                reduced = fullword[:index] + fullword[index + 1:]
+                if support_against(relation, reduced) != (True, True):
+                    failures.append(index)
+            if failures:
+                single_anchor_fragile += 1
+                fragile_dependencies.append({
+                    "firstword_relation": list(relation),
+                    "necessary_single_deletion_anchor_indices": failures,
+                    "necessary_anchors": [list(fullword[index]) for index in failures],
+                })
+            else:
+                single_anchor_robust += 1
+
+            touched_rows = {relation[0], relation[2], relation[4]}
+            row_disjoint = [
+                anchor for anchor in fullword
+                if not touched_rows.intersection({anchor[0], anchor[2], anchor[4]})
+            ]
+            if support_against(relation, row_disjoint) == (True, True):
+                row_disjoint_both += 1
+
+            touched_words = {
+                (relation[0], relation[1]),
+                (relation[2], relation[3]),
+                (relation[4], relation[5]),
+            }
+            word_disjoint = [
+                anchor for anchor in fullword
+                if not touched_words.intersection({
+                    (anchor[0], anchor[1]),
+                    (anchor[2], anchor[3]),
+                    (anchor[4], anchor[5]),
+                })
+            ]
+            if support_against(relation, word_disjoint) == (True, True):
+                word_disjoint_both += 1
         elif mid is True or fin is True:
             one += 1
         else:
@@ -224,10 +274,15 @@ def firstword_support(fullword, firstword, all_relations, flat):
 
     return {
         "firstword_relations": len(firstword),
-        "both_offsets_implied_by_fullword_anchors": both,
-        "one_offset_implied": one,
-        "neither_offset_implied": none,
+        "both_offsets_graph_implied_by_fullword_anchors": both,
+        "one_offset_graph_implied": one,
+        "neither_offset_graph_implied": none,
         "offset_conflicts": conflict,
+        "both_offset_relations_single_anchor_deletion_robust": single_anchor_robust,
+        "both_offset_relations_single_anchor_fragile": single_anchor_fragile,
+        "both_offset_relations_row_disjoint": row_disjoint_both,
+        "both_offset_relations_exact_word_disjoint": word_disjoint_both,
+        "fragile_anchor_dependencies": fragile_dependencies,
         "predecessor_msb_coverage": predecessor_coverage,
     }
 
@@ -355,11 +410,17 @@ def main():
 
     support = firstword_support(fullword, firstword, relations, flat)
     assert (
-        support["both_offsets_implied_by_fullword_anchors"],
-        support["one_offset_implied"],
-        support["neither_offset_implied"],
+        support["both_offsets_graph_implied_by_fullword_anchors"],
+        support["one_offset_graph_implied"],
+        support["neither_offset_graph_implied"],
         support["offset_conflicts"],
     ) == (10, 1, 6, 0)
+    assert (
+        support["both_offset_relations_single_anchor_deletion_robust"],
+        support["both_offset_relations_single_anchor_fragile"],
+        support["both_offset_relations_row_disjoint"],
+        support["both_offset_relations_exact_word_disjoint"],
+    ) == (3, 7, 0, 10)
     assert support["predecessor_msb_coverage"] == {
         "fullword_anchors": [0, 0],
         "all_relations": [0, 0],
