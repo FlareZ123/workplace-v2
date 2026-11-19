@@ -31,14 +31,7 @@ EXPECTED_SHA256 = {
     "routing": "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5",
     "acceptance": "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f",
 }
-EXPECTED_EMAIL_REACH = {
-    0: 2,
-    1: 3,
-    2: 6,
-    3: 5,
-    4: 2,
-    5: 1,
-}
+EXPECTED_EMAIL_REACH = {0: 2, 1: 3, 2: 6, 3: 5, 4: 2, 5: 1}
 EXPECTED_CANDIDATE = (
     "at the end of the night the mugs stood beside the window and "
     "somebody had remembered to leave the little lamp on"
@@ -54,7 +47,7 @@ def sha256(data: bytes) -> str:
 
 
 def normalize(text: str) -> str:
-    return " ".join(re.sub(r"[^a-z0-9\\s]", " ", text.lower()).split())
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", text.lower()).split())
 
 
 def low_value(text: str) -> int:
@@ -71,7 +64,7 @@ def low_pack(raw: bytes) -> bytes:
 
 def parse_notes(text: str) -> dict[int, tuple[str, str]]:
     pattern = re.compile(
-        r"^N(\\d{2}) / ([^\\n]+?)\\n(.*?)(?=\\n\\nN\\d{2} /|\\Z)",
+        r"^N(\d{2}) / ([^\n]+?)\n(.*?)(?=\n\nN\d{2} /|\Z)",
         re.MULTILINE | re.DOTALL,
     )
     parsed = {
@@ -185,12 +178,10 @@ def main() -> None:
 
     # Check all 20 email bodies as matched controls. This shows whether the
     # extension to email bodies is actually selective.
-    email_controls: dict[int, tuple[int, list[int] | None]] = {}
     distance_counts: collections.Counter[int] = collections.Counter()
     for number in range(1, 21):
         start = selector(read_mail_body(number), key)[1]
         path = trace_to_target(start, edges)
-        email_controls[number] = (start, path)
         if path is not None and path[-1] == 13:
             distance_counts[len(path) - 1] += 1
 
