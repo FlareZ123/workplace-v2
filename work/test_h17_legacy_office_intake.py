@@ -54,14 +54,26 @@ class LegacyOfficeIntakeTests(unittest.TestCase):
         wb.save(path)
 
     def test_xlsx_visible_hidden_formula_and_comment(self):
-        with tempfile.TemporaryDirectory() as td:
-            path=Path(td)/"test.xlsx"
-            self.make_workbook(path)
-            result=mod.extract_one(path,64,True)
-            self.assertEqual([s["state"] for s in result["sheets"]],["visible","hidden"])
-            self.assertGreaterEqual(result["cell_text_count"],5)
-            self.assertEqual(result["K08_commitment_hits"],[])
-            self.assertEqual(result["K04_matching_candidates"],[])
+        old_nonce,old_commit=mod.K08_NONCE,mod.K08_COMMIT
+        try:
+            mod.K08_NONCE=b"test-nonce-0123456789012345678901"
+            digest=__import__("hmac").new(mod.K08_NONCE,b"the end of the",hashlib.sha256).digest()[:16]
+            mod.K08_COMMIT=hashlib.sha256(digest).hexdigest()
+            with tempfile.TemporaryDirectory() as td:
+                path=Path(td)/"test.xlsx"
+                self.make_workbook(path)
+                wb=__import__("openpyxl").load_workbook(path)
+                wb["Visible"]["A1"]="the end of the"
+                wb["Visible"]["B1"]=bytes(range(16)).hex().upper()
+                wb.save(path)
+                result=mod.extract_one(path,64,True)
+                self.assertEqual([s["state"] for s in result["sheets"]],["visible","hidden"])
+                self.assertGreaterEqual(result["cell_text_count"],5)
+                self.assertTrue(any(h["sheet"]=="Visible" and h["cell"]=="A1" for h in result["K08_commitment_hits"]))
+                self.assertTrue(any(h["sheet"]=="Visible" and h["cell"]=="B1" for h in result["K04_hex_candidates"]))
+                self.assertEqual(result["K04_matching_candidates"],[])
+        finally:
+            mod.K08_NONCE,mod.K08_COMMIT=old_nonce,old_commit
 
     @unittest.skipUnless(shutil.which("libreoffice"),"LibreOffice is required for legacy XLS conversion")
     def test_legacy_xls_conversion_is_temporary_and_read_only(self):
