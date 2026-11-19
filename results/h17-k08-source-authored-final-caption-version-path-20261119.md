@@ -26,6 +26,19 @@ The defensible complete-text operation is **version selection from the original 
 
 The IPTC/XMP/history path is a **testable hypothesis**, not a claim that such metadata is present. The physical envelope inscription is the direct authoritative alternative. The source material does not currently identify a filename or a particular metadata property for the photograph.
 
+## Conditional source-authored render/copy path: PS-0323
+
+The existing note-to-spool crosswalk supplies a second, more direct candidate for a complete-text construction:
+
+- N23 is Emily's final-margin/envelope note.
+- The fixed note/job sequence associates N23 with PS-261003-0323 at 08:55 UTC.
+- That row is ATTEMPT=1 / ACK / CLASS=RECOVER / DEST=store.
+- The queue note says destination names are physical print destinations, while the crosswalk cautions that queue acceptance does not prove paper collection. No native route/host manifest currently binds PS-0323 to the recovery envelope.
+
+**Conditional operation:** if an authenticated native queue/job manifest confirms that PS-0323 is the recovery-envelope job, recover its original document bytes and rendered output from the native spool object (`.SPL/.SHD` or the host's equivalent) or the retained physical output. Extract the complete printed caption text from that rendered document, not from the 16-byte `PAYLOAD` token. Apply the unchanged K08 normalization and HMAC. This is a concrete source-authored render/copy operation that can emit the whole phrase; the current text reconstruction is not the rendered document.
+
+The PS-0323 16-byte payload itself is not the K08 component: its SHA-256 does not match the K08 slot commitment. Keep PS-0317 (standby label), PS-0318 (commissioning label), PS-0320 (semantic brief), and PS-0306 (desk draft) as controls. PS-0324 is a sequence-aligned label job, not an envelope witness. The note/job association remains structural until the native manifest confirms it.
+
 ## Interpretation and boundary
 
 The available export supports the identity and role of the missing text, and it supports a concrete version-selection procedure if the native caption record is recovered. It does **not** support the exact words. No further phrase grammar, note-ID locator, book scan, or workbook-coordinate branch can supply the missing authored wording without an additional source field.
