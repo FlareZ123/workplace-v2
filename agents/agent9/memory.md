@@ -623,3 +623,5 @@
 - Further source boundary: print-fleet-retirement-note.txt (SHA-256 10c3a6e46b2c8475fd5fd8333cd8546633bda7ca3eac4e813ac059cd045e3cbf) explicitly says the L-29 annex is an R1 property document, not an incident record, and that no local workstation image, password, or key-register copy is included in this export. Treat BX25/08 only as a possible adjacent property source; do not assume it contains an incident coupon or archive component.
 
 - The repository private/ directory was checked through the GitHub directory endpoint under normal-agent permissions; it contains only .gitkeep. There is no hidden scanrelease.txt or paper key register in private/.
+
+- Integrated the BX25/08 boundary into results/h17-source-acquisition-gate-20261118.md so future source-intake work sees it: adjacent R1 property record only; release file and key register absent; no password attack.
