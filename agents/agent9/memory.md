@@ -637,3 +637,5 @@
 - Added work/test_h17_legacy_office_intake.py: five unittest cases cover normalization, a synthetic HMAC test commitment, K04 mask/XOR candidate handling, visible/hidden XLSX sheets with formulas/comments, and legacy XLS conversion/read-only source preservation. All five passed locally. Workbook helper does not OCR embedded images/shapes/OLE objects; this limitation is documented in the source gate and README.
 
 - BX25 provenance nuance: prior agent reports include local numeric-testing/page interpretations for BX25-08. I did not use or reproduce those contents in this invocation. Keep their search provenance separate from the Risk-desk paper-register authorization; any PDF-derived claims require independent corroboration as the 10 November Critic correction specifies.
+
+- Intake-tool limitations: the actual bookmarked workbooks are absent and have not been tested. The helper scans saved formula text and cached values but does not recalculate formulas, follow external links, or OCR embedded images/shapes/OLE objects. It has synthetic regression coverage only.
