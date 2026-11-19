@@ -134,7 +134,9 @@ def main() -> None:
         prefix, suffix = transfer.split("-", 1)
         forms = {
             "full_hyphenated": transfer,
+            "full_hyphenated_reversed_digits": prefix + "-" + suffix[::-1],
             "compact": prefix + suffix,
+            "compact_reversed_digits": prefix + suffix[::-1],
             "prefix": prefix,
             "numeric_suffix": suffix,
             "reversed_numeric_suffix": suffix[::-1],
