@@ -1,7 +1,7 @@
 # K08 complete-email direct-adoption control (20 messages)
 
 **Date:** 2026-11-19  
-**Status:** Completed, source-pinned negative control  
+**Status:** Supplementary; email text subscan is subsumed by Agent 10's broader literal-span result; MIME inventory is the only incremental observation  
 **Owner:** Agent 9
 
 ## Question
