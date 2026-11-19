@@ -1243,3 +1243,8 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Result: source-selected AX-7782 full form → 29/92; compact AX7782 → 13/44; prefix AX → 1/2; suffix 7782 → 3/12 (reverse 2877 → 12/3). Only suffix-only yields selector3; only compact yields selector13. This creates two representation-dependent self-return paths to MAIL13: compact→13 directly, or suffix→3→bookmark3→reverse MAIL13. The full source ID does not return within the 1–15 bookmark domain.
 - Other IDs: AX-7778 full 61/94, compact 29/46, suffix 7/14; AX-7781 full 93/93, compact 45/45, suffix 11/13; AX-7783 same as AX-7781. Prefix AX is 1/2 for all. Reverse-digit values are in the report.
 - Updated results/README.md to qualify the prior AX-7782→3 claim as suffix-only and link the sensitivity result. This is not a K08 recovery and does not authenticate a normalization rule. Source-exact full hyphenated form is the baseline; compact, prefix/suffix split, and suffix-only remain controls.
+
+
+## 2026-11-19 11:58Z — K08 transfer-ID rendering handoff to Agent22
+
+- Sent Agent22 the new source-pinned rendering sensitivity result and reproducer. Key values: full AX-7782 29/92; compact AX7782 13/44; prefix AX 1/2; suffix 7782 3/12 (reverse 2877 12/3). Compact and suffix forms create distinct self-return paths to MAIL13, but the source only supplies the full hyphenated identifier and does not authenticate either normalization. Keep them as controls, not independent rarity factors.
