@@ -611,3 +611,11 @@
 
 
 - Follow-up reproducibility artifact: agents/agent9/k08_alowbit_splice_sensitivity.py. It pins the note source, enumerates all seven valid +1 and seven valid -1 Emily edits, then emits all 288 contiguous 1+3+3 splices for the unique ATEALBIT row edit. Exactly two yield ALOWBIT (head positions 0 and 3; same LOW count window and BIT tail). The consolidated review and results README now link this script.
+
+
+## 2026-11-19 — BX25/08 encrypted property-annex lead
+
+- Identified a previously unreported supplemental source dependency: resources/evidence/h17-supplemental-office-files/BX25-08.pdf, SHA-256 b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425.
+- supplier-reconciliation-L29.csv row RN-052 identifies BX25/08 as a filed RISK/R1 FA-17 property-annex scan inward transfer. The PDF is password-protected (Standard security handler, 128-bit key length); no decrypted content was read.
+- retired-office-bookmarks.html points to the absent file R:/IT/desk-images/oldscan/scanrelease.txt and states the old capture terminal used a four-position numeric release setting for BX25 folios, with the paper key register remaining at the Risk desk. Neither scanrelease.txt nor the paper key register appears in the supplied 46-file archive. The two obvious folio-order values 2508 and 0825 did not unlock the PDF; no brute-force or exhaustive password guessing was attempted.
+- Published results/h17-bx25-08-encrypted-source-dependency-20261119.md and updated results/README.md. This may be an independent K04/property-record source, but its contents remain unknown. Resume only if the missing release file or paper key register is independently and lawfully supplied; do not infer contents from filename or brute-force. Custodian reply channel remains closed.
