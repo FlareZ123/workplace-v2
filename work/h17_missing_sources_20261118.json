@@ -106,7 +106,17 @@
             "Riddle 1903 p212: final page of The Little Drab Book chapter, literary locator"
           ],
           "reference": "results/h17-k08-mail09-mapbook-praeger-ticket-pages-20261107.md",
-          "status": "conditional page-index hypothesis; retain parallel to Excel A1 cell P212"
+          "status": "conditional page-index hypothesis; retain parallel to Excel A1 cell P212",
+          "cowper_two_volume_candidate": {
+            "title": "Cowper, Sailing Tours, Parts I and II (1892/1893)",
+            "ticket_page_structure": "If suffixes are printed pages, L-29/N pages 81,94,99,106,112 fit Part I (168 pp.); L-29/S pages 121,130,135,142,151 fit Part II (365 pp.).",
+            "p212": "Part II contains printed page 212.",
+            "independent_literary_link": "Childers's The Riddle of the Sands names Cowper's Sailing Tours among Davies's library books.",
+            "physical_detail": "A Part I catalogue copy records a previous-owner name on the reverse of its frontispiece map.",
+            "tested_limit": "Signed-WN14 eight page/word extraction against Cowper Part II yielded a / should / At / away / a / Why / the / We and K08 NO_MATCH; this rejects that phrase extraction, not the physical receipt/bookmark role.",
+            "reference": "results/h17-k08-signed-WN14-book-coordinate-candidate-20261107.md",
+            "status": "conditional two-volume physical-book candidate; not authenticated"
+          }
         }
       }
     ]
