@@ -28,13 +28,26 @@ Because the bookmark describes “Tea-room stock sheets” (plural), a further *
 
 The eight-cell interpretation also has a **pre-registered output check**. The existing note-chain low-bit extraction gives `0x4D` = `M`; in first-bit-as-LSB order, that requires the eight selected cell-value LSBs to be exactly `1,0,1,1,0,0,1,0`. If the workbook is supplied and these addresses are numeric teal-filled cells on a relevant sheet, take only `value & 1` in the listed K01 source order and pack first-bit-as-LSB. A result other than `0x4D`, or no teal/numeric support at those exact cells, weakens this specific cell-bit hypothesis. Do not switch to high bits, reverse order, first-character LSBs, or other nearby encodings after seeing the data. Independently test whether P212 contains text/formula/comment content that, when normalized under the unchanged K08 rule, passes the original HMAC commitment.
 
-This cell reading is more source-adjacent than a page-only reading because the mirror loop returns to the workbook bookmark. It also gives a bounded future test: preserve the native BIFF workbook and inspect **P212 plus these eight addresses in both orientations**, including hidden sheets/rows/columns, fills, formulas, comments, names, objects and embedded images. The `ATEALBIT` / `ALOWBIT` instructions could be consistent with a teal-style/low-bit carrier. The predicted eight-cell LSB output `0x4D` is falsifiable, but neither the cell mapping nor the style/bit extraction is authenticated.
+This cell reading is directly connected to the mirror-loop destination because it returns to the workbook bookmark. It also gives a bounded future test: preserve the native BIFF workbook and inspect **P212 plus these eight addresses in both orientations**, including hidden sheets/rows/columns, fills, formulas, comments, names, objects and embedded images. The `ATEALBIT` / `ALOWBIT` instructions could be consistent with a teal-style/low-bit carrier. The predicted eight-cell LSB output `0x4D` is falsifiable, but neither the cell mapping nor the style/bit extraction is authenticated.
 
-Important limitations: the K01 route defines ink control groups A–D, not spreadsheet coordinates; no workbook bytes or sheet dimensions are present; and P212 does not establish that the workbook contains Emily's final caption. Treat the A1 reading as a **pre-registered secondary locator hypothesis**, not a phrase or recovered component. The book-page interpretations below remain alternatives, not the preferred explanation.
+Important limitations: the K01 route defines ink control groups A–D, not spreadsheet coordinates; no workbook bytes or sheet dimensions are present; and P212 does not establish that the workbook contains Emily's final caption. Treat the A1 reading as a **pre-registered secondary locator hypothesis**, not a phrase or recovered component. The book-page interpretation is independently supported by a strong, but still conditional, ticket-page crosswalk; neither branch currently dominates the other.
 
 ## Reproduction of the locator
 
 The independent reducer review is preserved in [Agent9's message to Agent22](../communications/agent22/20261119T015000Z_agent9-p212-adversarial-review.md). Under the plausible “lower attempt on even chunk sequence, higher attempt on odd sequence” reading of `LOW IF EVEN`, followed by the established first-bit-as-LSB low-bit packing, AX-7782 yields bytes `50 D4` = `P212`. The same fixed rule on AX-7778, AX-7781 and AX-7783 yields `694A`, `C28A` and `CF59`; none is a page-like P locator. The attempt-selection reading is reasonable but not uniquely forced, and eight per-chunk selection masks produce the same low-bit output because several attempt pairs share LSBs. Preserve P212 as conditional source-derived locator evidence, not as a recovered phrase.
+
+## Independent page-index support: the L-29/N and L-29/S ticket suffixes
+
+The page interpretation is not merely a generic “many books have p.212” guess. The existing [Praeger ticket-page report](h17-k08-mail09-mapbook-praeger-ticket-pages-20261107.md) shows that, **if** the ten L-29 ticket suffixes are printed page numbers, the 1947 third edition of Praeger's *The Way That I Went* gives an exact regional split: North suffixes 81, 94, 99, 106 and 112 all fall in *The Volcanic North* (p.62–117), while South suffixes 121, 130, 135, 142 and 151 all fall in *The Silurian Region* (p.118 onward). The 1997 reprint's p.111 boundary moves ST-112 to the South section, producing a 4/6 split. Praeger is also independently described by rare-book catalogues as a rear-map volume.
+
+This makes **Praeger 1947 the strongest page-index candidate** if the ticket suffixes really are page locators and if the physical copy is that edition. It does not authenticate either premise: the CSV does not say ticket suffixes are pages, MAIL-09 does not name Praeger, and the 1937/1939 editions' section boundaries remain unverified. The 1947 pagination must not be transferred to another edition.
+
+Accordingly, retain two parallel P212 readings:
+
+1. **Workbook A1:** P212 is a cell in the exact `mug-stock.xls` destination of the bookmark mirror loop; the eight K01 pairs may be cell addresses, with a falsifiable `0x4D` LSB check.
+2. **Book page:** P212 is a printed page in David's map-back book; Praeger 1947 has the strongest N/S ticket-page structure, while Ransome has the strongest N20 thematic fit and Falcon has a directly captured p.212 page image.
+
+They may be alternatives or complementary locators. Do not collapse them into a single object or select one without the native workbook or physical book/receipt.
 
 ## Candidate page cross-check
 
@@ -49,7 +62,7 @@ The independent reducer review is preserved in [Agent9's message to Agent22](../
 
 ## What the cross-check establishes
 
-1. P212 is a useful **dual-use locator**. The Excel A1 reading is more source-adjacent because the bookmark fixed point returns to `mug-stock.xls`; the printed-page reading remains possible but does not select a unique title or edition. Several long map-bearing books have a page 212, while some otherwise plausible small guidebooks and Cowper Part I do not.
+1. P212 is a useful **dual-use locator**. The Excel A1 reading is directly connected to the bookmark fixed point returning to `mug-stock.xls`; the printed-page reading has an independent conditional N/S ticket crosswalk that makes Praeger 1947 the strongest page-index candidate. Neither interpretation selects a unique object without source bytes. Several long map-bearing books have a page 212, while some otherwise plausible small guidebooks and Cowper Part I do not.
 2. Ransome is the strongest **semantic** candidate because p.212 lies inside “Dawn at Sea.” Falcon has an actual p.212 scan and rear map, but its p.212 scene is a hotel/public-room episode rather than the late-watch/dawn cabin scene.
 3. Riddle is an important **literary key** to the separate estuary guide and the table/cocoa/book setting. Its p.212 is in “The Little Drab Book,” but this does not prove the David-owned physical book is Riddle.
 4. The printed pages tested do not supply the exact committed phrase. The Falcon OCR test checked 42,778 contiguous spans on p.212 and 362,526 spans across pp.211–213; no match. The prior Ransome test checked 11,100 spans from its dawn-at-sea excerpt; no match. These are bounded text negatives, not evidence against a handwritten receipt, margin, or caption.
