@@ -7,13 +7,18 @@ import urllib.parse
 import urllib.request
 
 QUERY='title:"The Way That I Went" AND creator:"Praeger"'
-SEARCH="https://archive.org/advancedsearch.php?" + urllib.parse.urlencode({
-    "q": QUERY,
-    "fl[]": ["identifier","title","creator","date","mediatype","collection"],
-    "rows": 50,
-    "page": 1,
-    "output": "json",
-})
+SEARCH="https://archive.org/advancedsearch.php?" + urllib.parse.urlencode([
+    ("q", QUERY),
+    ("fl[]", "identifier"),
+    ("fl[]", "title"),
+    ("fl[]", "creator"),
+    ("fl[]", "date"),
+    ("fl[]", "mediatype"),
+    ("fl[]", "collection"),
+    ("rows", 50),
+    ("page", 1),
+    ("output", "json"),
+])
 
 def get_json(url: str) -> dict:
     req=urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 Agent22-H17-research"})
