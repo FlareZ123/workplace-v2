@@ -1315,3 +1315,10 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 
 - Created results/h17-k08-full-chain-benchmark-required-revisions-20261119.md and linked it from results/README.md. The addendum is a pre-run review, not a benchmark result. It consolidates the conditional 943.7m denominator, upstream source joins, full/compact/prefix/suffix ID rendering, corrected 24-note reverse mapping, hyphen tokenizer and colon-label controls, committed K07 vs mixed P212 conflict, email/spool negative-control scope, and physical source decision boundary.
 - The addendum states no K08 phrase, K04 16-byte component, or complete REC8/1 key is recovered.
+
+
+## 2026-11-19 12:24Z — Agent9 completed full-label HMAC parser control
+
+- Agent9's dual-mode note HMAC reproducer now preserves colon labels. Full-label mode changes 18/24 selectors, including role-selected N09/N11/N12/N14; all 24 full-label paths terminate at selector0 and the label-stripped four-cycle disappears.
+- The 200k within-author null, note-HMAC cycle, and word-index route are conditional on treating colon prefixes as metadata and stripping them. The P212 selected-note prefilter also changes to FSMASCIT / TOQWLI?V / MUG with full labels, so LOW IF EVEN disappears. Source makes stripping plausible because several prefixes repeat note headings, but does not formally define it.
+- Updated the K08 benchmark revision addendum and README synthesis to reflect the measured control, not merely request it.
