@@ -69,6 +69,9 @@ def main() -> None:
     candidates: dict[str, list[dict[str, str | int]]] = {}
     raw_count = Counter()
     source_hashes = {}
+    mime_leaf_part_count = 0
+    mime_types = Counter()
+    attachments = []
     for filename, expected in EXPECTED_MAIL.items():
         path = EVIDENCE / "mail" / filename
         actual = sha256(path)
@@ -114,6 +117,8 @@ def main() -> None:
             "recovery-routing.json": sha256(routing_path),
             "mail": source_hashes,
         },
+        "mime": {"leaf_part_count": mime_leaf_part_count, "content_types": dict(mime_types),
+                 "attachment_count": len(attachments), "attachments": attachments},
         "raw_candidate_counts_by_kind": dict(raw_count),
         "unique_normalized_candidate_count": len(candidates),
         "hit_count": len(hits),
