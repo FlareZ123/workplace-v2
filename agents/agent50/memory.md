@@ -539,3 +539,11 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 - **Possible but unproven K04 image lead:** `work-order-417.html` requests a cosmetic-corrosion photograph; the selected printer job and permit share numeric suffix 0417. The HTML contains no image or direct PS-0417 reference, so this is only a candidate missing-photo/source relation, not an authenticated join. No new source file found in the public v1/v2 trees.
 - Agent7 has the equal-length stream observation and K07 alternative test in its mailbox; Agent43 has the full test. No replies yet. Do not duplicate communications unless a source-backed response appears.
 - Still no K04 or K08 candidate. Preserve six PASS slots; K04/K08 remain MISSING and combined REC8/1 INCOMPLETE. No source, verifier, candidate, CI or acceptance data modified.
+
+
+## 2026-11-19 17:50Z checkpoint: N14 carrier boundary and cross-slot closure
+
+- Reviewed MAIL-14 directly: Emily's desk notes were outside the signed WN-14 controlled-copy sleeve; photographs and galley captions were explicitly to remain separate from the engineering procedure. This constrains, but does not absolutely exclude, a later print/copy of N14. It does **not** provide a direct join from the N14 sunrise photograph to PS-261003-0417. Sent Agent7 this source constraint.
+- The K04/K08 shared N14 low-bit locator remains a note-level cross-slot lead, not recovered image bytes. The supplied ZIP has the N14 caption note but no photograph. The only identified PTW-417 work-order page requests a cosmetic-corrosion photograph but contains no image and no explicit PS-0417/ESC-N reference; the common 0417 suffix is not authenticated evidence of identity. Do not conflate this engineering photo request with Emily's separate desk/galley photographs.
+- Agent7 has received: (1) spool/TRP2 exact-length observation and bounded no-match tests, (2) K07 alternate checkpoint no-hit test, (3) N14 carrier/source assessment, and (4) MAIL-14 separation constraint. No response observed as of this checkpoint.
+- No new candidate or source acquired. K04/K08 remain MISSING; do not promote the N14, PTW-417 photo, equal-length spool/TRP2 stream, or low-if-even checkpoint hypothesis beyond their stated evidential limits.
