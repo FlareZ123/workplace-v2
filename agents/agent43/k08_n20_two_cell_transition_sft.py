@@ -12,7 +12,7 @@ Target-blind closures:
   DESK->14, CREW->13 and TITLE->18.
 """
 from __future__ import annotations
-import hashlib, json, re
+import hashlib, hmac, json, re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -181,6 +181,52 @@ def main() -> None:
     assert notes[11].startswith("Mug shelf:")
     assert notes[18].startswith("Commissioning envelope label:")
 
+    # Apply the already calibrated LOW BIT -> note -> body-count alphabet
+    # to every authoritative slot "source" field as a specificity control.
+    def route_source_reduce(text: str) -> tuple[str, int]:
+        selectors = [
+            low_value(token)
+            for token in re.findall(r"[A-Za-z0-9]+", text)
+            if 1 <= low_value(token) <= 24
+        ]
+        count_letters = "".join(
+            chr(ord("A") + len(words(body(notes[n]))))
+            for n in selectors
+        )
+        return count_letters, low_value(count_letters)
+
+    source_reductions = {
+        slot: route_source_reduce(routing[slot]["source"])
+        for slot in (f"K{i:02d}" for i in range(1, 9))
+    }
+    assert source_reductions == {
+        "K01": ("LLOV", 4),
+        "K02": ("OM", 3),
+        "K03": ("LLMNM", 20),
+        "K04": ("VNM", 4),
+        "K05": ("LL", 0),
+        "K06": ("LO", 2),
+        "K07": ("W", 1),
+        "K08": ("VLOWL", 12),
+    }
+    assert [
+        slot for slot, (letters, _) in source_reductions.items()
+        if "LOW" in letters
+    ] == ["K08"]
+    assert source_reductions["K08"] == ("VLOWL", 12)
+    assert notes[12].startswith("Workshop card:")
+
+    def normalize(text: str) -> str:
+        return " ".join(re.sub(r"[^a-z0-9\s]", " ", text.lower()).split())
+
+    nonce = bytes.fromhex(routing["K08"]["desk_nonce"])
+    n12_digest = hmac.new(
+        nonce, normalize(body(notes[12])).encode("utf-8"), "sha256"
+    ).digest()[:16]
+    n12_hmac_selector = low_value(low_pack(n12_digest).hex().upper())
+    assert n12_hmac_selector == 11
+    assert notes[n12_hmac_selector].startswith("Mug shelf:")
+
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
     print("TEA->K06->N10 => M10")
@@ -201,6 +247,9 @@ def main() -> None:
     print("THE_END_OF(VOICES)=S; SEAT+S=SEATS")
     print("LOW_BIT(SEATS)=23->N23_FINAL_WORDING")
     print("ROUTE_LITERALS=KEEPER23,DESK14,CREW13,LATE10,WATCH11,TITLE18")
+    print("ROUTE_SOURCE_K08=VLOWL->12->N12_WORKSHOP")
+    print("ROUTE_SOURCE_LOW_UNIQUE=K08_ONLY")
+    print("N12_HMAC_LOW=11->N11_MUG_SHELF")
     print("PASS")
 
 if __name__ == "__main__":
