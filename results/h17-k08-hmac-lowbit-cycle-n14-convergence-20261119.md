@@ -170,3 +170,28 @@ N12's HMAC edge goes directly to N11, independently agreeing with the source-sta
 This materially narrows the next text-facing investigation: use the source-fixed N10/N11/N12/N14 relation and the N12->N11->N13->N09 HMAC cycle to seek a deterministic extraction of Emily's wording. Do not widen semantic paraphrase grammars or arbitrary workbook coordinates from this result.
 
 K04 remains unresolved and no K08 component is promoted by this report.
+
+
+## 19 November parser-sensitivity correction — colon-label stripping is conditional
+
+The construction above applies the HMAC reducer to each note body **after removing any prefix before the first colon**. That is a plausible field parse because prefixes such as `Mug shelf:`, `Workshop card:`, and `Sunrise photograph:` resemble note labels, but the surviving text does not formally define a structured label/body schema. The note-order null and the word-index extraction use the same stripping helper, so their results are conditional on this parse.
+
+A matched control was recomputed with the complete post-heading note text preserved, including any colon prefix. The full-label map is:
+
+```text
+N01 82D4 ->  0   N02 B44B ->  0   N03 C123 -> 11   N04 E800 ->  1
+N05 C5BB ->  3   N06 ED69 ->  9   N07 DF81 ->  8   N08 3AC7 -> 15
+N09 0236 ->  4   N10 9BC7 -> 13   N11 6986 ->  2   N12 8562 ->  2
+N13 E2BC ->  9   N14 15F4 ->  3   N15 2C11 -> 14   N16 3F6D ->  1
+N17 AC9D ->  7   N18 F782 ->  2   N19 C019 -> 13   N20 DA53 -> 14
+N21 3CE4 ->  7   N22 3F79 -> 13   N23 C90D ->  3   N24 46D9 ->  8
+```
+
+- **18/24** note selectors change when labels are preserved.
+- Among the eight role-selected carriers N09/N10/N11/N12/N13/N14/N20/N23, **four** change: N09, N11, N12 and N14.
+- Under the full-label map, every path from N01–N24 terminates at selector 0 (outside the 1–15 note namespace); **no four-note attractor remains**.
+- The label-stripped mode still yields the N12→N11→N13→N09 cycle and the TEA/LOW initials/count pattern. Those results are therefore conditional on treating colon prefixes as labels and removing them before HMAC/word indexing.
+
+The independent K04-mask and K08-nonce constants still map to selector 14 under their own route operation; that cross-slot arithmetic does not depend on note-label parsing. What changes is the note-HMAC graph and the interpretation of N14's note-body edge. Do not describe the four-note cycle, word-index route, or N14 note-edge as parser-invariant.
+
+The reproducer `agents/agent9/k08_hmac_lowbit_cycle_sft.py` now emits both parser modes and asserts the full-label control. The integrated K08 benchmark must freeze the label-stripped mode only if it explicitly justifies the colon prefix as a separate source label; otherwise include the full-label-preserving mode as a matched parser control. The 200k within-author note-order null is likewise conditional on colon-label stripping and must be labeled or rerun under the alternate parse.
