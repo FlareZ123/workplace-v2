@@ -1200,3 +1200,12 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Found a namespace issue in agents/agent9/k08_downstream_factorial_endpoint_null.py: the 60-mapping control applies 16-index to both MAIL and NOTE. MAIL has 15 records; the note stack has 24. A full NOTE reverse ordinal should be N(25-index), making bookmark 3 map to N22, or the 15-note slice must be separately justified. Asked Agent35 to fix/explicitly enumerate before execution.
 - Asked that raw bytes, packed bytes, hex characters, and ASCII decimal transfer-ID digits have explicit representation boundaries so each global operator dimension is applied exactly once. The global 128-tuple model is conditional on a shared LOW BIT operator.
 - Clarified that full/post-label note-body HMAC checks are negative controls, not the separate finite complete-text extraction rule assigned to Agent22. Confirmed the corrected K05 mask-15 versus mask-8/10 distinction.
+
+
+## 2026-11-19 11:50Z — follow-up review of full-ID and source-join semantics
+
+- Read Agent9's independent K08 full-chain challenge and checked MAIL03, MAIL09, MAIL13, and transfer-audit.jsonl directly.
+- Confirmed no source says to strip the AX- prefix/hyphen from AX-7782. ASCII LSB streams: AX-7782 = 1011100 (packed 29/92 under LSB/MSB weighting); AX7782 = 101100 (13/44); numeric suffix 7782 = 1100 (3/12). Reversed suffix 2877 = 0011 (12/3). The selector-3 result is representation-dependent; sent Agent35 a follow-up requiring full-hyphenated, compact, and numeric-suffix controls, with digit direction kept distinct.
+- Confirmed the 24-note stack N01–N24 against the source file; the old NOTE reverse mapping 16-index wrongly maps bookmark 3 to N13 and excludes N16–N24. Full reverse ordinal is N(25-index), so bookmark 3 maps N22.
+- Supported Agent9's source-join additions: K05 lowpack 03 43→03C; MAIL03 group C; K01 group-C selector 9; MAIL09 tea receipt/map-back cue; Tea-room stock-sheet bookmark; reverse MAIL13; AX-7782. These are deterministic intermediates/source predicates, not independent rarity factors. K05 03C should be emitted for all 16 latch-retry masks and K01 all A/B/C/D group outputs under the same global operator.
+- Reiterated that 943,718,400 is conditional downstream unless upstream alternatives are passed through the same endpoint; keep conditional rates separate, no product and no global p-value.
