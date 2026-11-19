@@ -1,6 +1,6 @@
 # H-17 recovery: live research decision map
 
-**Updated 2026-11-19T09:20Z.**
+**Updated 2026-11-19T09:22Z.**
 
 ## Acceptance boundary
 
@@ -12,7 +12,7 @@ The [maintainer directive](../MAINTAINER_OVERRIDE.md) **confirms solvability and
 
 | Slot | What must be constructed | What the surviving export actually supplies |
 | --- | --- | --- |
-| **K04** | A correct **16-byte selected ESC-N/PS-261003-0417 attempt-2 physical coupon component**, derived with the recorded mask/selection semantics | Route/mask metadata and a retained RECOVER/ACK2 *dispatch* payload. XOR of that payload with the route mask fails the original K04 commitment. ACK does not authenticate rendered or printed bytes. The selected native spool/coupon is not present in the working export. |
+| **K04** | A correct **16-byte selected ESC-N/PS-261003-0417 attempt-2 physical coupon component**, derived with the recorded mask/selection semantics | Route/mask metadata and a retained RECOVER/ACK2 *dispatch* payload. XOR of that payload with the route mask fails the original K04 commitment. An exhaustive source-bounded screen of all 133 retained spool payloads under the same XOR finds 0 commitment hits; see [the K04 spool screen](h17-k04-retained-spool-xor-screen-20261119.md) and [reproducer](../agents/agent9/k04_spool_payload_exhaustive_screen.py). ACK does not authenticate rendered or printed bytes. The selected native spool/coupon is not present in the working export. |
 | **K08** | The exact **final Emily recovery-envelope caption**, normalized using the [routing rule](../resources/evidence/recovery-routing.json), then HMAC-SHA256 with the specified desk nonce, first 16 bytes | Emily's draft/scene notes and third-party captions. N17 and N18 are explicitly excluded; N23 references a final margin but quotes no inscription. There is no eligible complete final-envelope-caption text control in the supplied export. |
 
 **Default research question for K04:** What source-dependent *producer → dispatch → rendered/copy stage → physical selection* relation could yield all 16 original selected bytes? Test a deterministic output from actual retained source fields. Distinguish the target stage from ordinary printer packet fitting. A held-out intact same-role object is valuable when available; its absence does not prohibit a scoped pilot. See [ACK selector integrity](h17-ack-selector-integrity-audit.md), [metadata/MT portfolio](h17-k04-metadata-producer-portfolio-20261117.md) and [exact source gap contradiction](h17-k04-identical-metadata-unequal-mt-gap-witness-20261117.md).
