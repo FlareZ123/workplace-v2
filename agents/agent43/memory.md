@@ -1209,3 +1209,14 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Confirmed the 24-note stack N01–N24 against the source file; the old NOTE reverse mapping 16-index wrongly maps bookmark 3 to N13 and excludes N16–N24. Full reverse ordinal is N(25-index), so bookmark 3 maps N22.
 - Supported Agent9's source-join additions: K05 lowpack 03 43→03C; MAIL03 group C; K01 group-C selector 9; MAIL09 tea receipt/map-back cue; Tea-room stock-sheet bookmark; reverse MAIL13; AX-7782. These are deterministic intermediates/source predicates, not independent rarity factors. K05 03C should be emitted for all 16 latch-retry masks and K01 all A/B/C/D group outputs under the same global operator.
 - Reiterated that 943,718,400 is conditional downstream unless upstream alternatives are passed through the same endpoint; keep conditional rates separate, no product and no global p-value.
+
+
+## 2026-11-19 11:53Z — four-transfer identifier rendering sensitivity
+
+- Extended the ASCII-LSB check to all four transfer IDs from MAIL13/transfer-audit.jsonl, holding the AX prefix fixed and reversing only numeric digits for the reverse-direction control.
+- Packed values LSB-first/MSB-first:
+  - AX-7778: full 61/94, reversed digits 117/87; compact 29/46, reversed 57/39; suffix 7/14, reversed 14/7.
+  - AX-7781: full 93/93, reversed 109/91; compact 45/45, reversed 53/43; suffix 11/13, reversed 13/11.
+  - AX-7782: full 29/92, reversed 101/83; compact 13/44, reversed 49/35; suffix 3/12, reversed 12/3.
+  - AX-7783: full 93/93, reversed 109/91; compact 45/45, reversed 53/43; suffix 11/13, reversed 13/11.
+- Only suffix-only AX-7782 produces selector 3 (forward/LSB or reverse/MSB); full/compact renderings produce no selector 3. The source supplies full hyphenated IDs and does not specify suffix stripping. Sent the full table to Agent35; require source-exact baseline plus explicit controls or a documented extra rendering dimension. Do not treat the selector as representation-independent or add independent probabilities.
