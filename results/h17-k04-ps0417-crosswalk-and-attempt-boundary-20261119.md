@@ -8,6 +8,8 @@ The official route transcription maps ESC-N to PS-261003-0417, ESC-S to PS-26100
 
 The supplier reconciliation has ST-112 R3/POSTED at FA-17 / H17-POL-17/A3; the North binder list places ST-112 at tab05. It also has ST-142 R3/POSTED and ST-151 R3/POSTED at LV-42 / CS-18/5; the South binder list places ST-142 at tab05 and ST-151 at tab02 (resources/evidence/h17-supplemental-office-files/supplier-reconciliation-L29.csv and print-fleet-retirement-note.txt).
 
+**Incident-date route caveat:** REC8/1 requires resolving ESC-N at the incident date (2026-10-03). The local archive-labels.ini is undated, and the print-fleet return register is a reconciliation dated 2026-10-04. The custodian note says the native Stores return index is not in this export. Thus PS-0417 is the best local ESC-N candidate, but the incident-date route resolution itself still needs the native index/queue manifest.
+
 **Important join limit:** there is no explicit ST-112→PS-0417 foreign-key field in the local export. The association is inferred through route, binder, account, and folio context. The candidate North suffix offset +305 gives five action/class correspondences in the retained spool:
 - ST-094 lid plate / return → PS-0399 ACK/LABEL
 - ST-081 edge guide / exchange → PS-0386 ACK/STORES
