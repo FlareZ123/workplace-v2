@@ -19,7 +19,7 @@ The standard-library script pins:
 
 The six populated candidate slots K01/K02/K03/K05/K06/K07 are each checked against their unchanged REC8/1 slot commitment before use.
 
-The common selector is implemented literally: take each byte's least significant bit, pack the first byte as bit 0 (LSB-first), convert the packed bytes to uppercase hex, then apply the same character-LSB packing to that hex string. For a 16-byte input, the packed hex has four characters, so the final selector is necessarily in **0..15**. Therefore a random selector has a **15/16 = 93.75%** chance of landing on one of the existing note IDs N01–N15; N16–N24 are unreachable by this four-bit selector.
+The common selector is implemented literally: take each byte's least significant bit, pack the first byte as bit 0 (LSB-first), convert the packed bytes to uppercase hex, then apply the same character-LSB packing to that hex string. For a 16-byte input, the packed hex has four characters, so the final selector is necessarily in **0..15**. Therefore a random selector has a **15/16 = 93.75%** chance of landing on one of the existing note IDs N01–N15; N16–N24 are unreachable by this four-bit selector. The current reproducer emits every one of the 120 component assignments, all 1,024 transfer/mask outputs, and all 133 print-payload outputs, not only summary hits.
 
 ## Results
 
