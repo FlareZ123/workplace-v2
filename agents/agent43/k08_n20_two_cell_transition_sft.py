@@ -270,6 +270,39 @@ def main() -> None:
         (routing["K08"]["source"], "VLOWL", 12)
     ]
 
+    # N23 names the final "words". WORDS selects N19, and N19 is the
+    # unique body-head fixed point of the exact K08 HMAC-low-bit graph.
+    def note_hmac_selector(number: int) -> int:
+        digest = hmac.new(
+            nonce, normalize(body(notes[number])).encode("utf-8"), "sha256"
+        ).digest()[:16]
+        return low_value(low_pack(digest).hex().upper())
+
+    hmac_map = {n: note_hmac_selector(n) for n in range(1, 25)}
+    assert low_value("WORDS") == 19
+    assert re.search(r"\bwords\b", notes[23], re.IGNORECASE)
+
+    fixed_points: list[tuple[int, list[int], str]] = []
+    for start in range(1, 25):
+        visited: list[int] = []
+        seen: set[int] = set()
+        node = start
+        while node not in seen:
+            seen.add(node)
+            visited.append(node)
+            node = hmac_map[node]
+        head_string = "".join(
+            words(body(notes[n]))[0][0].upper() for n in visited
+        )
+        if len(head_string) <= 8 and low_value(head_string) == start:
+            fixed_points.append((start, visited, head_string))
+
+    assert fixed_points == [
+        (19, [19, 13, 9, 12, 11], "SANTE")
+    ]
+    assert low_value("SANTE") == 19
+    assert not re.search(r"\bsante\b", note_text, re.IGNORECASE)
+
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
     print("TEA->K06->N10 => M10")
@@ -295,6 +328,9 @@ def main() -> None:
     print("N12_HMAC_LOW=11->N11_MUG_SHELF")
     print("LOW_IF_EVEN(12)=11->N11_MUG_SHELF")
     print("ROUTING_STRING_CONTROL=15_ELIGIBLE; UNIQUE_LOW_OR_12=K08_SOURCE")
+    print("N23_WORDS_LOW=19")
+    print("N19_HMAC_PATH_HEADS=19->13->9->12->11 => SANTE")
+    print("LOW_BIT(SANTE)=19; UNIQUE_24_START_FIXED_POINT")
     print("PASS")
 
 if __name__ == "__main__":
