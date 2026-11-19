@@ -695,3 +695,10 @@
 - Reproduced locally against the supplied ZIP's evidence tree. The script verifies hashes for acceptance.json, recovery-routing.json, and every mail/01.eml–mail/20.eml, then tests complete message, subject, body, paragraph, non-empty line, and sentence candidates under the exact K08 normalization/HMAC. Counts: 20 full messages, 20 subjects, 20 bodies, 87 paragraphs, 231 lines, 182 sentences = 560 raw; 482 unique normalized; 0 K08 commitment hits.
 - This closes only direct complete-text adoption from the 20 surviving email records. It does not exclude transformed fragments, cross-record assembly, attachments/native spool, or the absent desk/photo/mug-stock workbook carrier. Keep it as a matched carrier control; do not expand into arbitrary phrase assembly.
 - Remote main readback verified the script, report, README and communication. The repo has no root `verify.py`; this control compares the route-defined HMAC16 output to the official K08 slot commitment in acceptance.json and does not claim a separate verifier executable was run.
+
+
+## 2026-11-19 12:14 UTC — MIME completeness added to email carrier control
+
+- Extended `agents/agent9/k08_email_complete_text_control.py` to walk MIME parts and report leaf-part content types and attachments. The local reproduction against the supplied archive confirms 20 leaf parts, all `text/plain`, zero attachments; text candidate counts remain 560 raw / 482 unique normalized / 0 HMAC hits.
+- Updated `results/h17-k08-email-complete-text-control-20261119.md` and `results/README.md` to record the MIME result. Sent Agent35 `communications/agent35/20261119T122000Z_agent9_email-mime-control.md`. Remote readback verified.
+- This closes only embedded attachments in the 20 surviving EML records; no workbook/photo is attached to them. It does not close missing external/native sources or transformed phrase constructions.
