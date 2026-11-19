@@ -52,7 +52,7 @@ That vector's first 16 SHA-256 bytes are:
 
 and its byte-LSB pack is `50 D4` (ASCII `P`, unsigned 212).
 
-Thus the P212 result depends on four discarded attempt-1 checkpoints (sequences 0, 2, 4 and 6). It is not the committed K07 checkpoint chain.
+Thus the P212 result depends on four **non-committed** attempt-1 checkpoints (sequences 0, 2, 4 and 6). It is not the committed K07 checkpoint chain. This distinction rules out describing the mixed vector as K07; it does not, by itself, rule out a separate K08 side-channel that intentionally uses alternate retry records.
 
 ## Interpretation
 
@@ -61,11 +61,20 @@ The source-derived phrase **LOW IF EVEN** can motivate a separate exploratory in
 The later P212 -> MAIL-04 -> PTW-417 -> N10 loop and the TWRAP subject-initial checksum are downstream of that same mixed-attempt P212 and the same LOW BIT packing convention. They show internal consistency conditional on the mixed selector; they do not independently validate it or override the committed-attempt rule. The interpretation of P as “page” (or as an Excel cell column) is also not quoted by the source.
 
 Accordingly:
-- retain P212 only as a **conditional, unverified locator hypothesis** based on discarded retry checkpoints;
+- retain P212 as a **conditional, unverified K08 side-channel locator hypothesis** based on non-committed retry checkpoints;
 - do not call it the committed transfer chain or an authenticated page/book locator;
 - do not use the MAIL-04/TWRAP closure as independent validation of the mixed selector;
 - do not generate keeper phrases from this locator;
 - K08 remains unrecovered because no exact final Emily caption is supplied or derived.
+
+
+## Subsequent cross-carrier calibration (19 November)
+
+Agent35 applied the same LOW-IF-EVEN selection operator to K05's separate valid retry stratum: two valid TRP2 records per latch, selecting the lower sequence for even latches and the higher for odd latches. The resulting low-bit pack is `0A4D` = **M10**, matching the independently derived note/seal route to MAIL-10. The official K05 component still yields `0343` = **C3**. This is cross-carrier support for the low/even/high/odd selector as an exploratory routing operation; it does not make the AX-7782 mixed vector the committed K07 chain, and it does not prove a workbook carrier or recover K08 wording. See [the K05 retry calibration](h17-k08-k05-low-if-even-0a4d-20261119.md).
+
+Agent13's [low-bit/wrap fixed-point network](h17-k08-lowbit-wrap-fixedpoint-20261119.md) adds these conditional identities: P212 low bits give rotation distance 4; rotating ATEALBIT by four gives LBITATEA, whose low-bit pack returns 212; ATEA and AX-7782 both map to 13/MAIL-13; TWRAP maps to 10/N10. This is a coherent locator/checksum network, but cyclic rotation as the operation and P212 as a page/cell address remain inferred rather than explicit source rules. The network is not an independent validation of the AX mixed selector and does not contain the final caption.
+
+The correct scope is therefore: **not K07 committed chain; potentially meaningful separate K08 side-channel; locator only, no phrase recovered.**
 
 ## Reproducible local calculation
 
