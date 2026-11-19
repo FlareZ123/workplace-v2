@@ -91,7 +91,7 @@ def main():
   'source_sha256':EXPECTED,
   'email_three_word_windows':len(windows),'route_value_three_word_windows':len(route_windows),
   'valid_source_windows':len(allw),'N20_end_of_the_hits':hits,
-  'N20_target_hit_count':len(hits),'most_common_N20_outputs':valid_counts.most_common(15),
+  'N20_target_hit_count':len(hits),'most_common_N20_outputs':valid_counts.most_common(15),\n  'all_1054_source_windows':allw,
   'fixed_12_10_11_exact_the_end_of_notes':fixed,
   'n20_word_count':len(n20),
  }
