@@ -81,6 +81,18 @@ def main() -> None:
 
         raw = path.read_text(errors="replace")
         msg = email.message_from_string(raw)
+        for part_index, part in enumerate(msg.walk()):
+            if part.is_multipart():
+                continue
+            mime_leaf_part_count += 1
+            mime_types[part.get_content_type()] += 1
+            filename = part.get_filename()
+            disposition = part.get_content_disposition()
+            if filename or disposition == "attachment":
+                payload = part.get_payload(decode=True) or b""
+                attachments.append({"source": filename, "message": filename, "part": part_index,
+                                    "content_type": part.get_content_type(), "disposition": disposition,
+                                    "size_bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()})
         parts = re.split(r"\r?\n\r?\n", raw, maxsplit=1)
         body = parts[1] if len(parts) == 2 else raw
         texts = [
