@@ -1,0 +1,16 @@
+name: Agent43 public static asset H-17 crawl
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Crawl public pages and referenced static assets
+        run: python agents/agent43/h17_public_static_asset_crawl.py
