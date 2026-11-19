@@ -20,7 +20,7 @@ The cryptographic K07 check and the explicit greatest-attempt rule are important
 ## Gaps against the frozen-benchmark requirement
 
 1. **The author/row-selection front end is hardcoded.** The selected_rows tuple (2,6,11,13,17,18,20,23) directly embeds the edited Emily set; the program does not derive the CREW4 author stream or enumerate the valid one-row +1 edits. It also does not verify the fourth first-appearance author selection. The exact control is now available in agents/agent9/k08_crew4_author_null.py: seven valid edits, with N10→N11 uniquely producing ATEALBIT/ALOWBIT; the fixed A0_LSB author-label permutation null gives 1/169,975,520 for the conditional CREW4→David-fourth→LOW event.
-2. **The component mapping is asserted, not controlled.** The script reads K01/K02/K06 from candidate.json but does not verify their acceptance commitments or enumerate the 120 ordered assignments of three distinct accepted components. The independent control finds exactly one lower-half assignment yielding YEA.
+2. **The component mapping is asserted, not controlled.** The script reads K01/K02/K06 from candidate.json but does not verify their acceptance commitments or enumerate the 120 ordered assignments of three distinct accepted components. The independent control finds exactly one lower-half assignment yielding the literal YEA, but **24/120 assignments yield selector 7**, the actual downstream K07 endpoint; therefore the operational selector rate is 20%, not 1/120.
 3. **The operator degrees of freedom are not enumerated.** The script fixes lower half, byte-LSB selection, first-bit-as-LSB packing, ASCII low-bit reduction of the uppercase hex rendering, and one-based note indexing. It reports upper-half bytes but does not compare them or enumerate the alternative bit/packing/rendering/index conventions requested by Critic.
 4. **Transfer controls are incomplete.** It uses the source-valid mask 255 for each transfer, which is correct for the committed K07 path, but does not enumerate all 256 retry masks per transfer. The independent control finds AX-7782 reaches selector 11 under 64/256 masks (exact 53D5 under 8/256), and AX-7781 reaches selector 11 under 72/256 counterfactual masks. Only mask 255 remains source-valid K07.
 5. **The alternate S213 rendering is uncalibrated.** The program emits 53D5→S213→13/MAIL-13 without enumerating competing byte order, decimal/hex interpretation, index base, or namespace mappings. Keep it as an alternate representation, not a second independent confirmation or a recovered phrase.
@@ -33,7 +33,7 @@ The cryptographic K07 check and the explicit greatest-attempt rule are important
 |---|---|---|
 | Author stream + David LOW | Uniform author-label permutation preserving counts | 1/169,975,520 conditional joint event; not a calibrated p-value |
 | Emily row lowering | All sorted/unique +1 edits | 1/7 yields ATEALBIT and ALOWBIT |
-| Component assignment | All 6P3 = 120 ordered assignments | 1 lower-half assignment yields YEA |
+| Component assignment | All 6P3 = 120 ordered assignments | 1/120 yields literal YEA; 24/120 yield selector 7 (actual K07 endpoint) |
 | N20 source calibration | All email/routing contiguous 3-word windows | 2/1,054 yield “end of the”; fixed 12/10/11 yields “the end of” only in N20 |
 | K07 retry masks | 256 masks per transfer | AX-7782: 64/256 to selector 11, 8/256 exact 53D5; AX-7781: 72/256 to selector 11 |
 | Print payloads | All 133 retained payloads | 122/133 map to N01–N15; 13/133 to N05 |
