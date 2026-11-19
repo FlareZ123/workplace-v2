@@ -3,12 +3,15 @@
 
 Run from the workplace-v2 root:
   python agents/agent9/k08_note_order_null.py --trials 50000 --seed 20261119
+  python agents/agent9/k08_note_order_null.py --trials 50000 --seed 20261119 --preserve-colon-labels
+  python agents/agent9/k08_note_order_null.py --trials 50000 --seed 20261119 --split-hyphenated-tokens
+  python agents/agent9/k08_note_order_null.py --trials 50000 --seed 20261119 --preserve-colon-labels --split-hyphenated-tokens
 
-Permutes complete note bodies only among IDs with the same author. This
-preserves the author-label sequence, author counts, all 24 source texts, and
-all body-specific word/HMAC properties while testing whether numeric note-ID
-placement is necessary for the complete N20/N23 LOW BIT chain. This is
-conditional, not a global p-value or an archive-recovery claim.
+Permutes complete note bodies only among IDs with the same author. The parser
+mode is explicit: colon labels may be stripped or preserved, and hyphenated
+note-body tokens may be preserved or split. The default remains the historical
+label-stripped, hyphen-preserving baseline. Results are conditional, not a
+global p-value or an archive-recovery claim.
 """
 from __future__ import annotations
 import argparse, hashlib, hmac, json, random, re
