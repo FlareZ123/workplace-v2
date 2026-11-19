@@ -10,22 +10,23 @@ Can the complete K08 phrase be emitted from the surviving local export by a dete
 
 - `evidence/records-custodian.txt` defines K08 as the keeper's personal caption on the **recovery envelope**, used to distinguish it from similarly named commissioning and standby envelopes. It is intended to be memorable, not a cabinet number.
 - `evidence/mail/11.eml` explicitly says the final phrase is neither the commissioning label nor the standby-envelope label, and that the wording was worked out from desk notes and **photograph captions**.
+- `evidence/mail/14.eml` says the WN-14 folder was handed to the incoming watch, Emily's desk notes were **under** the folder (not inside the controlled-copy sleeve), a pencil standby transcription had been crossed through, and the photographs/galley captions were kept separate from the engineering procedure.
 - Note N10 in `evidence/crew/noticeboard-and-desk-notes.txt` refers to the photograph "after the last cup". Note N23 says the wording in Emily's margin was not an official slogan and that the envelope remembers the words she finally put on it.
 - The surviving note bodies provide semantic context, but no complete final inscription. The bounded direct-adoption check and the recent source-field splice checks did not produce a K08 commitment hit.
 - The supplied export contains no original recovery-envelope image/transcription, no original shared photo/caption archive, and no caption sidecar or revision history. The N10→N01 pairing is prior art recorded in `h17-k08-preincident-photo-caption-acquisition-20261107.md`; it is a contextual locator only. The earlier profile/image intake work is recorded in `h17-k08-teal-bit-image-intake-hypothesis-20261116.md` and `h17-profile-refresh-migration-store-retrieval-lead-20261107.md`.
 
 ## Source-authored finalization operation
 
-The defensible photo-caption operation is **recover the pre-incident shared photo/caption archive with author and edit attribution intact, then follow an explicit source link from Emily's N10 reference through the caption revision/adaptation to the final recovery-envelope margin**. This is not a free-form assembly of note themes and not simply "take the newest metadata value":
+The strongest source-authored version operation is to reconstruct the **WN-14 desk-note edit chain** and join it to the separate photo/galley-caption archive and the final recovery envelope. This is not a free-form assembly of note themes and not simply "take the newest metadata value":
 
-1. Obtain the original shared crew/noticeboard/galley photograph and caption archive, including pre-1 October 2026 material. The existing pre-incident acquisition result pairs N10's "photograph after the last cup" contextually with Jason's N01 empty-bench/finished-tea caption, but expressly treats this as a locator only: it does not prove that N01 and N10 refer to the same physical image or that Emily adopted Jason's caption.
-2. Prioritize the original N01 image as a **testable antecedent**, while preserving N02/N06 as Emily-authored exact-language controls. The literal N01 caption has already failed the K08 HMAC and is not the final phrase.
-3. Preserve original image files and physical prints (front/back), sidecars, EXIF/IPTC/XMP, album/noticeboard/galley-board membership, original file timestamps, caption text, author/editor identity, revision history, and caption timestamps.
-4. Require an explicit source join showing which caption/version Emily used or adapted into the final recovery-envelope wording. Select that source-authored version using its recorded revision order; do not infer it from thematic similarity. Do not substitute the N17 standby or N18 commissioning labels; MAIL-11 excludes them.
-5. If the archive does not preserve the final text, use the original recovery envelope itself (or a faithful image/transcription) as the authoritative text source.
+1. Obtain the original WN-14 folder and Emily's loose desk-note stack in original order. MAIL-14 places the notes **under** the folder, outside the controlled-copy sleeve, and says a pencil standby transcription had been crossed through. Preserve the crossed-through pencil note, every margin edit, reverse sides, inserts, pad leaves, physical order and any pressure/indentation evidence.
+2. Obtain the separate original shared crew/noticeboard/galley photograph and caption archive, including pre-1 October 2026 material, with author/editor attribution and revision history intact. MAIL-14 explicitly says these photographs and galley captions were kept separate from the engineering procedure.
+3. N10's "photograph after the last cup" is contextually paired in prior art with Jason's N01 empty-bench/finished-tea caption, but this is only an antecedent locator: it does not prove N01 and N10 refer to the same physical image or that Emily adopted Jason's caption. Preserve N02/N06 as Emily-authored exact-language controls; the literal N01 caption has already failed the K08 HMAC and is not the final phrase.
+4. Require a source-visible edit/version chain from the original photo-caption or desk-note source, through Emily's margin edits, to the exact wording copied onto the recovery envelope. Select the final authored version using its recorded order/markup; do not infer it from thematic similarity. Do not substitute the N17 standby or N18 commissioning labels; MAIL-11 excludes them. The crossed-through pencil standby transcription in WN-14 is a distinct source object and must not be conflated with the N17 standby-envelope label.
+5. If the folder/desk-note/photo archive does not preserve the final text, use the original recovery envelope itself (or a faithful image/transcription) as the authoritative text source.
 6. Apply the exact K08 normalization in `evidence/recovery-routing.json`, compute the prescribed HMAC with the supplied desk nonce, retain the prescribed 16 bytes, and check the unchanged acceptance commitment.
 
-The EXIF/IPTC/XMP/history fields are a **testable extraction surface**, not a claim that the phrase is present in metadata. The original pre-incident photo/caption archive and the physical envelope are distinct source objects; either needs an explicit link to Emily's final margin wording. The source material does not currently identify a unique photo filename or a specific metadata property.
+EXIF/IPTC/XMP/history fields are a **testable extraction surface**, not a claim that the phrase is present in metadata. The WN-14 desk-note stack, pre-incident photo/caption archive and physical envelope are distinct source objects; the recovered material must explicitly connect Emily's final margin wording to the envelope inscription. The source material does not currently identify a unique photo filename or a specific metadata property.
 
 ## Conditional source-authored render/copy path: PS-0323
 
@@ -61,6 +62,7 @@ The retired-profile bookmark paths `R:/IT/desk-images/oldscan/scanrelease.txt` a
 An independently authorized copy of **any one** of these source objects:
 
 - the original recovery envelope (or a faithful image/transcription of its handwritten caption);
+- the original WN-14 folder and Emily's loose desk-note stack in original order, including the crossed-through pencil standby transcription, margins, reverse sides, inserts and any source-visible edit/version chain;
 - the original shared crew/noticeboard/galley photo-caption archive (prioritizing the N01 antecedent candidate), with sidecars, author/editor attribution, revision history, and an explicit link to Emily's N10 reference and final envelope wording;
 - the native PS-0323 job object plus an authenticated queue/job manifest and rendered output, **only if** that manifest binds the job to the recovery envelope; or
 - the authenticated native MAIL-11/MAIL-20 thread(s), including quoted history, attachments and inline images, retrieved only after the original mail namespace is established.
@@ -69,6 +71,6 @@ Until one of these source objects is available, K08 must remain unresolved. Do n
 
 ## Confidence
 
-- **High:** K08 is a personal recovery-envelope caption; N17/N18 are excluded; the supplied notes do not state the final inscription.
-- **Medium:** the original photograph's caption metadata/version history may preserve the final wording.
+- **High:** K08 is a personal recovery-envelope caption; N17/N18 are excluded; MAIL-14 places Emily's desk notes under WN-14 and separates the photo/galley captions from the engineering procedure; the supplied text export does not state the final inscription.
+- **Medium:** the original WN-14 desk-note margins and separate photo-caption revision history may preserve the authored edit chain to the final wording.
 - **Low:** any FA-18 storage relationship; the locally decrypted property-PDF content is not paper-register-authenticated and does not establish a host/storage mapping.
