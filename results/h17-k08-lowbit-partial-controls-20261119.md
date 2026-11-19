@@ -71,6 +71,21 @@ The selected PS-261003-0417 attempt-2 ACK/RECOVER payload maps to 3BED → 5 →
 
 The selected K04 ACK is a dispatch-log payload, not a media-integrity witness. Its N05 mapping is a locator observation only; the high note-range base rate and the WATCH-SPARE control argue against counting it as independent evidence for either K04 or K08.
 
+## Endpoint frequencies across matched controls
+
+These are the operational endpoints, not the more attractive intermediate words:
+
+| Endpoint | Control family | Hits |
+|---|---|---:|
+| K07 selection (selector 7) | All 120 ordered assignments of three accepted components | 24/120 |
+| N11 | All four transfers × 256 retry masks | 136/1,024 (64 AX-7782 + 72 AX-7781); exact 53D5 is 8/1,024 |
+| N11 | Source-valid greatest-attempt vector, one per transfer | 1/4 (AX-7782 only) |
+| N11 | All 133 retained print payloads | 5/133 |
+| MAIL13 | All 15 browser bookmarks under inferred reverse ordinal | 1/15 |
+| Bookmark 3 | All four retained transfer IDs under digit LOW BIT | 1/4 (AX-7782 only) |
+
+The N11, MAIL13, and bookmark-3 results are **separate stage-conditioned frequencies**. The selected branches share AX-7782 and other source records, so they are not independent and no joint probability is claimed.
+
 ## Interpretation
 
 The controls show two different things:
