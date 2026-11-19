@@ -31,6 +31,15 @@ EXPECTED = {
     21: ("AD4E", 9), 22: ("5A16", 7), 23: ("C90D", 3), 24: ("7C67", 11),
 }
 
+EXPECTED_FULL = {
+    1: ("82D4", 0), 2: ("B44B", 0), 3: ("C123", 11), 4: ("E800", 1),
+    5: ("C5BB", 3), 6: ("ED69", 9), 7: ("DF81", 8), 8: ("3AC7", 15),
+    9: ("0236", 4), 10: ("9BC7", 13), 11: ("6986", 2), 12: ("8562", 2),
+    13: ("E2BC", 9), 14: ("15F4", 3), 15: ("2C11", 14), 16: ("3F6D", 1),
+    17: ("AC9D", 7), 18: ("F782", 2), 19: ("C019", 13), 20: ("DA53", 14),
+    21: ("3CE4", 7), 22: ("3F79", 13), 23: ("C90D", 3), 24: ("46D9", 8),
+}
+
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -81,6 +90,16 @@ def note_selector(note_text: str, key: bytes) -> tuple[str, int]:
     return packed, low_value(packed)
 
 
+def note_selector_full_label(note_text: str, key: bytes) -> tuple[str, int]:
+    digest16 = hmac.new(
+        key,
+        normalize(note_text).encode("utf-8"),
+        "sha256",
+    ).digest()[:16]
+    packed = pack_lsb(digest16).hex().upper()
+    return packed, low_value(packed)
+
+
 def main() -> None:
     assert sha256(NOTES) == NOTES_SHA256
     assert sha256(ROUTING) == ROUTING_SHA256
@@ -91,6 +110,32 @@ def main() -> None:
 
     observed = {n: note_selector(notes[n], key) for n in range(1, 25)}
     assert observed == EXPECTED
+
+    # Matched parser control: preserve the colon-prefixed labels as text.
+    observed_full = {n: note_selector_full_label(notes[n], key) for n in range(1, 25)}
+    assert observed_full == EXPECTED_FULL
+    changed_full = [n for n in range(1, 25) if observed_full[n][1] != observed[n][1]]
+    selected_full_changed = [n for n in (9, 10, 11, 12, 13, 14, 20, 23)
+                             if observed_full[n][1] != observed[n][1]]
+    full_paths_terminate_at_zero = True
+    for start in range(1, 25):
+        node = start
+        seen = set()
+        for _ in range(25):
+            if node in seen:
+                full_paths_terminate_at_zero = False
+                break
+            seen.add(node)
+            node = observed_full[node][1]
+            if node == 0:
+                break
+        else:
+            full_paths_terminate_at_zero = False
+        if node != 0:
+            full_paths_terminate_at_zero = False
+    assert len(changed_full) == 18
+    assert selected_full_changed == [9, 11, 12, 14]
+    assert full_paths_terminate_at_zero
 
     cycle = [12, 11, 13, 9]
     assert [observed[n][1] for n in cycle] == [11, 13, 9, 12]
@@ -184,6 +229,10 @@ def main() -> None:
     print(f"K04_MASK_LOW={k04_pack}->14")
     print(f"K08_NONCE_LOW={k08_pack}->14")
     print("CONVERGENCE=N14 Sunrise photograph")
+    print("COLON_LABEL_PARSER_CONTROL=FULL_LABEL_PRESERVING")
+    print("FULL_LABEL_MAP=" + ",".join(f"N{n:02d}:{observed_full[n][0]}->{observed_full[n][1]}" for n in range(1, 25)))
+    print(f"FULL_LABEL_CHANGED_SELECTORS={len(changed_full)}/24 SELECTED={selected_full_changed}")
+    print("FULL_LABEL_PATHS_TERMINATE_AT_ZERO=" + str(full_paths_terminate_at_zero))
     print(f"SOURCE_STAGE_WORD_ROUTE={source_phrase}")
     print(f"FINAL_STAGE_WORD_ROUTE={final_phrase}")
     print("PASS")
