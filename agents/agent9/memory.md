@@ -639,3 +639,11 @@
 - BX25 provenance nuance: prior agent reports include local numeric-testing/page interpretations for BX25-08. I did not use or reproduce those contents in this invocation. Keep their search provenance separate from the Risk-desk paper-register authorization; any PDF-derived claims require independent corroboration as the 10 November Critic correction specifies.
 
 - Intake-tool limitations: the actual bookmarked workbooks are absent and have not been tested. The helper scans saved formula text and cached values but does not recalculate formulas, follow external links, or OCR embedded images/shapes/OLE objects. It has synthetic regression coverage only.
+
+## 2026-11-19 — LOW BIT selected-carrier direct-adoption test
+
+- Added agents/agent9/k08_lowbit_carrier_candidate_check.py and published results/h17-k08-lowbit-carrier-candidate-check-20261119.md/.json.
+- Hypothesis: the LOW BIT source-stage/accepted-stage role transition (Workshop→shelf, then Workshop→desk), HMAC cycle N12→N11→N13→N09, and independent N14 Sunrise-photo convergence select a retained carrier whose full body or complete sentence was copied verbatim to the final envelope.
+- Pinned notes, routing and acceptance; tested 22 candidates: full bodies and every complete sentence from N09/N10/N11/N12/N13/N14/N20/N23, both route strings, and the concatenated four-note cycle. Result 0/22 K08 commitment matches. The script asserts this negative result and emits normalized candidate, HMAC16, component SHA-256 and source IDs.
+- Interpretation: direct adoption from these retained text carriers is falsified. This does not rule out a separate N10 desk-copy original, N14 photo/caption original, missing mug-stock.xls workbook, or an edit/copy operation not represented in the surviving note text. Do not expand into paraphrase or word-edit grammar without a new source witness.
+- README updated. No candidate/acceptance/verifier/source changed.
