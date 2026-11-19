@@ -8,7 +8,7 @@
 
 Six of eight components are authenticated by the unchanged acceptance commitments. K04 and K08 remain the only missing components; REC8/1 cannot complete until both are supplied.
 
-The supplied export is intentionally trimmed. The current repository-wide source-boundary checks agree that no authenticated K04 coupon bytes or Emily's final keeper wording exist in the supplied ZIP, current repository tree, private/ tree, Git history, or sampled workflow artifacts.
+The supplied export is intentionally trimmed. Official resources/START_HERE.md explicitly states that the preservation set is trimmed and the original mailboxes and devices are unavailable in this local export. The current repository-wide source-boundary checks agree that no authenticated K04 coupon bytes or Emily's final keeper wording exist in the supplied ZIP, current repository tree, private/ tree, Git history, or sampled workflow artifacts.
 
 ## K04 — high-value independent original sources
 
