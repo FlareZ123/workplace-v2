@@ -39,6 +39,14 @@ The existing note-to-spool crosswalk supplies a second, more direct candidate fo
 
 The PS-0323 16-byte payload itself is not the K08 component: its SHA-256 does not match the K08 slot commitment. Keep PS-0317 (standby label), PS-0318 (commissioning label), PS-0320 (semantic brief), and PS-0306 (desk draft) as controls. PS-0324 is a sequence-aligned label job, not an envelope witness. The note/job association remains structural until the native manifest confirms it.
 
+## Conditional source-authored correspondence-version path
+
+The redacted MAIL-11/MAIL-20 exports are not complete native threads: the supplied EMLs are single-part text/plain, omit usable References/In-Reply-To headers and attachments, and the records-custodian note says repeated quoted reply material was omitted. The incident-date Message-ID tokens in the export are templated/prepublication identifiers, not authenticated native mailbox keys.
+
+If an authorized native mail/archive copy becomes available, first authenticate its namespace and export provenance; then retrieve MAIL-11 and MAIL-20 by verified folder/UID, original Message-ID/thread ID, or authenticated archive record. Preserve raw RFC822/MIME, delivery headers, quoted history, attachments and inline images. Select the final authored caption/version from the complete thread, if present, then apply the unchanged K08 normalization and HMAC. Do not query a live mailbox or native store using the exported templated Message-ID tokens.
+
+This is a source-backed version-history path, not a claim that the missing phrase is present in either thread. The source-specific namespace limitation and timing caveats are documented in `h17-mail-incident-namespace-prepublication-20261104.md`.
+
 ## Interpretation and boundary
 
 The available export supports the identity and role of the missing text, and it supports a concrete version-selection procedure if the native caption record is recovered. It does **not** support the exact words. No further phrase grammar, note-ID locator, book scan, or workbook-coordinate branch can supply the missing authored wording without an additional source field.
