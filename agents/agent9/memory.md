@@ -649,3 +649,5 @@
 - README updated. No candidate/acceptance/verifier/source changed.
 
 - Integrated the 0/22 selected-carrier direct-adoption result into section 8 of results/h17-k08-lowbit-full-specificity-review-20261119.md. The main synthesis now links the specific falsified source-to-final model rather than leaving it as a detached atomic result.
+
+- Strengthened the legacy XLS integration test: a synthetic .xls now carries a K08 HMAC test phrase in visible/hidden cells and a comment plus a 32-hex K04 payload; the temporary conversion preserves detectable K08/K04 candidates and leaves the original XLS SHA-256 unchanged. All five tests pass.
