@@ -14,7 +14,7 @@ The supplied export is intentionally trimmed. The current repository-wide source
 
 Highest-value historical records:
 
-1. The original L-29 North tab-05 docket ST-112, specifically the R3/POSTED/FA-17/H17-POL-17/A3 record (catch cleaning), front and back, with any attached print strip, physical coupon, signature/posting marks, carbonless underlay, or transfer sheet. Preserve the separate R4/HELD/A4 duplicate as a comparison object; do not substitute it for the posted R3/A3 record. The unencrypted print-fleet retirement note and supplier-reconciliation-L29.csv establish this crosswalk; see results/h17-risk-bx25-source-locator-availability-20261106.md.
+1. The original L-29 North tab-05 docket ST-112, specifically the R3/POSTED/FA-17/H17-POL-17/A3 record (catch cleaning), front and back, with any attached print strip, physical coupon, signature/posting marks, carbonless underlay, or transfer sheet. Preserve the separate R4/HELD/A4 duplicate as a comparison object; do not substitute it for the posted R3/A3 record. The unencrypted print-fleet retirement note and supplier-reconciliation-L29.csv establish this crosswalk; see results/h17-risk-bx25-source-locator-availability-20261106.md. This is the most specific retrieval target, not proof that the docket or any underlay contains the 16-byte coupon.
 2. Native print-host material for PS-261003-0417: .SPL, .SHD, EMF/PRN, or equivalent rendered output/media.
 3. The native queue journal/export for PS-261003-0417, including mode, purpose, and dry_run.
 4. FA-17 / H17-POL-17/A3 asset card and September 2026 equipment-count/commissioning material.
