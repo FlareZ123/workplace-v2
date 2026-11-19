@@ -6,6 +6,21 @@
 
 Does the source-local AX-7782 decode `P212` identify a specific book/page, and does that page help recover the final Emily envelope caption?
 
+## Stronger source-adjacent alternative: Excel A1 cell P212
+
+The tea-bookmark mirror loop returns specifically to bookmark **#3, Tea-room stock sheets**, whose saved path is `R:/Stores/consumables/mug-stock.xls`. In that context, `P212` is also an exact Excel A1 cell address (column P, row 212), not merely a possible printed page.
+
+The eight K01 byte pairs can be read as candidate worksheet coordinates:
+
+- **First byte = row, second = column:** `EX4, AT171, HN28, DZ122, DT205, AI96, C67, Z201`.
+- **Swapped:** `D154, FO46, AB222, DR130, GW124, CR35, BO3, GS26`.
+
+For BIFF8 `.xls`, the 256-column limit is A–IV, so both orientations fit the column limit. The first orientation has rows no greater than 205; the swapped orientation reaches row 222. If the missing workbook's relevant sheet has exactly 212 rows, the first orientation fits and the swapped one does not, with `P212` as a cell in the final row. This is a useful structural discriminator **only if** the workbook's actual dimensions support it.
+
+This cell reading is more source-adjacent than a page-only reading because the mirror loop returns to the workbook bookmark. It also gives a bounded future test: preserve the native BIFF workbook and inspect **P212 plus these eight addresses in both orientations**, including hidden sheets/rows/columns, fills, formulas, comments, names, objects and embedded images. The `ATEALBIT` / `ALOWBIT` instructions could be consistent with a teal-style/low-bit carrier, but neither the cell mapping nor the style/bit extraction is authenticated.
+
+Important limitations: the K01 route defines ink control groups A–D, not spreadsheet coordinates; no workbook bytes or sheet dimensions are present; and P212 does not establish that the workbook contains Emily's final caption. Treat the A1 reading as a **pre-registered secondary locator hypothesis**, not a phrase or recovered component. The book-page interpretations below remain alternatives, not the preferred explanation.
+
 ## Reproduction of the locator
 
 The independent reducer review is preserved in [Agent9's message to Agent22](../communications/agent22/20261119T015000Z_agent9-p212-adversarial-review.md). Under the plausible “lower attempt on even chunk sequence, higher attempt on odd sequence” reading of `LOW IF EVEN`, followed by the established first-bit-as-LSB low-bit packing, AX-7782 yields bytes `50 D4` = `P212`. The same fixed rule on AX-7778, AX-7781 and AX-7783 yields `694A`, `C28A` and `CF59`; none is a page-like P locator. The attempt-selection reading is reasonable but not uniquely forced, and eight per-chunk selection masks produce the same low-bit output because several attempt pairs share LSBs. Preserve P212 as conditional source-derived locator evidence, not as a recovered phrase.
@@ -23,13 +38,13 @@ The independent reducer review is preserved in [Agent9's message to Agent22](../
 
 ## What the cross-check establishes
 
-1. P212 is a useful **page-location lead**, but it does not select a unique title or edition. Several long map-bearing books have a page 212, while some otherwise plausible small guidebooks and Cowper Part I do not.
+1. P212 is a useful **dual-use locator**. The Excel A1 reading is more source-adjacent because the bookmark fixed point returns to `mug-stock.xls`; the printed-page reading remains possible but does not select a unique title or edition. Several long map-bearing books have a page 212, while some otherwise plausible small guidebooks and Cowper Part I do not.
 2. Ransome is the strongest **semantic** candidate because p.212 lies inside “Dawn at Sea.” Falcon has an actual p.212 scan and rear map, but its p.212 scene is a hotel/public-room episode rather than the late-watch/dawn cabin scene.
 3. Riddle is an important **literary key** to the separate estuary guide and the table/cocoa/book setting. Its p.212 is in “The Little Drab Book,” but this does not prove the David-owned physical book is Riddle.
 4. The printed pages tested do not supply the exact committed phrase. The Falcon OCR test checked 42,778 contiguous spans on p.212 and 362,526 spans across pp.211–213; no match. The prior Ransome test checked 11,100 spans from its dawn-at-sea excerpt; no match. These are bounded text negatives, not evidence against a handwritten receipt, margin, or caption.
 
 ## Next discriminating evidence
 
-If an independently authorized original is supplied, first identify the David-owned title and edition from its cover/title page and rear map, then preserve the tea receipt **in situ** and record its printed page position. Check p.212 and the adjacent margin/receipt before moving anything. The physical receipt/book, the mug-shelf card, the native `mug-stock.xls` workbook and Emily's author-final envelope/margin remain distinct possible carriers; do not merge them without a source join.
+If an independently authorized workbook is supplied, first preserve its native bytes and sheet dimensions, then check P212 and the eight K01 cell addresses in both orientations before any broad extraction. If an independently authorized physical book is supplied, identify its title/edition and preserve the tea receipt **in situ**; only then check whether printed p.212 is relevant. The physical receipt/book, the mug-shelf card, the native `mug-stock.xls` workbook and Emily's author-final envelope/margin remain distinct possible carriers; do not merge them without a source join.
 
 **Status:** P212 preserved as conditional locator evidence. No book title is authenticated, no K08 phrase was generated, and no K08 commitment hit was obtained.
