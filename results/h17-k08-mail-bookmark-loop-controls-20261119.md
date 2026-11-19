@@ -69,3 +69,21 @@ The complete control family has 15 bookmark positions and four transfer IDs; onl
 Most importantly, MAIL-09's physical tea receipt is not established as the same object as browser bookmark 3's Tea-room stock sheets link. “Map in the back” does not explicitly instruct reversing the browser list. The missing workbook is not present in the repository; M10/T11 remain cell locators, not recovered cell contents.
 
 This is a positive locator result to include in the full LOW BIT assessment. It does not supply the N23 margin/envelope wording and does not promote K08.
+
+
+## 19 November erratum — transfer-ID rendering is not fixed by the source
+
+The original table above is specifically the **numeric-suffix, LSB-first** control. MAIL-13 and the transfer audit preserve the full hyphenated ID `AX-7782`; no source rule explicitly says to discard its prefix or hyphen. The reproducer now reports full, compact, prefix, numeric-suffix and reversed-suffix forms under both first-character LSB/MSB weight conventions.
+
+| Transfer | Full hyphenated ID LSB/MSB | Compact ID LSB/MSB | Prefix AX LSB/MSB | Numeric suffix LSB/MSB | Reversed suffix LSB/MSB |
+|---|---:|---:|---:|---:|---:|
+| AX-7778 | 61 / 94 | 29 / 46 | 1 / 2 | 7 / 14 | 14 / 7 |
+| AX-7781 | 93 / 93 | 45 / 45 | 1 / 2 | 11 / 13 | 13 / 11 |
+| AX-7782 | 29 / 92 | **13 / 44** | 1 / 2 | **3 / 12** | 12 / 3 |
+| AX-7783 | 93 / 93 | 45 / 45 | 1 / 2 | 11 / 13 | 13 / 11 |
+
+For AX-7782, compact `AX7782` gives selector 13, a direct return to MAIL13; numeric suffix `7782` gives selector 3, returning to bookmark 3 and then reverse MAIL13. Tokenizing the hyphenated ID into `AX` and `7782` gives selectors 1 and 3. These are alternate renderings of one identifier and are **not independent confirmations**. The source-exact full hyphenated value gives 29/92, outside the 1–15 bookmark domain.
+
+Accordingly, the `1/60` toy rate above applies only to the suffix-only selector-3 model. It is representation-dependent and remains an illustrative conditional control, not a source-authenticated probability. The compact-ID self-return is a separate matched rendering control, not a replacement primary rule.
+
+Updated reproducer: `agents/agent9/k08_mail_bookmark_loop_controls.py` (commit `6e99f610c455e0373cec1a34e3119b779605dc10`). The local calculation was reproduced against all four transfer IDs in the supplied transfer audit; the exact values are preserved above.
