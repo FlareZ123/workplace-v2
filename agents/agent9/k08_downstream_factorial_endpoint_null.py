@@ -21,6 +21,7 @@ EXPECTED={
  'transfers/transfer-audit.jsonl':'32970ad4431a9d610cc12dcca2813f39dd8fd2e396f9e748dc94b5932cb69adf',
  'h17-supplemental-office-files/retired-office-bookmarks.html':'b9261ac17524e66bb5a6e3f3ce4996df65737aa34564b6d29a87ebab681a6096',
  'mail/13.eml':'80d7b086d77fe7036a596198825dd221fec82e34cbd5a5a43edae74569e171aa',
+ 'crew/noticeboard-and-desk-notes.txt':'13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb',
 }
 def sha(b):return hashlib.sha256(b).hexdigest()
 def lowpack(raw):
@@ -51,18 +52,25 @@ def main():
  html=(E/'h17-supplemental-office-files/retired-office-bookmarks.html').read_text()
  anchors=re.findall(r'<A HREF="([^"]+)">([^<]+)</A>',html)
  if len(anchors)!=15 or anchors[2][1]!='Tea-room stock sheets':raise AssertionError('bookmark source changed')
+ note_text=(E/'crew/noticeboard-and-desk-notes.txt').read_text()
+ note_ids=re.findall(r'^(N\\d{2}) /',note_text,re.MULTILINE)
+ if note_ids!=[f'N{i:02d}' for i in range(1,25)]:raise AssertionError('expected complete N01-N24 note namespace')
  mail13=(E/'mail/13.eml').read_text()
  if 'AX-7782' not in mail13 or 'transfer receipt' not in mail13.lower():raise AssertionError('MAIL13 transfer receipt changed')
  bookmark_rows=[]
  for direction in ('forward','reverse'):
   for namespace in ('MAIL','NOTE'):
    for index in range(1,16):
-    mapped=(index if direction=='forward' else 16-index)
+    if namespace=='MAIL':
+     mapped=(index if direction=='forward' else 16-index)
+    else:
+     mapped=(index if direction=='forward' else 25-index)
     title=anchors[index-1][1]
     is_mail13=(namespace=='MAIL' and mapped==13)
     is_tea=(title=='Tea-room stock sheets')
     bookmark_rows.append({'direction':direction,'namespace':namespace,'candidate_index':index,
-                          'title':title,'mapped_id':mapped,'maps_to_MAIL13_receipt':is_mail13,
+                          'title':title,'mapped_id':mapped,'mapped_record':f'{namespace}{mapped:02d}',
+                          'maps_to_MAIL13_receipt':is_mail13,
                           'is_tea_bookmark':is_tea,'tea_bookmark_maps_to_MAIL13':is_tea and is_mail13,
                           'bookmark3_return_target':index})
  bookmark_hits=[r for r in bookmark_rows if r['maps_to_MAIL13_receipt']]
@@ -116,6 +124,7 @@ def main():
   'factorial_space':{'component_assignments':len(component_rows),'bookmark_mappings':len(bookmark_rows),'transfer_mask_outputs':len(transfer_outputs),'total_combinations':total},
   'component_selector_counts':{str(i):sum(r['selector']==i for r in component_rows) for i in range(8)},
   'bookmark_mail13_hits':bookmark_hits,
+  'note_namespace':{'record_count':len(note_ids),'forward_bookmark3':'N03','reverse_bookmark3':'N22'},
   'tea_bookmark_mail13_hit':tea_bookmark_hits,
   'transfer_id_return_selectors':transfer_ids,
   'transfer_mask_endpoint_counts':{
