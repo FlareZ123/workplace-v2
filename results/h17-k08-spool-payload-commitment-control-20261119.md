@@ -56,3 +56,10 @@ python agents/agent9/k08_spool_payload_commitment_control.py
 ```
 
 Expected summary: `133 unique payloads / 266 direct checks / 0 direct hits / 266 normalized text candidates / 0 HMAC hits`.
+
+
+## Prior-art correction — hexadecimal text HMAC is subsumed
+
+Agent 10's broader `h17-k08-all-text-literal-span-screen-20261118.md` includes `print/spool-reconstruction.log` among its 41 text-readable sources and checks every contiguous normalized 1–128-word span. It therefore subsumes the forward/reversed hexadecimal-string HMAC candidates in this report. Do **not** count the 266 hex-text candidates as new or independent evidence.
+
+The incremental check here is the direct raw-object comparison: SHA-256 of each of the 133 16-byte payloads and their 133 reversed-byte views against the K08 slot commitment. Those 266 raw-component checks have zero hits. This is the only new K08 commitment coverage contributed by this spool control; the native PS-0323 output/shadow remains absent and untested.
