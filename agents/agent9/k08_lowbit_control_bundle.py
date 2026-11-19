@@ -43,7 +43,7 @@ def main():
  # Assert cross-script invariants so a future source/code change fails loudly.
  assert a['p_joint_exact_CREW4_fourth_David_LOW']=='1/169975520'
  assert a['valid_one_row_plus_one_edits']==7
- assert p['components']['assignments']==120 and len(p['components']['exact_YEA_lower_assignments'])==1
+ assert p['components']['assignments']==120 and len(p['components']['exact_YEA_lower_assignments'])==1\n assert len(p['components']['selector_7_lower_assignments'])==24
  assert p['transfers']['AX-7782']['masks_to_selector_11']==64
  assert p['transfers']['AX-7781']['masks_to_selector_11']==72
  assert p['print_payloads']['rows']==133 and p['print_payloads']['valid_note_ids_1_to_15']==122
@@ -59,7 +59,7 @@ def main():
   'valid_Emily_plus_one_edits':a['valid_one_row_plus_one_edits'],
   'unique_ATEALBIT_and_ALOWBIT_edit':'N10->N11',
   'component_assignments':p['components']['assignments'],
-  'assignments_yielding_YEA':len(p['components']['exact_YEA_lower_assignments']),
+  'assignments_yielding_YEA':len(p['components']['exact_YEA_lower_assignments']),\n  'assignments_yielding_selector7':len(p['components']['selector_7_lower_assignments']),
   'AX7782_masks_to_N11_selector':'64/256',
   'AX7781_masks_to_N11_selector':'72/256',
   'print_payloads_in_N01_to_N15':'122/133',
