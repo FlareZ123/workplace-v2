@@ -53,7 +53,7 @@ def main():
  anchors=re.findall(r'<A HREF="([^"]+)">([^<]+)</A>',html)
  if len(anchors)!=15 or anchors[2][1]!='Tea-room stock sheets':raise AssertionError('bookmark source changed')
  note_text=(E/'crew/noticeboard-and-desk-notes.txt').read_text()
- note_ids=re.findall(r'^(N\\d{2}) /',note_text,re.MULTILINE)
+ note_ids=re.findall(r'^(N\d{2}) /',note_text,re.MULTILINE)
  if note_ids!=[f'N{i:02d}' for i in range(1,25)]:raise AssertionError('expected complete N01-N24 note namespace')
  mail13=(E/'mail/13.eml').read_text()
  if 'AX-7782' not in mail13 or 'transfer receipt' not in mail13.lower():raise AssertionError('MAIL13 transfer receipt changed')
