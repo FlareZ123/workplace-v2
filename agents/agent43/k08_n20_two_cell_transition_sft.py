@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source-pinned K08 low-bit two-cell and SEAT transition.
+"""Source-pinned K08 low-bit two-cell, SEAT and IF-EVEN transition.
 
 Reproduces the established source-stage LOW BIT bridge and target-blind
 continuations:
@@ -7,6 +7,7 @@ continuations:
   A LOW BIT -> THE END OF; NIGHT -> T
   SEA -> row 11                       => T11
   ends(SEA,NIGHT,VOICES,TABLE)=ATSE; wrap2 -> SEAT -> K07 -> N11
+  TEA + M -> TEAM -> N14, while SEAT -> N11; body heads -> IF EVEN
 """
 from __future__ import annotations
 import hashlib, re
@@ -104,7 +105,6 @@ def main() -> None:
             witnesses.append((number, " ".join(tri)))
     assert witnesses == [(20, "the end of")]
 
-    # N20 fixes the four content anchors in source order.
     motifs = ("sea", "night", "voices", "table")
     positions = [n20_lower.index(motif) + 1 for motif in motifs]
     assert positions == [8, 13, 16, 19]
@@ -116,8 +116,20 @@ def main() -> None:
     assert seat == "SEAT"
     assert not re.search(r"\bseat\b", note_text, re.IGNORECASE)
     assert low_value(seat) == 7
-    assert source_map[low_value(seat)] == 11
-    assert notes[11].startswith("Mug shelf:")
+    seat_row = source_map[low_value(seat)]
+    assert seat_row == 11
+    assert notes[seat_row].startswith("Mug shelf:")
+
+    team = "TEA" + column_m
+    assert team == "TEAM"
+    assert low_value(team) == 14
+    team_row = low_value(team)
+    assert words(body(notes[team_row]))[0].lower() == "if"
+    assert words(body(notes[seat_row]))[0].lower() == "even"
+    assert " ".join((
+        words(body(notes[team_row]))[0].upper(),
+        words(body(notes[seat_row]))[0].upper(),
+    )) == "IF EVEN"
 
     print("SOURCE_MAP=" + ",".join(f"K{k:02d}->{v}" for k, v in sorted(source_map.items())))
     print("ATEALBIT_LOW=M")
@@ -131,6 +143,9 @@ def main() -> None:
     print("MOTIF_ENDS=ATSE")
     print("WRAP_LOW_BIT(BIT)=2 => SEAT")
     print("LOW_BIT(SEAT)=7->K07->N11_MUG_SHELF")
+    print("TEA+M=TEAM; LOW_BIT(TEAM)=14->N14_IF")
+    print("SEAT->K07->N11_EVEN")
+    print("TEAM_SEAT_HEADS=IF EVEN")
     print("PASS")
 
 if __name__ == "__main__":
