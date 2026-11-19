@@ -79,8 +79,10 @@ The A1Z26 interpretation is not explicitly stated in the source. A zero-based A=
 - **Recovery status:** no K08 phrase, K08 component, K04 component, or recovery key recovered.
 - **Canonical state:** unchanged. No acceptance commitment, verifier, or candidate file was modified.
 
-## Practical next check
+## Promotion gate and practical next check
 
-If an independently authorized local copy of the missing caption archive is supplied, inspect **N25 first**, with N12 as its paired local anchor. If the note/job ordinal alignment is independently established, inspect the native **PS-0325** output as a secondary carrier. Do not treat the 16-byte spool payload itself as caption text, and do not probe protected services or reopen the closed custodian inquiry.
+This locator is **not promoted** and must not change the current K08 priority. The existing downstream factorial endpoint null is explicitly conditional on the upstream CREW4/ALOWBIT front end; it does not include the author-label permutation null or N20 source-window null and is not a calibrated full-chain significance test. Until that full-chain benchmark is complete, do not prioritize N25, add PS-0325 to the intake list, or treat the A1Z26 interpretation as a source-authenticated selector.
 
-This result is intended for adversarial review before it is promoted into the human-facing research map.
+If a full-chain benchmark later supports the upstream route, and an independently authorized local copy of the missing caption archive is supplied, N25 can be examined as a secondary hypothesis. PS-0325 native output should be considered only if the note/job ordinal alignment is independently established. Do not treat the 16-byte spool payload itself as caption text, and do not probe protected services or reopen the closed custodian inquiry.
+
+This file preserves a reproducible exploratory observation, not a recommended new research branch.
