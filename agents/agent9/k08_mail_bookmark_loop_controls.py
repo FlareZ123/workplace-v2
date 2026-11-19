@@ -48,8 +48,11 @@ def low_pack(raw: bytes) -> bytes:
                  for i in range(0, len(bits), 8))
 
 
-def low_value(text: str) -> int:
-    return sum((ord(ch) & 1) << i for i, ch in enumerate(text))
+def low_value(text: str, first_bit_lsb: bool = True) -> int:
+    bits = [ord(ch) & 1 for ch in text]
+    if first_bit_lsb:
+        return sum(bit << i for i, bit in enumerate(bits))
+    return sum(bit << (len(bits) - 1 - i) for i, bit in enumerate(bits))
 
 
 def main() -> None:
@@ -122,10 +125,30 @@ def main() -> None:
     transfer_ids = sorted({row["transfer"] for row in transfer_rows if "transfer" in row})
     transfer_selectors = {transfer: low_value(transfer.split("-")[-1]) for transfer in transfer_ids}
     if transfer_selectors != {"AX-7778": 7, "AX-7781": 11, "AX-7782": 3, "AX-7783": 11}:
-        raise AssertionError("transfer ID selector controls changed")
-    return_hits = [transfer for transfer, selector in transfer_selectors.items() if selector == 3]
-    if return_hits != ["AX-7782"]:
-        raise AssertionError("AX-7782 is no longer the unique transfer ID returning bookmark 3")
+        raise AssertionError("numeric-suffix LSB selector controls changed")
+    suffix_return_hits = [transfer for transfer, selector in transfer_selectors.items() if selector == 3]
+    if suffix_return_hits != ["AX-7782"]:
+        raise AssertionError("AX-7782 is no longer the unique numeric-suffix selector returning bookmark 3")
+    transfer_renderings = {}
+    for transfer in transfer_ids:
+        prefix, suffix = transfer.split("-", 1)
+        forms = {
+            "full_hyphenated": transfer,
+            "compact": prefix + suffix,
+            "prefix": prefix,
+            "numeric_suffix": suffix,
+            "reversed_numeric_suffix": suffix[::-1],
+        }
+        transfer_renderings[transfer] = {
+            form: {"LSB_first": low_value(value, True), "MSB_first": low_value(value, False)}
+            for form, value in forms.items()
+        }
+    if transfer_renderings["AX-7782"]["compact"]["LSB_first"] != 13:
+        raise AssertionError("compact AX7782 no longer returns to MAIL13")
+    compact_mail13_hits = [t for t, v in transfer_renderings.items()
+                           if v["compact"]["LSB_first"] == 13]
+    if compact_mail13_hits != ["AX-7782"]:
+        raise AssertionError("compact-ID MAIL13 self-return is no longer unique")
 
     result = {
         "K05_lowpack": k05_low.hex().upper(),
@@ -136,9 +159,11 @@ def main() -> None:
         "reverse_ordinal_transfer_receipt_hits": len(receipt_hits),
         "reverse_ordinal_hit": receipt_hits[0],
         "all_bookmark_reverse_controls": bookmark_rows,
-        "transfer_id_lowbit_controls": transfer_selectors,
-        "unique_transfer_returning_bookmark_3": return_hits,
-        "simple_uniform_control_rate": "1/15 bookmark-position hit x 1/4 transfer-ID return = 1/60 (conditional toy null; not calibrated)",
+        "transfer_id_numeric_suffix_lsb_controls": transfer_selectors,
+        "unique_numeric_suffix_transfer_returning_bookmark_3": suffix_return_hits,
+        "transfer_id_rendering_controls": transfer_renderings,
+        "unique_compact_transfer_id_returning_MAIL13": compact_mail13_hits,
+        "simple_uniform_control_rate": "1/15 bookmark-position hit x 1/4 numeric-suffix transfer-ID return = 1/60 (conditional toy null; not calibrated; rendering-dependent)",
         "semantic_limit": "MAIL-09's physical tea-receipt bookmark is not established as the same object as browser bookmark 3; reverse ordinal is inferred, not source-authenticated",
     }
     print(json.dumps(result, indent=2, sort_keys=True))
