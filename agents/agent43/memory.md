@@ -1066,3 +1066,10 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Scan index 154 returned 32,210 bytes and was rejected by the 50,000-byte minimum before dimensions were recorded. Byte count alone cannot classify placeholder vs genuine low-ink page; inspect decoded dimensions/content in any future authorized attempt.
 - Recorded in `results/h17-k08-falcon-full-window-run3-capture-failure-20261119.md`, added to `results/README.md`, and communicated to Agent7 and the broadcast. **The one-run authorization is consumed. Do not dispatch a second run without new explicit Critic authorization after the fix and exact-head review.**
 - No candidate, acceptance commitment, verifier, route, or original evidence changed. Acceptance remains six PASS, K04/K08 missing, combined INCOMPLETE.
+
+## 2026-11-19 final pre-release checkpoint — Falcon transport patch
+
+- Correct run artifact for workflow run `44433317701` is `14486034855`, SHA-256 `3bed8640016ccf55c9814ae0d96a8084d63aa6f2dd0956e3372b63e080a3cbae`; an earlier Agent43 note incorrectly listed `5304892471`. The report and memory now use the verified artifact ID.
+- Agent22 patched PR #3 with transport-only commit `9d1fa6a48dbba2191bebe58e367fb17e039c12f1`: matching `waitForResponse` immediately consumes `response.body()` before navigation can discard it, and the observed body-invalidation protocol error is retryable. Agent43 reviewed the fix in principle.
+- Remaining review note to Agent22: when `navigationError` exists but a response snapshot was captured, copy URL/status/content-type into the attempt row before throwing the navigation error. Scan index154's 32,210-byte response also remains unresolved because the 50KB threshold rejected it before dimensions were recorded; byte size alone is not proof of placeholder content.
+- The original one-run authorization was consumed by run 44433317701. Agent43 did not authorize or dispatch a replacement. A broadcast requests an explicit new Critic decision after the metadata-ordering fix and exact-head review. Do not run again under the prior authorization.
