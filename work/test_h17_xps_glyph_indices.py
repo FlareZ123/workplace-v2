@@ -339,5 +339,143 @@ class GlyphIndexExtractionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "incomplete XPS glyph extraction"):
                 extractor.extract_xps_glyph_streams(make_xps("budget"))
 
+
+class TestScannerIntegration(unittest.TestCase):
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_k04_scanner_consumes_glyph_index_only_xps(self):
+        import hashlib
+        import h17_k04_binary_window_intake as scanner
+
+        component = bytes(range(16))
+        mask = bytes.fromhex(scanner.DEFAULT_MASK)
+        payload = bytes(a ^ b for a, b in zip(component, mask))
+        package = make_xps(payload.hex().upper(), split_at=16)
+        result = scanner.scan_member(
+            "synthetic.xps",
+            package,
+            0,
+            [0, 64 * 1024 * 1024, 0, 1000],
+            hashlib.sha256(component).digest(),
+            mask,
+            1,
+            32 * 1024 * 1024,
+            4,
+        )
+        self.assertTrue(
+            any(
+                hit.get("kind") == "payload_xor_route_mask"
+                and hit.get("component_hex") == component.hex().upper()
+                for hit in result.get("hits", [])
+            ),
+            result,
+        )
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_k04_scanner_surfaces_incomplete_glyph_coverage(self):
+        import hashlib
+        import h17_k04_binary_window_intake as scanner
+
+        package = make_xps("ambiguous", ambiguous_cmap=True)
+        mask = bytes.fromhex(scanner.DEFAULT_MASK)
+        result = scanner.scan_member(
+            "ambiguous.xps",
+            package,
+            0,
+            [0, 64 * 1024 * 1024, 0, 1000],
+            hashlib.sha256(bytes(range(16))).digest(),
+            mask,
+            1,
+            32 * 1024 * 1024,
+            4,
+        )
+        self.assertTrue(
+            any(error.get("extractor") == "xps-glyph-indices"
+                for error in result.get("extraction_errors", [])),
+            result,
+        )
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_k08_scanner_consumes_spatial_glyph_index_only_xps(self):
+        import hashlib
+        import json
+        import tempfile
+        import h17_profile_k08_phrase_scan as scanner
+
+        caption = "the voices stayed around the table after the long watch"
+        nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
+        normalized = scanner.phrase.normalize(caption)
+        component = scanner.phrase.k08_component(nonce, normalized)
+        target = hashlib.sha256(component).digest()
+        package = make_xps(caption, split_at=4, reverse_runs=True)
+
+        with tempfile.TemporaryDirectory(prefix="h17-xps-scanner-integration-") as temp:
+            root = Path(temp) / "profile"
+            root.mkdir()
+            source = root / "PS-0323.xps"
+            source.write_bytes(package)
+            inventory_path = Path(temp) / "inventory.json"
+            inventory_path.write_text(json.dumps({
+                "schema": "h17-profile-inventory/v1",
+                "source_root": str(root),
+                "files": [{
+                    "path": source.name,
+                    "size": source.stat().st_size,
+                    "sha256": hashlib.sha256(package).hexdigest(),
+                    "categories": ["printer"],
+                }],
+            }), encoding="utf-8")
+            result = scanner.scan_inventory(
+                inventory_path,
+                nonce,
+                target,
+                max_phrase_words=16,
+                max_file_bytes=32 * 1024 * 1024,
+                max_total_bytes=64 * 1024 * 1024,
+            )
+
+        self.assertIn("xps-glyph:", json.dumps(result.get("hits", [])), result)
+
+    @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
+    def test_k08_scanner_surfaces_incomplete_glyph_coverage(self):
+        import hashlib
+        import json
+        import tempfile
+        import h17_profile_k08_phrase_scan as scanner
+
+        nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
+        target = hashlib.sha256(scanner.phrase.k08_component(nonce, "not the caption")).digest()
+        package = make_xps("ambiguous", ambiguous_cmap=True)
+
+        with tempfile.TemporaryDirectory(prefix="h17-xps-scanner-coverage-") as temp:
+            root = Path(temp) / "profile"
+            root.mkdir()
+            source = root / "ambiguous.xps"
+            source.write_bytes(package)
+            inventory_path = Path(temp) / "inventory.json"
+            inventory_path.write_text(json.dumps({
+                "schema": "h17-profile-inventory/v1",
+                "source_root": str(root),
+                "files": [{
+                    "path": source.name,
+                    "size": source.stat().st_size,
+                    "sha256": hashlib.sha256(package).hexdigest(),
+                    "categories": ["printer"],
+                }],
+            }), encoding="utf-8")
+            result = scanner.scan_inventory(
+                inventory_path,
+                nonce,
+                target,
+                max_phrase_words=16,
+                max_file_bytes=32 * 1024 * 1024,
+                max_total_bytes=64 * 1024 * 1024,
+            )
+
+        self.assertTrue(
+            any("xps-glyph-indices:" in error.get("error", "")
+                for error in result.get("errors", [])),
+            result,
+        )
+
 if __name__ == "__main__":
     unittest.main()
