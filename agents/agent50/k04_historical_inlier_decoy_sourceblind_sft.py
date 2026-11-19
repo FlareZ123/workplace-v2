@@ -241,6 +241,7 @@ def firstword_support(fullword, firstword, all_relations, flat):
             word_disjoint = [
                 anchor for anchor in fullword
                 if not touched_words.intersection({
+                    (anchor[0], anchor[1] - 1),
                     (anchor[0], anchor[1]),
                     (anchor[2], anchor[3]),
                     (anchor[4], anchor[5]),
@@ -420,7 +421,7 @@ def main():
         support["both_offset_relations_single_anchor_fragile"],
         support["both_offset_relations_row_disjoint"],
         support["both_offset_relations_exact_word_disjoint"],
-    ) == (3, 7, 0, 10)
+    ) == (3, 7, 0, 3)
     assert support["predecessor_msb_coverage"] == {
         "fullword_anchors": [0, 0],
         "all_relations": [0, 0],
