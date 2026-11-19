@@ -657,3 +657,5 @@
 - Added work/requirements_h17_legacy_office_intake.txt (openpyxl>=3.1,<4) and documented installation; LibreOffice is required for legacy .xls conversion. This avoids a silent undeclared dependency for future workbook intake.
 
 - ST-112 retrieval caveat: the crosswalk supports prioritizing the R3/POSTED/A3 docket, but explicitly does not prove the docket or any underlay contains the 16-byte K04 coupon. The source-acquisition gate now states this.
+
+- Final source inventory refinement: recursively enumerated the live GitHub resources/ tree (48 files), including START_HERE.md, candidate.template.json and resources/work/recover_six.py. No XLS/XLSX/XLSM/ODS workbook or JPEG/PNG/TIFF/WebP/BMP/HEIC image exists there; BX25-08.pdf is the only BX25-named file. The remote inventory is authoritative; an earlier local working copy had only 43 files. Updated the source gate and README.
