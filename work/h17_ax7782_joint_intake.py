@@ -50,7 +50,7 @@ def run_tool(name: str, command: list[str], output: Path, timeout: int) -> dict[
             "stdout_tail": _tail(exc.stdout),
             "stderr_tail": _tail(exc.stderr),
         }
-    if proc.returncode != 0 or not output.is_file():
+    if not output.is_file():
         return {
             "tool": name,
             "status": "error",
@@ -64,14 +64,17 @@ def run_tool(name: str, command: list[str], output: Path, timeout: int) -> dict[
         return {
             "tool": name,
             "status": "invalid-json",
+            "returncode": proc.returncode,
             "error": f"{type(exc).__name__}: {exc}",
             "stdout_tail": proc.stdout[-4000:],
             "stderr_tail": proc.stderr[-4000:],
         }
     return {
         "tool": name,
-        "status": "ok",
+        "status": "ok" if proc.returncode == 0 else "nonzero",
+        "returncode": proc.returncode,
         "result": result,
+        "stdout_tail": proc.stdout[-4000:] if proc.returncode != 0 else "",
         "stderr_tail": proc.stderr[-4000:],
     }
 
