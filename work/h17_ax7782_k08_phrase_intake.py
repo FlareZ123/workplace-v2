@@ -9,7 +9,7 @@ with the original desk nonce, truncated to 16 bytes, and checked against the
 unchanged K08 SHA-256 commitment. It does not invent or paraphrase wording.
 
 ZIP/TAR/GZIP, PDF text/content/annotations/attachments, image metadata, and
-optional OCR are read in memory. Legacy Excel .xls BIFF cell values are decoded when xlrd 2.x is installed; other OLE streams are scanned when olefile is installed. No source is modified or extracted to disk.
+optional OCR are read in memory. Legacy Excel .xls BIFF cells are decoded with xlrd when installed or through an isolated temporary-copy LibreOffice fallback; other OLE streams are scanned when olefile is installed. No source is modified or extracted to disk.
 Encrypted PDFs are not password-guessed.
 """
 from __future__ import annotations
@@ -299,15 +299,32 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             yield name, data
     elif kind == "ole-compound":
         yielded = False
+        fallback_used = False
         xls_streams = None
         if PurePosixPath(name.replace("\\", "/")).suffix.casefold() == ".xls":
             # BIFF8 cell strings are stored in structured records inside the
             # OLE Workbook stream; raw ASCII/UTF-16 scanning alone can split a
-            # caption across cells. xlrd is optional and read-only.
+            # caption across cells. Prefer xlrd when installed; otherwise use
+            # the isolated, temporary-copy LibreOffice format adapter.
             try:
                 import xlrd
             except ImportError:
-                errors.append({"source": name, "error": "xlrd unavailable; legacy .xls BIFF cell text not decoded"})
+                try:
+                    from h17_xls_lo_fallback import extract_bytes
+                    converted = extract_bytes(data, name)
+                    xls_streams = [
+                        (
+                            f"{name}!/{item['kind']}:{item['source']}",
+                            item["text"].encode("utf-8", "replace"),
+                        )
+                        for item in converted["text_streams"]
+                    ]
+                    fallback_used = True
+                except Exception as exc:
+                    errors.append({
+                        "source": name,
+                        "error": f"xlrd unavailable and LibreOffice BIFF fallback failed: {type(exc).__name__}: {exc}",
+                    })
             else:
                 try:
                     book = xlrd.open_workbook(file_contents=data, on_demand=False)
@@ -369,11 +386,11 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yielded = True
                     yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password)
         except ImportError:
-            if not yielded:
-                errors.append({"source": name, "error": "olefile unavailable; compound document internals not decoded"})
+            if not yielded or fallback_used:
+                errors.append({"source": name, "error": "olefile unavailable; non-Workbook OLE streams may not be decoded"})
         except Exception as exc:
             errors.append({"source": name, "error": f"OLE extraction failed: {exc}"})
-        if not yielded:
+        if not yielded or fallback_used:
             yield name, data
     elif kind == "pdf":
         content_yielded = False
@@ -556,7 +573,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
             "Encrypted PDFs are never password-guessed; supply --pdf-password only when authorized.",
             "OCR is optional and may not reliably transcribe handwritten marginalia; visually inspect original images when needed.",
-            "7z, RAR and SQLite internals are not decoded by this path; use authorized format-specific extraction if present. Legacy Excel .xls BIFF cell text is decoded when xlrd 2.x is installed; other OLE streams are decoded when olefile is installed.",
+            "7z, RAR and SQLite internals are not decoded by this path; use authorized format-specific extraction if present. Legacy Excel .xls BIFF cell text is decoded with xlrd or the isolated LibreOffice fallback; other OLE streams are decoded when olefile is installed.",
             "The K04 payload is handled by work/h17_k04_binary_window_intake.py, not by this phrase scanner.",
         ],
     }
