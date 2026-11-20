@@ -12,6 +12,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_xps_glyph_indices as extractor
+import h17_ax7782_k08_phrase_intake as phrase_intake
 
 try:
     from fontTools.fontBuilder import FontBuilder
@@ -435,6 +436,29 @@ class TestScannerIntegration(unittest.TestCase):
 
         self.assertIn("xps-glyph:", json.dumps(result.get("hits", [])), result)
 
+        errors = []
+        streams = list(phrase_intake.iter_text_streams(
+            "PS-0323.xps", package, 0, [0], errors
+        ))
+        intake_hits = []
+        for source_name, payload in streams:
+            for label, text in phrase_intake.decode_text_variants(payload, source_name):
+                phrase_intake.scan_phrase_spans(
+                    text, nonce, target, source_name + " [" + label + "]", 16, intake_hits
+                )
+        self.assertTrue(
+            any(hit["normalized_phrase"] == normalized for hit in intake_hits),
+            intake_hits,
+        )
+        self.assertTrue(
+            any("xps-glyph" in hit["source"] for hit in intake_hits),
+            intake_hits,
+        )
+        self.assertFalse(
+            any("xps-glyph-indices:" in error.get("error", "") for error in errors),
+            errors,
+        )
+
     @unittest.skipIf(FontBuilder is None, "fontTools is not installed")
     def test_k08_scanner_surfaces_incomplete_glyph_coverage(self):
         import hashlib
@@ -475,6 +499,15 @@ class TestScannerIntegration(unittest.TestCase):
             any("xps-glyph-indices:" in error.get("error", "")
                 for error in result.get("errors", [])),
             result,
+        )
+
+        intake_errors = []
+        list(phrase_intake.iter_text_streams(
+            "ambiguous.xps", package, 0, [0], intake_errors
+        ))
+        self.assertTrue(
+            any("xps-glyph-indices:" in error.get("error", "") for error in intake_errors),
+            intake_errors,
         )
 
 if __name__ == "__main__":
