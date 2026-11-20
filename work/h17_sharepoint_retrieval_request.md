@@ -12,8 +12,9 @@ If an independently authorized local copy is supplied, search these exact histor
 4. Native queue journal for `PS-261003-0417` with mode, purpose, dry_run, attempt, state, class, destination, and payload
 5. Native print/rendered files for `PS-261003-0417`: `.SPL`, `.SHD`, `.EMF`, `.PRN`, or equivalent
    - For `.SHD`, `work/h17_shd_triage.py` provides offset-preserving ASCII/UTF-16LE ASCII-subset string triage only; it is not a structural parser and cannot authenticate job/document fields without the native queue/job manifest.
-6. Physical escrow/recovery coupon or an authenticated scan/photo
-7. `R:/IT/desktop-move-2026.html` and its profile-migration package
+6. Risk-desk paper key register entry for the linked `BX25/08` / `H17-POL-17/A3` folio, including any coupon code, folio sidecar, release-setting index and paper-to-scan cross-reference. The local BX25-08 PDF explicitly links policy file H17-POL-17/A3 to transfer folio BX25/08 and declares the North office printer/cassette cabinet; it is a property declaration, not the coupon.
+7. Physical escrow/recovery coupon or an authenticated scan/photo
+8. `R:/IT/desktop-move-2026.html` and its profile-migration package
 
 For the exact job, retain every record for `PS-261003-0417`; the published selector is the last ACK for that exact job. Do not substitute a REQUESTED row or the 16:45 LABEL row.
 
@@ -46,7 +47,8 @@ Record formats, skipped files, scan limits, extraction failures and unscanned ca
 
 ## Additional source-side join files explicitly referenced by the retained bookmarks
 
-- R:/IT/desk-images/oldscan/scanrelease.txt
+- R:/IT/desk-images/oldscan/scanrelease.txt (bookmark description: BX25 folios used a four-position numeric release setting; paper key register stayed with the Risk desk)
+- Risk-desk paper key register (physical register; the bookmark does not provide a separate path)
 - R:/Risk/Transfers/BX25/transfer-index.htm
 - R:/Stores/consumables/mug-stock.xls
 - R:/IT/desktop-move-2026.html
