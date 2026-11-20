@@ -207,6 +207,23 @@ def _looks_like_xps_package(data: bytes) -> bool:
         return False
 
 
+def _xps_has_glyph_indices(data: bytes) -> bool:
+    """Check bounded FixedPage parts for Indices attributes before font decoding."""
+    try:
+        with zipfile.ZipFile(io.BytesIO(data)) as package:
+            for item in package.infolist():
+                if (item.is_dir() or not item.filename.casefold().endswith(".fpage")
+                        or item.file_size > 4 * 1024 * 1024):
+                    continue
+                with package.open(item) as stream:
+                    page = stream.read(4 * 1024 * 1024 + 1)
+                if len(page) <= 4 * 1024 * 1024 and b"Indices" in page:
+                    return True
+    except (zipfile.BadZipFile, OSError, RuntimeError, EOFError, ValueError):
+        return False
+    return False
+
+
 def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                       errors: list[dict], ocr: bool = False,
                       pdf_password: str | None = None,
@@ -238,17 +255,24 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield f"{name}!/{label}", payload
             except Exception as exc:
                 errors.append({"source": name, "error": f"xps-unicode-text:{type(exc).__name__}:{exc}"})
-            try:
-                from h17_xps_glyph_indices import extract_xps_glyph_streams
-                for label, payload in extract_xps_glyph_streams(data):
-                    if budget[0] + len(payload) > intake.MAX_TOTAL:
-                        errors.append({"source": name, "error": "XPS glyph-index output exceeds total scan budget"})
-                        break
-                    budget[0] += len(payload)
-                    xps_stream_count += 1
-                    yield f"{name}!/{label}", payload
-            except Exception as exc:
-                errors.append({"source": name, "error": f"xps-glyph-indices:{type(exc).__name__}:{exc}"})
+            if _xps_has_glyph_indices(data):
+                try:
+                    import h17_xps_glyph_indices as glyph_reader
+                    if glyph_reader.TTFont is None:
+                        errors.append({
+                            "source": name,
+                            "error": "xps-glyph-indices:fontTools-unavailable; glyph-index-only text remains undecoded",
+                        })
+                    else:
+                        for label, payload in glyph_reader.extract_xps_glyph_streams(data):
+                            if budget[0] + len(payload) > intake.MAX_TOTAL:
+                                errors.append({"source": name, "error": "XPS glyph-index output exceeds total scan budget"})
+                                break
+                            budget[0] += len(payload)
+                            xps_stream_count += 1
+                            yield f"{name}!/{label}", payload
+                except Exception as exc:
+                    errors.append({"source": name, "error": f"xps-glyph-indices:{type(exc).__name__}:{exc}"})
             if xps_stream_count == 0 and not any(
                 item.get("source") == name and str(item.get("error", "")).startswith("xps-")
                 for item in errors
