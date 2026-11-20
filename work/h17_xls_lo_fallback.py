@@ -175,6 +175,8 @@ def _extract_embedded_images(
 def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
             source_name: str | None = None, include_image_data: bool = False,
             allowed_image_anchors: set[str] | None = None) -> dict[str, Any]:
+    if include_image_data and not allowed_image_anchors:
+        raise ValueError("image-byte emission requires at least one explicit allowed cell anchor")
     path = path.expanduser().absolute()
     info = path.lstat()
     if path.is_symlink() or not path.is_file():
@@ -366,6 +368,8 @@ def extract_bytes(data: bytes, source_name: str, timeout: int = 60,
         raise ValueError("expected a legacy .xls member")
     if len(data) > MAX_WORKBOOK_BYTES:
         raise ValueError(f"workbook size exceeds {MAX_WORKBOOK_BYTES} bytes")
+    if include_image_data and not allowed_image_anchors:
+        raise ValueError("image-byte emission requires at least one explicit allowed cell anchor")
     digest = hashlib.sha256(data).hexdigest()
     with tempfile.TemporaryDirectory(prefix="h17-xls-member-") as temp_name:
         member = Path(temp_name) / "source.xls"
