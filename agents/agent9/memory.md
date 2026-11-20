@@ -813,3 +813,22 @@
 - Synthetic `.docx → .doc → .docx` positive control confirmed a Word comment authored by Emily survives conversion in `word/comments.xml`. Test `work/test_h17_doc_lo_fallback.py` is committed (initial `55688fb780c4afb0417c74b361fd8588cf44cfe6`, portability update `8ecc638c34a2e2447b2483887a51c1b3e692fc27`). The XLS helper profile also now disables external document updates (`e0791e1f9d854d5b3d893f57be6a3efa858f081a`); its portable test update is `0dcff40bfa3d449119adfe75c701dcf8ece9f784`.
 - Four local tests pass: XLS helper, DOC helper, and the two joint-runner stub tests. The XLS/DOC tests conditionally exercise the actual K08 `iter_text_streams` dispatcher when run inside the repository; that dispatcher-specific assertion has not been executed in this standalone local runtime. Do not claim it passed locally.
 - Updated `results/README.md` with the DOC path and safety settings; updated Agent50's mailbox with the helper, integration and test limitations. This does not establish that WN-14 is a Word document or that it contains the final caption. No source evidence, candidate, acceptance or verifier was modified.
+
+## 2026-11-20 04:43Z — Office/SQLite intake regression checkpoint
+
+This incarnation claimed Agent 9 at `2026-11-20T04:15:39.598Z` after confirming the prior lease was older than 100 minutes. Original lease timestamp remains authoritative; do not refresh it. The 70-minute orderly-release threshold is `2026-11-20T05:25:39.598Z`.
+
+Extended the existing manual workflow `.github/workflows/agent31-xls-embedded-image-intake.yml` rather than adding another workflow. It now installs LibreOffice Calc/Writer, `openpyxl`, Pillow, `python-docx`, and `lxml`; compiles the read-only Office/SQLite adapters; and runs:
+- `work.test_h17_doc_lo_fallback`
+- `work.test_h17_xls_lo_fallback`
+- `work.test_h17_ax7782_k08_sqlite_bridge`
+- `work.test_h17_ax7782_joint_intake`
+- `work.test_h17_sticky_notes_intake`
+
+GitHub Actions run `44676196662` completed successfully on workflow commit `c853e7ab9746c22ab287361dc916a4ca35821759`. Compilation and the combined unittest step both passed. The tests cover synthetic DOC comment retention; XLS ordered cells/comments/hidden sheet/formula cache/styles/explicitly anchored image bytes; nested `plum.sqlite` with WAL/SHM and deleted-note recovery; read-only source snapshots; and joint intake orchestration.
+
+Durable result: `results/h17-office-sqlite-intake-regression-20261120.md`. The human-readable map now links it from `results/README.md`.
+
+Interpretation limit: all fixtures are synthetic. This validates the adapters only; it does not establish that the real AX-7782 object contains DOC/XLS/SQLite/WAL/SHM members, and it does not recover K04 or K08. The joint intake remains the correct single entry point if an authorized original AX-7782/Bundle06 object is supplied. Do not add another workflow or another extractor for an intermediate assertion.
+
+Research direction remains unchanged: six components are accepted; K04 requires the authenticated PS-0417 ESC-N coupon/media source; K08 requires Emily's exact final envelope wording or an authenticated source bearing that complete text. The supplied ZIP does not contain `IR-261003-H17.txt` or the AX-7782 object. Keep any M10/workbook and N14 selector hypotheses conditional; do not treat a synthetic test or selector convergence as source evidence.
