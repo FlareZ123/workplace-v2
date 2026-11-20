@@ -23,6 +23,8 @@ class UsmtIntakeTests(unittest.TestCase):
             root = Path(td)
             store = root / "store.mig"
             store.write_bytes(b"fake-store-bytes")
+            segment = root / "store.mig01"
+            segment.write_bytes(b"fake-segment-bytes")
             fake = root / "UsmtUtils.exe"
             args_file = root / "args.txt"
             fake.write_text(
@@ -38,6 +40,8 @@ class UsmtIntakeTests(unittest.TestCase):
             manifest = usmt.run_intake(store, fake, out, mode="verify")
             self.assertTrue(manifest["input_unchanged"])
             self.assertEqual(manifest["input"]["sha256"], usmt.sha256_file(store))
+            self.assertEqual([Path(x["path"]).name for x in manifest["input_segments_before"]], ["store.mig", "store.mig01"])
+            self.assertEqual(manifest["input_segments_before"], manifest["input_segments_after"])
             self.assertTrue((out / "manifest.json").is_file())
             self.assertEqual((out / "usmtutils.log").read_text(encoding="utf-8"), "native log\n")
             self.assertIn("COMMAND:", (out / "runner.log").read_text(encoding="utf-8"))
