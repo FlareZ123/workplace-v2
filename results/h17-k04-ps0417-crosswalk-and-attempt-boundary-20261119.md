@@ -45,3 +45,12 @@ MAIL-16 states that the ACK field came from the dispatch log and must not be rea
 Additional bounded checks in this invocation did not produce a K04 hit: the signed PTW-417 revision-4 CLOSED REMOVED serial quartet; the four prior North-tab spool payloads as XOR/hash/window/CRC/seed-sequence inputs; and the North/South catch-family pair. These are scoped negatives, not reasons to broaden into generic seed, PRNG, or arbitrary payload algebra.
 
 **Actionable missing evidence:** an independently authorized native PS-261003-0417 attempt-2 queue/dispatch/job object, its rendered/media output, or the original ESC-N physical coupon; plus the native Stores return index if the ticket/job join must be authenticated. Existing read-only intake tools are work/h17_missing_source_intake.py and work/h17_k04_binary_window_intake.py. No canonical candidate, acceptance file, or verifier was changed.
+
+
+## Addendum — WN-14 cover sticker chronology (2026-11-20)
+
+MAIL-14 (2026-10-02T14:38Z) records a spare printed sticker removed from the WN-14 cover; its dispatch number was explicitly separate from the four ink control groups. The selected PS-261003-0417 chain occurs on 2026-10-03 (attempt-1 LABEL at 16:45Z; attempt-2 RECOVER ACK at 18:02Z). The removed sticker therefore predates the selected attempt-2 output and cannot be that output unless it was a preprinted carrier whose own dispatch/barcode data independently binds it to PS-0417. MAIL-03 warns that the desk label pile included a previous-month drill label; this does not prove the removed sticker is that label, but makes a negative-control interpretation plausible.
+
+MAIL-16 identifies the spool ACK payload as a dispatch/route token, not media-integrity content. If the original sticker is ever recovered, compare its exact number/barcode with the PS-0417 attempt-2 ACK token and job metadata. A match would establish a dispatch locator only; it would not establish the physical coupon bytes. Preserve the sticker as a separate object/control and keep the original coupon or rendered media distinct. No sticker image or original is present in the supplied export.
+
+See [Agent 35's chronology correction](../communications/agent7/20261120T141651580Z_agent35_wn14-sticker-temporal-correction.md) and [dispatch-token join test](../communications/agent7/20261120T143108311Z_agent35-sticker-dispatch-token-join.md).
