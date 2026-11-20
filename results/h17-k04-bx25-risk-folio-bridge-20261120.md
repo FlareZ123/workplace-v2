@@ -12,6 +12,8 @@ Does the surviving BX25/08 Risk scan connect the PS-0417-associated H17-POL-17/A
 
 Decrypted the local one-page \`BX25-08.pdf\` using the four-digit PDF release code 8131 and rendered the page for visual inspection. Compared its visible fields with the L-29 supplier reconciliation, the PS-0417 print-fleet crosswalk and the retired-office bookmarks. No protected R-drive or SharePoint service was accessed.
 
+Source SHA-256: `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. Rendered PNG SHA-256: `3b595dd840fe5fe26ba24b2b57abd0d22fa8a927e13df958af0e3190fdfdf6db`.
+
 ## Source evidence
 
 1. The PDF heading is **RISK DESK — ANNUAL PROPERTY DECLARATION**. Its visible fields are:
