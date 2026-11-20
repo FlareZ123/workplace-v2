@@ -28,7 +28,19 @@ The reproducer reads the six accepted values from candidate.json, K04/K08 consta
 | K04 masked component | D939 | N14 |
 | K08 desk nonce | F797 | N14 |
 
-The N14 result is not specific to the two missing slots: **four of eight** slot inputs select N14, including already accepted K03 and K07. K02/K05/K06 select N10 and K01 selects N12. This is a nontrivial cross-slot address cluster, not a missing-slot-only convergence. Under an iid-uniform four-bit selector null, the probability that any of 16 selector values receives at least four of eight inputs is 1.3928%; the probability of an exact 4/3/1 occupancy pattern across any three selector values is 0.0219%. These are descriptive null calculations, not p-values: the second-stage reducer and note-index interpretation were explored after source inspection, and the eight inputs may not be independent. Preserve N14 as a candidate shared address for multiple components, but do not equate the address with a physical image or prove that the image is the PS-0417 render or Emily's final caption.
+The N14 result is not specific to the two missing slots: **four of eight** slot inputs select N14, including already accepted K03 and K07. K02/K05/K06 select N10 and K01 selects N12. This is a nontrivial cross-slot address cluster, not a missing-slot-only convergence.
+
+### Matched 16-byte spool control
+
+The same reducer was applied to all 133 retained 16-byte PAYLOAD fields in spool-reconstruction.log, without using acceptance commitments:
+
+| Selector | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Count | 11 | 3 | 7 | 12 | 2 | 13 | 7 | 10 | 9 | 10 | 8 | 5 | 13 | 6 | 7 | 10 |
+
+N14 occurs in only **7/133** spool payloads (5.26%); N10 occurs 8/133 and N12 13/133. The selected PS-0417 attempt-2 ACK itself selects 5, and its ACK2 XOR K04 mask selects 1. As a descriptive matched-control calculation, a sample of eight drawn without replacement from these 133 payloads would contain at least four N14 selectors with probability 0.0182%. The eight slot inputs are not a random sample from the spool population, so this is not a p-value; it does show that N14 is not simply a high-frequency output of the reducer on arbitrary retained payloads.
+
+The 4/3/1 slot occupancy (N14/N10/N12) is also unusual under an iid-uniform four-bit selector null: the probability that any of 16 values receives at least four of eight inputs is 1.3928%, and the probability of an exact 4/3/1 occupancy pattern across any three values is 0.0219%. These are descriptive null calculations, not p-values: the second-stage reducer and note-index interpretation were explored after source inspection, and the eight slot inputs may not be independent.
 
 For the two missing-slot constants alone, an ideal independent-uniform four-bit selector gives a collision probability of 1/16. That is only a reference calculation, not a significance claim: no source-authored rule explicitly says to apply this reducer to both constants and interpret the output as a photograph ID.
 
