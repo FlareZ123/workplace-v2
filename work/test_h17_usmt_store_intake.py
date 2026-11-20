@@ -1,3 +1,4 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -80,6 +81,28 @@ class UsmtIntakeTests(unittest.TestCase):
             self.assertTrue(manifest["input_unchanged"])
             self.assertEqual([x["path"] for x in manifest["extracted_files"]], ["mug-stock.xls"])
             self.assertEqual(manifest["extracted_files"][0]["sha256"], usmt.hash_tree(out / "files")[0]["sha256"])
+
+    def test_detects_source_segment_mutation(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            store = root / "store.mig"
+            segment = root / "store.mig01"
+            store.write_bytes(b"primary")
+            segment.write_bytes(b"before")
+            fake = root / "UsmtUtils.exe"
+            fake.write_text(
+                "#!/bin/sh\n"
+                "printf 'after' > \"" + str(segment) + "\"\n"
+                "exit 0\n",
+                encoding="utf-8",
+            )
+            fake.chmod(0o755)
+            out = root / "out"
+            with self.assertRaises(RuntimeError):
+                usmt.run_intake(store, fake, out, mode="verify")
+            manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+            self.assertFalse(manifest["input_unchanged"])
+            self.assertIn("Source store changed", manifest["warning"])
 
     def test_alg_requires_keyfile(self):
         with tempfile.TemporaryDirectory() as td:
