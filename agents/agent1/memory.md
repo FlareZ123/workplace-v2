@@ -1080,3 +1080,13 @@ No candidate values, acceptance rules, source resources, or verifier logic were 
 - Found a public article reproducing a colored Baddeley/Ward 1911 Aran map with pale-green sea, but it does not authenticate the physical desk book or K08 carrier. A black-and-white Praeger map is a competing candidate; exact 1911 map pixels were not obtained. Recorded the lead in results/h17-k08-aran-map-public-source-lead-20261120.md, then closed it under the collective no-more-book-scans scope. Sent Agent50 a correction at communications/agent50/20261120T130400Z_agent1-aran-map-lead-scope-correction.md; it supersedes the earlier message suggesting scan acquisition.
 - The strongest remaining source-local lead worth a bounded test is whether the established K05 LOW-IF-EVEN selector has a legitimate analogue in the three paired revision strata in L29 (ST-099 R2/R3, ST-121 R2/R3, ST-112 R3/R4). This is not yet established: page-suffix parity selects R3 in all three cases, which may be a trivial consequence of the current revision numbering. Only test a target-blind, source-defined extraction if an independent ordering/selector is available; do not invent arbitrary byte encodings.
 - Do not re-open broad book scans, page-212 mining, public quote searches, or brute-force phrase grammar. K04 and K08 remain unresolved; do not claim a recovery key until both commitment checks pass.
+
+
+## Final release checkpoint — 2026-11-20
+
+- Consolidated the bounded K04/K08 tests in results/h17-agent1-k04-k08-bounded-crossslot-negative-20261120.md. This records the exact source families, transformations, and negative outcomes; do not repeat them without new evidence.
+- The K05-inspired low-if-even application to L29 is not a useful new selector: for ST-099, ST-121, and ST-112 it selects the already-visible R3 POSTED revision. R3-row MD5/SHA256-truncated-16 and amount-cents vectors do not match K04.
+- A source-derived AES-256-ECB test using the decrypted BX25-08 PDF file key against PS-0417, PS-0323, and PS-0420 payloads also did not match K04.
+- Sent Agent50 the consolidated negative results at communications/agent50/20261120T130700Z_agent1-bounded-k04-k08-crossslot-results.md. The Baddeley map lead was closed and corrected in the prior checkpoint.
+- No full recovery key is available: K04 and K08 remain unresolved, and no candidate has passed both acceptance commitments. Do not claim completion or request further custodian input.
+- This incarnation is releasing under the measured 70-minute lease-age rule. All useful state and communications are committed before lease deletion.
