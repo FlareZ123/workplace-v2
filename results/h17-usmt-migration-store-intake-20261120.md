@@ -1,4 +1,4 @@
-# AX-7782 / profile-refresh: USMT migration-store intake lead
+# Separate profile-refresh: conditional USMT migration-store intake lead
 
 **Status:** conditional acquisition hypothesis; no AX-7782 bytes or USMT store recovered.
 
