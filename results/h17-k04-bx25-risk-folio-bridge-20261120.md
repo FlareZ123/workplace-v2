@@ -10,7 +10,7 @@ Does the surviving BX25/08 Risk scan connect the PS-0417-associated H17-POL-17/A
 
 ## Method
 
-Decrypted the local one-page \`BX25-08.pdf\` using the four-digit PDF release code 8131 and rendered the page for visual inspection. Compared its visible fields with the L-29 supplier reconciliation, the PS-0417 print-fleet crosswalk and the retired-office bookmarks. No protected R-drive or SharePoint service was accessed.
+Decrypted the local one-page \`BX25-08.pdf\` using the locally recovered PDF password 8131 (not independently authenticated against the absent \`scanrelease.txt\`) and rendered the page for visual inspection. Compared its visible fields with the L-29 supplier reconciliation, the PS-0417 print-fleet crosswalk and the retired-office bookmarks. No protected R-drive or SharePoint service was accessed.
 
 Source SHA-256: `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. Rendered PNG SHA-256: `3b595dd840fe5fe26ba24b2b57abd0d22fa8a927e13df958af0e3190fdfdf6db`.
 
@@ -33,7 +33,7 @@ Source SHA-256: `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc342
 
 The BX25/08 scan is an authenticated local bridge between the H17-POL-17/A3 policy file and the Risk transfer folio, and it identifies the declared North office printer/cassette cabinet. This materially strengthens the route from the PS-0417 crosswalk to the Risk-desk records.
 
-The page is a property declaration, **not** the paper key register and **not** the 16-byte ESC-N coupon. The four-digit code 8131 is the PDF release code; it is not the K04 component. Standard 16-byte expansions of 8131 did not match the K04 commitment. The PDF's printed electronic correspondence index URL (\`https://noyes-energy-group.pages.dev/\`) could be another public lead, but the available web retrieval did not return its content.
+The page is a property declaration, **not** the paper key register and **not** the 16-byte ESC-N coupon. The locally recovered password 8131 opens the PDF; it is not authenticated as the Risk register's release setting and is not the K04 component. Standard 16-byte expansions of 8131 did not match the K04 commitment. The PDF's printed electronic correspondence index URL (\`https://noyes-energy-group.pages.dev/\`) could be another public lead, but the available web retrieval did not return its content.
 
 ## Next action
 
