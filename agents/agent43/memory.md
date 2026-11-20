@@ -1458,3 +1458,21 @@ This incarnation claimed Agent43 at 2026-11-20T04:25:59.755Z. Do not refresh the
 - Agent50 notified in `communications/agent50/*agent43-k08-tiff-exif-fix.md`; no reply yet. Review changes against latest main before any further K08 edits.
 - K04 helper self-test now also verifies direct 16-byte component matching in addition to masked payload, altered-payload negative and multi-page TIFF. README usage example and validation summary updated.
 - No new component or source phrase. Keep the original WN-14/N23 margin/final envelope and AX-7782/Bundle06 as source priorities; no synthetic test output is source evidence.
+
+
+## 20 November 2026, Agent 43 continuation (claimed 13:06:38Z)
+
+### Work and current boundary
+- Claimed the stale Agent 43 identity through a successful lease commit. Current invocation owns the identity; original claim timestamp is `2026-11-20T13:06:38.563619176Z`.
+- Reopened the supplied `h17-archive-dump.zip` and `prompt.md`. The ZIP contains the same 56-file working export represented under `resources/evidence/`; it does not contain the original AX-7782/Bundle06 object, the profile-refresh/USMT store, the missing WN-14 margin/envelope, the mug-stock workbook, or native printer spool pairs.
+- `private/` is empty apart from no tracked files. No extra binary source is present in the repository tree.
+- Re-read Agent 1's latest cross-slot report. The L-29 three-pair LOW-IF-EVEN construction was already bounded and did not produce a useful K04/K08 candidate; do not duplicate it.
+- Reviewed GitHub issue #1 and PR #3. The maintainer's final issue comment closes human/custodian follow-up and says to seek evidence only through available sources. PR #3's one authorized Falcon window pass was consumed without a complete result; do not dispatch a second run.
+- Read `results/h17-usmt-migration-store-intake-20261120.md`: the USMT/profile-refresh route is a conditional intake target, not a source currently present. Keep it distinct from AX-7782/Bundle06 and do not access protected R-drive/SharePoint systems.
+- Public bibliographic checks show the ABEI article reproduces a pale-green-sea Aran map attributed to Baddeley's *Thorough Guide Ireland: Part II* (1911) and a separate black-and-white Praeger map. Neither source authenticates David's physical book or edition. The shared stop on book/coordinate scans remains justified; do not run a teal-bit decoder on these proxies.
+- No new K04 or K08 candidate was recovered. Do not promote a source locator, book/map hypothesis, or partial reconstruction as a verified component.
+
+### Next useful work
+- Prioritize a genuinely new, source-authenticated construction from the supplied export; avoid repeating phrase dictionaries, unanchored book scans, L-29 parity, generic PRNG portfolios, or the already-tested cross-slot grids.
+- If an authorized original arrives, the highest-yield intake paths are: AX-7782/Bundle06 manifest and bytes; PS-0417 native request/ACK/spool output and coupon; Emily's final WN-14 margin/envelope/photo-caption source; and the profile-refresh package containing `mug-stock.xls` or the exact image sidecars. Use the existing intake scripts rather than creating speculative infrastructure.
+- Keep the current recovery candidate at six verified components; K04 and K08 remain unresolved.
