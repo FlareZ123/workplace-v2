@@ -12,11 +12,11 @@ Can the five-tab North and South L-29 return packets be linked to printer jobs b
 
 The print-fleet return register identifies:
 
-- `PS-261003-0417` as `ESC-N / L-29/N / FA-17 / H17-POL-17/A3`, with tab 05 `ST-112` (catch, clean).
-- `PS-261003-0448` as `ESC-S / L-29/S / LV-42 / CS-18/5`, with tab 05 `ST-142` (catch, retain).
+- `PS-261003-0417` as `ESC-N / L-29/N / FA-17 / H17-POL-17/A3`. The separate binder index maps L-29/N tab 05 to `ST-112` (catch, clean), and the supplier CSV maps its R3 row to POSTED/A3; these are cross-record joins, not a direct ticket field in the return-register row.
+- `PS-261003-0448` as `ESC-S / L-29/S / LV-42 / CS-18/5`. The separate binder index maps L-29/S tab 05 to `ST-142` (catch, retain); this is likewise a cross-record anchor.
 - `PS-261003-0420` as a separate `WATCH-SPARE / L-29/W / ST-09` control.
 
-The two tab-05 anchors yield composite suffix differences `417 - 112 = +305` for FA-17 and `448 - 142 = +306` for LV-42. The supplier reconciliation contains five R3/POSTED North tickets and five R3/POSTED South tickets, plus two R3/POSTED L-28/A2 FA-17 controls. R2/VOID and R4/HELD rows are excluded. The R4/HELD ST-112/A4 entry is a duplicate settlement, not a second selected North ticket.
+Using the separate binder tab-05 mappings and the return-register job suffixes as anchors yields candidate composite suffix differences `417 - 112 = +305` for FA-17 and `448 - 142 = +306` for LV-42. The anchors are cross-record associations, not source-authenticated ticket→job foreign keys. The supplier reconciliation contains five R3/POSTED North tickets and five R3/POSTED South tickets, plus two R3/POSTED L-28/A2 FA-17 controls. R2/VOID and R4/HELD rows are excluded. The R4/HELD ST-112/A4 entry is a duplicate settlement, not a second selected North ticket.
 
 The offsets can also be expressed as a two-stage hypothesis: the existing candidate ST→PTW relation is `+304`, followed by PTW→PS `+1` on FA-17 and `+2` on LV-42. The supplier CSV does not itself contain a PTW or PS foreign-key column. Both stages therefore remain inferred pending the original SEP26 return index or a native ticket/queue manifest.
 
@@ -39,7 +39,7 @@ The offsets can also be expressed as a two-stage hypothesis: the existing candid
 
 The two L-28/A2 rows are independent of the two tab-05 anchors and support the FA-17 `+305` candidate: both predicted jobs are present as ACK/RECOVER rows. The South `+306` candidate has one non-anchor retained observation, ST-121→PS-0427, which is also ACK/RECOVER/desk like the ST-142→PS-0448 anchor. The other three predicted South jobs lie beyond the normal retained spool range, which ends at suffix 0427 apart from separately retained late rows; their absence is not a negative result.
 
-The North packet's five job classes vary. That is not by itself adverse: the five tickets describe different maintenance categories. The key target-bearing observation is that the North tab-05 catch-cleaning ticket maps to PS-0417, whose selected K04 event is the RECOVER ACK2. The South tab-05 catch-pin control maps to PS-0448, also RECOVER. This is a role-specific locator hypothesis, not proof that the ticket physically carries the coupon.
+The North packet's five job classes vary. That is not by itself adverse: the five tickets describe different maintenance categories. Under the +305 hypothesis, the North tab-05 catch-cleaning ticket ST-112 predicts PS-0417, whose retained K04 event is RECOVER ACK2; separately, the return register maps PS-0417 to the L-29/N set and A3 folio. The South tab-05 catch-pin control ST-142 predicts PS-0448, also RECOVER. These are role-specific locator hypotheses, not source-authenticated ticket→job links or proof that a ticket physically carries the coupon.
 
 ## Distinguishing the two stages
 
