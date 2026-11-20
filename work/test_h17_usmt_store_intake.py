@@ -72,6 +72,7 @@ class UsmtIntakeTests(unittest.TestCase):
                 "#!/bin/sh\n"
                 "dest=''\n"
                 "for arg in \"$@\"; do case \"$arg\" in */files) dest=\"$arg\";; esac; done\n"
+                "[ ! -e \"$dest\" ] || exit 7\n"
                 "mkdir -p \"$dest\"\nprintf 'hello' > \"$dest/mug-stock.xls\"\nexit 0\n",
                 encoding="utf-8",
             )
