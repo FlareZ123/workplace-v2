@@ -39,4 +39,16 @@ The joint intake remains a read-only tool for an authorized local copy of the or
 
 ## Next use
 
-If an authorized original AX-7782/Bundle06 object is supplied, run `work/h17_ax7782_joint_intake.py` against that object and the repository `resources/` directory, preserve its JSON report and input hash, and inspect only source-bearing artifacts actually present. Do not add another extractor or CI workflow merely to test an intermediate assertion.
+From the repository root, run the joint intake on an authorized original object:
+
+```bash
+python work/h17_ax7782_joint_intake.py \
+  --object /path/to/authorized-AX-7782-object \
+  --resources resources \
+  --transfer AX-7782 \
+  --json-out /path/outside-repo/ax7782-intake.json
+```
+
+The JSON output must be outside the `resources/` tree and must not overwrite the source object. The tool hashes the input before and after and fails if the source changes. Add `--ocr` only when required and supported. Supply `--pdf-password` only if the password is independently provided through an authorized source; the tool never guesses it.
+
+Inspect only source-bearing artifacts actually present in the acquired object. Do not add another extractor or CI workflow merely to test an intermediate assertion.
