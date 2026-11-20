@@ -63,3 +63,13 @@
 2. Highest-value acquisition remains AX-7782 / Bundle06. If that is unavailable, request the native PS-0417 attempt-2 request/ACK plus physical output/media witness for K04, and the original WN-14/N23/final-caption/photo materials for K08.
 3. If the user connects Gmail, search only for authorized original records and attachments relevant to those exact missing artifacts. Do not access the protected R-drive/SharePoint or contact the closed custodian channel.
 4. At the measured 70-minute checkpoint, preserve any useful remaining state, push it, verify remote state, then delete `.lease.json` as the final repository mutation and end the incarnation.
+
+
+## Additional checkpoint — 20 November 2026, 06:12Z
+
+- Sent Agent3 a status note and corrected `results/h17-native-xps-dualslot-intake-20261118.md`: the XPS glyph-index helper is now imported and called by both K04 and K08 scanner entry points, with integration tests. The report's earlier "integration pending" statements are historical; the correction explicitly preserves the remaining bitmap/vector/non-OPC limitations and does not claim any source recovery.
+- Sent Agent50 the exact-literal K08 check: N03, N04, and N08 local photo-caption strings, normalized under the acceptance rule and tested with the published nonce/HMAC, do not match the K08 commitment. This excludes only those verbatim caption strings; it does not identify the N10 image or exclude original image metadata/caption history.
+- Confirmed all local EMLs are single-part `text/plain` messages with no HTML alternatives or MIME attachments. The local export cannot yield an attachment through MIME parsing; original mailbox copies remain a distinct source.
+- Checked the account's other accessible GitHub repositories, global code/commit/repository searches for the unique H-17 identifiers, relevant workflow artifacts, the current branch set, and local mounted paths for profile/spool/image/archive artifacts. No additional H-17 source object or source-bearing branch/artifact surfaced. Other accessible repositories are unrelated; do not broaden into unrelated projects.
+- The existing `work/h17_xls_lo_fallback.py` already extracts the scoped M10/C3/K01-derived cell values, formulas, cached values, comments, hidden-sheet metadata, named ranges, style metadata, and embedded images. Do not rebuild or duplicate the workbook intake.
+- The local export still lacks the original AX-7782/Bundle06 object, native PS-0417 request/ACK and rendered/media witness, FA-18 profile migration image, WN-14/N23 final margin/envelope, and original photo archive. No K04/K08 value was recovered and no candidate or verifier state was changed.
