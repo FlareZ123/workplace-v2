@@ -26,6 +26,7 @@ from typing import Any
 
 MAX_WORKBOOK_BYTES = 64 * 1024 * 1024
 MAX_CELLS = 250_000
+STYLE_COORDS = ("M10", "C3", "EX4", "AT171", "HN28", "DZ122", "DT205", "AI96", "C67", "Z201")
 
 
 def sha256_file(path: Path) -> str:
@@ -59,6 +60,29 @@ def _plain(value: Any) -> str | None:
     if value is None:
         return None
     return str(value)
+
+
+def _color_metadata(color: Any) -> dict[str, Any] | None:
+    if color is None:
+        return None
+    return {
+        "type": getattr(color, "type", None),
+        "rgb": _plain(getattr(color, "rgb", None)),
+        "indexed": getattr(color, "indexed", None),
+        "theme": getattr(color, "theme", None),
+        "tint": getattr(color, "tint", None),
+    }
+
+
+def _column_is_hidden(sheet: Any, column_index: int, column_letter: str) -> bool:
+    for dimension in sheet.column_dimensions.values():
+        minimum = getattr(dimension, "min", None)
+        maximum = getattr(dimension, "max", None)
+        if (minimum is not None and maximum is not None
+                and minimum <= column_index <= maximum and dimension.hidden):
+            return True
+    dimension = sheet.column_dimensions.get(column_letter)
+    return bool(dimension.hidden) if dimension is not None else False
 
 
 def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
@@ -123,6 +147,7 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
         )
         streams: list[dict[str, Any]] = []
         sheet_meta: list[dict[str, Any]] = []
+        style_metadata: list[dict[str, Any]] = []
         count = 0
 
         def add(source: str, kind: str, value: str | None, **extra: Any) -> None:
@@ -137,6 +162,25 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
                 "max_row": sheet.max_row,
                 "max_column": sheet.max_column,
             })
+            for coordinate in STYLE_COORDS:
+                cell = sheet[coordinate]
+                style_metadata.append({
+                    "sheet": sheet.title,
+                    "sheet_state": sheet.sheet_state,
+                    "coordinate": coordinate,
+                    "style_id": cell.style_id,
+                    "wrap_text": cell.alignment.wrap_text,
+                    "horizontal_alignment": cell.alignment.horizontal,
+                    "vertical_alignment": cell.alignment.vertical,
+                    "fill_type": cell.fill.fill_type,
+                    "fill_foreground": _color_metadata(cell.fill.fgColor),
+                    "fill_background": _color_metadata(cell.fill.bgColor),
+                    "font_color": _color_metadata(cell.font.color),
+                    "number_format": cell.number_format,
+                    "row_hidden": bool(sheet.row_dimensions[cell.row].hidden),
+                    "column_hidden": _column_is_hidden(sheet, cell.column, cell.column_letter),
+                    "style_source": "LibreOffice-converted XLSX; style_id is converted-workbook-local",
+                })
             row_texts: list[str] = []
             cached_row_texts: list[str] = []
             for row in sheet.iter_rows():
@@ -209,6 +253,8 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
             "converter_stderr": proc.stderr.strip(),
             "formula_values_note": "Cached values are from the LibreOffice-converted copy and may have been recalculated.",
             "sheets": sheet_meta,
+            "style_metadata": style_metadata,
+            "style_metadata_scope": list(STYLE_COORDS),
             "defined_names": defined_names,
             "properties": properties,
             "cell_count": count,
@@ -272,7 +318,7 @@ def main() -> int:
         args.text_out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps({k: result[k] for k in (
         "source_name", "source_bytes", "source_sha256_before", "source_unchanged",
-        "converted_sha256", "converter", "sheets", "defined_names", "cell_count",
+        "converted_sha256", "converter", "sheets", "style_metadata", "defined_names", "cell_count",
     )}, ensure_ascii=False, indent=2))
     return 0
 
