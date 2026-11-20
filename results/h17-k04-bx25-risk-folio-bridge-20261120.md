@@ -1,8 +1,10 @@
-# BX25/08 closes the H17-POL-17/A3 Risk-folio bridge
+# Historical, superseded: BX25/08 Risk-folio bridge claim
 
 **Date:** 2026-11-20  
 **Scope:** K04 ESC-N / PS-261003-0417 source recovery  
-**Status:** Positive source cross-reference; coupon value still absent
+**Status:** WITHDRAWN AS CURRENT EVIDENCE — historical record only
+
+> **Handling restriction (2026-11-20 14:38Z):** This report predates the active hash-only restriction in `results/h17-missing-evidence-request.md` and relies on opening/decrypting/rendering the exact supplied BX25-08 PDF. That restriction prohibits opening, decrypting, OCR, rendering, extracting or scanning the PDF, and says not to rely on earlier content summaries as authenticated host, coupon, release-setting or K08 witnesses. Preserve this file only as a record of the superseded investigation. **Do not use any PDF-derived field, folio/property/asset conclusion, 8131 value, rendered-page hash, or purported bridge from this report as current evidence.** The original PDF's SHA-256, computed without reading its contents, is `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. The independent supplier CSV and print-fleet note remain separate records; they do not themselves establish the PDF's internal content or bridge.
 
 ## Question
 
