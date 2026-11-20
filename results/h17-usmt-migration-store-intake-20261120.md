@@ -42,7 +42,7 @@ The helper:
 - accepts an authorized decryption key **file**, never a plaintext key argument;
 - never invokes LoadState and never writes to the source store.
 
-Six local unit tests pass against a fake UsmtUtils executable. This validates command construction, output safety, logging, and hashing only; it does not validate a real USMT store or Windows ADK behavior.
+Seven local unit tests pass against a fake UsmtUtils executable. This validates command construction, output safety, logging, and hashing only; it does not validate a real USMT store or Windows ADK behavior.
 
 Example on a Windows system with the matching ADK installed:
 
