@@ -28,9 +28,9 @@ The reproducer reads the six accepted values from candidate.json, K04/K08 consta
 | K04 masked component | D939 | N14 |
 | K08 desk nonce | F797 | N14 |
 
-The N14 result is not specific to the two missing slots: **four of eight** slot inputs select N14, including already accepted K03 and K07. K02/K05/K06 select N10 and K01 selects N12. Thus the shared N14 output is compatible with a common address convention, but it does not independently identify a K04/K08 shared physical carrier.
+The N14 result is not specific to the two missing slots: **four of eight** slot inputs select N14, including already accepted K03 and K07. K02/K05/K06 select N10 and K01 selects N12. This is a nontrivial cross-slot address cluster, not a missing-slot-only convergence. Under an iid-uniform four-bit selector null, the probability that any of 16 selector values receives at least four of eight inputs is 1.3928%; the probability of an exact 4/3/1 occupancy pattern across any three selector values is 0.0219%. These are descriptive null calculations, not p-values: the second-stage reducer and note-index interpretation were explored after source inspection, and the eight inputs may not be independent. Preserve N14 as a candidate shared address for multiple components, but do not equate the address with a physical image or prove that the image is the PS-0417 render or Emily's final caption.
 
-Under an ideal independent-uniform four-bit selector null, two constants collide with probability 1/16. That is only a reference calculation, not a p-value: the reducer, input set, and note interpretation were selected after earlier source exploration, and no source-authored rule says to apply this reducer to both constants and interpret the output as a photograph ID.
+For the two missing-slot constants alone, an ideal independent-uniform four-bit selector gives a collision probability of 1/16. That is only a reference calculation, not a significance claim: no source-authored rule explicitly says to apply this reducer to both constants and interpret the output as a photograph ID.
 
 ### Matched printer controls
 
