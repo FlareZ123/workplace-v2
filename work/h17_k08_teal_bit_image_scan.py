@@ -86,7 +86,7 @@ def _ngrams(text: str, max_words: int = 48) -> Iterator[str]:
                 yield phrase
 
 
-def _bit_variants(image: Image.Image) -> Iterator[tuple[str, np.ndarray]]:
+def _bit_variants(image: Image.Image, source_literal_only: bool = False) -> Iterator[tuple[str, np.ndarray]]:
     rgba = np.asarray(image.convert("RGBA"), dtype=np.uint8)
     # Include hue as a separate channel: a literal "teal bit" may refer to the
     # green/blue balance rather than one raw RGB channel.
@@ -105,6 +105,8 @@ def _bit_variants(image: Image.Image) -> Iterator[tuple[str, np.ndarray]]:
         values = channel.ravel(order="C")[teal_indices]
         bits = ((values >> bit_positions) & 1).astype(np.uint8)
         yield f"teal-mask-{channel_name}-low-if-even", bits
+    if source_literal_only:
+        return
     channels = {
         "green": rgba[:, :, 1],
         "blue": rgba[:, :, 2],
@@ -150,9 +152,7 @@ def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 48) -
             if frames > 1:
                 opened.seek(frame)
             image = opened.copy()
-            for layout, bits in _bit_variants(image):
-                if layout not in SOURCE_LITERAL_LAYOUTS:
-                    continue
+            for layout, bits in _bit_variants(image, source_literal_only=True):
                 seen: set[str] = set()
                 for run in _candidate_texts(bits):
                     # Keep only short runs likely to be a caption; long random
@@ -232,11 +232,13 @@ def scan_authorized_n14_image(
     """Run the frozen decoder on exactly one manifest-bound N14 image."""
     source_link = validate_n14_source_manifest(image_path, manifest_path)
     matches = scan_image(image_path, nonce, commitment, max_words=max_words)
+    with Image.open(image_path) as opened:
+        frames_scanned = getattr(opened, "n_frames", 1)
     return {
         "image": {
             "path": str(image_path),
             "sha256": source_link["image_sha256"],
-            "frames_scanned": getattr(Image.open(image_path), "n_frames", 1),
+            "frames_scanned": frames_scanned,
         },
         "source_link_assertion": source_link,
         "layouts_tested": list(SOURCE_LITERAL_LAYOUTS),
