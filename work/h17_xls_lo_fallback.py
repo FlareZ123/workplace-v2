@@ -5,7 +5,8 @@ This is a format adapter for the H-17 K08 intake path, not a source scanner.
 It hashes the original, converts a temporary copy with headless LibreOffice in
 an isolated profile, and emits workbook text streams with cell coordinates,
 row/sheet order, comments, hyperlinks, hidden-sheet contents, formulas, cached
-values and defined names. The original file is never modified.
+values, defined names and embedded-image metadata. Image bytes are emitted only
+when the caller explicitly allowlists cell anchors. The original file is never modified.
 
 LibreOffice conversion can recalculate formulas and may not preserve every
 legacy object. Treat extracted text as a search aid; retain and authenticate
@@ -14,6 +15,7 @@ the original workbook independently.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -26,6 +28,9 @@ from typing import Any
 
 MAX_WORKBOOK_BYTES = 64 * 1024 * 1024
 MAX_CELLS = 250_000
+MAX_EMBEDDED_IMAGES = 32
+MAX_EMBEDDED_IMAGE_BYTES = 8 * 1024 * 1024
+MAX_EMBEDDED_IMAGE_TOTAL_BYTES = 32 * 1024 * 1024
 STYLE_COORDS = ("M10", "C3", "EX4", "AT171", "HN28", "DZ122", "DT205", "AI96", "C67", "Z201")
 
 
@@ -85,8 +90,91 @@ def _column_is_hidden(sheet: Any, column_index: int, column_letter: str) -> bool
     return bool(dimension.hidden) if dimension is not None else False
 
 
+
+def _image_anchor_cell(image: Any, get_column_letter: Any) -> str | None:
+    """Return a stable A1 cell anchor for an openpyxl drawing image."""
+    anchor = getattr(image, "anchor", None)
+    if isinstance(anchor, str):
+        return anchor.upper()
+    marker = getattr(anchor, "_from", None)
+    row = getattr(marker, "row", None)
+    column = getattr(marker, "col", None)
+    if isinstance(row, int) and isinstance(column, int) and row >= 0 and column >= 0:
+        return f"{get_column_letter(column + 1)}{row + 1}"
+    return None
+
+
+def _extract_embedded_images(
+    workbook: Any,
+    include_image_data: bool = False,
+    allowed_anchors: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    """Inventory converted-workbook images; emit bytes only for explicit anchors.
+
+    Limits apply to the converted workbook's extracted image payloads. This is
+    a bounded intake aid, not proof of an image's historical identity.
+    """
+    allowed = {str(anchor).strip().upper() for anchor in (allowed_anchors or set())
+               if str(anchor).strip()}
+    if include_image_data and not allowed:
+        raise ValueError("image-byte emission requires at least one explicit allowed cell anchor")
+
+    try:
+        from openpyxl.utils import get_column_letter
+    except ImportError as exc:  # pragma: no cover - openpyxl is already required by extract()
+        raise RuntimeError("openpyxl utilities are required for image anchors") from exc
+
+    records: list[dict[str, Any]] = []
+    total_bytes = 0
+    image_count = 0
+    for sheet in workbook.worksheets:
+        for image_index, image in enumerate(getattr(sheet, "_images", []), start=1):
+            image_count += 1
+            if image_count > MAX_EMBEDDED_IMAGES:
+                raise RuntimeError(f"embedded image count exceeds {MAX_EMBEDDED_IMAGES}")
+            anchor = _image_anchor_cell(image, get_column_letter)
+            record: dict[str, Any] = {
+                "sheet": sheet.title,
+                "sheet_state": sheet.sheet_state,
+                "image_index": image_index,
+                "anchor": anchor,
+                "format": getattr(image, "format", None),
+                "width": getattr(image, "width", None),
+                "height": getattr(image, "height", None),
+                "data_included": False,
+            }
+            try:
+                data = image._data()
+            except Exception as exc:
+                record["error"] = f"image-data:{type(exc).__name__}:{exc}"
+                records.append(record)
+                continue
+            if not isinstance(data, bytes) or not data:
+                record["error"] = "image-data-empty-or-not-bytes"
+                records.append(record)
+                continue
+
+            record["size_bytes"] = len(data)
+            record["sha256"] = hashlib.sha256(data).hexdigest()
+            if len(data) > MAX_EMBEDDED_IMAGE_BYTES:
+                record["reason"] = "per_image_size_limit"
+            elif total_bytes + len(data) > MAX_EMBEDDED_IMAGE_TOTAL_BYTES:
+                record["reason"] = "total_image_size_limit"
+            else:
+                total_bytes += len(data)
+                if include_image_data and anchor in allowed:
+                    record["data_base64"] = base64.b64encode(data).decode("ascii")
+                    record["data_included"] = True
+                elif include_image_data:
+                    record["reason"] = "anchor_not_allowlisted"
+                else:
+                    record["reason"] = "metadata_only"
+            records.append(record)
+    return records
+
 def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
-            source_name: str | None = None) -> dict[str, Any]:
+            source_name: str | None = None, include_image_data: bool = False,
+            allowed_image_anchors: set[str] | None = None) -> dict[str, Any]:
     path = path.expanduser().absolute()
     info = path.lstat()
     if path.is_symlink() or not path.is_file():
@@ -226,6 +314,11 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
             defined_names.append(record)
             add(f"<defined-name:{name}>", "defined_name", record["attr_text"])
 
+        embedded_images = _extract_embedded_images(
+            formula_book, include_image_data=include_image_data,
+            allowed_anchors=allowed_image_anchors,
+        )
+
         props = formula_book.properties
         properties = {
             key: _plain(getattr(props, key, None))
@@ -255,6 +348,7 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
             "sheets": sheet_meta,
             "style_metadata": style_metadata,
             "style_metadata_scope": list(STYLE_COORDS),
+            "embedded_images": embedded_images,
             "defined_names": defined_names,
             "properties": properties,
             "cell_count": count,
@@ -263,7 +357,8 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
 
 
 def extract_bytes(data: bytes, source_name: str, timeout: int = 60,
-                  max_cells: int = MAX_CELLS) -> dict[str, Any]:
+                  max_cells: int = MAX_CELLS, include_image_data: bool = False,
+                  allowed_image_anchors: set[str] | None = None) -> dict[str, Any]:
     """Adapt an in-memory archive member through a short-lived temporary copy."""
     if not isinstance(data, bytes) or not data:
         raise ValueError("workbook bytes must be a non-empty bytes object")
@@ -278,8 +373,11 @@ def extract_bytes(data: bytes, source_name: str, timeout: int = 60,
         os.chmod(member, 0o600)
         if sha256_file(member) != digest:
             raise RuntimeError("temporary member copy does not match input SHA-256")
-        result = extract(member, timeout=timeout, max_cells=max_cells,
-                         source_name=source_name)
+        result = extract(
+            member, timeout=timeout, max_cells=max_cells, source_name=source_name,
+            include_image_data=include_image_data,
+            allowed_image_anchors=allowed_image_anchors,
+        )
         if sha256_file(member) != digest:
             raise RuntimeError("temporary member changed during intake")
         result["source_bytes"] = len(data)
@@ -297,6 +395,10 @@ def main() -> int:
                         help="write ordered cell/row/sheet/comment text for existing phrase intake")
     parser.add_argument("--timeout", type=int, default=60)
     parser.add_argument("--max-cells", type=int, default=MAX_CELLS)
+    parser.add_argument("--include-image-data", action="store_true",
+                        help="include base64 bytes only for explicitly allowlisted image anchors")
+    parser.add_argument("--image-anchor", action="append", default=[],
+                        help="cell anchor eligible for image-byte emission; repeat as needed")
     args = parser.parse_args()
     source = args.workbook.expanduser().absolute()
     outputs = [p for p in (args.json_out, args.text_out) if p is not None]
@@ -307,7 +409,15 @@ def main() -> int:
         raise ValueError("--json-out and --text-out must be different paths")
     if args.timeout <= 0 or args.max_cells <= 0:
         raise ValueError("timeout and max-cells must be positive")
-    result = extract(source, timeout=args.timeout, max_cells=args.max_cells)
+    if args.image_anchor and not args.include_image_data:
+        raise ValueError("--image-anchor requires --include-image-data")
+    if args.include_image_data and not args.image_anchor:
+        raise ValueError("--include-image-data requires at least one explicit --image-anchor")
+    result = extract(
+        source, timeout=args.timeout, max_cells=args.max_cells,
+        include_image_data=args.include_image_data,
+        allowed_image_anchors=set(args.image_anchor),
+    )
     if args.json_out:
         args.json_out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if args.text_out:
@@ -318,7 +428,8 @@ def main() -> int:
         args.text_out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps({k: result[k] for k in (
         "source_name", "source_bytes", "source_sha256_before", "source_unchanged",
-        "converted_sha256", "converter", "sheets", "style_metadata", "defined_names", "cell_count",
+        "converted_sha256", "converter", "sheets", "style_metadata", "embedded_images",
+        "defined_names", "cell_count",
     )}, ensure_ascii=False, indent=2))
     return 0
 
