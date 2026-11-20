@@ -43,6 +43,20 @@ The PS-0323 16-byte payload itself is not the K08 component: its SHA-256 does no
 
 For a recovered native print object, reuse the existing bounded read-only parsers: `work/h17_emf_text.py` for EMF/EMFSPOOL, `work/h17_xps_text.py` for XPS/OXPS UnicodeString runs, and `work/h17_xps_glyph_indices.py` for XPS glyph-index-only runs where UnicodeString is absent. Preserve the original spool bytes and the extractor's coverage/status. These tools do not recover bitmap-only or outline-only text; an empty/incomplete extraction is not a complete negative. Use the historical renderer and/or OCR only when the native text records do not contain the caption.
 
+## Conditional shared ESC-N rendered-label path: PS-0417 attempt-1 LABEL
+
+A second cross-slot carrier is worth retaining separately from the N23→PS-0323 sequence locator:
+
+- The records-custodian note defines K08 as the personal caption used to distinguish the recovery envelope from similarly named commissioning and standby envelopes. MAIL-20 makes the final words on the recovery-envelope face authoritative.
+- MAIL-16 explicitly excludes ESC-S from the keeper phrase but does not establish whether ESC-N carries the wording. The incident-date route transcription maps ESC-N to PS-261003-0417.
+- The retained spool reconstruction has a 16:45Z `LABEL/ACK` row for PS-0417, followed by 18:01Z `RECOVER/REQUESTED`, 18:02Z `RECOVER/ACK`, and 18:03Z `RECOVER/REQUESTED`. The K04 rule selects the 18:02Z RECOVER ACK; the earlier LABEL is not a K04 input.
+- PS-0417 is the only retained same-JOB `LABEL/ACK → RECOVER` sequence. PS-0420 is a useful control with `STORES/ACK → RECOVER/ACK`, and MAIL-16 explicitly identifies WATCH-SPARE as unrelated. This control prevents treating multi-class same-JOB behavior alone as an envelope link; PS-0417's LABEL class remains a distinct but unverified carrier clue.
+- If the sequence-only N23→PS-0323 association is correct, its 08:55Z margin/draft locator precedes the PS-0417 16:45Z LABEL row, making the later label a plausible final-envelope stage. That crosswalk is not an authenticated foreign key, and chronology does not prove the label was attached to the recovery envelope.
+
+**Conditional operation:** if an independently authorized native PS-0417 LABEL object is recovered, preserve its original document and native spool object (`.SPL/.SHD` or host equivalent), queue/job manifest, driver/processor/port metadata, all attempt/class records, rendered output, physical collection/affix witness and custody. Extract the complete label text from the native document/render (not the 16-byte PAYLOAD token), then apply the unchanged K08 normalization and HMAC. Keep the 18:02Z RECOVER object separate for K04 and PS-0420 as a negative control. Existing bounded EMF/XPS parsers and the K08 image/OCR intake can be reused; do not build a duplicate renderer or scanner.
+
+This is a source-grounded **acquisition hypothesis**, not a complete-text constructor from the current export. No native PS-0417 media object, rendered page, queue manifest or output-to-envelope witness is present. The 16-byte LABEL payload is not the phrase; a same-JOB identifier, class label, route or time sequence alone does not authenticate the final inscription. Keep this path distinct from PS-0323 until a source manifest or physical envelope association joins them.
+
 ## Conditional source-authored correspondence-version path
 
 The redacted MAIL-11/MAIL-20 exports are not complete native threads: the supplied EMLs are single-part text/plain, omit usable References/In-Reply-To headers and attachments, and the records-custodian note says repeated quoted reply material was omitted. The incident-date Message-ID tokens in the export are templated/prepublication identifiers, not authenticated native mailbox keys.
