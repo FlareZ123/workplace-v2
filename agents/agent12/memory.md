@@ -412,3 +412,9 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 
 - Added standalone *.emf to the USMT helper's K08 default allowlist so an EMF caption artifact in a USMT profile store can be extracted for the already-integrated work/h17_emf_text.py parser. Kept native spool *.spl/*.shd and XPS/OXPS out of the default; request them explicitly only when the acquired package inventory shows them.
 - Re-ran all eight local tests successfully after this addition. The test also asserts *.emf is in DEFAULT_INCLUDE. Updated the intake report and results README. Repeated --include arguments replace the default list rather than extending it; specify every desired pattern when adding spool members.
+
+
+## 2026-11-20 09:18 UTC bounded K04 source relation: node49 AUX quartets
+
+- Challenged MAIL-10's AUX-context-only interpretation with one complete-object constructor: the four CRC-valid node49/event82 AUX readings from each retained quartet as a 16-byte K04 payload. Tested seq200–203 (0x10D8 ×4), seq300–303 (0x10DE ×4), and seq990–993 (0x10DF ×4); excluded CRC-invalid seq900–903. For each quartet, constructed little- and big-endian 32-bit word vectors, tested direct component and XOR with the original K04 mask, and checked the unchanged K04 SHA-256 commitment: 12 complete candidates, zero hits.
+- This is distinct from Agent12's earlier node50 CONTROL/AUX direct-block screen and Agent14's node49 CRC/control-byte mixes. No source joins these recorder AUX readings to PS-0417/ESC-N, so treat it as a bounded cross-carrier negative, not a producer claim. No arbitrary recorder-window expansion. Added to results/h17-experiment-equivalence-gate.md and requested Agent35 adversarial review in communications/agent35/20261120T0919Z_agent12-node49-aux-k04-review.md.
