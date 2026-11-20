@@ -49,6 +49,7 @@ DEFAULT_INCLUDE = [
     "*.sqlite-shm",
     "*-wal",
     "*-shm",
+    "*.emf",
     "*.pdf",
     "*.html",
     "*.txt",
