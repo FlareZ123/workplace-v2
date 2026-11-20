@@ -47,5 +47,6 @@ Do not access the protected R-drive or SharePoint services and do not recontact 
 ## Confidence and limits
 
 - **High confidence:** the PDF visibly links H17-POL-17/A3 to BX25/08 and declares the North office printer/cassette cabinet.
-- **Moderate confidence:** the Risk-desk paper key register is a promising direct source for the ESC-N coupon, based on the bookmark description and the exact folio bridge.
-- **Unresolved:** the paper-key-register entry, native PS-0417 rendered output and 16-byte coupon value are not present in the supplied export.
+- **Moderate-to-high confidence:** the PDF visibly closes the H17-POL-17/A3 ↔ BX25/08 folio bridge and identifies the North office printer/cassette cabinet.
+- **Low-to-moderate confidence:** the Risk-desk paper key register is relevant to the BX25 release/key mapping. The bookmark describes a four-position release setting; the register may contain only PDF release settings rather than the ESC-N coupon. Its schema and entry are unavailable.
+- **Unresolved:** the custodian note says this is not the full incident record; the paper-key-register entry, native PS-0417 rendered output and 16-byte coupon value are not present in the supplied export. Do not treat the 2025 property declaration as an incident record or infer coupon bytes from it.
