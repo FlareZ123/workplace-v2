@@ -45,6 +45,18 @@ class UsmtIntakeTests(unittest.TestCase):
             self.assertEqual(args[0], "/verify:all")
             self.assertEqual(args[1], str(store.resolve()))
 
+    def test_related_store_files_captures_all_segments(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            primary = root / "store.mig"
+            primary.write_bytes(b"primary")
+            (root / "store.mig01").write_bytes(b"segment-1")
+            (root / "store.mig02").write_bytes(b"segment-2")
+            (root / "unrelated.mig01").write_bytes(b"unrelated")
+            paths = usmt.related_store_files(primary)
+            self.assertEqual([p.name for p in paths], ["store.mig", "store.mig01", "store.mig02"])
+            self.assertEqual(len(usmt.hash_store_set(primary)), 3)
+
     def test_extract_hashes_outputs(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
