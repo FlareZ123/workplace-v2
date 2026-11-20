@@ -1,6 +1,7 @@
 """Synthetic round-trip tests for the optional LibreOffice BIFF adapter."""
 from __future__ import annotations
 
+import base64
 import hashlib
 import shutil
 import subprocess
@@ -20,17 +21,19 @@ except ImportError:  # standalone helper test outside the repository
 try:
     from openpyxl import Workbook
     from openpyxl.comments import Comment
+    from openpyxl.drawing.image import Image as XLImage
     from openpyxl.styles import Alignment, Font, PatternFill
     from openpyxl.workbook.defined_name import DefinedName
+    from PIL import Image as PILImage
 except ImportError:  # pragma: no cover - environment-dependent
     Workbook = None
-    Alignment = Font = PatternFill = None
+    Alignment = Font = PatternFill = XLImage = PILImage = None
 
 
 class LegacyXlsFallbackTests(unittest.TestCase):
     @unittest.skipUnless(
-        (shutil.which("libreoffice") or shutil.which("soffice")) and Workbook,
-        "LibreOffice and openpyxl are required",
+        (shutil.which("libreoffice") or shutil.which("soffice")) and Workbook and XLImage and PILImage,
+        "LibreOffice, openpyxl and Pillow are required",
     )
     def test_ordered_cells_comments_hidden_sheet_and_formula_cache(self) -> None:
         with tempfile.TemporaryDirectory(prefix="h17-xls-test-") as tmp_name:
@@ -56,6 +59,10 @@ class LegacyXlsFallbackTests(unittest.TestCase):
             sheet["C3"].fill = PatternFill(fill_type="solid", fgColor="FFFFFFFF", bgColor="FFFFFFFF")
             sheet["C3"].font = Font(color="FF000000")
             sheet["C3"].alignment = Alignment(wrap_text=False, horizontal="left", vertical="top")
+            image_path = root / "fixture.png"
+            PILImage.new("RGB", (16, 16), (0, 160, 160)).save(image_path, format="PNG")
+            image_bytes = image_path.read_bytes()
+            sheet.add_image(XLImage(str(image_path)), "M10")
             hidden = book.create_sheet("Hidden")
             hidden.sheet_state = "hidden"
             hidden["A1"] = "hidden sheet phrase"
@@ -82,10 +89,35 @@ class LegacyXlsFallbackTests(unittest.TestCase):
             original_hash = hashlib.sha256(source_xls.read_bytes()).hexdigest()
 
             result = extract(source_xls)
-            member_result = extract_bytes(source_xls.read_bytes(), "archive/mug-stock.xls")
+            member_bytes = source_xls.read_bytes()
+            member_result = extract_bytes(
+                member_bytes, "archive/mug-stock.xls",
+                include_image_data=True, allowed_image_anchors={"M10"},
+            )
+            nonmatching_image_result = extract_bytes(
+                member_bytes, "archive/mug-stock.xls",
+                include_image_data=True, allowed_image_anchors={"C3"},
+            )
+            with self.assertRaises(ValueError):
+                extract_bytes(member_bytes, "archive/mug-stock.xls", include_image_data=True)
             self.assertEqual(member_result["source_name"], "archive/mug-stock.xls")
             self.assertTrue(member_result["source_unchanged"])
             self.assertEqual(member_result["source_sha256_before"], original_hash)
+            image_meta = result["embedded_images"]
+            self.assertEqual(len(image_meta), 1)
+            self.assertEqual(image_meta[0]["anchor"], "M10")
+            self.assertEqual(image_meta[0]["format"], "png")
+            self.assertFalse(image_meta[0]["data_included"])
+            self.assertNotIn("data_base64", image_meta[0])
+            self.assertEqual(image_meta[0]["sha256"], hashlib.sha256(image_bytes).hexdigest())
+            member_image = member_result["embedded_images"][0]
+            self.assertTrue(member_image["data_included"])
+            self.assertEqual(base64.b64decode(member_image["data_base64"]), image_bytes)
+            self.assertEqual(member_image["sha256"], hashlib.sha256(image_bytes).hexdigest())
+            blocked_image = nonmatching_image_result["embedded_images"][0]
+            self.assertFalse(blocked_image["data_included"])
+            self.assertEqual(blocked_image["reason"], "anchor_not_allowlisted")
+            self.assertEqual(nonmatching_image_result["source_sha256_before"], original_hash)
             member_texts = [item["text"] for item in member_result["text_streams"]]
             self.assertTrue(any("sea at the end of the night" in text for text in member_texts))
             streams = result["text_streams"]
