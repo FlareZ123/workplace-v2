@@ -26,6 +26,8 @@ jobs:
           python -m py_compile \
             work/h17_doc_lo_fallback.py \
             work/h17_xls_lo_fallback.py \
+            work/h17_biff_officeart.py \
+            work/test_h17_biff_officeart.py \
             work/h17_ax7782_k08_phrase_intake.py \
             work/h17_ax7782_k08_sqlite_bridge.py \
             work/h17_ax7782_joint_intake.py \
@@ -37,6 +39,7 @@ jobs:
           python -m unittest -v \
             work.test_h17_doc_lo_fallback \
             work.test_h17_xls_lo_fallback \
+            work.test_h17_biff_officeart \
             work.test_h17_ax7782_k08_sqlite_bridge \
             work.test_h17_ax7782_joint_intake \
             work.test_h17_sticky_notes_intake
