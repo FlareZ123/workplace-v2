@@ -53,10 +53,11 @@ def read_sources(root: Path):
 
 
 def ticket_ids(rows, account: str, folio: str) -> list[int]:
+    # The supplier export's actual header is "folio_or_jacket", not "folio".
     return sorted({
         int(r["line_ref"].split("-")[1])
         for r in rows
-        if r.get("account") == account and r.get("folio") == folio
+        if r.get("account") == account and r.get("folio_or_jacket") == folio
     })
 
 
@@ -100,11 +101,19 @@ def main() -> None:
     groups = {
         "L29/N FA-17": ticket_ids(posted, "FA-17", "H17-POL-17/A3"),
         "L28 FA-17": ticket_ids(posted, "FA-17", "H17-POL-17/A2"),
-        "L29/S LV-42": ticket_ids(posted, "LV-42", "H17-POL-17/B4"),
-        "Watch ST-09": ticket_ids(posted, "ST-09", "H17-POL-17/C1"),
+        "L29/S LV-42": ticket_ids(posted, "LV-42", "CS-18/5"),
+        "Watch ST-09": ticket_ids(posted, "ST-09", "STORES/FLT"),
     }
     if set(groups["L29/N FA-17"]) != set(NORTH_ORDER):
         raise AssertionError(f"Unexpected L29/N ticket set: {groups['L29/N FA-17']}")
+    if set(groups["L28 FA-17"]) != {87, 98}:
+        raise AssertionError(f"Unexpected L28 FA-17 holdout set: {groups['L28 FA-17']}")
+    if set(groups["L29/S LV-42"]) != {121, 130, 135, 142, 151}:
+        raise AssertionError(f"Unexpected L29/S LV-42 control set: {groups['L29/S LV-42']}")
+    if set(groups["Watch ST-09"]) != {157, 164}:
+        raise AssertionError(f"Unexpected Watch ST-09 control set: {groups['Watch ST-09']}")
+    # Keep the source-authored binder order for the North set, not numeric sort.
+    groups["L29/N FA-17"] = list(NORTH_ORDER)
 
     scored = []
     for offset in range(200, 401):
@@ -118,10 +127,13 @@ def main() -> None:
 
     scored.sort(key=lambda x: x[:5], reverse=True)
     print("\nTop offsets by North PTW coverage, bay diversity, and L28 holdout:")
-    for nptw, bays, oldptw, nps, ops, offset, _ in scored[:12]:
+    for nptw, bays, oldptw, nps, ops, offset, summary in scored[:12]:
+        south = summary["L29/S LV-42"]
+        watch = summary["Watch ST-09"]
         print(
             f"  +{offset}: North PTW {nptw}/5, bays {bays}/4, "
-            f"L28 PTW {oldptw}/2, North PS {nps}/5, L28 PS {ops}/2"
+            f"L28 PTW {oldptw}/2, North PS {nps}/5, L28 PS {ops}/2, "
+            f"South PS {south['ps']}/5, Watch PS {watch['ps']}/2"
         )
 
     for offset in (300, 304):
@@ -137,9 +149,12 @@ def main() -> None:
         mapped_gaps = [300 + gap - offset for gap in GAPS]
         print(f"  p951 gaps {GAPS} map to ST IDs {tuple(mapped_gaps)}")
 
-    print("\nInterpretation: offsets are hypotheses only. No source in this export explicitly")
-    print("pairs an ST ticket ID with a PTW permit or PS job. Retrieve the original")
-    print("SEP26 return index or a paired ticket before using inferred ST IDs.")
+    print("\nInterpretation: +304 is the strongest empirical join in this bounded scan: it")
+    print("maps 4/5 L29/N tickets to four distinct singleton PTW bays, all 5/5 to PS jobs,")
+    print("and both L28 FA-17 holdout tickets to PTW and PS jobs. The South and Watch")
+    print("groups act as cross-account controls. This is strong cross-source evidence,")
+    print("not an explicit source-authored foreign key; retain that distinction. The join")
+    print("does not by itself establish a K04 coupon construction.")
 
 
 if __name__ == "__main__":
