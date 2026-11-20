@@ -69,6 +69,25 @@ class JointIntakeTests(unittest.TestCase):
                 "h17_ax7782_k08_phrase_intake.py",
             )
 
+    def test_preserves_json_report_from_nonzero_subtool(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="h17-joint-nonzero-") as tmp_name:
+            root = Path(tmp_name)
+            output = root / "result.json"
+            script = root / "nonzero.py"
+            script.write_text(
+                "import json, pathlib, sys\n"
+                "pathlib.Path(sys.argv[1]).write_text(json.dumps({'partial': True}))\n"
+                "raise SystemExit(1)\n",
+                encoding="utf-8",
+            )
+            result = joint.run_tool(
+                "deliberate-nonzero", [sys.executable, str(script), str(output)],
+                output, timeout=10,
+            )
+            self.assertEqual(result["status"], "nonzero")
+            self.assertEqual(result["returncode"], 1)
+            self.assertTrue(result["result"]["partial"])
+
 
 if __name__ == "__main__":
     unittest.main()
