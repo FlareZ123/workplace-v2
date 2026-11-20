@@ -20,7 +20,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libreoffice-calc libreoffice-writer
           python -m pip install --upgrade pip
-          python -m pip install openpyxl pillow python-docx lxml
+          python -m pip install openpyxl pillow python-docx lxml numpy
       - name: Compile read-only intake adapters
         run: |
           python -m py_compile \
@@ -40,3 +40,6 @@ jobs:
             work.test_h17_ax7782_k08_sqlite_bridge \
             work.test_h17_ax7782_joint_intake \
             work.test_h17_sticky_notes_intake
+      - name: Run source-limited N14 teal-image positive and negative controls
+        run: |
+          python -m unittest discover -s tests -p 'test_h17_k08_teal_bit_image_scan.py' -v
