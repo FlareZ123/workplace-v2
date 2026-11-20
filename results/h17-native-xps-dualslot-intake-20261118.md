@@ -52,3 +52,14 @@ The helper now also exposes `extract_xps_glyph_streams(data)`, returning per-pag
 
 
 A scanner-compatible adapter, `extract_xps_glyph_streams(data)`, now returns `(label, UTF-8 bytes)` variants matching the existing XPS text extractor interface. An additional adversarial test confirms ambiguous cmap reverse mappings are refused rather than guessed. The helper suite is now **13/13 PASS locally**; its integration remains pending and the source boundary is unchanged.
+
+
+## Status correction — 2026-11-20
+
+The pending-integration statements above are historical and are superseded by the current main-branch code:
+
+- `work/h17_k04_binary_window_intake.py` imports `extract_xps_glyph_streams` and invokes it for XPS members.
+- `work/h17_profile_k08_phrase_scan.py` imports and invokes the same helper.
+- `work/test_h17_xps_glyph_indices.py` includes K04 and K08 scanner-integration tests.
+
+Accordingly, glyph-index-only XPS text is now covered by both scanner entry points, subject to the helper's explicit completeness and resource-limit reporting. This correction changes tool-status reporting only: the supplied local export still contains no original native PS-0417 XPS package, and no K04 or K08 component has been recovered. Bitmap-only content, vector outlines, unsupported image formats, and non-OPC spool framing remain outside this text/glyph extractor's coverage.
