@@ -309,6 +309,9 @@ def _parse_fopt(payload: bytes, instance: int, shape: dict[str, Any] | None,
         if not (opid & 0x8000):
             if property_id == PROP_PIB and shape is not None:
                 shape["pib"] = value
+                shape["pib_fbid"] = bool(opid & 0x4000)
+                if not shape["pib_fbid"]:
+                    warnings.append("FOPT pib property is missing the fBid BLIP-reference flag")
             continue
         end = complex_offset + value
         if end > len(payload):
