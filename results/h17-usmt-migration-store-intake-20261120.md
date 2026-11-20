@@ -67,7 +67,7 @@ If an authorized AX-7782 object or a separately preserved profile-refresh packag
 1. Preserve and hash the original object and its eight chunk reconstruction.
 2. Identify the actual container format for that specific object; do not assume .mig or assume AX-7782 and the profile-refresh package are the same object.
 3. If UsmtUtils /verify:all accepts it, preserve the verification log and extract only to a new isolated directory.
-4. Feed any recovered mug-stock.xls to the existing BIFF/M10 intake and photos/sidecars to the K08 phrase intake. Do not infer a K04 spool relationship from the profile-refresh package.
+4. Feed any recovered mug-stock.xls to the existing BIFF/M10 intake and photos/sidecars to the K08 phrase intake. If a native spool directory is independently identified within the acquired package, use the existing read-only SPL/SHD pairer and require SHD/job-ID plus queue/dispatch binding before treating it as PS-0417.
 5. If a separate profile image contains Windows/CSC, inspect the CSC namespace tree read-only first; ESE parsing is a fallback for metadata, not the first content-recovery step.
 
 No source bytes were available in the supplied ZIP or inspected repository at the time of this work. No K04/K08 component, source file, or recovery key has been recovered by this hypothesis.
