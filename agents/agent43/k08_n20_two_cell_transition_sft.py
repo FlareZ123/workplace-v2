@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Source-pinned K08 low-bit routing continuation.
+"""Exploratory K08 locator graph only — not a phrase decoder or recovery result.
+
+This script deliberately does not emit a complete normalized phrase or K08
+component. Its hardcoded note selection, first-letter cycle, end-letter
+rotation, and word-count alphabet are exploratory constructions, not
+independently source-specified rules. Outputs such as SANTE/MILK are locators
+only; they must never be promoted as K08 candidates without a new source-backed
+operation and an acceptance match.
+
 
 Target-blind closures:
   ATEALBIT -> M, TEA -> row 10       => M10
@@ -73,6 +81,8 @@ def main() -> None:
     source_map = {k: source_selector(v) for k, v in source.items()}
     assert source_map == {1: 12, 2: 11, 5: 10, 6: 10, 7: 11}
 
+    # Exploratory, post-hoc note subset: locator hypothesis only, not a
+    # source-authorized selection rule and not a phrase-construction step.
     selected = (2, 6, 11, 13, 17, 18, 20, 23)
     heads = "".join(words(body(notes[n]))[0][0].upper() for n in selected)
     assert heads == "ATEALBIT"
@@ -356,7 +366,7 @@ def main() -> None:
     print("N23_UNIQUE_TOKEN_TO_FIXED_POINT=WORDS->19")
     print("ALL_BODY_LOW19_TOKENS=N20:WANTED,N23:WORDS")
     print("N19_PATH_A1Z26=SMILK; CYCLE_SUFFIX=MILK")
-    print("PASS")
+    print("LOCATOR_GRAPH_ONLY; NO_COMPLETE_K08_PHRASE; NO_RECOVERY_CANDIDATE")
 
 if __name__ == "__main__":
     main()
