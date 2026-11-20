@@ -58,7 +58,8 @@ def _plain(value: Any) -> str | None:
     return str(value)
 
 
-def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS) -> dict[str, Any]:
+def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
+            source_name: str | None = None) -> dict[str, Any]:
     path = path.expanduser().absolute()
     info = path.lstat()
     if path.is_symlink() or not path.is_file():
@@ -193,7 +194,7 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS) -> dict[s
             raise RuntimeError("original workbook changed during intake")
 
         return {
-            "source_name": path.name,
+            "source_name": source_name or path.name,
             "source_bytes": info.st_size,
             "source_sha256_before": before_hash,
             "source_sha256_after": after_hash,
@@ -210,6 +211,33 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS) -> dict[s
             "cell_count": count,
             "text_streams": streams,
         }
+
+
+def extract_bytes(data: bytes, source_name: str, timeout: int = 60,
+                  max_cells: int = MAX_CELLS) -> dict[str, Any]:
+    """Adapt an in-memory archive member through a short-lived temporary copy."""
+    if not isinstance(data, bytes) or not data:
+        raise ValueError("workbook bytes must be a non-empty bytes object")
+    if Path(source_name).suffix.casefold() != ".xls":
+        raise ValueError("expected a legacy .xls member")
+    if len(data) > MAX_WORKBOOK_BYTES:
+        raise ValueError(f"workbook size exceeds {MAX_WORKBOOK_BYTES} bytes")
+    digest = hashlib.sha256(data).hexdigest()
+    with tempfile.TemporaryDirectory(prefix="h17-xls-member-") as temp_name:
+        member = Path(temp_name) / "source.xls"
+        member.write_bytes(data)
+        os.chmod(member, 0o600)
+        if sha256_file(member) != digest:
+            raise RuntimeError("temporary member copy does not match input SHA-256")
+        result = extract(member, timeout=timeout, max_cells=max_cells,
+                         source_name=source_name)
+        if sha256_file(member) != digest:
+            raise RuntimeError("temporary member changed during intake")
+        result["source_bytes"] = len(data)
+        result["source_sha256_before"] = digest
+        result["source_sha256_after"] = digest
+        result["source_unchanged"] = True
+        return result
 
 
 def main() -> int:
