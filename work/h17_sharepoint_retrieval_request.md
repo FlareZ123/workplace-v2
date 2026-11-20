@@ -6,6 +6,8 @@ If an independently authorized local copy is supplied, search these exact histor
 
 ## K04 / ESC-N
 
+The local BX25-08 property declaration visibly bridges policy file `H17-POL-17/A3` to transfer folio `BX25/08` and identifies the North office printer/cassette cabinet. It is a 2025 property declaration, not an incident record or coupon. The locally recovered PDF password `8131` is not authenticated against the absent `scanrelease.txt` and is not the K04 component. See `results/h17-k04-bx25-risk-folio-bridge-20261120.md`.
+
 1. `R:/Stores/returns/SEP26/index.htm`
 2. `R:/Records/INDEX/IR-261003-H17.txt`
 3. FA-17 / H17-POL-17/A3 asset card and September 2026 equipment-count / commissioning material
