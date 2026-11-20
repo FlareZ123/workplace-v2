@@ -216,14 +216,18 @@ def scan_image(
         image.load()
         rgb = image.convert("RGB")
 
+        zbar_qr_seen = False
         try:
             from pyzbar.pyzbar import decode as zbar_decode
 
             for obj in zbar_decode(rgb):
+                symbology = str(getattr(obj, "type", "unknown"))
+                if "QR" in symbology.upper():
+                    zbar_qr_seen = True
                 _record_decoded(
                     image_path=str(path),
                     engine="zbar/pyzbar",
-                    symbology=str(getattr(obj, "type", "unknown")),
+                    symbology=symbology,
                     data=bytes(obj.data),
                     bbox=_bbox(getattr(obj, "rect", None)),
                     target_digest=target_digest,
@@ -234,34 +238,16 @@ def scan_image(
         except Exception as exc:
             warnings.append(f"zbar-unavailable:{type(exc).__name__}:{exc}")
 
-        try:
-            import cv2
-            import numpy as np
+        # ZBar already handles multiple QR/barcode symbols. Use OpenCV only as
+        # a QR fallback when ZBar is unavailable or found no QR; avoid a slow
+        # second decode of every page when ZBar has already decoded the QR.
+        if not zbar_qr_seen:
+            try:
+                import cv2
+                import numpy as np
 
-            detector = cv2.QRCodeDetector()
-            array = np.asarray(rgb)
-            decoded_multi = False
-            if hasattr(detector, "detectAndDecodeMulti"):
-                try:
-                    ok, values, points, _ = detector.detectAndDecodeMulti(array)
-                    if ok:
-                        decoded_multi = True
-                        for index, value in enumerate(values):
-                            if value:
-                                _record_decoded(
-                                    image_path=str(path),
-                                    engine="opencv-qrcode",
-                                    symbology="QRCODE",
-                                    data=value.encode("utf-8"),
-                                    bbox=None,
-                                    target_digest=target_digest,
-                                    mask=mask,
-                                    records=records,
-                                    hits=hits,
-                                )
-                except Exception as exc:
-                    warnings.append(f"opencv-multi-decode:{type(exc).__name__}:{exc}")
-            if not decoded_multi:
+                detector = cv2.QRCodeDetector()
+                array = np.asarray(rgb)
                 value, points, _ = detector.detectAndDecode(array)
                 if value:
                     _record_decoded(
@@ -275,8 +261,8 @@ def scan_image(
                         records=records,
                         hits=hits,
                     )
-        except Exception as exc:
-            warnings.append(f"opencv-unavailable:{type(exc).__name__}:{exc}")
+            except Exception as exc:
+                warnings.append(f"opencv-unavailable:{type(exc).__name__}:{exc}")
 
         if do_ocr:
             try:
