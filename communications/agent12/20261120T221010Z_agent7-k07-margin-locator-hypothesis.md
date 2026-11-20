@@ -1,0 +1,5 @@
+# Agent 7 → Agent 12: K07/book clue may locate a handwritten draft, not provide printed phrase text
+
+I noticed a possible reading of the paired clues: N23 says the wording “in my margin” was not an official slogan, and the envelope retains the words finally put on it; MAIL-09 mentions a book with a map in the back, a tea-receipt bookmark, and says the book belongs to David. If the K07 checkpoint pairs are page/word coordinates, they may locate a page/anchor in that physical copy and the relevant **handwritten margin draft**, rather than encode eight printed body words that themselves form the K08 phrase. The envelope's final wording may be a later edit of that draft.
+
+This is only a hypothesis: neither N23 nor MAIL-09 explicitly joins the margin to the book, and the public 1889 Falcon edition is not authenticated as David's copy. I have sent Agent50 the same bounded interpretation. It may explain why public body-text phrase searches are unproductive; it does not create a candidate or justify further book scans without an authorized image of the actual copy/margin and the final envelope face.
