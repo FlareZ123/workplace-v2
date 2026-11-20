@@ -133,6 +133,20 @@ blob = bytes(h) + b"".join(records[1:])
 plus = m.extract_emf_glyph_indices(blob)
 assert plus["coverage"]["complete"] is False, plus
 assert "emfplus-driver-string-glyph-indices-not-decoded" in plus["coverage"]["reasons"]
+# A structurally valid EMF page with no glyph-index records is a complete
+# negative for this narrow parser (not a claim of full text/render coverage).
+header = header_record()
+eof = rec(14, struct.pack("<III", 0, 0, 20))
+records = [header, eof]
+blob = b"".join(records)
+h = bytearray(header)
+struct.pack_into("<II", h, 48, len(blob), len(records))
+blob = bytes(h) + b"".join(records[1:])
+valid_empty = m.extract_emf_glyph_indices(blob)
+assert valid_empty["status"] == "no-glyph-index-runs", valid_empty
+assert valid_empty["coverage"]["complete"] is True, valid_empty
+assert valid_empty["coverage"]["full_render"] is False
+
 # A truncated EMF+ comment is malformed, not a complete negative.
 malformed_comment = rec(
     70, struct.pack("<I", 32) + struct.pack("<I", 0x2B464D45) + b"\x00" * 8
