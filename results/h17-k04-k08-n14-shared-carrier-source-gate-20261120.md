@@ -59,6 +59,18 @@ For the two missing-slot constants alone, an ideal independent-uniform four-bit 
 
 Neither the selected ACK2 payload nor its direct route-derived XOR candidate selects N14. This is only a selector control: MAIL-16 explicitly says the ACK is dispatch evidence, not a media-integrity flag, so it cannot identify the physical coupon or rule out a different rendered object.
 
+### Competing source-narrative candidates
+
+N10 is Emily's desk note and says only that she kept returning to **"the photograph after the last cup"**; it does not name an N-number. The source contains several plausible photographs:
+
+- N01: empty bench; sea and finished tea
+- N08: window photograph; daylight, water and colors borrowed overnight
+- N14: sunrise photograph; horizon, boat and rain
+
+N20's requested themes are "the sea, the end of the night and the voices at the table." N01 and especially N08 have at least as direct a thematic fit as N14; N13 (Emily) separately places mugs beside the window at the end of the night and mentions the lamp. Therefore the selector cluster makes N14 a candidate shared address, but the surviving narrative does **not** uniquely identify N14 as the photograph Emily kept returning to. Do not let the selector override this competing source evidence.
+
+The practical acquisition target is the original photo set and its index/sidecar linking note IDs to image files (at minimum N01, N08 and N14), not an isolated N14 image chosen only by the selector. Use that index to resolve N10's unnamed photograph, then run the frozen decoder on the provenance-linked image(s) with matched negatives. A native PS-0417 manifest/render record is still required to claim that any image was carried by the K04 coupon.
+
 ## Source relationship assessment
 
 The surviving records do not provide a source-authored join from N14 to PS-0417 or from N14 to Emily's final caption:
