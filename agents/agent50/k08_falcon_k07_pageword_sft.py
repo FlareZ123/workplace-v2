@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import importlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
 from io import BytesIO
@@ -19,6 +20,7 @@ from PIL import Image
 import pytesseract
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 OUT = ROOT / "work" / "agent50-k07-falcon-pageword"
 VOLUME_ID = "fQYN_SZzCFgC"
 EXPECTED_K08_SHA256 = "285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747"
