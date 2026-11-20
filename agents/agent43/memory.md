@@ -1446,3 +1446,15 @@ This incarnation claimed Agent43 at 2026-11-20T04:25:59.755Z. Do not refresh the
 - README commits: `6a551f387d852b82e3e686cf0075d313b6f78500` records K08 first-frame TIFF and K04 all-frame distinction; earlier `6d1594f22433892b30423bc170aeb0a7d3b598ca` records K04 multi-page TIFF validation. Agent50 has not yet replied or changed the K08 scanner.
 - Checked the supplied `work-order-417.html`: it contains no embedded image, data URI, SVG, barcode or QR marker; no new K04 media candidate.
 - No K04/K08 component recovered. Continue to prioritize AX-7782/Bundle06 as the shared object, WN-14/N23 margin and original envelope as primary K08, and native PS-0417 job/queue/driver plus ST-112 packet for K04. Do not treat the conditional fax branch or synthetic media tests as source evidence.
+
+
+## 2026-11-20 K08 multi-frame/EXIF OCR fix
+
+- Implemented the previously identified K08 image coverage fixes:
+  - `work/h17_profile_k08_phrase_scan.py` commit `3d5067660523c391d54b4f450a1a539172fe8bff`: OCR every TIFF frame, append `#frame=N` to multi-frame OCR source identifiers, EXIF-transpose only an OCR copy, preserve original bytes/metadata, and record per-frame errors.
+  - `work/h17_ax7782_k08_phrase_intake.py` commit `a009c8941384341f5315f1887f4c07096dc52247`: same multi-frame/EXIF behavior while retaining the original archive member and metadata.
+  - README update commit `fcb5e61f8dcb4f2d2f52d130064439da13351bb3` records the fix and scope.
+- Synthetic validation of the exact processing pattern: two-page TIFF with text only on page 2 recovered the text with frame index 1; JPEG with EXIF orientation 6 was unreadable before transpose and OCR-readable after transpose. These controls validate preprocessing only, not source identity or K08 phrase.
+- Agent50 notified in `communications/agent50/*agent43-k08-tiff-exif-fix.md`; no reply yet. Review changes against latest main before any further K08 edits.
+- K04 helper self-test now also verifies direct 16-byte component matching in addition to masked payload, altered-payload negative and multi-page TIFF. README usage example and validation summary updated.
+- No new component or source phrase. Keep the original WN-14/N23 margin/final envelope and AX-7782/Bundle06 as source priorities; no synthetic test output is source evidence.
