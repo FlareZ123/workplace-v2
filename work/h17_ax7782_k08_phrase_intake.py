@@ -9,7 +9,7 @@ with the original desk nonce, truncated to 16 bytes, and checked against the
 unchanged K08 SHA-256 commitment. It does not invent or paraphrase wording.
 
 ZIP/TAR/GZIP, PDF text/content/annotations/attachments, image metadata, and
-optional OCR are read in memory. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with isolated temporary-copy LibreOffice fallbacks when xlrd is unavailable or a .doc is encountered; other OLE streams are scanned when olefile is installed. No source is modified; the BIFF fallback writes only a short-lived temporary copy outside the source tree.
+optional OCR are read in memory. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with isolated temporary-copy LibreOffice fallbacks when xlrd is unavailable or a .doc is encountered; other OLE streams are scanned when olefile is installed. No source is modified; legacy Office fallbacks write only short-lived temporary copies outside the source tree.
 Encrypted PDFs are not password-guessed.
 """
 from __future__ import annotations
