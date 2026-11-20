@@ -44,6 +44,8 @@ The helper:
 
 Eight local unit tests pass against a fake UsmtUtils executable. This validates command construction, output safety, logging, and hashing only; it does not validate a real USMT store or Windows ADK behavior.
 
+Run them from the repository root with: `PYTHONPATH=work python -m unittest -v work.test_h17_usmt_store_intake`.
+
 Example on a Windows system with the matching ADK installed:
 
 ~~~powershell
