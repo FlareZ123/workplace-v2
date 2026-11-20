@@ -18,7 +18,7 @@ jobs:
       - name: Install read-only scan dependencies
         run: python -m pip install --disable-pip-version-check --quiet pymupdf pillow numpy opencv-python-headless
       - name: Validate frozen teal decoder on synthetic positive control
-        run: python -m unittest work/test_h17_k08_teal_bit_image_scan.py
+        run: python work/test_h17_k08_teal_bit_image_scan.py
       - name: Run frozen six-slot grayscale map control
         run: python agents/agent41/k08_falcon_map_control.py
       - name: Run pre-registered teal-mask LOW-IF-EVEN scan on color rear foldout
