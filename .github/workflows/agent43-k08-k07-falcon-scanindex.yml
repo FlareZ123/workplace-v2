@@ -1,0 +1,35 @@
+name: H-17 K08 K07 Falcon scan-index word test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scanindex:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OCR dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes tesseract-ocr
+          tesseract --version
+          python -m pip install --upgrade pip
+          python -m pip install pillow pytesseract
+      - name: Test K07 scan-index/word constructions against original K08 commitment
+        run: |
+          set -o pipefail
+          python agents/agent43/k08_falcon_k07_scanindex_sft.py | tee k07-falcon-scanindex.log
+      - name: Preserve scan images, OCR, and candidate comparisons
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h17-k08-k07-falcon-scanindex
+          path: |
+            work/agent43-k07-falcon-scanindex/
+            k07-falcon-scanindex.log
+          if-no-files-found: warn
+          retention-days: 7
