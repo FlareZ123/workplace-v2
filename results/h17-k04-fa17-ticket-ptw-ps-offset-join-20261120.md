@@ -46,11 +46,19 @@ Nearest alternatives show why the L28 holdout matters: +300 also maps 4/5 North 
 
 The +304 mapping is not merely a fit to the five North tickets: both older L28 FA-17 tickets independently land on singleton PTW records and PS jobs. The different-account controls do not show comparable PS coverage.
 
-## Important ST-112 exception and unresolved versioning
+## ST-112 version resolution and PS-0416 boundary
 
-The return register separately states that **PS-0417** was charged to L-29/N tab05 ST-112. The supplier export contains ST-112 R3 POSTED/A3 and R4 HELD/A4 rows. The +304 join maps ST-112 to PTW-416 / PS-0416, while the explicit return-register reference maps it to PS-0417 (+305). The print-spool log contains both PS-0416 (RECOVER/ACK) and PS-0417 (LABEL/ACK followed by RECOVER attempts); the latter's last ACK is attempt 2.
+The source-authored filing reference resolves the supplier revision for the registered PS-0417 return:
 
-Do not silently equate PS-0416 and PS-0417, or collapse ST-112 R3/A3 and R4/A4. The return register's A3 filing reference does not cleanly resolve the R4/A4 duplicate. The +304 result is an empirical join; the source still lacks an explicit ticket→job foreign key.
+- The print-fleet return register identifies PS-261003-0417 as ESC-N / L-29/N / FA-17 with filing reference `H17-POL-17/A3`.
+- The binder index identifies L-29/N tab05 as ST-112.
+- The supplier CSV has ST-112 R3 `POSTED` / FA-17 / `H17-POL-17/A3`, and a separate ST-112 R4 `HELD` / FA-17 / `H17-POL-17/A4` row explicitly described as a duplicate settlement.
+
+The exact A3 reference therefore joins the registered PS-0417 return to the posted R3/A3 row, not the held R4/A4 duplicate. This is stronger than the numeric +304 inference and supports retaining PS-0417 as the selected route/job. It does not establish the native output bytes or prove that the dispatch-log payload is the physical coupon.
+
+The +304 join still maps ST-112 to PTW-416 / PS-0416, but that remains an empirical offset relation without an explicit ticket→job foreign key. Do not equate PS-0416 and PS-0417: the return register names PS-0417, while PS-0416 is a separate RECOVER/ACK spool job. Preserve both records as distinct objects.
+
+The selected PS-0417 spool sequence remains LABEL/ACK at 16:45Z, RECOVER/REQUESTED at 18:01Z, RECOVER/ACK at 18:02Z (attempt 2), and RECOVER/REQUESTED at 18:03Z. The route selects attempt 2. Its payload XOR the published mask still fails the unchanged K04 commitment. The A3 version join resolves the supplier revision/producer-selection ambiguity but does not recover the coupon bytes.
 
 ## K04 consequence and limits
 
