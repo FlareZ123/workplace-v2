@@ -19,7 +19,7 @@ Workflow commit: `c853e7ab9746c22ab287361dc916a4ca35821759`
 
 ## Result
 
-<badge>All steps passed</badge>
+**Result: PASS — all workflow steps completed successfully.**
 
 The workflow completed successfully. Compilation and the combined unittest command both exited successfully.
 
