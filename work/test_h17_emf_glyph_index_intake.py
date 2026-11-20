@@ -79,6 +79,15 @@ assert result["coverage"]["pages_processed"] == 1
 assert result["coverage"]["full_render"] is False
 assert len(result["source_sha256"]) == 64
 
+# EMF may be embedded after a native spool/container prefix, not at byte zero.
+prefix = b"SPL-native-prefix\\x00\\x01"
+wrapped = prefix + blob + b"native-spool-trailer"
+wrapped_result = m.extract_emf_glyph_indices(wrapped)
+assert wrapped_result["status"] == "raw-glyph-indices", wrapped_result
+assert [run["glyph_ids"] for run in wrapped_result["runs"]] == [gids, gids, gids]
+assert wrapped_result["runs"][0]["record_offset"] == len(prefix) + 88 + 332 + 12
+
+
 # An offset into the EMRTEXT/EXTTEXTOUT descriptor rather than its trailing
 # string is rejected; the other two valid records remain visible.
 bad = bytearray(blob)
