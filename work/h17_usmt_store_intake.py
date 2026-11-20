@@ -13,6 +13,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -61,6 +62,29 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def related_store_files(store: Path) -> list[Path]:
+    """Return the primary store plus adjacent USMT .mig segment members."""
+    candidates = {store}
+    match = re.match(r"^(.*)\.mig\d*$", store.name, flags=re.IGNORECASE)
+    if match:
+        stem = match.group(1)
+        pattern = re.compile(re.escape(stem) + r"\.mig\d*$", flags=re.IGNORECASE)
+        for path in store.parent.iterdir():
+            if pattern.fullmatch(path.name):
+                if path.is_symlink():
+                    raise ValueError(f"USMT segment must not be a symlink: {path}")
+                if path.is_file():
+                    candidates.add(path.resolve())
+    return sorted(candidates, key=lambda p: p.name.lower())
+
+
+def hash_store_set(store: Path) -> list[dict[str, object]]:
+    records = []
+    for path in related_store_files(store):
+        records.append({"path": str(path), "size": path.stat().st_size, "sha256": sha256_file(path)})
+    return records
 
 
 def hash_tree(root: Path) -> list[dict[str, object]]:
@@ -172,6 +196,7 @@ def run_intake(store: Path, tool: Path, out: Path, mode: str = "verify",
     runner_log = out / "runner.log"
     manifest_path = out / "manifest.json"
     before = {"size": store.stat().st_size, "sha256": sha256_file(store)}
+    before_segments = hash_store_set(store)
     if mode == "verify":
         args = build_verify_args(store, usmt_log, report, keyfile, algorithm)
         destination = None
@@ -184,7 +209,8 @@ def run_intake(store: Path, tool: Path, out: Path, mode: str = "verify",
                                encoding="utf-8", errors="replace", timeout=timeout, check=False)
     elapsed = time.monotonic() - started
     after = {"size": store.stat().st_size, "sha256": sha256_file(store)}
-    source_unchanged = before == after
+    after_segments = hash_store_set(store)
+    source_unchanged = before == after and before_segments == after_segments
     extracted_files = hash_tree(destination) if destination is not None else []
     runner_log.write_text(
         "COMMAND: " + " ".join([tool.name, *args]) + "\n"
@@ -197,6 +223,8 @@ def run_intake(store: Path, tool: Path, out: Path, mode: str = "verify",
         "mode": mode,
         "input": {"path": str(store), **before},
         "input_after": after,
+        "input_segments_before": before_segments,
+        "input_segments_after": after_segments,
         "input_unchanged": source_unchanged,
         "return_code": completed.returncode,
         "elapsed_seconds": round(elapsed, 3),
