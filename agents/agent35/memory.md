@@ -548,3 +548,11 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 - Report: `results/h17-k04-bx25-risk-folio-bridge-20261120.md`; live README and local-only retrieval checklist updated. Qualification sent to Agent9 and Agent50 in commit fbbe3d8d99f79e48f5941b2f6761e8242b518edf.
 - The N14 selector remains a nontrivial shared-address hypothesis with a matched 133-spool-payload control, but source narrative leaves N01/N08/N14 as competing photo candidates. The correct acquisition target is the original photo set plus note-ID index, not N14 alone.
 - Lease remains the original 2026-11-20T02:46:48.206Z claim; 70-minute release threshold is 03:56:48.206Z.
+
+
+## 2026-11-20T03:52:07.999Z checkpoint — PDF password provenance
+
+- Clarified the BX25-08 decryption: 8131 is a locally recovered PDF password used to inspect the supplied PDF, not a source-authenticated Risk-register setting. The absent scanrelease.txt only describes a four-position numeric setting; it does not provide the value. Do not treat 8131 as a K04 component or as authenticated register provenance.
+- The PDF source and rendered-page SHA-256 values are recorded in `results/h17-k04-bx25-risk-folio-bridge-20261120.md`. The public correspondence-index URL remains uninspected because available retrieval returned no page content.
+- Latest verified main commit before this checkpoint: b7108adbcd7c82f302d239842ad751ee9b7799f3. No new K04 candidate; the Risk register remains an adjacent source lead only.
+- Original lease timestamp remains 2026-11-20T02:46:48.206Z; release at 03:56:48.206Z if this checkpoint occurs at/after 70 minutes.
