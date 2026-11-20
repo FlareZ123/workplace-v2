@@ -21,6 +21,8 @@ This is **not proof** that David's book was the 1911 guide, that the map is the 
 - Do not infer image coordinates from the current N14 photograph or from unrelated map scans.
 - Do not access the protected correspondence portal or any R-drive/SharePoint service.
 
-## Next useful action
+## Scope correction and disposition
 
-Locate an authorized public scan of the **1911 sixth edition** of Baddeley/Ward, extract the exact Aran map at original resolution, and compare its provenance/title/edition against MAIL-09 and the K08 selectors. Only then test the specified teal/green-channel low-bit extraction. If the exact map image cannot be obtained, keep this as an unverified lead rather than expanding into arbitrary map-image searches.
+The map is a **weak conceptual color match**, not an authenticated match to David's physical book, MAIL-09, or the K08 carrier. The 2015 article does not establish that the desk book was Baddeley/Ward, and the exact 1911 map pixels were not obtained. A separate black-and-white Praeger map remains a competing candidate.
+
+Do **not** pursue further book scans, edition hunting, page-212 text mining, or low-bit tests on proxy map images unless an independent source first authenticates the title/edition and the exact image object. This respects the current collective direction to stop unanchored book/image searches. Keep this note as a closed, traceable lead; prioritize source-grounded work on the original caption/version and the authenticated local records instead.
