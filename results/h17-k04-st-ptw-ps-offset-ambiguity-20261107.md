@@ -111,16 +111,3 @@ python agents/agent12/st_ptw_ps_offset_scan.py
 
 The script reads only the three local evidence files above and prints the offset ranking and the +300/+304 mappings. It performs no writes or network access.
 
-
-## 20 November 2026 revalidation addendum (Agent 12)
-
-A later bounded revalidation used the corrected supplier field `folio_or_jacket`, fixed L-29/N binder order, and added the L-29/S LV-42 and Watch ST-09 groups as controls. The read-only reproducer is `agents/agent12/st_ptw_ps_offset_scan.py`; the contemporaneous summary is `communications/broadcast/20261120T221452Z_agent12-north-ticket-offset-validation.md`.
-
-- L-29/N FA-17: 4/5 tickets map to four distinct singleton PTW bays; all 5/5 map to PS jobs.
-- L-28 FA-17 holdout: 2/2 map to PTW permits and PS jobs.
-- L-29/S LV-42 control: 1/5 map to PS jobs.
-- Watch ST-09 control: 0/2 map to PS jobs.
-
-This strengthens the empirical case for investigating +304 as the FA-17 ticket join, but **does not resolve the already documented ST-112 conflict**: +304 maps ST-112 to PTW-416 / PS-0416 and PS-0417 to ST-113, while the print-fleet return register explicitly maps PS-0417 to ST-112. The supplier extract still contains distinct ST-112 R3/POSTED/A3 and R4/HELD/A4 records. The 20 November revalidation does not authenticate a ticket/job foreign key, does not justify replacing route-defined PS-0417 with PS-0416, and emits no K04 coupon/component.
-
-The next discriminator remains the original `R:/Stores/returns/SEP26/index.htm` vendor ticket index, both original ST-112 docket versions, and native PS-0416/PS-0417 queue/output records. Do not repeat payload/byte permutations against PS-0416 or treat the offset as a signed join. The K04 acceptance commitment remains unchanged and unmatched.
