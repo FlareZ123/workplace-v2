@@ -9,7 +9,7 @@ with the original desk nonce, truncated to 16 bytes, and checked against the
 unchanged K08 SHA-256 commitment. It does not invent or paraphrase wording.
 
 ZIP/TAR/GZIP, PDF text/content/annotations/attachments, image metadata, and
-optional OCR are read in memory. Legacy Excel .xls BIFF cells are decoded with xlrd when installed or through an isolated temporary-copy LibreOffice fallback; other OLE streams are scanned when olefile is installed. No source is modified; the BIFF fallback writes only a short-lived temporary copy outside the source tree.
+optional OCR are read in memory. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with isolated temporary-copy LibreOffice fallbacks when xlrd is unavailable or a .doc is encountered; other OLE streams are scanned when olefile is installed. No source is modified; the BIFF fallback writes only a short-lived temporary copy outside the source tree.
 Encrypted PDFs are not password-guessed.
 """
 from __future__ import annotations
@@ -301,7 +301,27 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         yielded = False
         fallback_used = False
         xls_streams = None
-        if PurePosixPath(name.replace("\\", "/")).suffix.casefold() == ".xls":
+        suffix = PurePosixPath(name.replace("\\", "/")).suffix.casefold()
+        if suffix == ".doc":
+            # Legacy Word comments can hold the margin wording. Convert only a
+            # temporary copy to DOCX with macro security high, then reuse the
+            # existing DOCX ZIP/XML text path (including word/comments.xml).
+            try:
+                from h17_doc_lo_fallback import convert_doc_bytes
+                converted_docx = convert_doc_bytes(data, name)
+                fallback_used = True
+                for source, payload in iter_text_streams(
+                    f"{name}!/LibreOffice-converted.docx", converted_docx,
+                    depth + 1, budget, errors, ocr, pdf_password,
+                ):
+                    yielded = True
+                    yield source, payload
+            except Exception as exc:
+                errors.append({
+                    "source": name,
+                    "error": f"LibreOffice legacy .doc fallback failed: {type(exc).__name__}: {exc}",
+                })
+        if suffix == ".xls":
             # BIFF8 cell strings are stored in structured records inside the
             # OLE Workbook stream; raw ASCII/UTF-16 scanning alone can split a
             # caption across cells. Prefer xlrd when installed; otherwise use
@@ -387,7 +407,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password)
         except ImportError:
             if not yielded or fallback_used:
-                errors.append({"source": name, "error": "olefile unavailable; non-Workbook OLE streams may not be decoded"})
+                errors.append({"source": name, "error": "olefile unavailable; non-Office embedded OLE streams may not be decoded"})
         except Exception as exc:
             errors.append({"source": name, "error": f"OLE extraction failed: {exc}"})
         if not yielded or fallback_used:
@@ -573,7 +593,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
             "Encrypted PDFs are never password-guessed; supply --pdf-password only when authorized.",
             "OCR is optional and may not reliably transcribe handwritten marginalia; visually inspect original images when needed.",
-            "7z, RAR and SQLite internals are not decoded by this path; use authorized format-specific extraction if present. Legacy Excel .xls BIFF cell text is decoded with xlrd or the isolated LibreOffice fallback; other OLE streams are decoded when olefile is installed.",
+            "7z, RAR and SQLite internals are not decoded by this path; use authorized format-specific extraction if present. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with the isolated LibreOffice fallbacks; other OLE streams are decoded when olefile is installed.",
             "The K04 payload is handled by work/h17_k04_binary_window_intake.py, not by this phrase scanner.",
         ],
     }
