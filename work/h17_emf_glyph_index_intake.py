@@ -61,24 +61,34 @@ def _poly_runs(record, page, index, record_offset, font_handle, face, kind=97):
     return runs, malformed
 
 
-def _has_emfplus_glyph_indices(record):
+def _inspect_emfplus_glyph_indices(record):
+    """Return (has_unhandled_glyph_ids, malformed_emfplus_comment)."""
     if len(record) < 16:
-        return False
+        return False, False
     data_size, identifier = struct.unpack_from("<II", record, 8)
-    if identifier != 0x2B464D45 or data_size < 4 or data_size + 12 > len(record):
-        return False
+    if identifier != 0x2B464D45:
+        return False, False  # A different GDICOMMENT format.
+    if data_size < 4 or data_size + 12 > len(record):
+        return False, True
     cursor, end = 16, data_size + 12
-    while cursor + 12 <= end:
+    found = False
+    while cursor < end:
+        if cursor + 12 > end:
+            return False, True
         kind, _flags, size, payload_size = struct.unpack_from("<HHII", record, cursor)
         if size < 12 or size % 4 or cursor + size > end or payload_size > size - 12:
-            return False
-        if kind == 0x4036 and payload_size >= 16:
+            return False, True
+        if kind == 0x4036:
+            if payload_size < 16:
+                return False, True
             options = struct.unpack_from("<I", record, cursor + 16)[0]
             # CmapLookup=1 means Unicode code points; unset means glyph IDs.
             if not options & 1:
-                return True
+                found = True
         cursor += size
-    return False
+    if cursor != end:
+        return False, True
+    return found, False
 
 
 def parse_spool_binding(log_text, job_id, attempt, state="ACK", job_class=None, dest=None):
@@ -185,9 +195,14 @@ def extract_emf_glyph_indices(data, binding=None):
                             "font_handle": selected, "font_face": fonts.get(selected),
                             "x": x, "y": y}
                     page_runs.append(_word_run(rec, n, off, off, meta))
-            elif kind == 70 and _has_emfplus_glyph_indices(memoryview(rec)):
-                coverage["complete"] = False
-                reasons.append("emfplus-driver-string-glyph-indices-not-decoded")
+            elif kind == 70:
+                has_glyphs, malformed_comment = _inspect_emfplus_glyph_indices(memoryview(rec))
+                if malformed_comment:
+                    coverage["complete"] = False
+                    reasons.append("malformed-emfplus-comment")
+                elif has_glyphs:
+                    coverage["complete"] = False
+                    reasons.append("emfplus-driver-string-glyph-indices-not-decoded")
             if kind == 14:
                 saw_eof = index == nrecords - 1
             offset += size
@@ -205,7 +220,7 @@ def extract_emf_glyph_indices(data, binding=None):
     if coverage["pages_seen"] == 0:
         coverage["complete"] = False
         reasons.append("no-emf-header")
-    status = "no-glyph-index-runs" if not runs else "raw-glyph-indices" if coverage["complete"] else "partial"
+    status = "partial" if not coverage["complete"] else "no-glyph-index-runs" if not runs else "raw-glyph-indices"
     return {"status": status, "source_sha256": hashlib.sha256(data).hexdigest(),
             "binding": binding or {}, "runs": runs, "coverage": coverage}
 
