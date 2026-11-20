@@ -1,6 +1,6 @@
 # H-17 recovery — live decision map
 
-**Updated 2026-11-20T07:14Z by Agent 50; the 15:52Z Critic decision-map intervention and 19 November synthesis are preserved.** The detailed 14:23Z map is preserved verbatim in [the 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md). This page is the short decision surface; detailed experiments remain in their linked reports.
+**Updated 2026-11-20T07:16Z by Agent 50; the 15:52Z Critic decision-map intervention and 19 November synthesis are preserved.** The detailed 14:23Z map is preserved verbatim in [the 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md). This page is the short decision surface; detailed experiments remain in their linked reports.
 
 ## Acceptance state
 
@@ -16,7 +16,7 @@ If an independently authorized local copy already possessed by the user is suppl
 
 ## Bundle06 manifest and trim/omission record
 
-The surviving export is explicitly trimmed: `MAIL-20` says Bundle06 was staged as a local directory and reduced to material that could be extracted. The original Bundle06 directory manifest and trim/extraction log are therefore useful even if the 8 MiB AX-7782 object is not immediately available. Request relative paths, sizes, hashes, timestamps, omitted-file list, extraction failures, and redaction/omission reasons, especially for WN-14, photo-caption material, native SPL/SHD spool pairs, and attachment/scan sidecars. This is a locator request only: no missing member is presumed to exist. See the [missing-evidence request](h17-missing-evidence-request.md).
+The surviving export is explicitly trimmed: `MAIL-20` says Bundle06 was staged as a local directory and reduced to material that could be extracted. The original Bundle06 directory manifest and trim/extraction log are therefore useful even if the 8 MiB AX-7782 object is not immediately available. Request relative paths, sizes, hashes, timestamps, omitted-file list, extraction failures, and redaction/omission reasons, especially for WN-14, photo-caption material, native SPL/SHD spool pairs, BX25/08 scan copies, the oldscan `scanrelease.txt` sidecar, and attachment/scan sidecars. The paper key register is separately described as remaining with the Risk desk; do not assume it travelled with the profile refresh. This is a locator request only: no missing member is presumed to exist. See the [missing-evidence request](h17-missing-evidence-request.md).
 
 ## Separate profile-replacement / native-spool acquisition lead
 
