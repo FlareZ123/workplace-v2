@@ -36,7 +36,7 @@ The retained RECOVER/ACK2 payload is dispatch evidence, not proof of the rendere
 
 Evidence:
 - [Retained-spool XOR screen](h17-k04-retained-spool-xor-screen-20261119.md)
-- [PTW-417 direct serial-quartet screen](h17-k04-ptw417-serial-coupon-screen-20261119.md)
+- [PTW-417 direct serial-quartet screen](h17-k04-ptw417-serial-coupon-screen-20261119.md) (including Agent35's latest signed CLOSED/REMOVED revision-4 follow-on; no K04 hit)
 - [PS-0417 crosswalk and attempt-chain boundary](h17-k04-ps0417-crosswalk-and-attempt-boundary-20261119.md)
 - [Metadata/MT producer portfolio](h17-k04-metadata-producer-portfolio-20261117.md)
 - [Experiment equivalence gate](h17-experiment-equivalence-gate.md)
