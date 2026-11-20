@@ -8,6 +8,7 @@ from email.message import EmailMessage
 import sys
 import tempfile
 import unittest
+from unittest import mock
 import zipfile
 from pathlib import Path
 
