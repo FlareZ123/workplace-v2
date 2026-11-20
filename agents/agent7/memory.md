@@ -102,3 +102,24 @@
 - The workflow covers DOC, XLS, SQLite/WAL, joint-intake, Sticky Notes regression modules and the frozen teal-image synthetic controls. Updated `results/h17-office-sqlite-intake-regression-20261120.md` with the run. This validates the current integrated synthetic test path only; no original AX-7782 object was tested and no K04/K08 component was recovered.
 - No reply yet from Agent9, Agent35, or Agent50 to the cross-review messages. Their existing preplans and scope corrections remain controlling.
 - This checkpoint changed only the regression report and memory; no candidate, acceptance, verifier, routing, or source evidence was changed. Continue only on a genuinely new source-authored construction or source artifact; do not repeat closed source searches or candidate families.
+
+
+## 2026-11-20 13:30Z checkpoint — source-boundary review and bounded alternatives
+
+Current invocation: `gpt6-agent7-h17-source-relation-20261120T1246Z-7f4d`; original lease remains `2026-11-20T12:46:16Z`. No candidate values or verifier files changed. The archive remains 6/8; K04 and K08 are unresolved.
+
+### Source-boundary findings
+- The uploaded `h17-archive-dump.zip` is the trimmed local export, not the full 8 MiB `AX-7782` object recorded in HST-4 / Bundle06. The local export has no native PS-0417 `.SPL/.SHD`, no original N01/N08/N14 photo set, no original WN-14 desk/galley-caption sheets, and no `mug-stock.xls`.
+- The predecessor `workplace-v1` repository has the same resource set; its tree contains no additional H17 image or source files. No release assets or workflow artifacts were found there. Do not treat v1 as an alternate source archive.
+- MAIL-14 explicitly places the desk notes and photographs/galley captions under the WN-14 folder, outside the controlled-copy sleeve, and says a spare printed sticker was removed from the cover; its dispatch number is not one of the four WN-14 control groups. This is a physical-object lead, not proof that the sticker is K04.
+- The existing `results/h17-missing-evidence-request.md` already covers the WN-14 sticker, desk notes, photo/caption material, and AX-7782/Bundle06. The v1 synthesis says no further custodian assistance or new records should be expected. Do not reopen that channel or repeat requests. Two Agent7 notes were sent to Agent12 during this invocation; they largely duplicate the existing intake specification and should not be treated as new evidence.
+
+### Bounded alternatives actually tested
+- Extended the prior RS(8,6) erasure work to arbitrary assignments of the six known 16-byte components to any six of eight evaluation positions, with both missing labels assigned to the two remaining positions. Exhausted 241,920 candidate pairs across GF(256) polynomials 0x11B/0x11D, 1-based, 0-based and powers-of-two locators, and within-byte bit reflection. No K04 or K08 commitment hit. This closes the simple arbitrary-slot-permutation RS variant; do not repeat natural/reverse or permutation sweeps.
+- Exhausted common-coefficient GF(256) linear combinations of the three PS-0417 attempt payloads (256^3 coefficients, both 0x11B/0x11D fields, with and without the K04 mask; 33,554,432 SHA-256 checks). No K04 commitment hit. Earlier Agent1 work already covered XOR, majority, all 256 bitwise Boolean functions and simple grouped combinations; do not repeat those.
+- Tested 10,000 four-digit codes as HMAC keys/messages against source-grounded PS-0417 job/attempt/folio/archive contexts, with and without the K04 mask. No K04 hit.
+- Searched all 16-byte windows of `trip-recorder.raw` and the source-grouped node 0x31/event 0x52 control/AUX quartets (including earlier, selected, invalid-CRC and later sequence strata), direct and XOR-mask forms. No K04 hit. This does not change K05, which remains the accepted 300–303 control-word quartet in its 21:14:00–21:14:08 window.
+- No source-supported route now justifies more generic phrase guessing, PRNG-family grids, PDF metadata windows, book/map raster scans, or arbitrary recorder reinterpretations. Agent50's latest memory repeats the Critic stop condition: no further book/coordinate scans absent a physical title/edition join.
+
+### Next useful direction
+Wait for a genuinely new, already-authorized source object or a distinct source-specific mechanism with a falsifiable prediction. Highest-value missing material remains the original AX-7782/Bundle06 object, native PS-0417 print-host/rendered output and physical coupon/sticker, plus the original WN-14 desk/photo/galley-caption and N23 margin materials. If none becomes available, do not manufacture more blind candidate families. Preserve the distinction between route-sheet claims, local-export facts, and unverified physical-object hypotheses.
