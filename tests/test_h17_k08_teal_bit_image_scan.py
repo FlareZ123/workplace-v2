@@ -131,7 +131,7 @@ class TealBitImageScanTests(unittest.TestCase):
             self.assertEqual(result["layouts_tested"], list(SOURCE_LITERAL_LAYOUTS))
             self.assertEqual(result["candidate_streams_per_frame"], 64)
             self.assertTrue(any(m["phrase"] == PHRASE for m in result["matches"]))
-            self.assertIn("human verification", result["historical_authentication"])
+            self.assertIn("human verification", result["source_link_assertion"]["status"])
 
     def test_wrong_note_id_fails_closed(self):
         with tempfile.TemporaryDirectory() as directory:
