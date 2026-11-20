@@ -37,7 +37,7 @@ The helper:
 - defaults to /verify:all;
 - supports selective extraction of the H-17-relevant workbook, profile, text, image, SQLite, and spool file patterns;
 - requires a new/empty output directory;
-- hashes the input before and after and hashes extracted files;
+- hashes the primary store plus adjacent .mig/.migNN segments before and after, and hashes extracted files;
 - preserves the native USMT log separately from the runner log;
 - accepts an authorized decryption key **file**, never a plaintext key argument;
 - never invokes LoadState and never writes to the source store.
