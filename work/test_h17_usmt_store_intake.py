@@ -20,6 +20,7 @@ class UsmtIntakeTests(unittest.TestCase):
         self.assertNotIn("/o", args)
         self.assertIn("*.sqlite-wal", usmt.DEFAULT_INCLUDE)
         self.assertIn("*-shm", usmt.DEFAULT_INCLUDE)
+        self.assertIn("*.emf", usmt.DEFAULT_INCLUDE)
 
     def test_verify_runs_read_only_and_preserves_native_log(self):
         with tempfile.TemporaryDirectory() as td:
