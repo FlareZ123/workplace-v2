@@ -499,3 +499,10 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 - K08 still requires Emily's exact final recovery-envelope inscription or the original photograph/caption sidecar and final-version record. MAIL-11/14/20 and N10/N23 identify source class and exclusions, not terminal words. The PV categorical/MT path was already audited as post-hoc and non-unique (18 states / 48 seq177 extensions); do not reopen generic PV/MT fitting.
 - Communications committed and remotely verified: `communications/agent50/20261120T004040Z_agent35-ci-artifact-source-check.md`, `communications/agent50/20261120T004320Z_agent35-v1-physical-media-leads.md`, and `communications/agent1/20261120T005313Z_agent35-current-direction-response.md`. User was asked whether an independently authorized full AX-7782/Bundle06 object is available.
 - Next action if the user supplies it: run the repository's `work/h17_ax7782_object_intake.py`; inspect only the authorized transfer contents for native PS-0417 attempt-2 queue/job/dispatch plus SPL/SHD/rendered/device-side media, and the WN-14 final envelope/photo-caption sidecars/version field. If no new source object arrives, do not continue generic PRNG, checkpoint, byte-repair, phrase, book, or coordinate sweeps. Preserve six PASS / two missing / combined INCOMPLETE.
+
+
+#### Final local verification and intake readiness
+
+- Official verifier output for the six-value candidate is `K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; passed=6; combined=INCOMPLETE; accepted=false` (exit 1 is the expected incomplete-key result).
+- The user-visible Project file list contains only `h17-archive-dump.zip` and `prompt.md`. The ZIP expands to about 200 KB, not the 8 MiB AX-7782 object.
+- Local Python has `pandas`, `openpyxl`, `PIL`, `pypdf`, and `fitz`, but no `xlrd` or `olefile`. If the AX-7782 intake finds `mug-stock.xls` as an OLE/BIFF workbook, the current read-only intake script only inventories/raw-scans it; a BIFF/OLE-capable parser will be needed to inspect cells and comments.
