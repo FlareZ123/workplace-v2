@@ -1,0 +1,33 @@
+name: H-17 K08 K07-checkpoint Riddle page-word test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pageword:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PDF text extraction dependency
+        run: python -m pip install pypdf
+      - name: Test K07 checkpoint page-word constructions against original K08 commitment
+        run: |
+          set -o pipefail
+          python agents/agent50/k08_riddle_k07_pageword_sft.py | tee k07-riddle-pageword.log
+      - name: Preserve page-word candidates and extraction report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h17-k08-k07-riddle-pageword
+          path: |
+            work/agent50-k07-riddle-pageword/
+            k07-riddle-pageword.log
+          if-no-files-found: warn
+          retention-days: 7
