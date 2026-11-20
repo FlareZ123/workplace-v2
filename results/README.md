@@ -72,7 +72,7 @@ Evidence:
 - [LOW BIT full-specificity review](h17-k08-lowbit-full-specificity-review-20261119.md)
 - [Direct-adoption candidate check](h17-k08-lowbit-carrier-candidate-check-20261119.md)
 - [Source-triple control](h17-k08-n20-source-triple-null-20261119.md)
-- [Conditional BIFF8 OfficeArt metadata reader](h17-k08-officeart-biff-metadata-intake-20261120.md) — parser/test capability only; not part of the frozen M10 cell-value test and not run on an H-17 source workbook.
+
 
 ## Experiment standard
 
@@ -100,6 +100,7 @@ The working export is not a completeness certificate. If an independently author
 - [Detailed 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md)
 - [Maintainer directive](../MAINTAINER_OVERRIDE.md)
 - [Reusable read-only intake and recovery tools](../work/). For a newly authorized AX-7782 object, use [`h17_ax7782_joint_intake.py`](../work/h17_ax7782_joint_intake.py) to coordinate transfer validation, K04 raw-window intake and K08 exact-phrase intake in one report. Its K08 step runs [`h17_ax7782_k08_sqlite_bridge.py`](../work/h17_ax7782_k08_sqlite_bridge.py), which wraps the phrase scanner and additionally inspects only named Windows Sticky Notes `plum.sqlite` databases with adjacent WAL/SHM sidecars in a temporary read-only snapshot; this is conditional on such a member actually being present and does not imply one exists in the missing object. The K08 intake also uses [`h17_xls_lo_fallback.py`](../work/h17_xls_lo_fallback.py) for legacy `.xls` members when `xlrd` is unavailable and [`h17_doc_lo_fallback.py`](../work/h17_doc_lo_fallback.py) for legacy Word `.doc` members, preserving comment text through DOCX XML intake. Both LibreOffice fallbacks use isolated profiles with macro security Very High and external document updates disabled. Temporary conversion copies are search aids, not replacements for the originals.
+- [Standalone BIFF8 OfficeArt metadata reader](../work/h17_biff_officeart.py) and [tests](../work/test_h17_biff_officeart.py): conditional parser capability only; not integrated into K08 candidate generation or the frozen M10 cell-value test. Use only after an independent source record authenticates the exact image/version link.
 
 ## Tool validation — 20 November 2026
 
