@@ -51,4 +51,21 @@ python work/h17_ax7782_joint_intake.py \
 
 The JSON output must be outside the `resources/` tree and must not overwrite the source object. The tool hashes the input before and after and fails if the source changes. Add `--ocr` only when required and supported. Supply `--pdf-password` only if the password is independently provided through an authorized source; the tool never guesses it.
 
+If intake identifies a candidate coupon or exact final caption, keep the **unmodified original** and a separate exact transcription. Then use the existing witness/acceptance gate from the repository root:
+
+```bash
+# K04: coupon-transcript.json contains job, attempt, state, class,
+# timestamp_utc and the exact 16-byte payload_hex.
+python work/h17_witness_intake.py \
+  --coupon /path/to/coupon-transcript.json \
+  --coupon-original /path/to/unmodified-coupon-source
+
+# K08: final-caption.txt is the verbatim UTF-8 wording.
+python work/h17_witness_intake.py \
+  --caption /path/to/final-caption.txt \
+  --caption-original /path/to/unmodified-envelope-or-note-source
+```
+
+The witness tool checks the original route/ACK selector and unchanged acceptance commitments. It records separate original-source and transcription hashes, but explicitly reports that a hash alone does not establish historical authenticity; custody and source provenance remain a human evidence requirement. It emits a complete candidate only when all eight slots and the combined commitment pass.
+
 Inspect only source-bearing artifacts actually present in the acquired object. Do not add another extractor or CI workflow merely to test an intermediate assertion.
