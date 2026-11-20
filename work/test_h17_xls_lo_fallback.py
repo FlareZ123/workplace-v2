@@ -20,9 +20,11 @@ except ImportError:  # standalone helper test outside the repository
 try:
     from openpyxl import Workbook
     from openpyxl.comments import Comment
+    from openpyxl.styles import Alignment, Font, PatternFill
     from openpyxl.workbook.defined_name import DefinedName
 except ImportError:  # pragma: no cover - environment-dependent
     Workbook = None
+    Alignment = Font = PatternFill = None
 
 
 class LegacyXlsFallbackTests(unittest.TestCase):
@@ -48,6 +50,12 @@ class LegacyXlsFallbackTests(unittest.TestCase):
             sheet["A1"].comment = Comment("Emily margin caption", "Emily")
             sheet["B1"].hyperlink = "https://example.invalid/x"
             sheet["D1"] = "=1+1"
+            sheet["M10"].fill = PatternFill(fill_type="solid", fgColor="FF008080", bgColor="FF008080")
+            sheet["M10"].font = Font(color="FFFFFFFF")
+            sheet["M10"].alignment = Alignment(wrap_text=True, horizontal="left", vertical="top")
+            sheet["C3"].fill = PatternFill(fill_type="solid", fgColor="FFFFFFFF", bgColor="FFFFFFFF")
+            sheet["C3"].font = Font(color="FF000000")
+            sheet["C3"].alignment = Alignment(wrap_text=False, horizontal="left", vertical="top")
             hidden = book.create_sheet("Hidden")
             hidden.sheet_state = "hidden"
             hidden["A1"] = "hidden sheet phrase"
@@ -96,6 +104,20 @@ class LegacyXlsFallbackTests(unittest.TestCase):
                 [(s["name"], s["state"]) for s in result["sheets"]],
                 [("Visible", "visible"), ("Hidden", "hidden")],
             )
+            styles = {item["coordinate"]: item for item in result["style_metadata"]
+                      if item["sheet"] == "Visible"}
+            self.assertTrue(styles["M10"]["wrap_text"])
+            self.assertEqual(styles["M10"]["fill_type"], "solid")
+            self.assertEqual(styles["M10"]["fill_foreground"]["rgb"], "FF008080")
+            self.assertEqual(styles["M10"]["font_color"]["rgb"], "FFFFFFFF")
+            self.assertFalse(styles["C3"]["wrap_text"])
+            self.assertEqual(styles["C3"]["fill_foreground"]["rgb"], "FFFFFFFF")
+            self.assertEqual(styles["C3"]["font_color"]["rgb"], "FF000000")
+            self.assertEqual(styles["M10"]["number_format"], "General")
+            self.assertFalse(styles["M10"]["row_hidden"])
+            self.assertFalse(styles["M10"]["column_hidden"])
+            self.assertEqual(set(result["style_metadata_scope"]),
+                             {"M10", "C3", "EX4", "AT171", "HN28", "DZ122", "DT205", "AI96", "C67", "Z201"})
 
             # Exercise the repository dispatcher when its sibling modules
             # are available; standalone helper tests may run outside the repo.
