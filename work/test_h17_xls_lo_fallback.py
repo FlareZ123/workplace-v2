@@ -11,7 +11,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from h17_xls_lo_fallback import extract  # noqa: E402
+from h17_xls_lo_fallback import extract, extract_bytes  # noqa: E402
 
 try:
     from openpyxl import Workbook
@@ -70,6 +70,12 @@ class LegacyXlsFallbackTests(unittest.TestCase):
             original_hash = hashlib.sha256(source_xls.read_bytes()).hexdigest()
 
             result = extract(source_xls)
+            member_result = extract_bytes(source_xls.read_bytes(), "archive/mug-stock.xls")
+            self.assertEqual(member_result["source_name"], "archive/mug-stock.xls")
+            self.assertTrue(member_result["source_unchanged"])
+            self.assertEqual(member_result["source_sha256_before"], original_hash)
+            member_texts = [item["text"] for item in member_result["text_streams"]]
+            self.assertTrue(any("sea at the end of the night" in text for text in member_texts))
             streams = result["text_streams"]
             texts = [item["text"] for item in streams]
             self.assertTrue(result["source_unchanged"])
