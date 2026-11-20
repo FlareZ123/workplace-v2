@@ -188,6 +188,25 @@ def decode_text_variants(data: bytes, name: str) -> list[tuple[str, str]]:
     return variants
 
 
+def _looks_like_xps_package(data: bytes) -> bool:
+    """Recognize an OPC XPS/OXPS package without treating every ZIP as XPS."""
+    try:
+        with zipfile.ZipFile(io.BytesIO(data)) as package:
+            infos = package.infolist()
+            if len(infos) > 20_000:
+                return False
+            names = {item.filename for item in infos}
+            if "[Content_Types].xml" not in names:
+                return False
+            if any(name.casefold().endswith((".fpage", ".fdseq")) for name in names):
+                return True
+            with package.open("[Content_Types].xml") as stream:
+                content_types = stream.read(256 * 1024).lower()
+            return b"fixedpage" in content_types
+    except (zipfile.BadZipFile, OSError, RuntimeError, EOFError, ValueError):
+        return False
+
+
 def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                       errors: list[dict], ocr: bool = False,
                       pdf_password: str | None = None,
@@ -203,6 +222,41 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         return
     kind = intake.magic(data)
     if kind == "zip":
+        # XPS/OXPS is an OPC ZIP, but its visible strings are Glyphs attributes,
+        # not XML text nodes. Run the bounded page readers before generic ZIP
+        # recursion; the glyph-index reader fails closed on incomplete coverage.
+        if _looks_like_xps_package(data):
+            xps_stream_count = 0
+            try:
+                from h17_xps_text import extract_xps_text
+                for label, payload in extract_xps_text(data):
+                    if budget[0] + len(payload) > intake.MAX_TOTAL:
+                        errors.append({"source": name, "error": "XPS UnicodeString output exceeds total scan budget"})
+                        break
+                    budget[0] += len(payload)
+                    xps_stream_count += 1
+                    yield f"{name}!/{label}", payload
+            except Exception as exc:
+                errors.append({"source": name, "error": f"xps-unicode-text:{type(exc).__name__}:{exc}"})
+            try:
+                from h17_xps_glyph_indices import extract_xps_glyph_streams
+                for label, payload in extract_xps_glyph_streams(data):
+                    if budget[0] + len(payload) > intake.MAX_TOTAL:
+                        errors.append({"source": name, "error": "XPS glyph-index output exceeds total scan budget"})
+                        break
+                    budget[0] += len(payload)
+                    xps_stream_count += 1
+                    yield f"{name}!/{label}", payload
+            except Exception as exc:
+                errors.append({"source": name, "error": f"xps-glyph-indices:{type(exc).__name__}:{exc}"})
+            if xps_stream_count == 0 and not any(
+                item.get("source") == name and str(item.get("error", "")).startswith("xps-")
+                for item in errors
+            ):
+                errors.append({
+                    "source": name,
+                    "error": "XPS package contains no extractable UnicodeString or complete glyph-index text; bitmap/outline-only pages may remain",
+                })
         content_yielded = False
         unreadable_member = False
         try:
@@ -513,6 +567,28 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         except Exception as exc:
             errors.append({"source": name, "error": f"image metadata/OCR unavailable: {exc}"})
         # Image bytes themselves are not useful phrase text unless metadata/OCR is present.
+    elif data.startswith(b"EMFSPOOL") or b" EMF" in data or name.casefold().endswith(".emf"):
+        # EMFSPOOL can wrap one or more EMF pages. Keep the raw member as well
+        # as validated Unicode text; glyph-index/bitmap/outline-only content
+        # remains outside this reader's coverage.
+        emf_stream_count = 0
+        try:
+            from h17_emf_text import extract_emf_text
+            for label, payload in extract_emf_text(data):
+                if budget[0] + len(payload) > intake.MAX_TOTAL:
+                    errors.append({"source": name, "error": "EMF text output exceeds total scan budget"})
+                    break
+                budget[0] += len(payload)
+                emf_stream_count += 1
+                yield f"{name}!/{label}", payload
+        except Exception as exc:
+            errors.append({"source": name, "error": f"emf-text:{type(exc).__name__}:{exc}"})
+        if emf_stream_count == 0:
+            errors.append({
+                "source": name,
+                "error": "EMF/EMFSPOOL candidate produced no validated Unicode text; glyph-index, bitmap or outline content may remain",
+            })
+        yield name, data
     else:
         yield name, data
 
@@ -600,7 +676,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
             "Encrypted PDFs are never password-guessed; supply --pdf-password only when authorized.",
             "OCR is optional and may not reliably transcribe handwritten marginalia; visually inspect original images when needed.",
-            "7z, RAR and SQLite internals are not decoded by this path; use authorized format-specific extraction if present. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with the isolated LibreOffice fallbacks; other OLE streams are decoded when olefile is installed.",
+            "7z/RAR and SQLite databases other than named Windows Sticky Notes plum.sqlite members are not decoded by this path; the joint runner adds a read-only plum.sqlite/WAL bridge. EMF/EMFSPOOL Unicode text and XPS/OXPS UnicodeString plus complete glyph-index-only runs use bounded dedicated readers; incomplete XPS glyph coverage and empty EMF/XPS text extraction are reported, and bitmap/outline-only text may remain. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with the isolated LibreOffice fallbacks; other OLE streams are decoded when olefile is installed.",
             "The K04 payload is handled by work/h17_k04_binary_window_intake.py, not by this phrase scanner.",
         ],
     }
