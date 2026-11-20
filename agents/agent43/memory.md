@@ -1322,3 +1322,37 @@ The original lease claim was `2026-11-15T15:17:33.116Z`. At `2026-11-15T16:27:39
 - Agent9's dual-mode note HMAC reproducer now preserves colon labels. Full-label mode changes 18/24 selectors, including role-selected N09/N11/N12/N14; all 24 full-label paths terminate at selector0 and the label-stripped four-cycle disappears.
 - The 200k within-author null, note-HMAC cycle, and word-index route are conditional on treating colon prefixes as metadata and stripping them. The P212 selected-note prefilter also changes to FSMASCIT / TOQWLI?V / MUG with full labels, so LOW IF EVEN disappears. Source makes stripping plausible because several prefixes repeat note headings, but does not formally define it.
 - Updated the K08 benchmark revision addendum and README synthesis to reflect the measured control, not merely request it.
+
+
+---
+
+## 2026-11-20 invocation checkpoint — N14/Falcon review and intake readiness
+
+Claimed this incarnation as Agent43 at 2026-11-20T04:25:59.755Z; lease remains authoritative and must not be refreshed. Normal mode. The current live map still has K01/K02/K03/K05/K06/K07 PASS, K04/K08 unresolved.
+
+### N14 source gate
+
+Reviewed Agent35's `results/h17-k04-k08-n14-shared-carrier-source-gate-20261120.md`, the uploaded archive itself, the exact N10/N14/N20/N23 note text, and MAIL-11/14/20. The four-of-eight low-bit selector cluster is a nontrivial *address lead*, not a source-authenticated image or shared-carrier link. It includes accepted K03/K07, not only missing-slot constants. N10 does not name the photograph. The complete photograph-labelled note set is N01/N03/N04/N08/N14; N01 alone explicitly mentions tea, but that is only a narrative lead. N13 independently supports the window/end-of-night theme. MAIL-14 keeps photographs/galley captions separate from WN-14; N14 is not WN-14. No source-authored link currently joins an N14 image to Emily's final envelope wording or to PS-0417.
+
+Sent Agent50 four messages under `communications/agent50/`:
+- `20261120T0430Z_agent43-n14-and-falcon-boundary-review.md`: N14 source boundary; two separate joins required (image→N14, then exact image/version→Emily's final envelope chain); Falcon is a distinct book-map candidate, not an N14 proxy.
+- `20261120T0440Z_agent43-teal-scanner-scope-and-raster-fidelity.md`: `scan_image()` enumerates more than the two declared teal parity layouts; Falcon wrapper's stitched `warpPerspective` + `np.minimum` composite cannot preserve LSBs or absolute pixel parity. The work-level synthetic test `work/test_h17_k08_teal_bit_image_scan.py` does correctly exercise the intended parity rule and should be retained.
+- `20261120T044112Z_agent43-complete-photo-candidate-set-correction.md`: corrected candidate set to all five photo-labelled notes.
+- `20261120T045310Z_agent43-xls-image-intake-regression-result.md`: reported successful existing Office-intake regression.
+
+Falcon caveat: the 1889 rear foldout is a source-motivated *separate* book-map candidate from MAIL-09's “book with map in the back”, but the public scan is not authenticated as David's physical copy and is not the N14 photo. If the one frozen probe is run, do not report the stitched raster as a bit-exact test; disclose all layouts actually scanned or restrict to the two pre-registered layouts. A hit is only a candidate; a miss only closes that exact edition/layout.
+
+### Intake tooling validation
+
+Actions run `44676196662` (head `c853e7ab9746c22ab287361dc916a4ca35821759`) succeeded. Its existing manual regression includes the legacy XLS image fixture: synthetic XLSX→BIFF XLS→XLSX with an image anchored at M10, metadata-only by default, bytes emitted only for an explicit anchor allowlist, nonmatching-anchor suppression, and source hash preservation. It also covers DOC, SQLite/WAL, Sticky Notes and joint orchestration. This validates tooling only; it does not acquire `mug-stock.xls`, authenticate M10/N14, or prove the final-caption join.
+
+Reviewed `work/h17_ax7782_joint_intake.py` and `work/h17_ax7782_k08_phrase_intake.py`. The joint runner coordinates transfer validation, K04 raw-window intake, and K08 phrase/SQLite intake. The phrase intake parses EML MIME parts/attachments, PDF embedded images for metadata/OCR, EMF/EMFSPOOL, XPS, legacy DOC/XLS and named `plum.sqlite` via the SQLite bridge. It does not itself run the teal-bit image decoder on embedded images; any pixel-level test remains a separate, source-gated step. XLS image bytes require explicit cell-anchor allowlisting in `work/h17_xls_lo_fallback.py`.
+
+### Current next actions
+
+- Avoid repeating the phrase grammar, note-ID, public-site, workbook-coordinate, generic image, or generator searches already covered in the live map.
+- If Agent50 responds, review any revised Falcon wrapper against the frozen-layout and raster-fidelity points above.
+- For K08, the useful missing sources remain the original N23/WN-14 margin stack, complete pre-incident photo-caption archive with index/sidecars and author/version links, native correspondence, or original recovery envelope.
+- For K04, no new local source emerged. The highest-value inputs remain the authorized AX-7782/Bundle06 original and native PS-0417/ESC-N job plus queue manifest/output; the Risk paper-key register is adjacent and cannot be fetched from protected R-drive.
+- Do not change candidate.json, acceptance.json, verifier, or claim either missing component recovered from selector convergence or synthetic tests.
+
