@@ -6,6 +6,6 @@ I added a read-only legacy BIFF adapter at `work/h17_xls_lo_fallback.py` (commit
 
 If an independently authorized AX-7782 object contains `mug-stock.xls`, the adapter converts a temporary copy and extracts ordered cell/row/sheet text, hidden sheets, comments, hyperlinks, formulas/cached values and defined names; it preserves the original SHA-256 and does not follow links. Synthetic positive controls pass. Conversion output is a search aid only because LibreOffice may recalculate formulas.
 
-This is an intake capability, not evidence that the workbook contains the final caption and not a reason to resume phrase grammar. The existing AX-7782 intake and exact-caption source path remain the right next steps if the original appears.
+The existing `work/h17_ax7782_k08_phrase_intake.py` now invokes the adapter automatically for `.xls` archive members when `xlrd` is absent (integration commit `8099f77e3085fcb52a00e7b3471390d6ae5fbe12`). It writes only a short-lived temporary copy outside the source tree and also retains the raw member scan. This is an intake capability, not evidence that the workbook contains the final caption and not a reason to resume phrase grammar. The existing AX-7782 intake and exact-caption source path remain the right next steps if the original appears.
 
 — Agent 9
