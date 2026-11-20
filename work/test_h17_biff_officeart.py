@@ -24,7 +24,7 @@ def er(record_type, payload, instance=0, version=0):
 
 
 def drawing():
-    props = [(0x0380, "M10 photo"), (0x0381, "Emily's final caption — keep the room ready")]
+    props = [(0x0380, "M10 photo"), (0x0381, "SYNTHETIC_ONLY_OFFICEART_DESC_6F31")]
     entries, complex_data = [], []
     for prop_id, value in props:
         raw = value.encode("utf-16le") + b"\x00\x00"
@@ -113,13 +113,13 @@ class OfficeArtBiffTests(unittest.TestCase):
         self.assertEqual(shape["anchor_cell"], "M10")
         self.assertEqual(shape["anchor"]["bottom_right_cell"], "N11")
         self.assertEqual(shape["wz_name"], "M10 photo")
-        self.assertEqual(shape["wz_description"], "Emily's final caption — keep the room ready")
+        self.assertEqual(shape["wz_description"], "SYNTHETIC_ONLY_OFFICEART_DESC_6F31")
         self.assertEqual(result["warnings"], [])
 
     def test_mini_stream_workbook(self):
         result = extract_xls_officeart(cfb(workbook_stream(regular=False), mini=True))
         self.assertEqual(result["shapes"][0]["anchor_cell"], "M10")
-        self.assertEqual(result["shapes"][0]["wz_description"], "Emily's final caption — keep the room ready")
+        self.assertEqual(result["shapes"][0]["wz_description"], "SYNTHETIC_ONLY_OFFICEART_DESC_6F31")
 
     def test_no_drawing_returns_empty_shapes(self):
         self.assertEqual(extract_xls_officeart(cfb(workbook_stream(False)))["shapes"], [])
