@@ -315,5 +315,54 @@ class K08PhraseIntakeTests(unittest.TestCase):
                 )
         self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
 
+    def test_emf_spool_and_xps_rendered_text_dispatch_to_k08_hmac(self):
+        nonce = bytes(range(16))
+
+        xps_phrase = "the water held the last light around the table"
+        xps_target = hashlib.sha256(phrase_intake.k08_component(nonce, xps_phrase)).digest()
+        xps_page = (
+            '<FixedPage xmlns="http://schemas.microsoft.com/xps/2005/06">'
+            f'<Glyphs UnicodeString="{xps_phrase}"/>'
+            '</FixedPage>'
+        ).encode("utf-8")
+        package = io.BytesIO()
+        with zipfile.ZipFile(package, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr(
+                "[Content_Types].xml",
+                '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"/>',
+            )
+            archive.writestr("Documents/1/Pages/1.fpage", xps_page)
+        errors = []
+        xps_streams = list(phrase_intake.iter_text_streams(
+            "PS-0323.xps", package.getvalue(), 0, [0], errors
+        ))
+        xps_hits = []
+        for source, payload in xps_streams:
+            for label, text in phrase_intake.decode_text_variants(payload, source):
+                phrase_intake.scan_phrase_spans(
+                    text, nonce, xps_target, source + " [" + label + "]", 16, xps_hits
+                )
+        self.assertTrue(any(hit["normalized_phrase"] == xps_phrase for hit in xps_hits), xps_hits)
+        self.assertFalse(any("xps-glyph-indices" in item["error"] for item in errors), errors)
+
+        from test_h17_emf_text import page as emf_page, record as emf_record
+
+        emf_phrase = "the voices stayed around the table after the long watch"
+        emf_target = hashlib.sha256(phrase_intake.k08_component(nonce, emf_phrase)).digest()
+        envelope = b"EMFSPOOL read-only fixture\\x00\\x00" + emf_page(emf_record(84, [emf_phrase]))
+        errors = []
+        emf_streams = list(phrase_intake.iter_text_streams(
+            "PS-0323.SPL", envelope, 0, [0], errors
+        ))
+        emf_hits = []
+        for source, payload in emf_streams:
+            for label, text in phrase_intake.decode_text_variants(payload, source):
+                phrase_intake.scan_phrase_spans(
+                    text, nonce, emf_target, source + " [" + label + "]", 16, emf_hits
+                )
+        self.assertTrue(any(hit["normalized_phrase"] == emf_phrase for hit in emf_hits), emf_hits)
+        self.assertTrue(any("emf-page" in hit["source"] for hit in emf_hits), emf_hits)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
