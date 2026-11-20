@@ -4,7 +4,7 @@
 
 ## Question
 
-Could the missing AX-7782 retained object, or a profile-refresh package carried with it, be a Windows User State Migration Tool (USMT) compressed migration store? If so, it may contain the missing mug-stock.xls, profile-refresh records, photo/caption material, and possibly relevant native print artifacts.
+Could a separately preserved office profile-refresh package be a Windows User State Migration Tool (USMT) compressed migration store? If so, it may contain the missing mug-stock.xls, profile-refresh records, photo/caption material, and possibly relevant native print artifacts. AX-7782 is a distinct, high-priority retained object; its format is unknown, and no surviving source joins it to the profile-refresh package. Do not conflate the two acquisition targets.
 
 ## Source basis
 
@@ -18,7 +18,7 @@ Could the missing AX-7782 retained object, or a profile-refresh package carried 
 - work/h17_profile_inventory.py already classifies .mig as windows_usmt_migration_store and recursively inventories files, but does not validate/extract a USMT store.
 - work/h17_ax7782_object_intake.py handles ZIP/TAR/PDF/SQLite/OLE/image content but does not handle USMT stores.
 
-These records make a profile-refresh container plausible; they do not prove AX-7782 is a USMT store or that it contains the missing files.
+These records make a separate profile-refresh container plausible; they do not prove that AX-7782 contains it, that either target is a USMT store, or that either contains the missing files.
 
 ## External format support
 
@@ -62,10 +62,10 @@ The default extraction allowlist includes mug-stock.xls, desktop-move-2026.html,
 
 ## Next action and limits
 
-If an authorized AX-7782 object or profile-refresh package becomes available:
+If an authorized AX-7782 object or a separately preserved profile-refresh package becomes available:
 
 1. Preserve and hash the original object and its eight chunk reconstruction.
-2. Identify the actual container format; do not assume .mig.
+2. Identify the actual container format for that specific object; do not assume .mig or assume AX-7782 and the profile-refresh package are the same object.
 3. If UsmtUtils /verify:all accepts it, preserve the verification log and extract only to a new isolated directory.
 4. Feed any recovered mug-stock.xls to the existing BIFF/M10 intake; photos and sidecars to the K08 phrase intake; native spool pairs to the K04 intake.
 5. If a separate profile image contains Windows/CSC, inspect the CSC namespace tree read-only first; ESE parsing is a fallback for metadata, not the first content-recovery step.
