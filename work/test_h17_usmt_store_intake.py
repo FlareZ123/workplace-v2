@@ -1,0 +1,87 @@
+import tempfile
+import unittest
+from pathlib import Path
+
+import h17_usmt_store_intake as usmt
+
+
+class UsmtIntakeTests(unittest.TestCase):
+    def test_verify_args_summary_and_keyfile(self):
+        args = usmt.build_verify_args(Path("store.mig"), Path("log.txt"), "summary",
+                                      Path("key.txt"), "AES_128")
+        self.assertEqual(args, ["/verify", "store.mig", "/l:log.txt", "/decrypt:AES_128", "/keyfile:key.txt"])
+
+    def test_extract_args_are_targeted_and_do_not_use_loadstate(self):
+        args = usmt.build_extract_args(Path("store.mig"), Path("out"), Path("log.txt"),
+                                       ["mug-stock.xls", "*.jpg"])
+        self.assertEqual(args[:4], ["/extract", "store.mig", "/i:mug-stock.xls,*.jpg", "out"])
+        self.assertNotIn("LoadState", args)
+        self.assertNotIn("/o", args)
+
+    def test_verify_runs_read_only_and_preserves_native_log(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            store = root / "store.mig"
+            store.write_bytes(b"fake-store-bytes")
+            fake = root / "UsmtUtils.exe"
+            args_file = root / "args.txt"
+            fake.write_text(
+                "#!/bin/sh\n"
+                "printf '%s\\n' \"$@\" > \"" + str(args_file) + "\"\n"
+                "for arg in \"$@\"; do case \"$arg\" in /l:*) log=\"${arg#/l:}\";; esac; done\n"
+                "printf 'native log\\n' > \"$log\"\n"
+                "exit 0\n",
+                encoding="utf-8",
+            )
+            fake.chmod(0o755)
+            out = root / "out"
+            manifest = usmt.run_intake(store, fake, out, mode="verify")
+            self.assertTrue(manifest["input_unchanged"])
+            self.assertEqual(manifest["input"]["sha256"], usmt.sha256_file(store))
+            self.assertTrue((out / "manifest.json").is_file())
+            self.assertEqual((out / "usmtutils.log").read_text(encoding="utf-8"), "native log\n")
+            self.assertIn("COMMAND:", (out / "runner.log").read_text(encoding="utf-8"))
+            args = args_file.read_text(encoding="utf-8").splitlines()
+            self.assertEqual(args[0], "/verify:all")
+            self.assertEqual(args[1], str(store.resolve()))
+
+    def test_extract_hashes_outputs(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            store = root / "store.mig"
+            store.write_bytes(b"fake-store-bytes")
+            fake = root / "UsmtUtils.exe"
+            fake.write_text(
+                "#!/bin/sh\n"
+                "dest=''\n"
+                "for arg in \"$@\"; do case \"$arg\" in */files) dest=\"$arg\";; esac; done\n"
+                "mkdir -p \"$dest\"\nprintf 'hello' > \"$dest/mug-stock.xls\"\nexit 0\n",
+                encoding="utf-8",
+            )
+            fake.chmod(0o755)
+            out = root / "out"
+            manifest = usmt.run_intake(store, fake, out, mode="extract", includes=["mug-stock.xls"])
+            self.assertTrue(manifest["input_unchanged"])
+            self.assertEqual([x["path"] for x in manifest["extracted_files"]], ["mug-stock.xls"])
+            self.assertEqual(manifest["extracted_files"][0]["sha256"], usmt.hash_tree(out / "files")[0]["sha256"])
+
+    def test_alg_requires_keyfile(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            store = root / "store.mig"
+            store.write_bytes(b"fake")
+            with self.assertRaises(ValueError):
+                usmt.run_intake(store, root / "missing.exe", root / "out", algorithm="AES_128")
+
+    def test_refuses_nonempty_output(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            out = root / "out"
+            out.mkdir()
+            (out / "keep.txt").write_text("keep", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                usmt.prepare_output(out)
+
+
+if __name__ == "__main__":
+    unittest.main()
