@@ -38,14 +38,16 @@ def _word_run(record, count, offset, floor, meta):
 
 
 def _poly_runs(record, page, index, record_offset, font_handle, face, kind=97):
-    if len(record) < 40:
+    if len(record) < 28:
         return [], True
-    count = struct.unpack_from("<I", record, 36)[0]
-    if count <= 0 or count > (len(record) - 40) // 40:
+    # EMRPOLYTEXTOUT{A,W}: EMR(8) + RECTL(16) + cStrings(4),
+    # followed by 40-byte EMRTEXT descriptors.
+    count = struct.unpack_from("<I", record, 24)[0]
+    if count <= 0 or count > (len(record) - 28) // 40:
         return [], True
-    floor = 40 + count * 40
+    floor = 28 + count * 40
     runs, malformed = [], False
-    for sub, start in enumerate(range(40, floor, 40)):
+    for sub, start in enumerate(range(28, floor, 40)):
         x, y = struct.unpack_from("<ii", record, start)
         n, off, options = struct.unpack_from("<III", record, start + 8)
         if not options & ETO_GLYPH_INDEX:
@@ -123,7 +125,7 @@ def extract_emf_glyph_indices(data, binding=None):
         rtype, header_size = struct.unpack_from("<II", data, start)
         if rtype != 1 or header_size < 88 or header_size % 4:
             continue
-        nbytes, nrecords = struct.unpack.from("<II", data, start + 48)
+        nbytes, nrecords = struct.unpack_from("<II", data, start + 48)
         if nbytes < header_size + 20 or nbytes > len(data) - start or not 2 <= nrecords <= MAX_RECORDS:
             continue
         coverage["pages_seen"] += 1
@@ -134,7 +136,7 @@ def extract_emf_glyph_indices(data, binding=None):
             if offset + 8 > stop:
                 valid = False
                 break
-            kind, size = struct.unpack.from("<II", data, offset)
+            kind, size = struct.unpack_from("<II", data, offset)
             if size < 8 or size % 4 or offset + size > stop:
                 valid = False
                 break
@@ -144,7 +146,7 @@ def extract_emf_glyph_indices(data, binding=None):
                 valid = False
                 break
             if kind == 82 and size >= 332:  # EXTCREATEFONTINDIRECTW
-                handle, = struct.unpack.from("<I", rec, 8)
+                handle, = struct.unpack_from("<I", rec, 8)
                 face = _face_name(rec)
                 if face:
                     fonts[handle] = face
@@ -159,7 +161,7 @@ def extract_emf_glyph_indices(data, binding=None):
             elif kind in (83, 84):  # EXTTEXTOUTA/W
                 if size >= 76:
                     x, y = struct.unpack_from("<ii", rec, 36)
-                    n, off, options = struct.unpack.from("<III", rec, 44)
+                    n, off, options = struct.unpack_from("<III", rec, 44)
                     if options & ETO_GLYPH_INDEX:
                         meta = {"page": page_no + 1, "record_index": index,
                                 "record_offset": offset, "record_type": kind,
@@ -200,6 +202,9 @@ def extract_emf_glyph_indices(data, binding=None):
         coverage["pages_processed"] += 1
         runs.extend(page_runs)
         cursor = stop
+    if coverage["pages_seen"] == 0:
+        coverage["complete"] = False
+        reasons.append("no-emf-header")
     status = "no-glyph-index-runs" if not runs else "raw-glyph-indices" if coverage["complete"] else "partial"
     return {"status": status, "source_sha256": hashlib.sha256(data).hexdigest(),
             "binding": binding or {}, "runs": runs, "coverage": coverage}
