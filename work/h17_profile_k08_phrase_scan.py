@@ -252,11 +252,21 @@ def _image_fallback_streams(
                 try:
                     import pytesseract
                     from PIL import ImageOps
-                    frame = ImageOps.exif_transpose(image.copy()).convert("RGB")
-                    frame.thumbnail((3000, 3000))
-                    text = pytesseract.image_to_string(frame)
-                    if text.strip():
-                        yield f"{display_name}!/<image-ocr-fallback>", text.encode("utf-8", "replace")
+                    frame_count = int(getattr(image, "n_frames", 1))
+                    for frame_index in range(frame_count):
+                        try:
+                            image.seek(frame_index)
+                            frame = ImageOps.exif_transpose(image.copy()).convert("RGB")
+                            frame.thumbnail((3000, 3000))
+                            text = pytesseract.image_to_string(frame)
+                            if text.strip():
+                                frame_suffix = f"#frame={frame_index}" if frame_count > 1 else ""
+                                yield f"{display_name}!/<image-ocr-fallback>{frame_suffix}", text.encode("utf-8", "replace")
+                        except Exception as frame_exc:
+                            errors.append({
+                                "source": f"{display_name}#frame={frame_index}",
+                                "error": f"image-ocr-fallback:{type(frame_exc).__name__}:{frame_exc}",
+                            })
                 except Exception as exc:
                     errors.append({"source": display_name, "error": f"image-ocr-fallback:{type(exc).__name__}:{exc}"})
     except ImportError as exc:
