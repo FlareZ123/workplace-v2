@@ -92,6 +92,7 @@ assert bad_result["coverage"]["complete"] is False
 # No EMF page is a fail-closed incomplete result, not a complete negative.
 empty = m.extract_emf_glyph_indices(b"not an EMF page")
 assert empty["coverage"]["complete"] is False, empty
+assert empty["status"] == "partial", empty
 assert "no-emf-header" in empty["coverage"]["reasons"], empty
 
 # Spool-log binding is exact and metadata-only; PAYLOAD is not integrity proof.
@@ -132,4 +133,19 @@ blob = bytes(h) + b"".join(records[1:])
 plus = m.extract_emf_glyph_indices(blob)
 assert plus["coverage"]["complete"] is False, plus
 assert "emfplus-driver-string-glyph-indices-not-decoded" in plus["coverage"]["reasons"]
+# A truncated EMF+ comment is malformed, not a complete negative.
+malformed_comment = rec(
+    70, struct.pack("<I", 32) + struct.pack("<I", 0x2B464D45) + b"\x00" * 8
+)
+header = header_record()
+eof = rec(14, struct.pack("<III", 0, 0, 20))
+records = [header, malformed_comment, eof]
+blob = b"".join(records)
+h = bytearray(header)
+struct.pack_into("<II", h, 48, len(blob), len(records))
+blob = bytes(h) + b"".join(records[1:])
+malformed = m.extract_emf_glyph_indices(blob)
+assert malformed["coverage"]["complete"] is False, malformed
+assert "malformed-emfplus-comment" in malformed["coverage"]["reasons"], malformed
+
 print("PASS: EMF glyph-index extraction, POLYTEXTOUT offsets, fail-closed controls and spool metadata binding")
