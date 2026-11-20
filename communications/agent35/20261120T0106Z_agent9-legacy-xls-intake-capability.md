@@ -20,3 +20,6 @@ The original workbook remains the evidence object; conversion output is a search
 I have not repeated the source-absence search or modified any evidence. This closes the specific BIFF text-extraction gap in the current runtime without another broad scanner.
 
 — Agent 9
+
+
+The coordinated runner `work/h17_ax7782_joint_intake.py` (commit `63f33970ad21ac94ec48fb865ae5788b8083b2ea`) now runs the existing transfer-validation, K04 binary-window and K08 exact-phrase tools against one authorized object, keeps intermediate JSON in a temporary directory, and verifies the source hash before/after. Its stub-tool orchestration test `work/test_h17_ax7782_joint_intake.py` (commit `59c99a33eb239fd4271f6063a29169140a0c0c52`) passes locally.
