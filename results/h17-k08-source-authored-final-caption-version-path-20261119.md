@@ -43,9 +43,9 @@ The PS-0323 16-byte payload itself is not the K08 component: its SHA-256 does no
 
 For a recovered native print object, reuse the existing bounded read-only parsers: `work/h17_emf_text.py` for EMF/EMFSPOOL, `work/h17_xps_text.py` for XPS/OXPS UnicodeString runs, and `work/h17_xps_glyph_indices.py` for XPS glyph-index-only runs where UnicodeString is absent. Preserve the original spool bytes and the extractor's coverage/status. These tools do not recover bitmap-only or outline-only text; an empty/incomplete extraction is not a complete negative. Use the historical renderer and/or OCR only when the native text records do not contain the caption.
 
-## Conditional shared ESC-N rendered-label path: PS-0417 attempt-1 LABEL
+## Conditional shared ESC-N print-object path: PS-0417 attempt-1 LABEL
 
-A second cross-slot carrier is worth retaining separately from the N23→PS-0323 sequence locator:
+A second cross-slot print-object path is worth retaining separately from the N23→PS-0323 sequence locator; its physical target remains unresolved:
 
 - The records-custodian note defines K08 as the personal caption used to distinguish the recovery envelope from similarly named commissioning and standby envelopes. MAIL-20 makes the final words on the recovery-envelope face authoritative.
 - MAIL-16 explicitly excludes ESC-S from the keeper phrase but does not establish whether ESC-N carries the wording. The incident-date route transcription maps ESC-N to PS-261003-0417.
