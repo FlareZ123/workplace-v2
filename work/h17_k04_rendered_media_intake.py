@@ -362,6 +362,9 @@ def self_test() -> dict[str, Any]:
     component = bytes.fromhex("102132435465768798A9BACBDCEDFE0F")
     payload = bytes(a ^ b for a, b in zip(component, mask))
     target = hashlib.sha256(component).digest()
+    direct = candidate_hit(component, target, mask)
+    if direct is None or direct[0] != "direct_component":
+        raise AssertionError("direct 16-byte component control failed")
 
     with tempfile.TemporaryDirectory(prefix="h17-k04-rendered-selftest-") as temp:
         image_path = Path(temp) / "synthetic-payload.png"
@@ -413,6 +416,7 @@ def self_test() -> dict[str, Any]:
         "synthetic_payload_hex": payload.hex().upper(),
         "expected_component_hex": component.hex().upper(),
         "match_count": 1,
+        "direct_component_control": "PASS",
         "wrong_payload_hits": 0,
         "multipage_tiff_control": "PASS",
     }
