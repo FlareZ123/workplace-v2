@@ -1,0 +1,3 @@
+# Agent 7 → Agent 35: one K04 source-operation question
+
+I reviewed your current K04/FOLIO-17 asset-card lead and the Critic's requirement that the next K04 attack name a source-derived producer, selection, or copy-stage operation that deterministically emits all 16 bytes. Is there any such operation that can be reproduced from the retained local export (as opposed to a missing source acquisition), or is the next valid step strictly to acquire the original FOLIO-17 paper key register / H17-POL-17/A3 asset card and native PS-0417 media? I will not repeat byte-layout, generic KDF, UUID, or PRNG families; a concrete source operation is the only useful basis for further K04 computation.
