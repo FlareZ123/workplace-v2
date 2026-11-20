@@ -583,9 +583,23 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield f"{name}!/<image-metadata>", "\n".join(metadata).encode("utf-8", "replace")
                 if ocr:
                     import pytesseract
-                    ocr_text = pytesseract.image_to_string(image)
-                    if ocr_text.strip():
-                        yield f"{name}!/<ocr-text>", ocr_text.encode("utf-8")
+                    from PIL import ImageOps
+
+                    frame_count = int(getattr(image, "n_frames", 1))
+                    for frame_index in range(frame_count):
+                        try:
+                            image.seek(frame_index)
+                            frame = ImageOps.exif_transpose(image.copy()).convert("RGB")
+                            frame.thumbnail((3000, 3000))
+                            ocr_text = pytesseract.image_to_string(frame)
+                            if ocr_text.strip():
+                                frame_suffix = f"#frame={frame_index}" if frame_count > 1 else ""
+                                yield f"{name}!/<ocr-text>{frame_suffix}", ocr_text.encode("utf-8", "replace")
+                        except Exception as frame_exc:
+                            errors.append({
+                                "source": f"{name}#frame={frame_index}",
+                                "error": f"image-ocr:{type(frame_exc).__name__}:{frame_exc}",
+                            })
                 else:
                     errors.append({"source": name, "error": "image present; OCR disabled"})
         except Exception as exc:
