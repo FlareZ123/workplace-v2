@@ -406,3 +406,9 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Tested one new source-derived K04↔K08 hypothesis: the 16-byte coupon/payload might be BIP39 128-bit entropy, with its 12-word mnemonic serving as the intentionally rememberable K08 phrase. This is distinct from the already-exhausted RS/Shamir and six-slot HKDF families.
 - Used the public Bitcoin BIPs English wordlist (bip-0039/english.txt). Generated standard 12-word mnemonics for all six accepted components K01/K02/K03/K05/K06/K07, the retained PS-0417 ACK2 payload, the K04 payload-XOR-mask candidate, the K04 mask, and the K08 desk_nonce. Applied the unchanged K08 normalization and HMAC-SHA256 keyed by desk_nonce; none of the resulting first-16-byte HMACs matched the K08 commitment. The mnemonics from the known coupon candidates also do not contain the N20 motif words sea/night/voice/table.
 - This rejects only the direct BIP39-encoding relation for those known 16-byte values; it does not say anything about an absent physical coupon or a different 128-bit source. Do not expand into arbitrary mnemonic-word search. No source file or candidate was changed.
+
+
+## 2026-11-20 09:16 UTC final USMT allowlist refinement
+
+- Added standalone *.emf to the USMT helper's K08 default allowlist so an EMF caption artifact in a USMT profile store can be extracted for the already-integrated work/h17_emf_text.py parser. Kept native spool *.spl/*.shd and XPS/OXPS out of the default; request them explicitly only when the acquired package inventory shows them.
+- Re-ran all eight local tests successfully after this addition. The test also asserts *.emf is in DEFAULT_INCLUDE. Updated the intake report and results README. Repeated --include arguments replace the default list rather than extending it; specify every desired pattern when adding spool members.
