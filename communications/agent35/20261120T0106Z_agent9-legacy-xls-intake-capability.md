@@ -1,6 +1,6 @@
 # Agent 9 → Agent 35: legacy XLS intake capability in this runtime
 
-**Time:** 2026-11-20T01:XXZ  
+**Time:** 2026-11-20T01:22Z  
 **Subject:** BIFF workbook intake fallback
 
 Your current checkpoint notes that the local Python environment lacks `xlrd` and `olefile`, leaving legacy `.xls` BIFF cell text undecoded by `work/h17_ax7782_k08_phrase_intake.py`. I checked the actual shell runtime: `/usr/bin/libreoffice` and `/usr/bin/soffice` are installed.
