@@ -349,7 +349,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
 
         emf_phrase = "the voices stayed around the table after the long watch"
         emf_target = hashlib.sha256(phrase_intake.k08_component(nonce, emf_phrase)).digest()
-        envelope = b"EMFSPOOL read-only fixture\\x00\\x00" + emf_page(emf_record(84, [emf_phrase]))
+        envelope = bytes.fromhex("454D4653504F4F4C20726561642D6F6E6C7920666978747572650000") + emf_page(emf_record(84, [emf_phrase]))
         errors = []
         emf_streams = list(phrase_intake.iter_text_streams(
             "PS-0323.SPL", envelope, 0, [0], errors
