@@ -58,6 +58,7 @@ Keep PS-0317 (standby label), PS-0318 (commissioning label), PS-0320 (semantic b
 
 Evidence:
 - [Source-authored final caption/version path](h17-k08-source-authored-final-caption-version-path-20261119.md)
+- [MAIL-12 shelf-card literal-source lead](h17-k08-shelf-card-literal-source-20261106.md)
 - [N14 cross-slot selector/source gate](h17-k04-k08-n14-shared-carrier-source-gate-20261120.md)
 - [Author-final version graph](h17-k08-author-final-version-graph-20261112.md)
 - [Underleaf-indentation recovery path](h17-k08-underleaf-indentation-acquisition-20261107.md)
