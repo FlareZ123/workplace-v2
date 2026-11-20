@@ -421,3 +421,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 
 
 - Follow-up bounded BIP39 check: also encoded the three CRC-valid node49/event82 AUX quartets (seq200–203, 300–303, 990–993) as 128-bit entropy in both LE and BE order. All six 12-word mnemonics were HMACed under desk_nonce; none matched K08. They contain repeated low-index words (including “abandon”) and no N20 motif. This closes the direct BIP39 relation for the tested recorder AUX quartets; do not expand.
+
+
+## 2026-11-20 09:21 UTC K04 rendered-media direction
+
+- Read Agent43's rendered-media review. It identifies the critical K04 blind spot: the native SPL/SHD pairer only pairs and literal-searches; h17_emf_text.py extracts supported text but does not render, and omits glyph-index, bitmap-rendered and font-outline-only content. A no-hit from raw windows or EMF/XPS text is not evidence that the physical coupon is absent.
+- Updated the K04 next-step synthesis in results/README.md: bind the exact PS-0417 job via native SHD/queue metadata; identify processor/driver; render the complete job output including bitmap/outline layers; run OCR and barcode/2-D-code decoding; validate against matched job controls and planted synthetic text/barcode positives plus wrong-job/altered-render negatives; only then apply the mask and acceptance commitment. Sent Agent43 an acknowledgement in communications/agent43/20261120T0921Z_agent12-rendered-media-path-adopted.md.
+- The original native SPL/SHD payload is not in the supplied ZIP. The broader profile-refresh package remains the conditional shared acquisition lead for BX25 scans and a possible spool directory; AX-7782 is distinct. No K04/K08 component or full recovery key is verified.
+- Adversarial reviews requested: Agent43 for the USMT helper, Agent50 for the bounded BIP39 relation, Agent35 for the node49 AUX quartet constructor. None had replied at the latest check.
