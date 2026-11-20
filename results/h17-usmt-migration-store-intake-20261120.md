@@ -4,7 +4,7 @@
 
 ## Question
 
-Could a separately preserved office profile-refresh package be a Windows User State Migration Tool (USMT) compressed migration store? If so, it may contain the missing mug-stock.xls, profile-refresh records, photo/caption material, and possibly relevant native print artifacts. AX-7782 is a distinct, high-priority retained object; its format is unknown, and no surviving source joins it to the profile-refresh package. Do not conflate the two acquisition targets.
+Could a separately preserved office profile-refresh package be a Windows User State Migration Tool (USMT) compressed migration store? If so, it may contain the missing mug-stock.xls, profile-refresh records, and photo/caption material. AX-7782 is a distinct, high-priority retained object; its format is unknown, and no surviving source joins it to the profile-refresh package. Do not conflate the two acquisition targets.
 
 ## Source basis
 
@@ -35,7 +35,7 @@ Added work/h17_usmt_store_intake.py with tests in work/test_h17_usmt_store_intak
 The helper:
 - delegates validation and extraction to the matching Windows ADK UsmtUtils.exe;
 - defaults to /verify:all;
-- supports selective extraction of the H-17-relevant workbook, profile, text, image, SQLite, and spool file patterns;
+- supports selective extraction of the H-17-relevant workbook, profile, text, image, and SQLite file patterns;
 - requires a new/empty output directory;
 - hashes the primary store plus adjacent .mig/.migNN segments before and after, and hashes extracted files;
 - preserves the native USMT log separately from the runner log;
@@ -58,7 +58,7 @@ If verification confirms a store and extraction is authorized, use a new output 
 python work\h17_usmt_store_intake.py AX-7782.mig --tool "C:\Program Files\Windows Kits\10\Assessment and Deployment Kit\User State Migration Tool\amd64\UsmtUtils.exe" --mode extract --out C:\H17-intake\extract
 ~~~
 
-The default extraction allowlist includes mug-stock.xls, desktop-move-2026.html, scanrelease.txt, IR-261003-H17.txt, transfer-index.htm, common Office/document/image formats, SQLite databases and their WAL/SHM sidecars, and .spl/.shd spool files. Supply an independently authorized --keyfile only if the store is encrypted; do not assume the unrelated 8131 PDF password is the USMT key.
+The default extraction allowlist includes mug-stock.xls, desktop-move-2026.html, scanrelease.txt, IR-261003-H17.txt, transfer-index.htm, common Office/document/image formats, SQLite databases and their WAL/SHM sidecars. Supply an independently authorized --keyfile only if the store is encrypted; do not assume the unrelated 8131 PDF password is the USMT key.
 
 ## Next action and limits
 
@@ -67,7 +67,7 @@ If an authorized AX-7782 object or a separately preserved profile-refresh packag
 1. Preserve and hash the original object and its eight chunk reconstruction.
 2. Identify the actual container format for that specific object; do not assume .mig or assume AX-7782 and the profile-refresh package are the same object.
 3. If UsmtUtils /verify:all accepts it, preserve the verification log and extract only to a new isolated directory.
-4. Feed any recovered mug-stock.xls to the existing BIFF/M10 intake; photos and sidecars to the K08 phrase intake; native spool pairs to the K04 intake.
+4. Feed any recovered mug-stock.xls to the existing BIFF/M10 intake and photos/sidecars to the K08 phrase intake. Do not infer a K04 spool relationship from the profile-refresh package.
 5. If a separate profile image contains Windows/CSC, inspect the CSC namespace tree read-only first; ESE parsing is a fallback for metadata, not the first content-recovery step.
 
 No source bytes were available in the supplied ZIP or inspected repository at the time of this work. No K04/K08 component, source file, or recovery key has been recovered by this hypothesis.
