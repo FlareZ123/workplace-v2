@@ -196,6 +196,82 @@ def consolidate_hits(hits: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return list(merged.values())
 
 
+def scan_frame(
+    rgb: Any,
+    image_path: str,
+    target_digest: bytes,
+    mask: bytes,
+    *,
+    do_ocr: bool,
+    records: list[dict[str, Any]],
+    hits: list[dict[str, Any]],
+    warnings: list[str],
+) -> None:
+    zbar_qr_seen = False
+    try:
+        from pyzbar.pyzbar import decode as zbar_decode
+
+        for obj in zbar_decode(rgb):
+            symbology = str(getattr(obj, "type", "unknown"))
+            if "QR" in symbology.upper():
+                zbar_qr_seen = True
+            _record_decoded(
+                image_path=image_path,
+                engine="zbar/pyzbar",
+                symbology=symbology,
+                data=bytes(obj.data),
+                bbox=_bbox(getattr(obj, "rect", None)),
+                target_digest=target_digest,
+                mask=mask,
+                records=records,
+                hits=hits,
+            )
+    except Exception as exc:
+        warnings.append(f"zbar-unavailable:{type(exc).__name__}:{exc}")
+
+    # ZBar handles multiple QR/barcode symbols. Use OpenCV only as a QR
+    # fallback when ZBar is unavailable or found no QR.
+    if not zbar_qr_seen:
+        try:
+            import cv2
+            import numpy as np
+
+            detector = cv2.QRCodeDetector()
+            array = np.asarray(rgb)
+            value, points, _ = detector.detectAndDecode(array)
+            if value:
+                _record_decoded(
+                    image_path=image_path,
+                    engine="opencv-qrcode",
+                    symbology="QRCODE",
+                    data=value.encode("utf-8"),
+                    bbox=None,
+                    target_digest=target_digest,
+                    mask=mask,
+                    records=records,
+                    hits=hits,
+                )
+        except Exception as exc:
+            warnings.append(f"opencv-unavailable:{type(exc).__name__}:{exc}")
+
+    if do_ocr:
+        try:
+            import pytesseract
+
+            text = pytesseract.image_to_string(rgb, config="--psm 6")
+            if text.strip():
+                _record_ocr(
+                    image_path=image_path,
+                    text=text,
+                    target_digest=target_digest,
+                    mask=mask,
+                    records=records,
+                    hits=hits,
+                )
+        except Exception as exc:
+            warnings.append(f"tesseract-unavailable:{type(exc).__name__}:{exc}")
+
+
 def scan_image(
     path: Path,
     target_digest: bytes,
@@ -210,83 +286,41 @@ def scan_image(
     records: list[dict[str, Any]] = []
     hits: list[dict[str, Any]] = []
     warnings: list[str] = []
+    frames: list[dict[str, int]] = []
 
     with Image.open(path) as image:
-        width, height = image.size
-        image.load()
-        rgb = image.convert("RGB")
-
-        zbar_qr_seen = False
-        try:
-            from pyzbar.pyzbar import decode as zbar_decode
-
-            for obj in zbar_decode(rgb):
-                symbology = str(getattr(obj, "type", "unknown"))
-                if "QR" in symbology.upper():
-                    zbar_qr_seen = True
-                _record_decoded(
-                    image_path=str(path),
-                    engine="zbar/pyzbar",
-                    symbology=symbology,
-                    data=bytes(obj.data),
-                    bbox=_bbox(getattr(obj, "rect", None)),
-                    target_digest=target_digest,
-                    mask=mask,
-                    records=records,
-                    hits=hits,
-                )
-        except Exception as exc:
-            warnings.append(f"zbar-unavailable:{type(exc).__name__}:{exc}")
-
-        # ZBar already handles multiple QR/barcode symbols. Use OpenCV only as
-        # a QR fallback when ZBar is unavailable or found no QR; avoid a slow
-        # second decode of every page when ZBar has already decoded the QR.
-        if not zbar_qr_seen:
-            try:
-                import cv2
-                import numpy as np
-
-                detector = cv2.QRCodeDetector()
-                array = np.asarray(rgb)
-                value, points, _ = detector.detectAndDecode(array)
-                if value:
-                    _record_decoded(
-                        image_path=str(path),
-                        engine="opencv-qrcode",
-                        symbology="QRCODE",
-                        data=value.encode("utf-8"),
-                        bbox=None,
-                        target_digest=target_digest,
-                        mask=mask,
-                        records=records,
-                        hits=hits,
-                    )
-            except Exception as exc:
-                warnings.append(f"opencv-unavailable:{type(exc).__name__}:{exc}")
-
-        if do_ocr:
-            try:
-                import pytesseract
-
-                text = pytesseract.image_to_string(rgb, config="--psm 6")
-                if text.strip():
-                    _record_ocr(
-                        image_path=str(path),
-                        text=text,
-                        target_digest=target_digest,
-                        mask=mask,
-                        records=records,
-                        hits=hits,
-                    )
-            except Exception as exc:
-                warnings.append(f"tesseract-unavailable:{type(exc).__name__}:{exc}")
+        frame_count = int(getattr(image, "n_frames", 1))
+        for frame_index in range(frame_count):
+            image.seek(frame_index)
+            image.load()
+            width, height = image.size
+            frames.append({"index": frame_index, "width": width, "height": height})
+            rgb = image.convert("RGB")
+            frame_path = (
+                f"{path}#frame={frame_index}"
+                if frame_count > 1
+                else str(path)
+            )
+            scan_frame(
+                rgb,
+                frame_path,
+                target_digest,
+                mask,
+                do_ocr=do_ocr,
+                records=records,
+                hits=hits,
+                warnings=warnings,
+            )
 
     unique_hits = consolidate_hits(hits)
+    first_frame = frames[0] if frames else {"width": 0, "height": 0}
     return {
         "path": str(path),
         "file_sha256": file_hash,
-        "width": width,
-        "height": height,
+        "width": first_frame["width"],
+        "height": first_frame["height"],
+        "frame_count": len(frames),
+        "frames": frames,
         "decoded_record_count": len(records),
         "candidate_hit_count": len(unique_hits),
         "decoded_records": records,
@@ -352,12 +386,35 @@ def self_test() -> dict[str, Any]:
         if candidate_hit(wrong, target, mask) is not None:
             raise AssertionError("altered payload unexpectedly matched")
 
+        # A fax-style multi-page TIFF must scan every frame, not only page 1.
+        control_qr = qrcode.make("unrelated-control-page")
+        payload_qr = qrcode.make(payload.hex().upper())
+        multipage_path = Path(temp) / "synthetic-fax-two-page.tiff"
+        control_qr.convert("RGB").save(
+            multipage_path,
+            save_all=True,
+            append_images=[payload_qr.convert("RGB")],
+            compression="tiff_lzw",
+        )
+        multipage_result = scan_image(
+            multipage_path, target, mask, do_ocr=False
+        )
+        if multipage_result["frame_count"] != 2:
+            raise AssertionError("multi-page TIFF frame count was not preserved")
+        if multipage_result["candidate_hit_count"] != 1:
+            raise AssertionError(
+                "multi-page TIFF did not yield exactly one candidate"
+            )
+        if "#frame=1" not in multipage_result["candidate_hits"][0]["image"]:
+            raise AssertionError("candidate page index was not preserved")
+
     return {
         "self_test": "PASS",
         "synthetic_payload_hex": payload.hex().upper(),
         "expected_component_hex": component.hex().upper(),
         "match_count": 1,
         "wrong_payload_hits": 0,
+        "multipage_tiff_control": "PASS",
     }
 
 
@@ -386,6 +443,8 @@ def main(argv: list[str] | None = None) -> int:
                 files.append({
                     "path": str(path),
                     "error": f"image-intake:{type(exc).__name__}:{exc}",
+                    "frame_count": 0,
+                    "frames": [],
                     "decoded_record_count": 0,
                     "candidate_hit_count": 0,
                     "decoded_records": [],
@@ -399,6 +458,7 @@ def main(argv: list[str] | None = None) -> int:
             "target_commitment_sha256": target.hex(),
             "route_mask_hex": mask.hex().upper(),
             "image_count": len(files),
+            "frame_count": sum(x.get("frame_count", 0) for x in files),
             "decoded_record_count": sum(x["decoded_record_count"] for x in files),
             "candidate_hit_count": len(hits),
             "candidate_hits": hits,
