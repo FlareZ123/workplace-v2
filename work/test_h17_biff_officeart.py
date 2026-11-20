@@ -23,9 +23,9 @@ def er(record_type, payload, instance=0, version=0):
     return struct.pack("<HHI", (instance << 4) | version, record_type, len(payload)) + payload
 
 
-def drawing():
+def drawing(pib=1, fbid=True):
     props = [(0x0380, "M10 photo"), (0x0381, "SYNTHETIC_ONLY_OFFICEART_DESC_6F31")]
-    entries = [struct.pack("<HI", 0x0104, 1)]
+    entries = [struct.pack("<HI", (0x4104 if fbid else 0x0104), pib)]
     complex_data = []
     for prop_id, value in props:
         raw = value.encode("utf-16le") + b"\x00\x00"
@@ -116,6 +116,7 @@ class OfficeArtBiffTests(unittest.TestCase):
         self.assertEqual(shape["wz_name"], "M10 photo")
         self.assertEqual(shape["wz_description"], "SYNTHETIC_ONLY_OFFICEART_DESC_6F31")
         self.assertEqual(shape["pib"], 1)
+        self.assertTrue(shape["pib_fbid"])
         self.assertEqual(result["warnings"], [])
 
     def test_mini_stream_workbook(self):
