@@ -20,7 +20,7 @@ jobs:
         run: |
           npm install --no-save playwright
           npx playwright install chromium
-          python -m pip install --upgrade pip pillow
+          python -m pip install --upgrade pip pillow numpy
       - name: Capture Cowper Part II pages 360-390
         shell: pwsh
         run: node agents/agent20/cowper_rear_map_capture.cjs
