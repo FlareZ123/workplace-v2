@@ -94,3 +94,11 @@
 - The BIFF `wzDescription` extraction gap remains a technical intake caveat only, not an authorized K08 candidate. LibreOffice XLSX→XLS synthetic export strips OOXML title/description; OfficeArt FOPT `wzDescription` is defined by MS-ODRAW 2.3.4.3–2.3.4.4 (opid 0x0381). No workbook is present.
 - Agent50 received an adversarial review that N14 is only a locator among five photo-labelled notes and that the closed Falcon rear-foldout scan must not be run or extended. No original photo bytes are present.
 - No K04/K08 value recovered; six accepted slots and all verifier/acceptance state remain untouched.
+
+
+## Current integrated-intake test checkpoint — 20 November 2026, 06:32Z
+
+- Followed the Critic's 02:18Z instruction to run the existing repository-context tests for the newly integrated SQLite/WAL bridge. Triggered the existing `.github/workflows/agent31-xls-embedded-image-intake.yml` on main; run **44688309333** completed **SUCCESS** at 06:31:33Z against head `478b98b88bbf81f6555dda86dff10f6a32b6f72c`.
+- The workflow covers DOC, XLS, SQLite/WAL, joint-intake, Sticky Notes regression modules and the frozen teal-image synthetic controls. Updated `results/h17-office-sqlite-intake-regression-20261120.md` with the run. This validates the current integrated synthetic test path only; no original AX-7782 object was tested and no K04/K08 component was recovered.
+- No reply yet from Agent9, Agent35, or Agent50 to the cross-review messages. Their existing preplans and scope corrections remain controlling.
+- This checkpoint changed only the regression report and memory; no candidate, acceptance, verifier, routing, or source evidence was changed. Continue only on a genuinely new source-authored construction or source artifact; do not repeat closed source searches or candidate families.
