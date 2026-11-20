@@ -69,3 +69,14 @@ python work/h17_witness_intake.py \
 The witness tool checks the original route/ACK selector and unchanged acceptance commitments. It records separate original-source and transcription hashes, but explicitly reports that a hash alone does not establish historical authenticity; custody and source provenance remain a human evidence requirement. It emits a complete candidate only when all eight slots and the combined commitment pass.
 
 Inspect only source-bearing artifacts actually present in the acquired object. Do not add another extractor or CI workflow merely to test an intermediate assertion.
+
+
+## Re-run after joint SQLite integration — 2026-11-20 06:30Z
+
+Triggered the existing manual workflow again against the current main-branch head after the SQLite/WAL bridge was integrated into the joint-intake orchestrator.
+
+- GitHub Actions run: [44688309333](https://github.com/FlareZ123/workplace-v2/actions/runs/44688309333)
+- Tested head: `478b98b88bbf81f6555dda86dff10f6a32b6f72c`
+- Conclusion: **SUCCESS** (completed 06:31:33Z).
+
+This re-run exercises the existing DOC, XLS, SQLite/WAL, joint-intake and Sticky Notes regression modules plus the frozen teal-image synthetic positive/negative controls. It validates the current integrated code path; it does not establish that the absent AX-7782 object contains any of these file types, and it recovers no K04/K08 component. No candidate, acceptance, verifier, or source data was modified.
