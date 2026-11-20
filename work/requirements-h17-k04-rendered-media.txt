@@ -1,0 +1,7 @@
+# Optional dependencies for work/h17_k04_rendered_media_intake.py
+# System packages: libzbar (for pyzbar) and tesseract-ocr (for OCR).
+Pillow>=9.0
+pyzbar>=0.1.9
+opencv-python-headless>=4.8
+pytesseract>=0.3.10
+qrcode[pil]>=7.4
