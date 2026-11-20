@@ -189,8 +189,6 @@ def run_intake(store: Path, tool: Path, out: Path, mode: str = "verify",
 
     prepare_output(out)
     extracted = out / "files"
-    if mode == "extract":
-        extracted.mkdir()
 
     usmt_log = out / "usmtutils.log"
     runner_log = out / "runner.log"
