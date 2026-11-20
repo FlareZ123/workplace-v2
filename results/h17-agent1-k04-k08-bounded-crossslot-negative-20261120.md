@@ -27,6 +27,8 @@ Tested:
 
 ## K04: BX25-08 PDF encryption internals
 
+> **WITHDRAWN AS CURRENT EVIDENCE (2026-11-20 14:38Z):** This section is retained only as a historical record. It predates the active hash-only restriction in `results/h17-missing-evidence-request.md`, which prohibits opening, decrypting, OCRing, rendering, extracting or scanning the supplied PDF and says not to rely on earlier content summaries as authenticated host, coupon, release-setting or K08 witnesses. Do not use any password, encryption field, decrypted plaintext, or result from this section; do not rerun it. The only permissible PDF fact is the original-byte SHA-256 `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. The other spool, K08 cross-slot, and L29 revision-pair tests in this report are separate from this withdrawn section.
+
 The local BX25-08 PDF opens with password `8131` and uses AES-256 PDF encryption (revision 6). Tested the trailer IDs, the 16-byte encrypted /Perms block and its AES-256-decrypted plaintext, the 32-byte file-key halves and their XOR, and simple 16-byte hashes of the PDF key, IDs, and permission block.
 
 **Result:** no tested 16-byte value matched K04. The PDF's valid /Perms plaintext is a PDF permissions structure, not a recovered coupon. Do not treat the PDF encryption key as the K04 component without new source evidence.
