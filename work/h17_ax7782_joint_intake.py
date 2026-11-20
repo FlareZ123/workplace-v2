@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Run the existing AX-7782, K04-window and K08-exact-text intakes together.
+"""Run the AX-7782, K04-window and K08-text/SQLite intakes together.
 
 This is an orchestration wrapper, not a new scanner. It runs the repository's
-three existing read-only tools against one authorized local object, stores
-intermediate JSON only in a short-lived temporary directory, and emits one
-combined report. It never edits the source object, candidate, acceptance or
-verifier. Any PDF password must be supplied explicitly; none is guessed.
+three read-only tools against one authorized local object, stores intermediate
+JSON only in a short-lived temporary directory, and emits one combined report.
+The K08 SQLite bridge wraps the exact phrase scanner and additionally recovers
+only named Windows Sticky Notes plum.sqlite databases with adjacent WAL/SHM.
+It never edits the source object, candidate, acceptance or verifier. Any PDF
+password must be supplied explicitly; none is guessed.
 """
 from __future__ import annotations
 
@@ -125,7 +127,7 @@ def inspect_joint(
         k04_result = run_tool("k04-binary-window", k04_cmd, k04_out, timeout)
 
         k08_cmd = [
-            python, str(WORK / "h17_ax7782_k08_phrase_intake.py"),
+            python, str(WORK / "h17_ax7782_k08_sqlite_bridge.py"),
             "--object", str(source), "--resources", str(resources),
             "--transfer", transfer, "--max-phrase-words", str(max_phrase_words),
             "--json-out", str(k08_out),
