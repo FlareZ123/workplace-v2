@@ -190,8 +190,11 @@ def decode_text_variants(data: bytes, name: str) -> list[tuple[str, str]]:
 
 def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                       errors: list[dict], ocr: bool = False,
-                      pdf_password: str | None = None) -> Iterator[tuple[str, bytes]]:
+                      pdf_password: str | None = None,
+                      style_metadata: list[dict] | None = None) -> Iterator[tuple[str, bytes]]:
     """Yield text-bearing leaf streams and decoded document text in memory."""
+    if style_metadata is None:
+        style_metadata = []
     if budget[0] + len(data) > intake.MAX_TOTAL or len(data) > intake.MAX_MEMBER:
         return
     budget[0] += len(data)
@@ -224,7 +227,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                         errors.append({"source": f"{name}!/{item.filename}", "error": str(exc)})
                         continue
                     content_yielded = True
-                    yield from iter_text_streams(f"{name}!/{item.filename}", child, depth + 1, budget, errors, ocr, pdf_password)
+                    yield from iter_text_streams(f"{name}!/{item.filename}", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
         except (zipfile.BadZipFile, OSError, RuntimeError) as exc:
             errors.append({"source": name, "error": str(exc)})
             unreadable_member = True
@@ -247,7 +250,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                             yield f"{name}!/<member-name>", item.name.encode("utf-8", "replace")
                         if item.pax_headers:
                             yield f"{name}!/{item.name}<pax-headers>", json.dumps(item.pax_headers).encode("utf-8", "replace")
-                        yield from iter_text_streams(f"{name}!/{item.name}", stream.read(intake.MAX_MEMBER + 1), depth + 1, budget, errors, ocr, pdf_password)
+                        yield from iter_text_streams(f"{name}!/{item.name}", stream.read(intake.MAX_MEMBER + 1), depth + 1, budget, errors, ocr, pdf_password, style_metadata)
         except (tarfile.TarError, OSError, EOFError) as exc:
             errors.append({"source": name, "error": str(exc)})
         if not yielded:
@@ -260,7 +263,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             with gzip.GzipFile(fileobj=io.BytesIO(data)) as stream:
                 child = stream.read(intake.MAX_MEMBER + 1)
             if len(child) <= intake.MAX_MEMBER:
-                yield from iter_text_streams(f"{name}!/<gzip-payload>", child, depth + 1, budget, errors, ocr, pdf_password)
+                yield from iter_text_streams(f"{name}!/<gzip-payload>", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
             else:
                 errors.append({"source": name, "error": "gzip member exceeds size cap"})
         except (OSError, EOFError) as exc:
@@ -292,7 +295,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield f"{name}!/{filename}", body.encode("utf-8", "replace")
                 else:
                     yielded = True
-                    yield from iter_text_streams(f"{name}!/{filename}", payload, depth + 1, budget, errors, ocr, pdf_password)
+                    yield from iter_text_streams(f"{name}!/{filename}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
         except Exception as exc:
             errors.append({"source": name, "error": f"MIME extraction failed: {exc}"})
         if not yielded:
@@ -332,6 +335,8 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 try:
                     from h17_xls_lo_fallback import extract_bytes
                     converted = extract_bytes(data, name)
+                    for style in converted.get("style_metadata", []):
+                        style_metadata.append({"source": name, **style})
                     xls_streams = [
                         (
                             f"{name}!/{item['kind']}:{item['source']}",
@@ -404,7 +409,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     # expose every NOTE/OBJ/comment or embedded-object record.
                     payload = compound.openstream(stream_path).read()
                     yielded = True
-                    yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password)
+                    yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
         except ImportError:
             if not yielded or fallback_used:
                 errors.append({"source": name, "error": "olefile unavailable; non-Office embedded OLE streams may not be decoded"})
@@ -456,7 +461,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     for image_index, image in enumerate(page.images):
                         if image.data:
                             content_yielded = True
-                            yield from iter_text_streams(f"{name}!/<page-{index + 1}-image-{image_index}>", image.data, depth + 1, budget, errors, ocr, pdf_password)
+                            yield from iter_text_streams(f"{name}!/<page-{index + 1}-image-{image_index}>", image.data, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
                 except Exception:
                     pass
                 if ocr and index < 20:
@@ -479,7 +484,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 for index, payload in enumerate(payloads):
                     if isinstance(payload, bytes):
                         content_yielded = True
-                        yield from iter_text_streams(f"{name}!/{filename}[{index}]", payload, depth + 1, budget, errors, ocr, pdf_password)
+                        yield from iter_text_streams(f"{name}!/{filename}[{index}]", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
         except Exception as exc:
             errors.append({"source": name, "error": f"PDF extraction unavailable (no password guessing): {exc}"})
         if not content_yielded:
@@ -559,10 +564,11 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
     nonce, target = load_k08_rules(resources)
     hits: list[dict] = []
     errors: list[dict] = []
+    workbook_style_metadata: list[dict] = []
     budget = [0]
     streams = 0
     spans_tested = 0
-    for source, stream_data in iter_text_streams(path.name, data, 0, budget, errors, ocr, pdf_password):
+    for source, stream_data in iter_text_streams(path.name, data, 0, budget, errors, ocr, pdf_password, workbook_style_metadata):
         streams += 1
         seen_normalized: set[str] = set()
         for label, text in decode_text_variants(stream_data, source):
@@ -588,6 +594,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                        "original_commitment_hits": hits,
                        "ocr_enabled": ocr,
                        "pdf_password_supplied": pdf_password is not None},
+        "workbook_style_metadata": workbook_style_metadata,
         "errors_or_unavailable_decoders": errors,
         "limits": [
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
