@@ -5,6 +5,7 @@ import io
 import json
 import sys
 import unittest
+from unittest import mock
 import zipfile
 from pathlib import Path
 
@@ -49,6 +50,20 @@ class IntakeTests(unittest.TestCase):
         self.assertIn("IR-261003-H17", terms)
         self.assertIn("final envelope", terms)
         self.assertIn("caption", terms)
+
+
+    def test_withdrawn_bx25_pdf_is_skipped_before_raw_scan(self):
+        payload = (REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf").read_bytes()
+        with mock.patch.object(intake, "magic", side_effect=AssertionError("opaque PDF reached magic detection")), \
+             mock.patch.object(intake, "raw_hits", side_effect=AssertionError("opaque PDF reached raw byte scan")):
+            result = intake.scan_member("renamed.bin", payload, 0, [0])
+        self.assertEqual(result, {
+            "name": "renamed.bin",
+            "size": len(payload),
+            "sha256": "b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425",
+            "status": "skipped_opaque_pdf",
+        })
+
 
 
 if __name__ == "__main__":
