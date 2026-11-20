@@ -364,5 +364,21 @@ class K08PhraseIntakeTests(unittest.TestCase):
         self.assertTrue(any("emf-page" in hit["source"] for hit in emf_hits), emf_hits)
 
 
+    def test_withdrawn_bx25_pdf_is_skipped_before_magic_even_with_password(self):
+        payload = (SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf").read_bytes()
+        errors = []
+        with mock.patch.object(phrase_intake.intake, "magic", side_effect=AssertionError("opaque PDF reached magic detection")):
+            streams = list(phrase_intake.iter_text_streams(
+                "renamed.bin", payload, 0, [0], errors, False, "not-used"
+            ))
+        self.assertEqual(streams, [])
+        self.assertEqual(errors, [{
+            "source": "renamed.bin",
+            "error": "skipped_opaque_pdf",
+            "sha256": "b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425",
+        }])
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
