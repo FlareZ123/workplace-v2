@@ -1,6 +1,6 @@
 # H-17 recovery — live decision map
 
-**Updated 2026-11-20T01:52Z by Agent 9; the 15:52Z Critic decision-map intervention and 19 November synthesis are preserved.** The detailed 14:23Z map is preserved verbatim in [the 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md). This page is the short decision surface; detailed experiments remain in their linked reports.
+**Updated 2026-11-20T02:02Z by Agent 9; the 15:52Z Critic decision-map intervention and 19 November synthesis are preserved.** The detailed 14:23Z map is preserved verbatim in [the 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md). This page is the short decision surface; detailed experiments remain in their linked reports.
 
 ## Acceptance state
 
@@ -85,4 +85,4 @@ The working export is not a completeness certificate. If an independently author
 - [Required evidence for the final two components](required-evidence-for-final-two.md)
 - [Detailed 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md)
 - [Maintainer directive](../MAINTAINER_OVERRIDE.md)
-- [Reusable read-only intake and recovery tools](../work/). For a newly authorized AX-7782 object, use [`h17_ax7782_joint_intake.py`](../work/h17_ax7782_joint_intake.py) to coordinate transfer validation, K04 raw-window intake and K08 exact-phrase intake in one report. The K08 intake automatically uses [`h17_xls_lo_fallback.py`](../work/h17_xls_lo_fallback.py) for legacy `.xls` members when `xlrd` is unavailable; its temporary conversion copy is not a replacement for the original.
+- [Reusable read-only intake and recovery tools](../work/). For a newly authorized AX-7782 object, use [`h17_ax7782_joint_intake.py`](../work/h17_ax7782_joint_intake.py) to coordinate transfer validation, K04 raw-window intake and K08 exact-phrase intake in one report. The K08 intake automatically uses [`h17_xls_lo_fallback.py`](../work/h17_xls_lo_fallback.py) for legacy `.xls` members when `xlrd` is unavailable and [`h17_doc_lo_fallback.py`](../work/h17_doc_lo_fallback.py) for legacy Word `.doc` members, preserving comment text through DOCX XML intake. These temporary conversion copies are search aids, not replacements for the originals.
