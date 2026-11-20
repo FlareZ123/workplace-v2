@@ -33,6 +33,9 @@ def _profile_config(profile: Path) -> None:
   <item oor:path="/org.openoffice.Office.Common/Security/Scripting">
     <prop oor:name="MacroSecurityLevel" oor:op="fuse"><value>3</value></prop>
   </item>
+  <item oor:path="/org.openoffice.Office.Common/Load">
+    <prop oor:name="UpdateDocMode" oor:op="fuse"><value>0</value></prop>
+  </item>
 </oor:items>
 '''
     (user / "registrymodifications.xcu").write_text(xcu, encoding="utf-8")
