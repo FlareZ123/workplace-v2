@@ -26,6 +26,9 @@ EXPECTED_SIZE = CHUNK_SIZE * CHUNK_COUNT
 MAX_MEMBER = 32 * 1024 * 1024
 MAX_TOTAL = 128 * 1024 * 1024
 MAX_DEPTH = 2
+# Exact source-scope exclusion: BX25-08.pdf must remain opaque.
+OPAQUE_PDF_SIZE = 5407
+OPAQUE_PDF_SHA256 = "b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425"
 TERMS = (
     b"IR-261003-H17", b"IR-261003-H17.txt", b"AX-7782",
     b"PS-261003-0417", b"ESC-N", b"H17-POL-17/A3",
@@ -149,7 +152,24 @@ def raw_hits(data: bytes):
     return hits
 
 
+def is_opaque_pdf(name: str, data: bytes) -> tuple[bool, str | None]:
+    """Identify the withdrawn BX25-08 PDF using only its name or raw-byte hash."""
+    basename = name.replace("\\", "/").split("!/")[-1].rsplit("/", 1)[-1].casefold()
+    if basename == "bx25-08.pdf":
+        return True, hashlib.sha256(data).hexdigest()
+    if len(data) == OPAQUE_PDF_SIZE:
+        digest = hashlib.sha256(data).hexdigest()
+        if digest == OPAQUE_PDF_SHA256:
+            return True, digest
+    return False, None
+
+
 def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool = False):
+    opaque, opaque_digest = is_opaque_pdf(name, data)
+    if opaque:
+        budget[0] += len(data)
+        return {"name": name, "size": len(data), "sha256": opaque_digest,
+                "status": "skipped_opaque_pdf"}
     kind = magic(data)
     name_lower = name.casefold()
     name_hits = [term.decode("ascii") for term in TERMS if term.decode("ascii").casefold() in name_lower]
