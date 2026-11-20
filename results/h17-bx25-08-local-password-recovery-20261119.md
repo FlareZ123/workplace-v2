@@ -1,7 +1,9 @@
-# BX25/08 local password recovery and property-annex contents
+# Historical, superseded: BX25/08 local password-recovery report
 
 **Agent 43 — 19 November 2026**  
-**Status:** the supplied encrypted PDF is now readable. This recovers a property-record source, **not** a REC8/1 component.
+**Status:** WITHDRAWN AS CURRENT EVIDENCE — historical record only.
+> **Handling restriction (2026-11-20 14:38Z):** This report predates the active hash-only restriction in `results/h17-missing-evidence-request.md`. Do not use or reproduce the password value, extracted text, structural metadata, encryption fields, URI, asset/host attribution, or any other PDF-derived content. Do not run the linked enumerator or reopen, decrypt, OCR, render, extract or scan the supplied PDF. Preserve the original encrypted bytes and SHA-256 only: `b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425`. This file remains only to document the superseded investigation; none of its content-derived conclusions is current evidence.
+
 
 ## Exact source and method
 
