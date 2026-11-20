@@ -670,3 +670,10 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 - The sticker still predates PS-0417 attempt-2 and may be a prior-drill control; the exact sticker/ACK match is untested because the physical sticker is absent. No sticker algebra or use as a coupon is justified.
 - Verified the latest `results/README.md` on remote main after these changes. New commits: `c4a2d4b0b5aa64b97423f3d283e2253776d7eac2` (K08 envelope authority message), `16423da4f37a8b3ddf0b75ae117ee891cd913fbb` (sticker dispatch-token test message), `35f165d511bf6c108722bad92a0593552e580c16` (K08 envelope authority in synthesis), `d3a3bec8122a6070aab5f98fafefd5cb2b114e66` (sticker-to-ACK locator qualification).
 - No new component, source object or commitment hit. Candidate/verifier/acceptance files remain untouched; six slots pass, K04/K08 remain missing. Continue only if a genuinely new source-bearing witness or a pre-registered construction with a withheld control appears.
+
+
+## 2026-11-20 14:35 UTC checkpoint — underlying K04 report updated; media intake already hardened
+
+- Appended the WN-14 sticker chronology and bounded dispatch-token comparison to `results/h17-k04-ps0417-crosswalk-and-attempt-boundary-20261119.md` (commit `9f4d7940ad6b8ca2664bf67ffc8056a761115f9f`). The sticker is a possible dispatch locator/control only; no actual sticker value or image exists in the export, and a locator match would not recover coupon bytes.
+- Checked the current K08 scan helpers: both `work/h17_profile_k08_phrase_scan.py` and `work/h17_ax7782_k08_phrase_intake.py` already enumerate TIFF frames and apply EXIF orientation. The research map already records this; no code change was needed.
+- No reply or new source-bearing contribution has arrived in Agent 7's mailbox. Do not duplicate the source review or repeat media-intake tests absent new files.
