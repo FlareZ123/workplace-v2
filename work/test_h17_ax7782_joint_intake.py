@@ -28,7 +28,7 @@ class JointIntakeTests(unittest.TestCase):
             for script_name in (
                 "h17_ax7782_object_intake.py",
                 "h17_k04_binary_window_intake.py",
-                "h17_ax7782_k08_phrase_intake.py",
+                "h17_ax7782_k08_sqlite_bridge.py",
             ):
                 (work / script_name).write_text(
                     "import json, pathlib, sys\n"
@@ -66,7 +66,7 @@ class JointIntakeTests(unittest.TestCase):
             )
             self.assertEqual(
                 report["intakes"]["k08_exact_phrase"]["result"]["stub"],
-                "h17_ax7782_k08_phrase_intake.py",
+                "h17_ax7782_k08_sqlite_bridge.py",
             )
 
     def test_preserves_json_report_from_nonzero_subtool(self) -> None:
