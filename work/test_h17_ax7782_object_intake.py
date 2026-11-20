@@ -5,6 +5,7 @@ import io
 import json
 import sys
 import unittest
+from unittest.mock import patch
 import zipfile
 from pathlib import Path
 
@@ -32,8 +33,33 @@ class IntakeTests(unittest.TestCase):
         self.assertTrue(meta["handoff_email_confirms_retained_object"])
         raw = b"".join(bytes.fromhex(row["checkpoint"]) for row in selected)
         component = hashlib.sha256(raw).digest()[:16]
-        acceptance = json.loads((REPO / "acceptance.json").read_text(encoding="utf-8"))
+        acceptance = json.loads((REPO / "resources" / "acceptance.json").read_text(encoding="utf-8"))
         self.assertEqual(hashlib.sha256(component).hexdigest(), acceptance["slot_sha256"]["K07"])
+
+    def test_opaque_bx25_pdf_is_hash_only_before_magic_or_raw_scan(self):
+        path = REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
+        payload = path.read_bytes()
+        digest = hashlib.sha256(payload).hexdigest()
+        self.assertEqual(digest, intake.OPAQUE_PDF_SHA256)
+        with patch.object(intake, "magic", side_effect=AssertionError("opaque PDF reached magic")), \
+             patch.object(intake, "raw_hits", side_effect=AssertionError("opaque PDF reached raw scan")):
+            result = intake.scan_member(str(path), payload, 0, [0])
+        self.assertEqual(result, {
+            "name": str(path), "size": len(payload), "sha256": digest,
+            "status": "skipped_opaque_pdf",
+        })
+
+    def test_container_does_not_raw_scan_opaque_pdf_member(self):
+        path = REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
+        pdf = path.read_bytes()
+        payload = io.BytesIO()
+        with zipfile.ZipFile(payload, "w", compression=zipfile.ZIP_STORED) as archive:
+            archive.writestr("BX25-08.pdf", pdf)
+        with patch.object(intake, "raw_hits", side_effect=AssertionError("container raw scan could inspect opaque member")):
+            result = intake.scan_member("bundle.zip", payload.getvalue(), 0, [0])
+        self.assertEqual(result["raw_hits"], [])
+        self.assertEqual(result["members"][0]["status"], "skipped_opaque_pdf")
+        self.assertEqual(result["members"][0]["sha256"], intake.OPAQUE_PDF_SHA256)
 
     def test_zip_member_text_is_found_without_extraction(self):
         payload = io.BytesIO()

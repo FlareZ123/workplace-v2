@@ -24,6 +24,7 @@ import tarfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
@@ -103,8 +104,15 @@ def scan_bytes(name: str, data: bytes, target_digest: bytes, mask: bytes, stride
 
 def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_digest: bytes,
                 mask: bytes, stride: int, max_member: int, max_depth: int):
-    result = {"name": name, "size": len(data), "sha256": hashlib.sha256(data).hexdigest(),
-              "magic": magic(data)}
+    sha256 = hashlib.sha256(data).hexdigest()
+    if sha256 == OPAQUE_PDF_SHA256:
+        budget[2] += 1
+        budget[0] += len(data)
+        return {"name": name, "size": len(data), "sha256": sha256,
+                "status": "skipped_opaque_pdf"}
+    kind = magic(data)
+    container = kind in {"zip", "tar", "gzip", "ole-compound"}
+    result = {"name": name, "size": len(data), "sha256": sha256, "magic": kind}
     budget[2] += 1
     if budget[2] > budget[3]:
         result["scan_limit"] = "member-count cap exceeded"
@@ -116,8 +124,8 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
     if budget[0] > budget[1]:
         result["scan_limit"] = "cumulative decompressed/read byte budget exceeded"
         return result
-    result["hits"] = scan_bytes(name, data, target_digest, mask, stride)
-    if b" EMF" in data and any(name.casefold().endswith(suffix)
+    result["hits"] = [] if container else scan_bytes(name, data, target_digest, mask, stride)
+    if not container and b" EMF" in data and any(name.casefold().endswith(suffix)
                                for suffix in (".spl", ".prn", ".emf")):
         for label, text in extract_emf_text(data):
             result["hits"].extend(scan_bytes(

@@ -5,9 +5,11 @@ import io
 import sys
 import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).parent))
 from h17_xps_text import extract_xps_text
+import h17_k04_binary_window_intake as k04
 
 NS = "http://schemas.microsoft.com/xps/2005/06"
 NONCE = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
@@ -48,6 +50,39 @@ def test():
     assert hmac.new(NONCE, assembled.lower(), hashlib.sha256).digest()[:16] == expected_k08
     assert hashlib.sha256(source).hexdigest() == original_hash
     print("PASS: synthetic 2-page package, split 16-byte K04 and split whole-phrase K08")
+
+    # The withdrawn BX25-08 original is hash-only, including inside containers.
+    opaque_path = Path(__file__).resolve().parents[1] / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
+    opaque_pdf = opaque_path.read_bytes()
+    opaque_sha = hashlib.sha256(opaque_pdf).hexdigest()
+    assert opaque_sha == k04.OPAQUE_PDF_SHA256
+    target_digest = bytes.fromhex(k04.DEFAULT_TARGET)
+    with patch.object(k04, "magic", side_effect=AssertionError("opaque PDF reached magic")), \
+         patch.object(k04, "scan_bytes", side_effect=AssertionError("opaque PDF reached raw-window scan")):
+        opaque_result = k04.scan_member(
+            str(opaque_path), opaque_pdf, 0,
+            [0, k04.DEFAULT_MAX_TOTAL, 0, k04.DEFAULT_MAX_MEMBERS],
+            target_digest, bytes.fromhex(k04.DEFAULT_MASK), 1,
+            k04.DEFAULT_MAX_MEMBER, k04.DEFAULT_MAX_DEPTH
+        )
+    assert opaque_result == {
+        "name": str(opaque_path), "size": len(opaque_pdf), "sha256": opaque_sha,
+        "status": "skipped_opaque_pdf",
+    }
+
+    bundle = io.BytesIO()
+    with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_STORED) as archive:
+        archive.writestr("BX25-08.pdf", opaque_pdf)
+    with patch.object(k04, "scan_bytes", side_effect=AssertionError("container raw scan could inspect opaque member")):
+        bundle_result = k04.scan_member(
+            "bundle.zip", bundle.getvalue(), 0,
+            [0, k04.DEFAULT_MAX_TOTAL, 0, k04.DEFAULT_MAX_MEMBERS],
+            target_digest, bytes.fromhex(k04.DEFAULT_MASK), 1,
+            k04.DEFAULT_MAX_MEMBER, k04.DEFAULT_MAX_DEPTH
+        )
+    assert bundle_result["hits"] == []
+    assert bundle_result["members"][0]["status"] == "skipped_opaque_pdf"
+    print("PASS: exact BX25-08 bytes and ZIP-contained duplicate remain hash-only")
 
     # Actual archival scanner integration: whole coupon in joined XPS glyph runs.
     from h17_k04_binary_window_intake import scan_member

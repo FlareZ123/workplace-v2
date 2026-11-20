@@ -8,6 +8,7 @@ from email.message import EmailMessage
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 import zipfile
 from pathlib import Path
 
@@ -98,6 +99,40 @@ class K08PhraseIntakeTests(unittest.TestCase):
                 any(hit["normalized_phrase"] == phrase for hit in hits),
                 f"{name}: decoded carrier did not reach K08 commitment scan",
             )
+
+    def test_opaque_bx25_pdf_is_skipped_before_magic_even_with_password(self):
+        path = SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
+        payload = path.read_bytes()
+        digest = hashlib.sha256(payload).hexdigest()
+        self.assertEqual(digest, phrase_intake.intake.OPAQUE_PDF_SHA256)
+        errors = []
+        budget = [0]
+        with patch.object(phrase_intake.intake, "magic",
+                          side_effect=AssertionError("opaque PDF reached content classification")):
+            streams = list(phrase_intake.iter_text_streams(
+                str(path), payload, 0, budget, errors, pdf_password="must-not-be-used"
+            ))
+        self.assertEqual(streams, [])
+        self.assertEqual(errors, [{
+            "source": str(path), "status": "skipped_opaque_pdf",
+            "size": len(payload), "sha256": digest,
+        }])
+        self.assertEqual(budget, [len(payload)])
+
+    def test_nested_opaque_bx25_pdf_is_not_yielded_as_content(self):
+        path = SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
+        pdf = path.read_bytes()
+        payload = io.BytesIO()
+        with zipfile.ZipFile(payload, "w", compression=zipfile.ZIP_STORED) as archive:
+            archive.writestr("BX25-08.pdf", pdf)
+        errors = []
+        streams = list(phrase_intake.iter_text_streams(
+            "bundle.zip", payload.getvalue(), 0, [0], errors, pdf_password="must-not-be-used"
+        ))
+        self.assertFalse(any(b"%PDF-" in data for _, data in streams))
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]["status"], "skipped_opaque_pdf")
+        self.assertEqual(errors[0]["sha256"], phrase_intake.intake.OPAQUE_PDF_SHA256)
 
     def test_encrypted_pdf_requires_and_accepts_supplied_password(self):
         from pypdf import PdfWriter

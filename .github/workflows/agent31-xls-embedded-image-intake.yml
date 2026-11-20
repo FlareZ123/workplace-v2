@@ -20,7 +20,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libreoffice-calc libreoffice-writer
           python -m pip install --upgrade pip
-          python -m pip install openpyxl pillow python-docx lxml numpy
+          python -m pip install openpyxl pillow python-docx lxml numpy pypdf
       - name: Compile read-only intake adapters
         run: |
           python -m py_compile \
@@ -30,15 +30,21 @@ jobs:
             work/test_h17_biff_officeart.py \
             work/h17_biff_officeart_blips.py \
             work/test_h17_biff_officeart_blips.py \
+            work/h17_ax7782_object_intake.py \
             work/h17_ax7782_k08_phrase_intake.py \
+            work/h17_k04_binary_window_intake.py \
             work/h17_ax7782_k08_sqlite_bridge.py \
             work/h17_ax7782_joint_intake.py \
-            work/h17_sticky_notes_intake.py
+            work/h17_sticky_notes_intake.py \
+            work/test_h17_ax7782_object_intake.py \
+            work/test_h17_ax7782_k08_phrase_intake.py
       - name: Run DOC, XLS, SQLite/WAL and joint-intake regression tests
         env:
           PYTHONPATH: work
         run: |
           python -m unittest -v \
+            work.test_h17_ax7782_object_intake \
+            work.test_h17_ax7782_k08_phrase_intake \
             work.test_h17_doc_lo_fallback \
             work.test_h17_xls_lo_fallback \
             work.test_h17_biff_officeart \

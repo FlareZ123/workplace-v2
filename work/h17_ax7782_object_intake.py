@@ -26,6 +26,8 @@ EXPECTED_SIZE = CHUNK_SIZE * CHUNK_COUNT
 MAX_MEMBER = 32 * 1024 * 1024
 MAX_TOTAL = 128 * 1024 * 1024
 MAX_DEPTH = 2
+# The withdrawn BX25-08 original is hash-only: never inspect its contents.
+OPAQUE_PDF_SHA256 = "b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425"
 TERMS = (
     b"IR-261003-H17", b"IR-261003-H17.txt", b"AX-7782",
     b"PS-261003-0417", b"ESC-N", b"H17-POL-17/A3",
@@ -150,11 +152,17 @@ def raw_hits(data: bytes):
 
 
 def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool = False):
+    sha256 = hashlib.sha256(data).hexdigest()
+    if sha256 == OPAQUE_PDF_SHA256:
+        budget[0] += len(data)
+        return {"name": name, "size": len(data), "sha256": sha256,
+                "status": "skipped_opaque_pdf"}
     kind = magic(data)
     name_lower = name.casefold()
     name_hits = [term.decode("ascii") for term in TERMS if term.decode("ascii").casefold() in name_lower]
-    result = {"name": name, "size": len(data), "sha256": hashlib.sha256(data).hexdigest(),
-              "magic": kind, "name_hits": name_hits, "raw_hits": raw_hits(data)}
+    raw = [] if kind in {"zip", "tar", "gzip", "ole-compound"} else raw_hits(data)
+    result = {"name": name, "size": len(data), "sha256": sha256,
+              "magic": kind, "name_hits": name_hits, "raw_hits": raw}
     budget[0] += len(data)
     if budget[0] > MAX_TOTAL or depth >= MAX_DEPTH or len(data) > MAX_MEMBER:
         result["scan_limit"] = "depth, member-size, or total-byte cap"

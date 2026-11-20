@@ -229,6 +229,12 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                       pdf_password: str | None = None,
                       style_metadata: list[dict] | None = None) -> Iterator[tuple[str, bytes]]:
     """Yield text-bearing leaf streams and decoded document text in memory."""
+    opaque_sha256 = hashlib.sha256(data).hexdigest()
+    if opaque_sha256 == intake.OPAQUE_PDF_SHA256:
+        budget[0] += len(data)
+        errors.append({"source": name, "status": "skipped_opaque_pdf",
+                       "size": len(data), "sha256": opaque_sha256})
+        return
     if style_metadata is None:
         style_metadata = []
     if budget[0] + len(data) > intake.MAX_TOTAL or len(data) > intake.MAX_MEMBER:
