@@ -72,6 +72,7 @@ Evidence:
 - [LOW BIT full-specificity review](h17-k08-lowbit-full-specificity-review-20261119.md)
 - [Direct-adoption candidate check](h17-k08-lowbit-carrier-candidate-check-20261119.md)
 - [Source-triple control](h17-k08-n20-source-triple-null-20261119.md)
+- [Conditional BIFF8 OfficeArt metadata reader](h17-k08-officeart-biff-metadata-intake-20261120.md) — parser/test capability only; not part of the frozen M10 cell-value test and not run on an H-17 source workbook.
 
 ## Experiment standard
 
