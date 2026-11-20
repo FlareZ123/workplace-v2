@@ -43,6 +43,7 @@ ESCHER_CLIENT_ANCHOR = 0xF010
 
 PROP_WZ_NAME = 0x0380
 PROP_WZ_DESCRIPTION = 0x0381
+PROP_PIB = 0x0104
 
 
 class OfficeArtParseError(ValueError):
@@ -306,6 +307,8 @@ def _parse_fopt(payload: bytes, instance: int, shape: dict[str, Any] | None,
         opid, value = struct.unpack_from("<HI", payload, index * 6)
         property_id = opid & 0x3FFF
         if not (opid & 0x8000):
+            if property_id == PROP_PIB and shape is not None:
+                shape["pib"] = value
             continue
         end = complex_offset + value
         if end > len(payload):
