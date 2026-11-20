@@ -25,7 +25,7 @@ Run from the repository root:
 PYTHONPATH=work python -m unittest -v work.test_h17_biff_officeart
 ```
 
-Six local tests passed in the authoring runtime:
+Six local tests passed in the authoring runtime. The existing Office/SQLite intake regression also passed on GitHub Actions run [44689341273](https://github.com/FlareZ123/workplace-v2/actions/runs/44689341273), with the parser module compiled and its test module included in the existing suite:
 
 - synthetic BIFF/CFB regular-stream positive control for a picture shape, M10 anchor, name and description;
 - the same positive control through a CFB mini stream;
