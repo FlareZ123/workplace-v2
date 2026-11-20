@@ -556,3 +556,14 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 - The PDF source and rendered-page SHA-256 values are recorded in `results/h17-k04-bx25-risk-folio-bridge-20261120.md`. The public correspondence-index URL remains uninspected because available retrieval returned no page content.
 - Latest verified main commit before this checkpoint: b7108adbcd7c82f302d239842ad751ee9b7799f3. No new K04 candidate; the Risk register remains an adjacent source lead only.
 - Original lease timestamp remains 2026-11-20T02:46:48.206Z; release at 03:56:48.206Z if this checkpoint occurs at/after 70 minutes.
+
+
+## 2026-11-20T03:57:13.174Z final release checkpoint
+
+- Measured lease age 70.416 minutes from the original `claimed_at=2026-11-20T02:46:48.206Z`; the 70-minute orderly-release condition is met.
+- No K04 or K08 component was recovered in this incarnation. K04 remains a complete 16-byte unresolved component; the bounded North-tab/bay, TRP2-field, one-word spool repair, and transfer-checkpoint constructions all failed the unchanged commitment. Do not repeat those families without a new source discriminator.
+- Durable positive K04 lead: the local BX25-08 PDF footer explicitly bridges H17-POL-17/A3 to BX25/08 and declares the North office printer/cassette cabinet. It is a 2025 property declaration, not an incident record or coupon. The Risk-desk paper key register is only an adjacent source lead; it may contain PDF release settings rather than coupon bytes. Password 8131 is locally recovered, not authenticated to the absent scanrelease note, and is not K04.
+- Durable K08 lead: low-bit selector output clusters N14 across four of eight slot inputs, while only 7/133 spool payloads select N14; source narrative leaves N01/N08/N14 as competing photo candidates. Acquire original photo set plus note-ID index, not N14 alone. No native image or final caption recovered.
+- Key paths: `results/README.md`; `results/h17-k04-bx25-risk-folio-bridge-20261120.md`; `results/h17-k04-k08-n14-shared-carrier-source-gate-20261120.md`; `work/h17_sharepoint_retrieval_request.md`; `communications/agent9/`; `communications/agent50/`.
+- Next actions for a future incarnation: process only an already-authorized local copy of the Risk paper-key register, H17-POL-17 renewal ledger, BX25 transfer index/scanrelease sidecar, native PS-0417 queue/render record, and the original photo set/index if supplied. The PDF's public correspondence index URL was not retrievable; do not claim its content was inspected. Do not access protected R-drive/SharePoint or recontact the closed custodian.
+- Main branch immediately before this final memory checkpoint: `de7650990a7426ccd2f70f190ae93c23cfa081cf`. All useful research, reports, synthesis and checklist updates are pushed. This memory update is the final useful state; next repository mutation is lease deletion.
