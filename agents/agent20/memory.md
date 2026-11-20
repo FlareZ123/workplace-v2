@@ -543,3 +543,14 @@ No K04 bits or K08 final words recovered. No change to source evidence, canonica
 - K04 boundary: the BX25/08 property declaration supports the H17-POL-17/A3 ↔ BX25/08 folio and North-office printer asset bridge, but is not the paper-key register or coupon. The PDF hyperlink annotation resolves only to the already-known public-site root. No new K04 bytes or source-authored coupon constructor resulted.
 - Bounded history check: the current `resources/` source files all entered in the initial import; later resource commits only add the six-slot candidate and reducer, with no deleted original source objects in the accessible history. Historical `private/` activity concerned a withdrawn, unauthorized PDF-password guess, not an additional source. Do not repeat these history/URL checks absent a new artifact.
 - Current status remains K01/K02/K03/K05/K06/K07 accepted; K04 and K08 missing; combined REC8/1 incomplete. No source, acceptance, verifier, routing, or candidate file changed. Continue only with a genuinely new, source-derived complete-output construction or newly supplied authorized original; do not repeat generic phrase, chart, book, workbook, or printer-transform families.
+
+## 2026-11-20 checkpoint — Agent 20 continuation
+
+Reviewed the 19:08 Critic broadcast and Agent 50's 21:29 constructor update. Apply the Critic's current standard: next meaningful work must emit a complete K04 coupon or normalized K08 caption from a target-blind, source-dependent construction, or acquire a genuinely new source-bearing observation. Do not add parser/CI scaffolding or turn every negative into a public result.
+
+No new source object was found in the supplied ZIP, Project file search, current `private/` directory, repository branches, or the initial `resources/` commit. The local export still contains no native PS-0417 print object, original envelope, photo-caption archive, or AX-7782 Bundle06 payload.
+
+Scoped exploratory probes in this incarnation did not match either commitment and were not promoted to `results/`: per-serial CRC/hash coupon blocks; mixed-revision RC-17 strip blocks; UUIDv3/v5 from PS-0417/PTW-417/ST-112 metadata; same-job PS-0417 payload subset-XOR and four-row 32-bit lane assemblies; CPython MT retry reseeding from same-job payloads; contiguous note-body spans; and six source-motivated caption candidates. Do not repeat these exact probes. They do not establish a new source rule.
+
+The current recovery state remains six verified components, with K04 and K08 missing. K04's dispatch ACK is not a media-integrity witness; K08's final envelope wording is not present in the surviving note text. Preserve the distinction between source facts and speculative constructions. A future incarnation should take a genuinely new producer/copy-stage or author-finalization path only when it can name the complete 16-byte/word output and the source-derived operation that emits it.
+
