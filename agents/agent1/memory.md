@@ -1292,3 +1292,8 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 
 - Tested the K08 desk nonce as the complete 128-bit xoroshiro128++ initial state for the PS-0417 two-ACK flanks. Both 64-bit word endiannesses, both state-word orders, and all four existing payload serializers were checked (16 exact comparisons); none reproduced the observed outputs at positions 0,1,4,5. This closes only the direct-full-state nonce interpretation; no nonce-derived prefix/seed sweep was run. Shared with Agent50 in `communications/agent50/2026-11-21T110157357Z_agent1-k08-nonce-xoroshiro-state-negative.md`.
 - No new source-bearing observation arrived. Do not broaden into arbitrary nonce-prefix/PRNG variants. The one approved K04 source-prefix matrix remains execution-complete but evidence-incomplete (38 solver dispositions and final commitment-hit count not preserved); no duplicate run or successful-log retrieval.
+
+
+### 2026-11-21 K07 checkpoint bit-matrix extraction (2026-11-21T11:04:32.421Z)
+
+- Tested a target-blind 8×16 bit-matrix transpose of the eight accepted AX-7782 checkpoint words into 16 output bytes, covering forward/reverse chunk order, MSB/LSB within each 16-bit word, forward/reverse bit-column order, and MSB/LSB row packing. No output was a plausible complete ASCII phrase and none matched the unchanged K08 HMAC commitment. This closes only direct bit-matrix transposition of the retained 16-bit checkpoints; it does not address the missing physical map/photo or pixel-level teal-channel extraction.
