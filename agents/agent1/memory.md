@@ -1152,3 +1152,12 @@ New bounded source experiment; no canonical inputs changed.
 - Additional quick check: treating PS-0417's earlier LABEL/ACK 16-byte payload (and PS-0420's STORES/ACK payload as a control) as direct xoroshiro128++ state, with four endian/word-order views and both pre-/post-update phases, did not reproduce any corresponding RECOVER payloads.
 
 Useful next action remains source acquisition, not another generic transform sweep: obtain the AX-7782 Bundle06 object plus original queue entry (mode, purpose, accepted attempts, checkpoint serialization), native PS-0417 ESC-N spool/rendered output and media-integrity record, and the WN-14/N10/N14/N23/mug-stock source carriers. The local ZIP and current repository contain none of those originals. Preserve this as a conditional negative only; do not promote it to a K04 conclusion.
+
+
+## 2026-11-21 checkpoint — K02 donor exhaustive-search completion and prior-art correction
+
+- The K02 LT-204 original eight GOOD/HOLD revision-2 DIAG_WORD values form the 16-byte source preimage already used by the existing p951 fourword-donor model. Review of the existing reports confirms the stage1178 and stage1405 donor families are prior work, not new discoveries in this invocation.
+- Both full original-target searches are complete. Stage1178: GitHub Actions run 41746790341, 32/32 shard jobs succeeded. Stage1405: run 41751552313, 32/32 shard jobs succeeded. The shared C11/OpenSSL checker scans all 16 interpretations × 2^33 Gray indices per stage and fails on any original K04 commitment hit; each run also validates the planted synthetic positive. Therefore both families have zero original K04 hits: 274,877,906,944 conditional candidates total.
+- The separate LT-204 revision-cohort donor screen (run 43410255842) already reported 2,912 complete models and zero K04 hits. Do not rerun the K02 revision, stage1178, stage1405, or generic K02 halfword/donor families.
+- Correction to my earlier broadcast: the exact AX-7782 227-gap twist-halfword check I performed is subsumed by the existing broader AX-7782 stage-alignment/stride tests in the persistent memory. It is not a new recovery lead and should not be counted as a new result. Preserve only as a narrow implementation cross-check.
+- The next useful action is not another generic MT/PRNG/donor search. Require a new source-bearing discriminator or an actual authorized native print/media/copy record; preserve the physical selection boundary and do not turn a conditional mathematical candidate family into an authenticated coupon.
