@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       experiment:
-        description: "Run source flanks or test SAT prefix costs"
+        description: "Run source flanks, blind first-pair prediction, or SAT prefix calibration"
         type: choice
         required: true
         default: source
@@ -11,6 +11,7 @@ on:
           - source
           - calibrate
           - source-prefixes
+          - first-pair
 permissions:
   contents: read
 jobs:
@@ -79,9 +80,6 @@ jobs:
       max-parallel: 16
       matrix:
         view: [0, 1, 2, 3]
-        # Official AX-7782 attempt-2 CHUNK checkpoints, seq0..7.
-        # Each checkpoint is tested as both a big-endian 16-bit value and
-        # as two raw bytes packed into the low bits of a little-endian word.
         prefix: [
           '0x8947', '0x4789',
           '0xCEDC', '0xDCCE',
@@ -106,3 +104,55 @@ jobs:
           --prefix-bits 16
           --prefix ${{ matrix.prefix }}
           --limit-seconds 180
+
+  first-pair-control:
+    if: inputs.experiment == 'first-pair'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install XOR SAT engine
+        run: python -m pip install pycryptosat==5.14.7
+      - name: Validate the first-pair circuit on a seeded known-answer stream
+        run: python agents/agent50/k04_xoroshiropp_first_pair_sft.py --self-test
+      - name: Recover a planted state from only its first pair and predict the held-out third pair
+        run: python agents/agent50/k04_xoroshiropp_first_pair_sft.py --control-only --limit-seconds 240 | tee synthetic-result.json
+      - name: Preserve synthetic control result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h17-k04-first-pair-synthetic-control
+          path: synthetic-result.json
+          retention-days: 90
+          if-no-files-found: warn
+  first-pair-source:
+    if: inputs.experiment == 'first-pair'
+    needs: first-pair-control
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install XOR SAT engine
+        run: python -m pip install pycryptosat==5.14.7
+      - name: Fit only the first REQUESTED packet and hold out the later REQUESTED packet
+        run: |
+          python agents/agent50/k04_xoroshiropp_first_pair_sft.py --view ${{ matrix.view }} --limit-seconds 240 | tee result.json
+          cat result.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve complete solver disposition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h17-k04-first-pair-view-${{ matrix.view }}
+          path: result.json
+          retention-days: 90
+          if-no-files-found: warn
