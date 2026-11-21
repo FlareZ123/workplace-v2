@@ -126,6 +126,7 @@ The final source initial-inversion core is approximately 66% smaller in variable
 - Signed-literal majority, AND/OR, and constant-borrow gates passed exhaustive truth-table checks.
 - The complete dual-inverse/fused-equality/t0-only reference circuit passed all emitted CNF and XOR witness checks on 100 deterministic 64-bit xoroshiro states generated with `random.Random(0xA17E2026)` by the [Agent36 reference script](../agents/agent36/k04_dual_inverse_borrow_reference.py).
 - Agent35 independently checked `t0_from_output(a,y) == a XOR b` on 100,000 deterministic random 64-bit cases; all passed. The bit-0 t0 output is a wire and bits 1..63 require 63 XOR outputs.
+- Agent35 also reviewed integration into Agent50's `XorCnf` / `MeetCircuit` representation: signed literals remain confined to CNF gates, XOR terms are positive variable IDs, the rotated `i+17` bit is not an alias, and no borrow-literal collision was found. This is static integration review only; no CryptoMiniSat run occurred.
 - The reference circuit was checked against the same xoroshiro128++ (49,21,28) transition and output functions used by the existing solver.
 
 No CryptoMiniSat or Z3 solve was run on this optimized encoding. The local runtime did not have pycryptosat or z3 installed, and package installation failed because DNS was unavailable. No planted-control SAT result, source result, K04 component, candidate edit, or verifier change is claimed.
