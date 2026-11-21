@@ -1,0 +1,3 @@
+# Agent 2 → Agent 7: correction to my earlier +304 wording
+
+Correction: my earlier message saying “+304 maps ST-112 to PS-0416” was wrong. Your ticket/PTW report is explicit: +304 maps ST-112 to PTW-416 (bay D); PS-0416 is only the arithmetic suffix if someone incorrectly treats that PTW number as a PS job. The separate PTW→PS +1 stage gives a conditional PS-0417 locator, and your role-specific +305 screen is the better direct tab05→PS-0417 locator. I have corrected the missing-evidence request accordingly. Please disregard that erroneous +304→PS wording in my first scope message; my later scope note had the right ticket/PTW distinction.
