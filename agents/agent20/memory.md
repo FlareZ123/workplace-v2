@@ -640,3 +640,32 @@ The current recovery state remains six verified components, with K04 and K08 mis
 - K08: tested 17 exact source-anchored phrase candidates, including the literal selector phrase “a teal bit”, Emily's semantic brief, and note captions; no HMAC commitment hit. This is not a reason to expand grammar guessing. Agent 7's packed K07 map-coordinate hypothesis (eight 16-bit checkpoints as eight 8-bit (x,y) points) remains a locator only; the actual foldout map from David's copy is absent. Do not substitute Cowper/Falcon public scans: the cached Cowper images are Google Books pages, not authenticated WN-14/David originals, and the candidate page-word reads are not coherent final wording.
 - Rechecked the K08 source boundary: N14 is Gabriel's sunrise-photo note; MAIL-14 says photo/galley captions were kept separately; RC-19 A is only a document-register locator. No N14 image, RC-19 A packet, WN-14 margin/final envelope, or versioned photo-caption archive exists in the supplied bundle or current repo source tree. No new source-bearing object appeared.
 - Collaboration: asked Agent 50 for a source-authenticated status on the existing K07 locator; no reply was present at the last mailbox check. HST-4 remains owned by Agent 2 and parked absent a source-authored seed/schedule; do not duplicate it.
+
+
+## 2026-11-21 03:34Z — receipt/custody boundary and source acquisition
+
+This incarnation is normal Agent20. Lease remains the original 2026-11-21T03:04:49.413Z claim; do not refresh it. Continue until the measured 70-minute lease-age checkpoint.
+
+### New source-bearing K04 observation
+
+resources/evidence/h17-supplemental-office-files/print-fleet-retirement-note.txt says the 4 Oct 2026 09:18Z register is a cabinet-office copy reconciled after return, not the original signed binder, and that courier-dispatch dates differ from physical-receipt dates for some sleeves because of weekend pickup. This changes the evidentiary status of the PS-0417 attempt-2 ACK: it is a queue/dispatch event, not proof that the physical coupon/sleeve was received or retained before the 3 Oct 21:47Z incident.
+
+The supplied supplier-reconciliation-L29.csv contains settlement-run/folio fields but no courier or physical-receipt timestamps. seal-receipts.jsonl contains permit/bay/revision/state/serial fields but no sleeve receipt times. transfer-audit.jsonl's receipt_utc is shared across dry-run, aborted, and committed rows, so it cannot resolve the print-fleet sleeve receipt question.
+
+I sent the evidence-qualified selection boundary to Agent50 in communications/agent50/20261121T032332Z_agent20_receipt-time-selection-boundary.md. Agent43 integrated it into results/README.md. Treat ACK2 as a conditional payload selector until the original signed return-binder pages and separate monthly consumables return can identify the actual sleeve/cassette and both timestamps. A surviving returned sleeve/coupon remains a plausible physical recovery path; this is not established.
+
+### Source availability checks
+
+The uploaded h17-archive-dump.zip expands to only about 118 KB across 56 files; it is not the 8 MiB AX-7782 object. A filesystem search found no Bundle06, AX-7782, plum.sqlite, native .SPL/.SHD, mug-stock.xls, desktop-move-2026.html, or 7–9 MiB source object outside the supplied export. Project Files search for AX-7782, Bundle06, mug-stock, and PS-0417 surfaced only prompt.md. GitHub issue #1 confirms no further human/custodian responses will be available before objective completion. Do not keep asking the custodian or use protected services.
+
+The current highest-value missing source remains the original Bundle06/AX-7782 package plus its directory manifest and trim/extraction log. It may contain both the native print spool material and profile-refresh artifacts (Sticky Notes/OfficeArt/legacy workbook). The original signed binder/monthly consumables return is the specific K04 custody target. For K08, the original N23 margin/WN-14 note stack, shelf card, photo/caption source, and mug-stock.xls remain absent. RC-19 A is only a document-register locator, not recovered content; N14 is only a photo locator, not an authenticated shared carrier. PS-0323 remains a conditional native-job K08 target, not a proven N23 mapping.
+
+### Bounded checks not to repeat
+
+- K07's eight raw 16-bit checkpoints as a direct 128-bit xoroshiro128++ state (natural word/endian/serialization views), and as xoshiro128** / xorshift128+ state, produced no K04 commitment hit.
+- The five-tab 1-LABEL/4-RECOVER XOR, same-job stage-transition hash/MAC, and four-RECOVER lane screens have already been run by Agent20/Agent43; no accepted K04 constructor. Do not repeat generic lane, PRF, or role-offset sweeps.
+- Agent7 asked whether the second 16-byte half of a K08 HMAC could be a K04 carrier. The existing 69.12M phrase family had no K08 first-half hit and is not a source-authored exact phrase family; do not rerun it absent new phrase-bearing source evidence.
+
+### Next productive direction
+
+Prioritize genuinely new source-bearing material, not more candidate enumeration: original native PS-0417 and PS-0323 job files/queue manifests or physical coupon; original signed return-binder pages and monthly consumables return with per-sleeve courier and receipt timestamps; original AX-7782/Bundle06 manifest and trim log; original N23/WN-14 margin, shelf card, and photo/workbook source. If none can be located in authorized repository material, preserve the blocker precisely rather than manufacturing a candidate.
