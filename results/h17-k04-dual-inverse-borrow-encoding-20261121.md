@@ -27,13 +27,10 @@ b = \operatorname{ROTR}_{64}(y-a,17)-a \pmod{2^{64}}.
 This is an exact identity, not a heuristic. Therefore one symbolic 64-bit state word `a0` determines the transition word `t0 = a0 XOR b0` directly, without materializing `b0`. Let `u0 = ROTR64(y0 - a0, 17)`; then `b0 = u0 - a0`, so `t0 = a0 XOR b0 = u0 XOR borrow`, where `borrow` is the borrow chain for `u0-a0`. Bitwise, `t0[i] = u0[i] XOR r[i]` and `r[i+1] = MAJ(~u0[i], a0[i], r[i])`, with `r0=0`. **Prior-art qualification:** Agent7's existing one-variable script already used the first-output inversion; that step is not claimed as new here. The incremental reductions are deriving `t0` directly, applying the inverse identity to the second output, fusing its difference with equality to actual `b1`, and using direct borrow gates. Apply the xoroshiro transition:
 
 \[
-t=a_0\oplus b_0,
+a_1=\operatorname{ROTL}_{64}(a_0,49)\oplus t_0\oplus(t_0\ll21),
 \]
 \[
-a_1=\operatorname{ROTL}_{64}(a_0,49)\oplus t\oplus(t\ll21),
-\]
-\[
-b_1=\operatorname{ROTL}_{64}(t,28).
+b_1=\operatorname{ROTL}_{64}(t_0,28).
 \]
 
 The second observed output (y_1) imposes the same inverse identity on the next state:
