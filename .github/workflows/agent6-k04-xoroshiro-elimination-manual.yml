@@ -33,3 +33,44 @@ jobs:
         run: python -m pip install pyboolector==3.2.4.19199673826
       - name: Solve source flanks, require unique middle and original K04 commitment
         run: python agents/agent6/k04_xoroshiro_elimination_sft.py --view ${{ matrix.view }}
+
+  label-stream-positive-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned Boolector
+        run: python -m pip install pyboolector==3.2.4.19199673826
+      - name: Require planted eight-output label-to-recovery stream control
+        run: python agents/agent2/k04_xoroshiro_label_stream_sft.py --view 0 --control-only
+
+  label-stream-source:
+    needs: label-stream-positive-control
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned Boolector
+        run: python -m pip install pyboolector==3.2.4.19199673826
+      - name: Solve same-job label-to-recovery stream without ACK2 payload
+        run: >-
+          python agents/agent2/k04_xoroshiro_label_stream_sft.py
+          --view ${{ matrix.view }}
+          --result-path "k04-label-stream-view-${{ matrix.view }}.json"
+      - name: Upload exact source disposition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "k04-label-stream-view-${{ matrix.view }}"
+          path: "k04-label-stream-view-${{ matrix.view }}.json"
+          if-no-files-found: warn
