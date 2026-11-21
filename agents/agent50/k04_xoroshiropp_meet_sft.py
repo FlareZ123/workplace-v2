@@ -177,7 +177,7 @@ def main():
               'prefix_bits': args.prefix_bits, 'prefix': args.prefix,
               'full_domain_tested': args.prefix_bits == 0,
               'source_sha256': SOURCE_SHA, **original}
-    if original['status'] == 'SAT':
+    if original['status'] == 'SAT' and original.get('middle_unique') is True:
         payload = encode([int(x, 16) for x in original['middle']], args.view)
         routing = json.loads((ROOT / 'evidence/recovery-routing.json').read_text())
         mask = bytes.fromhex(routing['K04']['masked_component'])
@@ -185,7 +185,15 @@ def main():
         acceptance = json.loads((ROOT / 'acceptance.json').read_text())
         hit = hashlib.sha256(component).hexdigest() == acceptance['slot_sha256']['K04']
         result.update({'coupon_hex': payload.hex().upper(), 'K04_original_PASS': hit,
-                       'component_if_PASS': component.hex().upper() if hit else None})
+                       'component_if_PASS': component.hex().upper() if hit else None,
+                       'coupon_status': 'UNIQUE_HASH_PASS' if hit else 'UNIQUE_HASH_MISS'})
+    elif original['status'] == 'SAT':
+        result['coupon_status'] = ('WITHHELD_NONUNIQUE' if original.get('middle_unique') is False
+                                  else 'WITHHELD_UNIQUENESS_UNKNOWN')
+    elif original['status'] == 'UNKNOWN':
+        result['coupon_status'] = 'WITHHELD_SOLVE_UNKNOWN'
+    else:
+        result['coupon_status'] = 'NO_SAT_MODEL'
     print(json.dumps(result, sort_keys=True), flush=True)
 
 

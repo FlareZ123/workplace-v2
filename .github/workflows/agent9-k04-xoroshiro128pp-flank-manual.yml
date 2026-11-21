@@ -80,7 +80,18 @@ jobs:
       matrix:
         view: [0, 1, 2, 3]
         # Official AX-7782 attempt-2 CHUNK checkpoints, seq0..7.
-        prefix: ['0x8947', '0xCEDC', '0xB9CC', '0x73BA', '0xB7E8', '0x7BE6', '0x3302', '0xC5C9']
+        # Each checkpoint is tested as both a big-endian 16-bit value and
+        # as two raw bytes packed into the low bits of a little-endian word.
+        prefix: [
+          '0x8947', '0x4789',
+          '0xCEDC', '0xDCCE',
+          '0xB9CC', '0xCCB9',
+          '0x73BA', '0xBA73',
+          '0xB7E8', '0xE8B7',
+          '0x7BE6', '0xE67B',
+          '0x3302', '0x0233',
+          '0xC5C9', '0xC9C5'
+        ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
