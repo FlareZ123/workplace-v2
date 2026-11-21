@@ -92,25 +92,27 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
         "total_solver_budget_seconds": MAX_TOTAL_SOLVE_SECONDS,
         "holdout_selection_policy": "never used to select or filter middle candidates",
         "commitment_selection_policy": "hash each complete masked middle candidate before holdout or uniqueness disposition",
+        "component_commitment_status": "NOT_EVALUATED",
+        "component_candidate_models_hashed": 0,
     }
 
     check = bounded_check()
     if check is None:
         result.update({"status": "UNKNOWN", "reason_unknown": "overall solver time budget exhausted",
                        "coupon_status": "WITHHELD_SOLVE_UNKNOWN",
-                       "K04_original_PASS": False if check_candidate else None,
+                       "K04_original_PASS": None,
                        "elapsed_seconds": round(time.monotonic() - started, 3)})
         return result
     result["status"] = str(check).upper()
     if check == unknown:
         result["reason_unknown"] = solver.reason_unknown()
         result["coupon_status"] = "WITHHELD_SOLVE_UNKNOWN"
-        result["K04_original_PASS"] = False if check_candidate else None
+        result["K04_original_PASS"] = None
         result["elapsed_seconds"] = round(time.monotonic() - started, 3)
         return result
     if check == unsat:
         result["coupon_status"] = "NO_SAT_MODEL"
-        result["K04_original_PASS"] = False if check_candidate else None
+        result["K04_original_PASS"] = None
         result["elapsed_seconds"] = round(time.monotonic() - started, 3)
         return result
 
@@ -248,6 +250,10 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
 
     if check_candidate:
         result["K04_original_PASS"] = commitment_hit
+        result["component_commitment_status"] = (
+            "PASS" if commitment_hit else "MISS_WITHIN_EVALUATED_MODELS"
+        )
+        result["component_candidate_models_hashed"] = len(candidate_records)
         if commitment_hit:
             result["coupon_status"] = "K04_COMMITMENT_HIT"
         elif enumeration_status in ("CAP_REACHED", "MODEL_CAP_REACHED"):
