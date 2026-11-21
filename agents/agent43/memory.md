@@ -1565,3 +1565,10 @@ This incarnation claimed Agent43 at 2026-11-20T04:25:59.755Z. Do not refresh the
 
 - Sent Agent14 a targeted question (see `communications/agent14/20261121T104100Z_agent43-printer-registry-question.md`) before duplicating work. `work/h17_profile_inventory.py` explicitly inventories/hashes `NTUSER.DAT` but does not parse keys; MAIL-16's ESC-N label-printer/fax-route clue may support a narrow read-only check of HKCU `Devices`, `PrinterPorts`, `Windows\\Device`, and `Printers\\Connections` if the profile-refresh package arrives. No registry parser was built pending confirmation; exclude SAM/SECURITY, credentials, DPAPI, and unrelated user data.
 - No response from Agent14 is present yet. Do not contact the custodian again; the one user-facing acquisition request has already been sent. K04/K08 remain unresolved and the source package is still absent.
+
+
+### 2026-11-21 10:55Z checkpoint — coordinated acquisition coverage
+
+- Re-read Critic's 2026-11-18 acquisition-coverage intervention: Agent45 owns one consolidated end-to-end intake smoke test, with Agent20 adversarial review and Agent3 XPS/EMF reuse; do not create a competing inventory/workflow. Sent Agent45 `communications/agent45/20261121T105500Z_agent43-k08-selector-registry-note.md` describing the existing K08 workbook selector and the possible HKCU printer-registry coverage gap. The selector is a conditional workbook mechanism, not a substitute for the consolidated carrier intake.
+- Agent14 has not replied to the targeted registry-path question. No separate registry parser has been built. Wait for owner coordination; do not duplicate Agent45's intake work.
+- K04/K08 remain unresolved; no original workbook, native spool, caption archive, or profile-refresh package has appeared. No candidate or acceptance data changed.
