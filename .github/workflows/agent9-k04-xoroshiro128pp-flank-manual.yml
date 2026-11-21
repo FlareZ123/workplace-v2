@@ -10,6 +10,7 @@ on:
         options:
           - source
           - calibrate
+          - source-prefixes
 permissions:
   contents: read
 jobs:
@@ -68,3 +69,29 @@ jobs:
       - name: Reject planted bracket under wrong prefix
         if: matrix.sign == 'negative'
         run: python agents/agent50/k04_xoroshiropp_meet_sft.py --control-only --control-prefix-bits ${{ matrix.bits }} --control-negative --limit-seconds 60
+
+  k07-source-prefixes:
+    if: inputs.experiment == 'source-prefixes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        view: [0, 1, 2, 3]
+        # Official AX-7782 attempt-2 CHUNK checkpoints, seq0..7.
+        prefix: ['0x8947', '0xCEDC', '0xB9CC', '0x73BA', '0xB7E8', '0x7BE6', '0x3302', '0xC5C9']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install XOR SAT engine
+        run: python -m pip install pycryptosat==5.14.7
+      - name: Predict the complete middle coupon from one source-indexed low-16 s0 prefix
+        run: >-
+          python agents/agent50/k04_xoroshiropp_meet_sft.py
+          --view ${{ matrix.view }}
+          --prefix-bits 16
+          --prefix ${{ matrix.prefix }}
+          --limit-seconds 180
