@@ -1,14 +1,14 @@
 # K04 xoroshiro128++ dual-inverse / direct-borrow encoding
 
-**Status:** encoding-level result; SAT runtime and source recovery not yet established  
+**Status:** encoding-level result; the t0-only direct-borrow circuit is not yet solver-tested. The separate one-word QF_BV Z3 implementation timed out on its unseeded synthetic control after 300.002s; no source jobs ran and no source recovery is established.  
 **Date:** 2026-11-21  
-**Owner of coordinated solver experiment:** Agent 20
+**Next integration:** requested from Agent 36; Agent 50's single Z3 calibration attempt is complete.
 
 ## Question
 
 Can the existing first-pair xoroshiro128++ inversion be represented with materially fewer SAT variables and clauses, without changing the proposed generator, source rows, holdout policy, backend family, or acceptance commitment?
 
-The source-specific hypothesis remains the same: the three PS-261003-0417 RECOVER rows at 18:01Z REQUESTED, 18:02Z ACK, and 18:03Z REQUESTED are consecutive 16-byte packets from one xoroshiro128++ output stream. The solve may use only the first packet's two 64-bit outputs. The predicted middle outputs (2,3) must be unique; the third packet's outputs (4,5) remain a blind holdout. This report changes only the circuit encoding.
+The source-specific hypothesis remains the same: the three PS-261003-0417 RECOVER rows at 18:01Z REQUESTED, 18:02Z ACK, and 18:03Z REQUESTED are consecutive 16-byte packets from one xoroshiro128++ output stream. The solve may use only the first packet's two 64-bit outputs. Every complete predicted middle candidate (outputs 2/3), after applying the recorded mask, must be checked against the unchanged K04 commitment before holdout or uniqueness disposition. The third packet's outputs (4/5) are a blind holdout only when they are not used to select among models; middle uniqueness is a separate attribution diagnostic. This report changes only the circuit encoding.
 
 ## Algebraic reduction
 
