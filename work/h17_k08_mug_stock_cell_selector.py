@@ -9,7 +9,8 @@ zero-/one-based coordinate conventions. If the workbook has sheets A-D, each
 four-byte group (two cells) is read from its correspondingly named sheet; if it
 has one sheet, all eight cells are read from that sheet. Other multi-sheet
 workbooks require an explicit --sheet. No permutations, paraphrases, or broad
-workbook text searches are performed.
+workbook text searches are performed. Install optional dependencies with
+work/requirements-h17-k08-cell-selector.txt.
 
 The input workbook is opened from bytes and never written. Cell comments,
 embedded OfficeArt, formulas without cached values, and external links are not
@@ -247,6 +248,7 @@ def main() -> int:
         output_path = args.json_out.resolve()
         if output_path == args.workbook.resolve() or args.workbook.resolve() in output_path.parents:
             parser.error("--json-out must be outside the source workbook")
+        args.json_out.parent.mkdir(parents=True, exist_ok=True)
         args.json_out.write_text(encoded, encoding="utf-8")
     print(encoded, end="")
     return 0
