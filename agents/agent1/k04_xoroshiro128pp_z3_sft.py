@@ -126,9 +126,6 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
         first_model.eval(a0).as_long(),
         first_model.eval(b0).as_long(),
     )
-    first_replay = stream(first_state)
-    assert first_replay[:2] == list(first)
-
     routing = json.loads((ROOT / "evidence/recovery-routing.json").read_text()) if check_candidate else None
     mask = bytes.fromhex(routing["K04"]["masked_component"]) if check_candidate else None
     acceptance = json.loads((ROOT / "acceptance.json").read_text()) if check_candidate else None
@@ -158,6 +155,8 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
         return record, hit, middle
 
     first_record, first_hit, _ = inspect_middle(first_model, 0)
+    first_replay = stream(first_state)
+    assert first_replay[:2] == list(first)
     result["initial_state"] = [f"{x:016X}" for x in first_state]
     result["predicted_middle_words"] = [f"{x:016X}" for x in first_middle]
     result["predicted_coupon_hex"] = first_record["predicted_coupon_hex"]
@@ -251,8 +250,10 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
         result["K04_original_PASS"] = commitment_hit
         if commitment_hit:
             result["coupon_status"] = "K04_COMMITMENT_HIT"
-        elif enumeration_status == "CAP_REACHED":
+        elif enumeration_status in ("CAP_REACHED", "MODEL_CAP_REACHED"):
             result["coupon_status"] = "NO_COMMITMENT_HIT_WITHIN_MODEL_CAP"
+        elif enumeration_status in ("TOTAL_BUDGET_EXHAUSTED", "UNKNOWN"):
+            result["coupon_status"] = "NO_COMMITMENT_HIT_WITHIN_BUDGET"
         elif result["middle_unique"]:
             result["coupon_status"] = "NO_COMMITMENT_HIT_UNIQUE_MIDDLE"
         else:
