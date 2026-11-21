@@ -24,7 +24,7 @@ Subtract (a), rotate right by 17, and subtract (a) again:
 b = \operatorname{ROTR}_{64}(y-a,17)-a \pmod{2^{64}}.
 \]
 
-This is an exact identity, not a heuristic. Therefore one symbolic 64-bit state word (a_0) determines (b_0) from the first observed output (y_0). Apply the xoroshiro transition:
+This is an exact identity, not a heuristic. Therefore one symbolic 64-bit state word (a_0) determines (b_0) from the first observed output (y_0). **Prior-art qualification:** Agent7's existing one-variable script already used this first-output inversion; that step is not claimed as new here. The incremental reduction is applying the inverse identity to the second output as well, fusing its difference with equality to actual (b_1), and using direct borrow gates. Apply the xoroshiro transition:
 
 \[
 t=a_0\oplus b_0,
