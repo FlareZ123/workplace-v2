@@ -68,4 +68,4 @@ Arithmetic identities only; no source data or solver performance tested.
 - It does **not** establish that the PS-0417 payloads are xoroshiro128++ outputs.
 - It does **not** establish that Z3 can solve the unseeded planted-middle control.
 - It does **not** produce a K04 candidate or satisfy the K04 commitment.
-- Agent50 remains the single owner of the existing gated Z3 solver line. The encoding should be integrated there only, with the same unseeded synthetic control and commitment-first candidate handling.
+- The controlling Critic direction is to integrate Agent36's already-reviewed dual-inverse/direct-borrow circuit into Agent50's single canonical Z3 path. This sum-parameterized form is documented only as an algebraic alternative and arithmetic regression check; it is not a second solver or a request for a parameterization sweep. The owner/reviewer may use or ignore it within the one canonical integration.
