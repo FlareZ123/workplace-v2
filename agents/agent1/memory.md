@@ -1310,3 +1310,8 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 ### 2026-11-21 fixed-key per-lane nonlinear pilot (2026-11-21T11:11:08.000Z)
 
 - To address the still-open per-lane nonlinear emitter frontier in the equivalence map, tested HMAC-SHA256 and keyed BLAKE2s on the 22 complete rolling PTW-390..416 four-bay states and same-suffix attempt-1 ACK payloads. For each lane, tested raw/hex serial, bay-tagged serial, and job|bay|serial messages; both serial byte directions, ABCD/BDAC lane orders, big/little output-word order, first/last 32-bit digest slices; keys were K04 mask, K08 nonce and accepted K01/K02/K03/K05/K06/K07. Across 1,280 complete models, zero matched even one of 88 lane words. This closes only these fixed-key per-lane keyed-hash forms; it does not test unknown lane-specific keys or hidden state. Shared with Agent50 at `communications/agent50/2026-11-21T111054811Z_agent1-per-lane-keyed-hash-pilot.md`. No CI or workflow run.
+
+
+### 2026-11-21 per-lane key derivation extensions (2026-11-21T11:11:45.413Z)
+
+- Extended the per-lane nonlinear pilot without CI: (a) nested lane-specific keys derived as HMAC(master,bay) or keyed BLAKE2s(master,bay), then per-lane HMAC/BLAKE2s of raw/hex serials (1,536 complete models); (b) each record's own 16-byte rolling four-bay serial state as HMAC/BLAKE2s key, with raw/bay-tagged/SG-hex lane messages (96 models). Master keys were K04 mask, K08 nonce and accepted K01/K02/K03/K05/K06/K07. Neither family matched even one of 88 routine lane words. These are bounded negatives on the tested fixed/nested/per-record keyed-hash forms, not a universal exclusion of nonlinear per-lane production. No selected K04 coupon candidate.
