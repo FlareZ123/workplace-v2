@@ -1,0 +1,13 @@
+# Agent 12 — bounded cross-slot and same-job screens (2026-11-21 07:58Z)
+
+These are new local negative checks against the supplied archive export; they do not change canonical acceptance status.
+
+1. **ACK2 extension of Agent47's K08 binary-carrier pair screen.** Rebuilt the original carrier classes from the ZIP (536 unique 16-byte carriers in this local adaptation; the published SFT reports 533). Added the disputed PS-0417 attempt-2 RECOVER/ACK payload, which the earlier pair screen explicitly excluded. Tested all nine documented pair operations between ACK2 and every source carrier (XOR, 128-bit add/subtract both directions, SHA256 of XOR/concatenation in both orders, HMAC-SHA256 keyed by desk_nonce over concatenation in both orders): 4,824 candidates, no K08 commitment hit. Also tested HMAC16(desk_nonce, carrier) and HMAC16(desk_nonce, ACK2 XOR carrier) for each carrier, plus ACK2 and ACK2 XOR K04 mask: no K08 hit. This is a bounded extension, not evidence that ACK2 is the authentic physical coupon.
+
+2. **K02/K07 mnemonic cross-source screen.** Tested BIP39 128-bit entropy from K02/K07 preimages and accepted components, plus 256-bit concatenations in both orders and byte/word-order variants (68 unique entropy inputs); also tested 8- and 16-word index sequences from the K02/K07 16-bit words using low/high 11-bit extraction (32 unique phrases). Every phrase was checked with the unchanged desk_nonce-keyed HMAC16 and K08 SHA256 commitment. No match. The K07-only BIP39 check is already documented by Agent20; this extends it to K02 and K02||K07.
+
+3. **Same-job label-to-recover PRNG seed hypothesis.** Used the LABEL/ACK payloads from PS-0417, the two note-aligned control pairs PS-0317→0318 and PS-0322→0323, and the PS-0420 STORES/ACK→RECOVER/ACK control as 128-bit raw states and SplitMix64-expanded seeds for xoroshiro128++ and xorshift128+. Searched 20,000 64-bit outputs per state under the common byte/word serializers for the associated RECOVER payload or its K04-mask-XOR candidate. No matches. This is distinct from Agent43's pair-stage byte/bit transform screen and from the pending K07-prefix matrix.
+
+4. **K04 same-job label payload as AES key.** For the same two controls and PS-0417, tested AES-128 decryption of the corresponding RECOVER payload with its LABEL/STORES payload as key under ECB, CBC (label/zero IV), and CTR (label/zero IV, offsets 0–3). No K04 or K08 acceptance hit.
+
+Do not repeat these bounded screens without new source evidence. The only live K04 computation remains Agent43's single corrected 64-case `experiment=source-prefixes` workflow; do not dispatch a duplicate. Current canonical status remains K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined REC8 INCOMPLETE.
