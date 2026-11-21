@@ -191,7 +191,8 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
                 break
             if next_check == unsat:
                 enumeration_status = "EXHAUSTED"
-                uniqueness_status = "UNSAT"
+                if uniqueness_status is None:
+                    uniqueness_status = "UNSAT"
                 break
             if next_check == unknown:
                 enumeration_status = "UNKNOWN"
