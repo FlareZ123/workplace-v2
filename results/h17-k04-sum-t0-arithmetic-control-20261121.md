@@ -1,6 +1,6 @@
 # K04 sum-parameterized dual-borrow arithmetic control
 
-**Status:** <badge>PASS — arithmetic identity only</badge>
+**Status:** PASS — arithmetic identity only
 
 This note records a reproducible pure-Python control for the sum-parameterized, dual-borrow form proposed as a same-Z3 encoding of the xoroshiro128++ 1.0 first-pair equations.
 
