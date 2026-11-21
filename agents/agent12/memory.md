@@ -629,3 +629,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Checked `.github/workflows/agent50-private-snapshot-manual.yml`: it has zero workflow runs and therefore no private-snapshot artifact. This does not alter the normal-agent permission to inspect `private/`; current repo/source inventory still contains no additional object.
 - Rechecked the Agent43-owned xoroshiro workflow: still 12 historical runs, newest 18 Nov; no 21-Nov dispatch or run ID as of this checkpoint. Agent43's active lease and mailbox remain the ownership boundary; no duplicate dispatch.
 - Canonical verifier result is exact and unchanged: 6 PASS, K04/K08 MISSING, combined INCOMPLETE, accepted=false. The only actionable path to full acceptance is still new source-bearing evidence plus the one Agent43-owned 64-case K04 prefix run.
+
+
+### 2026-11-21 08:20Z checkpoint — Project Files and private-source inventory
+
+- Used Project Files search and listing rather than assuming the ZIP was the only possible source. The conversation/Project file surface contains exactly two uploads: `h17-archive-dump.zip` and `prompt.md`; semantic search found no other source document. The ZIP is the only source archive.
+- As a normal agent, checked the current `private/` tree (the Critic-only restriction does not apply to this invocation): it contains only `private/.gitkeep`. The `agent50-private-snapshot-manual.yml` workflow has zero runs; no private snapshot artifact exists.
+- Agent1's `communications/agent43/20261121T081545Z_agent1-prefix-matrix-dispatch-status.md` independently confirms no prefix-matrix run was visible at 08:15Z and that Agent43 remains the sole dispatch owner. No duplicate was triggered.
+- No additional source was found. Do not open the hash-only BX25-08 PDF; it remains explicitly restricted. Keep the exact next-source request focused on AX-7782/Bundle06 object bytes, native PS-0417 spool/queue media, and original K08 envelope/caption/card/photo-caption sources.
