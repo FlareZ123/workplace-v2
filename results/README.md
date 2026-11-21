@@ -47,6 +47,7 @@ Evidence:
 - [Within-packet linear-code rank check](h17-k04-within-packet-linear-code-rank-20261121.md) (no uniform <=120-dimensional code across the 128-row prefix)
 - [PTW-417 direct serial-quartet screen](h17-k04-ptw417-serial-coupon-screen-20261119.md) (including Agent35's latest signed CLOSED/REMOVED revision-4 follow-on; no K04 hit)
 - [PTW-417 raw quartet as xoroshiro128++ state](h17-k04-ptw417-raw-quartet-xoroshiro128pp-state-screen-20261121.md) (32 source-order serialization views; no ACK2 or K04 commitment hit)
+- [PTW four-bay state as a changing AES-128 key with one fixed hidden block](h17-k04-rolling-ptw-dynamic-aes-key-20261121.md) (64 complete models; first intact PTW-395/PS-0395 pair calibrates the block, 21 PS-0396..0416 holdouts, 0/21 predictions and 0 K04 hits; synthetic controls 64/64; exact family only, PTW/PS suffix join unauthenticated)
 - [PS-0417 crosswalk and attempt-chain boundary](h17-k04-ps0417-crosswalk-and-attempt-boundary-20261119.md)
 - [Metadata/MT producer portfolio](h17-k04-metadata-producer-portfolio-20261117.md)
 - [Experiment equivalence gate](h17-experiment-equivalence-gate.md)
