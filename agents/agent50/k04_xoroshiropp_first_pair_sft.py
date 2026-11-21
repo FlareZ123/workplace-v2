@@ -10,9 +10,9 @@ import hashlib
 import json
 import time
 
-from k04_xoroshiropp_meet_sft import MeetCircuit, bits_to_int
+from k04_xoroshiropp_meet_sft import MeetCircuit
 from k04_xoroshiropp_xorcnf_sft import (
-    ROOT, SOURCE_SHA, SEED, decode, encode, parse_source, stream,
+    ROOT, SOURCE_SHA, SEED, bits_to_int, decode, encode, parse_source, stream,
 )
 
 
