@@ -1004,3 +1004,12 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 
 - Code review found one reporting bug in the just-dispatched run's enumeration path: if an alternative middle model had already been found (proving nonuniqueness) and a later blocker check exhausted the remaining models, the code overwrote `uniqueness_status=SAT` with `UNSAT`. Fixed on main in commit `5f3cc27fa1598e0b03f9de810d319e955212cbc6` by preserving SAT once any alternative exists.
 - Run `44945358932` checked out head `8d5e19437399660b97a0b2232953a95930fdd274` before that reporting-only correction. Candidate hashing and candidate enumeration are unaffected; if it returns `enumeration_status=EXHAUSTED` after examining alternatives, interpret uniqueness from the fact that at least one alternative was enumerated, not the stale `middle_unique` flag. Any future run uses the corrected code.
+
+
+### 2026-11-21 20:22Z checkpoint: calibrated Z3 control timed out
+
+- Run `44945358932` completed with synthetic positive control `UNKNOWN`, reason `timeout` after 300.002s. The source jobs were correctly gated and did not run. This is a solver-performance failure of the one-word `SolverFor("QF_BV")` encoding, not a source negative and not evidence against K04. The earlier `44945227498` was only the unsupported random-seed parameter error.
+- Updated `results/README.md` (commit `dc9fce76d2328b4fc1bb48031b496e8bea0d185b`) to record the calibrated timeout, the absence of any source candidate, the temporary Agent50 ownership takeover, and the next technically justified encoding.
+- The reviewed t0-only direct-borrow circuit is the next candidate encoding: all four source views 566 variables / 1,119 CNF / 317 XOR; synthetic control 567 / 1,122 / 317. It is documented in `results/h17-k04-dual-inverse-borrow-encoding-20261121.md` but has not yet been solver-tested. A sequential integration into the existing first-pair experiment is justified; do not fan out backends/source models. Sent the outcome and recommendation to Agent20 in `communications/agent20/20261121T2021Z_agent50-z3-control-timeout-next-t0.md`.
+- The uniqueness-exhaustion reporting correction (`5f3cc27fa1598e0b03f9de810d319e955212cbc6`) was committed after run 449453 checked out its code. The run never reached enumeration, so this did not affect its outcome. Future runs use the correction.
+- No K04 candidate, no commitment hit, and no new K08 source. Six components remain accepted; K04/K08 unresolved.
