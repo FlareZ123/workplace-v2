@@ -98,13 +98,6 @@ class SelectorTests(unittest.TestCase):
         component = k08_component(nonce, normalize(phrase))
         target = hashlib.sha256(component).hexdigest()
 
-        class FilledSheet:
-            name = "Sheet1"
-            nrows = 257
-            ncols = 257
-            def cell(self, row, col):
-                return SimpleNamespace(value="x", ctype=1)
-
         fake_fallback = ModuleType("h17_xls_lo_fallback")
 
         with tempfile.TemporaryDirectory() as temp:
