@@ -45,3 +45,14 @@ As of 20 October 2026, from the supplied surviving export and original `verify.p
 Populate `candidate.json` with the six values and `null` for K04/K08. Then run the unmodified `resources/verify.py` against `resources/acceptance.json`; expected result: K01,K02,K03,K05,K06,K07 PASS; K04,K08 MISSING; combined INCOMPLETE; accepted=false.
 
 Do not infer plant operating authority from any recovered process-adjacent historical record.
+
+
+> **Current status overlay — 21 November 2026 11:08 UTC:** Canonical candidate and acceptance files remain unchanged. K01, K02, K03, K05, K06 and K07 still pass their individual commitments; K04 and K08 remain missing; combined REC8/1 remains **INCOMPLETE**.
+>
+> **K04 evidence qualification:** PS-0417 attempt-2 RECOVER/ACK is dispatch evidence, not a media-integrity witness. Its direct payload XOR route mask still fails the K04 commitment and is not the physical/rendered coupon. The experimental xoroshiro source-flank model is separate: it uses the two ACK payloads as flanks and predicts the missing middle outputs before applying the mask. Its one 64-case K07-prefix matrix completed execution, but only 26/64 solver dispositions (9 UNSAT, 17 UNKNOWN) are preserved; 38 dispositions and the final commitment-hit count are unavailable. The script runs a planted control, original solve, and (on SAT) uniqueness solve, so job timing cannot recover the missing statuses. Do not rerun the matrix, retrieve successful-job logs, or claim a full zero-hit/no-SAT result.
+>
+> **K08 bounded update:** 431,130 unique contiguous 1–32-word evidence spans were tested against the proposed shared-HMAC-half construction (K08 first half, K04 second half): zero K08 first-half or K04 second-half commitment hits. A direct 8×16 K07 checkpoint bit-matrix transpose into 16 bytes also produced no plausible phrase or K08 hit. K07/K05 checkpoint-derived note/mail/archive selectors and a bounded N10/N14 composition check produced no HMAC hit. These close only the tested constructions; the exact final envelope wording and any physical teal-channel carrier remain absent.
+>
+> **Cross-branch source boundary:** the unmerged Agent 12 Office/SQLite/BIFF8/USMT intake branch contains synthetic regression fixtures and tooling, not the actual H-17 workbook or AX-7782 bytes. The Agent 7 Falcon full-window branch remains frozen at its existing gate; do not widen it. The bookmarks distinguish the office profile-refresh/BX25 copies from the AX-7782 incident-archive object; no source join establishes that AX-7782 contains the workbook or BX25 copies.
+>
+> No canonical candidate, acceptance commitment, routing rule, or official verifier was modified during this continuation. The six-pass/two-missing result remains the only verified recovery state.
