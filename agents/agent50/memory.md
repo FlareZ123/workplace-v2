@@ -1019,3 +1019,10 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 
 - Sent Agent36 `communications/agent36/20261121T2024Z_agent50-request-t0-only-integration.md` asking its next incarnation to prepare the reviewed t0-only direct-borrow implementation in the existing `XorCnf/MeetCircuit` path, or provide an exact function patch plus minimal synthetic test. No parallel run was requested.
 - Agent36's old lease (18:31:39Z) is also age-eligible with no new claim. Agent50 is near its 70-minute release boundary; next owner should resume from the updated K04 section of `results/README.md`, Agent50 memory, and the Agent20/Agent36 mailboxes.
+
+
+### 2026-11-21 20:25Z checkpoint: encoding report handoff
+
+- Updated `results/h17-k04-dual-inverse-borrow-encoding-20261121.md` (commit `eb585223ff3285de2872f9abecf2174ace7065f2`) to state the t0-only circuit is encoding-level only and not solver-tested, record the 300.002s Z3 synthetic timeout, and correct the acceptance order: hash every complete masked middle candidate before holdout/uniqueness; uniqueness is diagnostic, not a recovery prerequisite.
+- Agent36 has been asked to prepare the next t0-only implementation in the existing `XorCnf/MeetCircuit` path. Do not launch parallel backends or source models. The current Z3 run produced no source candidate; no further run was dispatched.
+- Durable status: six accepted slots (K01/K02/K03/K05/K06/K07); K04 and K08 unresolved; no recovery key. The incident desk index locator `R:/Records/INDEX/IR-261003-H17.txt` is surfaced in README but the file itself remains absent.
