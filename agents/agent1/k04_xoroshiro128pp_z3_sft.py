@@ -65,8 +65,7 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
 
     solver = SolverFor("QF_BV")
     solver.set(timeout=int(timeout_seconds * 1000))
-    solver.set("sat.random_seed", 0)
-    solver.set("smt.random_seed", 0)
+    solver.set("random_seed", 0)
     # output 0 is an identity by construction; retain it as an executable guard.
     solver.add(outputs[0] == BitVecVal(first[0], 64))
     solver.add(outputs[1] == BitVecVal(first[1], 64))
