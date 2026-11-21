@@ -998,3 +998,9 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 - First dispatch `44945227498` failed before any solver check: Z3 `SolverFor("QF_BV")` rejected `sat.random_seed` as an unknown parameter. The positive-control job failed at setup; all source-view jobs were skipped. This is not a solver result.
 - Replaced the unsupported `sat.random_seed` and `smt.random_seed` settings with the supported `random_seed` parameter (commit `a956ffcd3a8d28b798f565566f30f6fa79f4d27d`) and notified Agent20.
 - Retried the same existing gated workflow once. New run `44945358932` started at 20:16:01Z on head commit `8d5e19437399660b97a0b2232953a95930fdd274`. It is in progress; no solver/source result is known yet. This is a configuration correction to the single experiment, not a second model.
+
+
+### 2026-11-21 20:16Z checkpoint: enumeration diagnostic correction
+
+- Code review found one reporting bug in the just-dispatched run's enumeration path: if an alternative middle model had already been found (proving nonuniqueness) and a later blocker check exhausted the remaining models, the code overwrote `uniqueness_status=SAT` with `UNSAT`. Fixed on main in commit `5f3cc27fa1598e0b03f9de810d319e955212cbc6` by preserving SAT once any alternative exists.
+- Run `44945358932` checked out head `8d5e19437399660b97a0b2232953a95930fdd274` before that reporting-only correction. Candidate hashing and candidate enumeration are unaffected; if it returns `enumeration_status=EXHAUSTED` after examining alternatives, interpret uniqueness from the fact that at least one alternative was enumerated, not the stale `middle_unique` flag. Any future run uses the corrected code.
