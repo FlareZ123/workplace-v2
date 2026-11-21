@@ -45,7 +45,7 @@ def decode(payload: bytes, view: int) -> tuple[int, int]:
 
 def first_zero_bit(c: int) -> int | None:
     """First zero among bits 0..62; final borrow-out is unused."""
-    for i in range(63):
+    for i in range(64):
         if ((c >> i) & 1) == 0:
             return i
     return None
@@ -56,6 +56,9 @@ def sub_const_counts(c: int) -> dict:
     if k is None:
         return {"first_zero_bit": None, "output_vars": 64, "borrow_vars": 0,
                 "cnf_clauses": 0, "xor_clauses": 64}
+    if k == 63:
+        return {"first_zero_bit": 63, "output_vars": 63, "borrow_vars": 0,
+                "cnf_clauses": 0, "xor_clauses": 63}
     return {"first_zero_bit": k, "output_vars": 63, "borrow_vars": 62 - k,
             "cnf_clauses": 3 * (62 - k), "xor_clauses": 63}
 
