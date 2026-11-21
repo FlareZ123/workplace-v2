@@ -92,7 +92,7 @@ Require UNSAT to establish uniqueness; SAT means a distinct middle; UNKNOWN rema
 
 The existing Agent50 CryptoMiniSat first-pair circuit from run 44931493564 contained 1,658 variables, 3,136 CNF clauses, and 1,024 XOR clauses. It built the middle-output circuit before the initial solve. That run's planted positive control returned UNKNOWN after 180.382 seconds.
 
-The local reference encoding produced:
+The local reference encoding produced the following counts for the current synthetic planted control (both observed output words have least-significant bit 0). Source-view constants can change the count slightly through first-bit simplification; the algebra and gate structure are unchanged:
 
 | Circuit | Variables | CNF clauses | XOR clauses |
 |---|---:|---:|---:|
