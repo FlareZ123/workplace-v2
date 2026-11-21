@@ -1315,3 +1315,8 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 ### 2026-11-21 per-lane key derivation extensions (2026-11-21T11:11:45.413Z)
 
 - Extended the per-lane nonlinear pilot without CI: (a) nested lane-specific keys derived as HMAC(master,bay) or keyed BLAKE2s(master,bay), then per-lane HMAC/BLAKE2s of raw/hex serials (1,536 complete models); (b) each record's own 16-byte rolling four-bay serial state as HMAC/BLAKE2s key, with raw/bay-tagged/SG-hex lane messages (96 models). Master keys were K04 mask, K08 nonce and accepted K01/K02/K03/K05/K06/K07. Neither family matched even one of 88 routine lane words. These are bounded negatives on the tested fixed/nested/per-record keyed-hash forms, not a universal exclusion of nonlinear per-lane production. No selected K04 coupon candidate.
+
+
+### 2026-11-21 stateful per-bay serial injection pilot (2026-11-21T11:13:12.763Z)
+
+- Tested a distinct rolling four-bay 32-bit emitter on the same 22 complete PTW-390..416 state/payload pairs: xorshift32 and LCG32 with per-lane serial injection (state XOR serial, state plus serial, or advance-then-XOR), ABCD/BDAC bay order, both serial byte directions and both payload word endiannesses (48 models). No lane word matched. This is only a bounded negative for these simple stateful injection rules; no further PRNG sweep is justified without a source-authored update rule.
