@@ -47,8 +47,7 @@ def subtract_with_borrow(x: int, y: int) -> tuple[int, int]:
         xi = (x >> i) & 1
         yi = (y >> i) & 1
         difference |= (xi ^ yi ^ borrow) << i
-        if i < 63:
-            borrow = ((1 - xi) & yi) | (((1 - xi) | yi) & borrow)
+        borrow = ((1 - xi) & yi) | (((1 - xi) | yi) & borrow)
     return difference & MASK64, borrow
 
 
@@ -60,8 +59,7 @@ def t0_from_sum(x0: int, a0: int) -> int:
         xi = (x0 >> i) & 1
         ai = (a0 >> i) & 1
         t0 |= (xi ^ borrow) << i
-        if i < 63:
-            borrow = ((1 - xi) & ai) | (((1 - xi) | ai) & borrow)
+        borrow = ((1 - xi) & ai) | (((1 - xi) | ai) & borrow)
     return t0 & MASK64
 
 
