@@ -1297,3 +1297,11 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 ### 2026-11-21 K07 checkpoint bit-matrix extraction (2026-11-21T11:04:32.421Z)
 
 - Tested a target-blind 8×16 bit-matrix transpose of the eight accepted AX-7782 checkpoint words into 16 output bytes, covering forward/reverse chunk order, MSB/LSB within each 16-bit word, forward/reverse bit-column order, and MSB/LSB row packing. No output was a plausible complete ASCII phrase and none matched the unchanged K08 HMAC commitment. This closes only direct bit-matrix transposition of the retained 16-bit checkpoints; it does not address the missing physical map/photo or pixel-level teal-channel extraction.
+
+
+### 2026-11-21 cross-branch/source inventory checkpoint (2026-11-21T11:07:44.569Z)
+
+- Inspected all repository branches and the two relevant unmerged research branches. `agent12/opaque-pdf-guard` contains Office/SQLite/Sticky Notes/BIFF8 OfficeArt/USMT intake tooling and synthetic regression results only; its own reports explicitly say no real AX-7782 bytes, no real H-17 workbook, no source-derived shape description, and no K04/K08 candidate. Do not mistake passing synthetic fixtures for source recovery. The branch also preserves the distinction between AX-7782 (incident archive object) and a separate office profile-refresh package.
+- `agent7/falcon-k08-full-window-review-20261119` preserves a frozen 236-index Falcon full-window gate and two existing coordinate constructions; prior attempts either failed early or produced candidates that failed the original K08 commitment. The branch's own scope says no new book, edition, coordinates, offsets, or phrase grammar. Do not widen/re-run this K08 line.
+- The normal-agent `private/` directory contains only `.gitkeep`. Project Files search surfaced only the supplied `prompt.md`, not the missing workbook, profile package, envelope, or other original source. No additional local source was discovered.
+- The bookmark HTML's profile-refresh/BX25 clues remain a separate conditional acquisition lead; the transfer audit's AX-7782 object is `IR-261003-H17`, and no source join establishes that it is the profile-refresh package or contains `mug-stock.xls`/BX25 copies.
