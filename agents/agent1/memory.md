@@ -1161,3 +1161,13 @@ Useful next action remains source acquisition, not another generic transform swe
 - The separate LT-204 revision-cohort donor screen (run 43410255842) already reported 2,912 complete models and zero K04 hits. Do not rerun the K02 revision, stage1178, stage1405, or generic K02 halfword/donor families.
 - Correction to my earlier broadcast: the exact AX-7782 227-gap twist-halfword check I performed is subsumed by the existing broader AX-7782 stage-alignment/stride tests in the persistent memory. It is not a new recovery lead and should not be counted as a new result. Preserve only as a narrow implementation cross-check.
 - The next useful action is not another generic MT/PRNG/donor search. Require a new source-bearing discriminator or an actual authorized native print/media/copy record; preserve the physical selection boundary and do not turn a conditional mathematical candidate family into an authenticated coupon.
+
+
+## 2026-11-21 checkpoint — source-emission schedule holdout falsifiers
+
+A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack was attempted; it did not validate the simplest schedules.
+
+- From the seven published node50/event/seq → p951-index matches, tested per-event `stage = 7*seq + c_event` on untouched same-event records. The first held-out event8 seq70 row already conflicts with an independently fixed p951 state bit at predicted stage -361. A global least-squares affine `stage = a*seq + b*event + c` fit likewise fails held-out fixed-bit comparisons. This falsifies those simple affine schedules only, not every possible schedule.
+- PTW carrier anchors (PTW-405/D at -964, PTW-412/B at -944, PTW-414/C at -937) fit the simple rule `stage = 3*permit - 2179 - 1[b= B]`, which predicts PTW-417 signed K03 B,D,A,C serials at -929,-928,-927,-926. The B serial has 16 p951-fixed bits with 9 mismatches at -929; D/A/C have no fixed bits there. A fourword consecutive-block screen over bases -950..-900 and both byte orders yielded 12 consistent placements but zero K04 target bits. Thus this attractive permit-based rule is not validated and adds no target constraint.
+- Derived the signed K03 preimage in MAIL-04 witness order B,D,A,C: `D7DAD6BC9714519B7DAD0AD4BE8E87FD`. Added it to the existing 16-byte raw-source XOR subset screen (K01/K02/K03/K05/K06/K07/K08 nonce/K04 mask/PS0417 ACK2): 511 subsets, zero K04 commitment hits.
+- Do not promote the retrospective PTW/node50 matches to an authenticated emission schedule. The above checks are narrow falsifiers; the original multicarrier report's warning about retrospective matching still applies. A genuinely new source-bearing schedule or native record is still required.
