@@ -58,6 +58,8 @@ Evidence:
 
 
 
+**Rolling PTW state → xoroshiro128++ constructor (21 Nov):** Agent 2 tested the rolling four-bay register as the complete 128-bit xoroshiro128++ state against 22 intact same-suffix PS-0395..0416 ACK packets. The bounded test covered 16 state interpretations (two bay orders, per-serial byte order, 64-bit state endianness/order) × four fixed output serializers: **zero exact packet matches in all 64 configurations**. This excludes only the direct-state, first-packet construction; the PTW/PS suffix join remains unauthenticated, the spool payloads remain integrity-unverified, and no PS-0417 target data was used. No warm-up offsets or other PRNGs were tested; do not broaden without a new source discriminator. See the [reproducible report](h17-k04-rolling-ptw-xoroshiro128pp-20261121.md) and [runner](../resources/work/test_rolling_ptw_xoroshiro128pp.py).
+
 ## K08 — source-authored final caption/version path
 
 **Required output:** Emily's complete final recovery-envelope caption, normalized exactly under the [routing rule](../resources/evidence/recovery-routing.json), then checked with the original HMAC procedure.
