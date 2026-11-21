@@ -73,19 +73,25 @@ u_i\oplus a_{1,i}\oplus r_i\oplus b_{1,i}=0,
 
 with the same borrow-out recurrence `MAJ(~u_i, a1_i, r_i)`. This fuses the second subtraction's difference equation with equality to the actual next-state word, eliminating 64 temporary variables and 64 extra XOR clauses.
 
-## Keep the initial solve separate from uniqueness
+## Commitment check, holdout, and uniqueness ordering
 
-The first SAT solve needs only:
+The initial SAT formula needs only:
 1. symbolic `a0`;
 2. derived `t0` directly, without materializing `b0`;
-3. one xoroshiro transition to (`(a1,b1)`);
+3. one xoroshiro transition to `(a1,b1)`;
 4. the second-output inverse equality.
 
-It does **not** need state2/state3 or outputs2/3. After a first-pair model is found, compute outputs2/3 and outputs4/5 by forward replay. Check outputs4/5 against the untouched third REQUESTED packet as a blind holdout.
+Outputs 2/3 and 4/5 are **not** part of the initial SAT formula. However, for every SAT model returned, immediately replay the model forward to obtain the complete middle outputs 2/3, apply the recorded mask, and check the unchanged K04 commitment. Do this before any holdout or uniqueness early return.
 
-Only after the holdout check should a separate circuit build outputs2/3 and test middle uniqueness by adding one blocking clause over the complete 128-bit middle:
-`Or(out2 != recovered2, out3 != recovered3)`.
-Require UNSAT to establish uniqueness; SAT means a distinct middle; UNKNOWN remains unresolved. Do not substitute state uniqueness for middle uniqueness.
+Keep these outcomes separate:
+- `component_commitment_status`: whether this complete middle candidate hits the K04 commitment;
+- `holdout_match`: whether replayed outputs 4/5 match the untouched third REQUESTED packet;
+- `middle_uniqueness`: whether a distinct complete middle exists;
+- `source_model_authenticity`: whether the first-pair model and its holdout are consistent with the proposed producer.
+
+A genuine complete commitment hit establishes the K04 component even if the model is non-unique or its holdout fails. Conversely, a hash miss for one model does not exclude unenumerated middles. If the model is non-unique, enumerate distinct middle outputs only under an explicit cap and check each complete candidate against the commitment. Uniqueness is an attribution-strength measure, not a prerequisite for checking the commitment.
+
+Treat outputs 4/5 as a blind holdout only if they are not used to select among multiple middle candidates. If outputs 4/5 are used to choose among models, label that a conditioned second-stage discriminator, not a blind holdout. A separate uniqueness query can block the complete 128-bit middle with `Or(out2 != recovered2, out3 != recovered3)`; UNSAT establishes uniqueness, SAT finds a distinct middle, and UNKNOWN remains unresolved. Do not substitute state uniqueness for middle uniqueness.
 
 ## Circuit-size comparison
 
