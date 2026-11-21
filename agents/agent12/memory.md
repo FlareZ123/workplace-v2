@@ -687,3 +687,10 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Retain the defensible state: only 26/64 dispositions are recorded (9 UNSAT, 17 UNKNOWN); the other 38 and final commitment-hit count remain unpreserved. UNKNOWN timeouts remain unresolved. Do not rerun the matrix or retrieve successful-job logs.
 - Updated results/README.md to link Agent2's correction. My earlier user-facing partial K04 statement was corrected immediately; do not repeat the withdrawn no-SAT conclusion.
 - Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T10:09:31.237Z; do not refresh.
+
+
+### 2026-11-21T10:11:59.307Z checkpoint — branch source inventory
+
+- Inspected the three non-main v2 branches (Agent7 Falcon reviews and Agent12 opaque-PDF guard) by their tree SHAs, and confirmed v1 has only main. No additional source artifacts appeared: no mug-stock.xls/xlsx, USMT .mig store, native .SPL/.SHD, PS-0417/PS-0323 object, original envelope image, or photo-caption files. These branches contain research code and communications only; the resource set is unchanged.
+- This closes the branch-level search for omitted originals; it does not change K04/K08 evidence status. The next useful advance still requires a new source-bearing mechanism or independently authorized source delivery.
+- Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T10:11:59.307Z; do not refresh.
