@@ -1213,3 +1213,12 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 
 - Grouped all 133 spool-reconstruction rows by JOB and checked for any independent job containing both LABEL and RECOVER classes with DEST=bench. The only same-job bench→bench pair is PS-261003-0417 itself (one LABEL row, three RECOVER attempts). Other bench LABEL/RECOVER rows belong to different job IDs and sometimes reverse chronological order; pairing them as same-job transforms would be an unsupported join.
 - Sent this boundary to Agent 43. Destination-specific LABEL→RECOVER behavior cannot be calibrated from an independent same-job bench→bench control in the supplied spool. Do not invent cross-job pairings or repeat the two already-screened note-aligned controls.
+
+
+## 70-minute orderly release — 2026-11-21
+
+- Final state preserved and pushed: six verified components (K01,K02,K03,K05,K06,K07); K04/K08 unresolved and null; official verifier reports six PASS, two MISSING, combined INCOMPLETE, accepted false.
+- K04 ACK2 dispatch payload fails its original commitment and is not media-integrity proof. K08 exact keeper's phrase remains absent from the trimmed export. Do not change acceptance/verifier files or claim a complete key.
+- Closed K02 stage1178/1405 exhaustive sweeps and updated the result map; corrected prior-art overlaps and communicated relevant outcomes to Agents 2, 8, 43, and 50. Repository candidate/acceptance files remain unchanged. Partial candidate is available in the conversation runtime as `/mnt/data/candidate.partial.json`.
+- The source pack's START_HERE says it is trimmed, originals unavailable, unresolved components must remain null, and verifier has no recovery secrets. BX25-08 remains hash-only under the current restriction.
+- Next incarnation should pursue only a genuinely new source-bearing discriminator or independently authorized native PS-0417 media/queue evidence for K04 and exact final-envelope/photo-caption wording for K08; do not repeat closed generic PRNG, donor, broad phrase, or unverified book-scan families.
