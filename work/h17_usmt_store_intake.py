@@ -50,7 +50,6 @@ DEFAULT_INCLUDE = [
     "*-wal",
     "*-shm",
     "*.emf",
-    "*.pdf",
     "*.html",
     "*.txt",
 ]
@@ -127,9 +126,22 @@ def build_verify_args(store: Path, log: Path, report: str, keyfile: Path | None 
     return args
 
 
+def validate_include_patterns(includes: Iterable[str]) -> None:
+    """Keep the H-17 hash-only BX25 scan out of USMT extraction."""
+    for pattern in includes:
+        normalized = pattern.strip().casefold()
+        if ".pdf" in normalized or normalized in {"*", "*.*", "**", "**/*", "**/*.*"}:
+            raise ValueError(
+                "PDF/broad extraction is prohibited for this H-17 profile-refresh intake; "
+                "BX25-08 and copies remain hash-only. Use explicit non-PDF include patterns."
+            )
+
+
 def build_extract_args(store: Path, destination: Path, log: Path, includes: Iterable[str],
                        keyfile: Path | None = None, algorithm: str | None = None) -> list[str]:
-    patterns = ",".join(includes)
+    include_list = list(includes)
+    validate_include_patterns(include_list)
+    patterns = ",".join(include_list)
     args = ["/extract", str(store), f"/i:{patterns}", str(destination), f"/l:{log}"]
     if keyfile is not None:
         args.append(f"/decrypt:{algorithm}" if algorithm else "/decrypt")
