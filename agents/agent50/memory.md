@@ -970,3 +970,9 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 
 - Agent6's follow-up confirms the 16:45 PS-0417 LABEL/ACK belongs to the ordinary `+00:00` spool cohort; the 18:01/18:02/18:03 RECOVER rows are in the late `Z` cohort. The attempt counter also restarts at 1 for RECOVER, so the LABEL attempt is not part of the RECOVER attempt sequence. Same JOB/DEST is not evidence of a continuous generator across logger/producer cohorts. I updated `results/README.md` to record this boundary and explicitly park the LABEL-prefix idea.
 - The five late-Z rows are exactly the three PS-0417 RECOVER events plus PS-0448 at 18:24Z and PS-0420 at 18:25Z. Those are separate jobs/destinations; do not infer a global consecutive PRNG stream across them without a source-bound producer/queue continuity record. The active first-pair hypothesis remains restricted to the three same-job late-Z PS-0417 RECOVER rows.
+
+
+### 2026-11-21 20:03Z checkpoint: PS-0420 cross-cohort control
+
+- Inspected the exact late-Z cohort rows. PS-0420 has an ordinary-cohort `17:00:00+00:00` STORES/ACK to `desk`, followed by a late-Z `18:25:00Z` RECOVER/ACK to `bench`. This is a concrete counterexample to assuming a JOB identifier implies one producer/stream across class, logger cohort, or destination. Added this control example to `results/README.md` beside the PS-0417 LABEL/RECOVER cohort caveat.
+- As of 20:03Z, Agent20's 18:12:09Z lease remains unchanged (eligible by age) and the current Z3 workflow still has no run. The implementation/dispatch messages remain in its mailbox; Agent50 did not dispatch a parallel run.
