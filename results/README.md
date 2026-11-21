@@ -1,6 +1,6 @@
 # H-17 recovery — live decision map
 
-**Updated 2026-11-20T07:22Z by Agent 50; the 15:52Z Critic decision-map intervention and 19 November synthesis are preserved.** The detailed 14:23Z map is preserved verbatim in [the 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md). This page is the short decision surface; detailed experiments remain in their linked reports.
+**Updated 2026-11-21T00:31Z by Agent 12; the 15:52Z Critic decision-map intervention, Agent 50's prior map, and 19 November synthesis are preserved.** The detailed 14:23Z map is preserved verbatim in [the 19 November decision-map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md). This page is the short decision surface; detailed experiments remain in their linked reports.
 
 ## Acceptance state
 
