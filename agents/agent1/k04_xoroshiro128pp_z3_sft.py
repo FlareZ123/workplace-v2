@@ -11,6 +11,7 @@ fixed cap; uniqueness and first-model holdout are reported separately.
 import argparse
 import hashlib
 import json
+import time
 from pathlib import Path
 
 from z3 import BitVec, BitVecVal, Or, RotateLeft, RotateRight, SolverFor, sat, unsat, unknown
@@ -18,7 +19,8 @@ from z3 import BitVec, BitVecVal, Or, RotateLeft, RotateRight, SolverFor, sat, u
 MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 SEED = (0x5D1DE1A5CAFEBEEF, 0x17A5B3CB69A1CBCA)
-MAX_MIDDLE_MODELS = 32
+MAX_MIDDLE_MODELS = 8
+MAX_TOTAL_SOLVE_SECONDS = 600
 ROOT = Path(__file__).resolve().parents[2] / "resources"
 
 
@@ -69,6 +71,16 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
     solver.add(outputs[0] == BitVecVal(first[0], 64))
     solver.add(outputs[1] == BitVecVal(first[1], 64))
 
+    started = time.monotonic()
+    deadline = started + MAX_TOTAL_SOLVE_SECONDS
+
+    def bounded_check():
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return None
+        solver.set(timeout=max(1, int(min(timeout_seconds, remaining) * 1000)))
+        return solver.check()
+
     result = {
         "experiment": "z3_one_word_inverse_first_pair_only",
         "view": view,
@@ -78,20 +90,29 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
         "source_sha256": SOURCE_SHA,
         "timeout_seconds": timeout_seconds,
         "middle_model_cap": max_middle_models,
+        "total_solver_budget_seconds": MAX_TOTAL_SOLVE_SECONDS,
         "holdout_selection_policy": "never used to select or filter middle candidates",
         "commitment_selection_policy": "hash each complete masked middle candidate before holdout or uniqueness disposition",
     }
 
-    check = solver.check()
+    check = bounded_check()
+    if check is None:
+        result.update({"status": "UNKNOWN", "reason_unknown": "overall solver time budget exhausted",
+                       "coupon_status": "WITHHELD_SOLVE_UNKNOWN",
+                       "K04_original_PASS": False if check_candidate else None,
+                       "elapsed_seconds": round(time.monotonic() - started, 3)})
+        return result
     result["status"] = str(check).upper()
     if check == unknown:
         result["reason_unknown"] = solver.reason_unknown()
         result["coupon_status"] = "WITHHELD_SOLVE_UNKNOWN"
         result["K04_original_PASS"] = False if check_candidate else None
+        result["elapsed_seconds"] = round(time.monotonic() - started, 3)
         return result
     if check == unsat:
         result["coupon_status"] = "NO_SAT_MODEL"
         result["K04_original_PASS"] = False if check_candidate else None
+        result["elapsed_seconds"] = round(time.monotonic() - started, 3)
         return result
 
     # First unconditioned model: commitment check is deliberately performed
@@ -149,12 +170,17 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
     solver.push()
     solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
                   outputs[3] != BitVecVal(first_middle[1], 64)))
-    alternative = solver.check()
+    alternative = bounded_check()
     solver.pop()
+    if alternative is None:
+        alternative = unknown
+        result["uniqueness_reason_unknown"] = "overall solver time budget exhausted"
+    else:
+        result["uniqueness_status"] = str(alternative).upper()
+        if alternative == unknown:
+            result["uniqueness_reason_unknown"] = solver.reason_unknown()
     result["uniqueness_status"] = str(alternative).upper()
     result["middle_unique"] = alternative == unsat
-    if alternative == unknown:
-        result["uniqueness_reason_unknown"] = solver.reason_unknown()
 
     candidate_records = [first_record]
     commitment_hit = first_hit
@@ -170,7 +196,11 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
                       outputs[3] != BitVecVal(first_middle[1], 64)))
         enumeration_status = "CAP_REACHED"
         for model_index in range(1, max_middle_models):
-            next_check = solver.check()
+            next_check = bounded_check()
+            if next_check is None:
+                enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
+                result["enumeration_reason_unknown"] = "overall solver time budget exhausted"
+                break
             if next_check == unsat:
                 enumeration_status = "EXHAUSTED"
                 break
@@ -195,6 +225,7 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
             solver.add(Or(outputs[2] != BitVecVal(middle[0], 64),
                           outputs[3] != BitVecVal(middle[1], 64)))
 
+    result["elapsed_seconds"] = round(time.monotonic() - started, 3)
     result["candidate_models"] = candidate_records
     result["candidate_models_examined"] = len(candidate_records)
     result["enumeration_status"] = enumeration_status
