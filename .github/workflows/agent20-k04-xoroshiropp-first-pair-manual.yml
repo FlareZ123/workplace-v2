@@ -35,7 +35,6 @@ jobs:
           if-no-files-found: warn
 
   source:
-    needs: positive-control
     runs-on: ubuntu-latest
     timeout-minutes: 12
     strategy:
