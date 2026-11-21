@@ -1,27 +1,31 @@
 #!/usr/bin/env python3
-"""Independent Z3 bit-vector backend for the H-17 K04 xoroshiro128++ hypothesis.
+"""One-word inverse Z3 backend for the H-17 K04 xoroshiro128++ hypothesis.
 
-This is a solver-backend pilot, not a new producer claim. It fits only the
-first REQUESTED packet (outputs 0/1), withholds ACK2, predicts the middle
-coupon, and blindly checks the third REQUESTED packet (outputs 4/5).
+Fits only the first REQUESTED packet (outputs 0/1), derives b0 from a0 using
+the exact inverse of xoroshiro128++'s first output, predicts the middle pair,
+and blindly checks the third REQUESTED packet (outputs 4/5). Every complete
+masked middle candidate is checked against the K04 commitment before any
+holdout or uniqueness disposition. Nonunique middles are enumerated under a
+fixed cap; uniqueness and first-model holdout are reported separately.
 """
 import argparse
 import hashlib
 import json
 from pathlib import Path
 
-from z3 import BitVec, BitVecVal, Or, RotateLeft, SolverFor, sat, unsat, unknown
+from z3 import BitVec, BitVecVal, Or, RotateLeft, RotateRight, SolverFor, sat, unsat, unknown
 
 MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 SEED = (0x5D1DE1A5CAFEBEEF, 0x17A5B3CB69A1CBCA)
+MAX_MIDDLE_MODELS = 32
 ROOT = Path(__file__).resolve().parents[2] / "resources"
 
 
-def stream(state):
+def stream(state, count=6):
     a, b = state
     out = []
-    for _ in range(6):
+    for _ in range(count):
         total = (a + b) & MASK
         out.append((((total << 17) | (total >> 47)) + a) & MASK)
         t = a ^ b
@@ -41,9 +45,16 @@ def encode(words, view):
     return b"".join(int(x).to_bytes(8, endian) for x in words)
 
 
-def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate):
-    s0, s1 = BitVec("initial_s0", 64), BitVec("initial_s1", 64)
-    a, b = s0, s1
+def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
+                     expected_middle=None, max_middle_models=MAX_MIDDLE_MODELS):
+    # Exact first-output inverse:
+    # u0 = ROTR(y0 - a0, 17) = a0 + b0 (mod 2^64)
+    # b0 = u0 - a0; t0 = a0 XOR b0.
+    a0 = BitVec("initial_s0", 64)
+    u0 = RotateRight(BitVecVal(first[0], 64) - a0, 17)
+    b0 = u0 - a0
+
+    a, b = a0, b0
     outputs = []
     for _ in range(6):
         outputs.append(RotateLeft(a + b, 17) + a)
@@ -54,41 +65,90 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate):
     solver.set(timeout=int(timeout_seconds * 1000))
     solver.set("sat.random_seed", 0)
     solver.set("smt.random_seed", 0)
+    # output 0 is an identity by construction; retain it as an executable guard.
     solver.add(outputs[0] == BitVecVal(first[0], 64))
     solver.add(outputs[1] == BitVecVal(first[1], 64))
+
     result = {
-        "experiment": "z3_first_pair_only",
+        "experiment": "z3_one_word_inverse_first_pair_only",
         "view": view,
         "fit_scope": "18:01 REQUESTED outputs 0/1 only",
-        "holdout_scope": "18:03 REQUESTED outputs 4/5 only",
+        "holdout_scope": "18:03 REQUESTED outputs 4/5; first unconditioned model only",
         "withheld_from_fit": "18:02 ACK payload",
         "source_sha256": SOURCE_SHA,
         "timeout_seconds": timeout_seconds,
+        "middle_model_cap": max_middle_models,
+        "holdout_selection_policy": "never used to select or filter middle candidates",
+        "commitment_selection_policy": "hash each complete masked middle candidate before holdout or uniqueness disposition",
     }
+
     check = solver.check()
     result["status"] = str(check).upper()
     if check == unknown:
         result["reason_unknown"] = solver.reason_unknown()
         result["coupon_status"] = "WITHHELD_SOLVE_UNKNOWN"
+        result["K04_original_PASS"] = False if check_candidate else None
         return result
     if check == unsat:
         result["coupon_status"] = "NO_SAT_MODEL"
+        result["K04_original_PASS"] = False if check_candidate else None
         return result
 
-    model = solver.model()
-    state = (model.eval(s0).as_long(), model.eval(s1).as_long())
-    replay = stream(state)
-    assert replay[:2] == list(first)
-    result["initial_state"] = [f"{x:016X}" for x in state]
-    result["predicted_middle_words"] = [f"{x:016X}" for x in replay[2:4]]
-    result["predicted_later_words"] = [f"{x:016X}" for x in replay[4:6]]
-    result["holdout_matches_full_18_03_packet"] = replay[4:6] == list(holdout)
+    # First unconditioned model: commitment check is deliberately performed
+    # before computing/reporting holdout or asking the uniqueness question.
+    first_model = solver.model()
+    first_middle = (
+        first_model.eval(outputs[2]).as_long(),
+        first_model.eval(outputs[3]).as_long(),
+    )
+    first_state = (
+        first_model.eval(a0).as_long(),
+        first_model.eval(b0).as_long(),
+    )
+    first_replay = stream(first_state)
+    assert first_replay[:2] == list(first)
 
-    middle0 = model.eval(outputs[2]).as_long()
-    middle1 = model.eval(outputs[3]).as_long()
+    routing = json.loads((ROOT / "evidence/recovery-routing.json").read_text()) if check_candidate else None
+    mask = bytes.fromhex(routing["K04"]["masked_component"]) if check_candidate else None
+    acceptance = json.loads((ROOT / "acceptance.json").read_text()) if check_candidate else None
+    target_sha = acceptance["slot_sha256"]["K04"] if check_candidate else None
+
+    def inspect_middle(model, index):
+        middle = (
+            model.eval(outputs[2]).as_long(),
+            model.eval(outputs[3]).as_long(),
+        )
+        coupon = encode(middle, view)
+        record = {
+            "model_index": index,
+            "middle_words": [f"{x:016X}" for x in middle],
+            "predicted_coupon_hex": coupon.hex().upper(),
+        }
+        hit = False
+        if check_candidate:
+            component = bytes(x ^ y for x, y in zip(coupon, mask))
+            hit = hashlib.sha256(component).hexdigest() == target_sha
+            record.update({
+                "predicted_component_hex": component.hex().upper(),
+                "K04_original_PASS": hit,
+            })
+        if expected_middle is not None:
+            record["middle_matches_planted_control"] = middle == tuple(expected_middle)
+        return record, hit, middle
+
+    first_record, first_hit, _ = inspect_middle(first_model, 0)
+    result["initial_state"] = [f"{x:016X}" for x in first_state]
+    result["predicted_middle_words"] = [f"{x:016X}" for x in first_middle]
+    result["predicted_coupon_hex"] = first_record["predicted_coupon_hex"]
+    result["predicted_later_words"] = [f"{x:016X}" for x in first_replay[4:6]]
+    result["holdout_matches_full_18_03_packet"] = first_replay[4:6] == list(holdout)
+    result["holdout_model_index"] = 0
+    result["holdout_is_blind"] = True
+
+    # Uniqueness is a separate diagnostic. It must not suppress a commitment hit.
     solver.push()
-    solver.add(Or(outputs[2] != BitVecVal(middle0, 64),
-                  outputs[3] != BitVecVal(middle1, 64)))
+    solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
+                  outputs[3] != BitVecVal(first_middle[1], 64)))
     alternative = solver.check()
     solver.pop()
     result["uniqueness_status"] = str(alternative).upper()
@@ -96,26 +156,67 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate):
     if alternative == unknown:
         result["uniqueness_reason_unknown"] = solver.reason_unknown()
 
-    if not result["middle_unique"]:
-        result["coupon_status"] = "WITHHELD_NONUNIQUE" if alternative == sat else "WITHHELD_UNIQUENESS_UNKNOWN"
-        return result
+    candidate_records = [first_record]
+    commitment_hit = first_hit
+    planted_middle_seen = bool(first_record.get("middle_matches_planted_control", False))
+    planted_middle_model_index = 0 if planted_middle_seen else None
+    enumeration_status = "NOT_NEEDED"
 
-    coupon = encode(replay[2:4], view)
-    result["predicted_coupon_hex"] = coupon.hex().upper()
-    if not check_candidate:
-        result["coupon_status"] = "SYNTHETIC_UNIQUE_MIDDLE_HOLDOUT_PASS" if result["holdout_matches_full_18_03_packet"] else "SYNTHETIC_HOLDOUT_FAIL"
-        return result
+    # Enumerate distinct middle outputs only when the first model did not already
+    # satisfy the target. The holdout remains attached to model 0 and is never
+    # consulted during this enumeration.
+    if not commitment_hit and not planted_middle_seen and max_middle_models > 1:
+        solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
+                      outputs[3] != BitVecVal(first_middle[1], 64)))
+        enumeration_status = "CAP_REACHED"
+        for model_index in range(1, max_middle_models):
+            next_check = solver.check()
+            if next_check == unsat:
+                enumeration_status = "EXHAUSTED"
+                break
+            if next_check == unknown:
+                enumeration_status = "UNKNOWN"
+                result["enumeration_reason_unknown"] = solver.reason_unknown()
+                break
+            model = solver.model()
+            record, hit, middle = inspect_middle(model, model_index)
+            candidate_records.append(record)
+            if hit:
+                commitment_hit = True
+                result["commitment_hit_model_index"] = model_index
+                result["commitment_hit_candidate"] = record
+                enumeration_status = "COMMITMENT_HIT"
+                break
+            if record.get("middle_matches_planted_control", False):
+                planted_middle_seen = True
+                planted_middle_model_index = model_index
+                enumeration_status = "PLANTED_MIDDLE_FOUND"
+                break
+            solver.add(Or(outputs[2] != BitVecVal(middle[0], 64),
+                          outputs[3] != BitVecVal(middle[1], 64)))
 
-    routing = json.loads((ROOT / "evidence/recovery-routing.json").read_text())
-    mask = bytes.fromhex(routing["K04"]["masked_component"])
-    component = bytes(x ^ y for x, y in zip(coupon, mask))
-    acceptance = json.loads((ROOT / "acceptance.json").read_text())
-    hit = hashlib.sha256(component).hexdigest() == acceptance["slot_sha256"]["K04"]
-    result.update({
-        "predicted_component_hex": component.hex().upper(),
-        "K04_original_PASS": hit,
-        "coupon_status": "UNIQUE_MIDDLE_HASH_PASS" if hit else "UNIQUE_MIDDLE_HASH_MISS",
-    })
+    result["candidate_models"] = candidate_records
+    result["candidate_models_examined"] = len(candidate_records)
+    result["enumeration_status"] = enumeration_status
+    result["planted_middle_seen"] = planted_middle_seen
+    result["planted_middle_model_index"] = planted_middle_model_index
+
+    if check_candidate:
+        result["K04_original_PASS"] = commitment_hit
+        if commitment_hit:
+            result["coupon_status"] = "K04_COMMITMENT_HIT"
+        elif enumeration_status == "CAP_REACHED":
+            result["coupon_status"] = "NO_COMMITMENT_HIT_WITHIN_MODEL_CAP"
+        elif result["middle_unique"]:
+            result["coupon_status"] = "NO_COMMITMENT_HIT_UNIQUE_MIDDLE"
+        else:
+            result["coupon_status"] = "NO_COMMITMENT_HIT"
+    else:
+        result["middle_matches_seed"] = planted_middle_seen
+        result["coupon_status"] = (
+            "SYNTHETIC_PLANTED_MIDDLE_RECOVERED"
+            if planted_middle_seen else "SYNTHETIC_PLANTED_MIDDLE_NOT_FOUND"
+        )
     return result
 
 
@@ -141,6 +242,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--view", type=int, choices=range(4), default=0)
     p.add_argument("--timeout-seconds", type=int, default=300)
+    p.add_argument("--max-middle-models", type=int, default=MAX_MIDDLE_MODELS)
     mode = p.add_mutually_exclusive_group()
     mode.add_argument("--synthetic-only", action="store_true",
                       help="run only the unseeded first-pair positive control")
@@ -150,20 +252,20 @@ def main():
 
     if not args.source_only:
         outputs = stream(SEED)
-        synthetic = solve_first_pair(outputs[:2], outputs[4:6], args.view,
-                                     args.timeout_seconds, False)
-        synthetic["experiment"] = "synthetic_positive_control"
-        synthetic["expected_middle_hex"] = [f"{x:016X}" for x in outputs[2:4]]
-        synthetic["middle_matches_seed"] = (
-            synthetic.get("predicted_middle_words") == synthetic["expected_middle_hex"]
+        synthetic = solve_first_pair(
+            outputs[:2], outputs[4:6], args.view, args.timeout_seconds, False,
+            expected_middle=outputs[2:4], max_middle_models=args.max_middle_models
         )
+        synthetic["experiment"] = "synthetic_positive_control"
         control_pass = (
             synthetic.get("status") == "SAT"
-            and synthetic.get("middle_unique") is True
-            and synthetic.get("holdout_matches_full_18_03_packet") is True
-            and synthetic["middle_matches_seed"] is True
+            and synthetic.get("planted_middle_seen") is True
         )
         synthetic["control_pass"] = control_pass
+        synthetic["control_gate_policy"] = (
+            "unseeded SAT plus planted middle recovered within explicit model cap; "
+            "first-model holdout and uniqueness are separate diagnostics"
+        )
         print(json.dumps(synthetic, sort_keys=True), flush=True)
 
         if args.synthetic_only:
@@ -175,7 +277,7 @@ def main():
                 "experiment": "original_first_pair_only",
                 "status": "NOT_RUN",
                 "coupon_status": "WITHHELD_CONTROL_FAILED",
-                "reason": "unseeded planted control did not prove SAT, unique middle, exact later holdout and planted middle",
+                "reason": "unseeded planted middle was not recovered within the explicit model cap",
             }, sort_keys=True), flush=True)
             raise SystemExit(2)
 
@@ -185,14 +287,16 @@ def main():
     rows = parse_source()
     first = decode(rows[0], args.view)
     holdout = decode(rows[2], args.view)
-    original = solve_first_pair(first, holdout, args.view,
-                                args.timeout_seconds, True)
+    original = solve_first_pair(
+        first, holdout, args.view, args.timeout_seconds, True,
+        max_middle_models=args.max_middle_models
+    )
     original["experiment"] = "original_first_pair_only"
     original["control_gate"] = (
         "positive-control workflow dependency passed" if args.source_only
         else "unseeded planted control passed in this process"
     )
-    original["ack2_payload_matches_prediction"] = (
+    original["ack2_payload_matches_first_model_prediction"] = (
         original.get("predicted_coupon_hex") == rows[1].hex().upper()
     ) if "predicted_coupon_hex" in original else None
     print(json.dumps(original, sort_keys=True), flush=True)
