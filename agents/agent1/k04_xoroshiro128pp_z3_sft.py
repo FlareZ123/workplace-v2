@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-word inverse Z3 backend for the H-17 K04 xoroshiro128++ hypothesis.
+"""Direct-borrow first-pair Z3 backend for the H-17 K04 xoroshiro128++ hypothesis.
 
 Fits only the first REQUESTED packet (outputs 0/1), derives b0 from a0 using
 the exact inverse of xoroshiro128++'s first output, predicts the middle pair,
@@ -14,7 +14,7 @@ import json
 import time
 from pathlib import Path
 
-from z3 import BitVec, BitVecVal, Or, RotateLeft, RotateRight, SolverFor, sat, unsat, unknown
+from z3 import BitVec, BitVecVal, Concat, Extract, Or, RotateLeft, RotateRight, SolverFor, sat, unsat, unknown
 
 MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
@@ -49,16 +49,43 @@ def encode(words, view):
 
 def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
                      expected_middle=None, max_middle_models=MAX_MIDDLE_MODELS):
-    # Exact first-output inverse:
-    # u0 = ROTR(y0 - a0, 17) = a0 + b0 (mod 2^64)
-    # b0 = u0 - a0; t0 = a0 XOR b0.
+    # Fit the first two outputs using the exact t0-only direct-borrow inverse.
+    # From y0, u0 = ROTR(y0 - a0, 17) = a0 + b0; the 64-bit
+    # subtraction's borrow bits express t0 = a0 XOR b0 directly.
+    # The y1 inverse imposes exactly one 64-bit equality on a0.
+    def borrow_next(x, y, prior):
+        return (~x & y) | ((~x | y) & prior)
+
     a0 = BitVec("initial_s0", 64)
     u0 = RotateRight(BitVecVal(first[0], 64) - a0, 17)
-    b0 = u0 - a0
+    borrow0 = BitVecVal(0, 1)
+    t_bits = []
+    for i in range(64):
+        ui, ai = Extract(i, i, u0), Extract(i, i, a0)
+        t_bits.append(ui ^ borrow0)
+        if i < 63:
+            borrow0 = borrow_next(ui, ai, borrow0)
+    t0 = Concat(*reversed(t_bits))
+    b0 = a0 ^ t0
 
-    a, b = a0, b0
-    outputs = []
-    for _ in range(6):
+    a1 = RotateLeft(a0, 49) ^ t0 ^ (t0 << 21)
+    b1 = RotateLeft(t0, 28)
+    u1 = RotateRight(BitVecVal(first[1], 64) - a1, 17)
+    borrow1 = BitVecVal(0, 1)
+    b1_bits = []
+    for i in range(64):
+        ui, ai = Extract(i, i, u1), Extract(i, i, a1)
+        b1_bits.append(ui ^ ai ^ borrow1)
+        if i < 63:
+            borrow1 = borrow_next(ui, ai, borrow1)
+    required_b1 = Concat(*reversed(b1_bits))
+
+    # Only fit output 0/1. Output 0 is an algebraic identity and output
+    # 1 is enforced by the inverse equality. Output 2/3 (coupon) and 4/5
+    # (blind holdout) are generated after this fit without constraints.
+    outputs = [BitVecVal(first[0], 64), BitVecVal(first[1], 64)]
+    a, b = a1, b1
+    for _ in range(4):
         outputs.append(RotateLeft(a + b, 17) + a)
         t = a ^ b
         a, b = RotateLeft(a, 49) ^ t ^ (t << 21), RotateLeft(t, 28)
@@ -66,9 +93,7 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
     solver = SolverFor("QF_BV")
     solver.set(timeout=int(timeout_seconds * 1000))
     solver.set("random_seed", 0)
-    # output 0 is an identity by construction; retain it as an executable guard.
-    solver.add(outputs[0] == BitVecVal(first[0], 64))
-    solver.add(outputs[1] == BitVecVal(first[1], 64))
+    solver.add(required_b1 == b1)
 
     started = time.monotonic()
     deadline = started + MAX_TOTAL_SOLVE_SECONDS
@@ -81,7 +106,7 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
         return solver.check()
 
     result = {
-        "experiment": "z3_one_word_inverse_first_pair_only",
+        "experiment": "z3_direct_borrow_inverse_first_pair_only",
         "view": view,
         "fit_scope": "18:01 REQUESTED outputs 0/1 only",
         "holdout_scope": "18:03 REQUESTED outputs 4/5; first unconditioned model only",
