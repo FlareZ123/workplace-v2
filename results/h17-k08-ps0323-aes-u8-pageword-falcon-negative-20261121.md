@@ -61,6 +61,23 @@ All eight combinations were complete. None matched the K08 commitment.
 
 The N02 known-answer control normalized to "a good watch leaves the room ready for the next pair of hands" and produced HMAC16 BF889359B0303F2B2B2FD96AE841210B, matching the pinned control. Its HMAC16 SHA-256 is 47e787785ff25082b4b960ad415f1e030ae0edc89c38b2f61c48f9331282ea55, not the K08 target.
 
+## N20/PS-0320 earlier-version control
+
+Agent50 supplied the earlier-version PS-0320 control. Its retained row is ATTEMPT=1, STATE=ACK, CLASS=RECOVER, DEST=bench, payload 9B9D8D85D48AF325FF55556CE0AE7BF3. AES-128-ECB under the same K08 desk nonce decrypts it to 9266952F91A151BA399876EB5A0E83E2. The same two byte orientations and word bases 0/1 were applied, using both PDF text-layer and Tesseract OCR tokens.
+
+The high-page/low-word orientation is incomplete in all four extraction/base combinations: its fourth pair requests word 186 on printed folio 81, where the body token counts are 154 (PDF text) and 155 (OCR). No offset or selector adjustment was attempted. The low-page/high-word orientation is complete in all four combinations and none matches K08:
+
+| Word base | Extraction | Selected words | HMAC16 | SHA-256 of HMAC16 |
+|---:|---|---|---|---|
+| 0 | PDF text | mouth of to is entrance green Baltic of | EF559FAF75D8751635FEDF7E74A1EB52 | ee294d2788697e1133828b4388fd345f2a06a3ea83e6fe00ce972d701befbe6e |
+| 0 | OCR | mouth myself travel always entrance green described of | 116D4BD7C462997A7AB61212FEF11BF1 | 430bdc00111be5ff4edc401e33cd93466b3d8e0bf972bb4d05f35a9e848752fc |
+| 1 | PDF text | its ashamed yacht There the dark the side | 0C377CF365E5BEF1559DA2779A182D2F | f07ee484684cd5869021f276011b6c3f96f5cba09cdf9f583a3f57aaddcfd687 |
+| 1 | OCR | its of to is the dark and side | EDBB26BCEF49421B540DEDE65FA9D51E | adb99daf7ad2bbbd3af951ffccd0f3b8c4a06e6dbd89c6c42f4958ff8fe53cc0 |
+
+The N20 folio map is: 14→27, 47→62, 57→12, 81→96, 90→105, 102→119, 118→135, 131→148, 145→162, 146→163, 149→166, 152→169, 161→178, 186→203, 226→247, 235→256 (PDF indices zero-based). Folios 14, 81 and 161 were visually resolved from the page images because the text layer produced ambiguous hits or OCR read “161” as “IGl”; the remaining folios had unique standalone text-layer hits.
+
+This is an earlier-version negative control, not a candidate search to expand. The control script is agents/agent12/k08_ps0320_aes_u8_pageword_control.py. It produced four complete and four incomplete combinations, with zero K08 commitment matches.
+
 ## Reproduction
 
 Run:

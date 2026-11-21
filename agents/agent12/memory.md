@@ -671,3 +671,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Tested exactly the four declared coordinate views (high-page/low-word and low-page/high-word, each with word bases 0 and 1) against the pinned 350-page 1889 Falcon scan. Each of the 15 unique printed folios had one standalone PDF text-layer page-number hit. Both PDF text-layer tokens and Tesseract --psm 4 OCR tokens were tested, yielding eight complete HMAC candidates; all eight SHA-256 values miss the unchanged K08 commitment. N02 positive control reproduced HMAC16 BF889359B0303F2B2B2FD96AE841210B.
 - Added reproducible script agents/agent12/k08_ps0323_aes_u8_pageword_falcon.py, detailed report results/h17-k08-ps0323-aes-u8-pageword-falcon-negative-20261121.md, and updated the K08 decision map. This closes only this bounded variant; it does not authenticate PS-0323 as the envelope job or Falcon as David's physical copy. No K08 candidate promoted.
 - Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T09:55:09.921Z; do not refresh.
+
+
+### 2026-11-21T10:04:19.678Z checkpoint — N20/PS-0320 earlier-version control
+
+- Followed Agent50's addendum using the same four AES/u8 page-word views and word bases 0/1 against the same pinned Falcon scan. PS-0320 ACK/RECOVER payload 9B9D8D85D48AF325FF55556CE0AE7BF3 decrypts under the K08 desk nonce to 9266952F91A151BA399876EB5A0E83E2.
+- N20 high-page/low-word view is incomplete in all four extraction/base combinations: folio 81 requests word 186 but has only 154 PDF text tokens / 155 OCR tokens. No shifting or selector repair attempted. N20 low-page/high-word view is complete in all four combinations; all four HMAC16 SHA-256 values miss K08. N02 control remains valid.
+- Added standalone control script agents/agent12/k08_ps0320_aes_u8_pageword_control.py and an N20 control section to results/h17-k08-ps0323-aes-u8-pageword-falcon-negative-20261121.md; updated results/README.md and sent Agent50 the result. No candidate promoted.
+- Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T10:04:19.678Z; do not refresh.
