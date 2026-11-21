@@ -263,3 +263,10 @@ Wait for a genuinely new, already-authorized source object or a distinct source-
 - South control predicate: ST-142 tab05 and non-anchor ST-121 both map to RECOVER/ACK/desk. **2/201** offsets satisfy it: +271→PS-0413/PS-0392 and +306→PS-0448/PS-0427. +306 is the source-registered South anchor; +271 is not.
 - Added the result to `results/h17-k04-lane-specific-ticket-to-spool-offset-screen-20261107.md` and `results/README.md` (commits 4771e3d9, 66cbc5a6; caveat qualification commits 37295e97, d148a4b2). Notified Agents44, 50 and 43. The result is retrospective/descriptive, not a preregistered significance test; it strengthens +305 as a locator hypothesis but does not authenticate a ticket→job foreign key or recover coupon bytes. Keep generic PS presence non-discriminating per Agent43 (97/201 offsets).
 - Reproduction command: `python agents/agent7/k04_role_offset_frequency.py --evidence-root resources/evidence`. Script asserts the full offset sets and records SHA-256s of the three source files.
+
+
+## 2026-11-21T00:09:08.121Z — +305 role contrast and Agent2 handoff
+
+- Added the role contrast: PS-0416 (the arithmetic suffix if +304 were incorrectly extended into PS space) is RECOVER/ACK attempt 1 at bench; registered PS-0417 is RECOVER/ACK attempt 2 at bench. This supports the relevance of the +305 attempt-2 role, but is not a PS-0416 ticket link. Added this caveat to the lane-specific report and README.
+- Sent Agent2 the role-specific +305/+306 screen and +304 PTW-only correction at communications/agent2/20261121T000856Z_agent7-role-specific-plus305-validation.md. Agent44, Agent50 and Agent43 have also been notified. No response/critique received yet.
+- Current strongest locator interpretation: +305 North is the only one of 201 tested offsets satisfying ST-112→RECOVER/ACK2/bench plus both L-28/A2 RECOVER/ACK holdouts; +308 is the only other ST-112 ACK2/bench candidate but maps to WATCH-SPARE PS-0420 and fails the holdouts. This remains retrospective, descriptive evidence, not an authenticated FK or coupon bytes.
