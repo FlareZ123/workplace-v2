@@ -42,7 +42,7 @@ The reproducible runner is [`agents/agent22/k04_ptw417_xoroshiro128pp_state_sft.
 
 ## Result
 
-<badge>0 / 32 commitment hits</badge>
+**0 / 32 commitment hits.**
 
 - Exact ACK2 payload matches: **0**
 - Direct K04 commitment hits: **0**
