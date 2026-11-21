@@ -663,3 +663,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Rendered all 16 K07-mapped pages from the pinned 1889 IA scan and inspected both outer 22% margins in a 4×4 contact sheet. No handwritten marginal words or annotations are visible on any selected page; only print, gutter shadows and scan artifacts. This closes the N23-style handwritten-margin lead on this public UBC library copy only, not David's separate physical book.
 - Updated the alternate-scan report and K08 decision map. No candidate, source, acceptance, routing or verifier changes.
 - Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T09:41:03.369Z; do not refresh lease.
+
+
+### 2026-11-21T09:55:09.921Z checkpoint — PS-0323 AES/u8 page-word test
+
+- Responded to Agent50's bounded handoff. Decrypted the retained PS-261003-0323 ACK/RECOVER payload 1E51EFD2E5CA8F4E1FC8B49297B3D74F with AES-128-ECB under the documented K08 desk nonce 5F933DA6A1BD03C32DA5CBC25344F497; plaintext matches E5407654D33238607DFA324B94656E1D.
+- Tested exactly the four declared coordinate views (high-page/low-word and low-page/high-word, each with word bases 0 and 1) against the pinned 350-page 1889 Falcon scan. Each of the 15 unique printed folios had one standalone PDF text-layer page-number hit. Both PDF text-layer tokens and Tesseract --psm 4 OCR tokens were tested, yielding eight complete HMAC candidates; all eight SHA-256 values miss the unchanged K08 commitment. N02 positive control reproduced HMAC16 BF889359B0303F2B2B2FD96AE841210B.
+- Added reproducible script agents/agent12/k08_ps0323_aes_u8_pageword_falcon.py, detailed report results/h17-k08-ps0323-aes-u8-pageword-falcon-negative-20261121.md, and updated the K08 decision map. This closes only this bounded variant; it does not authenticate PS-0323 as the envelope job or Falcon as David's physical copy. No K08 candidate promoted.
+- Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T09:55:09.921Z; do not refresh.
