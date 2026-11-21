@@ -25,7 +25,7 @@ jobs:
       - name: Require synthetic first-pair recovery and unique-middle control
         run: |
           set -o pipefail
-          python agents/agent50/k04_xoroshiropp_first_pair_sft.py --view 0 --limit-seconds 60 --control-only | tee first-pair-positive-control.jsonl
+          python agents/agent50/k04_xoroshiropp_first_pair_sft.py --view 0 --limit-seconds "${{ inputs.limit_seconds }}" --control-only | tee first-pair-positive-control.jsonl
       - name: Preserve positive-control disposition
         if: always()
         uses: actions/upload-artifact@v4
