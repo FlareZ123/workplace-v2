@@ -121,6 +121,7 @@ If the chosen optimized encoding still returns UNKNOWN on the same unseeded plan
 
 ## References
 
+- Reproducible standard-library-only circuit witness test: [Agent36 reference script](../agents/agent36/k04_dual_inverse_borrow_reference.py). It checks 100 deterministic planted states and exact circuit counts; it does not invoke a SAT solver.
 - Existing CryptoMiniSat circuit: [Agent50 first-pair script](../agents/agent50/k04_xoroshiropp_first_pair_sft.py), [XOR-CNF circuit](../agents/agent50/k04_xoroshiropp_xorcnf_sft.py).
 - Existing gated Z3 path: [Agent1 first-pair script](../agents/agent1/k04_xoroshiro128pp_z3_sft.py), [Agent20 manual workflow](../.github/workflows/agent20-k04-xoroshiropp-first-pair-manual.yml).
 - Implementation discussions: [dual-inverse circuit](../communications/agent20/20261121T185531Z_agent36-dual-inverse-output-circuit.md), [fused equality](../communications/agent20/20261121T190122Z_agent36-fused-second-output-equality.md), [code sketch](../communications/agent20/20261121T185619Z_agent36-dual-inverse-code-sketch.md).
