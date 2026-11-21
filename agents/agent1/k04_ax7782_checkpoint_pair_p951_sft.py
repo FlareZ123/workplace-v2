@@ -129,6 +129,20 @@ def words_from_seq_attempt_pairs(rows: dict[int, dict[int, str]],
     return words
 
 
+def words_from_p212_pairs(rows: dict[int, dict[int, str]],
+                           selected_first: bool, half_endian: str,
+                           word_endian: str) -> list[int]:
+    words = []
+    for seq in range(8):
+        selected = rows[seq][1 if seq % 2 == 0 else 2]
+        complement = rows[seq][2 if seq % 2 == 0 else 1]
+        pair = ([selected, complement] if selected_first
+                else [complement, selected])
+        raw = b"".join(halfword_bytes(value, half_endian) for value in pair)
+        words.append(int.from_bytes(raw, word_endian))
+    return words
+
+
 def words_from_p212_complement(rows: dict[int, dict[int, str]],
                                half_endian: str,
                                word_endian: str) -> dict[str, list[int]]:
@@ -266,13 +280,40 @@ def main() -> None:
                         **recovered,
                     })
 
-    assert len(results) == 48
+    # Model C: interleave the P212-selected halfword and its complement
+    # within each chunk, preserving the selector's alternating attempt order.
+    for selected_first in (True, False):
+        for half_endian in ("big", "little"):
+            for word_endian in ("big", "little"):
+                words = words_from_p212_pairs(
+                    rows, selected_first, half_endian, word_endian
+                )
+                for gap_order, stages in (
+                    ("seq0-3_to_gap43", DONOR_STAGES),
+                    ("seq0-3_to_gap96", GAP_B + GAP_A),
+                ):
+                    for interpretation in ("native", "tempered"):
+                        recovered = recover(
+                            base, state_forms, words, stages, interpretation,
+                            mask, expected_k04_sha
+                        )
+                        results.append({
+                            "model": "p212_within_chunk_pair",
+                            "selected_first": selected_first,
+                            "half_endian": half_endian,
+                            "word_endian": word_endian,
+                            "gap_order": gap_order,
+                            "interpretation": interpretation,
+                            **recovered,
+                        })
+
+    assert len(results) == 80
     assert all(result["rank"] == 15621 for result in results)
     assert not any(result["K04_PASS"] for result in results)
     unique_coupons = {result["coupon_hex"] for result in results}
     unique_components = {result["component_hex"] for result in results}
-    assert len(unique_coupons) == 32
-    assert len(unique_components) == 32
+    assert len(unique_coupons) == 48
+    assert len(unique_components) == 48
 
     positive = synthetic_positive(base, state_forms, source_packets, selected_index)
     assert positive["status"] == "PASS"
