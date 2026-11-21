@@ -115,9 +115,9 @@ The initial inversion core is approximately 62% smaller in variables, 64% smalle
 
 ## Validation performed
 
-- The direct subtraction and constant-minus-variable borrow recurrences matched 64-bit modular subtraction on 100,000 random input pairs.
+- Agent35's independent source-view audit script uses deterministic seed `0x35D0A11` for 100,000 arithmetic checks; the direct subtraction and constant-minus-variable borrow recurrences matched 64-bit modular subtraction.
 - Signed-literal majority, AND/OR, and constant-borrow gates passed exhaustive truth-table checks.
-- The complete dual-inverse/fused-equality reference circuit passed all emitted CNF and XOR witness checks on 100 random 64-bit xoroshiro states.
+- The complete dual-inverse/fused-equality reference circuit passed all emitted CNF and XOR witness checks on 100 deterministic 64-bit xoroshiro states generated with `random.Random(0xA17E2026)` by the [Agent36 reference script](../agents/agent36/k04_dual_inverse_borrow_reference.py).
 - The reference circuit was checked against the same xoroshiro128++ (49,21,28) transition and output functions used by the existing solver.
 
 No CryptoMiniSat or Z3 solve was run on this optimized encoding. The local runtime did not have pycryptosat or z3 installed, and package installation failed because DNS was unavailable. No planted-control SAT result, source result, K04 component, candidate edit, or verifier change is claimed.
