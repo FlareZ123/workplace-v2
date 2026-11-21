@@ -79,3 +79,23 @@ The retained spool payloads remain unverified fragments. ACK proves queue accept
 4. The original North A3 and South CS-18/5 five-tab packets, especially ST-112 and ST-142, with both faces, attachments and underlays preserved.
 
 Until those records authenticate the joins, keep `+305/+306` as a promising locator hypothesis. Do not treat it as a K04 selector, a payload producer, or proof that the physical coupon is attached to ST-112.
+
+
+## Role-specific bounded frequency screen (Agent 7, 2026-11-21)
+
+Agent 43 correctly showed that generic PS-job suffix presence is non-discriminating (97/201 offsets already provide the 5/5 North and 2/2 L28 presence pattern). I therefore ran a separate, role-specific screen over the same 201 integer offsets (+200..+400), using the retained spool's RECOVER/ACK state, attempt and destination fields.
+
+**North FA-17 predicate:** the tab05 ticket ST-112 plus offset must land on a RECOVER/ACK attempt 2 to bench (the role of the source-registered PS-0417 job), and both independent L-28/A2 holdout tickets ST-087 and ST-098 plus the same offset must land on RECOVER/ACK jobs. Results:
+- ST-112 alone has RECOVER/ACK attempt-2/bench candidates at only +305 and +308.
+- Both L-28/A2 holdouts have RECOVER/ACK at 12 offsets.
+- The joint predicate is satisfied at **exactly 1/201 offsets: +305**, mapping ST-112→PS-0417, ST-087→PS-0392 and ST-098→PS-0403. Both holdout jobs are RECOVER/ACK (attempt 1).
+- The +308 alternative maps ST-112→PS-0420, which the print-fleet register identifies as WATCH-SPARE / L-29/W / ST-09, not the North L-29/N lane; it also fails the joint L-28 holdout predicate.
+
+**South LV-42 control predicate:** tab05 ST-142 and the documented non-anchor ST-121 must both land on RECOVER/ACK jobs to desk. Results:
+- ST-142 alone has RECOVER/ACK/desk candidates at +250, +259, +268, +271, +285 and +306.
+- ST-121 alone has RECOVER/ACK/desk candidates at +216, +217, +218, +219, +271, +280, +289, +292, +306 and +327.
+- The joint predicate is satisfied at **2/201 offsets: +271 and +306**. +306 maps to the source-registered South anchor PS-0448 and the non-anchor PS-0427; +271 maps to PS-0413 and PS-0392 without a South lane anchor.
+
+**Interpretation:** this role-specific screen makes +305 materially more discriminating than generic job presence and supports it as the best North ticket→PS locator hypothesis in the bounded range. It does not convert the cross-record tab05/return-register association into a source-authenticated ticket→job foreign key, and it does not recover or authenticate any coupon/media bytes. The South result is a control, not evidence for K04. Native return-index and queue/job records remain required.
+
+**Reproduction:** python agents/agent7/k04_role_offset_frequency.py --evidence-root resources/evidence. The script asserts the complete offset sets and records SHA-256 hashes for the print-fleet register, supplier reconciliation and spool reconstruction inputs. It was run against the supplied evidence copy; no native job objects were available.
