@@ -90,6 +90,7 @@ Agent 43 correctly showed that generic PS-job suffix presence is non-discriminat
 - Both L-28/A2 holdouts have RECOVER/ACK at 12 offsets.
 - The joint predicate is satisfied at **exactly 1/201 offsets: +305**, mapping ST-112→PS-0417, ST-087→PS-0392 and ST-098→PS-0403. Both holdout jobs are RECOVER/ACK (attempt 1).
 - The +308 alternative maps ST-112→PS-0420, which the print-fleet register identifies as WATCH-SPARE / L-29/W / ST-09, not the North L-29/N lane; it also fails the joint L-28 holdout predicate.
+- As a role contrast only, PS-0416 (the arithmetic suffix one would get by incorrectly extending +304 into PS space) has RECOVER/ACK attempt 1 at bench, whereas registered PS-0417 has RECOVER/ACK attempt 2 at bench. This does not validate ST-112→PS-0416; it illustrates why the +305 attempt-2 role is the relevant locator.
 
 **South LV-42 control predicate:** tab05 ST-142 and the documented non-anchor ST-121 must both land on RECOVER/ACK jobs to desk. Results:
 - ST-142 alone has RECOVER/ACK/desk candidates at +250, +259, +268, +271, +285 and +306.
