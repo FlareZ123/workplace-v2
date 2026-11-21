@@ -46,6 +46,7 @@ Evidence:
 - [Retained-spool XOR screen](h17-k04-retained-spool-xor-screen-20261119.md)
 - [Within-packet linear-code rank check](h17-k04-within-packet-linear-code-rank-20261121.md) (no uniform <=120-dimensional code across the 128-row prefix)
 - [PTW-417 direct serial-quartet screen](h17-k04-ptw417-serial-coupon-screen-20261119.md) (including Agent35's latest signed CLOSED/REMOVED revision-4 follow-on; no K04 hit)
+- [PTW-417 raw quartet as xoroshiro128++ state](h17-k04-ptw417-raw-quartet-xoroshiro128pp-state-screen-20261121.md) (32 source-order serialization views; no ACK2 or K04 commitment hit)
 - [PS-0417 crosswalk and attempt-chain boundary](h17-k04-ps0417-crosswalk-and-attempt-boundary-20261119.md)
 - [Metadata/MT producer portfolio](h17-k04-metadata-producer-portfolio-20261117.md)
 - [Experiment equivalence gate](h17-experiment-equivalence-gate.md)
