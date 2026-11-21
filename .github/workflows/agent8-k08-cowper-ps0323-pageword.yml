@@ -1,0 +1,57 @@
+name: Agent 8 PS-0323 Cowper Part II page-word test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Capture the calibration page and eight PS-0323 target pages
+        run: node agents/agent8/k08_cowper_ps0323_pageword.cjs
+      - name: Install OCR and crypto dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install --disable-pip-version-check cryptography Pillow pytesseract
+      - name: Run the single frozen PS-0323 page-word commitment test
+        run: python agents/agent8/k08_cowper_ps0323_pageword.py
+      - name: Upload reproducible page images and result
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent8-ps0323-cowper-pageword
+          path: results/assets/cowper/part2-ps0323/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit page images and result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/assets/cowper/part2-ps0323
+          if git diff --cached --quiet; then
+            echo "No page-word result to commit"
+          else
+            git commit -m "Agent 8: Preserve PS-0323 Cowper page-word test"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
