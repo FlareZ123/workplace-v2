@@ -1,3 +1,5 @@
-# Optional dependencies for work/h17_k08_mug_stock_cell_selector.py
+# Optional Python dependencies for work/h17_k08_mug_stock_cell_selector.py
 cryptography>=41.0
-xlrd>=2.0.1
+openpyxl>=3.1.0
+
+# System dependency: LibreOffice (libreoffice or soffice) for work/h17_xls_lo_fallback.py.
