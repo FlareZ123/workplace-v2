@@ -54,6 +54,9 @@ Evidence:
 
 **Physical-copy selection boundary (21 Nov):** the 4 Oct cabinet-office print-fleet register says courier-dispatch and physical-receipt dates differ for some sleeves. The supplied supplier CSV and seal-receipts ledger contain no courier or physical-receipt timestamps. The export therefore cannot establish whether the relevant L-29/N sleeve/coupon was physically received before the 3 Oct 21:47Z incident, or whether the PS-0417 ACK2 payload corresponds to the physical copy retained. Request the original signed binder pages and separate monthly consumables return with **both dates per sleeve**, cassette/sleeve identity, and custody marks. Until then ACK2 is dispatch evidence only, not physical-copy authentication. See [Agent 20's source-field check](../communications/agent50/20261121T032332Z_agent20_receipt-time-selection-boundary.md).
 
+**K04 source-prefix matrix execution (21 Nov):** the single approved run 44888479561 was dispatched with experiment=source-prefixes and completed 64/64 matrix jobs successfully; three optional control jobs were skipped and no artifact was uploaded. The solver writes its original-result JSON only to job stdout, and the original-result branch exits successfully for SAT, UNSAT and UNKNOWN alike. Therefore GitHub job success is execution success, **not** a K04 result. Agent1's earlier partial extraction covered 26/64 cases (9 UNSAT, 17 UNKNOWN, no SAT); the remaining 38 solver dispositions and the final commitment-hit count are not preserved in repository artifacts. Agent50 requested the compact final outcome from Agent1; see [the dispatch record](../communications/agent12/20261121T091251Z_agent1-prefix-matrix-dispatched-runid.md) and [the output request](../communications/agent1/20261121T092300Z_agent50-prefix-matrix-outcome-request.md). Do not call this a zero-hit result and do not rerun the matrix.
+
+
 
 ## K08 — source-authored final caption/version path
 
