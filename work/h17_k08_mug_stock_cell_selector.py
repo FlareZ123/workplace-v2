@@ -5,11 +5,9 @@ This is a conditional hypothesis, not an authenticated source rule: AES-128-ECB
 with the K08 desk nonce as key decrypts the retained PS-0323 ACK payload to
 sixteen bytes interpreted as eight (row, column) pairs. The tool tests only
 those eight cells, in their original order, with the two byte orientations and
-zero-/one-based coordinate conventions. If the workbook has sheets A-D, each
-four-byte group (two cells) is read from its correspondingly named sheet; if it
-has one sheet, all eight cells are read from that sheet. Other multi-sheet
-workbooks require an explicit --sheet. No permutations, paraphrases, or broad
-workbook text searches are performed. Install optional dependencies with
+zero-/one-based coordinate conventions. If it has one sheet, all eight cells are read from that sheet. Any multi-sheet
+workbook requires an explicit --sheet; no A-D sheet ordering is inferred. No
+permutations, paraphrases, or broad workbook text searches are performed. Install optional dependencies with
 work/requirements-h17-k08-cell-selector.txt.
 
 The input workbook is opened from bytes and never written. Cell comments,
@@ -114,16 +112,13 @@ def excel_address(row: int, column: int) -> str:
 
 
 def map_sheets(sheet_names: list[str], explicit_sheet: str | None) -> dict[str, list[str]] | None:
-    """Return group-to-sheet mapping; never guess across arbitrary sheet names."""
+    """Return only source-explicit mappings; never infer sheet order."""
     if explicit_sheet is not None:
         if explicit_sheet not in sheet_names:
             raise ValueError(f"requested sheet {explicit_sheet!r} not found; sheets={sheet_names}")
         return {"single": [explicit_sheet] * 8}
     if len(sheet_names) == 1:
         return {"single": [sheet_names[0]] * 8}
-    by_upper = {name.upper(): name for name in sheet_names}
-    if all(name in by_upper for name in ("A", "B", "C", "D")):
-        return {"groups_A_to_D": [by_upper[group] for group in "AABBCCDD"]}
     return None
 
 
@@ -187,22 +182,13 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
     coordinates = coordinate_sets(plaintext)
     candidates: list[dict[str, Any]] = []
     if mapping is not None:
+        sheet_name = mapping["single"][0]
+        sheet = book.sheet_by_name(sheet_name)
         for orientation, pairs in coordinates.items():
             for base in (0, 1):
-                for mapping_name, group_sheets in mapping.items():
-                    if mapping_name == "groups_A_to_D":
-                        cells: list[dict[str, Any]] = []
-                        for group_index, sheet_name in enumerate(group_sheets):
-                            sheet = book.sheet_by_name(sheet_name)
-                            group_cells = sample_cells(sheet, pairs[group_index * 2:group_index * 2 + 2], base)
-                            for item in group_cells:
-                                item["group"] = "ABCD"[group_index]
-                            cells.extend(group_cells)
-                    else:
-                        sheet = book.sheet_by_name(group_sheets[0])
-                        cells = sample_cells(sheet, pairs, base)
-                    candidates.append(evaluate_candidate(cells, nonce, target,
-                                                         orientation, base, mapping_name))
+                cells = sample_cells(sheet, pairs, base)
+                candidates.append(evaluate_candidate(cells, nonce, target,
+                                                     orientation, base, "single"))
     result = {
         "status": ("MATCH_REVIEW" if any(x["match"] for x in candidates) else
                    "NO_K08_MATCH" if candidates and all(x["complete"] for x in candidates) else
@@ -221,7 +207,7 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
         "scope": [
             "Conditional test only: PS-0323-to-keeper-envelope identity is not authenticated by the surviving export.",
             "Only the eight PS-0323-derived cells, their original order, two byte orientations, and zero-/one-based coordinates are tested.",
-            "A-D sheet mapping is used only when those exact sheet names exist; other multi-sheet workbooks require --sheet.",
+            "No sheet ordering is inferred; multi-sheet workbooks require an explicit --sheet.",
             "Cell values are joined with one space and processed under the original REC8/1 normalization/HMAC rule.",
             "No sheet permutation, cell permutation, paraphrase, comments, embedded OfficeArt, formula recalculation, or broad text search is performed.",
             "The source workbook is read-only; hash is checked before and after."
