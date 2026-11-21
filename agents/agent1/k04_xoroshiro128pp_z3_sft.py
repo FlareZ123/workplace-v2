@@ -166,32 +166,21 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
     result["holdout_model_index"] = 0
     result["holdout_is_blind"] = True
 
-    # Uniqueness is a separate diagnostic. It must not suppress a commitment hit.
-    solver.push()
-    solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
-                  outputs[3] != BitVecVal(first_middle[1], 64)))
-    alternative = bounded_check()
-    solver.pop()
-    if alternative is None:
-        alternative = unknown
-        result["uniqueness_reason_unknown"] = "overall solver time budget exhausted"
-    else:
-        result["uniqueness_status"] = str(alternative).upper()
-        if alternative == unknown:
-            result["uniqueness_reason_unknown"] = solver.reason_unknown()
-    result["uniqueness_status"] = str(alternative).upper()
-    result["middle_unique"] = alternative == unsat
-
     candidate_records = [first_record]
     commitment_hit = first_hit
+    if first_hit:
+        result["commitment_hit_model_index"] = 0
+        result["commitment_hit_candidate"] = first_record
     planted_middle_seen = bool(first_record.get("middle_matches_planted_control", False))
     planted_middle_model_index = 0 if planted_middle_seen else None
     enumeration_status = "NOT_NEEDED"
 
-    # Enumerate distinct middle outputs only when the first model did not already
-    # satisfy the target. The holdout remains attached to model 0 and is never
-    # consulted during this enumeration.
+    uniqueness_status = None
+    # If the first candidate misses the commitment (or planted control), use the
+    # first alternative check both to classify uniqueness and to begin bounded
+    # candidate enumeration. Hash each candidate before any other disposition.
     if not commitment_hit and not planted_middle_seen and max_middle_models > 1:
+        solver.push()
         solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
                       outputs[3] != BitVecVal(first_middle[1], 64)))
         enumeration_status = "CAP_REACHED"
@@ -199,15 +188,20 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
             next_check = bounded_check()
             if next_check is None:
                 enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
+                uniqueness_status = "UNKNOWN" if uniqueness_status is None else uniqueness_status
                 result["enumeration_reason_unknown"] = "overall solver time budget exhausted"
                 break
             if next_check == unsat:
                 enumeration_status = "EXHAUSTED"
+                uniqueness_status = "UNSAT"
                 break
             if next_check == unknown:
                 enumeration_status = "UNKNOWN"
+                uniqueness_status = "UNKNOWN" if uniqueness_status is None else uniqueness_status
                 result["enumeration_reason_unknown"] = solver.reason_unknown()
                 break
+            if uniqueness_status is None:
+                uniqueness_status = "SAT"
             model = solver.model()
             record, hit, middle = inspect_middle(model, model_index)
             candidate_records.append(record)
@@ -224,7 +218,28 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
                 break
             solver.add(Or(outputs[2] != BitVecVal(middle[0], 64),
                           outputs[3] != BitVecVal(middle[1], 64)))
+        solver.pop()
+    else:
+        if not commitment_hit and not planted_middle_seen and max_middle_models <= 1:
+            enumeration_status = "MODEL_CAP_REACHED"
+        # A first-model commitment hit or planted-middle recovery is already
+        # durable; uniqueness is still measured independently afterwards.
+        solver.push()
+        solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
+                      outputs[3] != BitVecVal(first_middle[1], 64)))
+        alternative = bounded_check()
+        solver.pop()
+        if alternative is None:
+            uniqueness_status = "UNKNOWN"
+            result["uniqueness_reason_unknown"] = "overall solver time budget exhausted"
+        elif alternative == unknown:
+            uniqueness_status = "UNKNOWN"
+            result["uniqueness_reason_unknown"] = solver.reason_unknown()
+        else:
+            uniqueness_status = str(alternative).upper()
 
+    result["uniqueness_status"] = uniqueness_status or "UNKNOWN"
+    result["middle_unique"] = uniqueness_status == "UNSAT"
     result["elapsed_seconds"] = round(time.monotonic() - started, 3)
     result["candidate_models"] = candidate_records
     result["candidate_models_examined"] = len(candidate_records)
