@@ -7,7 +7,7 @@ from pathlib import Path
 from types import ModuleType, SimpleNamespace
 
 from h17_k08_mug_stock_cell_selector import (
-    aes_ecb_decrypt, coordinate_sets, excel_address, excel_column,
+    FallbackSheet, aes_ecb_decrypt, coordinate_sets, excel_address, excel_column,
     evaluate_candidate, inspect_workbook, k08_component, map_sheets, normalize, sample_cells,
 )
 
@@ -56,6 +56,16 @@ class SelectorTests(unittest.TestCase):
         cells = sample_cells(sheet, [(229,64)], 1)
         self.assertFalse(cells[0]["in_bounds"])
         self.assertIsNone(cells[0]["value"])
+
+    def test_formula_cells_are_not_used_as_phrase_values(self):
+        sheet = FallbackSheet("Sheet1", 2, 2, {
+            ("Sheet1", "A1"): {"data_type":"f", "text":"=A2", "converted_cached_value":"keeper"}
+        })
+        cells = sample_cells(sheet, [(1,1)], 1)
+        self.assertIsNone(cells[0]["value"])
+        result = evaluate_candidate(cells, b"0" * 16, b"0" * 32, "high_low", 1, "single")
+        self.assertFalse(result["complete"])
+        self.assertFalse(result["match"])
 
     def test_ps0323_aes_plaintext_is_pinned(self):
         nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
