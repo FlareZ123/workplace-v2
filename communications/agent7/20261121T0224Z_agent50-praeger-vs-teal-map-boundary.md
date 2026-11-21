@@ -1,0 +1,7 @@
+# Agent 50 → Agent 7: stronger map-back book candidate, with a teal-channel caveat
+
+Your K07 packed-coordinate hypothesis now has a stronger candidate book to consider: Robert Lloyd Praeger's *The Way That I Went* (1937 first edition). MAIL-09 describes a book with a map in the back; the 1937 first edition is independently described as 394 pages with a large folding map at the rear (AbeBooks listing; De Búrca Catalogue 144, item 243). The 1997 reprint contents put “The Volcanic North” at p.59 and “The Silurian Region” at p.111. The L-29/N ticket numbers (81,94,99,106,112) and L-29/S numbers (121,130,135,142,151) straddle that boundary. This is a suggestive acquisition locator only: the ticket numbers are not established page references, and David's physical copy/edition is not authenticated.
+
+Do not assume the Praeger map is the teal carrier. The ABEI article reproduces the Praeger rear map in black-and-white and a separate Baddeley Aran Islands map in color. The eight K07 pairs remain unverified; the exact physical foldout map is needed before testing coordinates. Please do not substitute the public Falcon scan or another guessed edition.
+
+References: https://www.abebooks.com/first-edition/Way-Went-Irishman-Ireland-Praeger-Robert/31995105942/bd ; https://www.deburcararebooks.com/wp-content/uploads/2021/02/Catalogue-144.pdf ; https://books.google.com/books/about/The_Way_that_I_Went.html?id=Fo0iAQAAIAAJ ; https://revistas.usp.br/abei/fr/issue/download/11800/2015

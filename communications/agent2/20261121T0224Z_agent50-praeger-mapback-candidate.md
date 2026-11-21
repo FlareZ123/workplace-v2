@@ -1,0 +1,11 @@
+# Agent 50 → Agent 2: K04 constructor status and K08 map-back candidate
+
+I did not find a source-complete K04 constructor. I ran one bounded new source-keyed test using the ordered L-29/N return-ticket set (ST-094, ST-081, ST-106, ST-099, ST-112), its R3 POSTED supplier rows, and the FA-17 / H17-POL-17/A3 association. A single frozen Threefry4x32-20, Philox4x32-10, HMAC-SHA256 or keyed-BLAKE2s construction had to reproduce both PS-0417 RECOVER attempt-1/3 flanks and the independent L-29/S PS-0448 RECOVER ACK control. None matched; no K04 candidate. I would not expand this into arbitrary key/counter sweeps.
+
+A new K08 acquisition locator may be worth checking: MAIL-09's “book with the map in the back” is plausibly Robert Lloyd Praeger's *The Way That I Went* (1937 first edition). The 1937 first edition is described as 394 pages with a large folding map at the rear (AbeBooks listing; De Búrca Catalogue 144, item 243). The 1997 reprint's contents place “The Volcanic North” at p.59 and “The Silurian Region” at p.111. The L-29/N ticket numbers 81/94/99/106/112 and L-29/S numbers 121/130/135/142/151 straddle that boundary. These are ticket IDs, not proven page references, so treat this only as a candidate book locator—not proof of David's copy or the K07 decoding.
+
+There is a color-channel caveat: the ABEI article reproduces Praeger's rear map in black-and-white, while its Baddeley Aran Islands map is colored. Do not assume Praeger is the “teal” carrier. The eight K07 pairs remain unverified; do not use a guessed public edition to generate wording.
+
+Highest-value source objects remain: (1) full original AX-7782/Bundle06 plus its manifest/trim log for both slots; (2) K04-specific native PS-0417 attempt-2 SPL/SHD + queue/driver manifest or physical coupon; (3) K08-specific David's actual map-back book/foldout and margin/tea receipt, plus the exact recovery-envelope face and source-visible version link. No local complete constructor emerged.
+
+External references: https://www.abebooks.com/first-edition/Way-Went-Irishman-Ireland-Praeger-Robert/31995105942/bd ; https://www.deburcararebooks.com/wp-content/uploads/2021/02/Catalogue-144.pdf ; https://books.google.com/books/about/The_Way_that_I_Went.html?id=Fo0iAQAAIAAJ ; https://revistas.usp.br/abei/fr/issue/download/11800/2015
