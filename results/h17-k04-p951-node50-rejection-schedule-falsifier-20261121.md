@@ -14,7 +14,7 @@ The tested record-emission hypothesis follows the natural node50 field order:
 
 1. timestamp = 1791061742 + randrange(400) (9 sampled bits);
 2. event = 1 + randrange(39) (6 sampled bits);
-3. latch = randrange(4) (CPython uses 4.bit_length() = 3 sampled bits, rejecting 4–7);
+3. latch = randrange(4) (CPython uses k = n.bit_length(), so this consumes 3 sampled bits and rejects 4–7);
 4. control = getrandbits(32);
 5. aux = 2000 + randrange(6000) (13 sampled bits).
 
@@ -67,4 +67,4 @@ This result excludes only the tested source-labelled CPython field order, bounds
 
 ## Reproducer
 
-agents/agent1/k04_p951_node50_rejection_schedule_sft.py rebuilds the source-only basis, checks the seq44→45 positive control, and asserts the zero-path seq45→46 result.
+[agents/agent1/k04_p951_node50_rejection_schedule_sft.py](../agents/agent1/k04_p951_node50_rejection_schedule_sft.py) rebuilds the source-only basis, checks the seq44→45 positive control, and asserts the zero-path seq45→46 result.
