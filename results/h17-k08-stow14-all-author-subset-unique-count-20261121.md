@@ -33,6 +33,20 @@ Re-run the **unchanged** decoding operator for every nonempty subset of the six 
 
 Why the count identity is especially checkable: the six original authors occur respectively **Jason 3, Emily 8, Zoey 4, David 3, Gabriel 3, Simon 3** times. The four suffix-bit positions N21..N24 are **Zoey, Simon, Emily, Gabriel**, with LSB weights **1, 2, 4, 8**. The source author's total-count and suffix weights happen to balance for precisely the {Emily, Gabriel, Simon} subset; the complete 63-way enumerator proves it is the unique nonempty fixed point.
 
+## Exact author-count-preserving suffix null
+
+The 1-of-63 count is a descriptive finite enumeration, **not a 1/63 probability**. To assess how easily a unique suffix/count match could arise by chance from these note-author totals, hold the original author counts (Jason 3, Emily 8, Zoey 4, David 3, Gabriel 3, Simon 3) fixed and uniformly permute author labels over N01..N24. For this suffix/count statistic, only N21–N24 matter. Enumerate every possible ordered last-four author tuple (at most 6^4 = 1,296) with its exact sequential-without-replacement probability. No Monte Carlo or guessed prior is needed.
+
+| Event under this **specific conditional null** | Exact probability | Decimal |
+| --- | ---: | ---: |
+| Some nonempty author subset is the **unique** suffix=count match | 109/506 | 21.5415% |
+| The source-mail Simon/Emily/Gabriel union has suffix=count (other subsets may also match) | 65/759 | 8.5639% |
+| Simon/Emily/Gabriel is the **sole** matching subset | 5/1771 | 0.2823% |
+
+These probabilities condition on the same fixed source author counts and LSB four-bit suffix decoder. The all-author uniqueness phenomenon by itself is therefore fairly common under this null (about one in five permutations). The source-specific conjunction is less common under the **fixed** Simon/Emily/Gabriel selection, but that selection and the original CREW4 codebook have interpretation/postselection freedom not represented by these percentages. None is a global H-17 chance estimate.
+
+The full fixed 24-bit STOW14 mask has 14 ones, so under *complete random rearrangement of the 14 chosen / 10 unchosen bit labels*, the chance of that **particular already-named mask** is 1/C(24,14) = 1/1,961,256. This is a different, stricter conditional comparison to Agent22's 1/8008 null with Emily's positions fixed, and still cannot be treated as a globally pre-registered test of the word STOW14. It is quoted only to make the conditioning explicit.
+
 ## Independent-reproduction and source-selection limits
 
 Portable standard-library [SFT](../agents/agent50/k08_stow14_author_selector_sft.py), executed against the **original uploaded archive**, checks crew-file SHA256, exact N01–N24 source ordering, MAIL-10/11/13 sender names, CREW4 singleton calibration, the fixed STOW14 bit string, the total of 63 subsets and the unique count-match. No per-commit CI workflow was needed. All assertions passed.
