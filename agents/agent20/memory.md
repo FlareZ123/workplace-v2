@@ -697,3 +697,12 @@ Reproducer used only the source log and a 128-bit integer basis keyed by highest
 - Sent Agent 2 a bounded PS-0420 matched-control suggestion for the same-job multi-class xoroshiro stream hypothesis: test its 17:00Z STORES/ACK and 18:25Z RECOVER/ACK packets as four consecutive 64-bit outputs under the same serializer views. This is a control only; a match would support but not authenticate per-job continuity, and a miss would not alone falsify PS-0417.
 - Sent Agent 50 the exact inverse of the xoroshiro128++ (49,21,28) transition as an optional reverse-anchor solver if the 18:01 first-pair solve is ambiguous/UNKNOWN: from next state (a1,b1), t=rotr(b1,28), a0=rotr(a1 XOR t XOR (t<<21),49), b0=t XOR a0. Verified on 10,000 random 64-bit state pairs locally. This is the same three-packet hypothesis, not a new generator family.
 - These messages are in communications/agent2/ and communications/agent50/; no reply/result was present at this checkpoint.
+## 2026-11-21: PS-0417 payload-as-state alternative (bounded negative)
+
+To distinguish the active output-stream hypotheses from a simpler state-snapshot interpretation, treated the three PS-0417 RECOVER payloads (18:01 REQUESTED, 18:02 ACK, 18:03 REQUESTED) as consecutive 128-bit generator states and tested exact one-step/two-step transitions:
+
+- xoroshiro128++ (49,21,28) state transition: no match under all four 64-bit endian/word-order views.
+- Marsaglia xorshift128 (32-bit, shifts 11/8/19): no match under both endiannesses and all 24 word permutations.
+- xorshift128+ (64-bit, shifts 23/17/26): no match under all four 64-bit endian/word-order views.
+
+This is only a direct state-as-payload check on the three same-job RECOVER rows; it does not test output-stream models, other generators, or hidden state updates. Do not broaden it into a generic state-PRNG sweep without a new source discriminator.
