@@ -54,18 +54,18 @@ where \(r_i\) is the incoming borrow for \(u_1-a_1\). This is exactly the subtra
 
 The first-output inverse gives
 
-[
+\[
 u_0=\operatorname{ROTR}_{17}(y_0-a_0)=a_0+b_0.
-]
+\]
 
-For the subtraction (b_0=u_0-a_0), bit (i) is
-(b_{0,i}=u_{0,i}\oplus a_{0,i}\oplus r_i), where (r_i) is the incoming borrow. Therefore the state-transition input cancels (a_0):
+For the subtraction \(b_0=u_0-a_0\), bit \(i\) is
+\(b_{0,i}=u_{0,i}\oplus a_{0,i}\oplus r_i\), where \(r_i\) is the incoming borrow. Therefore the state-transition input cancels \(a_0\):
 
-[
+\[
 t_0=a_0\oplus b_0=u_0\oplus r.
-]
+\]
 
-The same borrow chain for (u_0-a_0) is retained, but the 64 materialized (b_0) difference variables are removed. Since (r_0=0), (t_{0,0}=u_{0,0}) is a wire; only bits 1..63 require XOR outputs. This removes 64 (b_0) variables and their 64 XOR equations, plus the bit-0 (t_0) variable/equation: net **65 fewer variables and 65 fewer XOR clauses**, with no change to the CNF borrow clauses. A deterministic 100,000-case check of (t_0(a,y_0)=a\oplus b) passed.
+The same borrow chain for \(u_0-a_0\) is retained, but the 64 materialized \(b_0\) difference variables are removed. Since \(r_0=0\), \(t_{0,0}=u_{0,0}\) is a wire; only bits 1..63 require XOR outputs. This removes 64 \(b_0\) variables and their 64 XOR equations, plus the bit-0 \(t_0\) variable/equation: net **65 fewer variables and 65 fewer XOR clauses**, with no change to the CNF borrow clauses. A deterministic 100,000-case check of \(t_0(a,y_0)=a\oplus b\) passed.
 
 ## Borrow and gate review
 
