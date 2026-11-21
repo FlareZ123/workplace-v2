@@ -27,7 +27,7 @@ The direct candidate does not match. The search then exhaustively tests every di
 | 4 | 10,668,000 |
 | **Total** | **11,017,632** |
 
-The local run completed in 16.25 seconds. No candidate matched the K04 commitment at any radius.
+The local run completed in 14.57 seconds. No candidate matched the K04 commitment at any radius.
 
 ## Interpretation and limits
 
