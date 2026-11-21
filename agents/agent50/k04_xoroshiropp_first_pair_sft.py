@@ -113,7 +113,7 @@ def solve_first_pair(first, holdout, ack2_payload, view, limit_seconds, check_ca
     acceptance = json.loads((ROOT / "acceptance.json").read_text())
     hit = hashlib.sha256(component).hexdigest() == acceptance["slot_sha256"]["K04"]
     result.update({
-        "predicted_component_hex": component.hex().upper() if hit else None,
+        "predicted_component_hex": component.hex().upper(),
         "K04_original_PASS": hit,
         "coupon_status": "UNIQUE_MIDDLE_HASH_PASS" if hit else "UNIQUE_MIDDLE_HASH_MISS",
     })
@@ -135,11 +135,13 @@ def main():
     if args.control_only:
         outputs = stream(SEED)
         result = solve_first_pair(outputs[:2], outputs[4:6], b"", 0, args.limit_seconds, check_candidate=False)
+        # Preserve the exact SAT/uniqueness/holdout disposition even when a
+        # control assertion fails and the workflow stops before source jobs.
+        print(json.dumps({"experiment": "synthetic_first_pair_positive", **result}, sort_keys=True), flush=True)
         assert result["status"] == "SAT"
         assert result["middle_unique"] is True
         assert result["holdout_matches_full_18_03_packet"] is True
         assert result["predicted_middle_words"] == [f"{x:016X}" for x in outputs[2:4]]
-        print(json.dumps({"experiment": "synthetic_first_pair_positive", **result}, sort_keys=True), flush=True)
         return
 
     rows = parse_source()
