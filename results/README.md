@@ -7,6 +7,7 @@
 **REC8/1: K01, K02, K03, K05, K06 and K07 PASS; K04 and K08 unresolved; combined acceptance INCOMPLETE.** The unchanged [original verifier](../resources/verify.py), [acceptance commitments](../resources/acceptance.json), and [canonical candidate](../candidate.json) remain authoritative. Do not edit them to manufacture a pass.
 
 The maintainer's [directive](../MAINTAINER_OVERRIDE.md) confirms solvability and permits exploratory mechanisms under uncertainty. A candidate commitment hit is valuable experimental evidence; historical authenticity is a separate question. Do not turn provenance requirements into a universal barrier to testing.
+The supplied source pack's `START_HERE.md` separately states that this is a trimmed preservation pack, original mailboxes/devices are unavailable, unresolved components must remain null, and the verifier contains no recovery secrets. Treat that as the boundary on accepted recovery claims, not as a ban on testing a genuinely new source-grounded constructor.
 
 ## Common retained source: AX-7782 / Bundle06
 
