@@ -1388,3 +1388,22 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 - All new scripts, reports, README synthesis changes, and communications from this incarnation were verified present on main at head aed1634df3574a0c87959c929586e9d583b56036 (before this memory update).
 - Agent50's first-pair workflow mode is present in the shared workflow, but no new run is visible as of 12:32Z. Agent50 explicitly owns the single intended dispatch and asked for no duplicate; do not dispatch it from a future incarnation. Await the JSON artifact or ask Agent50 for status if the work resumes.
 - No eight-component recovery key is available at this checkpoint. Six components remain accepted; K04 and K08 remain unresolved. Highest-value missing evidence is still the authorized AX-7782 original 8 MiB object/manifest/trim log, native PS-0417 queue/job media, and mug-stock.xls plus the keeper's final envelope/caption source.
+
+
+### 2026-11-21 20:11Z onward — normal-mode continuation and K04 solver support
+
+- Actual initial RNG draw was **2/10**, so this remains normal research mode. Current Agent1 lease is immutable `2026-11-21T20:11:01.645Z`; do not refresh it. Check elapsed against the runtime clock after each checkpoint and release only at >=70 minutes.
+- User-provided `h17-archive-dump.zip` is the local export, not the missing AX-7782 object. The repo remains the primary source. Files search surfaced only `prompt.md`; no additional Project source files were found. No original `mug-stock.xls`, native ESC-N spool job, AX-7782 bytes, or Emily final-envelope/caption source became available.
+- K08: do not repeat phrase grammar, page-word, teal-bit, or N14/N10 speculation grids. Agent22's latest handoff says the direct K08 evidence is the original recovery envelope or a faithful image/transcription of Emily's final caption with its source/version context; the mug-stock/PS-0323 selector is secondary and conditional. I gave the user a concise request for the AX-7782 object and clarified the direct envelope/caption source.
+- K04: Agent50 owns the single first-pair xoroshiro128++ solver line. Do not dispatch a competing source solver. Sent Agent50 these additive technical notes:
+  - existing one-word inverse reference: `agents/agent1/k04_xoroshiro128pp_z3_sft.py`;
+  - candidate-specific 18:03 holdout diagnostics should be reported only after each candidate's commitment check, never used to select;
+  - alternative sum parameterization (x_0=a_0+b_0), (a_0=y_0-ROTL(x_0,17));
+  - direct Z3 translation of Agent36's t0-only borrow recurrence;
+  - the second output subtraction should also use a bitwise borrow chain to match `agents/agent36/k04_dual_inverse_borrow_reference.py`;
+  - deterministic pure-Python identity control passed 10,000 states with seed `0xA17E8BC05E34DB24`. This validates arithmetic only, not solver performance or the source generator hypothesis.
+  - Z3 4.15.4.0 pinned in the existing workflow is newer than Agent5's local 4.13.3; SLS availability may differ, but no SLS run or new workflow was started.
+- Agent50's lease was >70 minutes old at the latest check; I sent a reminder to preserve handoff and perform orderly release. Do not modify another identity's lease. Agent22 had already released normally.
+- Conditional PS-0417 cross-slot note: Agent20's AES-under-desk-nonce experiment decrypts ACK2 to `A17E8BC05E34DB2470E7AD8912F2E127`, which is **not** a K04 candidate. If interpreted as eight (row,column) byte pairs, the corrected A1 labels are `DV161, GJ139, AZ94, AJ219, HW112, EG173, IH18, AM225` (Agent20's earlier `GF139` and `IW112` labels were arithmetic conversion errors; corrections sent to Agent20 and Agent28). This remains an unauthenticated selector hypothesis. If the original workbook arrives, only test these cells with explicit source-bound sheet mapping and native cell types/formats; candidate bytes must pass the unchanged K04 commitment. Keep them separate from PS-0323's K08 cells.
+- No acceptance, candidate, verifier, or original resource files were changed. Communications were committed and read back from main. Do not manufacture a results report from conditional hypotheses.
+- Next useful action: review Agent50's final t0/Z3 handoff or workflow result once it appears; otherwise act only on a genuinely new original source delivery. At release, update this memory, push all useful state, then delete the lease as the final repository mutation.
