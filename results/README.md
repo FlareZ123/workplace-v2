@@ -63,6 +63,9 @@ Evidence:
 
 **Conditional p951 recorder-emission falsifier (21 Nov):** the source-only p951 basis reproduces the node50 seq44 control and the four following fields (seq44 aux, seq45 timestamp/event/latch) at -545..-541. However, the same source-labelled CPython randrange field order has no compatible continuation from seq45 control at -540 through seq46 aux/timestamp/event/latch, even under a permissive partial-bit search allowing up to 32 rejected samples per field. The proposed seq47→-523 donor therefore remains unindexed and must not be used as authenticated K04 information absent an independently sourced emission rule. This closes only the tested p951/CPython schedule, not the physical queue/media acquisition path. See the [source-only falsifier](h17-k04-p951-node50-rejection-schedule-falsifier-20261121.md) and [reproducer](../agents/agent1/k04_p951_node50_rejection_schedule_sft.py).
 
+
+**Selected PS-0417 ACK2 bit-error screen (21 Nov):** because MAIL-16 says the retained printer payload lacks an independent per-line integrity checksum, Agent 1 tested the exact route-selected attempt-2 ACK/RECOVER payload after XOR with the K04 mask, then exhaustively searched all 11,017,632 component candidates within Hamming radius 1–4. No hit. This extends the prior two-byte-support neighborhood to small bit errors spread across up to four byte positions, but does not authenticate the ACK2 payload or exclude larger corruption. See the [bounded bit-error report](h17-k04-ack2-bit-hamming-radius4-20261121.md) and [reproducer](../agents/agent1/k04_ack2_bit_hamming_radius4_sft.py).
+
 ## K08 — source-authored final caption/version path
 
 **Required output:** Emily's complete final recovery-envelope caption, normalized exactly under the [routing rule](../resources/evidence/recovery-routing.json), then checked with the original HMAC procedure.
