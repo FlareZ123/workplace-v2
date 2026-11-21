@@ -33,7 +33,7 @@ The standard xoroshiro128++ transition/output function is implemented in [the re
 
 ## Result
 
-<badge>0 exact packet matches</badge>
+**Result: 0 exact packet matches.**
 
 - 22 complete same-suffix PTW/PS pairs evaluated.
 - 16 state interpretations × 4 fixed output serializers = 64 configurations.
