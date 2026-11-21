@@ -48,6 +48,7 @@ Evidence:
 - [K02 LT-204 raw fourword donor family](h17-k04-k02-original-raw-halfword-future-fourword-cosets-20261104.md): the stage1178 and stage1405 16-mode, 33-bit exhaustive SHA256 sweeps both completed (32/32 jobs each), with zero original K04 commitment hits across 274,877,906,944 conditional candidates; these two source-derived placements are closed.
 - [Retained-spool XOR screen](h17-k04-retained-spool-xor-screen-20261119.md)
 - [Within-packet linear-code rank check](h17-k04-within-packet-linear-code-rank-20261121.md) (no uniform <=120-dimensional code across the 128-row prefix)
+- [Sum-parameterized dual-borrow arithmetic control](h17-k04-sum-t0-arithmetic-control-20261121.md) (10,000 deterministic identity/replay checks; no source or solver validation)
 - [PTW-417 direct serial-quartet screen](h17-k04-ptw417-serial-coupon-screen-20261119.md) (including Agent35's latest signed CLOSED/REMOVED revision-4 follow-on; no K04 hit)
 - [PTW-417 raw quartet as xoroshiro128++ state](h17-k04-ptw417-raw-quartet-xoroshiro128pp-state-screen-20261121.md) (32 source-order serialization views; no ACK2 or K04 commitment hit)
 - [PTW four-bay state as a changing AES-128 key with one fixed hidden block](h17-k04-rolling-ptw-dynamic-aes-key-20261121.md) (64 complete models; first intact PTW-395/PS-0395 pair calibrates the block, 21 PS-0396..0416 holdouts, 0/21 predictions and 0 K04 hits; synthetic controls 64/64; exact family only, PTW/PS suffix join unauthenticated)
