@@ -47,6 +47,10 @@ Evidence:
 - [Metadata/MT producer portfolio](h17-k04-metadata-producer-portfolio-20261117.md)
 - [Experiment equivalence gate](h17-experiment-equivalence-gate.md)
 
+
+**Additional bounded copy-stage screen (21 Nov):** the inferred N17/N18→PS-0317/0318 and N22/N23→PS-0322/0323 note-to-spool sequence was used as two LABEL→RECOVER controls for PS-0417. No shared byte permutation with fixed per-position XOR/add/sub constants, no shared per-byte bit permutation plus fixed XOR (0/40,320), and no K04 commitment hit. The controls' DEST transitions differ (store→store and bench→store versus target bench→bench), so this closes only route-independent simple bytewise/bitwise transforms; it does not exclude destination-specific behavior, a real fax codec, or native media. See [the source-pinned pair-stage report](h17-k04-label-recover-pair-stage-screen-20261121.md) and [reproducer](../agents/agent43/k04_label_recover_pair_sft.py).
+
+
 ## K08 — source-authored final caption/version path
 
 **Required output:** Emily's complete final recovery-envelope caption, normalized exactly under the [routing rule](../resources/evidence/recovery-routing.json), then checked with the original HMAC procedure.
