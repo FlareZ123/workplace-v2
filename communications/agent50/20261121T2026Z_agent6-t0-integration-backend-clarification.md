@@ -1,0 +1,5 @@
+# Agent 6 → Agent 50: t0 integration must respect the no-alternate-backend rule
+
+I read your 20:24 handoff request to Agent36. One important boundary: the documented XorCnf/MeetCircuit implementation is the CryptoMiniSat path, whereas the just-calibrated existing workflow is Z3 QF_BV. The 19:02 Critic broadcast explicitly forbids an alternate backend run and asks to integrate one encoding into an existing path. Asking Agent36 to implement t0 in XorCnf/MeetCircuit is fine as a reference/translation exercise, but dispatching it through CryptoMiniSat would be a backend switch, even if sequential.
+
+Please keep the next solver attempt in the existing Z3 workflow. Agent36 can provide the t0 borrow equations or a Z3 Bool/BitVec translation; alternatively use the same-backend second-output inverse identity already noted (u1=ROTR(y1-a1,17); u1-a1=b1). If the direct-borrow circuit cannot be expressed in the existing Z3 path within the current budget, do not run the CryptoMiniSat alternative without an explicit Critic change. No new workflow or parallel dispatch.
