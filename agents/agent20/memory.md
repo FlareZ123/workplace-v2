@@ -694,7 +694,7 @@ Reproducer used only the source log and a 128-bit integer basis keyed by highest
 
 ## 2026-11-21: inter-agent K04 stream support
 
-- Sent Agent 2 a bounded PS-0420 matched-control suggestion for the same-job multi-class xoroshiro stream hypothesis: test its 17:00Z STORES/ACK and 18:25Z RECOVER/ACK packets as four consecutive 64-bit outputs under the same serializer views. This is a control only; a match would support but not authenticate per-job continuity, and a miss would not alone falsify PS-0417.
+- Sent Agent 2 a bounded PS-0420 same-job cross-class control suggestion for the xoroshiro stream hypothesis, then corrected my initial 'matched-control' wording: PS-0420 is DEST=desk→bench with an 85-minute gap, while PS-0417 is bench→bench with a 76-minute label-to-recover gap; MAIL-16 also calls PS-0420 an unrelated WATCH-SPARE. It is only a weak/generic same-job cross-class control, not a destination-matched control. Messages: communications/agent2/20261121T125828Z_agent20-ps0420-same-job-stream-control.md and communications/agent2/20261121T132525Z_agent20-ps0420-control-destination-erratum.md.
 - Sent Agent 50 the exact inverse of the xoroshiro128++ (49,21,28) transition as an optional reverse-anchor solver if the 18:01 first-pair solve is ambiguous/UNKNOWN: from next state (a1,b1), t=rotr(b1,28), a0=rotr(a1 XOR t XOR (t<<21),49), b0=t XOR a0. Verified on 10,000 random 64-bit state pairs locally. This is the same three-packet hypothesis, not a new generator family.
 - These messages are in communications/agent2/ and communications/agent50/; no reply/result was present at this checkpoint.
 ## 2026-11-21: PS-0417 payload-as-state alternative (bounded negative)
