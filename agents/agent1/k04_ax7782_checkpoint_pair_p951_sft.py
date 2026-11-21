@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Bounded AX-7782 checkpoint-pair donors for the conditional p951 K04 model.
+"""Bounded AX-7782 halfword interleave donors for the conditional p951 K04 model.
 
-Tests three source-motivated ways to turn the 16 retained 16-bit checkpoint
-fields (8 chunks x 2 attempts) into the eight 32-bit native-word donors that
-make the selected p951 coupon observable. This is an exploratory mapping test,
-not a claim that AX checkpoints historically share the printer MT producer.
+Tests two source-motivated arrangements of the two 16-bit attempts per chunk:
+pair attempts within each chunk, and use the already-derived P212 selector
+plus its complement. It deliberately excludes separate per-attempt 16-byte
+vectors and K02/K07 donor pairings because those are covered by prior SFTs.
 """
 from __future__ import annotations
 
@@ -12,7 +12,6 @@ import hashlib
 import json
 from pathlib import Path
 import sys
-from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -23,8 +22,7 @@ from agents.agent49.k04_p951_symbolic_basis import (  # noqa: E402
 
 SPOOL_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 TRANSFER_SHA = "32970ad4431a9d610cc12dcca2813f39dd8fd2e396f9e748dc94b5932cb69adf"
-TELEMETRY_SHA = "3787dbd6bab3930ea5293c25a995175161a1c0d7683daad29f498026e057639f"
-ROUTE_SHA = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7"
+ROUTE_SHA = "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5"
 ACCEPTANCE_SHA = "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f"
 DONOR_STAGES = [328, 329, 330, 331, 724, 725, 726, 727]
 GAP_A = [328, 329, 330, 331]
@@ -115,35 +113,6 @@ def checkpoint_rows(root: Path) -> dict[int, dict[int, str]]:
     return rows
 
 
-def k02_values(root: Path, route: dict, acceptance: dict) -> tuple[list[int], bytes]:
-    path = root / "resources/evidence/telemetry/freeze-export.jsonl"
-    raw = path.read_bytes()
-    assert hashlib.sha256(raw).hexdigest() == TELEMETRY_SHA
-    rule = route["K02"]
-    parts = [part.strip() for part in rule["source"].split("/")]
-    tag, field = parts[1], parts[2]
-    start = datetime.fromisoformat(rule["start_utc"]).astimezone(timezone.utc)
-    end = datetime.fromisoformat(rule["end_utc_exclusive"]).astimezone(timezone.utc)
-    selected: dict[int, dict] = {}
-    for line in raw.decode("utf-8").splitlines():
-        record = json.loads(line)
-        if (record.get("tag") != tag or record.get("field") != field
-                or record.get("quality") != "GOOD" or record.get("state") != "HOLD"):
-            continue
-        timestamp = datetime.fromisoformat(record["ts"]).astimezone(timezone.utc)
-        if not start <= timestamp < end:
-            continue
-        seq = int(record["seq"])
-        if seq not in selected or int(record["revision"]) > int(selected[seq]["revision"]):
-            selected[seq] = record
-    assert sorted(selected) == list(range(8))
-    values = [int(selected[seq]["value"]) for seq in range(8)]
-    preimage = b"".join(value.to_bytes(2, "big") for value in values)
-    component = hashlib.sha256(preimage).digest()[:16]
-    assert hashlib.sha256(component).hexdigest() == acceptance["slot_sha256"]["K02"]
-    return values, preimage
-
-
 def halfword_bytes(hex_value: str, endian: str) -> bytes:
     return int(hex_value, 16).to_bytes(2, endian)
 
@@ -160,25 +129,10 @@ def words_from_seq_attempt_pairs(rows: dict[int, dict[int, str]],
     return words
 
 
-def words_from_attempt_vectors(rows: dict[int, dict[int, str]],
-                               half_endian: str,
-                               word_endian: str) -> dict[int, list[int]]:
-    out = {}
-    for attempt in (1, 2):
-        raw = b"".join(halfword_bytes(rows[seq][attempt], half_endian)
-                       for seq in range(8))
-        assert len(raw) == 16
-        out[attempt] = [
-            int.from_bytes(raw[offset:offset + 4], word_endian)
-            for offset in range(0, 16, 4)
-        ]
-    return out
-
-
 def words_from_p212_complement(rows: dict[int, dict[int, str]],
                                half_endian: str,
                                word_endian: str) -> dict[str, list[int]]:
-    # MAIL-13/Agent22 P212 selector: attempt 1 on even seq, attempt 2 on odd.
+    # P212 selector: attempt 1 on even seq, attempt 2 on odd.
     p212 = [rows[seq][1 if seq % 2 == 0 else 2] for seq in range(8)]
     complement = [rows[seq][2 if seq % 2 == 0 else 1] for seq in range(8)]
     out = {}
@@ -194,8 +148,6 @@ def words_from_p212_complement(rows: dict[int, dict[int, str]],
 def synthetic_positive(base: Basis, state_forms: list[list[int]],
                        source_packets: list[bytes], selected_index: int) -> dict:
     assignment = zero_free_assignment(base)
-    # Independently replay every intact original packet under this synthetic
-    # source-consistent state. The selected row remains withheld.
     for row, (payload, start) in enumerate(zip(source_packets, STARTS)):
         if row == selected_index:
             assert payload == b""
@@ -250,16 +202,12 @@ def main() -> None:
     mask = bytes.fromhex(route["K04"]["masked_component"])
     expected_k04_sha = acceptance["slot_sha256"]["K04"]
     rows = checkpoint_rows(root)
-    k02_values_list, k02_preimage = k02_values(root, route, acceptance)
-    k07_values_list = [int(rows[seq][2], 16) for seq in range(8)]
 
-    # Verify that the official attempt-2 chain reproduces K07 exactly.
+    # Official attempt-2 chain positive source-parsing control for K07.
     k07_preimage = bytes.fromhex("".join(rows[seq][2] for seq in range(8)))
     k07_component = hashlib.sha256(k07_preimage).digest()[:16]
     assert hashlib.sha256(k07_component).hexdigest() == acceptance["slot_sha256"]["K07"]
-    assert k07_preimage.hex().upper() == (
-        "8947CEDCB9CC73BAB7E87BE63302C5C9"
-    )
+    assert k07_preimage.hex().upper() == "8947CEDCB9CC73BAB7E87BE63302C5C9"
 
     base, state_forms = source(root)
     source_packets, selected_index = packets(root)
@@ -293,33 +241,7 @@ def main() -> None:
                             **recovered,
                         })
 
-    # Model B: each complete attempt is one 16-byte vector / four words.
-    for half_endian in ("big", "little"):
-        for word_endian in ("big", "little"):
-            vectors = words_from_attempt_vectors(rows, half_endian, word_endian)
-            for gap_order, first, second in (
-                ("attempt1_gap43", 1, 2),
-                ("attempt2_gap43", 2, 1),
-            ):
-                stages_words = list(zip(GAP_A, vectors[first])) + list(zip(GAP_B, vectors[second]))
-                stages = [item[0] for item in stages_words]
-                words = [item[1] for item in stages_words]
-                for interpretation in ("native", "tempered"):
-                    recovered = recover(
-                        base, state_forms, words, stages, interpretation,
-                        mask, expected_k04_sha
-                    )
-                    results.append({
-                        "model": "separate_attempt_vectors",
-                        "half_endian": half_endian,
-                        "word_endian": word_endian,
-                        "gap_order": gap_order,
-                        "interpretation": interpretation,
-                        **recovered,
-                    })
-
-    # Model C: use the already source-derived P212 parity selector and its
-    # complementary stream as the two four-word gap donors.
+    # Model B: P212 parity selector plus its complement as two gap vectors.
     for half_endian in ("big", "little"):
         for word_endian in ("big", "little"):
             vectors = words_from_p212_complement(rows, half_endian, word_endian)
@@ -344,75 +266,13 @@ def main() -> None:
                         **recovered,
                     })
 
-    # Model D: pair the two independently accepted K02/K07 source halfwords
-    # at each sequence number to form one 32-bit donor word.
-    for pair_order in ("k02k07", "k07k02"):
-        for half_endian in ("big", "little"):
-            for word_endian in ("big", "little"):
-                words = []
-                for seq in range(8):
-                    pair = ([k02_values_list[seq], k07_values_list[seq]]
-                            if pair_order == "k02k07"
-                            else [k07_values_list[seq], k02_values_list[seq]])
-                    raw = b"".join(value.to_bytes(2, half_endian) for value in pair)
-                    words.append(int.from_bytes(raw, word_endian))
-                for gap_order, stages in (
-                    ("seq_to_gap43_then_gap96", DONOR_STAGES),
-                    ("seq_to_gap96_then_gap43", GAP_B + GAP_A),
-                ):
-                    for interpretation in ("native", "tempered"):
-                        recovered = recover(
-                            base, state_forms, words, stages, interpretation,
-                            mask, expected_k04_sha
-                        )
-                        results.append({
-                            "model": "K02_K07_sequence_pairs",
-                            "pair_order": pair_order,
-                            "half_endian": half_endian,
-                            "word_endian": word_endian,
-                            "gap_order": gap_order,
-                            "interpretation": interpretation,
-                            **recovered,
-                        })
-
-    # Model E: each accepted 16-byte K02/K07 preimage is four 32-bit words;
-    # place the two source vectors into the two four-word gaps.
-    for half_endian in ("big", "little"):
-        for word_endian in ("big", "little"):
-            k02_raw = b"".join(value.to_bytes(2, half_endian) for value in k02_values_list)
-            k07_raw = b"".join(value.to_bytes(2, half_endian) for value in k07_values_list)
-            vectors = {
-                "k02": [int.from_bytes(k02_raw[i:i + 4], word_endian) for i in range(0, 16, 4)],
-                "k07": [int.from_bytes(k07_raw[i:i + 4], word_endian) for i in range(0, 16, 4)],
-            }
-            for gap_order, first, second in (
-                ("k02_gap43", "k02", "k07"),
-                ("k02_gap96", "k07", "k02"),
-            ):
-                stages_words = list(zip(GAP_A, vectors[first])) + list(zip(GAP_B, vectors[second]))
-                stages = [item[0] for item in stages_words]
-                words = [item[1] for item in stages_words]
-                for interpretation in ("native", "tempered"):
-                    recovered = recover(
-                        base, state_forms, words, stages, interpretation,
-                        mask, expected_k04_sha
-                    )
-                    results.append({
-                        "model": "K02_K07_separate_vectors",
-                        "half_endian": half_endian,
-                        "word_endian": word_endian,
-                        "gap_order": gap_order,
-                        "interpretation": interpretation,
-                        **recovered,
-                    })
-
-    assert len(results) == 112
+    assert len(results) == 48
     assert all(result["rank"] == 15621 for result in results)
     assert not any(result["K04_PASS"] for result in results)
     unique_coupons = {result["coupon_hex"] for result in results}
     unique_components = {result["component_hex"] for result in results}
-    assert len(unique_coupons) == 80
-    assert len(unique_components) == 80
+    assert len(unique_coupons) == 32
+    assert len(unique_components) == 32
 
     positive = synthetic_positive(base, state_forms, source_packets, selected_index)
     assert positive["status"] == "PASS"
@@ -424,7 +284,6 @@ def main() -> None:
         "donor_stages": DONOR_STAGES,
         "cases": len(results),
         "unique_complete_candidates": len(unique_components),
-        "K02_preimage_hex": k02_preimage.hex().upper(),
         "original_k04_hits": 0,
         "synthetic_positive": positive,
         "results": results,
