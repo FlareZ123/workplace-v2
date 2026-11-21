@@ -1,5 +1,7 @@
 import hashlib
 import json
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -10,6 +12,14 @@ from h17_k08_mug_stock_cell_selector import (
     FallbackSheet, aes_ecb_decrypt, coordinate_sets, excel_address, excel_column,
     evaluate_candidate, inspect_workbook, k08_component, map_sheets, normalize, sample_cells,
 )
+
+
+try:
+    import openpyxl  # noqa: F401
+    from h17_xls_lo_fallback import extract as _fallback_extract  # noqa: F401
+    HAS_REAL_XLS_FALLBACK = bool(shutil.which("libreoffice") or shutil.which("soffice"))
+except ImportError:
+    HAS_REAL_XLS_FALLBACK = False
 
 
 class FakeSheet:
@@ -149,6 +159,60 @@ class SelectorTests(unittest.TestCase):
         self.assertEqual(before, after)
         self.assertEqual(result["workbook"]["sha256_before"], result["workbook"]["sha256_after"])
         self.assertEqual(result["workbook"]["converter"], "synthetic-fallback")
+
+    @unittest.skipUnless(HAS_REAL_XLS_FALLBACK, "LibreOffice, openpyxl and repository XLS fallback are required")
+    def test_real_legacy_xls_fallback_with_pinned_cell_selector(self):
+        import openpyxl
+
+        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+        phrase = "one two three four five six seven eight"
+        component = k08_component(nonce, normalize(phrase))
+        target = hashlib.sha256(component).hexdigest()
+        addresses = ["BL229","CF118","AX211","CR56","IP125","BW50","CW148","AC110"]
+        words = phrase.split()
+
+        with tempfile.TemporaryDirectory(prefix="h17-k08-selector-") as temp:
+            root = Path(temp)
+            (root / "evidence" / "print").mkdir(parents=True)
+            (root / "evidence" / "recovery-routing.json").write_text(
+                json.dumps({"K08":{"desk_nonce":nonce.hex()}}), encoding="utf-8")
+            (root / "acceptance.json").write_text(
+                json.dumps({"slot_sha256":{"K08":target}}), encoding="utf-8")
+            (root / "evidence" / "print" / "spool-reconstruction.log").write_text(
+                "2026-10-03T18:25:00Z JOB=PS-261003-0323 ATTEMPT=1 STATE=ACK "
+                "CLASS=RECOVER PAYLOAD=1E51EFD2E5CA8F4E1FC8B49297B3D74F DEST=store\n",
+                encoding="utf-8")
+            source_xlsx = root / "source.xlsx"
+            xls_dir = root / "xls"
+            xls_dir.mkdir()
+            profile = root / "lo-profile"
+            profile.mkdir()
+            book = openpyxl.Workbook()
+            sheet = book.active
+            sheet.title = "Visible"
+            for address, word in zip(addresses, words):
+                sheet[address] = word
+            book.save(source_xlsx)
+            book.close()
+            converter = shutil.which("libreoffice") or shutil.which("soffice")
+            proc = subprocess.run(
+                [converter, "--headless", "--nologo", "--nodefault", "--nolockcheck",
+                 "--norestore", "--nofirststartwizard", f"-env:UserInstallation={profile.as_uri()}",
+                 "--convert-to", "xls:MS Excel 97", "--outdir", str(xls_dir), str(source_xlsx)],
+                capture_output=True, text=True, timeout=60, check=False,
+            )
+            self.assertEqual(proc.returncode, 0, proc.stderr or proc.stdout)
+            source_xls = xls_dir / "source.xls"
+            self.assertTrue(source_xls.is_file(), proc.stderr or proc.stdout)
+            before = hashlib.sha256(source_xls.read_bytes()).hexdigest()
+            result = inspect_workbook(source_xls, root)
+            after = hashlib.sha256(source_xls.read_bytes()).hexdigest()
+
+        self.assertEqual(result["status"], "MATCH_REVIEW")
+        self.assertTrue(any(candidate["match"] for candidate in result["candidates"]))
+        self.assertEqual(before, after)
+        self.assertEqual(result["workbook"]["sha256_before"], result["workbook"]["sha256_after"])
+        self.assertIn(result["workbook"]["converter"], {"libreoffice", "soffice"})
 
     def test_hmac_normalization_known_answer(self):
         nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
