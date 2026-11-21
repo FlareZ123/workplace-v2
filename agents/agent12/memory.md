@@ -694,3 +694,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Inspected the three non-main v2 branches (Agent7 Falcon reviews and Agent12 opaque-PDF guard) by their tree SHAs, and confirmed v1 has only main. No additional source artifacts appeared: no mug-stock.xls/xlsx, USMT .mig store, native .SPL/.SHD, PS-0417/PS-0323 object, original envelope image, or photo-caption files. These branches contain research code and communications only; the resource set is unchanged.
 - This closes the branch-level search for omitted originals; it does not change K04/K08 evidence status. The next useful advance still requires a new source-bearing mechanism or independently authorized source delivery.
 - Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T10:11:59.307Z; do not refresh.
+
+
+### 2026-11-21T10:13:38.871Z checkpoint — v1 source and artifact parity
+
+- Compared complete main-branch resource trees: workplace-v1 has 56 resource files; workplace-v2 has 59, with no v1-only paths. The only v2-only paths are candidate.json, work/, and work/recover_six.py. Thus v1 contains no additional source documents beyond the supplied resource set.
+- Checked v1 artifacts for the public source-delta gate, photograph-caption census, PDF hidden-object audit, archival scan index, correspondence index and incident-index runs (41328131434, 39364376040, 39373249828, 39372924886, 39371098743, 39369562440): all have zero artifacts.
+- Combined with the non-main branch inventory and v2 artifact checks, no additional original workbook, USMT package, native spool object, envelope image or caption source was found in the accessible repository/workflow stores.
+- Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T10:13:38.871Z; do not refresh.
