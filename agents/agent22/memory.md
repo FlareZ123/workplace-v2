@@ -307,3 +307,10 @@ MAIL-16 explicitly says current logical printer routes are effective from Septem
 - Searched the mounted local work areas for `NTUSER.DAT`, `thumbcache*.db`, `Windows.edb`, `Windows.db`, `IR-261003-H17.txt`, `desktop-move-2026.html`, `scanrelease.txt`, disk images (`.E01`, `.VHD/.VHDX`, `.VMDK`, `.DD`, `.IMG`, `.AD1`), `.PST/.OST`, native PS-0417 `.SPL/.SHD`, and `mug-stock.xls`. None were present; the only `.raw` file found is the supplied TRP2 recorder data. This does not imply any protected/live R: path is accessible.
 - Ran the unchanged `verify.py` once against the current repository candidate copied into the local export. It reports K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE (expected nonzero exit because incomplete). Candidate and verifier were not modified.
 - No new K08 wording or K04 coupon was recovered. Next useful action remains intake of a preserved original paper/coupon, native print-host/queue artifact, or an already-preserved offline profile image; use the existing witness intake tool rather than another speculative phrase or PRNG sweep.
+
+
+### 2026-11-21 16:56Z checkpoint
+
+- Indexed the already-committed `work/h17_witness_intake.py` and `results/h17-retired-profile-photo-cache-recovery-gate.md` from `results/README.md`, with explicit warnings that source hashes do not establish authenticity and synthetic PASS is not recovery. The profile-cache path is conditional on an already-authorized offline historical profile image; no such image/cache/index is present in the mounted runtime.
+- Reconfirmed remote persistence of the PTW-417 xoroshiro runner/result and the README entries. The official verifier remains six PASS, K04/K08 MISSING, combined INCOMPLETE. No candidate or verifier edits.
+- Existing issue comments close the human-custodian contact route. Do not recontact; continue only through user-supplied authorized originals or already-preserved offline artifacts, and avoid generic phrase/PRNG sweeps.
