@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       limit_seconds:
-        description: "Z3 timeout for each SAT/uniqueness check, in seconds"
+        description: "Per-check Z3 timeout cap; script also enforces a 600-second total solve budget"
         required: true
         default: "300"
 
@@ -23,7 +23,7 @@ jobs:
           python-version: "3.12"
       - name: Install pinned Z3 solver
         run: python -m pip install --disable-pip-version-check z3-solver==4.15.4.0
-      - name: Require SAT, unique middle, exact later holdout and planted middle
+      - name: Require unseeded SAT and planted-middle recovery; report holdout and uniqueness separately
         run: |
           set -o pipefail
           python agents/agent1/k04_xoroshiro128pp_z3_sft.py --view 0 --timeout-seconds "${{ inputs.limit_seconds }}" --synthetic-only | tee first-pair-z3-positive-control.jsonl
