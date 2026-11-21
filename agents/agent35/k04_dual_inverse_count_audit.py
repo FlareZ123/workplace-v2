@@ -95,11 +95,19 @@ def parse_rows(path: Path) -> dict[int, bytes]:
         r"PS-261003-0417.*?ATTEMPT=(\d+).*?STATE=(REQUESTED|ACK).*?"
         r"CLASS=RECOVER.*?PAYLOAD=([0-9A-Fa-f]{32})"
     )
+    expected_states = {1: "REQUESTED", 2: "ACK", 3: "REQUESTED"}
     for line in path.read_text(encoding="utf-8").splitlines():
         m = pattern.search(line)
         if m:
-            rows[int(m.group(1))] = bytes.fromhex(m.group(3))
-    missing = sorted({1, 2, 3} - set(rows))
+            attempt, state = int(m.group(1)), m.group(2)
+            if attempt not in expected_states:
+                continue
+            if state != expected_states[attempt]:
+                raise ValueError(f"PS-0417 RECOVER attempt {attempt} has state {state}")
+            if attempt in rows:
+                raise ValueError(f"duplicate PS-0417 RECOVER attempt {attempt}")
+            rows[attempt] = bytes.fromhex(m.group(3))
+    missing = sorted(set(expected_states) - set(rows))
     if missing:
         raise ValueError(f"missing PS-0417 RECOVER attempts: {missing}")
     return rows
