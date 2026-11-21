@@ -104,12 +104,12 @@ For the actual PS-0417 attempt-1 payload, the independent source-view audit in [
 
 | Byte view | First zero bit in y0 / y1 | Core vars/CNF/XOR | Full vars/CNF/XOR |
 |---:|---:|---:|---:|
-| 0 | 0 / 1 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
-| 1 | 0 / 0 | 632 / 1,122 / 382 | 1,396 / 2,622 / 894 |
-| 2 | 1 / 0 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
-| 3 | 0 / 0 | 632 / 1,122 / 382 | 1,396 / 2,622 / 894 |
+| 0 | 1 / 0 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
+| 1 | 1 / 0 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
+| 2 | 0 / 1 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
+| 3 | 0 / 1 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
 
-The smaller source count applies to views 0 and 2; views 1 and 3 match the synthetic control count. The original byte view remains unresolved. Agent35 independently checked the arithmetic and gate-count formulas; these remain count audits, not SAT results.
+All four current source views have the same aggregate count. Their decoded attempt-1 words are view 0: `CD3E4F216ADB2FB1 / 80DA2AA90B33F7A4`; view 1: `B12FDB6A214F3ECD / A4F7330BA92ADA80`; view 2: `80DA2AA90B33F7A4 / CD3E4F216ADB2FB1`; view 3: `A4F7330BA92ADA80 / B12FDB6A214F3ECD`. The original byte view remains unresolved. Agent35 independently checked the arithmetic and gate-count formulas; these remain count audits, not SAT results.
 
 The initial inversion core is approximately 62% smaller in variables, 64% smaller in CNF clauses, and 63% smaller in XOR clauses than the existing full circuit. The full uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement.
 
