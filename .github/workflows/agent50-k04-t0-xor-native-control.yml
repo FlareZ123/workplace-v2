@@ -6,6 +6,14 @@ on:
         description: "Per-CryptoMiniSat timeout, 1 through 300 sec"
         required: true
         default: "180"
+      fit_flank:
+        description: "Fit both REQUESTED flank packets; third becomes a conditioned constraint"
+        required: true
+        type: choice
+        default: "false"
+        options:
+          - "false"
+          - "true"
 
 permissions:
   contents: read
@@ -25,7 +33,7 @@ jobs:
       - name: Require unseeded complete-middle inversion before source work
         run: |
           set -o pipefail
-          python agents/agent50/k04_direct_borrow_xornative_sft.py --synthetic --limit-seconds "${{ inputs.limit_seconds }}" | tee k04-t0-native-planted.jsonl
+          python agents/agent50/k04_direct_borrow_xornative_sft.py --synthetic --limit-seconds "${{ inputs.limit_seconds }}" ${{ inputs.fit_flank == 'true' && '--fit-flank' || '' }} | tee k04-t0-native-planted.jsonl
       - name: Preserve planted disposition
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,7 +61,7 @@ jobs:
       - name: Check first satisfying state against original full commitment before holdout
         run: |
           set -o pipefail
-          python agents/agent50/k04_direct_borrow_xornative_sft.py --source-view "${{ matrix.view }}" --limit-seconds "${{ inputs.limit_seconds }}" | tee k04-t0-native-view-${{ matrix.view }}.jsonl
+          python agents/agent50/k04_direct_borrow_xornative_sft.py --source-view "${{ matrix.view }}" --limit-seconds "${{ inputs.limit_seconds }}" ${{ inputs.fit_flank == 'true' && '--fit-flank' || '' }} | tee k04-t0-native-view-${{ matrix.view }}.jsonl
       - name: Preserve source disposition
         if: always()
         uses: actions/upload-artifact@v4
