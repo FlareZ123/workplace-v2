@@ -48,23 +48,19 @@ DEFAULT_INCLUDE = [
     "*-wal",
     "*-shm",
     "*.emf",
-    # Native print jobs, their queue sidecars, and common rendered spool formats.
-    "*.spl",
-    "*.shd",
-    "*.prn",
-    "*.pcl",
-    "*.ps",
-    "*.zpl",
-    "*.xps",
-    "*.oxps",
-    "*.json",
-    "*PrintService*.evtx",
-    # WN-14/profile note stores may retain OneNote source material.
+    # WN-14/profile note stores may retain OneNote or legacy Sticky Notes material.
     "*.one",
     "*.onepkg",
     "*.onecache",
+    "*.snt",
     "*.html",
     "*.txt",
+]
+# Add only after an independent source record binds the native spool directory to H-17.
+# This preset is opt-in so a general profile refresh does not broaden into unrelated jobs.
+NATIVE_SPOOL_INCLUDE = [
+    "*.spl", "*.shd", "*.prn", "*.pcl", "*.ps", "*.zpl", "*.xps", "*.oxps",
+    "*.json", "*PrintService*.evtx",
 ]
 REPORTS = {"summary": None, "catalog": "catalog", "all": "all", "failureonly": "failureonly"}
 
@@ -155,6 +151,15 @@ def validate_include_patterns(includes: Iterable[str]) -> None:
             )
 
 
+def select_include_patterns(includes: Iterable[str] | None = None,
+                            source_bound_native_spool: bool = False) -> list[str]:
+    """Select the K08 profile allowlist, optionally adding a source-bound K04 spool set."""
+    if source_bound_native_spool:
+        # Retain the K08 defaults even when a caller adds targeted custom patterns.
+        return list(dict.fromkeys([*DEFAULT_INCLUDE, *(includes or []), *NATIVE_SPOOL_INCLUDE]))
+    return list(includes or DEFAULT_INCLUDE)
+
+
 def build_extract_args(store: Path, destination: Path, log: Path, includes: Iterable[str],
                        keyfile: Path | None = None, algorithm: str | None = None) -> list[str]:
     include_list = list(includes)
@@ -182,7 +187,7 @@ def prepare_output(out: Path) -> None:
 def run_intake(store: Path, tool: Path, out: Path, mode: str = "verify",
                report: str = "all", includes: Iterable[str] | None = None,
                keyfile: Path | None = None, algorithm: str | None = None,
-               timeout: int = 600) -> dict[str, object]:
+               timeout: int = 600, source_bound_native_spool: bool = False) -> dict[str, object]:
     if store.is_symlink():
         raise ValueError(f"input store must not be a symlink: {store}")
     if out.is_symlink():
@@ -205,7 +210,9 @@ def run_intake(store: Path, tool: Path, out: Path, mode: str = "verify",
     if report not in REPORTS:
         raise ValueError(f"unsupported verification report: {report}")
     if mode == "extract":
-        includes = list(includes or DEFAULT_INCLUDE)
+        includes = select_include_patterns(includes, source_bound_native_spool)
+    elif source_bound_native_spool:
+        raise ValueError("--source-bound-native-spool is valid only with --mode extract")
     if mode == "verify" and includes:
         raise ValueError("--include is valid only with --mode extract")
     if not tool.is_file():
@@ -259,6 +266,7 @@ def run_intake(store: Path, tool: Path, out: Path, mode: str = "verify",
         "elapsed_seconds": round(elapsed, 3),
         "verification_report": report if mode == "verify" else None,
         "include_patterns": list(includes or DEFAULT_INCLUDE) if mode == "extract" else [],
+        "source_bound_native_spool": source_bound_native_spool,
         "decrypt_requested": keyfile is not None,
         "keyfile_supplied": keyfile is not None,
         "algorithm_supplied": algorithm is not None,
@@ -283,7 +291,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--mode", choices=("verify", "extract"), default="verify")
     parser.add_argument("--report", choices=tuple(REPORTS), default="all", help="verification report type (default: all files)")
     parser.add_argument("--out", type=Path, required=True, help="new/empty output directory for logs, manifest, and extracted files")
-    parser.add_argument("--include", action="append", default=None, help="USMT include pattern; repeatable; extract mode only")
+    parser.add_argument("--include", action="append", default=None,
+                        help="USMT include pattern; repeatable; extract mode only; normally replaces defaults")
+    parser.add_argument("--source-bound-native-spool", action="store_true",
+                        help="add native spool/queue formats while retaining defaults; use only after an independent source record binds the spool directory to H-17")
     parser.add_argument("--keyfile", type=Path, default=None, help="authorized USMT decryption key file (never a key string)")
     parser.add_argument("--alg", default=None, help="USMT encryption algorithm; requires --keyfile")
     parser.add_argument("--timeout", type=int, default=600)
@@ -294,7 +305,8 @@ def main(argv: list[str] | None = None) -> int:
     ns = parse_args(argv)
     try:
         manifest = run_intake(ns.store, ns.tool, ns.out, ns.mode, ns.report,
-                              ns.include, ns.keyfile, ns.alg, ns.timeout)
+                              ns.include, ns.keyfile, ns.alg, ns.timeout,
+                              ns.source_bound_native_spool)
     except (ValueError, FileNotFoundError, subprocess.TimeoutExpired, subprocess.CalledProcessError,
             RuntimeError, OSError) as exc:
         print(f"ERROR: {type(exc).__name__}: {exc}", file=sys.stderr)
