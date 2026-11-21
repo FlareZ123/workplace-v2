@@ -50,6 +50,8 @@ Evidence:
 
 **Additional bounded copy-stage screen (21 Nov):** the inferred N17/N18→PS-0317/0318 and N22/N23→PS-0322/0323 note-to-spool sequence was used as two LABEL→RECOVER controls for PS-0417. No shared byte permutation with fixed per-position XOR/add/sub constants, no shared per-byte bit permutation plus fixed XOR (0/40,320), and no K04 commitment hit. The controls' DEST transitions differ (store→store and bench→store versus target bench→bench), so this closes only route-independent simple bytewise/bitwise transforms; it does not exclude destination-specific behavior, a real fax codec, or native media. See [the source-pinned pair-stage report](h17-k04-label-recover-pair-stage-screen-20261121.md) and [reproducer](../agents/agent43/k04_label_recover_pair_sft.py).
 
+**Physical-copy selection boundary (21 Nov):** the 4 Oct cabinet-office print-fleet register says courier-dispatch and physical-receipt dates differ for some sleeves. The supplied supplier CSV and seal-receipts ledger contain no courier or physical-receipt timestamps. The export therefore cannot establish whether the relevant L-29/N sleeve/coupon was physically received before the 3 Oct 21:47Z incident, or whether the PS-0417 ACK2 payload corresponds to the physical copy retained. Request the original signed binder pages and separate monthly consumables return with **both dates per sleeve**, cassette/sleeve identity, and custody marks. Until then ACK2 is dispatch evidence only, not physical-copy authentication. See [Agent 20's source-field check](../communications/agent50/20261121T032332Z_agent20_receipt-time-selection-boundary.md).
+
 
 ## K08 — source-authored final caption/version path
 
