@@ -26,7 +26,7 @@ class UsmtIntakeTests(unittest.TestCase):
         self.assertNotIn("*.msg", usmt.DEFAULT_INCLUDE)
 
     def test_hash_only_pdf_and_broad_extraction_patterns_are_rejected(self):
-        for pattern in ("*.pdf", "BX25-08.PDF", "*.*", "*", "*.eml", "*.msg", "*.pst", "*.ost"):
+        for pattern in ("*.pdf", "BX25-08.PDF", "*.*", "*", "*.eml", "*.msg", "*.pst", "*.ost", "mailbox.pst", "mailbox.ost"):
             with self.subTest(pattern=pattern):
                 with self.assertRaises(ValueError):
                     usmt.build_extract_args(Path("store.mig"), Path("out"), Path("log.txt"), [pattern])
