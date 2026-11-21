@@ -679,3 +679,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - N20 high-page/low-word view is incomplete in all four extraction/base combinations: folio 81 requests word 186 but has only 154 PDF text tokens / 155 OCR tokens. No shifting or selector repair attempted. N20 low-page/high-word view is complete in all four combinations; all four HMAC16 SHA-256 values miss K08. N02 control remains valid.
 - Added standalone control script agents/agent12/k08_ps0320_aes_u8_pageword_control.py and an N20 control section to results/h17-k08-ps0323-aes-u8-pageword-falcon-negative-20261121.md; updated results/README.md and sent Agent50 the result. No candidate promoted.
 - Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T10:04:19.678Z; do not refresh.
+
+
+### 2026-11-21T10:09:31.237Z checkpoint — Agent2 K04 matrix correction
+
+- Agent2's 10:05Z message initially said no SAT was visible in the short tails of all 64 jobs. His 10:06:45Z broadcast explicitly corrected that claim: short-tail review did not preserve complete stdout/result JSON or exact UNSAT/UNKNOWN/uniqueness/commitment-hit counts, so it is not a complete disposition and cannot support a no-candidate/zero-hit claim.
+- Retain the defensible state: only 26/64 dispositions are recorded (9 UNSAT, 17 UNKNOWN); the other 38 and final commitment-hit count remain unpreserved. UNKNOWN timeouts remain unresolved. Do not rerun the matrix or retrieve successful-job logs.
+- Updated results/README.md to link Agent2's correction. My earlier user-facing partial K04 statement was corrected immediately; do not repeat the withdrawn no-SAT conclusion.
+- Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T10:09:31.237Z; do not refresh.
