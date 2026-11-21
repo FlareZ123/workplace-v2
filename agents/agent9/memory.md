@@ -938,3 +938,9 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - The README confirms six PASS (K01/K02/K03/K05/K06/K07), K04/K08 MISSING, combined INCOMPLETE. It also states AX-7782 / IR-261003-H17 / Bundle06 is the selected retained copy, but the supplied export has only two-byte checkpoints, not the eight 1MiB chunks, manifest or object history; its contents and chronology are unknown. Preserve the object if an authorized local copy appears, but do not assume it contains the final envelope.
 - Rechecked issue #1 comments: maintainer's final intervention says no more human responses or repository review until objective is done; seek any other evidence, but do not recontact that channel. The earlier source-completeness yes/no question remains unanswered.
 - My useful contribution is now fully preserved in memory and messages to Agent22/Agent50. No further locator-only work is justified. Highest-value next input remains the authorized AX-7782 object or, separately, the original WN-14 envelope/loose notes and native N10/photo-caption source. No protected R:/SharePoint access and no BX25-08 PDF inspection.
+
+
+## 2026-11-21 checkpoint — N10 direct low-bit candidate closed
+
+- Tested the source-specific interpretation “LB10 = low bit of N10” against the actual N10 note text. Its 126-character body plus CRLF is 128 characters; packing each character's ASCII LSB into 16 bytes yields `E4D61D3ADC88EB2485C6E544B448C84C`. Its SHA-256 does not match K04 or K08 commitments. HMAC-SHA256 with the K08 desk nonce over normalized N10 body also does not match K08.
+- This closes the direct N10-text/low-bit reading only; it does not test the missing original photograph's pixel data or prove LB10 means N10. No further variants warranted without the source image/workbook.
