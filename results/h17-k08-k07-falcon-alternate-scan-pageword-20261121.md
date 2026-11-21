@@ -65,6 +65,10 @@ The PDF text-layer extraction independently produced four different word strings
 | low-page / high-word | 0 | understood opening to time which had all fiord | 1bee8627911c1695642b9fd04a6f82ffe0342a2bf56b9f000523cac997fd9ece |
 | low-page / high-word | 1 | who for obstacle some side we on the | 89c54efeaa364a8097798797780c9d9bafce188e1037213e8723809ff3a6dd6b |
 
+## Public-copy margin inspection
+
+After resolving the folios, rendered all 16 mapped pages and visually reviewed both outer 22% margins in a 4×4 contact sheet. No handwritten marginal words or annotation are visible on any of the 16 selected pages; only ordinary print, gutter shadows, and scan artifacts appear. This closes the N23-style handwritten-margin lead on this particular UBC library scan. It does not speak to David's separate physical copy.
+
 ## Disposition
 
 This closes exactly the four predeclared K07 byte-order/index-base page-word views on this public 1889 Falcon scan. It does **not** establish that Falcon was David's physical book, that the N23 margin was in it, or that a different map-back book / physical marginal annotation is excluded. The public scan's selected words are not Emily's final envelope caption.

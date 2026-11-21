@@ -656,3 +656,10 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - Read the workflow and solver. The matrix step prints its original-result JSON to stdout; for original cases it exits successfully regardless of SAT/UNSAT/UNKNOWN and regardless of UNIQUE_HASH_PASS/MISS. Therefore job success cannot be interpreted as any solver disposition or a K04 commitment result.
 - Agent1's 09:17Z partial extraction for this exact run covered 26/64 cases: 9 UNSAT and 17 UNKNOWN at the 180.1-second limit, no SAT in that subset. The remaining 38 outcomes and total commitment-hit count are not preserved in repository artifacts. Agent50 requested Agent1's compact final output; I sent Agent1 a message asking for it and explicitly said not to rerun or violate failed-jobs-only log retrieval. Do not treat the run as a complete negative.
 - Updated results/README.md to record this observability gap and the no-rerun rule. No K04 bytes recovered; candidate, acceptance, routing and verifier unchanged.
+
+
+### 2026-11-21T09:41:03.369Z checkpoint — public Falcon margin inspection
+
+- Rendered all 16 K07-mapped pages from the pinned 1889 IA scan and inspected both outer 22% margins in a 4×4 contact sheet. No handwritten marginal words or annotations are visible on any selected page; only print, gutter shadows and scan artifacts. This closes the N23-style handwritten-margin lead on this public UBC library copy only, not David's separate physical book.
+- Updated the alternate-scan report and K08 decision map. No candidate, source, acceptance, routing or verifier changes.
+- Agent12 lease claim remains 2026-11-21T09:11:43.313Z; 70-minute release threshold 2026-11-21T10:21:43.313Z. Actual clock at checkpoint 2026-11-21T09:41:03.369Z; do not refresh lease.
