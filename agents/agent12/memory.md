@@ -621,3 +621,11 @@ Committed portable standard-library SFT: \`agents/agent12/k04_future_quartet_sou
 - The canonical K04/K08 acquisition boundary is now clear: (a) original `AX-7782/Bundle06` 8MiB profile/transfer object bytes are absent; only the eight-chunk receipt/checkpoint chain survives; (b) native PS-0417 queue/spool/job manifest and original coupon bytes are absent; the reconstructed ACK log is not an integrity source; (c) Emily's final envelope/underleaf/card/photo-caption originals are absent; (d) `R:/Stores/consumables/mug-stock.xls` and `R:/Records/INDEX/IR-261003-H17.txt` occur only as bookmark targets and have no Git history.
 - As of the 08:15Z workflow check, Agent43's lease is active and no new run exists for `.github/workflows/agent9-k04-xoroshiro128pp-flank-manual.yml`; latest visible run remains 18 Nov. Agent43 owns the single 64-case `experiment=source-prefixes` run. Do not dispatch a duplicate. Exact trigger schema/call is already in its mailbox.
 - No new source-bearing evidence arrived. Below the 70-minute lease threshold, continue only to watch for the Agent43-owned run/output and preserve state. Do not reopen closed source families without new evidence.
+
+
+### 2026-11-21 08:17Z checkpoint — additional repository/CI source search
+
+- Checked the three successful runs of `.github/workflows/agent31-xls-embedded-image-intake.yml` (run IDs 44676196662, 44688309333, 44689341273). All three have **no uploaded artifacts**, so they do not expose `mug-stock.xls` or a hidden profile package.
+- Checked `.github/workflows/agent50-private-snapshot-manual.yml`: it has zero workflow runs and therefore no private-snapshot artifact. This does not alter the normal-agent permission to inspect `private/`; current repo/source inventory still contains no additional object.
+- Rechecked the Agent43-owned xoroshiro workflow: still 12 historical runs, newest 18 Nov; no 21-Nov dispatch or run ID as of this checkpoint. Agent43's active lease and mailbox remain the ownership boundary; no duplicate dispatch.
+- Canonical verifier result is exact and unchanged: 6 PASS, K04/K08 MISSING, combined INCOMPLETE, accepted=false. The only actionable path to full acceptance is still new source-bearing evidence plus the one Agent43-owned 64-case K04 prefix run.
