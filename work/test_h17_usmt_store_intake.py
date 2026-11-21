@@ -22,12 +22,18 @@ class UsmtIntakeTests(unittest.TestCase):
         self.assertIn("*-shm", usmt.DEFAULT_INCLUDE)
         self.assertIn("*.emf", usmt.DEFAULT_INCLUDE)
         self.assertNotIn("*.pdf", usmt.DEFAULT_INCLUDE)
+        self.assertNotIn("*.eml", usmt.DEFAULT_INCLUDE)
+        self.assertNotIn("*.msg", usmt.DEFAULT_INCLUDE)
 
     def test_hash_only_pdf_and_broad_extraction_patterns_are_rejected(self):
-        for pattern in ("*.pdf", "BX25-08.PDF", "*.*", "*"):
+        for pattern in ("*.pdf", "BX25-08.PDF", "*.*", "*", "*.eml", "*.msg", "*.pst", "*.ost"):
             with self.subTest(pattern=pattern):
-                with self.assertRaisesRegex(ValueError, "remain hash-only"):
+                with self.assertRaises(ValueError):
                     usmt.build_extract_args(Path("store.mig"), Path("out"), Path("log.txt"), [pattern])
+
+    def test_exact_scoped_message_file_is_allowed(self):
+        args = usmt.build_extract_args(Path("store.mig"), Path("out"), Path("log.txt"), ["MAIL-16.eml"])
+        self.assertIn("MAIL-16.eml", args)
 
     def test_verify_runs_read_only_and_preserves_native_log(self):
         with tempfile.TemporaryDirectory() as td:
