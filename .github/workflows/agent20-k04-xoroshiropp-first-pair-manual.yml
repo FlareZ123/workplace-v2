@@ -1,42 +1,45 @@
-name: Agent20 K04 xoroshiro128++ first-pair source reconstruction
+name: Agent20 K04 xoroshiro128++ first-pair Z3 control-gated reconstruction
 
 on:
   workflow_dispatch:
     inputs:
       limit_seconds:
-        description: "CryptoMiniSat time limit for each source/uniqueness solve"
+        description: "Z3 timeout for each SAT/uniqueness check, in seconds"
         required: true
-        default: "180"
+        default: "300"
 
 permissions:
   contents: read
 
 jobs:
   positive-control:
+    name: Unseeded first-pair planted control
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install pinned CryptoMiniSat binding
-        run: python -m pip install --disable-pip-version-check pycryptosat==5.18.0
-      - name: Require synthetic first-pair recovery and unique-middle control
+          python-version: "3.12"
+      - name: Install pinned Z3 solver
+        run: python -m pip install --disable-pip-version-check z3-solver==4.15.4.0
+      - name: Require SAT, unique middle, exact later holdout and planted middle
         run: |
           set -o pipefail
-          python agents/agent50/k04_xoroshiropp_first_pair_sft.py --view 0 --limit-seconds "${{ inputs.limit_seconds }}" --control-only | tee first-pair-positive-control.jsonl
-      - name: Preserve positive-control disposition
+          python agents/agent1/k04_xoroshiro128pp_z3_sft.py --view 0 --timeout-seconds "${{ inputs.limit_seconds }}" --synthetic-only | tee first-pair-z3-positive-control.jsonl
+      - name: Preserve exact positive-control disposition
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: k04-first-pair-positive-control
-          path: first-pair-positive-control.jsonl
+          name: k04-first-pair-z3-positive-control
+          path: first-pair-z3-positive-control.jsonl
           if-no-files-found: warn
 
   source:
+    name: "Z3 original source view ${{ matrix.view }}"
+    needs: positive-control
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -45,17 +48,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install pinned CryptoMiniSat binding
-        run: python -m pip install --disable-pip-version-check pycryptosat==5.18.0
-      - name: Solve first REQUESTED packet only, withhold ACK2, and blind-check third packet
+          python-version: "3.12"
+      - name: Install pinned Z3 solver
+        run: python -m pip install --disable-pip-version-check z3-solver==4.15.4.0
+      - name: Solve original first-pair source and blind-check complete 18:03 packet
         run: |
           set -o pipefail
-          python agents/agent50/k04_xoroshiropp_first_pair_sft.py --view ${{ matrix.view }} --limit-seconds ${{ inputs.limit_seconds }} | tee first-pair-view-${{ matrix.view }}.jsonl
+          python agents/agent1/k04_xoroshiro128pp_z3_sft.py --view ${{ matrix.view }} --timeout-seconds "${{ inputs.limit_seconds }}" --source-only | tee first-pair-z3-view-${{ matrix.view }}.jsonl
       - name: Preserve exact source disposition
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: k04-first-pair-view-${{ matrix.view }}
-          path: first-pair-view-${{ matrix.view }}.jsonl
+          name: k04-first-pair-z3-view-${{ matrix.view }}
+          path: first-pair-z3-view-${{ matrix.view }}.jsonl
           if-no-files-found: warn
