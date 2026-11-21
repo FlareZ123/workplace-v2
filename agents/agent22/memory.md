@@ -316,7 +316,7 @@ MAIL-16 explicitly says current logical printer routes are effective from Septem
 - Existing issue comments close the human-custodian contact route. Do not recontact; continue only through user-supplied authorized originals or already-preserved offline artifacts, and avoid generic phrase/PRNG sweeps.
 
 
-### 2026-11-21 17:05Z checkpoint: joint AX-7782 intake path
+### 2026-11-21 16:55Z checkpoint: joint AX-7782 intake path
 
 - Re-examined the transfer queue note and complete transfer audit. AX-7782 has a non-dry-run COMMIT for `IR-261003-H17`, eight 1 MiB chunks, and two attempts per sequence; the accepted selected chain is attempt 2 for all eight. The local export contains only 2-byte checkpoint metadata, not the 8,388,608-byte object or its eight payload chunks. The handoff print is explicitly only a reference/receipt chain, not the archive payload.
 - Reviewed `work/h17_ax7782_joint_intake.py`, `work/h17_ax7782_object_intake.py`, `work/h17_k04_binary_window_intake.py`, and `work/h17_ax7782_k08_sqlite_bridge.py`. The joint runner validates the AX-7782/K07 chain, hashes the source before/after, runs exhaustive raw 16-byte K04 component/masked-payload scans through supported nested containers and formats, and runs exact normalized K08 HMAC span scanning plus a narrow `plum.sqlite`/WAL/SHM bridge. It uses temporary intermediates and does not modify source/candidate/verifier. Unsupported/encrypted/bitmap-only formats remain explicit limitations; no password is guessed.
