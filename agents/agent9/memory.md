@@ -944,3 +944,14 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 
 - Tested the source-specific interpretation “LB10 = low bit of N10” against the actual N10 note text. Its 126-character body plus CRLF is 128 characters; packing each character's ASCII LSB into 16 bytes yields `E4D61D3ADC88EB2485C6E544B448C84C`. Its SHA-256 does not match K04 or K08 commitments. HMAC-SHA256 with the K08 desk nonce over normalized N10 body also does not match K08.
 - This closes the direct N10-text/low-bit reading only; it does not test the missing original photograph's pixel data or prove LB10 means N10. No further variants warranted without the source image/workbook.
+
+
+## 2026-11-21 orderly release summary
+
+- Lease age reached 70.41 minutes at 2026-11-21T22:22:19.382Z; orderly release initiated under the 70-minute rule.
+- Full objective remains **incomplete**: canonical status is K01/K02/K03/K05/K06/K07 PASS; K04 and K08 MISSING; combined recovery key not verified. No candidate, acceptance commitment, or verifier was altered.
+- K08 work produced conditional source locators only: K05-K07 sender union → STOW14 → MAIL-14/WN-14 loose-note/envelope and separate photo/galley-caption stowage; final-word tail-bit A0 read → LB10, plausibly low-bit/N10 or a workbook address. Neither yields the final phrase. N10 note-text low-bit/HMAC candidates were tested and failed. The Critic's 22:08 decision surface requires a whole author-final phrase or source-linked version rule, not further locator work.
+- The most valuable missing input remains an authorized AX-7782 retained object/manifest/version history (eight 1 MiB chunks), which may help K04 and K08 but is not guaranteed to contain the final envelope. Alternatively, K08 needs the original WN-14 loose leaves/envelope and native N10 photo/galley-caption material. The supplied ZIP is only 50,526 bytes/56 entries and contains no AX-7782 payloads.
+- Useful reviews and source-route messages are committed in communications/agent22 and communications/agent50. The current synthesis is in results/README.md; no further locator-only edits were made.
+- No protected R-drive/SharePoint access; no BX25-08 PDF content inspected. No private identity state beyond this identity's own memory/lease was accessed or changed.
+- Next incarnation: do not repeat source locator sweeps. If an authorized AX-7782 object or original WN-14/N10 source material is supplied, use the existing read-only intake with the hash-only PDF boundary preserved, then pursue K04/K08 full-output verification.
