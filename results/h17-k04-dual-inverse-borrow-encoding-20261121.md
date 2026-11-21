@@ -24,7 +24,7 @@ Subtract `a`, rotate right by 17, and subtract `a` again:
 b = \operatorname{ROTR}_{64}(y-a,17)-a \pmod{2^{64}}.
 \]
 
-This is an exact identity, not a heuristic. Therefore one symbolic 64-bit state word `a0` determines `b0` from the first observed output `y0`. **Prior-art qualification:** Agent7's existing one-variable script already used this first-output inversion; that step is not claimed as new here. The incremental reduction is applying the inverse identity to the second output as well, fusing its difference with equality to actual `b1`, and using direct borrow gates. Apply the xoroshiro transition:
+This is an exact identity, not a heuristic. Therefore one symbolic 64-bit state word `a0` determines the transition word `t0 = a0 XOR b0` directly, without materializing `b0`. Let `u0 = ROTR64(y0 - a0, 17)`; then `b0 = u0 - a0`, so `t0 = a0 XOR b0 = u0 XOR borrow`, where `borrow` is the borrow chain for `u0-a0`. Bitwise, `t0[i] = u0[i] XOR r[i]` and `r[i+1] = MAJ(~u0[i], a0[i], r[i])`, with `r0=0`. **Prior-art qualification:** Agent7's existing one-variable script already used the first-output inversion; that step is not claimed as new here. The incremental reductions are deriving `t0` directly, applying the inverse identity to the second output, fusing its difference with equality to actual `b1`, and using direct borrow gates. Apply the xoroshiro transition:
 
 \[
 t=a_0\oplus b_0,
@@ -42,7 +42,7 @@ The second observed output (y_1) imposes the same inverse identity on the next s
 b_1=\operatorname{ROTR}_{64}(y_1-a_1,17)-a_1.
 \]
 
-Thus the first-pair inverse is a 64-bit search over (a_0), with `b0` derived and the second output expressed as equality to the required `b1`. Outputs 0 and 1 are not fitted through two forward-output adders.
+Thus the first-pair inverse is a 64-bit search over `a0`; `t0` is derived directly, and the second output is expressed as equality to the required `b1`. `b0` can be reconstructed as `a0 XOR t0` after solving if needed. Outputs 0 and 1 are not fitted through two forward-output adders.
 
 ## Direct borrow-chain encoding
 
@@ -66,6 +66,8 @@ For constant-minus-variable `u = c - a`, the difference bit is `u_i = c_i XOR a_
 
 The initial borrow is zero. This removes the 64-variable constant word and simplifies the carry chain.
 
+For the first output, after computing `u0 = ROTR64(y0-a0,17)`, the subtraction `b0=u0-a0` need not materialize `b0`. The transition uses only `t0=a0 XOR b0`; substituting the difference bit gives `t0[i]=u0[i] XOR r[i]`, with `r[i+1]=MAJ(~u0[i],a0[i],r[i])`. This eliminates the 64 `b0` variables and the 64 separate `a0 XOR b0` variables, replacing them with the 63 non-alias `t0` XOR outputs.
+
 For the second observed output, the required difference word need not be allocated at all. Let `u = ROTR64(y1 - a1, 17)`. The equality to actual `b1` is directly:
 
 \[
@@ -78,7 +80,7 @@ with the same borrow-out recurrence `MAJ(~u_i, a1_i, r_i)`. This fuses the secon
 
 The first SAT solve needs only:
 1. symbolic `a0`;
-2. derived `b0`;
+2. derived `t0` directly, without materializing `b0`;
 3. one xoroshiro transition to (`(a1,b1)`);
 4. the second-output inverse equality.
 
@@ -97,23 +99,23 @@ The local reference encoding produced the following counts for the current synth
 | Circuit | Variables | CNF clauses | XOR clauses |
 |---|---:|---:|---:|
 | Existing first-pair circuit | 1,658 | 3,136 | 1,024 |
-| Dual-inverse/direct-borrow first-pair core | **632** | **1,122** | **382** |
-| Full circuit for middle uniqueness | 1,396 | 2,622 | 894 |
+| Dual-inverse/direct-borrow/t0 first-pair core | **567** | **1,122** | **317** |
+| Full circuit for middle uniqueness | 1,331 | 2,622 | 829 |
 
 For the actual PS-0417 attempt-1 payload, the independent source-view audit in [Agent35's count script](../agents/agent35/k04_dual_inverse_count_audit.py) gives:
 
 | Byte view | First zero bit in y0 / y1 | Core vars/CNF/XOR | Full vars/CNF/XOR |
 |---:|---:|---:|---:|
-| 0 | 1 / 0 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
-| 1 | 1 / 0 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
-| 2 | 0 / 1 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
-| 3 | 0 / 1 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
+| 0 | 1 / 0 | 566 / 1,119 / 317 | 1,330 / 2,619 / 829 |
+| 1 | 1 / 0 | 566 / 1,119 / 317 | 1,330 / 2,619 / 829 |
+| 2 | 0 / 1 | 566 / 1,119 / 317 | 1,330 / 2,619 / 829 |
+| 3 | 0 / 1 | 566 / 1,119 / 317 | 1,330 / 2,619 / 829 |
 
 All four current source views have the same aggregate count. Their decoded attempt-1 words are view 0: `CD3E4F216ADB2FB1 / 80DA2AA90B33F7A4`; view 1: `B12FDB6A214F3ECD / A4F7330BA92ADA80`; view 2: `80DA2AA90B33F7A4 / CD3E4F216ADB2FB1`; view 3: `A4F7330BA92ADA80 / B12FDB6A214F3ECD`. The original byte view remains unresolved. Agent35 independently checked the arithmetic and gate-count formulas; these remain count audits, not SAT results.
 
-The fused equality removes 64 materialized `required_b1` variables and 64 equality XOR clauses without changing CNF count. For the synthetic control this is 696 / 1,122 / 446 → 632 / 1,122 / 382 (core); for the source constants it is 695 / 1,119 / 446 → 631 / 1,119 / 382. The corresponding full source uniqueness circuit falls from 1,459 / 2,619 / 958 to 1,395 / 2,619 / 894. Agent35's independent adversarial review found no sign, carry, or rotation error in the fused equations.
+Two successive fusions reduce the circuit. First, fusing the second-output difference with equality removes 64 materialized `required_b1` variables and 64 equality XOR clauses without changing CNF count: synthetic core 696 / 1,122 / 446 → 632 / 1,122 / 382; source core 695 / 1,119 / 446 → 631 / 1,119 / 382. Second, deriving `t0` directly removes 65 more variables and 65 XOR clauses, again with CNF unchanged: synthetic core 632 / 1,122 / 382 → 567 / 1,122 / 317; source core 631 / 1,119 / 382 → 566 / 1,119 / 317. The full source uniqueness circuit falls from 1,459 / 2,619 / 958 to 1,395 / 2,619 / 894 after the first fusion, then to 1,330 / 2,619 / 829 after the `t0` simplification. Agent35's independent adversarial review found no sign, carry, or rotation error in the fused equations; the final `t0` refinement has been sent for review.
 
-The initial inversion core is approximately 62% smaller in variables, 64% smaller in CNF clauses, and 63% smaller in XOR clauses than the existing full circuit. The full uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement.
+The final source initial-inversion core is approximately 66% smaller in variables, 64% smaller in CNF clauses, and 69% smaller in XOR clauses than the existing full circuit. The full middle-uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement. The full uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement.
 
 ## Validation performed
 
