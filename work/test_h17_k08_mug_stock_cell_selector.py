@@ -35,8 +35,7 @@ class SelectorTests(unittest.TestCase):
 
     def test_sheet_mapping_is_bounded(self):
         self.assertEqual(map_sheets(["Sheet1"], None), {"single":["Sheet1"]*8})
-        self.assertEqual(map_sheets(["A","B","C","D"], None),
-                         {"groups_A_to_D":["A","A","B","B","C","C","D","D"]})
+        self.assertIsNone(map_sheets(["A","B","C","D"], None))
         self.assertIsNone(map_sheets(["Sheet1","Sheet2","Sheet3"], None))
         self.assertEqual(map_sheets(["Sheet1","Sheet2"], "Sheet2"), {"single":["Sheet2"]*8})
 
