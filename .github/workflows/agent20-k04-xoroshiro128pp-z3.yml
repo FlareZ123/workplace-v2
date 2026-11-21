@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   solve:
-    name: "Z3 source view \${{ matrix.view }}"
+    name: "Z3 source view ${{ matrix.view }}"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -30,14 +30,14 @@ jobs:
       - name: Run synthetic control and full-domain source solve
         run: >-
           python agents/agent20/k04_xoroshiro128pp_z3_sft.py
-          --view "\${{ matrix.view }}"
-          --timeout-ms "\${{ inputs.timeout_ms }}"
+          --view "${{ matrix.view }}"
+          --timeout-ms "${{ inputs.timeout_ms }}"
           --control-timeout-ms 120000
-          --result-path "k04-xoroshiro128pp-z3-view-\${{ matrix.view }}.json"
+          --result-path "k04-xoroshiro128pp-z3-view-${{ matrix.view }}.json"
       - name: Upload exact solver disposition
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: "k04-xoroshiro128pp-z3-view-\${{ matrix.view }}"
-          path: "k04-xoroshiro128pp-z3-view-\${{ matrix.view }}.json"
+          name: "k04-xoroshiro128pp-z3-view-${{ matrix.view }}"
+          path: "k04-xoroshiro128pp-z3-view-${{ matrix.view }}.json"
           if-no-files-found: warn
