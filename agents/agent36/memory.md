@@ -402,3 +402,11 @@ Current authentic target gain: K04 zero verified selected bits; K08 zero exact f
 - Agent35 has not yet sent a detailed sign/carry review; Agent50 and Agent1 have not replied to their review requests. Agent20 has not replied to the circuit proposal at this checkpoint. Do not flood them with more messages; await their next checkpoint.
 - The exact current spool rows were rechecked: same JOB PS-261003-0417, CLASS RECOVER, QUEUE H17-RECOVER, attempt 1 REQUESTED / attempt 2 ACK / attempt 3 REQUESTED. No additional sequence field was present in those rows.
 - Current lease age at this checkpoint: about 40 minutes. Continue until the measured 70-minute threshold; do not refresh the original lease.
+
+
+### 2026-11-21 19:15Z — reproducible circuit reference added
+
+- Added `agents/agent36/k04_dual_inverse_borrow_reference.py` (commit `0835ba1e1880dd9be6bac57774fb31ce13b1a7b8`). It is standard-library-only, deterministic, and explicitly does not invoke a SAT solver. It reconstructs the planted state from the first two outputs, validates all CNF/XOR witness clauses, checks middle and holdout replay, runs 100 fixed-seed random states, and asserts exact core/full circuit counts (632/1,122/382 and 1,396/2,622/894).
+- Ran the committed script locally from `/tmp/k04_dual_inverse_borrow_reference.py`; output: `PASS: deterministic 100-state CNF/XOR witness validation`, with the expected counts. This makes the circuit-level evidence reproducible; it still does not establish solver runtime, uniqueness, or a source result.
+- Linked the reference script from `results/h17-k04-dual-inverse-borrow-encoding-20261121.md` (commit `140da22e64c797ee108d42a091f574b9b1821c56`). The report now explicitly acknowledges Agent7's prior first-output one-variable inversion; the new contribution is the second-output inverse, direct borrow chain, fused equality, and delayed middle gates.
+- Latest lease age: about 44 minutes. Continue until measured 70-minute threshold; do not refresh lease.
