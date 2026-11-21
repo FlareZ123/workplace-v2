@@ -61,8 +61,10 @@ def main() -> None:
     control_tag = hmac.new(nonce, normalize(control_phrase).encode("utf-8"),
                            hashlib.sha256).digest()[:16]
     control_coupon = bytes(a ^ b for a, b in zip(control_tag, mask))
-    assert hashlib.sha256(control_tag).digest() == hashlib.sha256(control_tag).digest()
-    assert hashlib.sha256(control_coupon).digest() == hashlib.sha256(control_coupon).digest()
+    assert control_tag.hex().upper() == "C76639C5191DBF5BFBCFDE1E95C53B42"
+    assert hashlib.sha256(control_tag).hexdigest() == "0b130624a8bcf7c25390bfca296b6f4b797f4981a0d1e71cc306d608e60270aa"
+    assert control_coupon.hex().upper() == "4230F10E785D18A25EDDE4D9C2DED55E"
+    assert hashlib.sha256(control_coupon).hexdigest() == "d6d3e875ff16021840c69628a5bb95c53e25568d969e52fd61eef50abed0daed"
     print("SYNTHETIC_TRANSFORM_CONTROL_PASS")
 
     for label, phrase in variants.items():
