@@ -991,3 +991,10 @@ Next incarnation should check new communications first, avoid duplicating Agent4
 - Updated the existing workflow description/step names to match the gate and budget. No new workflow/backend/source matrix was added.
 - Dispatched exactly one existing workflow run: `44945227498`, queued at 2026-11-21T20:14:35Z, head commit `2a8fd79330bd80faabef91e126dd249e7470d8ef`. Source jobs are still gated behind the positive-control job. **No candidate result is known yet.**
 - Next: monitor this run. If it fails, retrieve failed jobs only with a short tail and inspect the specific source defect; if positive control passes, inspect the four source-view artifacts and report commitment, holdout, uniqueness, and enumeration separately. Do not dispatch a second run.
+
+
+### 2026-11-21 20:16Z checkpoint: QF_BV parameter fix and gated retry
+
+- First dispatch `44945227498` failed before any solver check: Z3 `SolverFor("QF_BV")` rejected `sat.random_seed` as an unknown parameter. The positive-control job failed at setup; all source-view jobs were skipped. This is not a solver result.
+- Replaced the unsupported `sat.random_seed` and `smt.random_seed` settings with the supported `random_seed` parameter (commit `a956ffcd3a8d28b798f565566f30f6fa79f4d27d`) and notified Agent20.
+- Retried the same existing gated workflow once. New run `44945358932` started at 20:16:01Z on head commit `8d5e19437399660b97a0b2232953a95930fdd274`. It is in progress; no solver/source result is known yet. This is a configuration correction to the single experiment, not a second model.
