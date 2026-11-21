@@ -99,7 +99,7 @@ The local reference encoding produced the following counts for the current synth
 | Dual-inverse/direct-borrow/t0 first-pair core | **567** | **1,122** | **317** |
 | Full circuit for middle uniqueness | 1,331 | 2,622 | 829 |
 
-For the actual PS-0417 attempt-1 payload, the independent source-view audit in [Agent35's count script](../agents/agent35/k04_dual_inverse_count_audit.py) gives:
+For the actual PS-0417 attempt-1 payload, [Agent35's independent source-view audit](../agents/agent35/k04_dual_inverse_count_audit.py) establishes the pre-`t0`-fusion counts and decoded constants. Applying the additional exact `t0` cancellation above removes 65 variables and 65 XOR clauses from each view; the resulting final counts are:
 
 | Byte view | First zero bit in y0 / y1 | Core vars/CNF/XOR | Full vars/CNF/XOR |
 |---:|---:|---:|---:|
@@ -108,17 +108,17 @@ For the actual PS-0417 attempt-1 payload, the independent source-view audit in [
 | 2 | 0 / 1 | 566 / 1,119 / 317 | 1,330 / 2,619 / 829 |
 | 3 | 0 / 1 | 566 / 1,119 / 317 | 1,330 / 2,619 / 829 |
 
-All four current source views have the same aggregate count. Their decoded attempt-1 words are view 0: `CD3E4F216ADB2FB1 / 80DA2AA90B33F7A4`; view 1: `B12FDB6A214F3ECD / A4F7330BA92ADA80`; view 2: `80DA2AA90B33F7A4 / CD3E4F216ADB2FB1`; view 3: `A4F7330BA92ADA80 / B12FDB6A214F3ECD`. The original byte view remains unresolved. Agent35 independently checked the arithmetic and gate-count formulas; these remain count audits, not SAT results.
+All four current source views have the same final aggregate count. Their decoded attempt-1 words are view 0: `CD3E4F216ADB2FB1 / 80DA2AA90B33F7A4`; view 1: `B12FDB6A214F3ECD / A4F7330BA92ADA80`; view 2: `80DA2AA90B33F7A4 / CD3E4F216ADB2FB1`; view 3: `A4F7330BA92ADA80 / B12FDB6A214F3ECD`. The original byte view remains unresolved. Agent35 independently checked the pre-`t0` arithmetic and gate-count formulas; the additional `t0` cancellation is validated by the Agent36 reference script and is pending Agent35's review. These remain count audits, not SAT results.
 
-Two successive fusions reduce the circuit. First, fusing the second-output difference with equality removes 64 materialized `required_b1` variables and 64 equality XOR clauses without changing CNF count: synthetic core 696 / 1,122 / 446 → 632 / 1,122 / 382; source core 695 / 1,119 / 446 → 631 / 1,119 / 382. Second, deriving `t0` directly removes 65 more variables and 65 XOR clauses, again with CNF unchanged: synthetic core 632 / 1,122 / 382 → 567 / 1,122 / 317; source core 631 / 1,119 / 382 → 566 / 1,119 / 317. The full source uniqueness circuit falls from 1,459 / 2,619 / 958 to 1,395 / 2,619 / 894 after the first fusion, then to 1,330 / 2,619 / 829 after the `t0` simplification. Agent35's independent adversarial review found no sign, carry, or rotation error in the fused equations; the final `t0` refinement has been sent for review.
+Two successive fusions after the dual-inverse/direct-borrow baseline reduce the circuit. First, fusing the second-output difference with equality removes 64 materialized `required_b1` variables and 64 equality XOR clauses without changing CNF count: synthetic core 696 / 1,122 / 446 → 632 / 1,122 / 382; source core 695 / 1,119 / 446 → 631 / 1,119 / 382. Second, deriving `t0` directly removes 65 more variables and 65 XOR clauses, again with CNF unchanged: synthetic core 632 / 1,122 / 382 → 567 / 1,122 / 317; source core 631 / 1,119 / 382 → 566 / 1,119 / 317. The full source uniqueness circuit falls from 1,459 / 2,619 / 958 to 1,395 / 2,619 / 894 after the first fusion, then to 1,330 / 2,619 / 829 after the `t0` simplification. Agent35's independent adversarial review found no sign, carry, or rotation error in the fused equations; the final `t0` refinement has been sent for review.
 
-The final source initial-inversion core is approximately 66% smaller in variables, 64% smaller in CNF clauses, and 69% smaller in XOR clauses than the existing full circuit. The full middle-uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement. The full uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement.
+The final source initial-inversion core is approximately 66% smaller in variables, 64% smaller in CNF clauses, and 69% smaller in XOR clauses than the existing full circuit. The full middle-uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement.
 
 ## Validation performed
 
 - Agent35's independent source-view audit script uses deterministic seed `0x35D0A11` for 100,000 arithmetic checks; the direct subtraction and constant-minus-variable borrow recurrences matched 64-bit modular subtraction.
 - Signed-literal majority, AND/OR, and constant-borrow gates passed exhaustive truth-table checks.
-- The complete dual-inverse/fused-equality reference circuit passed all emitted CNF and XOR witness checks on 100 deterministic 64-bit xoroshiro states generated with `random.Random(0xA17E2026)` by the [Agent36 reference script](../agents/agent36/k04_dual_inverse_borrow_reference.py).
+- The complete dual-inverse/fused-equality/t0-only reference circuit passed all emitted CNF and XOR witness checks on 100 deterministic 64-bit xoroshiro states generated with `random.Random(0xA17E2026)` by the [Agent36 reference script](../agents/agent36/k04_dual_inverse_borrow_reference.py).
 - The reference circuit was checked against the same xoroshiro128++ (49,21,28) transition and output functions used by the existing solver.
 
 No CryptoMiniSat or Z3 solve was run on this optimized encoding. The local runtime did not have pycryptosat or z3 installed, and package installation failed because DNS was unavailable. No planted-control SAT result, source result, K04 component, candidate edit, or verifier change is claimed.
