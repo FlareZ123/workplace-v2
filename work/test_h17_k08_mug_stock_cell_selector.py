@@ -8,7 +8,7 @@ from types import ModuleType, SimpleNamespace
 
 from h17_k08_mug_stock_cell_selector import (
     aes_ecb_decrypt, coordinate_sets, excel_address, excel_column,
-    evaluate_candidate, k08_component, map_sheets, normalize, sample_cells,
+    evaluate_candidate, inspect_workbook, k08_component, map_sheets, normalize, sample_cells,
 )
 
 
@@ -85,20 +85,7 @@ class SelectorTests(unittest.TestCase):
             def cell(self, row, col):
                 return SimpleNamespace(value="x", ctype=1)
 
-        class FakeBook:
-            def __init__(self):
-                self.sheet = FilledSheet()
-            def sheet_names(self):
-                return ["Sheet1"]
-            def sheet_by_name(self, name):
-                self.assert_name = name
-                return self.sheet
-            def release_resources(self):
-                self.released = True
-
-        fake_book = FakeBook()
-        fake_xlrd = ModuleType("xlrd")
-        fake_xlrd.open_workbook = lambda **kwargs: fake_book
+        fake_fallback = ModuleType("h17_xls_lo_fallback")
 
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -114,15 +101,36 @@ class SelectorTests(unittest.TestCase):
             workbook = root / "mug-stock.xls"
             workbook.write_bytes(b"synthetic workbook bytes")
             before = hashlib.sha256(workbook.read_bytes()).hexdigest()
-            previous_xlrd = sys.modules.get("xlrd")
-            sys.modules["xlrd"] = fake_xlrd
+            plaintext = bytes.fromhex("E5407654D33238607DFA324B94656E1D")
+            selected_addresses = set()
+            for pairs in coordinate_sets(plaintext).values():
+                for base in (0, 1):
+                    for raw_row, raw_column in pairs:
+                        row = raw_row + (1 if base == 0 else 0)
+                        column = raw_column + (1 if base == 0 else 0)
+                        selected_addresses.add(excel_address(row, column))
+            extraction = {
+                "source_bytes": workbook.stat().st_size,
+                "source_sha256_before": before,
+                "source_sha256_after": before,
+                "source_unchanged": True,
+                "converter": "synthetic-fallback",
+                "sheets": [{"name":"Sheet1","max_row":257,"max_column":257,"state":"visible"}],
+                "text_streams": [
+                    {"source":f"Sheet1!{address}","kind":"cell","text":"x","data_type":"s"}
+                    for address in sorted(selected_addresses)
+                ],
+            }
+            fake_fallback.extract = lambda path: extraction
+            previous_fallback = sys.modules.get("h17_xls_lo_fallback")
+            sys.modules["h17_xls_lo_fallback"] = fake_fallback
             try:
                 result = inspect_workbook(workbook, root)
             finally:
-                if previous_xlrd is None:
-                    sys.modules.pop("xlrd", None)
+                if previous_fallback is None:
+                    sys.modules.pop("h17_xls_lo_fallback", None)
                 else:
-                    sys.modules["xlrd"] = previous_xlrd
+                    sys.modules["h17_xls_lo_fallback"] = previous_fallback
             after = hashlib.sha256(workbook.read_bytes()).hexdigest()
 
         self.assertEqual(result["status"], "MATCH_REVIEW")
@@ -130,7 +138,7 @@ class SelectorTests(unittest.TestCase):
         self.assertTrue(all(candidate["match"] for candidate in result["candidates"]))
         self.assertEqual(before, after)
         self.assertEqual(result["workbook"]["sha256_before"], result["workbook"]["sha256_after"])
-        self.assertTrue(getattr(fake_book, "released", False))
+        self.assertEqual(result["workbook"]["converter"], "synthetic-fallback")
 
     def test_hmac_normalization_known_answer(self):
         nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
