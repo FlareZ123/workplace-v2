@@ -48,6 +48,21 @@ DEFAULT_INCLUDE = [
     "*-wal",
     "*-shm",
     "*.emf",
+    # Native print jobs, their queue sidecars, and common rendered spool formats.
+    "*.spl",
+    "*.shd",
+    "*.prn",
+    "*.pcl",
+    "*.ps",
+    "*.zpl",
+    "*.xps",
+    "*.oxps",
+    "*.json",
+    "*PrintService*.evtx",
+    # WN-14/profile note stores may retain OneNote source material.
+    "*.one",
+    "*.onepkg",
+    "*.onecache",
     "*.html",
     "*.txt",
 ]
