@@ -1,5 +1,10 @@
+import hashlib
+import json
+import sys
+import tempfile
 import unittest
-from types import SimpleNamespace
+from pathlib import Path
+from types import ModuleType, SimpleNamespace
 
 from h17_k08_mug_stock_cell_selector import (
     aes_ecb_decrypt, coordinate_sets, excel_address, excel_column,
@@ -66,6 +71,66 @@ class SelectorTests(unittest.TestCase):
         cells = [{"in_bounds":True,"value":word} for word in phrase.split()]
         result = evaluate_candidate(cells, nonce, target, "high_low", 1, "single")
         self.assertTrue(result["match"])
+
+    def test_end_to_end_synthetic_workbook_match_and_read_only_hash(self):
+        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+        phrase = "x x x x x x x x"
+        component = k08_component(nonce, normalize(phrase))
+        target = hashlib.sha256(component).hexdigest()
+
+        class FilledSheet:
+            name = "Sheet1"
+            nrows = 257
+            ncols = 257
+            def cell(self, row, col):
+                return SimpleNamespace(value="x", ctype=1)
+
+        class FakeBook:
+            def __init__(self):
+                self.sheet = FilledSheet()
+            def sheet_names(self):
+                return ["Sheet1"]
+            def sheet_by_name(self, name):
+                self.assert_name = name
+                return self.sheet
+            def release_resources(self):
+                self.released = True
+
+        fake_book = FakeBook()
+        fake_xlrd = ModuleType("xlrd")
+        fake_xlrd.open_workbook = lambda **kwargs: fake_book
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "evidence" / "print").mkdir(parents=True)
+            (root / "evidence" / "recovery-routing.json").write_text(
+                json.dumps({"K08":{"desk_nonce":nonce.hex()}}), encoding="utf-8")
+            (root / "acceptance.json").write_text(
+                json.dumps({"slot_sha256":{"K08":target}}), encoding="utf-8")
+            (root / "evidence" / "print" / "spool-reconstruction.log").write_text(
+                "2026-10-03T18:25:00Z JOB=PS-261003-0323 ATTEMPT=1 STATE=ACK "
+                "CLASS=RECOVER PAYLOAD=1E51EFD2E5CA8F4E1FC8B49297B3D74F DEST=store\n",
+                encoding="utf-8")
+            workbook = root / "mug-stock.xls"
+            workbook.write_bytes(b"synthetic workbook bytes")
+            before = hashlib.sha256(workbook.read_bytes()).hexdigest()
+            previous_xlrd = sys.modules.get("xlrd")
+            sys.modules["xlrd"] = fake_xlrd
+            try:
+                result = inspect_workbook(workbook, root)
+            finally:
+                if previous_xlrd is None:
+                    sys.modules.pop("xlrd", None)
+                else:
+                    sys.modules["xlrd"] = previous_xlrd
+            after = hashlib.sha256(workbook.read_bytes()).hexdigest()
+
+        self.assertEqual(result["status"], "MATCH_REVIEW")
+        self.assertEqual(len(result["candidates"]), 4)
+        self.assertTrue(all(candidate["match"] for candidate in result["candidates"]))
+        self.assertEqual(before, after)
+        self.assertEqual(result["workbook"]["sha256_before"], result["workbook"]["sha256_after"])
+        self.assertTrue(getattr(fake_book, "released", False))
 
     def test_hmac_normalization_known_answer(self):
         nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
