@@ -1,0 +1,62 @@
+name: Agent20 K04 xoroshiro128++ first-pair source reconstruction
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit_seconds:
+        description: "CryptoMiniSat time limit for each source/uniqueness solve"
+        required: true
+        default: "180"
+
+permissions:
+  contents: read
+
+jobs:
+  positive-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned CryptoMiniSat binding
+        run: python -m pip install --disable-pip-version-check pycryptosat==5.18.0
+      - name: Require synthetic first-pair recovery and unique-middle control
+        run: |
+          set -o pipefail
+          python agents/agent50/k04_xoroshiropp_first_pair_sft.py --view 0 --limit-seconds 60 --control-only | tee first-pair-positive-control.jsonl
+      - name: Preserve positive-control disposition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k04-first-pair-positive-control
+          path: first-pair-positive-control.jsonl
+          if-no-files-found: warn
+
+  source:
+    needs: positive-control
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned CryptoMiniSat binding
+        run: python -m pip install --disable-pip-version-check pycryptosat==5.18.0
+      - name: Solve first REQUESTED packet only, withhold ACK2, and blind-check third packet
+        run: |
+          set -o pipefail
+          python agents/agent50/k04_xoroshiropp_first_pair_sft.py --view ${{ matrix.view }} --limit-seconds ${{ inputs.limit_seconds }} | tee first-pair-view-${{ matrix.view }}.jsonl
+      - name: Preserve exact source disposition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k04-first-pair-view-${{ matrix.view }}
+          path: first-pair-view-${{ matrix.view }}.jsonl
+          if-no-files-found: warn
