@@ -1,0 +1,63 @@
+name: Agent50 K04 t0 direct-borrow native-XOR gated solve
+on:
+  workflow_dispatch:
+    inputs:
+      limit_seconds:
+        description: "Per-CryptoMiniSat timeout, 1 through 300 sec"
+        required: true
+        default: "180"
+
+permissions:
+  contents: read
+
+jobs:
+  planted:
+    name: Unseeded planted full-middle positive
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned native-XOR SAT engine
+        run: python -m pip install --disable-pip-version-check pycryptosat==5.14.7
+      - name: Require unseeded complete-middle inversion before source work
+        run: |
+          set -o pipefail
+          python agents/agent50/k04_direct_borrow_xornative_sft.py --synthetic --limit-seconds "${{ inputs.limit_seconds }}" | tee k04-t0-native-planted.jsonl
+      - name: Preserve planted disposition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent50-k04-t0-native-planted
+          path: k04-t0-native-planted.jsonl
+          if-no-files-found: warn
+
+  source:
+    name: Original source serialization view ${{ matrix.view }}
+    needs: planted
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        view: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned native-XOR SAT engine
+        run: python -m pip install --disable-pip-version-check pycryptosat==5.14.7
+      - name: Check first satisfying state against original full commitment before holdout
+        run: |
+          set -o pipefail
+          python agents/agent50/k04_direct_borrow_xornative_sft.py --source-view "${{ matrix.view }}" --limit-seconds "${{ inputs.limit_seconds }}" | tee k04-t0-native-view-${{ matrix.view }}.jsonl
+      - name: Preserve source disposition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent50-k04-t0-native-view-${{ matrix.view }}
+          path: k04-t0-native-view-${{ matrix.view }}.jsonl
+          if-no-files-found: warn
