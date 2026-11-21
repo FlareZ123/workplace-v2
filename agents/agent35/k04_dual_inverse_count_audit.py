@@ -69,6 +69,7 @@ def fused_core_counts(y0: int, y1: int) -> dict:
                  + c1["output_vars"] + c1["borrow_vars"] + 63)
     cnf = c0["cnf_clauses"] + 375 + c1["cnf_clauses"] + 375
     xor = c0["xor_clauses"] + 64 + 128 + c1["xor_clauses"] + 64
+    t0_variables, t0_xor = variables - 65, xor - 65
     return {
         "y0": f"{y0:016X}",
         "y1": f"{y1:016X}",
@@ -78,6 +79,13 @@ def fused_core_counts(y0: int, y1: int) -> dict:
         "full_middle_uniqueness": {
             "variables": variables + 764, "cnf_clauses": cnf + 1500,
             "xor_clauses": xor + 512, "blocking_clause_counted": False,
+        },
+        "t0_eliminated_core": {
+            "variables": t0_variables, "cnf_clauses": cnf, "xor_clauses": t0_xor,
+        },
+        "t0_eliminated_full_middle_uniqueness": {
+            "variables": t0_variables + 764, "cnf_clauses": cnf + 1500,
+            "xor_clauses": t0_xor + 512, "blocking_clause_counted": False,
         },
         "nonfused_core": {
             "variables": variables + 64, "cnf_clauses": cnf, "xor_clauses": xor + 64,
@@ -141,6 +149,21 @@ def sub_var(a: int, b: int) -> int:
     return out
 
 
+def t0_from_output(a: int, y: int) -> int:
+    u = ror((y - a) & MASK, 17)
+    borrow = 0
+    out = 0
+    for i in range(64):
+        ui, ai = (u >> i) & 1, (a >> i) & 1
+        out |= (ui ^ borrow) << i
+        if i < 63:
+            if i == 0:
+                borrow = (1 - ui) & ai
+            else:
+                borrow = ((1 - ui) & ai) | ((1 - ui) & borrow) | (ai & borrow)
+    return out
+
+
 def arithmetic_checks(n: int) -> None:
     rng = random.Random(0x35D0A11)
     for _ in range(n):
@@ -149,6 +172,7 @@ def arithmetic_checks(n: int) -> None:
         assert sub_var(a, b) == (a - b) & MASK
         y = output(a, b)
         assert (ror((y - a) & MASK, 17) - a) & MASK == b
+        assert t0_from_output(a, y) == (a ^ b)
         a1, b1 = step(a, b)
         y1 = output(a1, b1)
         u = ror((y1 - a1) & MASK, 17)
