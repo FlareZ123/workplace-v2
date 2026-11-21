@@ -722,3 +722,18 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 - Continue the existing Agent35 investigation only where it can add a genuinely new recovery mechanism. Do not repeat the broad K08 phrase/metadata/ZIP searches or any first-pair solver work owned by Agent20.
 - Check for a substantive Agent20 disposition if useful. Any future first-pair result must use outputs 0/1 only, a no-prefix planted control, outputs 4/5 as true holdouts, and middle-output uniqueness rather than exact-state uniqueness.
 - Challenge the shared assumption that K08 must be recoverable only by literal phrase guessing, but require a source-determined selector/transform or a complete candidate that passes the original commitment.
+
+
+## 2026-11-21T19:04:32.379Z — source-operation replies and existing first-pair artifact handoff
+
+- Initial mode-selection draw was 8: normal research mode. Agent35 lease remains immutable at `2026-11-21T18:41:27.451Z`; do not refresh.
+- Replied to Agent7's K04/FOLIO-17 source-operation question in `communications/agent7/20261121T1902Z_agent35-k04-retained-local-constructor-disposition.md`. No source-determined 16-byte producer exists in the retained export. The local route/register/CSV/binder identifiers do not authenticate ST-112 as a PS-0417 coupon witness; Agent43's +304 mapping is an empirical PTW-416 bay-D relation, not a PS-0417 foreign key. The only useful next sources are authorized local originals: FOLIO-17 paper key register, H17-POL-17/A3 asset card, and native PS-0417 attempt-2 job/queue/driver/rendered output with integrity/custody witness. No protected service or custodian recontact.
+- Reviewed existing workflow run `44931493564` using run metadata and failed-job-only logs (no successful-job logs). Four source-view jobs completed and uploaded artifacts `14717098689`, `14717358344`, `14717982658`, `14718365309`; the separate synthetic positive-control job failed with `UNKNOWN` after 180.382s on the old 1,658-variable circuit. The source-view artifacts may contain SAT/UNSAT/UNKNOWN dispositions but are uncalibrated while the positive control fails. I did not download them. Sent Agent20 the exact artifact IDs and caveat in `communications/agent20/20261121T1911Z_agent35-existing-first-pair-artifact-discovery.md`; Agent20 remains sole solver owner and should decide whether to inspect them.
+- Re-opened Agent36's dual-inverse/fused second-output circuit notes. The inverse identity is algebraically exact; the fused circuit is smaller, but no SAT runtime or source candidate has been established. Do not duplicate or modify Agent20's solver. Agent36 had already sent the no-prefix/true-output-4/5-holdout/ middle-uniqueness requirements; my earlier two review notes repeated those requirements and are not new results.
+- Project Files inventory confirms only the uploaded `h17-archive-dump.zip` and `prompt.md` are present; no additional source attachments are available in the current conversation. The local archive remains the same 46-file export.
+- No K04/K08 candidate was recovered. No source, acceptance, verifier, or canonical candidate was changed. Latest observed main commit at checkpoint: `e43962bd91e5247bf416035ff709000b8bdfe1ee`.
+
+### Next
+- Wait for Agent20's disposition of the existing artifacts or a calibrated one-owner solve; do not run or dispatch a parallel solver.
+- Keep K08 closed to phrase guesses. The only viable next move is a source-bearing original (envelope/margin/photo-caption history, authorized AX-7782 Bundle06/profile object, or authenticated native print/render record).
+- Preserve the original 70-minute release threshold; current lease started at `2026-11-21T18:41:27.451Z`.
