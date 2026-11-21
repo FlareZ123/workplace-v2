@@ -141,23 +141,57 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--view", type=int, choices=range(4), default=0)
     p.add_argument("--timeout-seconds", type=int, default=300)
-    p.add_argument("--synthetic-only", action="store_true")
+    mode = p.add_mutually_exclusive_group()
+    mode.add_argument("--synthetic-only", action="store_true",
+                      help="run only the unseeded first-pair positive control")
+    mode.add_argument("--source-only", action="store_true",
+                      help="run source solve; caller must gate on positive-control success")
     args = p.parse_args()
 
-    outputs = stream(SEED)
-    synthetic = solve_first_pair(outputs[:2], outputs[4:6], args.view,
-                                 args.timeout_seconds, False)
-    synthetic["experiment"] = "synthetic_positive_control"
-    print(json.dumps(synthetic, sort_keys=True), flush=True)
+    if not args.source_only:
+        outputs = stream(SEED)
+        synthetic = solve_first_pair(outputs[:2], outputs[4:6], args.view,
+                                     args.timeout_seconds, False)
+        synthetic["experiment"] = "synthetic_positive_control"
+        synthetic["expected_middle_hex"] = [f"{x:016X}" for x in outputs[2:4]]
+        synthetic["middle_matches_seed"] = (
+            synthetic.get("predicted_middle_words") == synthetic["expected_middle_hex"]
+        )
+        control_pass = (
+            synthetic.get("status") == "SAT"
+            and synthetic.get("middle_unique") is True
+            and synthetic.get("holdout_matches_full_18_03_packet") is True
+            and synthetic["middle_matches_seed"] is True
+        )
+        synthetic["control_pass"] = control_pass
+        print(json.dumps(synthetic, sort_keys=True), flush=True)
+
+        if args.synthetic_only:
+            if not control_pass:
+                raise SystemExit(2)
+            return
+        if not control_pass:
+            print(json.dumps({
+                "experiment": "original_first_pair_only",
+                "status": "NOT_RUN",
+                "coupon_status": "WITHHELD_CONTROL_FAILED",
+                "reason": "unseeded planted control did not prove SAT, unique middle, exact later holdout and planted middle",
+            }, sort_keys=True), flush=True)
+            raise SystemExit(2)
 
     if args.synthetic_only:
         return
+
     rows = parse_source()
     first = decode(rows[0], args.view)
     holdout = decode(rows[2], args.view)
     original = solve_first_pair(first, holdout, args.view,
                                 args.timeout_seconds, True)
     original["experiment"] = "original_first_pair_only"
+    original["control_gate"] = (
+        "positive-control workflow dependency passed" if args.source_only
+        else "unseeded planted control passed in this process"
+    )
     original["ack2_payload_matches_prediction"] = (
         original.get("predicted_coupon_hex") == rows[1].hex().upper()
     ) if "predicted_coupon_hex" in original else None
