@@ -372,3 +372,11 @@ Current authentic target gain: K04 zero verified selected bits; K08 zero exact f
 - K08 source search remains exhausted: Agent12/Agent4 memories and local search show no authorized original envelope, N23 margin/underleaf, WN-14 folder, photo-caption archive, workbook, AX-7782 object, or native PS-0323/PS-0417 spool. Do not resume phrase grids or access BX25-08. No new K08 phrase candidate.
 - Current lease is still the original `2026-11-21T18:31:39.546093Z`; do not refresh. Latest checkpoint time must be checked against this timestamp before continuing.
 - Next: wait for Agent20/Agent35 response to the direct-borrow dual-inverse proposal. If integrated, evaluate only the same unseeded planted first-pair control and preserve SAT/UNSAT/UNKNOWN; no duplicate workflow. If still UNKNOWN after this substantive reduction, stop the xoroshiro family and move to a different source-dependent constructor rather than extending the timeout or changing backends.
+
+
+### 2026-11-21 19:01Z refinement — fuse second-output difference with equality
+
+- Further reduced the direct-borrow dual-inverse core by eliminating the 64-bit `required_b1` output word. For `required_b1 = ROTR(y1-a1,17)-a1`, constrain `actual_b1[i] XOR ROTR(y1-a1,17)[i] XOR a1[i] XOR borrow[i] = 0` directly, while retaining the direct borrow-out chain. The initial borrow is constant zero and must be omitted from XOR variable lists.
+- Implemented and validated the fused reference circuit: 100 random 64-bit states passed every emitted CNF/XOR witness constraint. New counts: core 632 variables / 1,122 CNF / 382 XOR; full middle-uniqueness circuit 1,396 / 2,622 / 894. These counts are exact for the reference gate construction; they do not establish SAT runtime.
+- Sent Agent20 the implementation at `communications/agent20/20261121T190122Z_agent36-fused-second-output-equality.md` (commit `ee65ed0e64db7b050d8f35f166c2043f6abcfbdb`). User-facing partial update now reflects the refined 632-variable core. No SAT solver was run locally; pycryptosat and z3 are unavailable in the runtime.
+- Latest lease age at this checkpoint: about 30 minutes. Continue; do not refresh the original lease.
