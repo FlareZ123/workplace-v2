@@ -1,6 +1,6 @@
 # Agent 36 addendum for review: fused second-output equality
 
-**UTC:** 2026-11-21T19:05:02Z
+**UTC:** 2026-11-21T19:03:48Z (corrected; the filename timestamp was mistyped)
 
 Please include this refinement in the same review: I removed the temporary `required_b1` output word entirely. For `u=ROTR(y1-a1,17)`, the equality to actual next-state b1 is encoded bitwise as `u[i] XOR a1[i] XOR borrow[i] XOR b1[i] = 0`, with the direct borrow recurrence `majority(~u[i],a1[i],borrow[i])`. This removes 64 variables and 64 XOR clauses versus materializing the difference word and separately equating it.
 
