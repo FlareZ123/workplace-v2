@@ -6,7 +6,7 @@
 
 ## Executive finding
 
-The dual-inverse identities, borrow recurrences, rotations, and fused second-output equality are algebraically correct. An independent deterministic test of 100,000 random 64-bit witnesses passed. The proposed circuit-size figures need one qualification: **632 variables / 1,122 CNF / 382 XOR is the synthetic-control count**, while the four actual PS-0417 source byte views each produce **631 / 1,119 / 382** for the fused first-pair core.
+The dual-inverse identities, borrow recurrences, rotations, fused second-output equality, and newer t0 elimination are algebraically correct. Independent deterministic tests of 100,000 random 64-bit witnesses passed for both the inverse and t0 identities. The best reviewed t0-eliminated fused core is **566 variables / 1,119 CNF / 317 XOR** for every PS-0417 source view; the synthetic-control count is **567 / 1,122 / 317**. The previous 631/1,119/382 source core is retained as the non-t0 baseline.
 
 No SAT solve was performed, no PRNG state was recovered, and no K04 candidate or commitment hit is claimed.
 
@@ -50,6 +50,23 @@ u_{1,i}\oplus a_{1,i}\oplus r_i\oplus b_{1,i}=0,
 
 where \(r_i\) is the incoming borrow for \(u_1-a_1\). This is exactly the subtraction result; it is not an approximation.
 
+## Further exact reduction: eliminate b0 through t0
+
+The first-output inverse gives
+
+[
+u_0=\operatorname{ROTR}_{17}(y_0-a_0)=a_0+b_0.
+]
+
+For the subtraction (b_0=u_0-a_0), bit (i) is
+(b_{0,i}=u_{0,i}\oplus a_{0,i}\oplus r_i), where (r_i) is the incoming borrow. Therefore the state-transition input cancels (a_0):
+
+[
+t_0=a_0\oplus b_0=u_0\oplus r.
+]
+
+The same borrow chain for (u_0-a_0) is retained, but the 64 materialized (b_0) difference variables are removed. Since (r_0=0), (t_{0,0}=u_{0,0}) is a wire; only bits 1..63 require XOR outputs. This removes 64 (b_0) variables and their 64 XOR equations, plus the bit-0 (t_0) variable/equation: net **65 fewer variables and 65 fewer XOR clauses**, with no change to the CNF borrow clauses. A deterministic 100,000-case check of (t_0(a,y_0)=a\oplus b) passed.
+
 ## Borrow and gate review
 
 For subtraction \(c-a\), the difference bit is \(c_i\oplus a_i\oplus r_i\). The outgoing borrow is:
@@ -79,6 +96,10 @@ The audit parses the PS-0417 RECOVER rows from resources/evidence/print/spool-re
 | Construction | Variables | CNF clauses | XOR clauses |
 |---|---:|---:|---:|
 | Fused first-pair core, each of four source views | **631** | **1,119** | **382** |
+| **t0-eliminated fused core, each of four source views** | **566** | **1,119** | **317** |
+| **t0-eliminated full middle-output uniqueness, source constants** | **1,330** | **2,619** | **829** |
+| t0-eliminated fused core, synthetic seed control | **567** | **1,122** | **317** |
+| t0-eliminated full middle-output uniqueness, synthetic seed control | **1,331** | **2,622** | **829** |
 | Full middle-output uniqueness circuit, source constants | **1,395** | **2,619** | **894** |
 | Non-fused first-pair core, source constants | 695 | 1,119 | 446 |
 | Non-fused full middle-output circuit, source constants | 1,459 | 2,619 | 958 |
@@ -101,8 +122,9 @@ The fused form removes the 64 materialized required_b variables and 64 equality 
 
 This audit validates arithmetic and estimates circuit size only. It does not establish that the PS-0417 rows are consecutive xoroshiro128++ outputs, that the source model is SAT, that outputs 4/5 hold out, or that the middle pair is unique.
 
-Keep two dispositions separate:
-1. **K04 component recovery:** any candidate that independently hits the unchanged K04 slot commitment after the recorded mask is the exact committed component.
-2. **First-pair source-model validation:** requires an unseeded planted control, outputs 4/5 as blind holdouts, and middle-output uniqueness (not exact-state uniqueness).
+Keep the following dispositions separate:
+1. **K04 component recovery:** hash every complete middle candidate returned by the first-pair solve against the unchanged K04 slot commitment after the recorded mask, before any uniqueness query. A commitment hit is the exact committed component even if the proposed source model later fails a holdout or uniqueness check.
+2. **First-pair source-model validation:** require an unseeded planted control and an independently replayed first-pair fit; report blind outputs 4/5 holdout, middle uniqueness, and source-model authenticity separately. If outputs 4/5 are used to select among multiple first-pair models, label this a conditioned second-stage discriminator, not a blind holdout prediction.
+3. **Planted-control diagnostics:** distinguish solver liveness, planted-middle recovery under bounded distinct-middle enumeration, blind 4/5 discrimination, and uniqueness. Do not make uniqueness an axiomatic prerequisite for checking a candidate commitment.
 
-Do not promote a source-model claim from an uncalibrated SAT result. Agent20 remains the coordinated solver owner.
+The current harnesses still need the Critic's hash-before-uniqueness correction; Agent20 owns that implementation and run. Do not promote a source-model claim from an uncalibrated SAT result.
