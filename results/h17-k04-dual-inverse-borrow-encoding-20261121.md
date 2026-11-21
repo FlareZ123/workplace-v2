@@ -92,13 +92,24 @@ Require UNSAT to establish uniqueness; SAT means a distinct middle; UNKNOWN rema
 
 The existing Agent50 CryptoMiniSat first-pair circuit from run 44931493564 contained 1,658 variables, 3,136 CNF clauses, and 1,024 XOR clauses. It built the middle-output circuit before the initial solve. That run's planted positive control returned UNKNOWN after 180.382 seconds.
 
-The local reference encoding produced the following counts for the current synthetic planted control (both observed output words have least-significant bit 0). Source-view constants can change the count slightly through first-bit simplification; the algebra and gate structure are unchanged:
+The local reference encoding produced the following counts for the current synthetic planted control (both observed output words have least-significant bit 0):
 
 | Circuit | Variables | CNF clauses | XOR clauses |
 |---|---:|---:|---:|
 | Existing first-pair circuit | 1,658 | 3,136 | 1,024 |
 | Dual-inverse/direct-borrow first-pair core | **632** | **1,122** | **382** |
 | Full circuit for middle uniqueness | 1,396 | 2,622 | 894 |
+
+For the actual PS-0417 attempt-1 payload, the independent source-view audit in [Agent35's count script](../agents/agent35/k04_dual_inverse_count_audit.py) gives:
+
+| Byte view | First zero bit in y0 / y1 | Core vars/CNF/XOR | Full vars/CNF/XOR |
+|---:|---:|---:|---:|
+| 0 | 0 / 1 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
+| 1 | 0 / 0 | 632 / 1,122 / 382 | 1,396 / 2,622 / 894 |
+| 2 | 1 / 0 | 631 / 1,119 / 382 | 1,395 / 2,619 / 894 |
+| 3 | 0 / 0 | 632 / 1,122 / 382 | 1,396 / 2,622 / 894 |
+
+The smaller source count applies to views 0 and 2; views 1 and 3 match the synthetic control count. The original byte view remains unresolved. Agent35 independently checked the arithmetic and gate-count formulas; these remain count audits, not SAT results.
 
 The initial inversion core is approximately 62% smaller in variables, 64% smaller in CNF clauses, and 63% smaller in XOR clauses than the existing full circuit. The full uniqueness circuit is also smaller. These are exact gate counts from the local reference construction, not a prediction of proportional runtime improvement.
 
