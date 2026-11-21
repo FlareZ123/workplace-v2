@@ -12,19 +12,19 @@ The source-specific hypothesis remains the same: the three PS-261003-0417 RECOVE
 
 ## Algebraic reduction
 
-For xoroshiro128++ output from state words (a,b),
+For xoroshiro128++ output from state words `a` and `b`,
 
 \[
 y = \operatorname{ROTL}_{64}(a+b,17)+a \pmod{2^{64}}.
 \]
 
-Subtract (a), rotate right by 17, and subtract (a) again:
+Subtract `a`, rotate right by 17, and subtract `a` again:
 
 \[
 b = \operatorname{ROTR}_{64}(y-a,17)-a \pmod{2^{64}}.
 \]
 
-This is an exact identity, not a heuristic. Therefore one symbolic 64-bit state word (a_0) determines (b_0) from the first observed output (y_0). **Prior-art qualification:** Agent7's existing one-variable script already used this first-output inversion; that step is not claimed as new here. The incremental reduction is applying the inverse identity to the second output as well, fusing its difference with equality to actual (b_1), and using direct borrow gates. Apply the xoroshiro transition:
+This is an exact identity, not a heuristic. Therefore one symbolic 64-bit state word `a0` determines `b0` from the first observed output `y0`. **Prior-art qualification:** Agent7's existing one-variable script already used this first-output inversion; that step is not claimed as new here. The incremental reduction is applying the inverse identity to the second output as well, fusing its difference with equality to actual `b1`, and using direct borrow gates. Apply the xoroshiro transition:
 
 \[
 t=a_0\oplus b_0,
@@ -42,13 +42,13 @@ The second observed output (y_1) imposes the same inverse identity on the next s
 b_1=\operatorname{ROTR}_{64}(y_1-a_1,17)-a_1.
 \]
 
-Thus the first-pair inverse is a 64-bit search over (a_0), with (b_0) derived and the second output expressed as equality to the required (b_1). Outputs 0 and 1 are not fitted through two forward-output adders.
+Thus the first-pair inverse is a 64-bit search over (a_0), with `b0` derived and the second output expressed as equality to the required `b1`. Outputs 0 and 1 are not fitted through two forward-output adders.
 
 ## Direct borrow-chain encoding
 
-The existing CryptoMiniSat circuit implemented subtraction as complement-plus-add ((a+\sim b+1)), allocating complemented-word variables and an initial carry variable. A direct subtractor uses the borrow recurrence.
+The existing CryptoMiniSat circuit implemented subtraction as complement-plus-add (`a + ~b + 1`), allocating complemented-word variables and an initial carry variable. A direct subtractor uses the borrow recurrence.
 
-For (d=a-b\pmod{2^{64}}), with (r_0=0):
+For `d = a - b mod 2^64`, with `r0 = 0`:
 
 \[
 d_i=a_i\oplus b_i\oplus r_i,
@@ -57,29 +57,29 @@ d_i=a_i\oplus b_i\oplus r_i,
 r_{i+1}=\operatorname{MAJ}(\neg a_i,b_i,r_i).
 \]
 
-At bit zero, (r_1=\neg a_0\land b_0), so a three-clause AND gate suffices. Later borrow bits use a six-clause majority gate with the first input represented as a signed literal (-a_i); no complemented-word variables are needed.
+At bit zero, `r1 = ~a0 AND b0`, so a three-clause AND gate suffices. Later borrow bits use a six-clause majority gate with the first input represented as a signed literal `-a_i`; no complemented-word variables are needed.
 
-For constant-minus-variable (u=c-a), the difference bit is (u_i=c_i\oplus a_i\oplus r_i), and the borrow recurrence specializes to:
+For constant-minus-variable `u = c - a`, the difference bit is `u_i = c_i XOR a_i XOR r_i`, and the borrow recurrence specializes to:
 
-- if (c_i=0), (r_{i+1}=a_i\lor r_i);
-- if (c_i=1), (r_{i+1}=a_i\land r_i).
+- if `c_i=0`, `r_(i+1)=a_i OR r_i`;
+- if `c_i=1`, `r_(i+1)=a_i AND r_i`.
 
 The initial borrow is zero. This removes the 64-variable constant word and simplifies the carry chain.
 
-For the second observed output, the required difference word need not be allocated at all. Let (u=\operatorname{ROTR}_{64}(y_1-a_1,17)). The equality to actual (b_1) is directly:
+For the second observed output, the required difference word need not be allocated at all. Let `u = ROTR64(y1 - a1, 17)`. The equality to actual `b1` is directly:
 
 \[
 u_i\oplus a_{1,i}\oplus r_i\oplus b_{1,i}=0,
 \]
 
-with the same borrow-out recurrence (\operatorname{MAJ}(\neg u_i,a_{1,i},r_i)). This fuses the second subtraction's difference equation with equality to the actual next-state word, eliminating 64 temporary variables and 64 extra XOR clauses.
+with the same borrow-out recurrence `MAJ(~u_i, a1_i, r_i)`. This fuses the second subtraction's difference equation with equality to the actual next-state word, eliminating 64 temporary variables and 64 extra XOR clauses.
 
 ## Keep the initial solve separate from uniqueness
 
 The first SAT solve needs only:
-1. symbolic (a_0);
-2. derived (b_0);
-3. one xoroshiro transition to ((a_1,b_1));
+1. symbolic `a0`;
+2. derived `b0`;
+3. one xoroshiro transition to (`(a1,b1)`);
 4. the second-output inverse equality.
 
 It does **not** need state2/state3 or outputs2/3. After a first-pair model is found, compute outputs2/3 and outputs4/5 by forward replay. Check outputs4/5 against the untouched third REQUESTED packet as a blind holdout.
