@@ -21,7 +21,8 @@ from k04_xoroshiropp_xorcnf_sft import ROOT, SOURCE_SHA, decode, encode, parse_s
 MASK64 = (1 << 64) - 1
 
 
-def solve_pair(first: list[int], view: int, limit_seconds: int) -> dict:
+def solve_pair(first: list[int], view: int, limit_seconds: int,
+               fitted_flank: list[int] | None = None) -> dict:
     from pycryptosat import Solver
 
     circuit = BorrowCircuit()
@@ -30,8 +31,20 @@ def solve_pair(first: list[int], view: int, limit_seconds: int) -> dict:
     )
     assert unused_middle is None
     expected = (567, 1122, 317) if view == -1 else (566, 1119, 317)
+    core_counts = (circuit.count, len(circuit.clauses), len(circuit.xors))
+    assert core_counts == expected, (core_counts, expected)
+    if fitted_flank is not None:
+        # A second *conditioned* experiment: fit both REQUESTED flanks,
+        # reserving the disputed ACK2 payload entirely for after-SAT readback.
+        # These are extra constraints, so the later packet is no longer blind.
+        a1, b1 = circuit.step_from_t(a0_bits, t0_bits)
+        a2, b2 = circuit.step(a1, b1)
+        a3, b3 = circuit.step(a2, b2)
+        a4, b4 = circuit.step(a3, b3)
+        circuit.constrain_output(a4, b4, fitted_flank[0])
+        a5, b5 = circuit.step(a4, b4)
+        circuit.constrain_output(a5, b5, fitted_flank[1])
     counts = (circuit.count, len(circuit.clauses), len(circuit.xors))
-    assert counts == expected, (counts, expected)
 
     solver = Solver(threads=1, time_limit=float(limit_seconds))
     for terms, rhs in circuit.xors:
@@ -43,7 +56,8 @@ def solve_pair(first: list[int], view: int, limit_seconds: int) -> dict:
     elapsed = round(time.monotonic() - start, 3)
     result = dict(
         encoding="t0_direct_borrow_xor_native", view=view, counts=list(counts),
-        planted_seed_withheld=True, fit_scope="outputs0,1",
+        planted_seed_withheld=True,
+        fit_scope="outputs0,1,4,5" if fitted_flank is not None else "outputs0,1",
         first_status="SAT" if sat is True else "UNSAT" if sat is False else "UNKNOWN",
         first_solve_seconds=elapsed, source_sha256=SOURCE_SHA,
         component_commitment_status="NOT_EVALUATED",
@@ -70,6 +84,7 @@ def main() -> None:
     select.add_argument("--synthetic", action="store_true")
     select.add_argument("--source-view", type=int, choices=range(4))
     ap.add_argument("--limit-seconds", type=int, default=180)
+    ap.add_argument("--fit-flank", action="store_true")
     args = ap.parse_args()
     assert 1 <= args.limit_seconds <= 300
 
@@ -80,7 +95,8 @@ def main() -> None:
     assert (checked.count, len(checked.clauses), len(checked.xors)) == (567, 1122, 317)
 
     if args.synthetic:
-        result = solve_pair(outputs[:2], -1, args.limit_seconds)
+        result = solve_pair(outputs[:2], -1, args.limit_seconds,
+                            outputs[4:6] if args.fit_flank else None)
         result["experiment"] = "unseeded_planted_middle_positive"
         if result["first_status"] == "SAT":
             result["planted_complete_middle_recovered"] = (
@@ -99,7 +115,8 @@ def main() -> None:
     assert view is not None
     rows = parse_source()  # requires exact original 18:01/18:02/18:03 records
     first, third = decode(rows[0], view), decode(rows[2], view)
-    result = solve_pair(first, view, args.limit_seconds)
+    result = solve_pair(first, view, args.limit_seconds,
+                        third if args.fit_flank else None)
     result["experiment"] = "original_first_pair_source"
     result["selected_ACK2_withheld_from_fit"] = True
     if result["first_status"] == "SAT":
@@ -112,7 +129,10 @@ def main() -> None:
         result["candidate_complete_coupon"] = coupon.hex().upper()
         result["candidate_complete_component"] = component.hex().upper()
         result["component_commitment_status"] = "PASS" if hit else "MISS_ONE_MODEL"
-        result["holdout_match"] = [int(w, 16) for w in result["later_words"]] == third
+        if args.fit_flank:
+            result["fitted_flank_match"] = [int(w, 16) for w in result["later_words"]] == third
+        else:
+            result["blind_holdout_match"] = [int(w, 16) for w in result["later_words"]] == third
         result["ACK2_buffer_match"] = coupon == rows[1]
         result["middle_uniqueness"] = "NOT_EVALUATED"
     print(json.dumps(result, sort_keys=True), flush=True)
