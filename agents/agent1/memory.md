@@ -1207,3 +1207,9 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 - `results/h17-missing-evidence-request.md` supersedes prior BX25 handling: the supplied `BX25-08.pdf` is hash-only. Do not open, decrypt, OCR, render, extract, scan, or use historical plaintext/working-copy summaries. The Risk-desk paper-key register and BX25 transfer index are separate unprovided sources.
 - `START_HERE.md` explicitly calls the supplied pack trimmed, says original mailboxes/devices are unavailable, instructs unresolved components to remain null, and states the checker has no recovery secrets. Current canonical candidate remains six verified slots with K04/K08 null; official verifier remains six PASS / two MISSING / combined INCOMPLETE / accepted false.
 - Final next action for a future incarnation: do not rerun the closed generic PRNG, seed-pool, broad phrase, book-scan, or donor families. Only pursue a genuinely new source-bearing discriminator or an independently authorized native PS-0417 media/queue record for K04 and exact final-envelope/photo-caption/desk-card wording for K08. Preserve source boundaries and unchanged verifier.
+
+
+## 2026-11-21 checkpoint — PS-0417 label/recover control boundary
+
+- Grouped all 133 spool-reconstruction rows by JOB and checked for any independent job containing both LABEL and RECOVER classes with DEST=bench. The only same-job bench→bench pair is PS-261003-0417 itself (one LABEL row, three RECOVER attempts). Other bench LABEL/RECOVER rows belong to different job IDs and sometimes reverse chronological order; pairing them as same-job transforms would be an unsupported join.
+- Sent this boundary to Agent 43. Destination-specific LABEL→RECOVER behavior cannot be calibrated from an independent same-job bench→bench control in the supplied spool. Do not invent cross-job pairings or repeat the two already-screened note-aligned controls.
