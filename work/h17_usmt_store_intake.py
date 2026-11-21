@@ -27,8 +27,6 @@ DEFAULT_INCLUDE = [
     "scanrelease.txt",
     "IR-261003-H17.txt",
     "transfer-index.htm",
-    "*.eml",
-    "*.msg",
     "*.doc",
     "*.docx",
     "*.xls",
@@ -130,10 +128,14 @@ def validate_include_patterns(includes: Iterable[str]) -> None:
     """Keep the H-17 hash-only BX25 scan out of USMT extraction."""
     for pattern in includes:
         normalized = pattern.strip().casefold()
-        if ".pdf" in normalized or normalized in {"*", "*.*", "**", "**/*", "**/*.*"}:
+        broad = normalized in {"*", "*.*", "**", "**/*", "**/*.*"}
+        mailbox_suffix = normalized.endswith((".eml", ".msg", ".pst", ".ost"))
+        mailbox_glob = mailbox_suffix and any(char in normalized for char in "*?[]")
+        if ".pdf" in normalized or broad or mailbox_glob:
             raise ValueError(
-                "PDF/broad extraction is prohibited for this H-17 profile-refresh intake; "
-                "BX25-08 and copies remain hash-only. Use explicit non-PDF include patterns."
+                "PDF, catch-all, and broad mailbox extraction is prohibited for this H-17 "
+                "profile-refresh intake; BX25-08 and copies remain hash-only, and mail "
+                "must be explicitly scoped to exact message files. Use non-PDF, non-broad patterns."
             )
 
 
