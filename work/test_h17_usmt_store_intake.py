@@ -21,16 +21,38 @@ class UsmtIntakeTests(unittest.TestCase):
         self.assertIn("*.sqlite-wal", usmt.DEFAULT_INCLUDE)
         self.assertIn("*-shm", usmt.DEFAULT_INCLUDE)
         self.assertIn("*.emf", usmt.DEFAULT_INCLUDE)
-        for pattern in (
-            "*.spl", "*.shd", "*.prn", "*.pcl", "*.ps", "*.zpl",
-            "*.xps", "*.oxps", "*.json", "*PrintService*.evtx",
-            "*.one", "*.onepkg", "*.onecache",
-        ):
+        for pattern in ("*.one", "*.onepkg", "*.onecache", "*.snt"):
             with self.subTest(pattern=pattern):
                 self.assertIn(pattern, usmt.DEFAULT_INCLUDE)
+        for pattern in usmt.NATIVE_SPOOL_INCLUDE:
+            with self.subTest(pattern=pattern):
+                self.assertNotIn(pattern, usmt.DEFAULT_INCLUDE)
         self.assertNotIn("*.pdf", usmt.DEFAULT_INCLUDE)
         self.assertNotIn("*.eml", usmt.DEFAULT_INCLUDE)
         self.assertNotIn("*.msg", usmt.DEFAULT_INCLUDE)
+
+    def test_source_bound_native_spool_is_opt_in_and_preserves_defaults(self):
+        selected = usmt.select_include_patterns(["custom.json"], source_bound_native_spool=True)
+        for pattern in usmt.DEFAULT_INCLUDE:
+            self.assertIn(pattern, selected)
+        for pattern in usmt.NATIVE_SPOOL_INCLUDE:
+            self.assertIn(pattern, selected)
+        self.assertIn("custom.json", selected)
+        args = usmt.build_extract_args(Path("store.mig"), Path("out"), Path("log.txt"), selected)
+        self.assertIn("*.spl", args[2])
+        self.assertIn("*PrintService*.evtx", args[2])
+        self.assertNotIn("*.pdf", selected)
+        self.assertNotIn("*.eml", selected)
+        self.assertNotIn("*.msg", selected)
+
+    def test_source_bound_native_spool_flag_requires_extract_mode(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            store = root / "store.mig"
+            store.write_bytes(b"fake-store-bytes")
+            with self.assertRaises(ValueError):
+                usmt.run_intake(store, root / "missing.exe", root / "out", mode="verify",
+                                source_bound_native_spool=True)
 
     def test_hash_only_pdf_and_broad_extraction_patterns_are_rejected(self):
         for pattern in ("*.pdf", "BX25-08.PDF", "*.*", "*", "*.eml", "*.msg", "*.pst", "*.ost", "mailbox.pst", "mailbox.ost"):
