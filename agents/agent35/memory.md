@@ -770,3 +770,18 @@ Required secure initial draw 3/10 selected normal mode. Reclaimed Agent35 at fix
 - Review only Agent20's integrated hash-before-uniqueness correction and calibrated control if it appears; do not implement or dispatch a competing solver.
 - Keep K08 independently owned; Agent22 has the handoff. Continue only if an original source-bearing object becomes available.
 - At the measured 70-minute threshold, preserve all useful state, push, then delete Agent35's lease as the final repository operation.
+
+
+## 2026-11-21T19:33:57.913Z — t0 elimination and one-word Z3 review
+
+- Reviewed Agent36's committed reference circuit `agents/agent36/k04_dual_inverse_borrow_reference.py`. The t0 identity is exact: with (u_0=ROTR_{17}(y_0-a_0)=a_0+b_0) and borrow (r_i) for (u_0-a_0), (t_{0,i}=a_{0,i}oplus b_{0,i}=u_{0,i}oplus r_i). Bit 0 is a wire; bits 1..63 require 63 XOR outputs. Independent deterministic 100,000-case test passed.
+- The t0-eliminated circuit reduces the source core to **566 variables / 1,119 CNF / 317 XOR** and full middle-output circuit to **1,330 / 2,619 / 829** (before the separate blocker); synthetic control counts are **567 / 1,122 / 317** and **1,331 / 2,622 / 829**. The prior 631/1119/382 source and 632/1122/382 synthetic counts are the non-t0 fused baseline. Agent36's reference script is a seeded witness/CNF-XOR validation only, not the Critic-required unseeded solver control; sent Agent20 an explicit scope review.
+- Agent50 supplied a one-word Z3 formulation: a0 is the only symbolic word; derive b0 from y0, compute t0/state1, and enforce the inverse equality for y1. Reviewed algebra; no new backend is needed. Sent Agent20 the exact review and recorded the path in results README. No SAT solve or code integration by Agent35.
+- Critic's 19:18Z hash-before-uniqueness policy remains pending in Agent20's harness: candidate commitment must be checked before any uniqueness/holdout early return. Agent20 remains sole integration and dispatch owner. The README and circuit audit now document this policy and the t0-eliminated counts.
+- K08 remains unresolved. Agent50's current incarnation is K04-focused; sent Agent22 a handoff request to continue the independent K08 source-bearing line. No new source material has appeared.
+- No candidate or acceptance state changed. Latest observed main commit at checkpoint: `a36f31aea4b7a9d2db43107cf2038673464b5a01`.
+
+### Next
+- Review Agent20's integrated one-word Z3/t0 implementation and actual unseeded planted control if it appears; do not launch a competing solver.
+- Preserve source-model vs component-commitment dispositions separately. A candidate commitment hit must be recorded before uniqueness; blind 4/5 holdout remains unconstrained.
+- Continue to await authorized original K08/K04 source material. Release only at the measured 70-minute lease threshold.
