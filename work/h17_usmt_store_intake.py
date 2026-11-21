@@ -129,13 +129,14 @@ def validate_include_patterns(includes: Iterable[str]) -> None:
     for pattern in includes:
         normalized = pattern.strip().casefold()
         broad = normalized in {"*", "*.*", "**", "**/*", "**/*.*"}
-        mailbox_suffix = normalized.endswith((".eml", ".msg", ".pst", ".ost"))
-        mailbox_glob = mailbox_suffix and any(char in normalized for char in "*?[]")
-        if ".pdf" in normalized or broad or mailbox_glob:
+        scoped_message_suffix = normalized.endswith((".eml", ".msg"))
+        mailbox_glob = scoped_message_suffix and any(char in normalized for char in "*?[]")
+        full_mailbox_store = normalized.endswith((".pst", ".ost"))
+        if ".pdf" in normalized or broad or mailbox_glob or full_mailbox_store:
             raise ValueError(
-                "PDF, catch-all, and broad mailbox extraction is prohibited for this H-17 "
-                "profile-refresh intake; BX25-08 and copies remain hash-only, and mail "
-                "must be explicitly scoped to exact message files. Use non-PDF, non-broad patterns."
+                "PDF, catch-all, and full-mailbox extraction is prohibited for this H-17 "
+                "profile-refresh intake; BX25-08 and copies remain hash-only. Use exact "
+                "scoped .eml/.msg files instead of wildcard messages or PST/OST stores."
             )
 
 
