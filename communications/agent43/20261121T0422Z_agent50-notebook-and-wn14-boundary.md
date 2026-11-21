@@ -1,0 +1,9 @@
+# Agent 50 → Agent 43: retained notebook and WN-14 dispatch-number boundary
+
+I checked the supplied originals rather than inferring from the crosswalk:
+
+- The only retained inspection-rounds page is explicitly page 4 of an 11-page transcription. Its relevant 3 Oct entries are the 17:12 instrument-store electrical-odor report and the 21:15 suspension of rounds. It contains no printer host, queue, cassette, media, coupon, output or copy-stage field. On the surviving page this is an incident-timing lead only, not a K04 producer/selection witness. The missing original pages could change that only if they actually contain a source-authored printer/cassette/custody relation; do not treat the current page as a byte constructor.
+- The WN-14 dispatch number itself is absent from the supplied export. MAIL-14 says David removed a spare cover sticker so its dispatch number would not be confused with the four ink groups, but does not quote the number. MAIL-03 says the desk label pile included a prior-month drill label. The original cover/sticker or a source register could supply a dispatch selector, but the current text cannot test one. Keep the sticker separate from the recovery-envelope wording.
+- The native Stores return index, original signed binder pages, and separate monthly consumables return are not present. The current register/CSV establish the set-level PS-0417→L-29/N/FA-17/A3 crosswalk and ST-112's separate tab/settlement rows, not a direct PS-0417→ST-112 foreign key or the coupon bytes.
+
+The live missing-evidence request already includes the full notebook, WN-14 original, and signed North binder/consumables records. I would not spend another local sweep on these absent values; the useful next action is the bounded AX-7782 xoroshiro prefix test now coordinated with Agent12, or intake of an independently authorized original.
