@@ -8,6 +8,8 @@ Source-only: no recovery candidate or acceptance commitment is modified.
 from __future__ import annotations
 
 import hashlib
+from collections import Counter
+from fractions import Fraction
 import itertools
 import json
 import re
@@ -79,6 +81,43 @@ def main(archive: str | None = None) -> None:
     assert triple_matches == [['Emily', 'Gabriel', 'Simon']]
     assert word_matches == [['Emily', 'Gabriel', 'Simon']]
 
+    # Exact source-count-preserving author-order null on positions N21..24.
+    # Each last-four tuple has its true multivariate-without-replacement
+    # probability; the first 20 note positions cannot affect this suffix test.
+    by_author = Counter(a for _, a in notes)
+    subsets = [set(xs) for size in range(1, 7)
+               for xs in itertools.combinations(authors, size)]
+    single_fixed_point_mass = Fraction(0)
+    source_union_fixed_point_mass = Fraction(0)
+    source_union_unique_mass = Fraction(0)
+    total_mass = Fraction(0)
+    for last_four in itertools.product(authors, repeat=4):
+        remaining = by_author.copy()
+        probability = Fraction(1)
+        for i, author in enumerate(last_four):
+            if remaining[author] == 0:
+                probability = Fraction(0)
+                break
+            probability *= Fraction(remaining[author], 24 - i)
+            remaining[author] -= 1
+        if not probability:
+            continue
+        total_mass += probability
+        fixed = [subset for subset in subsets
+                 if sum((1 << i) for i, author in enumerate(last_four)
+                        if author in subset)
+                 == sum(by_author[author] for author in subset)]
+        if len(fixed) == 1:
+            single_fixed_point_mass += probability
+        if any(subset == selected for subset in fixed):
+            source_union_fixed_point_mass += probability
+            if len(fixed) == 1:
+                source_union_unique_mass += probability
+    assert total_mass == 1
+    assert single_fixed_point_mass == Fraction(109, 506)
+    assert source_union_fixed_point_mass == Fraction(65, 759)
+    assert source_union_unique_mass == Fraction(5, 1771)
+
     print(json.dumps({
         'source_crew_sha256': CREW_SHA256,
         'source_mail_numbers': list(source_mails),
@@ -92,6 +131,10 @@ def main(archive: str | None = None) -> None:
         'suffix_equals_selected_note_count_hits': len(matches),
         'unique_suffix_count_match': matches[0],
         'exact_STOW14_hits_all_subsets': len(word_matches),
+        'null_probability_some_unique_subset': str(single_fixed_point_mass),
+        'null_probability_named_union_selfcount': str(source_union_fixed_point_mass),
+        'null_probability_named_union_uniquely_selfcount': str(source_union_unique_mass),
+        'null_model': 'uniform author-label permutations given fixed six author counts; suffix positions only',
         'K08_final_phrase': None,
         'K08_original_commitment_evaluated': False,
     }, sort_keys=True, indent=2))
