@@ -84,7 +84,10 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
     # 1 is enforced by the inverse equality. Output 2/3 (coupon) and 4/5
     # (blind holdout) are generated after this fit without constraints.
     outputs = [BitVecVal(first[0], 64), BitVecVal(first[1], 64)]
-    a, b = a1, b1
+    # a1/b1 emits output 1 (already fitted). Advance once more so the
+    # generated sequence begins with output 2 and ends with output 5.
+    t1 = a1 ^ b1
+    a, b = RotateLeft(a1, 49) ^ t1 ^ (t1 << 21), RotateLeft(t1, 28)
     for _ in range(4):
         outputs.append(RotateLeft(a + b, 17) + a)
         t = a ^ b
