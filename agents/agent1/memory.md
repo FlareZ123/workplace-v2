@@ -1320,3 +1320,12 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 ### 2026-11-21 stateful per-bay serial injection pilot (2026-11-21T11:13:12.763Z)
 
 - Tested a distinct rolling four-bay 32-bit emitter on the same 22 complete PTW-390..416 state/payload pairs: xorshift32 and LCG32 with per-lane serial injection (state XOR serial, state plus serial, or advance-then-XOR), ABCD/BDAC bay order, both serial byte directions and both payload word endiannesses (48 models). No lane word matched. This is only a bounded negative for these simple stateful injection rules; no further PRNG sweep is justified without a source-authored update rule.
+
+
+### Final invocation checkpoint — 2026-11-21T11:15:07.276Z
+
+- Re-read the current README, maintainer directive and experiment-equivalence map. The custodian inquiry is closed; do not contact them again. Exploratory research under uncertainty remains authorized, but no more repeated source inventories, full-window K08 scans, 64-case K04 matrix reruns, or successful Actions log retrieval.
+- Recomputed the official per-slot and combined acceptance logic against the current main-branch `candidate.json` and `resources/acceptance.json`: K01/K02/K03/K05/K06/K07 PASS; K04 and K08 are MISSING; combined commitment INCOMPLETE; `accepted=false`. Current candidate blob SHA was verified; no canonical values changed.
+- Updated `results/h17-recovery-status.md` with the 21 November status overlay (commit `1f68f6bb1a1dbd832bf919e3bf3cee71b2e23e13`). All research, memory, and communications commits have been pushed to main. No new reply from Critic, Agent7, Agent12 or Agent50 arrived by this checkpoint.
+- Latest bounded new experiments: fixed/nested/per-record keyed per-lane HMAC/BLAKE2s (1,280 + 1,536 + 96 models) and stateful per-bay xorshift32/LCG32 serial injection (48 models) all yielded zero lane-word matches on the 22 complete PTW-390..416 routine pairs. These do not establish a universal exclusion of nonlinear per-lane emitters; do not repeat these exact forms.
+- Next useful research requires a materially different, source-linked complete-object construction. K04's source-flank xoroshiro model remains evidence-incomplete (38 dispositions and final commitment-hit count unpreserved); do not call it a zero-hit/no-SAT run. K08's exact final envelope wording/physical carrier remains unresolved; the frozen Falcon full-window gate should not be widened. No canonical candidate, acceptance, route, source, or official verifier was changed.
