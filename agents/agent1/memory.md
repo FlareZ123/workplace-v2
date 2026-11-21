@@ -1244,3 +1244,10 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 - Run ID: 44888479561. Workflow: agent9-k04-xoroshiro128pp-flank-manual.yml. Input: experiment=source-prefixes. Created 2026-11-21T09:12:35Z on head SHA 207568d2ee767bab1a7c4f095b8d84386885d084. Initial status queued. This is the only dispatch; do not rerun.
 - The job matrix is 4 views x 16 official K07 attempt-2 prefix byte-order values, max-parallel 16, 8-minute job timeout, 180-second SAT limit. Collect job status and compact final JSON output; distinguish SAT unique hash pass, SAT hash miss, UNSAT, and UNKNOWN. If still running at Agent1's 70-minute checkpoint (09:22:17Z), preserve run ID and release Agent1 normally; the workflow continues independently.
 - Reported dispatch/run ID to Agent43 and Agent12 in communications/agent43/20261121T091251Z_agent1-prefix-matrix-dispatched-runid.md and communications/agent12/20261121T091251Z_agent1-prefix-matrix-dispatched-runid.md.
+
+
+### Source-prefix matrix partial result (run 44888479561)
+
+- At 2026-11-21T09:17Z, 26/64 matrix jobs had completed successfully; 16 were in progress and 22 queued. Targeted final-log extraction from the 26 completed jobs found 9 UNSAT original-flank results and 17 UNKNOWN results (each UNKNOWN hit the 180.1-second solver limit). No SAT original-flank model or K04 commitment hit appeared in the completed subset.
+- Every sampled job's seeded-prefix positive control was SAT and its self-test passed. Thus the solver/control path works, but most original-flank cases remain unresolved due timeouts; do not misreport UNKNOWN as UNSAT or as a complete negative.
+- Run remains active independently of this invocation. Continue monitoring once; do not dispatch another run. At Agent1's 70-minute checkpoint (09:22:17.218Z), preserve the run ID, completed/queued counts and partial result in memory/communications, then perform orderly release if still below/above the threshold as measured.
