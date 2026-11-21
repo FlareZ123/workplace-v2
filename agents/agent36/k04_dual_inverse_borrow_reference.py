@@ -139,6 +139,24 @@ class BorrowCircuit:
         intermediate = self.sub_const64(y, a)
         return self.sub64(self.rotated(intermediate, -17), a)
 
+    def get_t_from_output(self, a: list[int], y: int) -> list[int]:
+        """Derive t=a XOR b directly, avoiding materializing b."""
+        intermediate = self.sub_const64(y, a)
+        u = self.rotated(intermediate, -17)
+        borrow = 0
+        t = []
+        for i in range(64):
+            t.append(self.xor(u[i], borrow))
+            if i < 63:
+                borrow = self.and_lits(-u[i], a[i]) if i == 0 else self.majority_lits(-u[i], a[i], borrow)
+        return t
+
+    def step_from_t(self, a: list[int], t: list[int]) -> tuple[list[int], list[int]]:
+        ra = self.rotated(a, 49)
+        na = [self.xor(ra[i], t[i], t[i - 21] if i >= 21 else 0) for i in range(64)]
+        nb = self.rotated(t, 28)
+        return na, nb
+
     def constrain_sub64_equal(self, a: list[int], b: list[int], expected: list[int]) -> None:
         borrow = 0
         for i in range(64):
@@ -154,15 +172,15 @@ class BorrowCircuit:
     def build_first_pair(self, y0: int, y1: int, seed: tuple[int, int] | None = None,
                          include_middle: bool = False):
         a0 = self.word(None if seed is None else seed[0])
-        b0 = self.get_state_from_output(a0, y0)
-        state1 = self.step(a0, b0)
+        t0 = self.get_t_from_output(a0, y0)
+        state1 = self.step_from_t(a0, t0)
         self.constrain_output(*state1, y1)
         middle = None
         if include_middle:
             state2 = self.step(*state1)
             state3 = self.step(*state2)
             middle = (self.output(*state2), self.output(*state3))
-        return (a0, b0), middle
+        return (a0, t0), middle
 
     def validate_witness(self) -> None:
         assert len(self.witness) == self.count
@@ -183,7 +201,8 @@ def main() -> None:
     (state_bits, middle) = full.build_first_pair(planted[0], planted[1], seed=SEED, include_middle=True)
     full.validate_witness()
     assert middle is not None
-    recovered_state = tuple(full.bits_to_int(w) for w in state_bits)
+    recovered_a0, recovered_t0 = (full.bits_to_int(w) for w in state_bits)
+    recovered_state = (recovered_a0, (recovered_a0 ^ recovered_t0) & MASK64)
     replayed = stream(recovered_state, 6)
     assert replayed[:2] == planted[:2]
     assert [full.bits_to_int(w) for w in middle] == planted[2:4]
@@ -192,8 +211,8 @@ def main() -> None:
 
     core_counts = (core.count, len(core.clauses), len(core.xors))
     full_counts = (full.count, len(full.clauses), len(full.xors))
-    assert core_counts == (632, 1122, 382), core_counts
-    assert full_counts == (1396, 2622, 894), full_counts
+    assert core_counts == (567, 1122, 317), core_counts
+    assert full_counts == (1331, 2622, 829), full_counts
 
     rng = random.Random(0xA17E2026)
     for _ in range(100):
@@ -204,7 +223,8 @@ def main() -> None:
             outputs[0], outputs[1], seed=seed, include_middle=True
         )
         circuit.validate_witness()
-        recovered_state = tuple(circuit.bits_to_int(w) for w in state_bits)
+        recovered_a0, recovered_t0 = (circuit.bits_to_int(w) for w in state_bits)
+        recovered_state = (recovered_a0, (recovered_a0 ^ recovered_t0) & MASK64)
         assert stream(recovered_state, 6) == outputs
         assert middle_bits is not None
         assert [circuit.bits_to_int(w) for w in middle_bits] == outputs[2:4]
