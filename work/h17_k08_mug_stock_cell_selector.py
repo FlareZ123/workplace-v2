@@ -165,18 +165,72 @@ def evaluate_candidate(cells: list[dict[str, Any]], nonce: bytes, target: bytes,
     return result
 
 
+class FallbackSheet:
+    def __init__(self, name: str, rows: int, columns: int,
+                 cell_records: dict[tuple[str, str], dict[str, Any]]):
+        self.name = name
+        self.nrows = rows
+        self.ncols = columns
+        self._cell_records = cell_records
+
+    def cell(self, row0: int, column0: int) -> Any:
+        address = excel_address(row0 + 1, column0 + 1)
+        record = self._cell_records.get((self.name, address))
+        if record is None:
+            return type("Cell", (), {"value": None, "ctype": None})()
+        data_type = record.get("data_type")
+        # Do not use LibreOffice-recalculated formula results as historical text.
+        value = None if data_type in ("f", "e") else record.get("text")
+        return type("Cell", (), {"value": value, "ctype": data_type})()
+
+
+class FallbackBook:
+    def __init__(self, extracted: dict[str, Any]):
+        self._sheets: dict[str, FallbackSheet] = {}
+        self._sheet_meta = extracted.get("sheets", [])
+        self._cell_records: dict[tuple[str, str], dict[str, Any]] = {}
+        for stream in extracted.get("text_streams", []):
+            if stream.get("kind") != "cell":
+                continue
+            source = str(stream.get("source", ""))
+            if "!" not in source:
+                continue
+            sheet_name, address = source.rsplit("!", 1)
+            self._cell_records[(sheet_name, address.upper())] = stream
+        for meta in self._sheet_meta:
+            name = str(meta["name"])
+            self._sheets[name] = FallbackSheet(
+                name, int(meta.get("max_row", 0)), int(meta.get("max_column", 0)),
+                self._cell_records,
+            )
+
+    def sheet_names(self) -> list[str]:
+        return list(self._sheets)
+
+    def sheet_by_name(self, name: str) -> FallbackSheet:
+        return self._sheets[name]
+
+    def release_resources(self) -> None:
+        return None
+
+
 def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str | None = None) -> dict[str, Any]:
     if not workbook_path.is_file() or workbook_path.is_symlink():
         raise ValueError("workbook must be a regular, non-symlink file")
-    source_bytes = workbook_path.read_bytes()
-    source_hash = sha256(source_bytes)
     nonce, target = load_k08_rules(resources)
     ciphertext, plaintext = decrypt_ps0323(resources, nonce)
     try:
-        import xlrd
+        from h17_xls_lo_fallback import extract as extract_xls
     except ImportError as exc:
-        raise RuntimeError("xlrd is required to read the original BIFF .xls workbook") from exc
-    book = xlrd.open_workbook(file_contents=source_bytes, on_demand=False)
+        raise RuntimeError("work/h17_xls_lo_fallback.py must be available beside this tool") from exc
+    extracted = extract_xls(workbook_path)
+    if not extracted.get("source_unchanged"):
+        raise RuntimeError("legacy XLS intake did not confirm source immutability")
+    before_hash = extracted.get("source_sha256_before")
+    after_hash = extracted.get("source_sha256_after")
+    if not before_hash or before_hash != after_hash:
+        raise RuntimeError("legacy XLS intake source hashes differ or are missing")
+    book = FallbackBook(extracted)
     sheet_names = book.sheet_names()
     mapping = map_sheets(sheet_names, explicit_sheet)
     coordinates = coordinate_sets(plaintext)
@@ -193,14 +247,16 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
         "status": ("MATCH_REVIEW" if any(x["match"] for x in candidates) else
                    "NO_K08_MATCH" if candidates and all(x["complete"] for x in candidates) else
                    "INCOMPLETE_OR_NO_MAPPING"),
-        "workbook": {"path": str(workbook_path), "size": len(source_bytes),
-                     "sha256_before": source_hash, "sha256_after": sha256(workbook_path.read_bytes())},
+        "workbook": {"path": str(workbook_path), "size": extracted.get("source_bytes"),
+                     "sha256_before": before_hash, "sha256_after": after_hash,
+                     "source_unchanged": True, "converter": extracted.get("converter")},
         "ps0323_selector": {"payload_hex": ciphertext.hex().upper(),
                              "desk_nonce_hex": nonce.hex().upper(),
                              "aes_plaintext_hex": plaintext.hex().upper(),
                              "coordinate_sets": {k: [[r, c] for r, c in v] for k, v in coordinates.items()}},
-        "sheets": [{"name": name, "rows": book.sheet_by_name(name).nrows,
-                    "columns": book.sheet_by_name(name).ncols} for name in sheet_names],
+        "sheets": [{"name": meta.get("name"), "rows": meta.get("max_row"),
+                    "columns": meta.get("max_column"), "state": meta.get("state")}
+                   for meta in extracted.get("sheets", [])],
         "sheet_mapping": mapping,
         "k08_target_sha256": target.hex(),
         "candidates": candidates,
@@ -209,8 +265,9 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
             "Only the eight PS-0323-derived cells, their original order, two byte orientations, and zero-/one-based coordinates are tested.",
             "No sheet ordering is inferred; multi-sheet workbooks require an explicit --sheet.",
             "Cell values are joined with one space and processed under the original REC8/1 normalization/HMAC rule.",
-            "No sheet permutation, cell permutation, paraphrase, comments, embedded OfficeArt, formula recalculation, or broad text search is performed.",
-            "The source workbook is read-only; hash is checked before and after."
+            "Formula cells are not used as phrase values because LibreOffice may recalculate them.",
+            "No sheet permutation, cell permutation, paraphrase, comments, embedded OfficeArt, or broad text search is performed.",
+            "The existing XLS intake converts a temporary copy and confirms the original workbook hash is unchanged."
         ]
     }
     book.release_resources()
