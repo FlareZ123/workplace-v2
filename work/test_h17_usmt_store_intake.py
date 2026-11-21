@@ -21,6 +21,13 @@ class UsmtIntakeTests(unittest.TestCase):
         self.assertIn("*.sqlite-wal", usmt.DEFAULT_INCLUDE)
         self.assertIn("*-shm", usmt.DEFAULT_INCLUDE)
         self.assertIn("*.emf", usmt.DEFAULT_INCLUDE)
+        for pattern in (
+            "*.spl", "*.shd", "*.prn", "*.pcl", "*.ps", "*.zpl",
+            "*.xps", "*.oxps", "*.json", "*PrintService*.evtx",
+            "*.one", "*.onepkg", "*.onecache",
+        ):
+            with self.subTest(pattern=pattern):
+                self.assertIn(pattern, usmt.DEFAULT_INCLUDE)
         self.assertNotIn("*.pdf", usmt.DEFAULT_INCLUDE)
         self.assertNotIn("*.eml", usmt.DEFAULT_INCLUDE)
         self.assertNotIn("*.msg", usmt.DEFAULT_INCLUDE)
