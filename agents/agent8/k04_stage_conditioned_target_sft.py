@@ -132,6 +132,58 @@ def main() -> None:
         hits += sha256(coupon).hexdigest() == original
     assert checks == 253000 and hits == 0
 
+    # The original 17 firstword partial recurrence witnesses impose stage
+    # equalities, despite leaving one unknown predecessor high bit each.
+    # These are all derived from intact source payloads only.
+    from collections import defaultdict
+
+    index: dict[int, list[tuple[int, int]]] = defaultdict(list)
+    for source_row, source_packet in enumerate(native):
+        if source_packet is None:
+            continue
+        for lane, value in enumerate(source_packet):
+            index[value].append((source_row, lane))
+    partial = []
+    for r, source_packet in enumerate(native):
+        if source_packet is None:
+            continue
+        for k in range(r + 1, len(native)):
+            partner_packet = native[k]
+            if partner_packet is None:
+                continue
+            for i, partner in enumerate(partner_packet):
+                for msb in (0, 0x80000000):
+                    for l, q in index.get(partner ^ twist(msb, source_packet[0]), []):
+                        if l > k:
+                            partial.append((r, k, l, 0, i, q))
+    assert len(partial) == 17 and len(set(partial)) == 17
+    stricter = closure(rows, historical + partial)
+
+    strict_geom = []
+    strict_words: list[set[int]] = [set() for _ in range(4)]
+    for r in range(129):
+        for k in range(r + 1, 129):
+            for p in range(4):
+                for i in range(4):
+                    gap1 = 396 + p - i
+                    if not feasible_difference(stricter, r, k, gap1):
+                        continue
+                    for q in range(4):
+                        gap2 = 623 + p - q
+                        if not feasible_difference(stricter, r, 129, gap2):
+                            continue
+                        if not feasible_difference(stricter, k, 129, gap2 - gap1):
+                            continue
+                        strict_geom.append((r, k, p, i, q))
+                        for msb in ((0, 0x80000000) if p == 0 else (0,)):
+                            predecessor = native[r][p-1] if p else msb
+                            strict_words[q].add(temper(native[k][i] ^ twist(predecessor, native[r][p])))
+    assert strict_geom == [(43, 96, 0, 3, 0)], strict_geom
+    assert strict_words == [{0x214F3ECD, 0x65472FCF}, set(), set(), set()]
+    # One alias literally equals the original REQUESTED1 first native word.
+    # It is not independently authenticated as the missing ACK2 coupon.
+    assert int.from_bytes(packets[128][:4], "little") == 0x214F3ECD
+
     # Source-witness stage-feasible full packet from rows 43,44,96,97.
     # It explicitly uses the row96->row97 native partner boundary.
     anchors = {43: 0, 44: 4, 96: 394, 97: 398, 129: 624}
@@ -167,6 +219,9 @@ def main() -> None:
         "target_lane_distinct_word_counts": [len(x) for x in possible],
         "complete_original_candidates": checks,
         "original_K04_hits": hits,
+        "historical_partial_firstword_witnesses": len(partial),
+        "strict_source42_target_direct_geometry": strict_geom,
+        "strict_source42_lane_wordsets": [[f"{v:08X}" for v in sorted(vs)] for vs in strict_words],
         "source_stage_feasible_fourrow_raw": proposed_raw.hex().upper(),
         "source_stage_feasible_fourrow_original_hit": False,
         "seeded_full_packet_positive": True,
