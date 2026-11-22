@@ -53,6 +53,8 @@ Potential native final-text carriers, if independently authorized, are the envel
 
 **AX-7782 / IR-261003-H17 / Bundle06** is the selected retained incident copy. The export has only **two-byte checkpoints**, not the eight 1 MiB chunks, original directory manifest or object history. Do not assert it contains K04/K08: chronology and contents remain unknown. Preserve any independently authorized 8,388,608-byte source object and manifest unchanged; [joint read-only intake](../work/h17_ax7782_joint_intake.py) and [chronology caveat](h17-ax7782-native-copy-source-lane.md). Original native spool/job and paper-envelope/profile materials are separate conditional routes. [Precise missing-record request](h17-missing-evidence-request.md).
 
+**22 November complete-candidate intake improvement:** The [native-media bridge](h17-source-native-k04-k08-intake-bridges-20261122.md) closes a K04 scanner blind spot for original OLE/CFB media and reads complete coupons in native UTF-16/grouped-hex/Base64 representations. It also routes M10-anchored original BIFF8 OfficeArt descriptions/BLIP image bytes and source-literal teal-bit text to the exact K08 checker. Full end-to-end controls passed on [run 45010248437](https://github.com/FlareZ123/workplace-v2/actions/runs/45010248437). No historical native source or original commitment hit has been obtained; these are source-dependent test paths.
+
 The custodian inquiry is closed. Do not recontact that channel, access protected R:/SharePoint, operate equipment, or alter preserved source evidence. The encrypted BX25 office PDF does not authenticate an incident-day coupon/host or Emily's text.
 
 ## Publication and experiment decision
