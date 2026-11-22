@@ -19,7 +19,7 @@ The local BX25-08 property declaration visibly bridges policy file `H17-POL-17/A
 7. Physical escrow/recovery coupon or an authenticated scan/photo
 8. `R:/IT/desktop-move-2026.html` and its profile-migration package
 
-For the exact job, retain every record for `PS-261003-0417`; the published selector is the last ACK for that exact job. Do not substitute a REQUESTED row or the 16:45 LABEL row.
+For the exact job, retain every record for `PS-261003-0417`; the published selector is the last ACK for that exact job. Do not substitute a REQUESTED row or the 16:45 LABEL row. MAIL-04 explicitly says a stores picking ticket is not the as-left record; do not use ST-112/ticket-suffix arithmetic as a foreign key to PS-0417. The ESC-N job selection must be supported by the route record and native job/host evidence, not the ticket offset.
 
 ## K08 / keeper desk phrase
 
