@@ -7,6 +7,7 @@ import hashlib
 import itertools
 import json
 import re
+import random
 from collections import Counter
 from pathlib import Path
 
@@ -53,6 +54,37 @@ def untemper(x):
 def mt_twist_pair(before, now):
     joint = (before & 0x80000000) | (now & 0x7FFFFFFF)
     return (joint >> 1) ^ (0x9908B0DF if now & 1 else 0)
+
+
+def stage_offsets_right_lane(p, i, q):
+    """Offsets when p is the right input lane in twist_pair(x[p-1], x[p])."""
+    assert p in (1, 2, 3)
+    return 396 + p - i, 623 + p - q
+
+
+def stage_offsets_left_lane(p0, i, q):
+    """Equivalent offsets when p0 is the left input lane (p0 = p - 1)."""
+    assert p0 in (0, 1, 2)
+    return 397 + p0 - i, 624 + p0 - q
+
+
+def verify_stage_index_fixture():
+    """Seeded MT fixture guards the right/left lane convention against +1 drift."""
+    rng = random.Random(0x17A11CE)
+    stream = [untemper(rng.getrandbits(32)) for _ in range(1300)]
+    for p in (1, 2, 3):
+        p0 = p - 1
+        i = q = p0
+        t = p0
+        assert stream[t + 397] == stream[397 + i]
+        assert stream[t + 624] == (
+            stream[t + 397] ^ mt_twist_pair(stream[t], stream[t + 1])
+        )
+        right = stage_offsets_right_lane(p, i, q)
+        left = stage_offsets_left_lane(p0, i, q)
+        assert right == left == (397, 624)
+        # Treating the right lane as if it were the left lane is the old +1 bug.
+        assert (397 + p - i, 624 + p - q) == (398, 625)
 
 
 def source_packets():
@@ -117,9 +149,15 @@ def candidate_coupon(native_words):
 
 
 def main():
+    verify_stage_index_fixture()
     native = source_packets()
     observed = witnesses(native)
     assert len(observed) == 25, len(observed)
+    assert all(
+        stage_offsets_right_lane(p, i, q) == stage_offsets_left_lane(p - 1, i, q)
+        for r, p, k, i, l, q in observed
+    )
+    print('seeded MT stage-index fixture=PASS; all 25 source tuples use equivalent right/left lane offsets')
     signatures = sorted({(k-r, l-r, p, i, q) for r, p, k, i, l, q in observed})
     assert Counter(l-r for r, p, k, i, l, q in observed) == Counter({83: 6, 84: 17, 87: 2})
     assert {((k-r), (l-r)) for r, p, k, i, l, q in observed} == {(52,83),(53,83),(53,84),(54,84),(53,87)}
