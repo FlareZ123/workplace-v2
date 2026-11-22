@@ -63,6 +63,22 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         self.assertEqual(len(result["hits"]), 1, result)
         self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
 
+    def test_second_frame_of_multiframe_tiff_is_recovered(self):
+        from PIL import Image
+
+        code = qrcode.QRCode(box_size=8, border=4)
+        code.add_data(self.payload)
+        code.make(fit=True)
+        coupon = code.make_image(fill_color="black", back_color="white").convert("RGB")
+        blank = Image.new("RGB", coupon.size, "white")
+        self.path = self.path.with_suffix(".tiff")
+        blank.save(self.path, format="TIFF", save_all=True,
+                   append_images=[coupon])
+        result = self.scan()
+        self.assertEqual(len(result["hits"]), 1, result)
+        self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
+        self.assertIn("frame1", result["hits"][0]["source"])
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
