@@ -1036,3 +1036,11 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - Added these checks to results/h17-k04-p951-193bit-carrier-screen-20261122.md and notified Agent18. Do not widen recurrence, hidden-row, or arbitrary stream searches without a source-authored selector.
 - Remaining decision-changing evidence: native PS-0417 queue/render/host-stage manifest or actual coupon; original AX-7782 8 MiB retained object; Emily's final WN-14 desk/photo-caption source.
 
+
+
+## 2026-11-22 04:06 UTC — cross-stream generator / spool checksum alternatives
+
+- Tested a materially different common-MT hypothesis: raw 16-byte source blocks K01, K02, K03, K05, K06 and K07 as additional outputs of the same MT stream as the 133-row spool. Across eight whole-word views per block (192 carrier words) and 528 untempered spool words: zero exact overlaps and zero twist-pair recurrence matches across all source/middle/target combinations spanning spool and carrier words. No direct shared-MT bridge is evident.
+- Tested a 16-byte K04 coupon hypothesis formed by four CRC32-IEEE words over the four PS-261003-0417 spool records (payload-only, full log-line, and 20-byte timestamp+payload variants), with chronological/reverse order, both word byte orders, and route-mask XOR. No K04 commitment match. This is not a source-defined print serialization; do not expand arbitrary CRC serialization guesses.
+- These scratch negatives do not establish a different producer or recover K04. The native print queue/render/host manifest remains the decision-changing source.
+
