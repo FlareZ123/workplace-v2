@@ -247,7 +247,7 @@ def evaluate(path: Path, limit_seconds: int, cap: int, windows: int):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--resources", type=Path, default=Path("resources"))
-    parser.add_argument("--limit-seconds", type=int, default=12)
+    parser.add_argument("--limit-seconds", type=int, default=45)
     parser.add_argument("--max-states", type=int, default=8)
     parser.add_argument("--windows", type=int, default=65536)
     parser.add_argument("--controls-only", action="store_true")
