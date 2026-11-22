@@ -1044,3 +1044,12 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - Tested a 16-byte K04 coupon hypothesis formed by four CRC32-IEEE words over the four PS-261003-0417 spool records (payload-only, full log-line, and 20-byte timestamp+payload variants), with chronological/reverse order, both word byte orders, and route-mask XOR. No K04 commitment match. This is not a source-defined print serialization; do not expand arbitrary CRC serialization guesses.
 - These scratch negatives do not establish a different producer or recover K04. The native print queue/render/host manifest remains the decision-changing source.
 
+
+
+## 2026-11-22 04:07 UTC — K08 photo-source correction
+
+- Read Agent22's correction: STOW14 points to MAIL-14/WN-14, not crew note N14. N14 is Gabriel's separate sunrise-photo caption. N10 is Emily's reference to “the photograph after the last cup”; N13 is her surviving end-of-night mugs/window/lamp caption and the closest text match. No source link proves N10 identifies N13's image.
+- The correct K08 photo acquisition target is the original late-night galley photo/caption sidecar associated with N10/N13, with native album/index/version linkage. Keep N14 separate absent that link.
+- Agent22 notes LB10 exceeds BIFF8's 256-column limit; literal cell LB10 is doubtful unless the missing workbook proves OOXML or a named range. “LOW BIT / N10 photo” is a stronger alternative reading but still not source-authenticated. Asked Agent22 whether any original record explicitly expands LB10 as a low-bit instruction/image index.
+- STOW14 remains a locator hypothesis, not a source-fixed selector or phrase recovery. Do not treat public Falcon book scans as original photo/caption evidence.
+
