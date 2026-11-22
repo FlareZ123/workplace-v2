@@ -222,6 +222,49 @@ def run():
     assert assignments == 1_204_224
     assert source_compatible == 610_176
     assert len(matches) == 0
+
+    # Exploratory source-cued interpretation of ATTPTTAILBIT: the selected
+    # attempt is 2, so its decimal field's least-significant bit is zero.
+    # This is a locator hypothesis, not a source-mandated K04 rule.
+    attempt_assignments = 0
+    attempt_compatible = 0
+    attempt_matches = []
+    for names in itertools.permutations(SOURCE, 3):
+        for encodings in itertools.product(range(8), repeat=3):
+            left, middle, right = (
+                views[(name, encoding)]
+                for name, encoding in zip(names, encodings)
+            )
+            full = (
+                left[1], left[2],
+                middle[0], middle[1],
+                right[0], right[1],
+            )
+            donor_bits = sum(
+                value << (32 * index)
+                for index, value in enumerate(full)
+            )  # partial attempt-tail bit is fixed at zero
+            for partial in PARTIAL_BITS:
+                donor_map, targets = maps[partial]
+                attempt_assignments += 1
+                if any(evaluate(donor_bits, row)
+                       for row in donor_map.syndromes):
+                    continue
+                attempt_compatible += 1
+                component = component_from_bits(donor_bits, targets)
+                if hashlib.sha256(component).digest() == K04_TARGET:
+                    attempt_matches.append({
+                        "sources": names,
+                        "encodings": encodings,
+                        "partial_bit": partial,
+                        "attempt_tail_bit": 0,
+                        "component": component.hex().upper(),
+                    })
+                    print("ATTEMPT-TAIL K04 COMMITMENT MATCH", attempt_matches[-1])
+
+    assert attempt_assignments == 1_204_224
+    assert attempt_compatible == 610_176
+    assert len(attempt_matches) == 0
     print({
         "source_rank": basis.rank,
         "full_donor_stages": FULL_STAGES,
@@ -229,9 +272,13 @@ def run():
         "partial_bit_views": PARTIAL_BITS,
         "distinct_source_families_per_assignment": 3,
         "word_views_per_source": 8,
-        "assignments": assignments,
-        "source_compatible": source_compatible,
-        "K04_commitment_matches": len(matches),
+        "carrier_partial_assignments": assignments,
+        "carrier_partial_source_compatible": source_compatible,
+        "carrier_partial_K04_matches": len(matches),
+        "ATTPTTAILBIT_attempt_lsb": 0,
+        "attempt_lsb_assignments": attempt_assignments,
+        "attempt_lsb_source_compatible": attempt_compatible,
+        "attempt_lsb_K04_matches": len(attempt_matches),
         "elapsed_seconds": round(time.monotonic() - started, 2),
     })
 
