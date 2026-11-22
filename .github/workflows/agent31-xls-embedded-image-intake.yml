@@ -52,6 +52,10 @@ jobs:
             work.test_h17_ax7782_k08_sqlite_bridge \
             work.test_h17_ax7782_joint_intake \
             work.test_h17_sticky_notes_intake
+      - name: Run K04 OLE/CFB raw-window original-component positive control
+        env:
+          PYTHONPATH: work
+        run: python work/h17_k04_binary_window_intake.py --self-test
       - name: Run source-limited N14 teal-image positive and negative controls
         run: |
           python -m unittest discover -s tests -p 'test_h17_k08_teal_bit_image_scan.py' -v
