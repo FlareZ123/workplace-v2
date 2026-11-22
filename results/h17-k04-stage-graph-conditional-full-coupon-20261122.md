@@ -46,6 +46,12 @@ A second, stricter original-source calculation adds the **17** independently obs
 
 With the *same* selected-row exclusion, ACK and REQUESTED native-word bounds, and 3-anchor feasibility rule, this graph admits **only one** source-stage scalar target relation: `(r=43,k=96,p=0,i=3,q=0)`. Two possible target-lane-0 tempered words survive the unknown predecessor MSB: `214F3ECD` and `65472FCF`. No directly supported source-to-target word for lanes **1, 2 or 3** survives.
 
+### Why the stage-feasible fourrow candidate is excluded by all 42
+
+The 25-fullword-graph example `F3B81FDE37F0311F5D01E5F9DA58EC64` ends with **DA58EC64**. That 4-byte string is itself the exact last word of **intact original row130, PS-0417 REQUESTED attempt3**, recorded as `44D53DFC29D7943A95D89371DA58EC64`. This is no proof of original ACK2: it exposes an incompatible row-stage borrowing assumption.
+
+In the independently observed 17 firstword witnesses, the original relation `(r=44,k=97,l=130,p=0,i=2,q=3)` forces `S130-S44=620`. The 25-witness candidate assigned `S44=4` and `S129=624`. Thus this 42-witness relation forces `S130=624=S129`, but row129 is an ACK requiring at least four native outputs, hence `S130>=S129+4`. **The exact fourrow candidate chronology is thereby contradictory under the all-42 source graph**, without computing any original K04 hash or fitting a full MT state. A correction was sent to Agent18 before a requested full-state fitting run.
+
 This is not an independently recovered authentic K04 word. The same donor relation already occurs in the intact **row128 REQUESTED attempt1** witness `(43,96,128,0,3,0)`. The strengthened graph permits `S129=S128` because REQUESTED row128 may consume **zero** native generator words. One lane-0 alias is exactly the REQUESTED attempt1 word `214F3ECD` (serialized `CD3E4F21`), which is an unacknowledged, independently unauthenticated print request. The actual copied ACK2 first native lane reads `57DCA9A9`, neither alias, though source explicitly warns the ACK2 copied payload may be damaged. The REQUESTED1 complete packet also fails the unchanged K04 commitment after route mask.
 
 This makes the conditional observability boundary explicit: adding the 17 partial recurrence witnesses can narrow a *hypothetical* target lane's possible values, but the only narrowing depends on a REQUESTED/ACK zero-draw alias, and none of the remaining three selected 32-bit lanes receives a direct source donor. No genuine K04 acceptance bit or complete physical coupon is authenticated by this stage model.
