@@ -30,7 +30,7 @@ from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 from h17_k04_image_barcode_intake import read_image_barcodes
 from h17_k04_emf_dib_intake import extract_emf_dib_bmps
 from h17_k04_pdf_barcode_intake import (
-    iter_pdf_barcode_images, iter_pdf_coupon_text,
+    iter_pdf_barcode_images, iter_pdf_coupon_text, iter_pdf_embedded_files,
 )
 from h17_k04_pcl_raster_intake import extract_pcl_raster_images
 from h17_emf_text import extract_emf_text
@@ -397,6 +397,16 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                             break
         except (tarfile.TarError, OSError, EOFError) as exc:
             result["container_error"] = str(exc)
+    elif kind == "pdf":
+        for filename, payload in iter_pdf_embedded_files(data):
+            child = scan_member(
+                f"{name}!/{filename}", payload, depth + 1, budget,
+                target_digest, mask, stride, max_member, max_depth,
+            )
+            children.append(child)
+            if budget[0] > budget[1] or budget[2] >= budget[3]:
+                result["scan_limit"] = "PDF embedded-file member budget reached"
+                break
     elif name.casefold().endswith(".eml"):
         from email import policy
         from email.parser import BytesParser
