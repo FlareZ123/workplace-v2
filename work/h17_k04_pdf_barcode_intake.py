@@ -36,7 +36,21 @@ def iter_pdf_coupon_text(data: bytes) -> Iterator[tuple[str, bytes]]:
                 return
             for page_index in range(min(doc.page_count, _MAX_PAGES)):
                 source = f"pdf-page-{page_index+1}"
-                text = doc.load_page(page_index).get_text("text", sort=True)
+                page = doc.load_page(page_index)
+                for index, annotation in enumerate(page.annots() or ()):
+                    if index >= 512:
+                        break
+                    for field in ("content", "subject", "title"):
+                        value = annotation.info.get(field)
+                        if isinstance(value, str) and 0 < len(value) <= 1_000_000:
+                            yield f"{source}-annotation-{index}-{field}", value.encode("utf-8")
+                for index, widget in enumerate(page.widgets() or ()):
+                    if index >= 512:
+                        break
+                    value = widget.field_value
+                    if isinstance(value, str) and 0 < len(value) <= 1_000_000:
+                        yield f"{source}-form-field-{index}", value.encode("utf-8")
+                text = page.get_text("text", sort=True)
                 if not text or len(text) > 1_000_000:
                     continue
                 yield f"{source}-native-text", text.encode("utf-8")
