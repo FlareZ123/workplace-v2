@@ -268,6 +268,20 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                 hit["encoding"] = f"image-{symbol}-{hit['encoding']}"
                 result["hits"].append(hit)
 
+    if not container and kind == "ole-compound" and name.casefold().endswith(".msg"):
+        from h17_ax7782_k08_phrase_intake import iter_text_streams
+        errors: list[dict] = []
+        budget = [0]
+        for source, payload in iter_text_streams(
+            name, data, 0, budget, errors, False, None, [],
+        ):
+            if source == name and payload == data:
+                continue  # The raw Outlook OLE carrier was scanned above.
+            result["hits"].extend(scan_bytes(
+                source, payload, target_digest, mask, stride,
+            ))
+        if errors:
+            result["msg_decode_diagnostics"] = errors
     if not container and b"\x1b*r" in data and b"\x1b*b" in data:
         for label, png in extract_pcl_raster_images(data):
             decoded, diagnostics = read_image_barcodes(png)
