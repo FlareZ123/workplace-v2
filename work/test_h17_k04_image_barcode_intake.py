@@ -409,6 +409,45 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         self.assertEqual(len(hits), 1, hits)
         self.assertIn("base64url-16bytes", hits[0]["encoding"])
 
+    def test_pdf_annotation_coupon_recovered_without_page_text(self):
+        import pymupdf
+
+        document = pymupdf.open()
+        page = document.new_page(width=420, height=220)
+        page.add_text_annot(
+            (20, 50), "Original north coupon: " + self.payload.hex().upper()
+        )
+        self.path = self.path.with_suffix(".pdf")
+        self.path.write_bytes(document.tobytes())
+        document.close()
+        result = self.scan()
+        self.assertTrue(any(
+            hit["component_hex"] == self.component.hex().upper()
+            and "annotation-0-content" in hit["source"]
+            for hit in result["hits"]
+        ), result)
+
+    def test_pdf_form_field_coupon_recovered(self):
+        import pymupdf
+
+        document = pymupdf.open()
+        page = document.new_page(width=420, height=220)
+        widget = pymupdf.Widget()
+        widget.rect = pymupdf.Rect(20, 70, 350, 110)
+        widget.field_name = "ESC_N_RECOVER_COUPON"
+        widget.field_type = pymupdf.PDF_WIDGET_TYPE_TEXT
+        widget.field_value = self.payload.hex().upper()
+        page.add_widget(widget)
+        self.path = self.path.with_suffix(".pdf")
+        self.path.write_bytes(document.tobytes())
+        document.close()
+        result = self.scan()
+        self.assertTrue(any(
+            hit["component_hex"] == self.component.hex().upper()
+            and "form-field-0" in hit["source"]
+            for hit in result["hits"]
+        ), result)
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
