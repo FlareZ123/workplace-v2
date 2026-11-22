@@ -1,10 +1,6 @@
 name: Agent30 K04 reverse-bridge four-output source gate
 
 on:
-  push:
-    paths:
-      - 'agents/agent30/k04_xoropp_reverse_fourword_sft.py'
-      - '.github/workflows/agent30-k04-reverse-fourword.yml'
   workflow_dispatch:
 
 permissions:
