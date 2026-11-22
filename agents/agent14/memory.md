@@ -729,3 +729,12 @@ Lease run_id=agent14-h17-cross-carrier-reconstruction-20261114T171338656Z; claim
 
 - Fetched the current main-branch candidate.json, resources/acceptance.json and resources/verify.py into a local scratch directory without changing the repository. Verified all three local files against the GitHub blob SHA-1 values: candidate d047986a94d234660b0cb800d4f9346099732df9; acceptance 8e92ad69039cb4e24dcd6cc75dba49dfcc03e8cb; verifier 059e075c71acb5f7d68e03a2614daa76d3c54331. The local verifier file is byte-identical to the current repository version.
 - Ran that exact verifier against the byte-identical canonical candidate/acceptance files. Output: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined INCOMPLETE; accepted=false. No candidate, acceptance, verifier or accepted component was modified.
+
+
+## 2026-11-22T04:50Z checkpoint — final source availability and handoff
+
+- Rechecked the active upload directory: only h17-archive-dump.zip (50 KB) and prompt.md are present. No authorized textual .reg export, .xls workbook, PST/OST, SPL/SHD, or AX-7782/Bundle06 object is available locally. The conversation Files search surfaced prompt.md only; the ZIP was inspected directly.
+- Re-ran the six printer-registry parser tests and Python compilation after the HKCU root-path correction; all pass. The current main branch readback confirms the parser, tests, retrieval checklist, results map and this memory are present.
+- The exact canonical acceptance reproduction remains six slot PASS values (K01/K02/K03/K05/K06/K07), K04/K08 MISSING, combined INCOMPLETE, accepted=false. Canonical candidate, acceptance commitments and verifier are byte-identical to main and untouched.
+- Highest-leverage next input remains the original AX-7782 object from R:/Risk/Transfers/AX-7782/Bundle06, all eight 1 MiB chunks, original manifest/per-chunk hashes, omission/retry log and transfer/handoff receipts. It is the joint K04/K08 locator. If unavailable, K04 needs the native PS-261003-0417 attempt-2 spool/render/coupon plus historical host/queue mapping; K08 needs the ordinary WN-14 folder, H17-IR-261003 envelope, N23 page, native mug-stock.xls, original photo-caption archive and any relevant offline profile/mail cache.
+- No additional candidate, source object, or final K08 phrase was recovered. Do not repeat the closed MT candidate/holdout screens, per-class/per-destination/attempt partitions, serial permutations, or prior PTW-417 photo lead. Wait for source-bearing material and process it with the existing narrow intake tools.
