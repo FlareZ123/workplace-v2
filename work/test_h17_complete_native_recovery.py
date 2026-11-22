@@ -155,6 +155,52 @@ class CompleteNativeRecoveryTests(unittest.TestCase):
             for hit in result["k08_phrase_hits"]
         ))
 
+    def test_long_caption_after_same_line_colon_label(self):
+        self._install_long_caption(wrapped=False)
+        current = self.caption.read_text(encoding="utf-8")
+        self.caption.write_text(
+            current.replace("Authentic margin caption:\n\n",
+                            "Authentic margin caption: ", 1),
+            encoding="utf-8",
+        )
+        result = self.execute()
+        self.assertTrue(result["accepted"], result)
+        self.assertTrue(any(
+            hit.get("source_field") == "value-after-:"
+            for hit in result["k08_phrase_hits"]
+        ))
+
+    def test_long_caption_wrapped_after_colon_label(self):
+        self._install_long_caption(wrapped=True)
+        current = self.caption.read_text(encoding="utf-8")
+        self.caption.write_text(
+            current.replace("Authentic margin caption:\n\n",
+                            "Authentic margin caption: ", 1),
+            encoding="utf-8",
+        )
+        result = self.execute()
+        self.assertTrue(result["accepted"], result)
+        self.assertTrue(any(
+            hit.get("source_field") == "value-after-:"
+            and hit.get("whole_text_unit") == "paragraph"
+            for hit in result["k08_phrase_hits"]
+        ))
+
+    def test_long_caption_after_equals_label(self):
+        self._install_long_caption(wrapped=False)
+        current = self.caption.read_text(encoding="utf-8")
+        self.caption.write_text(
+            current.replace("Authentic margin caption:\n\n",
+                            "FinalCaption = ", 1),
+            encoding="utf-8",
+        )
+        result = self.execute()
+        self.assertTrue(result["accepted"], result)
+        self.assertTrue(any(
+            hit.get("source_field") == "value-after-="
+            for hit in result["k08_phrase_hits"]
+        ))
+
     def test_wrong_long_caption_never_reaches_verifier(self):
         self._install_long_caption(wrapped=False)
         self.caption.write_text(
