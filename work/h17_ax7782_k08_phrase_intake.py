@@ -389,6 +389,11 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         fallback_used = False
         xls_streams = None
         suffix = PurePosixPath(name.replace("\\", "/")).suffix.casefold()
+        m10_image_workbook = (
+            suffix == ".xls"
+            and PurePosixPath(name.replace(chr(92), "/")).name.casefold() == "mug-stock.xls"
+        )
+        xls_image_records: list[dict] = []
         if suffix == ".doc":
             # Legacy Word comments can hold the margin wording. Convert only a
             # temporary copy to DOCX with macro security high, then reuse the
@@ -418,7 +423,13 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             except ImportError:
                 try:
                     from h17_xls_lo_fallback import extract_bytes
-                    converted = extract_bytes(data, name)
+                    converted = extract_bytes(
+                        data, name,
+                        include_image_data=m10_image_workbook,
+                        allowed_image_anchors={"M10"} if m10_image_workbook else None,
+                    )
+                    if m10_image_workbook:
+                        xls_image_records = converted.get("embedded_images", [])
                     for style in converted.get("style_metadata", []):
                         style_metadata.append({"source": name, **style})
                     xls_streams = [
@@ -480,10 +491,46 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 except Exception as exc:
                     xls_streams = None
                     errors.append({"source": name, "error": f"legacy .xls BIFF extraction failed: {exc}"})
+                if m10_image_workbook:
+                    try:
+                        from h17_xls_lo_fallback import extract_bytes
+                        converted_images = extract_bytes(
+                            data, name, include_image_data=True,
+                            allowed_image_anchors={"M10"},
+                        )
+                        xls_image_records = converted_images.get("embedded_images", [])
+                    except Exception as exc:
+                        errors.append({
+                            "source": name,
+                            "error": f"M10 image extraction failed: {type(exc).__name__}: {exc}",
+                        })
         if xls_streams is not None:
             for source, payload in xls_streams:
                 yielded = True
                 yield source, payload
+        # The source-linked mug-stock workbook may contain a photograph or a
+        # text-bearing drawing anchored at M10. Only this named workbook and
+        # this one original cell anchor may yield embedded image bytes.
+        for item in xls_image_records:
+            if not item.get("data_included"):
+                continue
+            if str(item.get("anchor", "")).upper() != "M10":
+                errors.append({"source": name, "error": "unexpected non-M10 image emission"})
+                continue
+            try:
+                image_data = base64.b64decode(item["data_base64"], validate=True)
+                if hashlib.sha256(image_data).hexdigest() != str(item["sha256"]).lower():
+                    raise ValueError("embedded image digest mismatch")
+            except (KeyError, ValueError, binascii.Error) as exc:
+                errors.append({"source": name, "error": f"invalid M10 image: {exc}"})
+                continue
+            image_format = str(item.get("format") or "png").lower()
+            image_source = f"{name}!/<image:{item['sheet']}!M10>.{image_format}"
+            yielded = True
+            yield from iter_text_streams(
+                image_source, image_data, depth + 1, budget, errors,
+                ocr, pdf_password, style_metadata,
+            )
         try:
             import olefile
             with olefile.OleFileIO(io.BytesIO(data)) as compound:
