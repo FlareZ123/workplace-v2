@@ -19,6 +19,36 @@ _MAX_PDF_IMAGE_BYTES = 32 * 1024 * 1024
 _MAX_TOTAL_IMAGE_BYTES = 128 * 1024 * 1024
 
 
+def iter_pdf_coupon_text(data: bytes) -> Iterator[tuple[str, bytes]]:
+    """Extract native PDF text before considering bitmap-only symbol carriers.
+
+    Native text is checked exactly as transcribed and once without whitespace
+    or punctuation separators to support multi-run hexadecimal labels.
+    The original 16-byte hash determines acceptance, not a text guess.
+    """
+    try:
+        import pymupdf
+    except ImportError:
+        return
+    try:
+        with pymupdf.open(stream=data, filetype="pdf") as doc:
+            if doc.needs_pass:
+                return
+            for page_index in range(min(doc.page_count, _MAX_PAGES)):
+                source = f"pdf-page-{page_index+1}"
+                text = doc.load_page(page_index).get_text("text", sort=True)
+                if not text or len(text) > 1_000_000:
+                    continue
+                yield f"{source}-native-text", text.encode("utf-8")
+                condensed = "".join(
+                    ch for ch in text if ch not in " \t\r\n:.-"
+                )
+                if condensed != text:
+                    yield f"{source}-condensed-text", condensed.encode("utf-8")
+    except (RuntimeError, ValueError, OSError):
+        return
+
+
 def iter_pdf_barcode_images(data: bytes) -> Iterator[tuple[str, bytes]]:
     """Yield bounded original embedded images and rendered PDF pages.
 
