@@ -22,10 +22,10 @@ class RegistryAllowlistTests(unittest.TestCase):
 "Device"="Office Printer,winspool,Ne03:"
 "LegacyDevice"="must-not-appear"
 
-[{BASE}\\Printers\\Connections\\,,PRINTSRV,OfficePrinter]
+[HKEY_CURRENT_USER\\Printers\\Connections\\,,PRINTSRV,OfficePrinter]
 "Port"="Ne03:"
 
-[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run]
+[{BASE}\\Printers\\Connections\\,,WRONGPATH,Printer]\n"WrongPath"="must-not-appear"\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run]
 "Secret"="must-not-appear"
 
 [HKEY_LOCAL_MACHINE\\SAM\\Domains\\Account]
