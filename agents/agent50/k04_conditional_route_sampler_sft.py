@@ -290,7 +290,9 @@ def planted_positive(order: str):
                 labels.append(("LABEL", "bench"))
             starts.append(stage)
             if row == 129:
-                rows.append([])  # withhold target packet completely
+                for _ in range(4):
+                    rng.getrandbits(32)  # consume, but do not expose target words
+                rows.append([])
             else:
                 rows.append([mt.untemper(rng.getrandbits(32)) for _ in range(4)])
             stage += 4
