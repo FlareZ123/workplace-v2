@@ -1007,3 +1007,12 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - No source, candidate, verifier, acceptance commitment or equipment changed. Six canonical slots remain PASS; K04/K08 remain missing.
 - Next: do not expand arbitrary carrier permutations. Seek original PS-0417 native media/coupon or a source-indexed producer/copy-stage record; for K08 seek the original WN-14 final margin/envelope or photograph-caption material.
 
+
+
+## 2026-11-22 03:54 UTC — prior Falcon artifact boundary
+
+- Retrieved existing K08 Falcon dual-batch Actions artifact 14486034855 (15.8 MB). It is a Google Books page-image batch for volume fQYN_SZzCFgC, a candidate scan of E. F. Knight's The "Falcon" on the Baltic (1889); the local MAIL-09 does not name the book or edition, so this is not an authenticated identification of David's physical book.
+- The artifact is public book imagery, not the original office photo-caption archive, desk card, or WN-14 margin. Target printed pages 122, 171, 180 and 215 failed to download. OCR of available pages 210, 212 and 213 and a bounded 11,792-phrase n-gram HMAC check produced no K08 hit. This does not rule out a caption inspired by the book; it does not justify further book/page/phrase search without a source-authored title/edition or original receipt/photo/caption join.
+- Agent19's memory independently records the same source-first freeze: do not repeat public book OCR/page-word searches absent a new source-authenticated locator. Keep this branch closed.
+- The user has been asked for the actual AX-7782 8 MiB retained object; no new source upload is present as of this checkpoint.
+
