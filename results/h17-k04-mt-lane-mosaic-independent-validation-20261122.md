@@ -69,8 +69,10 @@ Observed: 25 witnesses, 23 signatures, 4 heldout word matches on 2 rows, and 2 r
 | Global | 8.38 | 14 | 18 |
 | CLASS×DEST | 10.08 | 15 | 20 |
 | Full metadata | 10.05 | 15 | 18 |
+| Job-suffix mod 4 | 8.39 | 13 | 19 |
+| CLASS×DEST×job-suffix mod 4 | 12.85 | 18 | 22 |
 
-Across all 3,000 trials there were **zero** exact leave-one-out word matches and **zero** repeated signatures. This supports a genuine temporal MT-like structure in the raw sequence; it does not make the two-row motif independent or identify the selected target's stage.
+The two additional phase-preserving nulls retain each packet's job-suffix residue modulo 4; the final null also retains CLASS×DEST. Across all **5,000 trials** there were **zero** exact leave-one-out word matches and **zero** repeated signatures. Fixed Python RNG seeds were 20261122 through 20261126 in table order. This supports a genuine temporal MT-like structure in the raw sequence even after preserving the obvious four-row phase; it does not make the two-row motif independent or identify the selected target's stage.
 
 ## Selected-job and metadata controls
 
