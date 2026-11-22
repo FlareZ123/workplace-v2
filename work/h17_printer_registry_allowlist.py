@@ -7,7 +7,7 @@ locations:
   * ...\Devices (all values)
   * ...\PrinterPorts (all values)
   * ...\Windows (the value named Device only)
-  * ...\Printers\Connections (values and descendant key names)
+  * HKCU\\Printers\\Connections (values and descendant key names)
 
 No other registry path or value is returned. Input is never modified. Output
 is JSON on stdout; no output file is created.
@@ -26,7 +26,7 @@ BASE = r"HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion"
 DEVICES = BASE + r"\Devices"
 PORTS = BASE + r"\PrinterPorts"
 WINDOWS = BASE + r"\Windows"
-CONNECTIONS = BASE + r"\Printers\Connections"
+CONNECTIONS = r"HKEY_CURRENT_USER\Printers\Connections"
 DEFAULT_MAX_BYTES = 16 * 1024 * 1024
 
 SECTION_RE = re.compile(r"^\s*\[([^\]]+)\]\s*$")
