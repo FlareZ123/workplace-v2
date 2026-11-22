@@ -26,7 +26,7 @@ class CompressedMsgRtfTests(unittest.TestCase):
             r"{\rtf1\ansi\ansicpg1252\pard "
             r"there is {\b room} for everyone after the last watch\par}"
         )
-        self.compressed = compress(self.rtf, compressed=True)
+        self.compressed = compress(self.rtf.encode("ascii"), compressed=True)
         self.assertIsInstance(self.compressed, bytes)
         self.assertEqual(self.compressed[8:12], b"LZFu")
 
