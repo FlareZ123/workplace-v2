@@ -212,6 +212,7 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         from h17_complete_native_recovery import recover_complete
 
         self.embed(b"ORIGINAL-COUPON=" + self.payload.hex().upper().encode("ascii"))
+        source_png = self.path.read_bytes()
         doc = pymupdf.open()
         page = doc.new_page(width=260, height=260)
         page.insert_image(page.rect, stream=self.path.read_bytes())
@@ -269,6 +270,39 @@ class OriginalHashBarcodeTests(unittest.TestCase):
             hashlib.sha256(caption_source.read_bytes()).hexdigest(),
             original_caption_sha,
         )
+
+        from email.message import EmailMessage
+
+        message = EmailMessage()
+        message["From"] = "records@example.invalid"
+        message["To"] = "custodian@example.invalid"
+        message["Subject"] = "Original north coupon and final incident margin"
+        message.set_content("Final incident caption: " + caption)
+        message.add_attachment(
+            source_png, maintype="image", subtype="png",
+            filename="PS-261003-0417-original.png",
+        )
+        original_email = Path(self.root.name) / "author-original-and-coupon.eml"
+        original_email.write_bytes(message.as_bytes())
+        eml_sha = hashlib.sha256(original_email.read_bytes()).hexdigest()
+        recovered_eml = recover_complete(
+            original_email, original_email,
+            targets={
+                "slot_sha256": slots,
+                "combined_prefix": prefix,
+                "combined_sha256": combined,
+            },
+            routing={
+                "K04": {"masked_component": self.mask.hex().upper()},
+                "K08": {"desk_nonce": nonce.hex().upper()},
+            },
+            six_pass={key: value for key, value in final.items()
+                      if key not in ("K04", "K08")},
+        )
+        self.assertTrue(recovered_eml["accepted"], recovered_eml)
+        self.assertEqual(recovered_eml["verification"]["combined"], "PASS")
+        self.assertEqual(recovered_eml["candidate"], final)
+        self.assertEqual(hashlib.sha256(original_email.read_bytes()).hexdigest(), eml_sha)
 
     def test_pdf_native_text_complete_coupon(self):
         import pymupdf
