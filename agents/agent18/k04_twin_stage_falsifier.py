@@ -184,10 +184,9 @@ def main():
     assert len(starts) == n
     draws = np.diff(starts + [starts[-1] + starts[-1] - starts[-2]])
     assert min(draws) >= 4 and max(draws) <= 17
-    assert all(sum(draws[row:middle]) == 396 + p - i and
-               sum(draws[row:target]) == 623 + p - q
-               for row, p, middle, target, q in
-               [(r,p,k,l,q) for r,p,k,i,l,q in witnesses])
+    assert all(sum(draws[r:k]) == 396 + p - i and
+               sum(draws[r:l]) == 623 + p - q
+               for r, p, k, i, l, q in witnesses)
     p951_target_gaps = (int(sum(draws[45:99])), int(sum(draws[45:TARGET_ROW])))
     assert p951_target_gaps == (401, 609), p951_target_gaps
     pc1 = np.zeros(n); pc1[45:99] = 1
