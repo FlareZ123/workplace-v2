@@ -36,6 +36,7 @@ from pathlib import Path, PurePosixPath
 from typing import Iterator
 
 import h17_ax7782_object_intake as intake
+from h17_ooxml_text_intake import iter_ooxml_text_units
 
 HEX_RE = re.compile(r"(?<![A-Fa-f0-9])[A-Fa-f0-9]{16,4096}(?![A-Fa-f0-9])")
 B64_RE = re.compile(r"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{24,4096}={0,2}(?![A-Za-z0-9+/])")
@@ -307,6 +308,8 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         return
     kind = intake.magic(data)
     if kind == "zip":
+        for label, authored in iter_ooxml_text_units(data):
+            yield f"{name}!/{label}", authored
         # XPS/OXPS is an OPC ZIP, but its visible strings are Glyphs attributes,
         # not XML text nodes. Run the bounded page readers before generic ZIP
         # recursion; the glyph-index reader fails closed on incomplete coverage.
