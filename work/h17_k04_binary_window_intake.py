@@ -271,9 +271,9 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
     if not container and kind == "ole-compound" and name.casefold().endswith(".msg"):
         from h17_ax7782_k08_phrase_intake import iter_text_streams
         errors: list[dict] = []
-        budget = [0]
+        text_budget = [0]
         for source, payload in iter_text_streams(
-            name, data, 0, budget, errors, False, None, [],
+            name, data, 0, text_budget, errors, False, None, [],
         ):
             if source == name and payload == data:
                 continue  # The raw Outlook OLE carrier was scanned above.
@@ -397,6 +397,30 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                             break
         except (tarfile.TarError, OSError, EOFError) as exc:
             result["container_error"] = str(exc)
+    elif name.casefold().endswith(".eml"):
+        from email import policy
+        from email.parser import BytesParser
+
+        try:
+            message = BytesParser(policy=policy.default).parsebytes(data)
+            for index, part in enumerate(message.walk()):
+                if part.is_multipart():
+                    continue
+                payload = part.get_payload(decode=True)
+                if not payload:
+                    continue
+                filename = part.get_filename() or f"mime-part-{index}.bin"
+                filename = filename.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
+                child = scan_member(
+                    f"{name}!/{filename}", payload, depth + 1, budget,
+                    target_digest, mask, stride, max_member, max_depth,
+                )
+                children.append(child)
+                if budget[0] > budget[1] or budget[2] >= budget[3]:
+                    result["scan_limit"] = "MIME member budget reached"
+                    break
+        except (ValueError, TypeError, LookupError) as exc:
+            result["container_error"] = f"MIME parse failed: {type(exc).__name__}: {exc}"
     elif kind == "gzip":
         try:
             with gzip.GzipFile(fileobj=io.BytesIO(data)) as stream:
