@@ -36,6 +36,10 @@ DEFAULT_MAX_TOTAL = 512 * 1024 * 1024
 DEFAULT_MAX_DEPTH = 4
 DEFAULT_MAX_MEMBERS = 10000
 HEX32 = re.compile(rb"(?i)(?<![0-9a-f])[0-9a-f]{32}(?![0-9a-f])")
+# Windows native print streams also commonly store coupon text as UTF-16.
+# Match exact 32-character tokens in either byte order, preserving boundaries.
+HEX32_UTF16LE = re.compile(rb"(?i)(?<![0-9a-f]\x00)(?:[0-9a-f]\x00){32}(?![0-9a-f]\x00)")
+HEX32_UTF16BE = re.compile(rb"(?i)(?<!\x00[0-9a-f])(?:\x00[0-9a-f]){32}(?!\x00[0-9a-f])")
 
 
 def magic(data: bytes) -> str:
@@ -99,6 +103,22 @@ def scan_bytes(name: str, data: bytes, target_digest: bytes, mask: bytes, stride
                 hits.append({"source": name, "encoding": "ascii-hex-token", "offset": match.start(),
                              "kind": kind, "component_hex": component.hex().upper(),
                              "window_hex": block.hex().upper()})
+    for encoding, pattern, codec in (
+        ("utf16le-hex-token", HEX32_UTF16LE, "utf-16le"),
+        ("utf16be-hex-token", HEX32_UTF16BE, "utf-16be"),
+    ):
+        for match in pattern.finditer(data):
+            block = bytes.fromhex(match.group().decode(codec))
+            hit = candidate_hit(block, target_digest, mask)
+            if hit:
+                kind, component = hit
+                key = (kind, match.start(), component)
+                if key not in seen:
+                    seen.add(key)
+                    hits.append({"source": name, "encoding": encoding,
+                                 "offset": match.start(), "kind": kind,
+                                 "component_hex": component.hex().upper(),
+                                 "window_hex": block.hex().upper()})
     return hits
 
 
@@ -297,8 +317,17 @@ def self_test():
                       target, mask, 1, 100_000, 4)
     assert ole["magic"] == "ole-compound", ole
     assert any(hit["kind"] == "payload_xor_route_mask" for hit in ole["hits"]), ole
+    utf16_hits = []
+    for codec, label in (("utf-16le", "utf16le-hex-token"),
+                         ("utf-16be", "utf16be-hex-token")):
+        encoded_coupon = ("!" + payload.hex().upper() + "!").encode(codec)
+        found = scan_bytes("fixture.spl", encoded_coupon, target, mask, 1)
+        assert any(hit["kind"] == "payload_xor_route_mask"
+                   and hit["encoding"] == label for hit in found), (codec, found)
+        utf16_hits.append(label)
     return {"ok": True, "hits": len(hits), "kinds": sorted(kinds),
-            "encodings": sorted(encodings), "ole_compound_coupon": "PASS"}
+            "encodings": sorted(encodings), "ole_compound_coupon": "PASS",
+            "utf16_encodings": utf16_hits}
 
 
 def main():
