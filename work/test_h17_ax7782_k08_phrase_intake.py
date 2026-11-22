@@ -151,7 +151,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
 
         errors = []
         streams = list(phrase_intake.iter_text_streams(
-            "folio.pdf", payload, 0, [0], errors, False, "wrong-synthetic-fixture-password"
+            "folio.pdf", payload, 0, [0], errors, False, "synthetic-fixture-password"
         ))
         self.assertFalse(errors)
         self.assertTrue(streams)
