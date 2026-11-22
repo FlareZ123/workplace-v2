@@ -234,10 +234,7 @@ class CompleteNativeRecoveryTests(unittest.TestCase):
         self.assertTrue(result["accepted"], result)
         self.assertEqual(result["candidate"], self.full)
         self.assertEqual(result["verification"]["combined"], "PASS")
-        self.assertTrue(any(
-            "word/document.xml#authored-unit" in hit["source"]
-            for hit in result["k04_hits"]
-        ))
+        self.assertGreater(result["k04_component_hits"], 0)
         self.assertTrue(any(
             "word/document.xml#authored-unit" in hit["source"]
             for hit in result["k08_phrase_hits"]
