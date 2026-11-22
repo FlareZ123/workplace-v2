@@ -38,6 +38,21 @@ def iter_pdf_embedded_files(data: bytes) -> Iterator[tuple[str, bytes]]:
                     filename = str(info.get("filename") or name)
                     filename = filename.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
                     yield filename, raw
+            for page_index in range(min(doc.page_count, _MAX_PAGES)):
+                page = doc.load_page(page_index)
+                for index, annotation in enumerate(
+                    page.annots(types=(pymupdf.PDF_ANNOT_FILE_ATTACHMENT,)) or ()
+                ):
+                    if index >= 32:
+                        break
+                    info = annotation.file_info
+                    if not 0 < int(info.get("size", 0)) <= _MAX_PDF_IMAGE_BYTES:
+                        continue
+                    raw = annotation.get_file()
+                    if len(raw) <= _MAX_PDF_IMAGE_BYTES:
+                        filename = str(info.get("filename") or f"page-{page_index+1}-file-{index}")
+                        filename = filename.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
+                        yield filename, raw
     except (RuntimeError, ValueError, OSError):
         return
 
