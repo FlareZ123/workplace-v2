@@ -252,6 +252,49 @@ class CompleteNativeRecoveryTests(unittest.TestCase):
         self.assertEqual(result["candidate"], self.full)
         self.assertEqual(result["verification"]["combined"], "PASS")
 
+    def test_complete_acceptance_with_original_msg_compressed_coupon(self):
+        import io
+        import types
+        from unittest import mock
+        from compressed_rtf import compress
+
+        rtf = (
+            r"{\rtf1\ansi\pard Escrow coupon recovered from the "
+            r"north print job:\line "
+            + self.payload.hex().upper()
+            + r"\par}"
+        )
+        packed = compress(rtf.encode("ascii"), compressed=True)
+        self.spool = self.spool.with_name("MAIL-20-original-coupon.msg")
+        self.spool.write_bytes(
+            bytes.fromhex("D0CF11E0A1B11AE1") + bytes(64)
+        )
+
+        class FakeOle:
+            def __init__(self, _data):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                pass
+
+            def listdir(self, streams=True, storages=False):
+                return [["__substg1.0_10090102"]]
+
+            def openstream(self, _stream):
+                return io.BytesIO(packed)
+
+        with mock.patch.dict(sys.modules, {
+            "olefile": types.SimpleNamespace(OleFileIO=FakeOle),
+        }):
+            result = self.execute()
+        self.assertTrue(result["accepted"], result)
+        self.assertEqual(result["verification"]["combined"], "PASS")
+        self.assertEqual(result["k04_component_hits"], 1)
+        self.assertEqual(result["k08_component_hits"], 1)
+
     def test_source_files_are_read_only(self):
         before = {
             self.spool: hashlib.sha256(self.spool.read_bytes()).hexdigest(),
