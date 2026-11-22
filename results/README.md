@@ -12,6 +12,9 @@
 
 [Unmodified verifier](../resources/verify.py), [commitments](../resources/acceptance.json), [canonical six-pass candidate](../candidate.json), and [exact component construction/acceptance specification](h17-recovery-status.md). Do not edit these to manufacture a pass.
 
+**22 November, native evidence intake expanded and tested against the original archive:** K04 now accepts source-verified original spool images and QR/printed-hex coupons from raster, EMF, PCL5, PDF (native text, rendered pages, portfolio/page attachments), TIFF and MIME/Outlook email carriers. K08 accepts intact source-authored long lines, wrapped paragraphs and field values. Full eight-slot synthetic acceptance controls PASS, while the unchanged original archive checks yield **K04 0/70 members; K08 0/356,516 short source spans and 0/1,319 long authored units**. The known opaque PDF was intentionally skipped, and there is **no accepted historical K04/K08 key**. [Detailed source-native recovery report, exact test and supported file formats](h17-native-coupon-caption-recovery-20261122.md), [original-media CI](https://github.com/FlareZ123/workplace-v2/actions/runs/45055849967). Further progress requires new authentic source bits/words or a truly new constrained complete-output producer. Do not promote synthetic positives to real archive recovery.
+
+
 The [maintainer directive](../MAINTAINER_OVERRIDE.md) explicitly confirms solvability and encourages **exploratory research under uncertainty**. Unknown source provenance is not a global prohibition on new mechanisms. Keep original-commitment hits distinct from historical-source authentication.
 
 ## K04: produce and check the full selected 16-byte coupon
