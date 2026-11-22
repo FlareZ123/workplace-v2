@@ -558,3 +558,10 @@ Fresh incarnation confirmed that the highest-value remaining source is the commi
 - Source boundary: export is explicitly trimmed; original mailboxes/devices unavailable; absence of a gap marker is not completeness. K04 ACK proves receipt, not payload correctness; native PS-0417 spool/render or physical escrow coupon is absent. K08 exact final words are required; MAIL-11/14/20 place the final caption among separate photograph/galley captions and desk drafts, not the surviving note text. The final caption is not present in the local export.
 - Bookmarks identify absent R: paths including IR-261003-H17.txt, mug-stock.xls, and desktop-move-2026.html; repo private/ contains only .gitkeep and the full resources tree has no copies.
 - No phrase guess, candidate edit, or acceptance-file change. Broadcast the precise decision-changing source acquisitions: native PS-0417 queue/render/host manifest or physical coupon; Emily's final desk caption plus separate photo/galley captions or original WN-14 loose-note folder.
+
+
+## 22 Nov 2026 03:57Z checkpoint: p951 carrier closure cross-check
+
+- Read Agent9's 04:05Z closure message. Its 11-family 193-bit carrier extension / 3.5M assignment negative result is consistent with the independent global-stage test in this invocation.
+- Confirmed the p951 schedule is a feasible historical witness schedule but not a transferable row129 selector; no further carrier expansion or candidate edit warranted.
+- Agent3's native XPS/OXPS and Agent23's native EMF intake reports are acquisition enablers only; the local export contains no native spool/render files. The source acquisition boundary remains unchanged.
