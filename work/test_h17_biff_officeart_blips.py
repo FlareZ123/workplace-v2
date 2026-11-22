@@ -13,6 +13,11 @@ from h17_biff_officeart_blips import extract_xls_officeart_blips  # noqa: E402
 from test_h17_biff_officeart import br, er, cfb, drawing  # noqa: E402
 
 
+def regular_workbook_fixture(workbook: bytes) -> bytes:
+    """Keep the declared Workbook stream at or above the CFB mini-stream cutoff."""
+    return cfb(workbook + bytes(max(0, 4096 - len(workbook))))
+
+
 def png_chunk(kind: bytes, payload: bytes) -> bytes:
     return (
         struct.pack(">I", len(payload))
@@ -107,7 +112,7 @@ class OfficeArtBlipStoreTests(unittest.TestCase):
         image = one_pixel_png()
         uid = b"\x22" * 16
         workbook = workbook_with_bstore([bse_record(png_blip(image, uid), uid=uid)])
-        result = extract_xls_officeart_blips(cfb(workbook), include_image_data=True)
+        result = extract_xls_officeart_blips(regular_workbook_fixture(workbook), include_image_data=True)
 
         self.assertEqual(len(result["blip_store"]), 1)
         blip = result["blip_store"][0]
@@ -130,7 +135,7 @@ class OfficeArtBlipStoreTests(unittest.TestCase):
         empty = bse_record(None, name="", fo_delay=0xFFFFFFFF, uid=b"\x00" * 16)
         picture = bse_record(png_blip(image, uid), name="second.png", uid=uid)
         result = extract_xls_officeart_blips(
-            cfb(workbook_with_bstore([empty, picture], pib=2)),
+            regular_workbook_fixture(workbook_with_bstore([empty, picture], pib=2)),
             include_image_data=True,
         )
         self.assertEqual(len(result["blip_store"]), 2)
@@ -143,7 +148,7 @@ class OfficeArtBlipStoreTests(unittest.TestCase):
         image = one_pixel_png()
         uid = b"\x44" * 16
         result = extract_xls_officeart_blips(
-            cfb(workbook_with_bstore(
+            regular_workbook_fixture(workbook_with_bstore(
                 [bse_record(png_blip(image, uid), uid=uid)],
                 split_group=True,
             ))
@@ -155,7 +160,7 @@ class OfficeArtBlipStoreTests(unittest.TestCase):
         image = one_pixel_png()
         uid = b"\x55" * 16
         result = extract_xls_officeart_blips(
-            cfb(workbook_with_bstore(
+            regular_workbook_fixture(workbook_with_bstore(
                 [bse_record(png_blip(image, uid), uid=uid)],
                 fbid=False,
             ))
@@ -172,7 +177,7 @@ class OfficeArtBlipStoreTests(unittest.TestCase):
 
     def test_delayed_blip_is_reported_but_not_followed(self):
         delayed = bse_record(None, name="delayed.png", fo_delay=1234, uid=b"\x66" * 16)
-        result = extract_xls_officeart_blips(cfb(workbook_with_bstore([delayed])))
+        result = extract_xls_officeart_blips(regular_workbook_fixture(workbook_with_bstore([delayed])))
         self.assertTrue(result["blip_store"][0]["delayed"])
         self.assertEqual(result["shapes"][0]["blip_ref_status"], "unresolved")
         self.assertTrue(any("delayed blip reference is not resolved" in w
@@ -184,7 +189,7 @@ class OfficeArtBlipStoreTests(unittest.TestCase):
         bad_size = bse_record(
             png_blip(image, uid), uid=uid, declared_size=9999
         )
-        result = extract_xls_officeart_blips(cfb(workbook_with_bstore([bad_size])))
+        result = extract_xls_officeart_blips(regular_workbook_fixture(workbook_with_bstore([bad_size])))
         self.assertEqual(result["shapes"][0]["blip_ref_status"], "resolved")
         self.assertTrue(any("declared blip size" in w for w in result["blip_warnings"]))
 
