@@ -201,6 +201,49 @@ class CompleteNativeRecoveryTests(unittest.TestCase):
             for hit in result["k08_phrase_hits"]
         ))
 
+    def test_full_rec8_from_native_docx_split_styling_runs(self):
+        from zipfile import ZipFile
+        from xml.sax.saxutils import escape
+
+        self._install_long_caption(wrapped=False)
+        caption = self.caption.read_text(encoding="utf-8").split("\n\n", 1)[1].strip()
+        component = self.payload.hex().upper()
+        self.spool = self.spool.with_name("original-escrow-and-margin.docx")
+        self.caption = self.spool
+        midpoint = len(caption) // 2
+        paragraphs = (
+            ("ESC-N coupon: " + component[:16], component[16:]),
+            ("Final Caption: " + caption[:midpoint], caption[midpoint:]),
+        )
+        body = "".join(
+            "<w:p><w:r><w:t xml:space=\"preserve\">" + escape(left)
+            + "</w:t></w:r><w:r><w:t xml:space=\"preserve\">"
+            + escape(right) + "</w:t></w:r></w:p>"
+            for left, right in paragraphs
+        )
+        xml = (
+            "<w:document xmlns:w=\"http://schemas.openxmlformats.org/"
+            "wordprocessingml/2006/main\"><w:body>"
+            + body + "</w:body></w:document>"
+        )
+        with ZipFile(self.spool, "w") as package:
+            package.writestr("[Content_Types].xml", "<Types/>")
+            package.writestr("word/document.xml", xml)
+        original_sha = hashlib.sha256(self.spool.read_bytes()).hexdigest()
+        result = self.execute()
+        self.assertTrue(result["accepted"], result)
+        self.assertEqual(result["candidate"], self.full)
+        self.assertEqual(result["verification"]["combined"], "PASS")
+        self.assertTrue(any(
+            "word/document.xml#authored-unit" in hit["source"]
+            for hit in result["k04_hits"]
+        ))
+        self.assertTrue(any(
+            "word/document.xml#authored-unit" in hit["source"]
+            for hit in result["k08_phrase_hits"]
+        ))
+        self.assertEqual(hashlib.sha256(self.spool.read_bytes()).hexdigest(), original_sha)
+
     def test_wrong_long_caption_never_reaches_verifier(self):
         self._install_long_caption(wrapped=False)
         self.caption.write_text(
