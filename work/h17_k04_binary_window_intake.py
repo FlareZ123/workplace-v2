@@ -111,7 +111,9 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
         return {"name": name, "size": len(data), "sha256": sha256,
                 "status": "skipped_opaque_pdf"}
     kind = magic(data)
-    container = kind in {"zip", "tar", "gzip", "ole-compound"}
+    # OLE/CFB has no member walker here. Scan its original bytes directly so
+    # a complete coupon inside a native Workbook/Book/SHD stream is observable.
+    container = kind in {"zip", "tar", "gzip"}
     result = {"name": name, "size": len(data), "sha256": sha256, "magic": kind}
     budget[2] += 1
     if budget[2] > budget[3]:
@@ -286,7 +288,17 @@ def self_test():
     assert "payload_xor_route_mask" in kinds, hits
     assert "direct_component" in kinds, hits
     assert "raw-window" in encodings and "ascii-hex-token" in encodings, hits
-    return {"ok": True, "hits": len(hits), "kinds": sorted(kinds), "encodings": sorted(encodings)}
+    # Original scanner suppressed every byte of an OLE-compound source:
+    # it classified CFB as a container but had no CFB member traversal.
+    # Keep the complete planted coupon inside a source-signature CFB blob.
+    ole_blob = bytes.fromhex("D0CF11E0A1B11AE1") + bytes(48) + payload + bytes(32)
+    budget = [0, 100_000, 0, 100]
+    ole = scan_member("fixture.xls", ole_blob, 0, budget,
+                      target, mask, 1, 100_000, 4)
+    assert ole["magic"] == "ole-compound", ole
+    assert any(hit["kind"] == "payload_xor_route_mask" for hit in ole["hits"]), ole
+    return {"ok": True, "hits": len(hits), "kinds": sorted(kinds),
+            "encodings": sorted(encodings), "ole_compound_coupon": "PASS"}
 
 
 def main():
