@@ -56,3 +56,8 @@ K04 remains MISSING. This result neither confirms nor falsifies the historical x
 Retain the script as a reproducible reference for the symbolic-elimination encoding, but retire this solver lane. Do not create another workflow or tune variable order, random seeds, or time limits against the same eight-state/source assumptions. Reopen only if a new source-authenticated constraint, independently preserved PS-0417 media, or a materially different producer relation becomes available.
 
 The one-off manual workflow is retired after this run. Canonical candidate data, acceptance commitments, verifier, and original evidence remain unchanged.
+
+
+## Serialization limitation
+
+The unrun historical-source branch would have tested big- and little-endian encoding of each 64-bit output while assuming the two outputs inside each 16-byte PAYLOAD are stored in generation order. The export does not independently document 64-bit word packing, and reversed-word serialization was not tested. This is an explicit model assumption, not a source fact. Because the planted-state liveness gate failed, no serializer view was tried on PS-0417; do not expand views without a source cue.
