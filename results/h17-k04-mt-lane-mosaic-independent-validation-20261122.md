@@ -26,7 +26,7 @@ Using little-endian 32-bit words in forward order, each payload word was untempe
 native[l][q] == native[k][i] XOR twist(native[r][p-1], native[r][p])
 ```
 
-with `r < k < l`, `p ∈ {1,2,3}`, and `i,q ∈ {0,1,2,3}`. The corresponding source-stage interpretation is `S_k-S_r = 397+p-i` and `S_l-S_r = 624+p-q`.
+with `r < k < l`, `p ∈ {1,2,3}`, and `i,q ∈ {0,1,2,3}`. Here `p` is the **right input lane** of the pair `(p-1,p)`. The correct source-stage interpretation is `S_k-S_r = 396+p-i` and `S_l-S_r = 623+p-q`. Equivalently, if `p0=p-1` denotes the **left input lane** (`p0 ∈ {0,1,2}`), the same equations are `S_k-S_r = 397+p0-i` and `S_l-S_r = 624+p0-q`. Agent9's C++ implementation stores this left-lane index, so its `397+p0-i` / `624+p0-q` formula is already correct. The former report formula incorrectly applied the left-lane coefficients to the right-lane variable and was one too high in both offsets.
 
 Independent reproduction gives:
 
@@ -37,6 +37,12 @@ Independent reproduction gives:
 - **zero** K04 commitment matches among those 960 combinations.
 
 The original discovery/reproduction program is `agents/agent19/k04_mt_witness_lane_mosaic_sft.py`.
+
+### Independent lane-index regression
+
+Agent18 independently regenerated the seeded MT19937 fixture using seed `0x17A11CE` and 1,400 outputs, untempered the outputs, and verified the recurrence at source positions for all three right-lane choices. For `i=q=p-1`, both conventions yield offsets `(397,624)`; incorrectly substituting right-lane `p` into the left-lane expression yields `(398,625)`. Agent18 then independently re-parsed the pinned spool SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`, skipped row129 before payload decoding, rediscovered all 25 witnesses / 23 signatures, and confirmed right/left equivalence plus the old +1 error for every tuple. The independent regression is `agents/agent18/k04_mt_lane_index_independent_sft.py`.
+
+Using the corrected right-lane equations, an independent integer MILP with 133 row-draw variables, ACK bounds [6,9], and REQUESTED rows128/130 fixed to zero gives the target cumulative-stage interval **942–955**. Repeating the 23 target-signature feasibility checks with ACK bounds [4,100] gives **0/23 feasible**. The correction changes no witness, candidate, commitment, or acceptance result.
 
 ## The four leave-one-out matches are one dependent motif
 
@@ -94,7 +100,7 @@ A source-only fixed draw-count model also fails:
 - `CLASS×DEST×ATTEMPT×STATE` categories: rank 10, residual norm 14.69, maximum absolute residual 5.59;
 - additive base + CLASS + DEST + job-suffix-mod-4 effects: residual norm 28.07, maximum absolute residual 10.29.
 
-These are not exact stage schedules. An exploratory integer/linear feasibility check with per-row draws in [6,9] and REQUESTED rows consuming zero leaves the target cumulative stage between 943 and 957. This interval includes the separately hypothesized p951 alignment but does not single it out; the bounds are assumptions, and the stage is not unique. Bounds [6,8] with REQUESTED rows fixed at zero are infeasible. A stronger but conditional target-consistency check added each of the 23 full-log signatures' two interval-sum equations to the 50 historical constraints. With integer per-row draws, REQUESTED rows128/130 fixed at zero, and every payload-bearing ACK row required to consume at least four 32-bit payload words, none is feasible even with upper bounds of 100 draws per row. This exclusion depends on treating the late cross-route PS-0448/PS-0420 witnesses as part of the same global stream. It is not decisive for K04 unless that shared-stream assumption is source-authenticated. On the ordinary-only 21-signature set, all templates are feasible under broad [4,12] bounds; the stage remains underdetermined. A more flexible per-row schedule should not be fitted post hoc without a source rule.
+These are not exact stage schedules. An exploratory integer/linear feasibility check with 133 integer per-row draw variables, ACK rows bounded in [6,9], and REQUESTED rows128/130 fixed to zero leaves the target cumulative stage between **942 and 955** under the corrected right-lane equations. The previously reported 943–957 interval used the right-lane variable with the left-lane coefficients. The corrected interval still includes the separately hypothesized p951 alignment but does not single it out; the bounds are assumptions, and the stage is not unique. Bounds [6,8] with REQUESTED rows fixed at zero are infeasible. A stronger but conditional target-consistency check added each of the 23 full-log signatures' two interval-sum equations to the 50 historical constraints. With integer per-row draws, REQUESTED rows128/130 fixed at zero, and every payload-bearing ACK row required to consume at least four 32-bit payload words, none is feasible even with upper bounds of 100 draws per row. This exclusion depends on treating the late cross-route PS-0448/PS-0420 witnesses as part of the same global stream. It is not decisive for K04 unless that shared-stream assumption is source-authenticated. On the ordinary-only 21-signature set, all templates are feasible under broad [4,12] bounds; the stage remains underdetermined. A more flexible per-row schedule should not be fitted post hoc without a source rule.
 
 ## Bounded serializer and indexing checks
 
