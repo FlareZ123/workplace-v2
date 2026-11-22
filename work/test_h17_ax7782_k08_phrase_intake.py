@@ -334,7 +334,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
         errors = []
         with mock.patch.dict(sys.modules, {"xlrd": fake_xlrd, "olefile": fake_olefile}):
             streams = list(phrase_intake.iter_text_streams(
-                "mug-stock.xls", payload, 0, [0], errors, False
+                "ordinary-biff-fixture.xls", payload, 0, [0], errors, False
             ))
 
         self.assertFalse(errors)
@@ -349,6 +349,97 @@ class K08PhraseIntakeTests(unittest.TestCase):
                     text, nonce, target, source + " [" + label + "]", 16, hits
                 )
         self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
+
+    def test_m10_image_payload_reaches_exact_k08_and_other_workbook_is_excluded(self):
+        import types
+        from unittest import mock
+        from PIL import Image
+        from PIL.PngImagePlugin import PngInfo
+        import h17_xls_lo_fallback
+
+        phrase = "there is room at the table after the last watch"
+        nonce = bytes(range(16))
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+        metadata = PngInfo()
+        metadata.add_text("caption", phrase)
+        image = io.BytesIO()
+        Image.new("RGB", (8, 8), (0, 128, 128)).save(image, format="PNG", pnginfo=metadata)
+        png = image.getvalue()
+        image_record = {
+            "sheet": "Galley",
+            "anchor": "M10",
+            "format": "png",
+            "sha256": hashlib.sha256(png).hexdigest(),
+            "data_base64": base64.b64encode(png).decode("ascii"),
+            "data_included": True,
+        }
+
+        class FakeBook:
+            def sheets(self):
+                return []
+
+            def release_resources(self):
+                pass
+
+        class FakeOle:
+            def __init__(self, _data):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                pass
+
+            def listdir(self, streams=True, storages=False):
+                return []
+
+        fake_xlrd = types.SimpleNamespace(open_workbook=lambda **_kwargs: FakeBook())
+        fake_olefile = types.SimpleNamespace(OleFileIO=FakeOle)
+        payload = b"\\xd0\\xcf\\x11\\xe0\\xa1\\xb1\\x1a\\xe1" + bytes(64)
+        with mock.patch.dict(sys.modules, {"xlrd": fake_xlrd, "olefile": fake_olefile}):
+            with mock.patch.object(h17_xls_lo_fallback, "extract_bytes",
+                                   return_value={"embedded_images": [image_record]}) as extractor:
+                errors = []
+                streams = list(phrase_intake.iter_text_streams(
+                    "AX-7782!/mug-stock.xls", payload, 0, [0], errors,
+                ))
+                extractor.assert_called_once_with(
+                    payload, "AX-7782!/mug-stock.xls", include_image_data=True,
+                    allowed_image_anchors={"M10"},
+                )
+                self.assertTrue(any(
+                    "<image:Galley!M10>.png" in source
+                    and hashlib.sha256(data).hexdigest() == image_record["sha256"]
+                    for source, data in streams
+                ))
+                hits = []
+                for source, data in streams:
+                    for label, text in phrase_intake.decode_text_variants(data, source):
+                        phrase_intake.scan_phrase_spans(
+                            text, nonce, target, source + " [" + label + "]", 48, hits,
+                        )
+                self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
+                self.assertFalse(any("M10 image extraction failed" in e.get("error", "")
+                                     for e in errors))
+
+            with mock.patch.object(h17_xls_lo_fallback, "extract_bytes") as extractor:
+                errors = []
+                streams = list(phrase_intake.iter_text_streams(
+                    "AX-7782!/unrelated.xls", payload, 0, [0], errors,
+                ))
+                extractor.assert_not_called()
+                self.assertFalse(any("<image:" in source for source, _ in streams))
+
+            blocked = dict(image_record, anchor="C3")
+            with mock.patch.object(h17_xls_lo_fallback, "extract_bytes",
+                                   return_value={"embedded_images": [blocked]}):
+                errors = []
+                streams = list(phrase_intake.iter_text_streams(
+                    "AX-7782!/mug-stock.xls", payload, 0, [0], errors,
+                ))
+                self.assertFalse(any("<image:" in source for source, _ in streams))
+                self.assertTrue(any("non-M10" in e.get("error", "") for e in errors))
 
     def test_emf_spool_and_xps_rendered_text_dispatch_to_k08_hmac(self):
         nonce = bytes(range(16))
