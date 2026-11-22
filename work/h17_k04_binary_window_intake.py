@@ -33,6 +33,7 @@ from h17_k04_pdf_barcode_intake import (
     iter_pdf_barcode_images, iter_pdf_coupon_text, iter_pdf_embedded_files,
 )
 from h17_k04_pcl_raster_intake import extract_pcl_raster_images
+from h17_ooxml_text_intake import iter_ooxml_text_units
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
@@ -239,6 +240,11 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
         result["scan_limit"] = "cumulative decompressed/read byte budget exceeded"
         return result
     result["hits"] = [] if container else scan_bytes(name, data, target_digest, mask, stride)
+    if kind == "zip":
+        for label, authored in iter_ooxml_text_units(data):
+            result["hits"].extend(scan_bytes(
+                f"{name}!/{label}", authored, target_digest, mask, stride
+            ))
     if kind == "pdf":
         for label, text_bytes in iter_pdf_coupon_text(data):
             result["hits"].extend(scan_bytes(
