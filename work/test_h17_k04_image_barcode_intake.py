@@ -141,6 +141,70 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         result = self.scan()
         self.assertEqual(result["hits"], [])
 
+    def test_pdf_image_xobject_coupon_reaches_original_commitment(self):
+        import pymupdf
+
+        self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
+        document = pymupdf.open()
+        page = document.new_page(width=260, height=260)
+        page.insert_image(page.rect, stream=self.path.read_bytes())
+        self.path = self.path.with_suffix(".pdf")
+        self.path.write_bytes(document.tobytes())
+        document.close()
+        result = self.scan()
+        self.assertTrue(result["hits"], result)
+        self.assertTrue(any(
+            hit["component_hex"] == self.component.hex().upper()
+            and "pdf-image" in hit["encoding"]
+            for hit in result["hits"]
+        ), result)
+
+    def test_vector_pdf_qr_coupon_recovered_from_rendered_page(self):
+        import pymupdf
+
+        qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, border=4)
+        qr.add_data(self.payload.hex().upper().encode("ascii"))
+        qr.make(fit=True)
+        cells = qr.get_matrix()
+        document = pymupdf.open()
+        page = document.new_page(width=240, height=240)
+        painter = page.new_shape()
+        cell = 240 / len(cells)
+        for y, row in enumerate(cells):
+            for x, dark in enumerate(row):
+                if dark:
+                    painter.draw_rect(pymupdf.Rect(
+                        x * cell, y * cell, (x + 1) * cell, (y + 1) * cell
+                    ))
+        painter.finish(color=(0, 0, 0), fill=(0, 0, 0))
+        painter.commit()
+        self.path = self.path.with_suffix(".pdf")
+        self.path.write_bytes(document.tobytes())
+        document.close()
+        result = self.scan()
+        self.assertTrue(result["hits"], result)
+        self.assertTrue(any(
+            "pdf-page-1-rendered" in hit["source"]
+            and hit["component_hex"] == self.component.hex().upper()
+            for hit in result["hits"]
+        ), result)
+
+    def test_encrypted_pdf_coupon_not_read_without_authorized_key(self):
+        import pymupdf
+
+        self.embed(self.payload.hex().upper().encode("ascii"))
+        document = pymupdf.open()
+        page = document.new_page(width=260, height=260)
+        page.insert_image(page.rect, stream=self.path.read_bytes())
+        self.path = self.path.with_suffix(".pdf")
+        self.path.write_bytes(document.tobytes(
+            encryption=pymupdf.PDF_ENCRYPT_AES_256,
+            user_pw="test-only-fixture-secret",
+            owner_pw="test-only-fixture-secret",
+        ))
+        document.close()
+        self.assertEqual(self.scan()["hits"], [])
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
