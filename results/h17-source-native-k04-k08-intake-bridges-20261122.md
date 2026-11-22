@@ -10,6 +10,12 @@
 
 The dispatcher now admits only the exact named `mug-stock.xls` and the original M10 anchor. It yields original OfficeArt `wz_name`/`wz_description` strings, SHA-256-verified native image bytes referenced by an M10 shape, and, where necessary, SHA-256-verified LibreOffice-converted M10 images. Original image bytes take precedence; matching converted image bytes are deduplicated. Image metadata and optional OCR then feed the unchanged K08 normalized-phrase HMAC comparison. The direct OfficeArt route also works when the converter is unavailable. Neither the source workbook nor acceptance files are modified.
 
+## Source-literal image-bit continuation
+
+The original source-stage `A TEAL BIT / LOW IF EVEN` reading already had a frozen, two-layout decoder in `work/h17_k08_teal_bit_image_scan.py`. The M10 image bridge now reuses exactly those two layouts on the verified original M10 image bytes: teal/cyan pixels in row-major order; absolute pixel parity selects green/blue bit plane 0/1; both channels pass through the existing byte-alignment and ASCII/UTF-16 printable-run extractor. Those recovered text runs feed the existing exact HMAC comparison. This operation is **exploratory** when applied to a workbook M10 picture because the original N14/Gabriel image-to-Emily-final link remains unauthenticated.
+
+An end-to-end positive fixture creates an original BIFF8 M10 OfficeArt BLIP PNG with **no caption in ordinary metadata** and hides the entire synthetic line only in the source-literal green-channel bits. The native OfficeArt reader recovers the PNG, the teal decoder returns the complete hidden line, and the unchanged K08 reduction accepts its matching **synthetic** commitment. The same original picture under a non-M10 cell anchor is excluded. This control passed [GitHub Actions run 45010248437](https://github.com/FlareZ123/workplace-v2/actions/runs/45010248437). Historical K08 remains MISSING.
+
 ## Reproduction and coverage
 
 - `work/h17_k04_binary_window_intake.py --self-test`: planted direct and masked coupons, raw OLE/CFB source, UTF-16LE/BE hex, grouped hex and Base64, all exact matches.
