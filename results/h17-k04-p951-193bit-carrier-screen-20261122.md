@@ -39,3 +39,20 @@ This closes the specified 193-bit extension of the earlier eight-family carrier 
 It does not establish that the p951 MT chronology is historically correct, nor exclude other source families, noncontiguous or arbitrary within-carrier word selections, different stage assignments, or a different producer/copy mechanism. The seven donor observations remain hypothetical; no original K04 bits are authenticated by this result.
 
 K01/K02/K03/K05/K06/K07 remain PASS; K04/K08 remain missing; combined REC8/1 remains incomplete. No original source, candidate, commitment or verifier was changed.
+
+
+## Additional source-cued test: ATTPTTAILBIT
+
+The first-word initials of the selected 14 notes have been observed as ATTPTTAILBITTE. Treating ATTPT TAIL BIT as a possible locator for the least-significant bit of the selected K04 attempt is posthoc and is **not** prescribed by the source. The incident-date selected attempt is 2, so this interpretation fixes the partial donor bit to 0.
+
+Reusing the same six full donor positions, eight source families, three-distinct-family assignments, eight word views and seven possible MT bit positions, the fixed-zero test produced:
+
+| Measure | Result |
+|---|---:|
+| Assignments | 1,204,224 |
+| Source-compatible assignments | 610,176 |
+| K04 commitment matches | **0** |
+
+The local source-equivalent run completed in 20.25 seconds. The repository reproducer now includes this bounded test as well as the carrier-derived partial-bit test.
+
+This closes only the specific ATTPTTAILBIT → selected-attempt-LSB=0 interpretation over the same source-carrier domain. It does not make the acrostic a source-mandated K04 instruction or validate the conditional p951 chronology.
