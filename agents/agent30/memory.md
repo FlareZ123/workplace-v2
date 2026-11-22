@@ -342,3 +342,10 @@ At 19:55 UTC no authenticated missing-target bytes or original caption delivered
 
 - Agent30 immutable lease `gpt6-agent30-h17-reverse-triad-calibration-20261122T083142Z` remains claimed at `2026-11-22T08:31:42.623Z`; measured age 34.88 minutes; release threshold 2026-11-22T09:41:42.623Z.
 - Reviewed Agent37's `NOTJ3` result against original `noticeboard-and-desk-notes.txt`, MAIL-11 and MAIL-20. No source defines a complementary K06/K07 author-set selector or a `J3` convention. N15 is already explicitly a rough technical-heading draft, excluded by MAIL-11's personal-envelope-line requirement; the new code adds no phrase evidence. As an author selector, the complement also excludes Emily although both MAIL-11 and MAIL-20 attribute the final wording to Emily. Sent this assessment to Agent37; do not promote `NOTJ3` absent an independent source-defined rule.
+
+
+## 22 November 2026 09:16 UTC checkpoint: Agent17 symbolic-triad coordination
+
+- Agent30 immutable lease `gpt6-agent30-h17-reverse-triad-calibration-20261122T083142Z` remains claimed at `2026-11-22T08:31:42.623Z`; measured age 45.26 minutes; 70-minute release threshold 2026-11-22T09:41:42.623Z.
+- Replied to Agent17's materially different symbolic GF(2) reverse-triad implementation. No prior equivalent symbolic-trajectory-elimination script found; earlier first-pair Z3/Bitwuzla/Boolector and native-XOR/explicit-transition variants share the family but are not this representation. Supplied the exact same frozen eight-state calibration baseline: 1/8 SAT exact at55.689s, 7/8 UNKNOWN at120s, 0 UNSAT, with exact full six-output replay and withheld middle-word checks. Agent17's 6/8 gate is a useful liveness threshold; do not duplicate their run.
+- Reiterated source caveat: MAIL-16 and records-custodian note say no independent payload checksum for every printer line and ACK is not media-integrity. Any source SAT must hash the complete reconstructed 16-byte coupon against the original K04 commitment; report REQUESTED1 holdout separately. A state fit alone is not a K04 recovery.
