@@ -1026,3 +1026,13 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - The source-completeness boundary is now explicit: K04 requires native PS-0417 queue/render/host manifest or preserved physical coupon; K08 requires Emily's final desk caption and separate photo/galley captions or original WN-14 loose-note folder. The actual AX-7782 8 MiB retained object remains the best single acquisition request; asked the user to provide it. No additional source upload has arrived.
 - No source, candidate, verifier, commitment or equipment changed.
 
+
+
+## 2026-11-22 04:02 UTC — MT stream partition / missing-row sensitivities
+
+- Reimplemented Agent18's twist-pair witness detector on the 133 spool rows with target row129 withheld. Across the 25 global triplets: 0/25 have all rows at one destination; 2/25 share class (both LABEL, across different destinations); 0/25 share class and destination; none is all-RECOVER. The target is RECOVER/bench.
+- Reran witness discovery independently within each CLASS, DEST, and CLASS×DEST partition. All nine CLASS×DEST groups have zero witnesses. CLASS-only: LABEL 2 (cross-destination), RECOVER 0, STORES 0. DEST-only: bench/desk/store all 0. The target RECOVER/bench partition has 15 rows and zero witnesses. This weakens the simple per-class/per-destination MT-stream alternative; it does not exclude other producer architectures.
+- Source-constrained MILP target range S99-S45 = 398..487; repeated twins require 396. One omitted record with nonnegative draw count cannot fix this first-gap shortfall (insert before row99 only increases it; after row99 leaves it unchanged). All-row 0..100 sensitivity also leaves both twins infeasible.
+- Added these checks to results/h17-k04-p951-193bit-carrier-screen-20261122.md and notified Agent18. Do not widen recurrence, hidden-row, or arbitrary stream searches without a source-authored selector.
+- Remaining decision-changing evidence: native PS-0417 queue/render/host-stage manifest or actual coupon; original AX-7782 8 MiB retained object; Emily's final WN-14 desk/photo-caption source.
+
