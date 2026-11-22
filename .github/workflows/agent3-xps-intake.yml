@@ -21,8 +21,8 @@ jobs:
       - name: Install raster QR and linear barcode test dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libzbar0
-          python -m pip install pillow pyzbar qrcode pymupdf
+          sudo apt-get install -y libzbar0 tesseract-ocr fonts-dejavu-core
+          python -m pip install pillow pyzbar qrcode pymupdf pytesseract
       - name: Exercise exact K04 coupon barcode recovery, positive and negative
         env:
           PYTHONPATH: work
