@@ -7,6 +7,7 @@ OpenCV are optional independent symbol detectors.
 from __future__ import annotations
 
 import io
+import re
 
 MAX_BARCODE_PIXELS = 24_000_000
 MAX_BARCODE_FRAMES = 32
@@ -74,6 +75,34 @@ def read_image_barcodes(data: bytes) -> tuple[list[tuple[str, bytes]], list[str]
                                     results.append((f"QRCODE-cv2-frame{frame}", s.encode("utf-8")))
                         except cv2.error as exc:
                             failures.append(f"OpenCV QR fallback failed: {type(exc).__name__}")
+            # Printed 32-hex escrow labels can be source-visible text rather
+            # than barcodes. OCR is optional; the unmodified SHA256 commitment
+            # independently rejects every misrecognized coupon.
+            try:
+                import pytesseract
+            except ImportError:
+                failures.append("pytesseract unavailable: printed coupon OCR skipped")
+            else:
+                for frame in range(min(frames, 4)):
+                    image.seek(frame)
+                    if image.width * image.height > MAX_BARCODE_PIXELS:
+                        continue
+                    for psm in (6, 11):
+                        try:
+                            text = pytesseract.image_to_string(
+                                image.convert("RGB"),
+                                config=f"--psm {psm}", timeout=3,
+                            )
+                        except (pytesseract.TesseractNotFoundError,
+                                RuntimeError) as exc:
+                            failures.append(f"Printed coupon OCR failed: {type(exc).__name__}")
+                            break
+                        if 0 < len(text) <= 100_000:
+                            raw = text.encode("utf-8")
+                            results.append((f"OCR-psm{psm}-frame{frame}", raw))
+                            compact = re.sub(rb"[\s:.-]", b"", raw)
+                            if compact != raw:
+                                results.append((f"OCR-psm{psm}-compact-frame{frame}", compact))
             return list(dict.fromkeys(results)), list(dict.fromkeys(failures))
     except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError) as exc:
         return [], [f"Image could not be decoded: {type(exc).__name__}"]
