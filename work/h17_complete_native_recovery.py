@@ -18,7 +18,7 @@ from pathlib import Path
 from resources.verify import evaluate
 from h17_ax7782_k08_phrase_intake import (
     decode_text_variants, iter_text_streams, normalize,
-    scan_phrase_spans,
+    scan_authored_text_units, scan_phrase_spans,
 )
 from h17_k04_binary_window_intake import run_scan
 
@@ -94,6 +94,8 @@ def recover_complete(
             local_variants.add(normalized)
             hits: list[dict] = []
             scan_phrase_spans(text, nonce, target, f"{source} [{label}]", 48, hits)
+            scan_authored_text_units(
+                text, nonce, target, f"{source} [{label}]", hits)
             for hit in hits:
                 pair = (hit["normalized_phrase"], hit["component_hex"])
                 if pair not in seen:
