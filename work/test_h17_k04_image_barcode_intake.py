@@ -549,6 +549,26 @@ class OriginalHashBarcodeTests(unittest.TestCase):
             for hit in result["hits"]
         ), result)
 
+    def test_pdf_page_file_annotation_coupon_recovered(self):
+        import pymupdf
+
+        self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
+        source_png = self.path.read_bytes()
+        document = pymupdf.open()
+        page = document.new_page(width=400, height=200)
+        page.add_file_annot(
+            pymupdf.Point(25, 35), source_png, "ESC-N-page-attachment.png",
+        )
+        self.path = self.path.with_suffix(".pdf")
+        self.path.write_bytes(document.tobytes())
+        document.close()
+        result = self.scan()
+        self.assertTrue(any(
+            hit["component_hex"] == self.component.hex().upper()
+            and "ESC-N-page-attachment.png" in hit["source"]
+            for hit in result["hits"]
+        ), result)
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
