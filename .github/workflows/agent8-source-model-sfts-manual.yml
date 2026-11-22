@@ -20,3 +20,7 @@ jobs:
         run: python agents/agent8/k08_seafever_literal_sft.py
       - name: Check HST PV and printer MT624 assembly
         run: python agents/agent8/k04_pv112_mt624_directstate_sft.py
+      - name: Check original interpacket MT whole coupon constructions
+        run: python agents/agent8/k04_mt_packet_boundary_sft.py
+      - name: Check original stage-conditioned MT complete coupon
+        run: python agents/agent8/k04_stage_conditioned_target_sft.py
