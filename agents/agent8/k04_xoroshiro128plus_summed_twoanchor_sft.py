@@ -167,7 +167,7 @@ def source(path):
             bytes.fromhex(records[2]["PAYLOAD"])], mask, target
 
 
-def controls(limit_seconds):
+def controls(limit_seconds, mask):
     for recurrence in ((55, 14, 36), (24, 16, 37)):
         seed = (0x123456789ABCDEF0, 0xFEDCBA9876543210)
         for _ in range(1000):
@@ -181,13 +181,23 @@ def controls(limit_seconds):
         assert list(generate(seed, recurrence, 20, False)) == native
         # Construct and verify complete synthetic 16-byte source targets.
         hypothetical = encode(native[10:12], "big", False)
-        generated = list(generate(seed, recurrence, 12, False))
+        generated = list(generate(seed, recurrence, 20, False))
         assert encode(generated[10:12], "big", False) == hypothetical
+        original_like = bytes(x ^ y for x, y in zip(hypothetical, mask))
+        planted_digest = hashlib.sha256(original_like).digest()
+        recovered_positions = []
+        for pos in range(2, 19):
+            coupon = encode(generated[pos:pos+2], "big", False)
+            reduced = bytes(x ^ y for x, y in zip(coupon, mask))
+            if hashlib.sha256(reduced).digest() == planted_digest:
+                recovered_positions.append(pos)
+        assert recovered_positions == [10]
         print(json.dumps({"synthetic": list(recurrence),
                           "planted_state_recovered": True,
                           "all_preimages": len(states), "terminal": status,
                           "inverse_roundtrips": 1000,
                           "full_packet_positive": "PASS",
+                          "original_route_mask_SHA256_planted_positive": "PASS",
                           "solver_seconds": elapsed}), flush=True)
 
 
@@ -199,8 +209,8 @@ def main():
     parser.add_argument("--limit-seconds", type=int, default=45)
     args = parser.parse_args()
     assert args.windows >= 4 and args.limit_seconds >= 1
-    controls(args.limit_seconds)
     packets, mask, target = source(args.resources)
+    controls(args.limit_seconds, mask)
     totals = {"original_K04_matches": [], "source_pair_holdout": 0,
               "source_states": 0, "complete_K04_assignments": 0,
               "solver_nonexhaustive_views": 0}
