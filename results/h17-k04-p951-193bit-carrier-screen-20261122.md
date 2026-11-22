@@ -94,3 +94,6 @@ A further source-field check of the 25 recurrence triplets found 0/25 with all t
 
 
 The trimmed-export caveat prompted a one-hidden-row sensitivity check. Under the same historical witness system, S99-S45 is bounded below by 398, whereas either repeated twin requires 396. An omitted row with a nonnegative draw count inserted before row 99 can only increase that gap; inserted after row 99 it leaves the gap unchanged. The already-reported all-row 0–100 sensitivity likewise leaves both twins infeasible. Thus one simple omitted-row insertion does not rescue the repeated-twin transfer, although this does not rule out a different raw-row mapping or producer/serialization model.
+
+
+Partition sensitivity: rerunning the same twist-pair witness detector independently within source partitions yields no witnesses in any of the nine CLASS×DEST groups. CLASS-only counts are LABEL 2 (both span different destinations), RECOVER 0, STORES 0; DEST-only counts are bench 0, desk 0, store 0. The target RECOVER/bench partition has 15 rows and zero witnesses. The 25 global witnesses therefore arise only when mixing classes/destinations; they do not support a simple independent MT stream per class or destination.
