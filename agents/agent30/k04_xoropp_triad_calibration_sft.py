@@ -12,8 +12,9 @@ import argparse
 import json
 import time
 
-from k04_dual_inverse_borrow_reference import stream
+# Importing the triad runner first installs its exact agent36/agent50 paths.
 from k04_xoropp_reverse_tail_triad_sft import forward, run_triad
+from k04_dual_inverse_borrow_reference import stream
 
 # Eight independent 128-bit states frozen before the calibration run.
 STATES = (
