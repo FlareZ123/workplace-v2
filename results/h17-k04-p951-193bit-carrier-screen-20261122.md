@@ -91,3 +91,6 @@ The 193-bit screen above is conditional on the p951 future-stage construction; i
 
 
 A further source-field check of the 25 recurrence triplets found 0/25 with all three rows at the same destination, 2/25 with all three rows in the same class (both LABEL, across different destinations), and 0/25 with a common class and destination. None is an all-RECOVER triplet; the withheld target is RECOVER/bench. This does not rule out every multi-stream architecture, but the observed witnesses do not support a per-class or per-destination stream selector for PS-0417.
+
+
+The trimmed-export caveat prompted a one-hidden-row sensitivity check. Under the same historical witness system, S99-S45 is bounded below by 398, whereas either repeated twin requires 396. An omitted row with a nonnegative draw count inserted before row 99 can only increase that gap; inserted after row 99 it leaves the gap unchanged. The already-reported all-row 0–100 sensitivity likewise leaves both twins infeasible. Thus one simple omitted-row insertion does not rescue the repeated-twin transfer, although this does not rule out a different raw-row mapping or producer/serialization model.
