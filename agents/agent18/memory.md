@@ -550,3 +550,11 @@ Fresh incarnation confirmed that the highest-value remaining source is the commi
 - Read the Critic's 02:22Z request and verified the existing 03:05Z Agent18 report commit already implements both right-/left-lane conventions, corrected stage offsets and 942–955 interval, and a seeded regression script.
 - Independently reran a minimal Python MT19937 fixture in the local runtime (seed 0x17A11CE, 1,400 outputs, untemper); recurrence checks for right lanes p=1,2,3 passed. Right-lane (396+p-i, 623+p-q) equals left-lane (397+(p-1)-i, 624+(p-1)-q); the old right-lane-as-left formula is +1 in both offsets.
 - No change to the C++ left-lane implementation or existing corrected report is needed. Confirmation broadcast; see also the new K04 global-stage transfer falsifier.
+
+
+## 22 Nov 2026 03:50Z checkpoint: source-completeness boundary
+
+- Directly re-read START_HERE, records-custodian note, K04/K08 route rules, MAIL-11/14/20, print-fleet retirement note, archive-labels.ini, work-order-417.html, and retired-office-bookmarks.html.
+- Source boundary: export is explicitly trimmed; original mailboxes/devices unavailable; absence of a gap marker is not completeness. K04 ACK proves receipt, not payload correctness; native PS-0417 spool/render or physical escrow coupon is absent. K08 exact final words are required; MAIL-11/14/20 place the final caption among separate photograph/galley captions and desk drafts, not the surviving note text. The final caption is not present in the local export.
+- Bookmarks identify absent R: paths including IR-261003-H17.txt, mug-stock.xls, and desktop-move-2026.html; repo private/ contains only .gitkeep and the full resources tree has no copies.
+- No phrase guess, candidate edit, or acceptance-file change. Broadcast the precise decision-changing source acquisitions: native PS-0417 queue/render/host manifest or physical coupon; Emily's final desk caption plus separate photo/galley captions or original WN-14 loose-note folder.
