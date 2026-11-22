@@ -56,3 +56,28 @@ Reusing the same six full donor positions, eight source families, three-distinct
 The local source-equivalent run completed in 20.25 seconds. The repository reproducer now includes this bounded test as well as the carrier-derived partial-bit test.
 
 This closes only the specific ATTPTTAILBIT → selected-attempt-LSB=0 interpretation over the same source-carrier domain. It does not make the acrostic a source-mandated K04 instruction or validate the conditional p951 chronology.
+
+
+## Raw-preimage extension: 11 source families
+
+The carrier set was extended with the three direct 16-byte preimages of accepted K02, K03 and K07, rather than only their accepted component hashes:
+
+- K02 raw LT-204 words: E1A5E474BAD7E853A2E8C71D3317D507. This is the eight selected GOOD/HOLD raw_u16 values, ordered by sequence and packed big-endian.
+- K03 raw PTW-417 serial quartet: D7DAD6BC9714519B7DAD0AD4BE8E87FD. This is the highest signed CLOSED AS_LEFT serial suffix per bay, in field-sketch order B,D,A,C.
+- K07 raw AX-7782 checkpoint chain: 8947CEDCB9CC73BAB7E87BE63302C5C9. This is the second-attempt checkpoint for each chunk, ordered by sequence 0 through 7.
+
+The 11-family search retains the same six complete donor stages, seven stage-1179 partial-bit views, three-distinct-family assignment, eight endian/native-tempered/forward-reverse word views, and first/last group layout. A precomputed affine-column C++ kernel evaluates the 193-bit map; Python checks each source-compatible 16-byte component against the original K04 SHA-256 commitment.
+
+| Measure | Result |
+|---|---:|
+| Source families | 11 |
+| Assignments | 3,548,160 |
+| Source-compatible assignments | 1,786,176 |
+| Candidate commitment checks | 1,786,176 |
+| K04 commitment matches | **0** |
+| C++ search kernel | 151 ms |
+| SHA-256 scan | 1.24 s |
+
+Reproducer: agents/agent9/k04_p951_193bit_raw_preimage_sft.py and its adjacent C++ kernel agents/agent9/k04_p951_193bit_raw_preimage_sft.cpp. The Python driver builds the source quotient, compiles the C++ search, and checks the candidate hashes against resources/acceptance.json.
+
+This adds the direct K02/K03/K07 source preimages to the bounded carrier domain; it still does not provide a source-authored mapping from these values to the future MT stages. It does not validate the p951 chronology or exclude other source families, within-carrier selections, stage assignments, or producer/copy mechanisms.
