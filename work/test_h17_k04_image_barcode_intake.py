@@ -205,6 +205,71 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         document.close()
         self.assertEqual(self.scan()["hits"], [])
 
+    def test_full_rec8_reconstruction_from_pdf_coupon_and_long_caption(self):
+        import pymupdf
+
+        from h17_ax7782_k08_phrase_intake import k08_component, normalize
+        from h17_complete_native_recovery import recover_complete
+
+        self.embed(b"ORIGINAL-COUPON=" + self.payload.hex().upper().encode("ascii"))
+        doc = pymupdf.open()
+        page = doc.new_page(width=260, height=260)
+        page.insert_image(page.rect, stream=self.path.read_bytes())
+        self.path = self.path.with_suffix(".pdf")
+        self.path.write_bytes(doc.tobytes())
+        doc.close()
+
+        caption = (
+            "after the last cup the sea remained beyond the window and "
+            "the little lamp waited for the next watch to gather around "
+            "the table"
+        )
+        self.assertGreater(len(normalize(caption)), 96)
+        caption_source = Path(self.root.name) / "Emily-original-final.txt"
+        caption_source.write_text("Final author margin:\n\n" + caption + "\n\n", encoding="utf-8")
+        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+        final = {
+            f"K{i:02d}": bytes([i]) .hex().upper() * 16
+            for i in (1, 2, 3, 5, 6, 7)
+        }
+        final["K04"] = self.component.hex().upper()
+        final["K08"] = k08_component(nonce, normalize(caption)).hex().upper()
+        prefix = "CEG-ARCHIVE-RECOVERY/v1\n"
+        slots = {
+            key: hashlib.sha256(bytes.fromhex(value)).hexdigest()
+            for key, value in final.items()
+        }
+        combined = hashlib.sha256(
+            (prefix + "".join(
+                final[f"K{i:02d}"] + "\n" for i in range(1, 9)
+            )).encode("ascii")
+        ).hexdigest()
+        original_pdf_sha = hashlib.sha256(self.path.read_bytes()).hexdigest()
+        original_caption_sha = hashlib.sha256(caption_source.read_bytes()).hexdigest()
+        recovered = recover_complete(
+            self.path, caption_source,
+            targets={
+                "slot_sha256": slots,
+                "combined_prefix": prefix,
+                "combined_sha256": combined,
+            },
+            routing={
+                "K04": {"masked_component": self.mask.hex().upper()},
+                "K08": {"desk_nonce": nonce.hex().upper()},
+            },
+            six_pass={key: value for key, value in final.items()
+                      if key not in ("K04", "K08")},
+        )
+        self.assertTrue(recovered["accepted"], recovered)
+        self.assertEqual(recovered["candidate"], final)
+        self.assertEqual(recovered["verification"]["passed"], 8)
+        self.assertEqual(recovered["verification"]["combined"], "PASS")
+        self.assertEqual(hashlib.sha256(self.path.read_bytes()).hexdigest(), original_pdf_sha)
+        self.assertEqual(
+            hashlib.sha256(caption_source.read_bytes()).hexdigest(),
+            original_caption_sha,
+        )
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
