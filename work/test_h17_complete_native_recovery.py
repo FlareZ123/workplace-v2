@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from h17_ax7782_k08_phrase_intake import k08_component
+from h17_ax7782_k08_phrase_intake import k08_component, normalize
 from h17_complete_native_recovery import recover_complete
 from resources.verify import evaluate
 
@@ -108,6 +108,63 @@ class CompleteNativeRecoveryTests(unittest.TestCase):
         self.assertIsNone(result["candidate"])
         self.assertEqual(result["verification"]["slots"]["K01"], "NO_MATCH")
         self.assertEqual(result["verification"]["combined"], "NO_MATCH")
+
+    def _install_long_caption(self, wrapped: bool):
+        phrase = (
+            "After the last cup the sea is still outside the window and "
+            "the little lamp waits for the tired people making room for "
+            "the next watch"
+        )
+        self.assertGreater(len(normalize(phrase)), 96)
+        new_k08 = k08_component(self.nonce, normalize(phrase)).hex().upper()
+        self.full["K08"] = new_k08
+        self.targets["slot_sha256"]["K08"] = hashlib.sha256(
+            bytes.fromhex(new_k08)
+        ).hexdigest()
+        self.targets["combined_sha256"] = hashlib.sha256(
+            (self.targets["combined_prefix"] + "".join(
+                self.full[f"K{i:02d}"] + "\n" for i in range(1, 9)
+            )).encode("ascii")
+        ).hexdigest()
+        original = (
+            phrase.replace("window and the little", "window\nand the little")
+            if wrapped else phrase
+        )
+        self.caption.write_text(
+            "Authentic margin caption:\n\n" + original + "\n\n",
+            encoding="utf-8",
+        )
+
+    def test_complete_acceptance_with_long_whole_line(self):
+        self._install_long_caption(wrapped=False)
+        result = self.execute()
+        self.assertTrue(result["accepted"], result)
+        self.assertEqual(result["verification"]["combined"], "PASS")
+        self.assertTrue(any(
+            hit.get("whole_text_unit") == "line"
+            for hit in result["k08_phrase_hits"]
+        ))
+
+    def test_complete_acceptance_with_hard_wrapped_long_paragraph(self):
+        self._install_long_caption(wrapped=True)
+        result = self.execute()
+        self.assertTrue(result["accepted"], result)
+        self.assertEqual(result["verification"]["combined"], "PASS")
+        self.assertTrue(any(
+            hit.get("whole_text_unit") == "paragraph"
+            for hit in result["k08_phrase_hits"]
+        ))
+
+    def test_wrong_long_caption_never_reaches_verifier(self):
+        self._install_long_caption(wrapped=False)
+        self.caption.write_text(
+            self.caption.read_text(encoding="utf-8").replace(
+                "next watch", "next shift"
+            ), encoding="utf-8",
+        )
+        result = self.execute()
+        self.assertFalse(result["accepted"])
+        self.assertEqual(result["k08_component_hits"], 0)
 
     def test_complete_acceptance_with_original_msg_rtf_body(self):
         import io
