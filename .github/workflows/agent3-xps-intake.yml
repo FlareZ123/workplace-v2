@@ -18,6 +18,15 @@ jobs:
         run: python -m pip install fonttools
       - name: Exercise coverage-safe Glyphs/Indices fallback
         run: python work/test_h17_xps_glyph_indices.py
+      - name: Install raster QR and linear barcode test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libzbar0
+          python -m pip install pillow pyzbar qrcode
+      - name: Exercise exact K04 coupon barcode recovery, positive and negative
+        env:
+          PYTHONPATH: work
+        run: python -m unittest -v work.test_h17_k04_image_barcode_intake
       - name: Confirm existing read-only K04 and K08 positive controls
         run: |
           python work/h17_k04_binary_window_intake.py --self-test
