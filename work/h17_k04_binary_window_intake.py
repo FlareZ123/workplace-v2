@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Read-only exact K04 commitment scanner for recovered native spool/AX-7782 files.
 
-Scans raw 16-byte windows and standalone 32-hex-character tokens. For each
+Scans raw 16-byte windows and standalone ASCII/UTF-16LE/UTF-16BE
+32-hex-character tokens, including native OLE/CFB printer files. For each
 candidate block B it checks both SHA256(B) and SHA256(B XOR route_mask) against
 the K04 component commitment. It also descends into ZIP, TAR, and GZIP members
 without extracting them to disk. No heuristic transformations are attempted.
