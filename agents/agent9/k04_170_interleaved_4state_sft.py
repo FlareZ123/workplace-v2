@@ -116,7 +116,7 @@ def main():
 
     labels = [
         tuple(re.search(
-            r"CLASS=(\\w+) PAYLOAD=[0-9A-F]{32} DEST=(\\w+)", line
+            r"CLASS=(\w+) PAYLOAD=[0-9A-F]{32} DEST=(\w+)", line
         ).groups())
         for line in lines
     ]
