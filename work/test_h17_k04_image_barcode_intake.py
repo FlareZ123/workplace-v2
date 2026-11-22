@@ -308,6 +308,69 @@ class OriginalHashBarcodeTests(unittest.TestCase):
             for hit in result["hits"]
         ), result)
 
+    def make_pcl_raster_spool(self, mode: int) -> None:
+        from PIL import Image
+
+        self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
+        with Image.open(self.path) as source:
+            qr = source.convert("1")
+            width, height = qr.size
+            row_bytes = (width + 7) // 8
+            image_bytes = qr.tobytes()
+        self.assertEqual(len(image_bytes), row_bytes * height)
+        payload = bytearray(
+            b"\x1b*r" + str(width).encode("ascii") + b"S"
+            + b"\x1b*r" + str(height).encode("ascii") + b"T"
+            + b"\x1b*r1A"
+        )
+        for row_index in range(height):
+            base = row_index * row_bytes
+            # Inverse of Pillow's ink polarity: black PCL pixel is 1.
+            row = bytes(byte ^ 255 for byte in image_bytes[base:base + row_bytes])
+            if mode == 0:
+                compressed = row
+            elif mode == 1:
+                compressed = b"".join(bytes([0, byte]) for byte in row)
+            elif mode == 2:
+                compressed = bytes([len(row) - 1]) + row
+            else:
+                raise AssertionError("unsupported test mode")
+            if row_index == 0:
+                # PCL lower-case m continues same ESC*b parameter group.
+                header = b"\x1b*b" + str(mode).encode("ascii") + b"m"
+            else:
+                header = b"\x1b*b"
+            payload.extend(
+                header + str(len(compressed)).encode("ascii") + b"W" + compressed
+            )
+        payload.extend(b"\x1b*rB")
+        self.path = self.path.with_suffix(".prn")
+        self.path.write_bytes(b"\x1b%-12345X@PJL JOB\n" + payload)
+
+    def test_native_pcl_uncompressed_raster_coupon(self):
+        self.make_pcl_raster_spool(0)
+        result = self.scan()
+        self.assertEqual(len(result["hits"]), 1, result)
+        self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
+        self.assertIn("pcl-raster-", result["hits"][0]["encoding"])
+
+    def test_native_pcl_rle_raster_coupon(self):
+        self.make_pcl_raster_spool(1)
+        result = self.scan()
+        self.assertEqual(len(result["hits"]), 1, result)
+        self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
+
+    def test_native_pcl_tiff_packbits_raster_coupon(self):
+        self.make_pcl_raster_spool(2)
+        result = self.scan()
+        self.assertEqual(len(result["hits"]), 1, result)
+        self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
+
+    def test_native_pcl_corrupt_unterminated_raster_rejected(self):
+        self.make_pcl_raster_spool(2)
+        self.path.write_bytes(self.path.read_bytes()[:-5])
+        self.assertEqual(self.scan()["hits"], [])
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
