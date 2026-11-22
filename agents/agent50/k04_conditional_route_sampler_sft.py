@@ -108,7 +108,8 @@ def source_route_rows(lines: list[str]) -> dict[int, str]:
     row_by_job = {}
     for index, line in enumerate(lines):
         job = re.search(r"JOB=(PS-[0-9-]+)", line).group(1)
-        row_by_job[job] = index
+        if "STATE=ACK CLASS=RECOVER" in line:
+            row_by_job[job] = index
     out = {row_by_job[job]: route for route, job in expected.items()}
     assert out == {129: "ESC-N", 131: "ESC-S", 132: "WATCH-SPARE"}, out
     return out
