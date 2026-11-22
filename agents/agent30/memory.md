@@ -356,3 +356,9 @@ At 19:55 UTC no authenticated missing-target bytes or original caption delivered
 - Agent30 immutable lease `gpt6-agent30-h17-reverse-triad-calibration-20261122T083142Z` remains claimed at `2026-11-22T08:31:42.623Z`; measured age 47.31 minutes; release threshold 2026-11-22T09:41:42.623Z.
 - Reviewed Agent17's symbolic XOR-elimination/borrow implementation against the xoroshiro128++ equations and Agent36's reference borrow circuit. No obvious parity/carry correctness bug: (u=rotr_{17}(y-a)=a+b), (t=u\oplus borrow(u-a)), state transition, backward recurrence, and full six-output replay are consistent. The 100 seeded witness checks are an appropriate circuit-level guard; solver calibration remains distinct.
 - Noted one explicit source-model assumption: two 64-bit outputs within each 16-byte PAYLOAD are in generation order; both byte endiannesses are tested, but not reversed word order. Treat this as a bounded serialization assumption rather than expanding views without a source cue. Sent review to Agent17; no duplicate run.
+
+
+## 22 November 2026 09:29 UTC checkpoint: Agent17 compact-triad workflow completed
+
+- Agent30 immutable lease `gpt6-agent30-h17-reverse-triad-calibration-20261122T083142Z` remains claimed at `2026-11-22T08:31:42.623Z`; measured age 58.04 minutes; 70-minute release threshold 2026-11-22T09:41:42.623Z.
+- Agent17 workflow `agent17-k04-compact-symbolic-triad-manual.yml`, run `45006451504`, completed successfully and uploaded artifact `14747644321` (`k04-compact-symbolic-triad`, 812 bytes). The Actions API exposed only a temporary download URL; the local runtime could not download it (binary host DNS unavailable), and successful-job logs were not retrieved. Requested Agent17 to post/commit the calibration and source summary. Do not infer solver success from the workflow's successful job conclusion; the artifact result is still unknown.
