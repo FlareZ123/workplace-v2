@@ -51,6 +51,19 @@ HEX32_UTF16BE = re.compile(rb"(?i)(?<!\x00[0-9a-f])(?:\x00[0-9a-f]){32}(?!\x00[0
 HEX16_GROUPED = re.compile(rb"(?i)(?<![0-9a-f])(?:[0-9a-f]{2}[\s:.-]{1,3}){15}[0-9a-f]{2}(?![0-9a-f])")
 BASE64_16 = re.compile(rb"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{22}==(?![A-Za-z0-9+/=])")
 
+UUID_16 = re.compile(
+    rb"(?i)(?<![a-z0-9])[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-"
+    rb"[a-f0-9]{4}-[a-f0-9]{12}(?![a-z0-9])"
+)
+BASE32_16 = re.compile(
+    rb"(?i)(?<![a-z2-7])[a-z2-7]{26}(?:={6})?(?![a-z2-7=])"
+)
+BASE64_URLSAFE_16 = re.compile(
+    rb"(?<![A-Za-z0-9+/_-])[A-Za-z0-9+/_-]{22}(?:==)?"
+    rb"(?![A-Za-z0-9+/_=-])"
+)
+
+
 
 def magic(data: bytes) -> str:
     if data.startswith((b"PK\x03\x04", b"PK\x05\x06", b"PK\x07\x08")):
@@ -160,6 +173,44 @@ def scan_bytes(name: str, data: bytes, target_digest: bytes, mask: bytes, stride
                              "offset": match.start(), "kind": kind,
                              "component_hex": component.hex().upper(),
                              "window_hex": block.hex().upper()})
+    for match in UUID_16.finditer(data):
+        payload = bytes.fromhex(match.group().replace(b"-", b"").decode("ascii"))
+        for order, block in (
+            ("rfc", payload),
+            ("windows-guid", payload[0:4][::-1] + payload[4:6][::-1]
+             + payload[6:8][::-1] + payload[8:]),
+        ):
+            hit = candidate_hit(block, target_digest, mask)
+            if hit:
+                kind, component = hit
+                hits.append({"source": name, "encoding": "uuid-" + order,
+                             "offset": match.start(), "kind": kind,
+                             "component_hex": component.hex().upper(),
+                             "window_hex": block.hex().upper()})
+    for match in BASE32_16.finditer(data):
+        token = match.group().upper().rstrip(b"=")
+        block = base64.b32decode(token + b"======", casefold=True)
+        hit = candidate_hit(block, target_digest, mask)
+        if hit:
+            kind, component = hit
+            hits.append({"source": name, "encoding": "base32-16bytes",
+                         "offset": match.start(), "kind": kind,
+                         "component_hex": component.hex().upper(),
+                         "window_hex": block.hex().upper()})
+    for match in BASE64_URLSAFE_16.finditer(data):
+        token = match.group()
+        if token.endswith(b"==") and b"-" not in token and b"_" not in token:
+            continue  # Already handled by the strict standard Base64 branch.
+        block = base64.urlsafe_b64decode(token.rstrip(b"=") + b"==")
+        if len(block) != 16:
+            continue
+        hit = candidate_hit(block, target_digest, mask)
+        if hit:
+            kind, component = hit
+            hits.append({"source": name, "encoding": "base64url-16bytes",
+                         "offset": match.start(), "kind": kind,
+                         "component_hex": component.hex().upper(),
+                         "window_hex": block.hex().upper()})
     return hits
 
 
