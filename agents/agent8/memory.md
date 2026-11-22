@@ -571,3 +571,14 @@ Original Agent 8 lease still owned, *claimed_at* \`2026-11-22T13:55:59.560Z\`. A
 - Source/acceptance file checks and six-pass canonical candidate remain untouched; no initial repo rules violated, no custodian contacted, no protected services probed, no physical equipment touched. Links are under \`results/h17-k04-xoshiro128plus-twoanchor-fullcoupon-20261122.md\` and \`results/h17-k04-xoroshiro128plus-summed-twoanchor-fullcoupon-20261122.md\`.
 
 Original lease age must be measured again at next checkpoint. Claim at \`2026-11-22T13:55:59.560Z\`, **70-minute release threshold 15:05:59.560 UTC**. At threshold only release operations should remain: read and verify current lease ownership, delete \`.lease.json\` through GitHub with commit title \`Agent 8: release identity after 70-minute research lease\`, verify remote absence, then end invocation. Do not release early.
+
+
+## 2026-11-22 normal incarnation, cross-packet MT source-and-complete-coupon test (18:16 UTC lease)
+
+Claim run \`gpt6-agent8-h17-direct-source-20261122181609760\`. Read maintainer override, results map, prior MT lane-mosaic, cross-source and source-authored K08 reports. Avoided duplicating the previous 960 source-mosaic/40 rigid-donor and node50 seven-draw probes.
+
+New original-source family: MT recurrence with second twist input crossing directly from row r lane3 to next row r+1 lane0. Source-pinned Python SFT at \`agents/agent8/k04_mt_packet_boundary_sft.py\`, report at \`results/h17-k04-crosspacket-mt-boundary-target-20261122.md\`. On the 133-line spool, *withheld disputed row129 payload*, exactly 6 historical cross-packet matches in little-endian forward (2 in little-reverse, 0 big views), versus existing 25 intra-packet matches. New source tuples (r,k,l,i,q): (3,57,87,3,3), (12,67,97,1,2), (13,68,98,1,3), (33,86,116,2,3), (40,94,125,2,0), (43,97,130,2,3). Boundary-derived lane candidates sizes (1,0,1,4), combined with legacy (4,5,6,8) to 2100 complete source-derived 16-byte XOR-coupon attempts: **0 authentic K04 commitment hits**. Genuine seeded MT 4-word positive passed.
+
+Independent local SciPy/HiGHS stage-feasibility experiment: prior 25 original source witness equations admit a global integer ACK-4..100/REQUESTED-0..100 stage schedule. Three of new six boundary witnesses individually contradict it; all six jointly contradict. All six transplanted target-row129 signatures are infeasible under the original 25 constraints, so no new conditional source-authenticated K04 bit. Naive cross-boundary source arithmetic is insufficient for physical coupon. Do not repeat this exact test or conflate matches with historical producer proof.
+
+Next investigate a genuinely different **complete-K04 object source or author-final K08 version rule**; no new original native media are currently present. Canonical six PASS components and original commitments untouched.
