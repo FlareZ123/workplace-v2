@@ -44,6 +44,7 @@ Run the existing complementary read-only tools on any authorized recovered tree,
 1. `work/h17_k04_binary_window_intake.py` for native/coupon/print/transfer bytes, nested containers, grouped hex, and supported EMF/XPS text extracts. Preserve all original-versus-extracted byte mappings.
 2. `work/h17_profile_inventory.py` followed by `work/h17_profile_k08_phrase_scan.py` for named and unnamed caption candidates, Office/images/profile caches, XPS/EMF, and archive/container variants. Respect the scanner's explicit limits and separately authorized mail inclusion.
 3. `work/h17_witness_intake.py` for proposed whole-object coupon and whole-caption transcriptions attached to preserved originals, then check the unchanged official `resources/verify.py` and acceptance commitments. A hash hit does not independently authenticate original provenance.
+4. `work/h17_printer_registry_allowlist.py` for an independently authorized textual `.reg` export only; it emits allowlisted HKCU printer settings and refuses binary hives. It does not parse `NTUSER.DAT`.
 
 Record formats, skipped files, scan limits, extraction failures and unscanned carriers. If a path is unsupported or a bounded search has no hit, report that specific coverage limitation rather than claiming the entire recovered tree lacks the target. Do not edit acceptance commitments, verifier logic or canonical candidate to manufacture acceptance. Continue genuinely different source-indexed internal reconstruction research while retrieval is pending.
 
