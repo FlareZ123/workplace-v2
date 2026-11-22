@@ -33,9 +33,9 @@ For the exact job, retain every record for `PS-261003-0417`; the published selec
 
 Return original file contents/bytes where possible. The K08 verifier normalizes the recovered phrase, computes HMAC-SHA256 with desk nonce `5F933DA6A1BD03C32DA5CBC25344F497`, keeps the first 16 bytes, then SHA-256s those 16 bytes against the acceptance commitment.
 
-## PTW-417 closeout/photo cross-source records
+## PTW-417 closeout cross-source records
 
-If an independently authorized local copy exists, preserve the original signed PTW-417 closeout, field sketch, all receipt/work-order revisions (including OPEN and REMOVED entries), and the photo request/attachment chain. The current HTML is a redacted records copy; MAIL-04 gives witness walk B/D/A/C but does not provide the original sketch or signatures. A privacy-safe yes/no attestation whether the printed E initial corresponds to Emily may help test the photo-caption link; do not request or expose full personal signatures or unrelated identity data. Keep the cosmetic-corrosion image and its caption/sidecar as separate objects. This is a source join to test, not proof that the photo is N14 or that it supplied K08 wording.
+If an independently authorized local copy exists, preserve the original signed PTW-417 closeout, field sketch, and all receipt/work-order revisions (including OPEN and REMOVED entries). The current HTML is a redacted records copy; MAIL-04 gives witness walk B/D/A/C but does not provide the original sketch or signatures. A privacy-safe yes/no attestation whether the printed E initial corresponds to Emily may help test the photo-caption link; do not request or expose full personal signatures or unrelated identity data. The cosmetic-corrosion photograph and caption/sidecar are requested under K08 item 2 above; keep them as separate objects. This is a source join to test, not proof that the photo is N14 or that it supplied K08 wording.
 
 ## AX-7782 / IR-261003-H17 native transfer object (joint K04/K08 locator)
 
