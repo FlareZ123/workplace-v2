@@ -33,6 +33,8 @@ jobs:
             work/h17_ax7782_object_intake.py \
             work/h17_ax7782_k08_phrase_intake.py \
             work/h17_k04_binary_window_intake.py \
+            work/h17_complete_native_recovery.py \
+            work/test_h17_complete_native_recovery.py \
             work/h17_ax7782_k08_sqlite_bridge.py \
             work/h17_ax7782_joint_intake.py \
             work/h17_sticky_notes_intake.py \
@@ -45,6 +47,7 @@ jobs:
           python -m unittest -v \
             work.test_h17_ax7782_object_intake \
             work.test_h17_ax7782_k08_phrase_intake \
+            work.test_h17_complete_native_recovery \
             work.test_h17_doc_lo_fallback \
             work.test_h17_xls_lo_fallback \
             work.test_h17_biff_officeart \
