@@ -158,6 +158,51 @@ def test():
         assert hits == 0 and planted_hits >= 1
         counts[name] = count
     assert counts == {"legacy": 960, "with_boundary": 2100}, counts
+    # Exhaust complete two-donor native MT constructions at every source
+    # ordered row-pair, beyond the historical witness-selected row geometries.
+    # The selected row's PAYLOAD remains withheld throughout.
+    allpair_counts = {"within_packet_plus_unknown_msb": 0,
+                      "adjacent_packets_zero_hidden": 0}
+    allpair_hits = 0
+    for endian in ("little", "big"):
+        for reversed_words in (False, True):
+            view_rows = source_words(packets, endian, reversed_words)
+            for r in range(129):
+                R = view_rows[r]
+                if R is None:
+                    continue
+                for k in range(r+1, 129):
+                    K = view_rows[k]
+                    if K is None:
+                        continue
+                    for prev_msb in (0, 0x80000000):
+                        out = [temper(K[j] ^ twist(R[j-1] if j else prev_msb, R[j]))
+                               for j in range(4)]
+                        if reversed_words:
+                            out.reverse()
+                        raw_coupon = b"".join(w.to_bytes(4, endian) for w in out)
+                        masked = bytes(a ^ b for a,b in zip(raw_coupon, mask))
+                        allpair_hits += sha256(masked).hexdigest() == target
+                        allpair_counts["within_packet_plus_unknown_msb"] += 1
+                    if k <= r+1 or view_rows[r+1] is None:
+                        continue
+                    eight = R + view_rows[r+1]
+                    for offset in range(4):
+                        five = eight[offset:offset+5]
+                        out = [temper(K[j] ^ twist(five[j], five[j+1]))
+                               for j in range(4)]
+                        if reversed_words:
+                            out.reverse()
+                        raw_coupon = b"".join(w.to_bytes(4, endian) for w in out)
+                        masked = bytes(a ^ b for a,b in zip(raw_coupon, mask))
+                        allpair_hits += sha256(masked).hexdigest() == target
+                        allpair_counts["adjacent_packets_zero_hidden"] += 1
+    assert allpair_counts == {"within_packet_plus_unknown_msb": 66048,
+                              "adjacent_packets_zero_hidden": 130048}
+    assert allpair_hits == 0
+    print("EXHAUSTIVE_ORIGINAL_TWO_DONOR", json.dumps({"counts": allpair_counts,
+          "original_k04_hits": allpair_hits, "total": sum(allpair_counts.values())}))
+
     print(json.dumps({"historical_intra": len(intra), "historical_boundary": len(boundary),
                       "boundary_views": full_counts, "boundary_source_tuples": boundary,
                       "selected_complete_candidates": counts, "original_k04_hits": 0,
