@@ -2,6 +2,12 @@ name: Agent30 K04 reverse-triad tail8 and blind flank
 
 on:
   workflow_dispatch:
+    inputs:
+      calibration_only:
+        description: "Run the frozen eight-state source-independent solver calibration only"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -18,14 +24,28 @@ jobs:
       - name: Install native XOR solver
         run: python -m pip install --disable-pip-version-check pycryptosat==5.14.7
       - name: Run unseeded triad control then historical source
+        if: ${{ inputs.calibration_only != true }}
         shell: bash
         run: |
           python -m py_compile agents/agent30/k04_xoropp_reverse_tail_triad_sft.py
           set -o pipefail
           python agents/agent30/k04_xoropp_reverse_tail_triad_sft.py --limit-seconds 240 | tee reverse-triad-outcome.ndjson
+      - name: Run frozen eight-state solver calibration
+        if: ${{ inputs.calibration_only == true }}
+        shell: bash
+        run: |
+          python -m py_compile agents/agent30/k04_xoropp_triad_calibration_sft.py
+          set -o pipefail
+          python agents/agent30/k04_xoropp_triad_calibration_sft.py --limit-seconds 120 | tee triad-calibration.ndjson
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ always() && inputs.calibration_only != true }}
         with:
           name: k04-reverse-triad-outcome
           path: reverse-triad-outcome.ndjson
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && inputs.calibration_only == true }}
+        with:
+          name: k04-reverse-triad-calibration
+          path: triad-calibration.ndjson
           if-no-files-found: warn
