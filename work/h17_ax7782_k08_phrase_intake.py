@@ -829,11 +829,12 @@ def scan_phrase_spans(text: str, nonce: bytes, target: bytes, source: str,
 
 def scan_authored_text_units(text: str, nonce: bytes, target: bytes, source: str,
                              hits: list[dict], max_chars: int = 512) -> int:
-    """Check whole source lines/paragraphs omitted by the 96-character span cap.
+    """Check intact long source-authored captions, including labeled fields.
 
-    These are observed text units, not generated phrase guesses. A paragraph
-    joins source line wraps only when there is no intervening blank line.
-    Normalization and the original K08 HMAC/commitment remain unchanged.
+    Preserve whole lines and blank-line-delimited paragraphs. For explicitly
+    labeled fields, also test the exact value after the first colon or equals
+    sign. This permits a long original caption whose written heading shares
+    its line, without generating or paraphrasing candidate wording.
     """
     source_lines = text.replace("\r\n", "\n").replace("\r", "\n")
     units = [("line", line) for line in source_lines.split("\n")]
@@ -844,22 +845,28 @@ def scan_authored_text_units(text: str, nonce: bytes, target: bytes, source: str
     tested = 0
     seen: set[str] = set()
     for kind, unit in units:
-        phrase = normalize(unit)
-        if not 96 < len(phrase) <= max_chars or phrase in seen:
-            continue
-        seen.add(phrase)
-        tested += 1
-        component = k08_component(nonce, phrase)
-        if hashlib.sha256(component).digest() == target:
-            hits.append({
-                "source": f"{source} [whole-{kind}]",
-                "word_start": 0,
-                "word_end_exclusive": len(phrase.split()),
-                "word_count": len(phrase.split()),
-                "normalized_phrase": phrase,
-                "component_hex": component.hex().upper(),
-                "whole_text_unit": kind,
-            })
+        views = [("whole", unit)]
+        for delimiter in (":", "="):
+            if delimiter in unit:
+                views.append((f"value-after-{delimiter}", unit.split(delimiter, 1)[1]))
+        for field, value in views:
+            phrase = normalize(value)
+            if not 96 < len(phrase) <= max_chars or phrase in seen:
+                continue
+            seen.add(phrase)
+            tested += 1
+            component = k08_component(nonce, phrase)
+            if hashlib.sha256(component).digest() == target:
+                hits.append({
+                    "source": f"{source} [{kind}-{field}]",
+                    "word_start": 0,
+                    "word_end_exclusive": len(phrase.split()),
+                    "word_count": len(phrase.split()),
+                    "normalized_phrase": phrase,
+                    "component_hex": component.hex().upper(),
+                    "whole_text_unit": kind,
+                    "source_field": field,
+                })
     return tested
 
 
