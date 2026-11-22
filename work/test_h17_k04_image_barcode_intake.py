@@ -79,6 +79,68 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
         self.assertIn("frame1", result["hits"][0]["source"])
 
+    def make_emf_bitmap_spool(self, kind: int) -> None:
+        import struct
+        from PIL import Image
+
+        self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
+        with Image.open(self.path) as source:
+            bmp_image = io.BytesIO()
+            source.convert("1").save(bmp_image, format="BMP")
+        bmp = bmp_image.getvalue()
+        pixel_offset = struct.unpack_from("<I", bmp, 10)[0]
+        bitmap_header = bmp[14:pixel_offset]
+        pixels = bmp[pixel_offset:]
+        width, height = struct.unpack_from("<ii", bitmap_header, 4)
+        base_size = 76 if kind == 80 else 80
+        record_bytes = base_size + len(bitmap_header) + len(pixels)
+        record = bytearray((record_bytes + 3) & ~3)
+        struct.pack_into("<II", record, 0, kind, len(record))
+        struct.pack_into("<4i", record, 8, 0, 0, width, height)
+        struct.pack_into("<4i", record, 24, 0, 0, 0, 0)
+        struct.pack_into("<2i", record, 40, width, height)
+        struct.pack_into(
+            "<4I", record, 48, base_size, len(bitmap_header),
+            base_size + len(bitmap_header), len(pixels),
+        )
+        record[base_size:base_size + len(bitmap_header)] = bitmap_header
+        record[
+            base_size + len(bitmap_header):
+            base_size + len(bitmap_header) + len(pixels)
+        ] = pixels
+        header = bytearray(88)
+        struct.pack_into("<II", header, 0, 1, 88)
+        header[40:44] = b" EMF"
+        struct.pack_into("<II", header, 48, 88 + len(record) + 20, 3)
+        footer = bytearray(20)
+        struct.pack_into("<II", footer, 0, 14, 20)
+        self.path = self.path.with_suffix(".spl")
+        self.path.write_bytes(b"SHD-FAKE\x00\x01" + header + record + footer)
+
+    def test_original_coupon_from_emf_stretchdibits(self):
+        self.make_emf_bitmap_spool(81)
+        result = self.scan()
+        self.assertEqual(len(result["hits"]), 1, result)
+        self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
+        self.assertIn("emf-bitmap-", result["hits"][0]["encoding"])
+
+    def test_original_coupon_from_emf_setdibitstodevice(self):
+        self.make_emf_bitmap_spool(80)
+        result = self.scan()
+        self.assertEqual(len(result["hits"]), 1, result)
+        self.assertEqual(result["hits"][0]["component_hex"], self.component.hex().upper())
+
+    def test_corrupted_emf_record_rejected(self):
+        self.make_emf_bitmap_spool(81)
+        blob = bytearray(self.path.read_bytes())
+        signature = blob.index(b" EMF")
+        start = signature - 40
+        struct_offset = start + 48
+        blob[struct_offset] ^= 1
+        self.path.write_bytes(blob)
+        result = self.scan()
+        self.assertEqual(result["hits"], [])
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
