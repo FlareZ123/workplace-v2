@@ -32,6 +32,7 @@ For the exact job, retain every record for `PS-261003-0417`; the published selec
 4. Native `PS-261003-0323` output/rendering
 5. `R:/Records/INDEX/IR-261003-H17.txt`
 6. `R:/IT/desktop-move-2026.html` and profile migration package
+   - If the already-retained package contains offline PST/OST or mail-cache copies, preserve only the relevant MAIL-11/14/20 threads and their original headers, MIME parts, Content-ID attachments and sidecars. Do not connect to a live mailbox or collect unrelated mailbox contents.
 
 Return original file contents/bytes where possible. The K08 verifier normalizes the recovered phrase, computes HMAC-SHA256 with desk nonce `5F933DA6A1BD03C32DA5CBC25344F497`, keeps the first 16 bytes, then SHA-256s those 16 bytes against the acceptance commitment.
 
