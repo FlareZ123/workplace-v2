@@ -36,3 +36,26 @@ The independent synthetic whole-object scanner uses an actual seeded xoshiro128+
 Executed on the original immutable spool, SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`. Source-independent positive logged `SYNTHETIC_LABEL_REQUEST_17_COUPON_33_REQUEST_82_PASS`. The source-pinned complete SFT [k04_xoshiro128pp_label_anchor_sft.cpp](../agents/agent27/k04_xoshiro128pp_label_anchor_sft.cpp) includes the base exact-inversion SFT from the same agent directory, and compiles using C++17/OpenSSL/OpenMP. Original canonical candidate, source, route, acceptance and verifier were untouched.
 
 **Decision:** A common continuous xoshiro128++ 1.0 issuer from the earlier LABEL to the three later RECOVER events is excluded within the first one-million subsequent 32-bit output positions and four specified serializers. This excludes no independently reseeded writer, no different serializer, no arbitrary nonconsecutive bytes and no historical printer firmware universally. **K04/K08 remain MISSING; the combined key cannot be verified as complete.**
+
+
+## Distinct global printer-spool anchor: first ordinary 07:00 packet
+
+The same tested implementation now accepts a second source-grounded `ordinary` mode, anchoring **PS-261003-0300 LABEL/ACK 07:00 UTC**, then searching for **PS-261003-0301 STORES/ACK 07:05 UTC** and **PS-261003-0302 STORES/ACK 07:10 UTC** as two independent, complete 16-byte holdouts. Their exact original payloads are respectively:
+
+- `FBBBC54356483F5864BB3F06794518A5`
+- `64176B6C3A91BD06B12FC0D90B3A7DB4`
+- `3531D8AB362BB040E7702CE23A8D5420`
+
+Source timestamp/job/class/destination and all three payloads are asserted against the original unchanged spool. The complete original K04 SHA256 is separately checked at every 16-byte sliding four-output window starting stage8 through stage1,048,575, without the copied selected ACK or selected target affecting the initial state fit.
+
+| View (32-bit word packing) | Initial 2^32 trial roots | Whole 07:05 matches | Original K04 SHA256 hits | Whole 07:10 matches |
+| --- | ---: | ---: | ---: | ---: |
+| Forward little-endian | 2 | 0 | 0 | 0 |
+| Forward big-endian | 1 | 0 | 0 | 0 |
+| Reverse little-endian | 1 | 0 | 0 | 0 |
+| Reverse big-endian | 0 | 0 | 0 | 0 |
+| **Total** | **4** | **0** | **0** | **0** |
+
+Original target comparisons: **4,194,272** complete whole-coupon placements (4 roots × 1,048,568 eligible sliding windows). The independently planted three-object scanner passed again, detecting output stages17,33,82 exactly. Execution is reproduced with [the single dual-anchor source SFT](../agents/agent27/k04_xoshiro128pp_label_anchor_sft.cpp) using mode `ordinary` as its final argument and bound `1048575`. The updated source remote Git blob is `7cb2bf717b2f492fd1a91ae551682a5025fb8fad`.
+
+This independently excludes the precise **globally continuous xoshiro128++ original printer stream** from first ordinary 07:00 row to the next two ordinary five-minute packets, within one-million output positions, under the same four serializers. It offers no accepted coupon. The conclusion is conditional on a producer and output schedule absent from the surviving original documentation. The full original K04 remains missing.
