@@ -89,7 +89,7 @@ def source_route_rows(lines: list[str]) -> dict[int, str]:
     fleet_text = (ROOT / "resources/evidence/h17-supplemental-office-files/"
                   "print-fleet-retirement-note.txt").read_text()
     section = re.search(
-        r"(?ms)^\\[printer_routes_2026-09-01_to_2026-10-03\\]\\s*(.*?)(?=^\\[|\\Z)",
+        r"(?ms)^\[printer_routes_2026-09-01_to_2026-10-03\]\s*(.*?)(?=^\[|\Z)",
         route_text
     )
     assert section, "missing incident-date printer route section"
