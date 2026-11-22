@@ -63,6 +63,7 @@ def possible_triples(gap: list[set[int]], at_first: bool,
     accepted. Between calls only rejected attempts are allowed. Arbitrary
     leading filler is allowed only when at_first=False; trailing filler is
     unrestricted.
+    """
     triples: set[tuple[int, int, int]] = set()
     for first in range(len(gap)):
         if at_first and any(3 not in gap[k] for k in range(first)):
