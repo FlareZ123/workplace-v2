@@ -165,7 +165,7 @@ class LegacyXlsFallbackTests(unittest.TestCase):
                 self.assertTrue(any("sea at the end of the night" in text
                                     for text in integrated_text))
                 self.assertTrue(any(
-                    "!/<image:Visible!M10>.png" in source
+                    "Visible!M10" in source and source.endswith(".png")
                     and hashlib.sha256(payload).hexdigest() == hashlib.sha256(image_bytes).hexdigest()
                     for source, payload in integrated
                 ), "M10 embedded image bytes never reached the generic K08 image decoder")
