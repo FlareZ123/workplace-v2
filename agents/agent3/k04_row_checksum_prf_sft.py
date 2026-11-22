@@ -130,7 +130,9 @@ def main(source):
     assert count_plain == 22272 and count_hmac == 98304
     assert len(distinct) == 120337
     assert planted is not None and planted_hits == 1
-    assert hashlib.sha256(planted).digest() == hashlib.sha256(planted).digest()
+    planted_sha256 = hashlib.sha256(planted).digest()
+    assert sum(hashlib.sha256(component).digest() == planted_sha256
+               for component in distinct) == 1
     assert not actual_hits
     print(json.dumps({
         "historical_spool_sha256": SPOOL, "routine_packets": len(original),
