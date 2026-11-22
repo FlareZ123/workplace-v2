@@ -826,6 +826,43 @@ def scan_phrase_spans(text: str, nonce: bytes, target: bytes, source: str,
     return tested
 
 
+
+def scan_authored_text_units(text: str, nonce: bytes, target: bytes, source: str,
+                             hits: list[dict], max_chars: int = 512) -> int:
+    """Check whole source lines/paragraphs omitted by the 96-character span cap.
+
+    These are observed text units, not generated phrase guesses. A paragraph
+    joins source line wraps only when there is no intervening blank line.
+    Normalization and the original K08 HMAC/commitment remain unchanged.
+    """
+    source_lines = text.replace("\r\n", "\n").replace("\r", "\n")
+    units = [("line", line) for line in source_lines.split("\n")]
+    units.extend(
+        ("paragraph", paragraph)
+        for paragraph in re.split(r"\n[ \t]*\n+", source_lines)
+    )
+    tested = 0
+    seen: set[str] = set()
+    for kind, unit in units:
+        phrase = normalize(unit)
+        if not 96 < len(phrase) <= max_chars or phrase in seen:
+            continue
+        seen.add(phrase)
+        tested += 1
+        component = k08_component(nonce, phrase)
+        if hashlib.sha256(component).digest() == target:
+            hits.append({
+                "source": f"{source} [whole-{kind}]",
+                "word_start": 0,
+                "word_end_exclusive": len(phrase.split()),
+                "word_count": len(phrase.split()),
+                "normalized_phrase": phrase,
+                "component_hex": component.hex().upper(),
+                "whole_text_unit": kind,
+            })
+    return tested
+
+
 def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                    ocr: bool = False, max_phrase_words: int = 48,
                    pdf_password: str | None = None) -> dict:
@@ -853,6 +890,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
     budget = [0]
     streams = 0
     spans_tested = 0
+    authored_units_tested = 0
     for source, stream_data in iter_text_streams(path.name, data, 0, budget, errors, ocr, pdf_password, workbook_style_metadata):
         streams += 1
         seen_normalized: set[str] = set()
@@ -863,6 +901,8 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
             seen_normalized.add(normalized)
             spans_tested += scan_phrase_spans(text, nonce, target,
                                               f"{source} [{label}]", max_phrase_words, hits)
+            authored_units_tested += scan_authored_text_units(
+                text, nonce, target, f"{source} [{label}]", hits)
     return {
         "object": {"path": str(path), "size": size,
                    "sha256": hashlib.sha256(data).hexdigest(),
@@ -875,6 +915,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                      "handoff_email_confirms_retained_object": transfer_meta["handoff_email_confirms_retained_object"]},
         "K08_search": {"text_streams_scanned": streams,
                        "normalized_contiguous_spans_tested": spans_tested,
+                       "authored_lines_and_paragraphs_tested": authored_units_tested,
                        "max_phrase_words": max_phrase_words,
                        "original_commitment_hits": hits,
                        "ocr_enabled": ocr,
