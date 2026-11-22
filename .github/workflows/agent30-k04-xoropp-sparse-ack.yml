@@ -1,10 +1,6 @@
 name: Agent30 K04 sparse ACK tail8 source reconstruction
 
 on:
-  push:
-    paths:
-      - 'agents/agent30/k04_xoropp_sparse_ack_sft.py'
-      - '.github/workflows/agent30-k04-xoropp-sparse-ack.yml'
   workflow_dispatch:
 
 permissions:
