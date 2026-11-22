@@ -117,7 +117,7 @@ def run():
         match=re.search(r'\bPAYLOAD=([0-9A-F]{32})\b',line)
         assert match, idx
         packets.append(bytes.fromhex(match.group(1)))
-    witness_offsets=((52,83),(53,83),(53,84),(53,86),(54,84))
+    witness_offsets=((52,83),(53,83),(53,84),(53,87),(54,84))
     # Frozen source-blind full-packet holdout across every intact destination.
     controls=0; whole_controls=[]; word_match_hist=[0]*5
     for l in range(0,133):
