@@ -27,6 +27,10 @@ jobs:
         env:
           PYTHONPATH: work
         run: python -m unittest -v work.test_h17_k04_image_barcode_intake
+      - name: Prove authored coupon restoration across Office XML style runs
+        env:
+          PYTHONPATH: work
+        run: python -m unittest -v work.test_h17_ooxml_text_intake
       - name: Search original H17 export through all new native K04 readers
         env:
           PYTHONPATH: work
