@@ -394,6 +394,51 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             and PurePosixPath(name.replace(chr(92), "/")).name.casefold() == "mug-stock.xls"
         )
         xls_image_records: list[dict] = []
+        m10_seen_image_digests: set[str] = set()
+        if m10_image_workbook:
+            # Native BIFF8/OfficeArt shapes can preserve captions and original
+            # image streams lost in a spreadsheet-conversion round trip.
+            # Only the exact source-linked workbook and M10-anchored shapes
+            # are eligible to emit text or images into the K08 phrase scanner.
+            try:
+                from h17_biff_officeart_blips import extract_xls_officeart_blips
+                officeart = extract_xls_officeart_blips(data, include_image_data=True)
+                for shape in officeart["shapes"]:
+                    if shape.get("anchor_cell") != "M10":
+                        continue
+                    shape_source = f"{name}!/<native-officeart:{shape['sheet']}!M10>"
+                    for field in ("wz_name", "wz_description"):
+                        caption_text = shape.get(field)
+                        if isinstance(caption_text, str) and caption_text.strip():
+                            yielded = True
+                            yield f"{shape_source}:{field}", caption_text.encode("utf-8")
+                    if shape.get("blip_ref_status") != "resolved":
+                        continue
+                    pib = shape.get("pib")
+                    blips = officeart["blip_store"]
+                    if not isinstance(pib, int) or not 1 <= pib <= len(blips):
+                        continue
+                    blip = blips[pib - 1]
+                    if not blip.get("data_base64"):
+                        continue
+                    image_data = base64.b64decode(blip["data_base64"], validate=True)
+                    actual_digest = hashlib.sha256(image_data).hexdigest()
+                    if actual_digest != str(blip["sha256"]).lower():
+                        raise ValueError("native M10 OfficeArt image SHA-256 mismatch")
+                    if actual_digest in m10_seen_image_digests:
+                        continue
+                    m10_seen_image_digests.add(actual_digest)
+                    image_format = str(blip.get("format") or "png").lower()
+                    yielded = True
+                    yield from iter_text_streams(
+                        f"{shape_source}.{image_format}", image_data, depth + 1,
+                        budget, errors, ocr, pdf_password, style_metadata,
+                    )
+            except Exception as exc:
+                errors.append({
+                    "source": name,
+                    "error": f"native M10 OfficeArt inspection failed: {type(exc).__name__}: {exc}",
+                })
         if suffix == ".doc":
             # Legacy Word comments can hold the margin wording. Convert only a
             # temporary copy to DOCX with macro security high, then reuse the
@@ -519,11 +564,15 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 continue
             try:
                 image_data = base64.b64decode(item["data_base64"], validate=True)
-                if hashlib.sha256(image_data).hexdigest() != str(item["sha256"]).lower():
+                image_digest = hashlib.sha256(image_data).hexdigest()
+                if image_digest != str(item["sha256"]).lower():
                     raise ValueError("embedded image digest mismatch")
             except (KeyError, ValueError, binascii.Error) as exc:
                 errors.append({"source": name, "error": f"invalid M10 image: {exc}"})
                 continue
+            if image_digest in m10_seen_image_digests:
+                continue
+            m10_seen_image_digests.add(image_digest)
             image_format = str(item.get("format") or "png").lower()
             image_source = f"{name}!/<image:{item['sheet']}!M10>.{image_format}"
             yielded = True
