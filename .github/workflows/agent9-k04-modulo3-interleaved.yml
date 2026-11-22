@@ -1,0 +1,18 @@
+name: Agent 9 H-17 K04 modulo-three metadata writer SFT
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-writer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test modulo-three CLASS DEST mapping across 170 source-compatible chronologies
+        run: python agents/agent9/k04_modulo3_interleaved_sft.py
