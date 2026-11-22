@@ -57,14 +57,12 @@ def possible_pairs(gap: list[set[int]], at_first: bool,
 
 def possible_triples(gap: list[set[int]], at_first: bool,
                      order: str) -> set[tuple[int, int, int]]:
-    """Possible accepted CLASS/DEST/ROUTE codes with route after CLASS.
+    """Possible accepted codes in the actual sampler call order.
 
     Every randbelow(3) attempt emits a two-bit code: 3 is rejected, 0..2 is
     accepted. Between calls only rejected attempts are allowed. Arbitrary
     leading filler is allowed only when at_first=False; trailing filler is
-    unrestricted. Returned triples are ordered by semantic field, not call
-    order: (class_code, dest_code, route_code).
-    """
+    unrestricted.
     triples: set[tuple[int, int, int]] = set()
     for first in range(len(gap)):
         if at_first and any(3 not in gap[k] for k in range(first)):
@@ -78,15 +76,9 @@ def possible_triples(gap: list[set[int]], at_first: bool,
                         if any(3 not in gap[k] for k in range(second + 1, third)):
                             break
                         for c in gap[third] - {3}:
-                            if order == "class_route_dest":
-                                triple = (a, c, b)
-                            elif order == "class_dest_route":
-                                triple = (a, b, c)
-                            elif order == "dest_class_route":
-                                triple = (b, a, c)
-                            else:
+                            if order not in ORDERS:
                                 raise AssertionError(order)
-                            triples.add(triple)
+                            triples.add((a, b, c))
     return triples
 
 
@@ -95,9 +87,14 @@ def source_route_rows(lines: list[str]) -> dict[int, str]:
     route_text = (ROOT / "resources/evidence/archive-labels.ini").read_text()
     fleet_text = (ROOT / "resources/evidence/h17-supplemental-office-files/"
                   "print-fleet-retirement-note.txt").read_text()
+    section = re.search(
+        r"(?ms)^\\[printer_routes_2026-09-01_to_2026-10-03\\]\\s*(.*?)(?=^\\[|\\Z)",
+        route_text
+    )
+    assert section, "missing incident-date printer route section"
     route_to_job = dict(re.findall(
         r"^(ESC-N|ESC-S|WATCH-SPARE)=(PS-[0-9-]+)$",
-        route_text, flags=re.MULTILINE
+        section.group(1), flags=re.MULTILINE
     ))
     expected = {
         "ESC-N": "PS-261003-0417",
@@ -116,7 +113,8 @@ def source_route_rows(lines: list[str]) -> dict[int, str]:
     return out
 
 
-def evaluate(starts, domains, labels, route_by_row, train_limit=LIMIT):
+def evaluate(starts, domains, labels, route_by_row, train_limit=LIMIT,
+             keep_all_examples=False):
     """Fit CLASS/DEST codebooks, then test held-out source route assignments."""
     gaps = [
         domains[starts[row] + 4:starts[row + 1]]
@@ -220,7 +218,7 @@ def evaluate(starts, domains, labels, route_by_row, train_limit=LIMIT):
                                 break
                         if route_ok:
                             route_codebook_survivors += 1
-                            if len(survivors) < 30:
+                            if keep_all_examples or len(survivors) < 30:
                                 survivors.append({
                                     "order": order,
                                     "binding": binding,
@@ -254,7 +252,7 @@ def sample_below3(rng: random.Random):
 
 def planted_positive(order: str):
     """Full seeded CPython MT control with conditional route sampling."""
-    for seed in range(1000, 1100):
+    for seed in range(1000, 11000):
         rng = random.Random(seed)
         starts, rows, labels = [], [], []
         route_codes_by_row = {}
@@ -298,13 +296,18 @@ def planted_positive(order: str):
         late_codes = [route_codes_by_row.get(r) for r in (129, 131, 132)]
         if None in late_codes or len(set(late_codes)) != 3:
             continue
+        if set(name for name, _ in labels[:128]) != set(CLASS_NAMES):
+            continue
+        if set(name for _, name in labels[:128]) != set(DEST_NAMES):
+            continue
         code_to_route = dict(zip(late_codes, ROUTE_NAMES))
         route_by_row = {r: code_to_route[c] for r, c in route_codes_by_row.items()
                         if r in (129, 131, 132)}
         expressions = mt.state_expressions(stage + 3)
         basis = six.build_source_basis(expressions, rows, starts)
         domains = joint.top_two_domains(expressions, basis)
-        result = evaluate(starts, domains, labels, route_by_row)
+        result = evaluate(starts, domains, labels, route_by_row,
+                          keep_all_examples=True)
         assert result["best_training_mismatches"] == 0, (order, result)
         assert result["zero_training_models"] > 0, (order, result)
         assert result["zero_holdout_models"] > 0, (order, result)
