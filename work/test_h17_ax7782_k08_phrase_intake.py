@@ -350,6 +350,100 @@ class K08PhraseIntakeTests(unittest.TestCase):
                 )
         self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
 
+    def test_native_m10_officeart_image_and_shape_caption_without_conversion(self):
+        import types
+        from unittest import mock
+        from PIL import Image
+        from PIL.PngImagePlugin import PngInfo
+        import h17_xls_lo_fallback
+        from test_h17_biff_officeart import cfb
+        from test_h17_biff_officeart_blips import bse_record, png_blip, workbook_with_bstore
+
+        phrase = "the last light falls across the cups by the window"
+        nonce = bytes(range(16))
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+        metadata = PngInfo()
+        metadata.add_text("caption", phrase)
+        image = io.BytesIO()
+        Image.new("RGB", (8, 8), (0, 128, 128)).save(image, format="PNG", pnginfo=metadata)
+        png = image.getvalue()
+        workbook = workbook_with_bstore([bse_record(png_blip(png))])
+        source = cfb(workbook + bytes(max(0, 4096 - len(workbook))))
+        source_sha = hashlib.sha256(source).hexdigest()
+
+        class FakeBook:
+            def sheets(self):
+                return []
+
+            def release_resources(self):
+                pass
+
+        class FakeOle:
+            def __init__(self, _data):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                pass
+
+            def listdir(self, streams=True, storages=False):
+                return []
+
+        fake_xlrd = types.SimpleNamespace(open_workbook=lambda **_kwargs: FakeBook())
+        fake_olefile = types.SimpleNamespace(OleFileIO=FakeOle)
+
+        with mock.patch.dict(sys.modules, {"xlrd": fake_xlrd, "olefile": fake_olefile}):
+            with mock.patch.object(h17_xls_lo_fallback, "extract_bytes",
+                                   side_effect=RuntimeError("conversion disabled")):
+                errors = []
+                streams = list(phrase_intake.iter_text_streams(
+                    "AX-7782!/mug-stock.xls", source, 0, [0], errors,
+                ))
+        self.assertEqual(hashlib.sha256(source).hexdigest(), source_sha)
+        self.assertTrue(any(
+            "<native-officeart:Sheet1!M10>:wz_description" in carrier
+            and b"SYNTHETIC_ONLY_OFFICEART_DESC_6F31" in value
+            for carrier, value in streams
+        ))
+        self.assertTrue(any(
+            "<native-officeart:Sheet1!M10>.png" in carrier
+            and hashlib.sha256(value).digest() == hashlib.sha256(png).digest()
+            for carrier, value in streams
+        ))
+        hits = []
+        for carrier, value in streams:
+            for label, text in phrase_intake.decode_text_variants(value, carrier):
+                phrase_intake.scan_phrase_spans(text, nonce, target,
+                                                carrier + " [" + label + "]", 48, hits)
+        self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
+        self.assertFalse(any("native M10 OfficeArt inspection failed" in e.get("error", "")
+                             for e in errors))
+
+        # The same intact blip under a non-M10 anchor is deliberately excluded.
+        # Change only the original 18-byte OfficeArtClientAnchorSheet payload.
+        import struct
+        m10_anchor = struct.pack(
+            "<H H h H h H h H h", 3, 12, 100, 9, 12, 13, 900, 10, 200,
+        )
+        c3_anchor = struct.pack(
+            "<H H h H h H h H h", 3, 2, 100, 2, 12, 3, 900, 3, 200,
+        )
+        self.assertEqual(workbook.count(m10_anchor), 1)
+        off_anchor_workbook = workbook.replace(m10_anchor, c3_anchor, 1)
+        off_anchor_source = cfb(
+            off_anchor_workbook + bytes(max(0, 4096 - len(off_anchor_workbook)))
+        )
+        with mock.patch.dict(sys.modules, {"xlrd": fake_xlrd, "olefile": fake_olefile}):
+            with mock.patch.object(h17_xls_lo_fallback, "extract_bytes",
+                                   side_effect=RuntimeError("conversion disabled")):
+                off_anchor_streams = list(phrase_intake.iter_text_streams(
+                    "AX-7782!/mug-stock.xls", off_anchor_source, 0, [0], [],
+                ))
+        self.assertFalse(any("<native-officeart:" in carrier
+                             for carrier, _ in off_anchor_streams))
+
     def test_m10_image_payload_reaches_exact_k08_and_other_workbook_is_excluded(self):
         import types
         from unittest import mock
