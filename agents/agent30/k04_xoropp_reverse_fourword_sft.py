@@ -162,18 +162,17 @@ def main() -> None:
             coupon=encode(words,view)
             assert coupon[8:]==middle[8:]
             result["whole_coupon"]=coupon.hex().upper()
-            if result["blind_REQUESTED1_output0_match"]:
-                route=json.loads((ROOT/"evidence/recovery-routing.json").read_text())
-                acceptance=json.loads((ROOT/"acceptance.json").read_text())
-                mask=bytes.fromhex(route["K04"]["masked_component"])
-                component=bytes(a^b for a,b in zip(coupon,mask))
-                result["whole_component"]=component.hex().upper()
-                result["original_K04_commitment"]=(
-                    "PASS" if hashlib.sha256(component).hexdigest()==acceptance["slot_sha256"]["K04"].lower()
-                    else "MISS_COMPLETE_CANDIDATE"
-                )
-            else:
-                result["original_K04_commitment"]="NOT_EVALUATED_BLIND_HOLDOUT_FAIL"
+            # The previous REQUESTED packet is a separate attribution test.
+            # Hash any complete coupon even when that blind holdout fails.
+            route=json.loads((ROOT/"evidence/recovery-routing.json").read_text())
+            acceptance=json.loads((ROOT/"acceptance.json").read_text())
+            mask=bytes.fromhex(route["K04"]["masked_component"])
+            component=bytes(a^b for a,b in zip(coupon,mask))
+            result["whole_component"]=component.hex().upper()
+            result["original_K04_commitment"]=(
+                "PASS" if hashlib.sha256(component).hexdigest()==acceptance["slot_sha256"]["K04"].lower()
+                else "MISS_COMPLETE_CANDIDATE"
+            )
         print(json.dumps(result,sort_keys=True),flush=True)
 
 
