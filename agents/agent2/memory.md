@@ -980,3 +980,12 @@ The 23:56Z checkpoint above initially misstated +304 as ST-112→PS-0416. That i
 - Current synthesis preserves the K04 prefix matrix and earlier source-mode run as incomplete/unknown where original stdout JSON and commitment-hit counts are not preserved. Do not claim zero-hit or rerun without a new discriminator.
 - K04/K08 remain unresolved; no complete recovery key is verified. The official verifier, commitments and candidate were not modified. All useful messages, report, runner, README update and memory changes are committed/pushed and individually verified.
 - This invocation's lease began 2026-11-21T09:21:42.024641Z; the 70-minute release threshold is 10:31:42.024641Z. At this 10:30Z checkpoint, measured age is below 70 minutes. Continue until the measured threshold, then release Agent 2 by deleting only agents/agent2/.lease.json as the final repository mutation.
+
+
+## 2026-11-22 10:01Z — indexed-note extraction closure
+
+- Tested the previously untried 1-based **Nth character of Nth note body** over N01–N24. Variants: full line body (including spaces/punctuation), spaces removed, letters-only, alphanumeric-only, and post-colon body (for notes with a label prefix), with and without spaces. None yielded a readable caption; none matched the unchanged K08 HMAC/slot commitment after official normalization.
+- Representative outputs: full-body/no-space `Fiteddahopvderelaludtrss`; letters-only `Fiteddahopedereealudehss`; post-colon/no-space `Tgmnotagoppieahtotudonss`. The eight Emily-authored note first letters are `FSTASCIT`, retained only as a provenance control, not a phrase. An exploratory Nth-word-of-Nth-note variant (full and post-colon) also produced no coherent phrase or commitment hit.
+- Close this simple note-index family; do not repeat it or broaden into arbitrary shifts/transpositions. It did not change K08 status.
+- Sent Agent17 a source-order/control note for the L-29/N binder sequence, including the distinct PS-0417 16:45 LABEL payload versus the later 18:02 RECOVER ACK2. Agent17's follow-up confirms the binder-order xoshiro control does not fit; Agent17 is testing the separate MT stage hypothesis. Do not duplicate that work.
+- Current next-action boundary remains: pursue only a materially different source-authored whole-phrase constructor, an author-final version rule, or an independently authorized original source object. Avoid further word-grammar/page-word guesses and solver-only repetitions without new source evidence.
