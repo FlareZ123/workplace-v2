@@ -224,6 +224,36 @@ def _xps_has_glyph_indices(data: bytes) -> bool:
     return False
 
 
+def iter_m10_teal_bit_text(name: str, image_data: bytes,
+                           errors: list[dict]) -> Iterator[tuple[str, bytes]]:
+    """Read the two source-literal TEAL BIT / LOW IF EVEN layouts from one M10 image.
+
+    This is exploratory, exact-source-coordinate intake. A phrase commitment hit
+    still needs independent original-workbook and Emily-version authentication.
+    """
+    try:
+        from PIL import Image
+        from h17_k08_teal_bit_image_scan import _bit_variants, _candidate_texts
+        with Image.open(io.BytesIO(image_data)) as opened:
+            if opened.width * opened.height > 16_000_000:
+                errors.append({"source": name, "error": "M10 teal image exceeds 16M-pixel bound"})
+                return
+            for frame in range(getattr(opened, "n_frames", 1)):
+                opened.seek(frame)
+                for layout, bits in _bit_variants(opened.copy(), source_literal_only=True):
+                    for run_index, run in enumerate(_candidate_texts(bits)):
+                        if 8 <= len(run) <= 4096:
+                            yield (
+                                f"{name}!/<teal-bit:{layout}:frame={frame}:run={run_index}>",
+                                run.encode("utf-8"),
+                            )
+    except Exception as exc:
+        errors.append({
+            "source": name,
+            "error": f"M10 teal image decoding unavailable: {type(exc).__name__}: {exc}",
+        })
+
+
 def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                       errors: list[dict], ocr: bool = False,
                       pdf_password: str | None = None,
@@ -434,6 +464,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                         f"{shape_source}.{image_format}", image_data, depth + 1,
                         budget, errors, ocr, pdf_password, style_metadata,
                     )
+                    yield from iter_m10_teal_bit_text(shape_source, image_data, errors)
             except Exception as exc:
                 errors.append({
                     "source": name,
@@ -580,6 +611,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 image_source, image_data, depth + 1, budget, errors,
                 ocr, pdf_password, style_metadata,
             )
+            yield from iter_m10_teal_bit_text(image_source, image_data, errors)
         try:
             import olefile
             with olefile.OleFileIO(io.BytesIO(data)) as compound:
