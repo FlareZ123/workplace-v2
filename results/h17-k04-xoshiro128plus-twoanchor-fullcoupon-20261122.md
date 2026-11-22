@@ -48,3 +48,30 @@ The portable read-only [reproducer](../agents/agent8/k04_xoshiro128plus_twoancho
 The original K04 is **not** in the 786,384 coupon assignments reachable from these eight fully inverted xoshiro128+ source anchors within their 65,532 tested positions. The opposite unacknowledged request is also not reproduced, weakening the same-stream chronology. The bounded result does **not** exclude more than 65,532 intervening packets, arbitrary fourword permutations, separately reseeded attempts, corrupted REQUESTED fragments, another writer or source-native original physical media. It authenticates **zero** new physical selected K04 bits and contributes no K08 final caption wording.
 
 Do not rerun the same eight state views or inflate the negative assignments into proof of a historical generator. A materially different source-to-full-coupon producer or genuine selected ESC-N physical original remains necessary. **Official REC8/1: six individual PASS; K04/K08 MISSING; combined INCOMPLETE.**
+
+
+## 22 November follow-up: two original sibling configuration fields as independent complete anchors
+
+To test a genuinely different source relationship beyond the unacknowledged printer REQUESTED fragments, the original route's \`K04.masked_component\` and \`K08.desk_nonce\` were independently inverted as hypothetical four-output xoshiro128+ objects. They are immutable commissioning routing fields, not reconstructed printer payloads.
+
+Use the same four 32-bit serializer views and exhaust every Z3 state model to UNSAT. For each, advance 65,532 complete packet windows in both temporal directions, compare full packets against the other original configuration field, and SHA256-check every complete coupon after the **unchanged** K04 XOR mask. No K04 printed ACK is used as an input, and no supposed common commissioning producer is asserted without a full source-heldout prediction.
+
+| Original 16-byte anchor | Valid complete internal state models across four views | Complete K04 candidate assignments | Other configuration field reproduced | Original K04 SHA256 hits |
+| --- | ---: | ---: | ---: | ---: |
+| K04 masked_component | 5 | 655,320 | 0 | 0 |
+| K08 desk_nonce | 0 | 0 | 0 | 0 |
+| **Total** | **5** | **655,320** | **0** | **0** |
+
+All eight original-source solver views terminated **UNSAT** after their exact state enumerations, with no UNKNOWN status. The five states are two little-endian/reversed and three big-endian/normal from the mask. Their 655,320 assignments include both forward and reverse 65,532-position continuations for each complete mask state. This is an independent, bounded source-field screen and does **not** extend the two REQUESTED-anchor total of 786,384 to a single mutually source-authenticated coupon family. No underlying historical evidence associates the K04 mask and K08 nonce with xoshiro128+; absence of a cross-field prediction is evidence against only this exact model.
+
+## Same-generator ordinary-printer full-source discriminator
+
+A separate **source-only** necessary test asks if the 128 intact ordinary PS-0300..PS-0427 printer ACK packets are four consecutive native xoshiro128+ 32-bit outputs from a **single shared 128-bit state**, with a fixed 0..16 hidden-word gap after every packet. The low bit of each output \`s0 + s3 (mod 2^32)\` is exactly \`s0[0] XOR s3[0]\`. The whole internal transition is GF(2)-linear, so all low bits are exact 128-variable equations, permitting source-only elimination without a nonlinear solver or K04 acceptance feedback. Test both 32-bit endian choices and both whole-word orders, 4 × 17 = **68 complete source configurations**.
+
+- **0/68** original fixed-gap models are consistent with all 512 original fullword low-bit observations.
+- The first contradiction occurs by zero-based ordinary packet row **33** in every configuration. The initial 128 rows are selected from the source by their original consecutive job identifiers and ACK status, never by output values.
+- Two independently generated genuine 128-packet xoshiro128+ positive fixtures with gaps 3 and 9, contrasting serializers, reconstruct exactly and have **no** source contradictions.
+
+The read-only portable [low-bit producer SFT](../agents/agent8/k04_xoshiro128plus_sourcewide_lowbit_sft.py) checks the pinned original spool SHA, synthetic generator/serializer controls and all 68 historical models. It is disjoint from the selected REQUESTED exact-state inversion: a printer may reset per incident, use variable gaps, copy imperfectly or produce a different type of payload, so this source-wide failure does not negate the exact 786,384 selected-event hashes.
+
+**Combined decision for the xoshiro128+ family:** no original K04 commitment hit, no authentic cross-field witness, no ordinary-source uniform-gap fit, and no new K08 caption. The original six PASS slots are unchanged. Avoid another sweep of the identical serializer and uniform-gap models.
