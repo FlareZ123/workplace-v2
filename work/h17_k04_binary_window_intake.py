@@ -27,6 +27,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
+from h17_k04_image_barcode_intake import read_image_barcodes
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
@@ -63,6 +64,12 @@ def magic(data: bytes) -> str:
         return "jpeg"
     if data.startswith((b"II*\x00", b"MM\x00*")):
         return "tiff"
+    if data.startswith(b"BM"):
+        return "bmp"
+    if data.startswith((b"GIF87a", b"GIF89a")):
+        return "gif"
+    if len(data) >= 12 and data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return "webp"
     if data.startswith(b"\x7fELF"):
         return "elf"
     return "unknown"
@@ -176,6 +183,17 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
         result["scan_limit"] = "cumulative decompressed/read byte budget exceeded"
         return result
     result["hits"] = [] if container else scan_bytes(name, data, target_digest, mask, stride)
+    if kind in {"png", "jpeg", "tiff", "gif", "bmp", "webp"}:
+        decoded, decoder_errors = read_image_barcodes(data)
+        if decoder_errors:
+            result["image_barcode_diagnostics"] = decoder_errors
+        for symbol, coupon_data in decoded:
+            for hit in scan_bytes(
+                f"{name}!/image-{symbol}", coupon_data, target_digest, mask, stride
+            ):
+                hit["encoding"] = f"image-{symbol}-{hit['encoding']}"
+                result["hits"].append(hit)
+
     if not container and b" EMF" in data and any(name.casefold().endswith(suffix)
                                for suffix in (".spl", ".prn", ".emf")):
         for label, text in extract_emf_text(data):
