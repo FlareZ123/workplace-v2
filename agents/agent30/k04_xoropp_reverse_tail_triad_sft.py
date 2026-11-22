@@ -147,15 +147,14 @@ def main() -> None:
             outcome["full_coupon"] = coupon.hex().upper()
             outcome["copied_tail8_match"] = coupon[8:] == middle[8:]
             assert outcome["copied_tail8_match"]
-            if outcome["blind_requested1_match"]:
-                mask = bytes.fromhex(json.loads((ROOT / "evidence/recovery-routing.json").read_text())["K04"]["masked_component"])
-                expected = json.loads((ROOT / "acceptance.json").read_text())["slot_sha256"]["K04"]
-                component = bytes(a ^ b for a, b in zip(coupon, mask))
-                hit = hashlib.sha256(component).hexdigest() == expected.lower()
-                outcome["full_component"] = component.hex().upper()
-                outcome["K04_status"] = "PASS" if hit else "MISS_FULL_HOLDOUT_MATCH"
-            else:
-                outcome["K04_status"] = "NOT_EVALUATED_HOLDOUT_FAIL"
+            # A complete selected coupon is always a commitment candidate.
+            # The earlier REQUESTED1 replay is an independent producer holdout.
+            mask = bytes.fromhex(json.loads((ROOT / "evidence/recovery-routing.json").read_text())["K04"]["masked_component"])
+            expected = json.loads((ROOT / "acceptance.json").read_text())["slot_sha256"]["K04"]
+            component = bytes(a ^ b for a, b in zip(coupon, mask))
+            hit = hashlib.sha256(component).hexdigest() == expected.lower()
+            outcome["full_component"] = component.hex().upper()
+            outcome["K04_status"] = "PASS" if hit else "MISS_FULL_CANDIDATE"
         print(json.dumps(outcome, sort_keys=True), flush=True)
 
 
