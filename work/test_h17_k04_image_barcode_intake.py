@@ -569,6 +569,34 @@ class OriginalHashBarcodeTests(unittest.TestCase):
             for hit in result["hits"]
         ), result)
 
+    def test_original_printed_hex_raster_coupon_ocr(self):
+        from PIL import Image, ImageDraw, ImageFont
+
+        image = Image.new("RGB", (1000, 140), "white")
+        font = ImageFont.truetype("DejaVuSansMono.ttf", 34)
+        ImageDraw.Draw(image).text(
+            (18, 42), self.payload.hex().upper(), fill="black", font=font,
+        )
+        image.save(self.path, format="PNG")
+        result = self.scan()
+        self.assertTrue(any(
+            hit["component_hex"] == self.component.hex().upper()
+            and "OCR-psm" in hit["encoding"]
+            for hit in result["hits"]
+        ), result)
+
+    def test_original_printed_hex_raster_wrong_target_is_not_accepted(self):
+        from PIL import Image, ImageDraw, ImageFont
+
+        image = Image.new("RGB", (1000, 140), "white")
+        font = ImageFont.truetype("DejaVuSansMono.ttf", 34)
+        ImageDraw.Draw(image).text(
+            (18, 42), self.payload.hex().upper(), fill="black", font=font,
+        )
+        image.save(self.path, format="PNG")
+        wrong = hashlib.sha256(b"not the coupon").hexdigest()
+        self.assertEqual(self.scan(digest=wrong)["hits"], [])
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
