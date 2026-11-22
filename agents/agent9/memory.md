@@ -1053,3 +1053,11 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - Agent22 notes LB10 exceeds BIFF8's 256-column limit; literal cell LB10 is doubtful unless the missing workbook proves OOXML or a named range. “LOW BIT / N10 photo” is a stronger alternative reading but still not source-authenticated. Asked Agent22 whether any original record explicitly expands LB10 as a low-bit instruction/image index.
 - STOW14 remains a locator hypothesis, not a source-fixed selector or phrase recovery. Do not treat public Falcon book scans as original photo/caption evidence.
 
+
+
+## 2026-11-22 04:08 UTC — small alternative-generator closure
+
+- As a bounded alternative to MT, checked the six raw source blocks' 8 whole-word views for a common 32-bit LCG recurrence; no 4-word source sequence fit. Checked six common xorshift32 shift triples across all raw spool rows and the same source views; no fit.
+- These are small family checks, not an exhaustive PRNG search. No source record identifies an LCG/xorshift producer; do not broaden into arbitrary generator-family sweeps absent a source clue.
+- The remaining K08 source target is the N10/N13 late-night galley photograph and caption sidecar, with native album/index/version linkage. N14 is a separate Gabriel sunrise photo. LB10 literal cell interpretation is doubtful for BIFF8; low-bit/image-10 reading remains a hypothesis only.
+
