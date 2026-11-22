@@ -27,6 +27,10 @@ jobs:
         env:
           PYTHONPATH: work
         run: python -m unittest -v work.test_h17_k04_image_barcode_intake
+      - name: Search original H17 export through all new native K04 readers
+        env:
+          PYTHONPATH: work
+        run: python work/h17_k04_native_source_original_scan.py
       - name: Confirm existing read-only K04 and K08 positive controls
         run: |
           python work/h17_k04_binary_window_intake.py --self-test
