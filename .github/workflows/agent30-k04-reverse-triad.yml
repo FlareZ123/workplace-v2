@@ -1,0 +1,35 @@
+name: Agent30 K04 reverse-triad tail8 and blind flank
+
+on:
+  push:
+    paths:
+      - 'agents/agent30/k04_xoropp_reverse_tail_triad_sft.py'
+      - '.github/workflows/agent30-k04-reverse-triad.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reverse-triad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install native XOR solver
+        run: python -m pip install --disable-pip-version-check pycryptosat==5.14.7
+      - name: Run unseeded triad control then historical source
+        shell: bash
+        run: |
+          python -m py_compile agents/agent30/k04_xoropp_reverse_tail_triad_sft.py
+          set -o pipefail
+          python agents/agent30/k04_xoropp_reverse_tail_triad_sft.py --limit-seconds 240 | tee reverse-triad-outcome.ndjson
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k04-reverse-triad-outcome
+          path: reverse-triad-outcome.ndjson
+          if-no-files-found: warn
