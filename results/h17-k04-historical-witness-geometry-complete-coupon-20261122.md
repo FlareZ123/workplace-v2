@@ -1,16 +1,20 @@
 # K04: source-observed MT witness geometry projected to a complete selected coupon
 
-**Agent 19 | 22 November 2026 | original K04 0/40 complete commitments; intact heldout 0/1,920 packet/word fits.** No seventh component recovered. This is a narrow coupon-producing hypothesis, not a known historical writer.
+**Agent 19 | 22 November 2026 | original K04 0/40 complete commitments; intact heldout 0/1,912 packet/word fits.** No seventh component recovered. This is a narrow coupon-producing hypothesis, not a known historical writer.
+
+## 22 November source-index correction
+
+An independent exact source reread of all **25** witnesses found that the fifth pair is **(53,87)** in the original 133-line row numbering, whereas the initial report and SFT used **(53,86)**. The latter referred to the compacted 132-intact-row indexing after removing selected row129; using it as an original raw-row coordinate was an off-by-one error. This corrected report and linked SFT re-ran the original 40 complete K04 commitments, now 1,912 historical complete-packet holdouts, and the genuine seeded-MT synthetic control. Both original target and all intact holdout predictions remain zero-match. The initial report's 1,920 count is superseded. The correction matters because source template positions must retain the physical row numbering for the separate variable-lane model.
 
 ## Question and source anchor
 
-The independent original spool study [Agent9's witness reproduction](h17-k04-agent9-independent-mt-reproduction-20261118.md) found 25 fullword MT19937 recurrence witnesses concentrated in five packet-row offset pairs `(k-r,l-r)`:
+The independent original spool study [Agent9's witness reproduction](h17-k04-agent9-independent-mt-reproduction-20261118.md) found 25 fullword MT19937 recurrence witnesses concentrated in five packet-row offset pairs (raw 133-row source indexing; excluding the selected row for analysis does not renumber later physical rows) `(k-r,l-r)`:
 
-`(52,83)`, `(53,83)`, `(53,84)`, `(53,86)`, `(54,84)`.
+`(52,83)`, `(53,83)`, `(53,84)`, `(53,87)`, `(54,84)`.
 
 Can those *observed* row-offset geometries be promoted to a rigid **four-word** recurrence constructor for the missing selected row `l=129`, deriving the entire physical coupon from two **intact** prior packets plus one unobserved predecessor state bit? This is distinct from single-word witness enumeration, the p951 source-state rank certificate, and large source-independent generator sweeps: a complete coupon reaches the untouched original acceptance commitment in one deterministic step per specified historical pair.
 
-The actual five `r,k` pairs are `(46,98)`, `(46,99)`, `(45,98)`, `(43,96)`, `(45,99)`, in the same order as the five source geometry types. Each source row is intact and precedes selected ACK2. The test identifies the exact `PS-261003-0417 / ATTEMPT=2 / ACK / RECOVER` row 129 by metadata and deliberately **skips its PAYLOAD field before decoding bytes**. The script SHA-pins the original spool to `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`.
+The actual five `r,k` pairs are `(46,98)`, `(46,99)`, `(45,98)`, `(42,95)`, `(45,99)`, in the same order as the five source geometry types. Each source row is intact and precedes selected ACK2. The test identifies the exact `PS-261003-0417 / ATTEMPT=2 / ACK / RECOVER` row 129 by metadata and deliberately **skips its PAYLOAD field before decoding bytes**. The script SHA-pins the original spool to `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`.
 
 ## Exact 16-byte constructor
 
@@ -26,11 +30,11 @@ The observation is the **packet-row offset class**, not a precise MT native-stag
 
 ## Historical holdouts and synthetic success
 
-Before constructing the missing-row candidates, the same five offset geometries were projected to **every eligible intact original packet as a withheld destination**, excluding the missing selected row entirely. That produces exactly 1,920 complete predictions across five offset classes, source/destination rows, four word views and two predecessor-bit choices.
+Before constructing the missing-row candidates, the same five offset geometries were projected to **every eligible intact original packet as a withheld destination**, excluding the missing selected row entirely. That produces exactly 1,912 complete predictions across five offset classes, source/destination rows, four word views and two predecessor-bit choices.
 
 | Check | Actual result |
 | --- | ---: |
-| Historical intact 16-byte packet predictions | 1,920 |
+| Historical intact 16-byte packet predictions | 1,912 |
 | Historical heldout 32-bit word matches in their corresponding 4-word slots | **0** |
 | Historical exact 16-byte packet matches | **0** |
 | Complete original selected K04 candidates | 40 |
