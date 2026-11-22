@@ -40,3 +40,9 @@ Across the 20 complete source views 18 proposed states survived the first-two-wo
 The exact **single 64-bit state, four consecutive direct Lathe32RNG 32-bit outputs per physical packet** model does not explain these intact printer packets under any of the four admitted serializers. This is an exhaustive state-model negative, not a solver timeout. The company sources do not identify Lathe32RNG as the actual printer producer; exceptional-only emitters, omitted calls and different serialization would need new models and controls. This branch should stop rather than transfer a failed issuer to selected ACK2.
 
 No selected physical K04 coupon or K08 exact final words were recovered. The original six accepted components and verifier remain unchanged; combined REC8/1 remains incomplete.
+
+## Extension: exceptional WATCH-SPARE attempt-2 control (same RECOVER class)
+
+The original source retains `2026-10-03T18:25:00Z JOB=PS-261003-0420 ATTEMPT=2 STATE=ACK CLASS=RECOVER PAYLOAD=432475F72A62DB39F3D5693E2C937FA4 DEST=bench`. This is distinct from selected ESC-N PS-0417 ACK2 and was used as an **independent same-class attempt-2 issuer discriminator**, not as an authenticated copy of ESC-N or as source evidence of the private coupon.
+
+All four native serializer views (big/little whole-word bytes, forward/reverse four-word order) underwent exact additional 2^32-state enumeration. First-two-word counts by view were `0,0,1,1` in executed test order, with **zero complete four-word fits**. The extension adds **17,179,869,184 state assignments**. Across five ordinary ACKs and this separate WATCH-SPARE attempt-2 ACK, the state inverter screened **24 views / 103,079,215,104 exact assignments, zero complete source packets**. The SHA-pinned driver now includes this additional source control. No assumption is made that the selected ACK's first eight copied bytes are intact, and the tested exceptional record does not make that assumption either.
