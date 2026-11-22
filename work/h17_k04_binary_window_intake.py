@@ -14,6 +14,7 @@ historical source files. Inputs are never modified.
 from __future__ import annotations
 
 import argparse
+import base64
 import gzip
 import hashlib
 import io
@@ -41,6 +42,8 @@ HEX32 = re.compile(rb"(?i)(?<![0-9a-f])[0-9a-f]{32}(?![0-9a-f])")
 # Match exact 32-character tokens in either byte order, preserving boundaries.
 HEX32_UTF16LE = re.compile(rb"(?i)(?<![0-9a-f]\x00)(?:[0-9a-f]\x00){32}(?![0-9a-f]\x00)")
 HEX32_UTF16BE = re.compile(rb"(?i)(?<!\x00[0-9a-f])(?:\x00[0-9a-f]){32}(?!\x00[0-9a-f])")
+HEX16_GROUPED = re.compile(rb"(?i)(?<![0-9a-f])(?:[0-9a-f]{2}[\s:.-]{1,3}){15}[0-9a-f]{2}(?![0-9a-f])")
+BASE64_16 = re.compile(rb"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{22}==(?![A-Za-z0-9+/=])")
 
 
 def magic(data: bytes) -> str:
@@ -120,6 +123,31 @@ def scan_bytes(name: str, data: bytes, target_digest: bytes, mask: bytes, stride
                                  "offset": match.start(), "kind": kind,
                                  "component_hex": component.hex().upper(),
                                  "window_hex": block.hex().upper()})
+    for match in HEX16_GROUPED.finditer(data):
+        compact = re.sub(rb"[\s:.-]", b"", match.group())
+        block = bytes.fromhex(compact.decode("ascii"))
+        hit = candidate_hit(block, target_digest, mask)
+        if hit:
+            kind, component = hit
+            key = (kind, match.start(), component)
+            if key not in seen:
+                seen.add(key)
+                hits.append({"source": name, "encoding": "grouped-hex-bytes",
+                             "offset": match.start(), "kind": kind,
+                             "component_hex": component.hex().upper(),
+                             "window_hex": block.hex().upper()})
+    for match in BASE64_16.finditer(data):
+        block = base64.b64decode(match.group(), validate=True)
+        hit = candidate_hit(block, target_digest, mask)
+        if hit:
+            kind, component = hit
+            key = (kind, match.start(), component)
+            if key not in seen:
+                seen.add(key)
+                hits.append({"source": name, "encoding": "base64-16bytes",
+                             "offset": match.start(), "kind": kind,
+                             "component_hex": component.hex().upper(),
+                             "window_hex": block.hex().upper()})
     return hits
 
 
@@ -326,9 +354,19 @@ def self_test():
         assert any(hit["kind"] == "payload_xor_route_mask"
                    and hit["encoding"] == label for hit in found), (codec, found)
         utf16_hits.append(label)
+    grouped_hex = ":".join(
+        payload.hex().upper()[i:i + 2] for i in range(0, 32, 2)
+    ).encode("ascii")
+    b64 = base64.b64encode(payload)
+    for label, token in (("grouped-hex-bytes", grouped_hex),
+                         ("base64-16bytes", b64)):
+        found = scan_bytes("fixture.spl", b"[" + token + b"]", target, mask, 1)
+        assert any(hit["kind"] == "payload_xor_route_mask"
+                   and hit["encoding"] == label for hit in found), (label, found)
     return {"ok": True, "hits": len(hits), "kinds": sorted(kinds),
             "encodings": sorted(encodings), "ole_compound_coupon": "PASS",
-            "utf16_encodings": utf16_hits}
+            "utf16_encodings": utf16_hits,
+            "grouped_hex_and_base64": "PASS"}
 
 
 def main():
