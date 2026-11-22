@@ -448,6 +448,51 @@ class OriginalHashBarcodeTests(unittest.TestCase):
             for hit in result["hits"]
         ), result)
 
+    def test_original_eml_mime_png_attachment_coupon(self):
+        from email.message import EmailMessage
+
+        self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
+        original = self.path.read_bytes()
+        message = EmailMessage()
+        message["From"] = "records@example.invalid"
+        message["To"] = "custodian@example.invalid"
+        message["Subject"] = "Original north escrow coupon"
+        message.set_content("Preserved print coupon attached as original image.")
+        message.add_attachment(
+            original, maintype="image", subtype="png", filename="ESC-N-original.png",
+        )
+        self.path = self.path.with_suffix(".eml")
+        self.path.write_bytes(message.as_bytes())
+        result = self.scan()
+        self.assertTrue(any(
+            hit["component_hex"] == self.component.hex().upper()
+            and "ESC-N-original.png" in hit["source"]
+            for hit in result["hits"]
+        ), result)
+
+    def test_original_eml_mime_pcl_spool_attachment_coupon(self):
+        from email.message import EmailMessage
+
+        self.make_pcl_raster_spool(2)
+        original = self.path.read_bytes()
+        message = EmailMessage()
+        message["From"] = "records@example.invalid"
+        message["To"] = "custodian@example.invalid"
+        message["Subject"] = "Historical print spool"
+        message.set_content("Native print spool attached.")
+        message.add_attachment(
+            original, maintype="application", subtype="octet-stream",
+            filename="PS-261003-0417.prn",
+        )
+        self.path = self.path.with_suffix(".eml")
+        self.path.write_bytes(message.as_bytes())
+        result = self.scan()
+        self.assertTrue(any(
+            hit["component_hex"] == self.component.hex().upper()
+            and "PS-261003-0417.prn" in hit["source"]
+            for hit in result["hits"]
+        ), result)
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
