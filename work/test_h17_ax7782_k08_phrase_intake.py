@@ -362,10 +362,20 @@ class K08PhraseIntakeTests(unittest.TestCase):
         phrase = "the last light falls across the cups by the window"
         nonce = bytes(range(16))
         target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
-        metadata = PngInfo()
-        metadata.add_text("caption", phrase)
+        # Encode the complete caption only in the source-literal teal-bit
+        # layout. The PNG contains no clear-text caption metadata.
+        pixels = Image.new("RGB", (8, len(phrase) + 2), (0, 128, 128))
+        for byte_index, letter in enumerate(phrase.encode("ascii") + bytes(1)):
+            for bit_index in range(8):
+                offset = byte_index * 8 + bit_index
+                position = (offset % 8, offset // 8)
+                red, green, blue = pixels.getpixel(position)
+                plane = offset & 1
+                bit = (letter >> (7 - bit_index)) & 1
+                green = (green & ~(1 << plane)) | (bit << plane)
+                pixels.putpixel(position, (red, green, blue))
         image = io.BytesIO()
-        Image.new("RGB", (8, 8), (0, 128, 128)).save(image, format="PNG", pnginfo=metadata)
+        pixels.save(image, format="PNG")
         png = image.getvalue()
         workbook = workbook_with_bstore([bse_record(png_blip(png))])
         source = cfb(workbook + bytes(max(0, 4096 - len(workbook))))
@@ -412,6 +422,11 @@ class K08PhraseIntakeTests(unittest.TestCase):
             and hashlib.sha256(value).digest() == hashlib.sha256(png).digest()
             for carrier, value in streams
         ))
+        self.assertTrue(any(
+            "<teal-bit:teal-mask-green-low-if-even:" in carrier
+            and phrase.encode("ascii") in value
+            for carrier, value in streams
+        ), "source-literal teal-bit payload was not emitted into K08 scanning")
         hits = []
         for carrier, value in streams:
             for label, text in phrase_intake.decode_text_variants(value, carrier):
