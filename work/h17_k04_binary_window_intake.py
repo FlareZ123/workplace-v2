@@ -28,6 +28,7 @@ from pathlib import Path, PurePosixPath
 
 from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 from h17_k04_image_barcode_intake import read_image_barcodes
+from h17_k04_emf_dib_intake import extract_emf_dib_bmps
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
@@ -194,6 +195,21 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                 hit["encoding"] = f"image-{symbol}-{hit['encoding']}"
                 result["hits"].append(hit)
 
+    if not container and b" EMF" in data and any(name.casefold().endswith(suffix)
+                               for suffix in (".spl", ".prn", ".emf")):
+        for label, bitmap in extract_emf_dib_bmps(data):
+            decoded, diagnostics = read_image_barcodes(bitmap)
+            if diagnostics:
+                result.setdefault("emf_bitmap_diagnostics", []).append({
+                    "record": label, "errors": diagnostics,
+                })
+            for symbol, coupon_data in decoded:
+                for hit in scan_bytes(
+                    f"{name}!/{label}-{symbol}", coupon_data,
+                    target_digest, mask, stride,
+                ):
+                    hit["encoding"] = f"emf-bitmap-{symbol}-{hit['encoding']}"
+                    result["hits"].append(hit)
     if not container and b" EMF" in data and any(name.casefold().endswith(suffix)
                                for suffix in (".spl", ".prn", ".emf")):
         for label, text in extract_emf_text(data):
