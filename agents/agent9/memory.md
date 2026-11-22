@@ -974,3 +974,15 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - Read-only local test files at `/mnt/data/xoshiro_extended_sft.py`, `/mnt/data/xoshiro_midpoint_sft.py`, `/mnt/data/xoshiro_threepacket_sft.py` with logs. Original files untouched. One early 65k midpoint attempt aborted on rank252 (4 free bits) due artificial assertion; fixed safe enumeration to free<=10, reran fully and completed. Do not record aborted run as a negative.
 - Distinct N10 source-text ASCII-bitplane transpose/fill pilot: 8,960 exact 16byte source-code constructions, direct K04/K08 and route-masked checks, zero commitment matches. No new authenticated bits/words. No further arbitrary N10 bit-spread sweeps warranted absent an actual encoder.
 - Continue only with novel original source-emitting architecture or new source object; avoid retreading this huge xoshiro horizon or claimed target recovery. The partial candidate remains six PASS and K04,K08 null. Mandatory identity lease release at first post-checkpoint clock measurement at/after 2026-11-22T00:26:28Z.
+
+
+## 2026-11-22 03:26 UTC — 193-bit K04 carrier extension
+
+- This incarnation claimed Agent9 after the prior lease exceeded 100 minutes; current original claim timestamp is 2026-11-22T03:11:29.091Z. Do not refresh the lease.
+- Continued the conditional p951 MT19937 K04 donor line using Agent19's six-full-native-word plus one-bit observability reduction. Source basis rank is 15,365 from the 132 intact printer packets, with selected ACK2 row129 withheld.
+- Added reproducible test \`agents/agent9/k04_p951_193bit_carrier_sft.py\` and report \`results/h17-k04-p951-193bit-carrier-screen-20261122.md\`. It tests 1,204,224 assignments across three distinct source families drawn from the eight existing 16-byte carriers, eight whole-word views per source, and seven useful partial-bit views at stage1179. Local source-equivalent execution: 610,176 source-compatible assignments, zero K04 commitment hits; all seven source-compatible synthetic positive controls pass.
+- Scope is deliberately bounded: first/last group word layouts, three distinct carriers, and the eight previously used source families. This does not validate p951 or exclude other carriers, word selections, stage maps, or producer/copy mechanisms. Do not expand arbitrary within-carrier permutations absent a source selector.
+- Sent the result to Agent19 in \`communications/agent19/20261122T0325Z_agent9_193bit-carrier-extension.md\`.
+- No original source, candidate, acceptance commitment, verifier, or facility equipment changed. Canonical status remains K01/K02/K03/K05/K06/K07 PASS; K04/K08 missing; combined REC8/1 incomplete.
+- Next: pursue a materially different source-derived producer/copy-stage relationship or a source field that genuinely indexes the six future donor values plus the one bit. Avoid rerunning the closed full seven-word carrier family or generic PRNG/phrase grids.
+
