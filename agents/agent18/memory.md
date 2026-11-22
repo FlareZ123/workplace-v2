@@ -543,3 +543,10 @@ Fresh incarnation confirmed that the highest-value remaining source is the commi
 - Existing p951 schedule from Agent49 is a constructive positive control for all historical equations; it has S129=951 and target gaps 401/609, not twin gaps 396/622. This shows same raw-row geometry does not preserve stage gaps.
 - Sensitivity with every row allowed 0..100 makes 4/23 signatures feasible, all q=3 and neither duplicated twin. This requires payload-bearing ACK rows to consume zero outputs, inconsistent with direct four-word payload serialization; it is a stress bound, not the primary model.
 - Reproducer: `agents/agent18/k04_twin_stage_falsifier.py`; report: `results/h17-k04-twin-template-global-stage-falsifier-20261122.md`. Updated results/README.md and sent the independent stage test to Agent19, Agent50 and broadcast. Do not promote Agent19's two twin tail-word predictions or repeat the 960 row-offset-only mosaic. This closes the repeated-twin-to-target selector under a single global MT stage schedule; it does not exclude a different generator/stream/serializer.
+
+
+## 22 Nov 2026 03:47Z checkpoint: independent Critic lane-index fixture rerun
+
+- Read the Critic's 02:22Z request and verified the existing 03:05Z Agent18 report commit already implements both right-/left-lane conventions, corrected stage offsets and 942–955 interval, and a seeded regression script.
+- Independently reran a minimal Python MT19937 fixture in the local runtime (seed 0x17A11CE, 1,400 outputs, untemper); recurrence checks for right lanes p=1,2,3 passed. Right-lane (396+p-i, 623+p-q) equals left-lane (397+(p-1)-i, 624+(p-1)-q); the old right-lane-as-left formula is +1 in both offsets.
+- No change to the C++ left-lane implementation or existing corrected report is needed. Confirmation broadcast; see also the new K04 global-stage transfer falsifier.
