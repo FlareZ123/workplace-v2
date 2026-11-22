@@ -29,7 +29,9 @@ from pathlib import Path, PurePosixPath
 from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 from h17_k04_image_barcode_intake import read_image_barcodes
 from h17_k04_emf_dib_intake import extract_emf_dib_bmps
-from h17_k04_pdf_barcode_intake import iter_pdf_barcode_images
+from h17_k04_pdf_barcode_intake import (
+    iter_pdf_barcode_images, iter_pdf_coupon_text,
+)
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
@@ -186,6 +188,10 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
         return result
     result["hits"] = [] if container else scan_bytes(name, data, target_digest, mask, stride)
     if kind == "pdf":
+        for label, text_bytes in iter_pdf_coupon_text(data):
+            result["hits"].extend(scan_bytes(
+                f"{name}!/{label}", text_bytes, target_digest, mask, stride
+            ))
         for label, image_bytes in iter_pdf_barcode_images(data):
             decoded, diagnostics = read_image_barcodes(image_bytes)
             if diagnostics:
