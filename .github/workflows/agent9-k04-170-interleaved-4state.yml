@@ -1,0 +1,18 @@
+name: Agent 9 H-17 K04 exhaustive 4-to-3 metadata writer SFT
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-writer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exhaust all fixed 4-outcome-to-3-label maps across 170 source-compatible chronologies
+        run: python agents/agent9/k04_170_interleaved_4state_sft.py
