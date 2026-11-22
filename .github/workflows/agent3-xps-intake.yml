@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libzbar0
-          python -m pip install pillow pyzbar qrcode
+          python -m pip install pillow pyzbar qrcode pymupdf
       - name: Exercise exact K04 coupon barcode recovery, positive and negative
         env:
           PYTHONPATH: work
