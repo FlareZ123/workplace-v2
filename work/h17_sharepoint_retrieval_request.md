@@ -25,6 +25,7 @@ For the exact job, retain every record for `PS-261003-0417`; the published selec
 
 1. Emily's WN-14 final-margin / final-envelope note stack
 2. Original photo-caption carrier referenced by MAIL-11/MAIL-20
+   - Include the PTW-417 cosmetic-corrosion photograph requested in MAIL-04 / `maintenance/work-order-417.html`, with its original image bytes, caption/sidecar, timestamps and revision history. It may or may not be the N14 sunrise photograph; treat that association as a retrieval lead, not an established identity.
 3. `mug-stock.xls` or any preserved workbook/thumbnail/cache copy
 4. Native `PS-261003-0323` output/rendering
 5. `R:/Records/INDEX/IR-261003-H17.txt`
