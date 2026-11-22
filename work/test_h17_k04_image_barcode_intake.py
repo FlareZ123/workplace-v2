@@ -371,6 +371,44 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         self.path.write_bytes(self.path.read_bytes()[:-5])
         self.assertEqual(self.scan()["hits"], [])
 
+    def test_qr_uuid_standard_coupon(self):
+        raw = self.payload.hex().upper()
+        uuid = "-".join((raw[:8], raw[8:12], raw[12:16], raw[16:20], raw[20:]))
+        self.embed(("COUPON=" + uuid).encode("ascii"))
+        hits = self.scan()["hits"]
+        self.assertEqual(len(hits), 1, hits)
+        self.assertEqual(hits[0]["encoding"], "image-QRCODE-frame0-uuid-rfc")
+
+    def test_qr_windows_guid_canonical_text_coupon(self):
+        payload = self.payload
+        guid = payload[:4][::-1] + payload[4:6][::-1] + payload[6:8][::-1] + payload[8:]
+        raw = guid.hex().upper()
+        uuid = "-".join((raw[:8], raw[8:12], raw[12:16], raw[16:20], raw[20:]))
+        self.embed(("GUID=" + uuid).encode("ascii"))
+        hits = self.scan()["hits"]
+        self.assertEqual(len(hits), 1, hits)
+        self.assertIn("uuid-windows-guid", hits[0]["encoding"])
+
+    def test_qr_unpadded_base32_coupon(self):
+        import base64
+
+        text = base64.b32encode(self.payload).rstrip(b"=")
+        self.assertEqual(len(text), 26)
+        self.embed(b"B32=" + text)
+        hits = self.scan()["hits"]
+        self.assertEqual(len(hits), 1, hits)
+        self.assertIn("base32-16bytes", hits[0]["encoding"])
+
+    def test_qr_unpadded_base64url_coupon(self):
+        import base64
+
+        text = base64.urlsafe_b64encode(self.payload).rstrip(b"=")
+        self.assertEqual(len(text), 22)
+        self.embed(b"B64=" + text)
+        hits = self.scan()["hits"]
+        self.assertEqual(len(hits), 1, hits)
+        self.assertIn("base64url-16bytes", hits[0]["encoding"])
+
     def test_original_commitment_mismatch_is_never_accepted(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
         wrong_target = hashlib.sha256(b"not the component").hexdigest()
