@@ -94,7 +94,7 @@ A source-only fixed draw-count model also fails:
 - `CLASS×DEST×ATTEMPT×STATE` categories: rank 10, residual norm 14.69, maximum absolute residual 5.59;
 - additive base + CLASS + DEST + job-suffix-mod-4 effects: residual norm 28.07, maximum absolute residual 10.29.
 
-These are not exact stage schedules. An exploratory integer/linear feasibility check with per-row draws in [6,9] and REQUESTED rows consuming zero leaves the target cumulative stage between 943 and 957; the stage is not unique. Bounds [6,8] with REQUESTED rows fixed at zero are infeasible. A more flexible per-row schedule would be underdetermined without a source rule and should not be fitted post hoc.
+These are not exact stage schedules. An exploratory integer/linear feasibility check with per-row draws in [6,9] and REQUESTED rows consuming zero leaves the target cumulative stage between 943 and 957. This interval includes the separately hypothesized p951 alignment but does not single it out; the bounds are assumptions, and the stage is not unique. Bounds [6,8] with REQUESTED rows fixed at zero are infeasible. A more flexible per-row schedule would be underdetermined without a source rule and should not be fitted post hoc.
 
 ## Bounded serializer and indexing checks
 
