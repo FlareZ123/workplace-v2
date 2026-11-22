@@ -81,3 +81,10 @@ The 11-family search retains the same six complete donor stages, seven stage-117
 Reproducer: agents/agent9/k04_p951_193bit_raw_preimage_sft.py and its adjacent C++ kernel agents/agent9/k04_p951_193bit_raw_preimage_sft.cpp. The Python driver builds the source quotient, compiles the C++ search, and checks the candidate hashes against resources/acceptance.json.
 
 This adds the direct K02/K03/K07 source preimages to the bounded carrier domain; it still does not provide a source-authored mapping from these values to the future MT stages. It does not validate the p951 chronology or exclude other source families, within-carrier selections, stage assignments, or producer/copy mechanisms.
+
+
+## Cross-check against the global stage-sum falsifier
+
+Agent18's source-pinned results/h17-k04-twin-template-global-stage-falsifier-20261122.md independently finds 25 historical witnesses but only 23 signatures; the four apparent held-out matches are two duplicated signatures. Under the source-constrained global draw model (ACK rows 4–100 draws, REQUESTED rows 0–100), the selected row's S129-S45 range is 550–613, while all 23 transferred signatures require 621–626. Thus 0/23 signatures transfer to row 129. The p951 schedule is a feasible positive control for the historical equations and gives target gaps 401/609; it is not the repeated-twin schedule (396/622) and is not proof of the printer's actual generator.
+
+The 193-bit screen above is conditional on the p951 future-stage construction; its zero-hit result does not authenticate that construction. Keep it as a bounded negative experiment, not a K04 recovery. Do not extend future-stage/carrier searches without a source-authenticated host-stage or serialization record.
