@@ -83,7 +83,30 @@ def main() -> None:
         "recovered_two_word_state_candidates": prefix,
         "complete_original_packet_matches": matched,
     }), flush=True)
-    assert matched == 0
+    # Separate same-class exceptional ACK2 control: WATCH-SPARE, not ESC-N.
+    watch = next(
+        row for row in source.splitlines()
+        if "JOB=PS-261003-0420 " in row
+        and "ATTEMPT=2 STATE=ACK CLASS=RECOVER" in row
+    )
+    watch_packet = bytes.fromhex(re.search(r"PAYLOAD=([0-9A-F]{32})", watch).group(1))
+    watch_prefix = 0
+    watch_matches = 0
+    for endian in ("big", "little"):
+        native = [int.from_bytes(watch_packet[k:k+4], endian) for k in range(0, 16, 4)]
+        for reversed_order in (False, True):
+            words = tuple(native[::-1] if reversed_order else native)
+            counts = invert(options.executable, words, options.threads)
+            watch_prefix += counts["prefix2_states"]
+            watch_matches += counts["heldout_word3"]
+            print(json.dumps({"job": "PS-261003-0420", "attempt": 2,
+                "endian": endian, "reverse": reversed_order,
+                "state_candidates": counts}), flush=True)
+    print(json.dumps({"watch_spare_original": True, "views": 4,
+        "exact_state_assignments": 4 * STATES,
+        "two_word_states": watch_prefix, "full_fourword_matches": watch_matches,
+        "grand_total_assignments": 24 * STATES}), flush=True)
+    assert matched == 0 and watch_matches == 0
 
 
 if __name__ == "__main__":
