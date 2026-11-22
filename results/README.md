@@ -1,6 +1,6 @@
 # H-17 archive recovery | live decision surface
 
-**21 November 2026, 22:08 UTC | Critic consolidation.** This entry point replaces a 69 KB accumulating experiment log. [The complete previous map is archived verbatim](DECISION_MAP_SNAPSHOT_20261121T2208Z.md). Keep substantive experimental reports intact and linked; add to this surface only when a result changes a live decision.
+**2026-11-22 04:23 UTC | Critic consolidation.** This entry point replaces a 69 KB accumulating experiment log. [The complete previous map is archived verbatim](DECISION_MAP_SNAPSHOT_20261121T2208Z.md). Keep substantive experimental reports intact and linked; add to this surface only when a result changes a live decision.
 
 ## Acceptance
 
@@ -27,6 +27,15 @@ The incident-date route is **ESC-N / PS-261003-0417 / 18:02Z RECOVER ACK attempt
 
 
 **22 November MT lane-mosaic validation:** An independent reproduction confirms a statistically unusual MT19937-like recurrence in raw spool payloads (25 witnesses / 23 signatures; above the maximum in 1,000 trials under each of five packet-preserving nulls, including job-suffix-mod-4 and CLASS×DEST×mod-4 controls). The four leave-one-out word matches are one dependent +4-row motif, not four independent validations; joint anchor removal eliminates them. The witness graph has 97 disconnected components and leaves target row129 isolated; more strongly, none of the 23 transferred target signatures fits a single raw-row MT stage schedule in which each payload-bearing ACK consumes at least four words. All 48 fixed word-permutation/endian views, the ACK-only indexing variant, and the 960 forward-view complete candidates produce **zero K04 commitment hits**. Retain the recurrence as a genuine historical pattern, not a coupon producer; the missing discriminator is the native PS-0417 spool/render and source-authenticated queue/host stage/serialization manifest. [Independent validation and reproducible method](h17-k04-mt-lane-mosaic-independent-validation-20261122.md). A broader independent MILP lets REQUESTED rows consume 0–100 draws and ACK rows 4–100: 0/23 signatures still transfer; target S129−S45 is 550–613 while all signatures require 621–626. The existing p951 schedule satisfies all 25 historical equations but gives target gaps 401/609 rather than the repeated twins' 396/622. An over-permissive all-row 0–100 sensitivity admits four unique q=3 signatures, but neither repeated twin. [Global-stage transfer falsifier and reproducer](h17-k04-twin-template-global-stage-falsifier-20261122.md).
+
+
+**22 November follow-on K04 complete-object screens (bounded negatives, not global exclusions):**
+
+- Agent19's rigid two-donor MT full-packet constructor generated **40** complete coupon candidates, with **0** original K04 commitment hits; its source-blind test also produced **0/1,912** exact intact-packet predictions and **0/1,912** corresponding held-out word matches. [Full-packet constructor and holdout report](h17-k04-historical-witness-geometry-complete-coupon-20261122.md).
+- Agent9's xoshiro256** long-gap reconstruction tested **138,554,718** complete selected-coupon assignments across its stated gap/start domains, with **0** K04 hits. Its separate three-packet blind holdout found **0** matching full REQUESTED3 packets among **4,066** compatible seeded states, conditional on the stated shared-stream and gap bounds. [Long-gap source reconstruction](h17-k04-xoshiro256starstar-longgap-midpoint-source-20261122.md).
+- Agent9's conditional p951 193-bit carrier screen tested **3,548,160** assignments over **11** source families; **1,786,176** were source-compatible and **0** matched K04. This does not authenticate p951 chronology or exclude untested donor layouts. [Carrier-screen report](h17-k04-p951-193bit-carrier-screen-20261122.md).
+
+The **960-member variable-lane MT** complete-coupon test is already summarized above; its full report records **0/49** exact blind-heldout packets and explains why the four apparent lane-word matches are dependent twins. [Full variable-lane constructor and blind-holdout report](h17-k04-source-witness-variable-lane-mosaic-20261122.md). Treat each result only within its enumerated model and control domain. Do not repeat the same candidate space with alternate backends, timeouts, byte views or relabelled parameters; a new run needs a materially different source relation or constructor.
 
 ## K08: derive the exact full author-final phrase
 
