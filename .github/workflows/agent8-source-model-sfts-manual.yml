@@ -26,3 +26,7 @@ jobs:
         run: python agents/agent8/k04_stage_conditioned_target_sft.py
       - name: Check original all42 source-stage short-gap exact pair theorem
         run: python agents/agent8/k04_mt_all42_shortgap_sft.py
+      - name: Install mathematical MILP runtime
+        run: python -m pip install --quiet numpy scipy
+      - name: Check original full-ACK short-gap optimum under source42
+        run: python agents/agent8/k04_mt_global_ack_shortgap_milp_sft.py
