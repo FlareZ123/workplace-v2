@@ -229,7 +229,7 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         caption_source.write_text("Final author margin:\n\n" + caption + "\n\n", encoding="utf-8")
         nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
         final = {
-            f"K{i:02d}": bytes([i]) .hex().upper() * 16
+            f"K{i:02d}": (bytes([i]) * 16).hex().upper()
             for i in (1, 2, 3, 5, 6, 7)
         }
         final["K04"] = self.component.hex().upper()
