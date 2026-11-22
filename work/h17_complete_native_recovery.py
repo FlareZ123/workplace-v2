@@ -17,8 +17,8 @@ from pathlib import Path
 
 from resources.verify import evaluate
 from h17_ax7782_k08_phrase_intake import (
-    decode_text_variants, iter_text_streams, load_k08_rules,
-    normalize, scan_phrase_spans,
+    decode_text_variants, iter_text_streams, normalize,
+    scan_phrase_spans,
 )
 from h17_k04_binary_window_intake import run_scan
 
