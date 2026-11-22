@@ -68,6 +68,24 @@ class ExactOoxmlTextTests(unittest.TestCase):
         )
         self.check_native("xl/sharedStrings.xml", xml)
 
+    def test_two_separate_paragraphs_never_form_a_fabricated_coupon(self):
+        token = self.payload.hex().upper()
+        xml = (
+            '<w:document xmlns:w="http://schemas.openxmlformats.org/'
+            'wordprocessingml/2006/main"><w:body>'
+            '<w:p><w:r><w:t>' + token[:16] + '</w:t></w:r></w:p>'
+            '<w:p><w:r><w:t>' + token[16:] + '</w:t></w:r></w:p>'
+            '</w:body></w:document>'
+        )
+        units = list(iter_ooxml_text_units(
+            self.package("word/document.xml", xml)
+        ))
+        self.assertEqual(len(units), 2)
+        self.assertFalse(any(
+            scan_bytes(name, payload, self.target, self.mask, 1)
+            for name, payload in units
+        ))
+
     def test_plain_zip_without_ooxml_manifest_never_emits_authored_units(self):
         self.assertEqual(
             list(iter_ooxml_text_units(self.package(
