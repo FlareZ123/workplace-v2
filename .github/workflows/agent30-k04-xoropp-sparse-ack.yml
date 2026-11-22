@@ -1,0 +1,35 @@
+name: Agent30 K04 sparse ACK tail8 source reconstruction
+
+on:
+  push:
+    paths:
+      - 'agents/agent30/k04_xoropp_sparse_ack_sft.py'
+      - '.github/workflows/agent30-k04-xoropp-sparse-ack.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tail8-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install native XOR solver
+        run: python -m pip install --disable-pip-version-check pycryptosat==5.14.7
+      - name: Compile source and run source-free then original gates
+        shell: bash
+        run: |
+          python -m py_compile agents/agent30/k04_xoropp_sparse_ack_sft.py
+          set -o pipefail
+          python agents/agent30/k04_xoropp_sparse_ack_sft.py --mode both --limit-seconds 240 | tee sparse-ack-outcome.ndjson
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k04-sparse-tail8-outcome
+          path: sparse-ack-outcome.ndjson
+          if-no-files-found: warn
