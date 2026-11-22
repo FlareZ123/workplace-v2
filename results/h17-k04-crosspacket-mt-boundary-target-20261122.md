@@ -45,6 +45,18 @@ Moreover, transplanting **each of the six** new exact historical signatures to t
 
 The stage calculation was run locally with SciPy/HiGHS linear and integer feasibility; it is a conditional generator test, not a fact about the undocumented printer firmware. The source-pinned portable reproducer above independently covers raw witness discovery, real complete commitment checking and a seeded full-packet positive. It does not include the optional SciPy feasibility solver.
 
+## Exhaustive two-donor packet bound across all earlier rows
+
+A follow-up removes the prior restriction to *observed historical row-offset templates*. For **every ordered earlier intact row pair** under four packet serializers, test two complete native MT successor constructors, always withholding selected row129's payload:
+
+| Exact complete native issuer | Exhaustive candidate evaluations | Original K04 SHA-256 hits |
+|---|---:|---:|
+| One intact earlier source row + a lagged earlier packet, one unknown predecessor MSB enumerated | **66,048** | **0** |
+| Two immediately adjoining earlier source packets, arbitrary offset 0–3 across their eight native words + a lagged earlier packet | **130,048** | **0** |
+| **Combined** | **196,096** | **0** |
+
+The first mechanism is an exact all-earlier-row-pair extension of the 40 historical-witness-selected rigid models in Agent19's earlier study. The second includes the 4+1 boundary case and offsets 1–3 needing 3+2, 2+3 or 1+4 source words from adjoining packets. It strictly subsumes the separate 2,100 candidate lane-mosaic search only as a *different full successor model*, not as a literal superset of all mosaics. The code's K04 commitment gate is unchanged and source-pinned; its new complete loops have locally executed count and zero-hit assertions. This does not validate any of these pairing assumptions as historical, nor exclude a pair with unknown gap words, a per-lane mosaic, alternate recurrence or modified copy stage.
+
 ## Decision
 
 This extends the source witness grammar to packet boundaries and actually tests all resulting whole K04 components. **It does not solve K04.** The cross-boundary equalities alone are real arithmetic relations, but their global-stage implications conflict with a direct four-word ACK stream and cannot transfer coherently to the selected row. Do not expand the same boundary candidates or confuse an exact isolated relation with actual coupon provenance. A genuinely different printer producer, physical media or explicitly source-defined stage rule remains necessary. Original six PASS slots remain untouched; K08 is unresolved; combined REC8/1 remains INCOMPLETE.
