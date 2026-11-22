@@ -19,6 +19,29 @@ _MAX_PDF_IMAGE_BYTES = 32 * 1024 * 1024
 _MAX_TOTAL_IMAGE_BYTES = 128 * 1024 * 1024
 
 
+def iter_pdf_embedded_files(data: bytes) -> Iterator[tuple[str, bytes]]:
+    """Extract actual PDF portfolio /EmbeddedFiles attachments, read-only."""
+    try:
+        import pymupdf
+    except ImportError:
+        return
+    try:
+        with pymupdf.open(stream=data, filetype="pdf") as doc:
+            if doc.needs_pass:
+                return
+            for name in doc.embfile_names()[:32]:
+                info = doc.embfile_info(name)
+                if not 0 < int(info.get("size", 0)) <= _MAX_PDF_IMAGE_BYTES:
+                    continue
+                raw = doc.embfile_get(name)
+                if len(raw) <= _MAX_PDF_IMAGE_BYTES:
+                    filename = str(info.get("filename") or name)
+                    filename = filename.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
+                    yield filename, raw
+    except (RuntimeError, ValueError, OSError):
+        return
+
+
 def iter_pdf_coupon_text(data: bytes) -> Iterator[tuple[str, bytes]]:
     """Extract native PDF text before considering bitmap-only symbol carriers.
 
