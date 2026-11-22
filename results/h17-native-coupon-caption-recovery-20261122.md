@@ -1,0 +1,29 @@
+# H-17 source-native recovery paths for the two missing components (22 November 2026)
+
+**Result:** new read-only source decoders and exact end-to-end recovery tests are passing. **Original REC8/1 remains six PASS; K04 and K08 MISSING, combined INCOMPLETE.** No original commitment has been matched by the new source-only candidates. This is a concrete input capability for independent original media when acquired, not a claim to have recovered historical bytes.
+
+## K04: complete printed coupon, regardless of how it was stored
+
+The original route selects ESC-N / PS-261003-0417 / last ACK; the retained copied 16-byte payload's XOR does not satisfy the original K04 SHA256 commitment, and its physical integrity is not authenticated. This work leaves the route, copy, mask, and commitment unchanged while adding several ways to read **an independently recovered actual coupon** from printer-native media:
+
+- [Raster barcode decoder](../work/h17_k04_image_barcode_intake.py): Pillow with pyzbar/zbar and optional OpenCV reads original QR and linear barcode bytes from PNG, JPEG, BMP, GIF, WebP and up to 32 frames of a TIFF. Preserves a separate Latin-1 view when a QR decoder has re-encoded opaque bytes to UTF-8.
+- [EMF DIB decoder](../work/h17_k04_emf_dib_intake.py): validates intact EMF/EMFSPOOL page boundaries, reads original `EMR_SETDIBITSTODEVICE` and `EMR_STRETCHDIBITS` bitmap record buffers and passes reconstructed BMPs to the barcode reader; source stream remains unchanged. Microsoft [MS-EMF] defines both bitmap-record layouts.
+- [PDF source reader](../work/h17_k04_pdf_barcode_intake.py): gets original selectable PDF text, condensed spaced-hex labels, embedded images, and a bounded 200-dpi rendering for QR/vector coupon graphics. No encrypted PDF is opened without a source-authorized key. PyMuPDF APIs are used as documented.
+- [PCL5 raster decoder](../work/h17_k04_pcl_raster_intake.py): reconstructs explicitly sized native monochrome raster jobs from documented unencoded, repeat-byte RLE, or TIFF PackBits rows and recognizes compound escape commands; feeds actual rendered pixels to the same barcode decoder.
+- [Exact coupon formats](../work/h17_k04_binary_window_intake.py): original raw16 and masked16 bytes, uppercase/lowercase 32hex, grouped bytes, standard padded Base64, plus common printed UUID, Windows GUID, RFC4648 Base32 and unpadded URL-safe Base64 serializations. Every interpretation gets the **original full K04 SHA256 comparison after the original XOR mask where applicable**. There is no fuzzy target acceptance.
+
+The new raster/PDF/PCL/serialization tests share one [single-test-file regression](../work/test_h17_k04_image_barcode_intake.py), including untrusted decoder outputs, corrupted EMF/PCL, encrypted PDF, and direct/masked synthetic coupon positives. The GitHub Actions completed successfully for [PDF](https://github.com/FlareZ123/workplace-v2/actions/runs/45053376797), [PCL](https://github.com/FlareZ123/workplace-v2/actions/runs/45053900884), and [serialization](https://github.com/FlareZ123/workplace-v2/actions/runs/45054067890).
+
+## K08: full author's long caption, even in wrapped or labeled native fields
+
+The original [K08 phrase decoder](../work/h17_ax7782_k08_phrase_intake.py) enumerates contiguous normalized spans but stops at 96 characters. That previously prevented exact acceptance of a valid long line or hard-wrapped paragraph even when its whole original wording was present. The new `scan_authored_text_units` checks source-authored 97–512-character whole lines/paragraphs and exact values after an explicit colon or equals sign, using **the unchanged original normalization, desk HMAC16 and full slot SHA256**. The [complete native REC8/1 assembler](../work/h17_complete_native_recovery.py) now uses the same path.
+
+[Combined eight-slot synthetic controls](../work/test_h17_complete_native_recovery.py) cover true long single-line, wrapped, colon/equal-labeled author captions, wrong captions, exact verification of all eight slots, and unchanged source bytes. The full native Office/SQLite regression suite [passed](https://github.com/FlareZ123/workplace-v2/actions/runs/45054215928). The printed-PDF coupon plus long-caption combined synthetic control [also passed](https://github.com/FlareZ123/workplace-v2/actions/runs/45053505366) under the original verifier, including the combined digest.
+
+A targeted read-only check of the **supplied** 46-entry archive's 44 directly decodable text files found **zero original K08 hits among 508 distinct normalized long values following a colon/equal delimiter**; encrypted and binary materials were not interpreted as final wording. This is a narrow source-only coverage note, not a proof about the missing edited paper caption.
+
+## What now advances the actual archive recovery
+
+The current 46-file preservation export does not supply a verified original K04 coupon or Emily's final edited margin wording. Further iterations on the suspect ACK2 copied bytes, speculative generator inversions, and unconstrained phrase grids do not provide those originals. Acquire the preserved north escrow coupon in its **original spool/native print/image/PDF form** and the **unredacted original author-final desk caption/edited margin**, preferably with their real source containers. Pass both original files to the existing `work/h17_complete_native_recovery.py` API. It returns a complete candidate only if the unchanged original `resources.verify.evaluate` accepts **all eight individual slots and the full combined commitment**. The six independently passed components remain unchanged.
+
+**Limitations:** barcode/PCL/EMF/PDF codecs cover the specified common modes, not every printer language or arbitrary rasterization. Synthetic positives validate functional intake and true commitment checks; they are not historical witness preimages. No original K04 physical bit or K08 terminal word has been authenticated by this intervention.
