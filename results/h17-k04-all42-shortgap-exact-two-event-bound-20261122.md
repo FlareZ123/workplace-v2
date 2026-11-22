@@ -33,6 +33,21 @@ The 435 feasible exactly-two-short pairs are **every pair drawn from 30 rows** (
 
 **Consequence:** Under the all-42 one-stream native MT model, at least two of these 32 events must consume six or fewer native words. This strengthens the earlier one-short-event bound but leaves 435 distinct minimal stage choices, so no particular real print gap is established.
 
+## Stronger full-original-ACK bound: nine mandatory short events
+
+The 32-event region is only part of the printer stream. Extending the same all-42 original stage equations to **all 130 original ACK rows with successor rows** yields a stronger, globally minimal exception count. Set each event's native gap to 4–100; require at least 7 whenever its binary short-event indicator is zero and allow 4–6 whenever the indicator is one. Other REQUESTED events may consume zero. Minimize the sum of all 130 binary indicators with **exact mixed-integer linear programming**, integrality and 0.0 optimality gap. These are the same row-stage difference equalities as the source-pinned Bellman–Ford test; no sample data or original K04 hash informs the optimization.
+
+| Original source MT witnesses | Exact minimum ACK gaps with 4–6 native draws |
+|---|---:|
+| Original 25 exact fullword witnesses | **5 of 130** |
+| All 42 fullword plus partial-firstword witnesses | **9 of 130** |
+| All42, additionally requiring selected ACK2 row129 itself short | **9 of 130** |
+| All42, additionally requiring selected ACK2 row129 long (at least 7) | **10 of 130** |
+
+One all42 optimal **stage-feasible** assignment has short original ACK indices **33,39,84,87,121,124,126,129,131**, with every other ACK row using at least seven native words. This example is not proven to fit all 528 actual source packet words as one global MT internal state; a minimal equality model only satisfies the source-derived 42 arithmetic witness constraints. It is a constructive *stage-bound witness*, rather than an authenticated printer explanation.
+
+The independent [source-pinned global ACK MILP SFT](../agents/agent8/k04_mt_global_ack_shortgap_milp_sft.py) uses NumPy and SciPy/HiGHS, enforces integer stage and binary indicator variables, asserts exact original source equalities, and requires optimality gap zero. It has been run locally. The global 9/10 bound makes any blanket seven-native-word-per-ACK scheme with only a few exceptional events implausible under the all42 MT model, and illustrates why the true generator gap rule must be established from independent printer evidence before predicting the selected physical coupon.
+
 ## Acceptance and limitations
 
 All 42 relations are source-observed arithmetic equalities. Some may be accidental coincidences, since the actual physical printer writer has not been established. The known published p951 full-source MT chronology satisfies all 42 and all 528 intact 32-bit original source words and has many six-output gaps; the new bound therefore does not imply universal original MT inconsistency. It also does not recover the selected physical ACK2 coupon. The only all-42 selected direct native donor relation aliases the earlier unacknowledged REQUESTED1 firstword; see [full target-stage analysis](h17-k04-stage-graph-conditional-full-coupon-20261122.md).
