@@ -254,6 +254,38 @@ def iter_m10_teal_bit_text(name: str, image_data: bytes,
         })
 
 
+def iter_msg_rtf_text(name: str, payload: bytes,
+                      errors: list[dict]) -> Iterator[tuple[str, bytes]]:
+    """Decode PidTagRtfCompressed 0x10090102 from an original Outlook MSG.
+
+    The original message/RtfCompressed stream is read only. The declared
+    uncompressed-size bound is checked before library decompression.
+    """
+    if (len(payload) < 16 or payload[8:12] not in (b"LZFu", b"MELA")):
+        errors.append({"source": name, "error": "invalid Outlook compressed RTF header"})
+        return
+    expected_size = int.from_bytes(payload[4:8], "little")
+    if expected_size > 8 * 1024 * 1024:
+        errors.append({"source": name, "error": "Outlook RTF exceeds 8 MiB bound"})
+        return
+    try:
+        from compressed_rtf import decompress
+        from striprtf.striprtf import rtf_to_text
+        rtf = decompress(payload)
+        if isinstance(rtf, str):
+            rtf = rtf.encode("latin-1", "replace")
+        if len(rtf) != expected_size or len(rtf) > 8 * 1024 * 1024:
+            raise ValueError("Outlook RTF decompressed-size mismatch")
+        plain = rtf_to_text(rtf.decode("latin-1"), errors="ignore")
+        if plain.strip():
+            yield f"{name}!/<rtf-plain>", plain.encode("utf-8")
+    except Exception as exc:
+        errors.append({
+            "source": name,
+            "error": f"Outlook RTF decode failed: {type(exc).__name__}: {exc}",
+        })
+
+
 def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                       errors: list[dict], ocr: bool = False,
                       pdf_password: str | None = None,
@@ -620,6 +652,11 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     # Keep the raw BIFF Workbook/Book stream too: xlrd does not
                     # expose every NOTE/OBJ/comment or embedded-object record.
                     payload = compound.openstream(stream_path).read()
+                    if (suffix == ".msg"
+                            and stream_path[-1].casefold() == "__substg1.0_10090102"):
+                        yield from iter_msg_rtf_text(
+                            f"{name}!/{stream_name}", payload, errors,
+                        )
                     yielded = True
                     yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
         except ImportError:
