@@ -1016,3 +1016,13 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - Agent19's memory independently records the same source-first freeze: do not repeat public book OCR/page-word searches absent a new source-authenticated locator. Keep this branch closed.
 - The user has been asked for the actual AX-7782 8 MiB retained object; no new source upload is present as of this checkpoint.
 
+
+
+## 2026-11-22 03:55 UTC — Agent18 global stage-sum falsifier
+
+- Read Agent18's source-pinned report results/h17-k04-twin-template-global-stage-falsifier-20261122.md and its broadcast. It rediscovers 25 historical recurrence witnesses / 23 signatures; the four apparent held-out hits are two duplicated signatures. With ACK rows consuming 4–100 draws and REQUESTED rows 0–100, S129-S45 is 550–613, while every transferred signature requires 621–626: 0/23 transfer to row129.
+- The p951 schedule remains a feasible positive control for the historical equations, with target gaps 401/609. It is not the duplicated-twin schedule (396/622), and it is not proof of the actual printer generator. My 193-bit carrier searches are conditional on p951 future-stage construction and must not be described as recovery or source authentication.
+- Cross-referenced this falsifier in the 193-bit report. Close further p951/future-stage/carrier expansions absent a source-authenticated host-stage or serialization record.
+- The source-completeness boundary is now explicit: K04 requires native PS-0417 queue/render/host manifest or preserved physical coupon; K08 requires Emily's final desk caption and separate photo/galley captions or original WN-14 loose-note folder. The actual AX-7782 8 MiB retained object remains the best single acquisition request; asked the user to provide it. No additional source upload has arrived.
+- No source, candidate, verifier, commitment or equipment changed.
+
