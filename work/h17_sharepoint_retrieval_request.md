@@ -14,6 +14,7 @@ The local BX25-08 property declaration visibly bridges policy file `H17-POL-17/A
 4. Native queue journal for `PS-261003-0417` with mode, purpose, dry_run, attempt, state, class, destination, and payload
 5. Native print/rendered files for `PS-261003-0417`: `.SPL`, `.SHD`, `.EMF`, `.PRN`, or equivalent
    - For `.SHD`, `work/h17_shd_triage.py` provides offset-preserving ASCII/UTF-16LE ASCII-subset string triage only; it is not a structural parser and cannot authenticate job/document fields without the native queue/job manifest.
+   - Preserve the complete job metadata (document name, datatype, print processor, port, user, DEVMODE, and page/output descriptors) plus all native text/image streams; do not reduce the source to the 16-byte dispatch payload. A possible PS-0417 joint K04/K08 carrier is an unverified hypothesis, not a current finding.
 6. Risk-desk paper key register entry for the linked `BX25/08` / `H17-POL-17/A3` folio, including any coupon code, folio sidecar, release-setting index and paper-to-scan cross-reference. The local BX25-08 PDF explicitly links policy file H17-POL-17/A3 to transfer folio BX25/08 and declares the North office printer/cassette cabinet; it is a property declaration, not the coupon.
 7. Physical escrow/recovery coupon or an authenticated scan/photo
 8. `R:/IT/desktop-move-2026.html` and its profile-migration package
