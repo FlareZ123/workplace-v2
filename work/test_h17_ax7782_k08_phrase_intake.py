@@ -396,7 +396,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
 
         fake_xlrd = types.SimpleNamespace(open_workbook=lambda **_kwargs: FakeBook())
         fake_olefile = types.SimpleNamespace(OleFileIO=FakeOle)
-        payload = b"\\xd0\\xcf\\x11\\xe0\\xa1\\xb1\\x1a\\xe1" + bytes(64)
+        payload = bytes.fromhex("D0CF11E0A1B11AE1") + bytes(64)
         with mock.patch.dict(sys.modules, {"xlrd": fake_xlrd, "olefile": fake_olefile}):
             with mock.patch.object(h17_xls_lo_fallback, "extract_bytes",
                                    return_value={"embedded_images": [image_record]}) as extractor:
