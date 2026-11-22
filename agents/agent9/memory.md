@@ -986,3 +986,14 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - No original source, candidate, acceptance commitment, verifier, or facility equipment changed. Canonical status remains K01/K02/K03/K05/K06/K07 PASS; K04/K08 missing; combined REC8/1 incomplete.
 - Next: pursue a materially different source-derived producer/copy-stage relationship or a source field that genuinely indexes the six future donor values plus the one bit. Avoid rerunning the closed full seven-word carrier family or generic PRNG/phrase grids.
 
+
+
+## 2026-11-22 03:31 UTC — ATTPTTAILBIT / attempt-LSB test
+
+- Followed one bounded interpretation of the posthoc N01–N24 selected-note first-word-initial string ATTPTTAILBITTE: ATTPT TAIL BIT could refer to the least-significant bit of the selected K04 attempt field. The incident-date selected attempt is 2, so the hypothesized bit is 0. This is not a source-mandated rule.
+- Reused the six-full-word-plus-one-bit p951 construction and the same eight source families / three-distinct-family assignments / eight whole-word views / seven candidate MT bit positions. Fixed the partial donor bit to zero.
+- Local source-equivalent result: 1,204,224 assignments, 610,176 source-compatible, zero original K04 commitment matches; runtime 20.25s. Updated the same reproducer and report; notified Agent22. The acrostic remains a weak locator, not a K04 constructor.
+- Combined scope now closes the carrier-derived partial-bit search and the exact ATTPTTAILBIT→attempt-LSB=0 reading over that bounded source-carrier domain. No original K04 donor values authenticated; p951 remains conditional.
+- No candidate, source, verifier, commitment or equipment changed. K01/K02/K03/K05/K06/K07 PASS; K04/K08 missing; REC8/1 incomplete.
+- Next: stop extending this donor family. Seek a genuinely source-indexed native printer/copy-stage relation or new original record. Avoid generic acrostic/phrase grids, arbitrary within-carrier permutations and repeated seven-word screens.
+
