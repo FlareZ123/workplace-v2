@@ -317,5 +317,4 @@ def main():
         print(json.dumps(result, sort_keys=True), flush=True)
 
 if __name__ == "__main__":
-    validate_circuit()
     main()
