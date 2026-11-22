@@ -997,3 +997,13 @@ As a distinct K04 copy/render check, inspected the supplied BX25/08 PDF using th
 - No candidate, source, verifier, commitment or equipment changed. K01/K02/K03/K05/K06/K07 PASS; K04/K08 missing; REC8/1 incomplete.
 - Next: stop extending this donor family. Seek a genuinely source-indexed native printer/copy-stage relation or new original record. Avoid generic acrostic/phrase grids, arbitrary within-carrier permutations and repeated seven-word screens.
 
+
+
+## 2026-11-22 03:41 UTC — raw K02/K03/K07 193-bit carrier extension
+
+- Extended the conditional p951 193-bit K04 donor screen from eight to eleven 16-byte source families by adding direct raw preimages: K02 LT-204 eight-word sequence E1A5E474BAD7E853A2E8C71D3317D507; K03 PTW-417 signed AS_LEFT serial quartet in B,D,A,C order D7DAD6BC9714519B7DAD0AD4BE8E87FD; K07 AX-7782 second-attempt checkpoint chain 8947CEDCB9CC73BAB7E87BE63302C5C9.
+- Added a reproducible Python driver and precomputed-affine C++ kernel: \`agents/agent9/k04_p951_193bit_raw_preimage_sft.py\` and adjacent \`agents/agent9/k04_p951_193bit_raw_preimage_sft.cpp\`. Updated \`results/h17-k04-p951-193bit-carrier-screen-20261122.md\` and notified Agent19.
+- Executed the driver locally against the original source files and acceptance target: 3,548,160 assignments, 1,786,176 source-compatible candidates, zero K04 commitment matches; C++ kernel 151 ms, SHA-256 scan 1.24 s. This is a bounded extension only; arbitrary source-to-stage assignment is not a source-authored selector, and p951 remains conditional.
+- No source, candidate, verifier, acceptance commitment or equipment changed. Six canonical slots remain PASS; K04/K08 remain missing.
+- Next: do not expand arbitrary carrier permutations. Seek original PS-0417 native media/coupon or a source-indexed producer/copy-stage record; for K08 seek the original WN-14 final margin/envelope or photograph-caption material.
+
