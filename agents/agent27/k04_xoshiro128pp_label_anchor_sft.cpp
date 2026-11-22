@@ -75,7 +75,22 @@ int main(int argc,char**argv){
   unsigned char dig[32];SHA256(reinterpret_cast<const unsigned char*>(spool.data()),spool.size(),dig);
   std::string pin=hex(dig,32);std::transform(pin.begin(),pin.end(),pin.begin(),::tolower);
   if(pin!=SPOOL_SHA)throw std::runtime_error("source SHA mismatch");
-  B label=label_record(spool),request1=record(spool,1,"REQUESTED"),request3=record(spool,3,"REQUESTED"),mask=unhex(MASK);
+  const std::string mode=argc>=4?argv[3]:"label";
+  B label{},request1{},request3{},mask=unhex(MASK);
+  if(mode=="label"){
+   label=label_record(spool);
+   request1=record(spool,1,"REQUESTED");
+   request3=record(spool,3,"REQUESTED");
+  }else if(mode=="ordinary"){
+   const std::string a="JOB=PS-261003-0300 ATTEMPT=1 STATE=ACK CLASS=LABEL PAYLOAD=FBBBC54356483F5864BB3F06794518A5 DEST=store";
+   const std::string b="JOB=PS-261003-0301 ATTEMPT=1 STATE=ACK CLASS=STORES PAYLOAD=64176B6C3A91BD06B12FC0D90B3A7DB4 DEST=bench";
+   const std::string c="JOB=PS-261003-0302 ATTEMPT=1 STATE=ACK CLASS=STORES PAYLOAD=3531D8AB362BB040E7702CE23A8D5420 DEST=store";
+   if(spool.find(a)==std::string::npos||spool.find(b)==std::string::npos||spool.find(c)==std::string::npos)
+    throw std::runtime_error("original source early printer anchors mismatch");
+   label=unhex("FBBBC54356483F5864BB3F06794518A5");
+   request1=unhex("64176B6C3A91BD06B12FC0D90B3A7DB4");
+   request3=unhex("3531D8AB362BB040E7702CE23A8D5420");
+  }else throw std::runtime_error("mode must be label or ordinary");
   Hash target=target_sha();
   for(int view=0;view<4;view++){
    S o=decode(label,view),first=decode(request1,view),third=decode(request3,view);
@@ -92,7 +107,7 @@ int main(int argc,char**argv){
     Counts result=search_label(seed,view,first,third,mask,target,maxstart);
     first_hits+=result.first_request.size();sha_hits+=result.selected.size();third_hits+=result.last_request.size();
     std::lock_guard<std::mutex> lock(mutex);
-    std::cout<<"ROOT view="<<view<<" trial="<<std::hex<<a2<<std::dec<<" windows="<<result.windows
+    std::cout<<"ROOT mode="<<mode<<" view="<<view<<" trial="<<std::hex<<a2<<std::dec<<" windows="<<result.windows
       <<" request1_hits="<<result.first_request.size()<<" original_K04_hits="<<result.selected.size()
       <<" request3_hits="<<result.last_request.size();
     for(U i:result.first_request)std::cout<<" request1_at="<<i;
@@ -101,7 +116,7 @@ int main(int argc,char**argv){
     std::cout<<"\n";
    }
    double sec=std::chrono::duration<double>(std::chrono::steady_clock::now()-begin).count();
-   std::cout<<"SUMMARY view="<<view<<" exact_trials=4294967296 roots="<<roots
+   std::cout<<"SUMMARY mode="<<mode<<" view="<<view<<" exact_trials=4294967296 roots="<<roots
      <<" windows_each="<<(maxstart-3)<<" REQUESTED1="<<first_hits
      <<" K04_SHA="<<sha_hits<<" REQUESTED3="<<third_hits<<" seconds="<<sec<<"\n"<<std::flush;
   }
