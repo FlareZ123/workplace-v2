@@ -1,3 +1,5 @@
+import hashlib
+import struct
 import sys
 import unittest
 from pathlib import Path
@@ -8,7 +10,8 @@ if str(WORK_DIR) not in sys.path:
     sys.path.insert(0, str(WORK_DIR))
 
 from work.h17_ax7782_k08_phrase_intake import iter_text_streams
-from work.h17_photo_caption_metadata import iter_iptc_caption_units, iter_xmp_caption_units
+from work.h17_photo_caption_metadata import iter_exif_caption_units, iter_iptc_caption_units, iter_xmp_caption_units
+import work.h17_ax7782_k08_phrase_intake as phrase_intake
 if str(WORK_DIR) in sys.path:
     sys.path.remove(str(WORK_DIR))
 
@@ -48,6 +51,62 @@ def _iptc_jpeg():
     payload = b"Photoshop 3.0\x00" + resource
     return (b"\xff\xd8\xff\xed" + (len(payload) + 2).to_bytes(2, "big") +
             payload + b"\xff\xd9")
+
+
+def _tiff_exif_fixture(endian="<", ifd0_fields=(), user_comment=None):
+    """Build a minimal classic TIFF with optional ExifIFD UserComment."""
+    type_sizes = {1: 1, 2: 1, 7: 1}
+    ifd0_offset = 8
+    entry_count = len(ifd0_fields) + (1 if user_comment is not None else 0)
+    ifd0_table_end = ifd0_offset + 2 + 12 * entry_count + 4
+    data_blob = bytearray()
+    entries = []
+
+    def entry(tag, field_type, raw):
+        count = len(raw)
+        size = count * type_sizes[field_type]
+        if size <= 4:
+            value_field = raw.ljust(4, b"\\x00")
+        else:
+            value_offset = ifd0_table_end + len(data_blob)
+            value_field = struct.pack(endian + "I", value_offset)
+            data_blob.extend(raw)
+        return struct.pack(endian + "HHI", tag, field_type, count) + value_field
+
+    for tag, field_type, raw in ifd0_fields:
+        entries.append(entry(tag, field_type, raw))
+
+    exif_block = b""
+    if user_comment is not None:
+        exif_ifd_offset = ifd0_table_end + len(data_blob)
+        exif_table_end = exif_ifd_offset + 2 + 12 + 4
+        if len(user_comment) <= 4:
+            value_field = user_comment.ljust(4, b"\\x00")
+            user_comment_data = b""
+        else:
+            value_field = struct.pack(endian + "I", exif_table_end)
+            user_comment_data = user_comment
+        user_comment_entry = (
+            struct.pack(endian + "HHI", 0x9286, 7, len(user_comment)) + value_field
+        )
+        exif_block = (
+            struct.pack(endian + "H", 1) + user_comment_entry
+            + struct.pack(endian + "I", 0) + user_comment_data
+        )
+        entries.append(
+            struct.pack(endian + "HHI", 0x8769, 4, 1)
+            + struct.pack(endian + "I", exif_ifd_offset)
+        )
+
+    header = (b"II*\\x00" if endian == "<" else b"MM\\x00*") + struct.pack(endian + "I", ifd0_offset)
+    ifd0 = struct.pack(endian + "H", entry_count) + b"".join(entries) + struct.pack(endian + "I", 0)
+    return header + ifd0 + data_blob + exif_block
+
+
+def _jpeg_app1_exif(tiff):
+    payload = b"Exif\\x00\\x00" + tiff
+    return b"\\xff\\xe1" + (len(payload) + 2).to_bytes(2, "big") + payload
+
 
 
 class PhotoCaptionMetadataTests(unittest.TestCase):
@@ -181,6 +240,96 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
     def test_unrelated_or_malformed_data_produces_no_caption_fields(self):
         self.assertEqual(list(iter_xmp_caption_units("ordinary.txt", b"just words")), [])
         self.assertEqual(list(iter_xmp_caption_units("broken.xmp", b"<x:xmpmeta>")), [])
+
+
+    def test_tiff_extracts_image_description_windows_xp_and_unicode_usercomment(self):
+        tiff = _tiff_exif_fixture(
+            "<",
+            [
+                (0x010E, 2, b"The sea keeps a place for every voice.\\x00"),
+                (0x9C9B, 1, "Night watch photograph".encode("utf-16le") + b"\\x00\\x00"),
+                (0x9C9C, 1, "A place for one more".encode("utf-16le") + b"\\x00\\x00"),
+                (0x9C9D, 1, "Emily".encode("utf-16le") + b"\\x00\\x00"),
+                (0x9C9E, 1, "sea;watch;table".encode("utf-16le") + b"\\x00\\x00"),
+                (0x9C9F, 1, "After the long watch".encode("utf-16le") + b"\\x00\\x00"),
+            ],
+            b"UNICODE\\x00" + "the water outside".encode("utf-16le") + b"\\x00\\x00",
+        )
+        streams = list(iter_exif_caption_units("desk-photo.tif", tiff))
+        values = {label.split(":")[2]: text for label, text in streams}
+        self.assertEqual(values["ImageDescription"], "The sea keeps a place for every voice.")
+        self.assertEqual(values["XPTitle"], "Night watch photograph")
+        self.assertEqual(values["XPComment"], "A place for one more")
+        self.assertEqual(values["XPAuthor"], "Emily")
+        self.assertEqual(values["XPKeywords"], "sea;watch;table")
+        self.assertEqual(values["XPSubject"], "After the long watch")
+        self.assertEqual(values["UserComment"], "the water outside")
+        self.assertTrue(any("ifd0:tag-0x010E:encoding-ascii" in label for label, _ in streams))
+        self.assertTrue(any("exif-ifd:tag-0x9286:encoding-utf-16le" in label for label, _ in streams))
+
+    def test_big_endian_tiff_decodes_unicode_usercomment_in_tiff_byte_order(self):
+        tiff = _tiff_exif_fixture(
+            ">",
+            [(0x010E, 2, b"Late watch at first light\\x00")],
+            b"UNICODE\\x00" + "the sea is quiet".encode("utf-16be") + b"\\x00\\x00",
+        )
+        streams = list(iter_exif_caption_units("desk-photo-big-endian.tif", tiff))
+        self.assertIn(("exif:tiff:ImageDescription:ifd0:tag-0x010E:encoding-ascii",
+                       "Late watch at first light"), streams)
+        self.assertIn(("exif:tiff:UserComment:exif-ifd:tag-0x9286:encoding-utf-16be",
+                       "the sea is quiet"), streams)
+
+    def test_usercomment_ascii_designator_is_decoded(self):
+        tiff = _tiff_exif_fixture(
+            "<", [], b"ASCII\\x00\\x00\\x00" + b"the last watch\\x00"
+        )
+        streams = list(iter_exif_caption_units("desk-photo.tif", tiff))
+        self.assertIn(("exif:tiff:UserComment:exif-ifd:tag-0x9286:encoding-ascii",
+                       "the last watch"), streams)
+
+    def test_jpeg_app1_exif_caption_reaches_k08_phrase_stream_and_hmac(self):
+        phrase = "The sea keeps a place for every voice."
+        nonce = bytes(range(16))
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+        tiff = _tiff_exif_fixture(
+            "<", [(0x010E, 2, phrase.encode("ascii") + b"\\x00")]
+        )
+        jpeg = b"\\xff\\xd8" + _jpeg_app1_exif(tiff) + b"\\xff\\xd9"
+        native_streams = list(iter_text_streams(
+            "desk-photo.jpg", jpeg, 0, [0], [], False, None, []
+        ))
+        self.assertTrue(any(
+            "exif:jpeg-app1-0:ImageDescription" in label
+            and payload.decode("utf-8") == phrase
+            for label, payload in native_streams
+        ))
+        hits = []
+        for source, payload in native_streams:
+            for label, text in phrase_intake.decode_text_variants(payload, source):
+                phrase_intake.scan_phrase_spans(
+                    text, nonce, target, source + " [" + label + "]", 16, hits
+                )
+        self.assertTrue(any(hit["normalized_phrase"] == phrase.lower() for hit in hits))
+
+    def test_multiple_jpeg_exif_app1_segments_keep_distinct_source_labels(self):
+        first = _tiff_exif_fixture("<", [(0x010E, 2, b"First caption\\x00")])
+        second = _tiff_exif_fixture("<", [(0x010E, 2, b"Second caption\\x00")])
+        jpeg = b"\\xff\\xd8" + _jpeg_app1_exif(first) + _jpeg_app1_exif(second) + b"\\xff\\xd9"
+        streams = list(iter_exif_caption_units("two-exif-segments.jpg", jpeg))
+        self.assertIn(("exif:jpeg-app1-0:ImageDescription:ifd0:tag-0x010E:encoding-ascii",
+                       "First caption"), streams)
+        self.assertIn(("exif:jpeg-app1-1:ImageDescription:ifd0:tag-0x010E:encoding-ascii",
+                       "Second caption"), streams)
+
+    def test_malformed_tiff_offsets_truncated_jpeg_and_unknown_usercomment_fail_closed(self):
+        bad_tiff = b"II*\\x00" + struct.pack("<I", 0xFFFFFFFF)
+        truncated_jpeg = b"\\xff\\xd8\\xff\\xe1\\x00\\x20Exif\\x00\\x00"
+        unknown_comment = _tiff_exif_fixture("<", [], b"UNKNOWN!!" + b"binary")
+        self.assertEqual(list(iter_exif_caption_units("bad.tif", bad_tiff)), [])
+        self.assertEqual(list(iter_exif_caption_units("bad.jpg", truncated_jpeg)), [])
+        self.assertEqual(list(iter_exif_caption_units("unknown.tif", unknown_comment)), [])
+        self.assertEqual(list(iter_exif_caption_units("ordinary.bin", b"not an image")), [])
+
 
 
 if __name__ == "__main__":
