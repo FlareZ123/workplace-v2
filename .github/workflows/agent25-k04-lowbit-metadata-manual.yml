@@ -16,4 +16,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Run planted control and source-compatible chronology search
-        run: python agents/agent25/k04_numpy_lowbit_conditional_route_sampler_sft.py
+        run: python agents/agent25/k04_numpy_lowbit_conditional_route_sampler_sft.py | tee k04-lowbit-output.txt
+      - name: Preserve compact model result
+        uses: actions/upload-artifact@v4
+        with:
+          name: k04-lowbit-summary
+          path: k04-lowbit-output.txt
+          if-no-files-found: error
+          retention-days: 7
