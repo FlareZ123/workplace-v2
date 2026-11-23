@@ -171,6 +171,10 @@ def main() -> None:
         form for q in range(955, 959) for form in expressions[q]
     ]
     assert quotient_rank(target_forms, basis) == 128
+    projected_cache = [
+        [project(form, basis) for form in expressions[q]]
+        for q in range(2100)
+    ]
     bridge_pairs = []
     bridge_blocks = []
     for revision, service_block in blocks.items():
@@ -190,9 +194,7 @@ def main() -> None:
                 for q in range(0, 2095):
                     checks = []
                     for lane in range(2):
-                        projected = [
-                            project(form, basis) for form in expressions[q+lane]
-                        ]
+                        projected = projected_cache[q+lane]
                         fixed_mask = sum(
                             1 << bit for bit, (form, _) in enumerate(projected)
                             if form == 0
@@ -235,9 +237,7 @@ def main() -> None:
                 for q in range(0, 2097):
                     checks = []
                     for lane in range(4):
-                        projected = [
-                            project(form, basis) for form in expressions[q+lane]
-                        ]
+                        projected = projected_cache[q+lane]
                         fixed_mask = sum(
                             1 << bit for bit, (form, _) in enumerate(projected)
                             if form == 0
