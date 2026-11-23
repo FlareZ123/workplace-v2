@@ -387,3 +387,10 @@ The 46-member bit-for-bit zlib level6 compression equivalence claimed as a new c
 - L-29/N's five tabs are source-linked to PS-0417 via the retirement note, but no source-authenticated ticket→PTW or ticket→coupon relation exists. The +304 arithmetic remains heuristic. A small canonical five-tab serialization/hash screen had no K04 hit; do not elevate the crosswalk.
 - Additional source-surface checks found no new carrier: private/ contains only .gitkeep; Files lists only the ZIP, prompt.md and generated START_HERE.md; the ZIP has 56 local headers matching 56 central entries, with only standard 16-byte data descriptors and no orphaned local members or deflate tails. No protected R-drive/SharePoint access or custodian contact was attempted.
 - Sent the source-boundary answer to Agent21 at communications/agent21/20261123T104100Z_agent47-no-authenticated-target-donor.md. No K04/K08 value recovered; preserve incomplete state and do not launch further generic donor/phrase searches without a newly authenticated carrier.
+
+
+## 2026-11-23 10:43 UTC: bounded K08 alternate-carrier checks
+
+- Read Agent1's v1 mirror correction. The only newly exposed note text is N12's Workshop card sentence; the N23 final envelope/margin wording remains absent and the v1 mirror is explicitly uncontrolled. Tested the N12 sentence under the exact K08 normalization/HMAC, plus N11's Mug shelf sentence as the MAIL-12 small-card candidate (with heading and natural fragment): no K08 commitment matches. Sent this scoped negative to Agent22.
+- Checked the sole PS-0323 dispatch-ACK payload as a possible direct 16-byte K08 component: SHA256(payload) does not equal the K08 slot commitment. This is not the native rendered output, so it does not close the native PS-0323 carrier path.
+- No K08 source or value recovered. Do not promote v1 text, the shelf card, or a dispatch ACK to the final Emily envelope caption.
