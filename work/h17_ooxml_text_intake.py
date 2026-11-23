@@ -74,7 +74,10 @@ def iter_ooxml_text_units(data: bytes) -> Iterator[tuple[str, bytes]]:
                 name = member.filename
                 if not name.endswith(".xml"):
                     continue
-                if name.startswith("word/"):
+                if name == "word/comments.xml":
+                    parent_tag = f"{W}comment"
+                    text_tags = None
+                elif name.startswith("word/"):
                     parent_tag = f"{W}p"
                     text_tags = None
                 elif (name.startswith("ppt/slides/") or
@@ -92,15 +95,29 @@ def iter_ooxml_text_units(data: bytes) -> Iterator[tuple[str, bytes]]:
                 processed += 1
                 root = ElementTree.fromstring(package.read(member))
                 for index, parent in enumerate(root.iter(parent_tag)):
-                    if name.startswith("word/"):
+                    if name == "word/comments.xml":
+                        text = "\n".join(
+                            _word_element_text(paragraph, "final")
+                            for paragraph in parent.iter(W + "p")
+                        )
+                        comment_id = _label_value(parent.attrib.get(W + "id", ""))
+                        author = _label_value(parent.attrib.get(W + "author", ""))
+                        date = _label_value(parent.attrib.get(W + "date", ""))
+                        label = (
+                            f"{name}#comment-id-{comment_id}"
+                            f"-author-{author}-date-{date}"
+                        )
+                    elif name.startswith("word/"):
                         text = _word_element_text(parent, "final")
+                        label = f"{name}#authored-unit-{index}"
                     else:
                         text = "".join(
                             child.text or "" for child in parent.iter()
                             if child.tag in text_tags
                         )
+                        label = f"{name}#authored-unit-{index}"
                     if 0 < len(text) <= MAX_TEXT:
-                        yield f"{name}#authored-unit-{index}", text.encode("utf-8")
+                        yield label, text.encode("utf-8")
     except (BadZipFile, OSError, ValueError, ElementTree.ParseError):
         return
 
@@ -146,21 +163,6 @@ def iter_ooxml_revision_units(data: bytes) -> Iterator[tuple[str, bytes]]:
                                 f"-event-{event_index}"
                             )
                             yield label, text.encode("utf-8")
-            if "word/comments.xml" in names:
-                info = package.getinfo("word/comments.xml")
-                if 0 < info.file_size <= MAX_PART_BYTES:
-                    root = ElementTree.fromstring(package.read("word/comments.xml"))
-                    for comment in root.iter(W + "comment"):
-                        text = _word_element_text(comment, "final")
-                        if not text or len(text) > MAX_TEXT:
-                            continue
-                        comment_id = _label_value(comment.attrib.get(W + "id", ""))
-                        author = _label_value(comment.attrib.get(W + "author", ""))
-                        date = _label_value(comment.attrib.get(W + "date", ""))
-                        label = (
-                            f"word/comments.xml#comment-id-{comment_id}"
-                            f"-author-{author}-date-{date}"
-                        )
-                        yield label, text.encode("utf-8")
+
     except (BadZipFile, OSError, ValueError, ElementTree.ParseError):
         return
