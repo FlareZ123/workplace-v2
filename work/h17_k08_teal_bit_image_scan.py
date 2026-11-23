@@ -20,6 +20,7 @@ import hashlib
 import hmac
 import json
 import re
+from io import BytesIO
 from pathlib import Path
 from typing import Iterator
 
@@ -141,12 +142,15 @@ def _candidate_texts(bits: np.ndarray) -> Iterator[str]:
                 yield from _runs_from_bytes(payload)
 
 
-def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 48) -> list[dict]:
-    """Scan one image using only the two frozen source-literal teal layouts."""
+def scan_image_bytes(
+    data: bytes, source_name: str, nonce: bytes, commitment: str,
+    max_words: int = 48,
+) -> list[dict]:
+    """Scan one exact image byte payload using the two frozen teal layouts."""
     if not 1 <= max_words <= 48:
         raise ValueError("max_words must be between 1 and the source-fixed maximum 48")
     matches: list[dict] = []
-    with Image.open(path) as opened:
+    with Image.open(BytesIO(data)) as opened:
         frames = getattr(opened, "n_frames", 1)
         for frame in range(frames):
             if frames > 1:
@@ -164,12 +168,19 @@ def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 48) -
                         seen.add(normalized)
                         if k08_matches(normalized, nonce, commitment):
                             matches.append({
-                                "file": str(path),
+                                "file": source_name,
                                 "frame": frame,
                                 "layout": layout,
                                 "phrase": normalized,
                             })
     return matches
+
+
+def scan_image(path: Path, nonce: bytes, commitment: str, max_words: int = 48) -> list[dict]:
+    """Scan one image file using only the two frozen source-literal teal layouts."""
+    return scan_image_bytes(
+        path.read_bytes(), str(path), nonce, commitment, max_words=max_words
+    )
 
 
 def validate_n14_source_manifest(image_path: Path, manifest_path: Path) -> dict:
