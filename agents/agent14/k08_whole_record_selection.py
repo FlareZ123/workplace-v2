@@ -80,10 +80,12 @@ def main() -> None:
     if len(selected) != 14:
         raise SystemExit(f"expected 14 author-selected records, got {len(selected)}")
 
-    excluded_n17 = "Leave the light on for the next watch" in mail11
-    excluded_n18 = "Back before the first boat" in mail11
+    n17_label = "Leave the light on for the next watch"
+    n18_label = "Back before the first boat"
+    excluded_n17 = n17_label in mail11 and n17_label in notes[17]["body"]
+    excluded_n18 = n18_label in mail11 and n18_label in notes[18]["body"]
     if not (excluded_n17 and excluded_n18):
-        raise SystemExit("MAIL-11 explicit label exclusions not found")
+        raise SystemExit("MAIL-11 must exclude the exact N17/N18 note texts")
     n23_body = notes[23]["body"]
     n23_instruction = "envelope" in n23_body.lower() and "finally put on it" in n23_body.lower()
 
@@ -92,7 +94,8 @@ def main() -> None:
         n for n in selected
         if jobs[n]["class"] == "RECOVER" and jobs[n]["dest"].lower() == "store"
     ]
-    surviving = [n for n in recover_store if n not in {17, 18}]
+    excluded_records = {n for n, excluded in ((17, excluded_n17), (18, excluded_n18)) if excluded}
+    surviving = [n for n in recover_store if n not in excluded_records]
     # No route entry for PS-0323 exists in the K08 routing object.
     ps0323_assigned_in_route = "PS-261003-0323" in json.dumps(routing)
 
