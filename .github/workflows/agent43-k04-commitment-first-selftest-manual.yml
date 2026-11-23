@@ -18,3 +18,5 @@ jobs:
         run: python agents/agent25/k04_native_spool_commitment_bridge.py --self-test
       - name: Check compatibility with original K04 bridge unit test
         run: python -m unittest discover -s tests -p test_h17_k04_native_spool_commitment_bridge.py -v
+      - name: Check shared original SPL SHD pairer regression
+        run: python agents/agent43/h17_native_spool_pair_intake.py --self-test
