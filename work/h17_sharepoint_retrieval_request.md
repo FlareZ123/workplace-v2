@@ -70,7 +70,7 @@ Prioritize the first three because the surviving bookmark set directly points to
 
 ## Additional K08 native-label discriminator
 
-PS-261003-0300 is a 07:00Z LABEL/store spool record preceding the numbered spool series; its role as an envelope label is unverified, and the five-minute ordinal proximity does not authenticate that role. If an independently authorized local copy is supplied, retain its native .SPL/.SHD/EMF/PRN or rendered output, queue/job/dispatch manifest, and any physical shelf card/label with collection receipt. Keep PS-0323 as an unverified payload candidate; the N23→PS0323 join is not source-authenticated.
+PS-261003-0300 is a 07:00Z LABEL/store spool record preceding the numbered spool series; its role as an envelope label is unverified, and the timing/ordinal proximity does not authenticate that role. If an independently authorized local copy is supplied, retain its native .SPL/.SHD/EMF/PRN or rendered output and queue/job/dispatch manifest. Under the still-unauthenticated ordinal crosswalk, preserve PS-261003-0318 (08:30Z RECOVER/store) as the N18-side comparison/control and PS-261003-0323 (08:55Z RECOVER/store) as the N23-side final-envelope candidate; retrieve both native outputs and their manifests. N18 is the excluded commissioning-label side, while N23 is the final-envelope instruction record; do not treat ordinal matching as proof of a job-note join. The shelf card remains an unverified physical object, not a demonstrated text carrier.
 
 ## K08 shelf-card and caption carriers
 
