@@ -138,7 +138,10 @@ def iter_iptc_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]
         marker = data.find(signature, pos)
         if marker < 0:
             break
-        cursor = marker + len(signature)
+        # Advance the outer search before parsing this APP13 block.
+        # Otherwise one Photoshop 3.0 signature is rediscovered forever.
+        pos = marker + len(signature)
+        cursor = pos
         while cursor + 12 <= len(data):
             block = data.find(b"8BIM", cursor)
             if block < 0 or block + 12 > len(data):
