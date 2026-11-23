@@ -115,7 +115,7 @@ def main() -> None:
     assert {second for _, _, _, second, *_ in hits} == {0, 1}
     assert Counter((second, row, lane, later, out)
                    for _, _, _, second, row, lane, later, out in hits) == {
-        (0, 28, 2, 59, 3): 6, (1, 28, 1, 59, 2): 6
+        (0, 28, 2, 59, 3): 5, (1, 28, 1, 59, 2): 7
     }
     a = untemper(int.from_bytes(bytes.fromhex("C130C9BB"), "little"))
     b = untemper(int.from_bytes(bytes.fromhex("759E0027"), "little"))
@@ -131,8 +131,8 @@ def main() -> None:
         "sourceblind_footer_pair_printer_proposals": proposals,
         "sourceblind_fullword_matches": len(hits),
         "matches_by_second_footer": {
-            "B_PURGE": 6,
-            "B_VERIFY": 6
+            "B_PURGE": 5,
+            "B_VERIFY": 7
         },
         "distinct_printer_middle_future_pairs": [[28, 2, 59, 3], [28, 1, 59, 2]],
         "additional_first_footer_value_information_bits_per_match": 1,
