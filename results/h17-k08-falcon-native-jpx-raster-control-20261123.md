@@ -55,7 +55,7 @@ Applied a direct reimplementation of the two `SOURCE_LITERAL_LAYOUTS` in `work/h
 Applied the existing 256-configuration coordinate decoder from `agents/agent41/k08_multislot_teal_coordinate_control.py` separately to each high-resolution native JPX foldout page after lossless PNG serialization and the decoder's own grayscale conversion.
 
 - Page 343: six configurations had at least five printable output bytes; best was hex `2B317B5E2B36`, ASCII `+1{^+6`.
-- Page 344: four configurations had at least five printable output bytes; best was hex `60B149677C2E`, escaped ASCII `\\x60.Ig|.`.
+- Page 344: four configurations had at least five printable output bytes; best was hex `60B149677C2E`, escaped ASCII bytes `60 2E 49 67 7C 2E`.
 
 Neither output is a coherent six-byte string. This is a printability control, not a K08 phrase or HMAC candidate. The coordinate decoder was not run on the covers.
 
