@@ -1,0 +1,14 @@
+SOURCE_VALIDATED copied=A9A9DC5731A5E2AE879C47215C2559D5 templates=12 per_template=4294967296 threads=5
+TEMPLATE rotation=1 free_lane=0 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.49
+TEMPLATE rotation=1 free_lane=1 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.29
+TEMPLATE rotation=1 free_lane=2 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.85
+TEMPLATE rotation=1 free_lane=3 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.39
+TEMPLATE rotation=2 free_lane=0 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.36
+TEMPLATE rotation=2 free_lane=1 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.41
+TEMPLATE rotation=2 free_lane=2 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.46
+TEMPLATE rotation=2 free_lane=3 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.24
+TEMPLATE rotation=3 free_lane=0 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.46
+TEMPLATE rotation=3 free_lane=1 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.29
+TEMPLATE rotation=3 free_lane=2 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.21
+TEMPLATE rotation=3 free_lane=3 complete=4294967296 original_hits=0 synthetic_hits=1 seconds=52.39
+SUMMARY complete=51539607552 original_hits=0 synthetic_hits=12 seconds=628.84
