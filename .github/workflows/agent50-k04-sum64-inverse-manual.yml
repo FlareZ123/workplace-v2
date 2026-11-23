@@ -1,0 +1,28 @@
+name: Agent50 xoroshiro++ sum64 inverse control
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sum64-inverse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install one exact solver dependency
+        run: |
+          python -m pip install "z3-solver>=4.12,<5"
+          python -c "import z3; print('z3-version', z3.get_version_string())"
+      - name: Unseeded two-state full-output positive controls
+        run: python agents/agent50/k04_xoropp_sum64_inverse_sft.py --synthetic --timeout-ms 90000 --max-models 8
+      - name: Only after unseeded controls, try untouched original request1 four views
+        run: |
+          for view in 0 1 2 3; do
+            python agents/agent50/k04_xoropp_sum64_inverse_sft.py --source-view "$view" --timeout-ms 60000 --max-models 8
+          done
