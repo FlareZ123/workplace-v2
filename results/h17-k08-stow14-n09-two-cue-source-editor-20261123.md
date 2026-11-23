@@ -29,3 +29,11 @@ Reproducer: [Agent31 source-pinned standalone C++](../agents/agent31/k08_n09_sto
 ## Consequence
 
 This closes only the stated **N09 ordered-subsequence + exactly two literal cue insertions and four version edits**. It neither recovers a word of Emily's final margin nor establishes that N09 was her actual base text. The exact final phrase remains unquoted in the preserved export, and a new broader synonym/three-cue lattice would not resolve the author-selection problem. No K08 or K04 accepted component was produced; the original six PASS, two MISSING and combined INCOMPLETE state remains. Preserve original sources, candidate, acceptance and verifier unchanged.
+
+## Additional complete three-cue N20 editor (same source-selected N09 base; 23 Nov 21:16Z)
+
+N20 explicitly names three motifs in source order: sea, *end of the night*, voices at the table. The original two-cue test allowed N09's historical “bad night” or a “long watch” edit to stand for night; this complementary **three-cue** family instead inserts all three *literal* source spans: `the sea` (N01), `at the end of the night` (N13) and `the voices at the table` (N20). All positions and all within-gap orders are enumerated with each N09 ordered subsequence, in a separate complete mode of the same reproducer (third CLI argument `three`).
+
+Each of the same four frozen N09 rewrite flags `0,1,6,7` checks precisely `sum(C(13,k)*(k+1)*(k+2)*(k+3), k=0..13) = 5,640,192` complete phrase assignments. **All four original K08 outcomes were zero hits**, an additional **22,560,768** full original commitment checks. Each execution checked the source and known N02 HMAC and found exactly one planted *three-cue* complete phrase, independently of the earlier planted two-cue controls; local execution was ~9–10 seconds per flag.
+
+The shared C++ file now supports both `two` (default, existing 35,127,296) and `three` (new 22,560,768), producing **57,688,064 complete tested assignments** across these eight runs, with zero authentic K08 hits. These counts are assignments, not globally distinct strings. No unsupported synonym, arbitrary third motif, or new corpus source was used, and no final author text is claimed. The strongest interpretation remains a finite **source-selected editorial family exclusion**, not an archival-key recovery.
