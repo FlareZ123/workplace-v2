@@ -1,7 +1,14 @@
 import hashlib
 import io
+import sys
 import unittest
 import zipfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+WORK_DIR = ROOT / "work"
+if str(WORK_DIR) not in sys.path:
+    sys.path.insert(0, str(WORK_DIR))
 
 from work.h17_ax7782_k08_phrase_intake import iter_text_streams, k08_component, normalize
 from work.h17_ooxml_text_intake import (
