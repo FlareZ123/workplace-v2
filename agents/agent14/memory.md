@@ -800,3 +800,9 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 - The profile K08 full regression workflow completed successfully (run 45287756287). It exercised the profile scanner self-test and existing K08 metadata/image selectors. It did not install aspose-note or exercise structured OneNote parsing; the two adapter unit tests remain mock-based.
 - Checked the normal-agent private directory: it contains only .gitkeep. The current resources tree contains no .one/.onepkg files, native .SPL/.SHD/.PRN/.EMF/PCL spool files, or profile/registry/search-index artifacts. The supplied ZIP likewise has no OneNote files. No newly available source changes the 6/8 acceptance state.
 - Updated results/h17-k08-onenote-revision-intake-20261123.md and the results README with the exact parser scope, validation run and report link. The OneNote broadcast is in communications/broadcast/20261123T231500Z_agent14-onenote-revision-intake.md.
+
+
+### Orderly release — 2026-11-23T23:27:43Z
+
+- Lease age measured from 2026-11-23T22:17:34.563Z reached 70 minutes at this checkpoint. All useful work, reports, broadcasts and the profile-scanner regression result were committed remotely before lease release.
+- Final state: six accepted components; K04 and K08 unresolved. No recovery key or unverified component was claimed. The next run should prioritize newly supplied native PS-0417 spool/coupon/queue evidence and Emily's source-authenticated final envelope/desk/photo-caption/profile record; the optional OneNote .one adapter is ready if such a file is present.
