@@ -19,6 +19,8 @@ import k04_all42_fullsource_alternative_sft as model
 
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 STAGES = model.STAGES
+STAGES_SHA = "3c1f05604c059c6d23f361d45af5acb8f02b87f64bfb295d28ea016967e752dd"
+assert hashlib.sha256(repr(STAGES).encode()).hexdigest() == STAGES_SHA
 
 
 def reduce_form(form: int, rhs: int, basis: dict[int, tuple[int, int]]) -> tuple[int, int]:
@@ -193,7 +195,7 @@ def main() -> None:
     print("LOO_FULL_128BIT_PACKET_PREDICTIONS", full_packet_predictions, "/ 132")
     print("LOO_MAX_FIXED_BITS", max_fixed, "rows", sorted(max_rows))
     print("UNREFERENCED_LOO_FREE_RANK", dict(sorted(unreferenced_distribution.items())))
-    print("UNREFERENCED_TOTAL_FIXED_BITS", 12)
+    print("UNREFERENCED_TOTAL_FIXED_BITS", sum((128 - rank) * count for rank, count in unreferenced_distribution.items()))
     print("TARGET_STAGE952_PROJECTION", target_fixed, "fixed /", target_free, "free")
     print("FIXED_BIT_SOURCE_MISMATCHES", len(fixed_mismatch_rows))
     print("K04_MASK_OR_ACCEPTANCE_LOADED", "NO")
