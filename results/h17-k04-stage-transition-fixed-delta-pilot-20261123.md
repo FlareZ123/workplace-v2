@@ -44,6 +44,21 @@ The PS-0420 deltas do not equal either PS-0417 transition delta. The 64-bit word
 
 The route-selected direct candidate is also still invalid: PS-0417 RECOVER/ACK attempt 2 XOR the route mask gives `2CFF149C50E54557228E7DE60B3EB7C9`, whose SHA-256 is `11a7f6064781a6ac7678dc6dd24759af95981c8a927f8da4436515354d34549b`; the unchanged K04 commitment is `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
 
+## Adjacent REQUESTED-row alternative
+
+MAIL-16 says the ACK **state field** came from the dispatch log and is not a media-integrity flag. A bounded alternative is therefore that the preceding RECOVER/REQUESTED attempt-1 payload, rather than the ACK2 row's payload, is the media operand acknowledged by the next event. The source sequence (18:01 REQUESTED1 → 18:02 ACK2 → 18:03 REQUESTED3) makes this a testable interpretation, while the later REQUESTED3 remains excluded by MAIL-16's explicit no-ACK warning.
+
+Applying the same route mask directly to each same-job row gives:
+
+| Row interpreted as media operand | Candidate after XOR mask | SHA-256 | K04 match |
+|---|---|---|---|
+| LABEL / ACK / attempt 1 | `64B0C5940A2D75DBFAB4EF65F121372E` | `3a1e9261869a0fcc61e169ad20a23b514d04b6f994452cdcda7186f1973453a5` | No |
+| RECOVER / REQUESTED / attempt 1 | `486887EA0B9B884825C8106E5C2819B8` | `b138a3b90d9cfab0f4994e3a38b354bf205265e2bafa2e29b01444b5dfae14ca` | No |
+| RECOVER / ACK / attempt 2 | `2CFF149C50E54557228E7DE60B3EB7C9` | `11a7f6064781a6ac7678dc6dd24759af95981c8a927f8da4436515354d34549b` | No |
+| RECOVER / REQUESTED / attempt 3 | `C183F537489733C330CAA9B68D430278` | `02402fd772d7c1dd9c62c90f66cc9b1ace9c593d6cbfa58fee96619fc5abeeaf` | No |
+
+This rejects the direct same-mask interpretation of each retained row as the coupon. It does not establish that ACK2's payload is media data, nor does it authenticate the missing attempt-2 request or rendered coupon.
+
 ## Conclusion and limits
 
 This pilot rejects only the stated common fixed-delta copy/edit rule. It does **not** reject every possible class-specific serializer, nor does it authenticate the bytes in the reconstructed ACK row. It produces no K04 component and does not justify changing the route, mask, candidate, or verifier.
