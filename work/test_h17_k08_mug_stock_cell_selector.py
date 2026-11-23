@@ -132,6 +132,9 @@ class SelectorTests(unittest.TestCase):
                 "text_streams": [
                     {"source":f"Sheet1!{address}","kind":"cell","text":"x","data_type":"s"}
                     for address in sorted(selected_addresses)
+                ] + [
+                    {"source":"Sheet1!M10<comment>","kind":"comment",
+                     "text":phrase,"comment_author":"Emily"}
                 ],
             }
             fake_fallback.extract = lambda path: extraction
@@ -152,6 +155,9 @@ class SelectorTests(unittest.TestCase):
         self.assertEqual(before, after)
         self.assertEqual(result["workbook"]["sha256_before"], result["workbook"]["sha256_after"])
         self.assertEqual(result["workbook"]["converter"], "synthetic-fallback")
+        self.assertEqual(len(result["m10_comment_candidates"]), 1)
+        self.assertTrue(result["m10_comment_candidates"][0]["match"])
+        self.assertEqual(result["m10_comment_candidates"][0]["comment_author"], "Emily")
 
     @unittest.skipUnless(HAS_REAL_XLS_FALLBACK, "LibreOffice, openpyxl and repository XLS fallback are required")
     def test_real_legacy_xls_fallback_with_pinned_cell_selector(self):
@@ -185,6 +191,8 @@ class SelectorTests(unittest.TestCase):
             sheet.title = "Visible"
             for address, word in zip(addresses, words):
                 sheet[address] = word
+            from openpyxl.comments import Comment
+            sheet["M10"].comment = Comment(phrase, "Emily")
             book.save(source_xlsx)
             book.close()
             converter = shutil.which("libreoffice") or shutil.which("soffice")
@@ -206,6 +214,8 @@ class SelectorTests(unittest.TestCase):
         self.assertEqual(before, after)
         self.assertEqual(result["workbook"]["sha256_before"], result["workbook"]["sha256_after"])
         self.assertIn(result["workbook"]["converter"], {"libreoffice", "soffice"})
+        self.assertTrue(any(item["match"] and item["comment_author"] == "Emily"
+                            for item in result["m10_comment_candidates"]))
 
     def test_hmac_normalization_known_answer(self):
         nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
