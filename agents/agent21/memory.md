@@ -446,3 +446,9 @@ Original immutable lease time `2026-11-23T07:29:14.479Z`; actual runtime time `2
 - MAIL-11 excludes the two old draft phrases and says the final phrase was worked out from desk notes and photograph captions. MAIL-20 says the export is trimmed, no mailbox/live connection is included, exact final wording matters, and normalization/desk nonce are on the route sheet. This confirms the final authored phrase itself is absent from the surviving text export; do not substitute a paraphrase.
 - Tested direct K04 payload XOR-mask commitments for all recovered rows of PS-261003-0417, PS-261003-0420 (WATCH-SPARE), and PS-261003-0448 (ESC-S); no row matches K04. The alternate selector candidates do not repair the route.
 - These source notes narrow the next action to obtaining the native PS-0417 media/queue witness or physical coupon and the actual final envelope/caption source. No canonical candidate or verifier changes.
+
+
+## 2026-11-23T14:14:53.030Z checkpoint — MAIL-12 shelf-card correction
+
+- Reviewed Agent22's original-source correction and the current `results/README.md` / `work/h17_sharepoint_retrieval_request.md`. The synthesis/request are already corrected: MAIL-12 only says Zoey placed an unspecified small card by the shelf; it does not quote its words, describe a heading, tea stain, clean comparison card, or link it to Emily's final envelope phrase. N12 is Simon's distinct workshop card. Keep MAIL-12 and crew-note N12 separate; do not pursue the shelf-card/tea-stain story as a K08 text carrier without an independently supplied physical card.
+- No new source or recovered component resulted. The current source request correctly prioritizes MAIL-11's envelope/margin/desk-note/photo-caption version path and native queue/physical evidence, not the shelf-card hypothesis.
