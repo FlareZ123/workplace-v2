@@ -19,11 +19,19 @@ ROOT = Path(__file__).resolve().parents[2]
 WORK_DIR = ROOT / "work"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-if str(WORK_DIR) not in sys.path:
-    sys.path.insert(0, str(WORK_DIR))
-
 from agents.agent43 import h17_native_spool_pair_intake as pairer
-from h17_k04_binary_window_intake import scan_bytes
+
+
+def _scan_spl_bytes(name: str, data: bytes, target_digest: bytes, mask: bytes):
+    added = str(WORK_DIR) not in sys.path
+    if added:
+        sys.path.insert(0, str(WORK_DIR))
+    try:
+        from h17_k04_binary_window_intake import scan_bytes
+        return scan_bytes(name, data, target_digest, mask, stride=1)
+    finally:
+        if added:
+            sys.path.remove(str(WORK_DIR))
 
 
 class RawIntake(pairer.Intake):
@@ -46,8 +54,8 @@ def scan_intake(intake, job_id: str, target_digest: bytes, mask: bytes):
     candidate_hits = []
     for pair in matching:
         spl = pair["spl"]
-        hits = scan_bytes(
-            spl["name"], spl["data"], target_digest, mask, stride=1
+        hits = _scan_spl_bytes(
+            spl["name"], spl["data"], target_digest, mask
         )
         pair_reports.append({
             "container": pair["container"],
