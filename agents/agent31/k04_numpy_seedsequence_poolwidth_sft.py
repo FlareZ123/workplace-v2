@@ -169,7 +169,7 @@ def main():
     assert len(excluded)==598,(len(excluded),surviving)
     assert len(surviving)==22 and min(surviving)==598,surviving
     assert counts[4]=={"bad_init0":126,"fullword_contradiction":499}
-    assert counts[393]=={"bad_init0":126,"fullword_contradiction":399,
+    assert counts[593]=={"bad_init0":126,"fullword_contradiction":399,
                           "partialword_contradiction":99,"pair_contradiction":1}
     print("ORIGINAL_RESULT",json.dumps({
       "source_sha256":base.SOURCE_SHA,
@@ -179,7 +179,7 @@ def main():
       "not_excluded_widths":surviving,
       "completed_original_numpy_pool_models":source_reconstructed,
       "source4_counts":dict(counts[4]),
-      "source393_counts":dict(counts[393]),
+      "source593_counts":dict(counts[593]),
       "elapsed_seconds":round(time.monotonic()-st,1),
       "original_K04_recovered":False,
     },sort_keys=True),flush=True)
