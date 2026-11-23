@@ -15,7 +15,7 @@ A native OneNote section can retain page history. The upstream [Aspose.Note FOSS
 - The adapter emits historical page revisions and the current page separately. It extracts page title, rich text, author/time metadata, image alternative-text fields, and attachment names.
 - The source file is SHA-256 hashed before and after extraction; a change raises an error.
 - It deliberately does **not** choose the latest revision as the final wording. Version selection still requires source-authored evidence tying a revision to Emily's final envelope text.
-- .onepkg/CAB package extraction is not implemented here; this adapter accepts individual .one section files only.
+- .onepkg/CAB package extraction and OneNoteOfflineCache.onecache decoding are not implemented; this adapter accepts individual .one section files only. The profile scanner retains its generic fallback for unsupported containers/cache files.
 
 Optional dependency: install work/requirements-h17-onenote.txt (aspose-note==26.3.2). The upstream GitHub repository contains an MIT LICENSE, while the current PyPI metadata reports a custom LicenseRef-Aspose-Split identifier; the requirements file flags this discrepancy for review before production use. See the [PyPI package metadata](https://pypi.org/project/aspose-note/).
 
