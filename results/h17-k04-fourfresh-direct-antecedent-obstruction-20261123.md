@@ -24,6 +24,12 @@ A *four-fresh* model sets every consecutive historical packet start difference t
 
 The graph constraints are demonstrably satisfiable: the preserved four-fresh source chronology (Agent10's ten gap deltas relative to Agent11's all-42 chronology) has gaps **4..13**, selected stage **955**, and satisfies **all 49 source-derived equalities**. A historical full-source GF(2) witness for that same chronology reproduces all 528 original observations with source rank15,434. Thus the obstruction is an actual antecedent-placement result within a feasible source model rather than an inconsistent model artifact.
 
+## Information-theoretic result for the constructive source-compatible history
+
+For the independently positive four-fresh, all-42 original history with selected stage955, the 528 intact native word observations have source GF(2) rank **15,434** against the 19,968-bit initial MT state. The projection of the selected four native words, *after conditioning on those original observations*, has full **rank128**. Consequently the source-consistent affine state set maps **surjectively to all 2^128 possible 16-byte selected printer buffers**, even though one earlier native word coincides with the target's first recurrence antecedent. MT tempering and the original 16-byte route-mask XOR are bijections, so the same statement holds for **every possible 16-byte K04 component** at this source-evidence level.
+
+This is a *constructive non-identifiability result*, rather than an assertion that all those components satisfy the original independent SHA256 commitment. The commitment identifies an unknown preimage in the 128-bit domain but supplies no efficient inverse. Any feasible true recovery needs a source-supported restriction not present in this complete original printer/MT model, such as a certified print-original witness, issuer key/seed mechanism, independent output donor, or copy-stage rule. It is futile to treat a new all42 source-compatible MT history by itself as K04 recovery.
+
 ## Reproducer and decision
 
 [Read-only single-file original-source SFT](../agents/agent22/k04_mt_fourfresh_target_antecedent_sft.py) derives the exact original historical witness equalities; computes four-fresh all-pairs difference bounds with standard-library integer arithmetic; tests all 2,112 third-antecedent placements; asserts the nearest gap and a concrete four-fresh positive schedule. An independent source-pinned local version returned `25 full / 17 partial / 49 unique / 0 third antecedent / minimum gap 2` with exit code zero.
