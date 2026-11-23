@@ -26,6 +26,8 @@ ROOT = Path(sys.argv[1]) if len(sys.argv) == 2 else Path("resources")
 RC17_SHA = "a4b649fdbb6909115fb9505133012b5c1dda42141aafc1c6ec756199ddf1fc6d"
 LABEL_SHA = "146fa698f44bc9b9fa7a443d8dc71a2e23ff0f883dabd01512f8ade82d3666ad"
 DOCREG_SHA = "20d8dc63a28bab7084b6919207c50fb5bf957054f30b71c3ced0b3b5507e7f2c"
+SEAL_SHA = "c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32"
+MAIL04_SHA = "c9e83a610f9240c3abd4b4d435588bd9056de34edf6fa3e6d7aca88d8a21f439"
 EXPECTED = {
     "B": "D82A73E9E1DB4379759E0027C130C9BB",
     "C": "5DBF40EE52FAAED9A536D3326CF0D95A",
@@ -276,6 +278,140 @@ def main() -> None:
                         "target_bits_fixed": 128 - target_rank,
                     })
 
+
+    # Source-indexed seal-serial bridge: the 44 signed/unsigned maintenance
+    # serials are 32-bit words. Check them against the all42/four-fresh
+    # printer source basis without inventing a permit-to-printer foreign key.
+    seal_data = checked(ROOT / "evidence/maintenance/seal-receipts.jsonl", SEAL_SHA)
+    mail04 = checked(ROOT / "evidence/mail/04.eml", MAIL04_SHA).decode("utf-8")
+    seal_rows = [json.loads(line) for line in seal_data.decode("utf-8").splitlines() if line]
+    assert len(seal_rows) == 44
+    order_match = re.search(r"witness walk was ([A-D, ]+)\\.", mail04)
+    assert order_match
+    bay_order = tuple(re.findall(r"[A-D]", order_match.group(1)))
+    assert bay_order == ("B", "D", "A", "C")
+    selected_by_bay = {}
+    for row in seal_rows:
+        if (
+            row["permit"] == "PTW-417" and row["state"] == "CLOSED"
+            and row["fitment"] == "AS_LEFT" and row["signed"]
+        ):
+            prior = selected_by_bay.get(row["bay"])
+            if prior is None or row["revision"] > prior["revision"]:
+                selected_by_bay[row["bay"]] = row
+    assert set(selected_by_bay) == {"A", "B", "C", "D"}
+    expected_selected = {
+        "A": "SG-7DAD0AD4", "B": "SG-D7DAD6BC",
+        "C": "SG-BE8E87FD", "D": "SG-9714519B",
+    }
+    assert {bay: row["serial"] for bay, row in selected_by_bay.items()} == expected_selected
+    k03_material = "|".join(selected_by_bay[bay]["serial"] for bay in bay_order)
+    k03_component = hashlib.sha256(k03_material.encode("ascii")).digest()[:16]
+    assert hashlib.sha256(k03_component).hexdigest() == acceptance["slot_sha256"]["K03"]
+    selected_words = [
+        bytes.fromhex(selected_by_bay[bay]["serial"].split("-", 1)[1])
+        for bay in bay_order
+    ]
+    selected_block = b"".join(selected_words)
+
+    fixed_masks = []
+    fixed_values = []
+    for stage in range(2100):
+        projected = projected_cache[stage]
+        fixed_masks.append(sum(
+            1 << bit for bit, (form, _) in enumerate(projected) if form == 0
+        ))
+        fixed_values.append(sum(
+            rhs << bit for bit, (form, rhs) in enumerate(projected) if form == 0
+        ))
+
+    seal_word_matches = []
+    for row in seal_rows:
+        serial_bytes = bytes.fromhex(row["serial"].split("-", 1)[1])
+        for endian in ("little", "big"):
+            stored = int.from_bytes(serial_bytes, endian)
+            for stored_native in (False, True):
+                observed = stored if stored_native else untemper(stored)
+                for stage in range(2100):
+                    fixed_mask = fixed_masks[stage]
+                    fixed_bits = fixed_mask.bit_count()
+                    mismatch = ((observed ^ fixed_values[stage]) & fixed_mask).bit_count()
+                    if mismatch or fixed_bits < 26:
+                        continue
+                    augmented = basis.copy()
+                    consistent = True
+                    for bit, form in enumerate(expressions[stage]):
+                        if not add_equation(augmented, form, (observed >> bit) & 1):
+                            consistent = False
+                            break
+                    if not consistent:
+                        continue
+                    target_rank = quotient_rank(target_forms, augmented)
+                    seal_word_matches.append({
+                        "permit": row["permit"], "bay": row["bay"],
+                        "revision": row["revision"], "fitment": row["fitment"],
+                        "signed": row["signed"], "serial": row["serial"],
+                        "selected_K03": (
+                            row["permit"] == "PTW-417"
+                            and selected_by_bay.get(row["bay"], {}).get("serial") == row["serial"]
+                        ),
+                        "historical_p951_anchor": (
+                            (row["permit"], row["bay"]) in {
+                                ("PTW-405", "D"), ("PTW-412", "B"), ("PTW-414", "C")
+                            }
+                        ),
+                        "stage": stage, "endian": endian,
+                        "stored_as_native": stored_native,
+                        "source_fixed_bits": fixed_bits,
+                        "added_rank": len(augmented) - len(basis),
+                        "target_bits_fixed": 128 - target_rank,
+                    })
+
+    selected_block_matches = []
+    for endian in ("little", "big"):
+        stored_words = [
+            int.from_bytes(word, endian) for word in selected_words
+        ]
+        for stored_native in (False, True):
+            observed_words = (
+                stored_words if stored_native
+                else [untemper(value) for value in stored_words]
+            )
+            for q in range(2097):
+                checks = []
+                for lane in range(4):
+                    fixed_mask = fixed_masks[q+lane]
+                    fixed_bits = fixed_mask.bit_count()
+                    mismatch = (
+                        (observed_words[lane] ^ fixed_values[q+lane]) & fixed_mask
+                    ).bit_count()
+                    checks.append((fixed_bits, mismatch))
+                fixed_total = sum(x[0] for x in checks)
+                mismatch_total = sum(x[1] for x in checks)
+                if mismatch_total or fixed_total < 64 or min(x[0] for x in checks) < 8:
+                    continue
+                augmented = basis.copy()
+                consistent = True
+                for lane in range(4):
+                    for bit, form in enumerate(expressions[q+lane]):
+                        if not add_equation(
+                            augmented, form, (observed_words[lane] >> bit) & 1
+                        ):
+                            consistent = False
+                            break
+                    if not consistent:
+                        break
+                if not consistent:
+                    continue
+                target_rank = quotient_rank(target_forms, augmented)
+                selected_block_matches.append({
+                    "stage": q, "endian": endian,
+                    "stored_as_native": stored_native,
+                    "source_fixed_bits": fixed_total,
+                    "added_rank": len(augmented) - len(basis),
+                    "target_bits_fixed": 128 - target_rank,
+                })
+
     mask = bytes.fromhex(route["K04"]["masked_component"])
     assert len(mask) == 16
     results = []
@@ -359,6 +495,28 @@ def main() -> None:
                 key=lambda x: (x["target_bits_fixed"], x["source_fixed_bits"]),
                 reverse=True
             )[:12],
+        },
+        "seal_serial_fourfresh_bridge": {
+            "source_records": len(seal_rows),
+            "selected_bay_order": list(bay_order),
+            "selected_K03_raw_block": selected_block.hex().upper(),
+            "selected_K03_component": k03_component.hex().upper(),
+            "serial_presentations_with_26plus_source_fixed_bits": len(seal_word_matches),
+            "exact_32bit_serial_matches": [
+                x for x in seal_word_matches if x["source_fixed_bits"] == 32
+            ],
+            "selected_PTW417_serial_matches": [
+                x for x in seal_word_matches if x["selected_K03"]
+            ],
+            "historical_p951_anchor_matches": [
+                x for x in seal_word_matches if x["historical_p951_anchor"]
+            ],
+            "best_serial_matches": sorted(
+                seal_word_matches,
+                key=lambda x: (x["target_bits_fixed"], x["source_fixed_bits"]),
+                reverse=True
+            )[:20],
+            "selected_four_serial_block_matches": selected_block_matches,
         },
         "synthetic_full_coupon_reconstruction": True,
         "interpretation": (
