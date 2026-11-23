@@ -30,7 +30,7 @@ def _teal_png(path: Path, phrase: str, generic: bool = False) -> bytes:
         if generic:
             flat[index, 1] = (int(flat[index, 1]) & 0xFE) | int(bit)
         else:
-            channel = 1 if (index & 1) == 0 else 2
+            channel = 1
             bit_position = index & 1
             mask = 1 << bit_position
             flat[index, channel] = (
