@@ -1,6 +1,6 @@
 # H-17 archive recovery | working entry point
 
-**Current state, 16 November 2026:** The original REC8/1 verifier accepts K01, K02, K03, K05, K06 and K07. **K04 and K08 remain unresolved. Combined acceptance is INCOMPLETE.** The success criterion is K04 PASS, K08 PASS and combined REC8/1 PASS using the untouched original verifier.
+**Current state, 23 November 2026:** The original REC8/1 verifier accepts K01, K02, K03, K05, K06 and K07. **K04 and K08 remain unresolved. Combined acceptance is INCOMPLETE.** The success criterion is K04 PASS, K08 PASS and combined REC8/1 PASS using the untouched original verifier.
 
 The authoritative short decision map is [results/README.md](results/README.md). It links the current experimental boundaries, source limitations, reusable code and substantive results. Start there rather than relying on older directions preserved below.
 
