@@ -30,8 +30,8 @@ The new `tests/test_h17_profile_k08_thumbcache_bridge.py` exercises:
 
 The existing `tests/test_h17_k08_teal_bit_image_scan.py` and the profile scanner's `--self-test` also ran successfully.
 
-- GitHub Actions workflow: [Agent 25 K08 profile thumbnail-cache bridge](https://github.com/FlareZ123/workplace-v2/actions/runs/45091655484)
-- Run: `45091655484`
+- GitHub Actions workflow: [Agent 25 K08 profile thumbnail-cache bridge](https://github.com/FlareZ123/workplace-v2/actions/runs/45094353923)
+- Run: `45094353923`
 - Result: success; decoder tests, bridge tests and profile-scanner self-test all completed successfully.
 
 ## Application to the supplied archive
