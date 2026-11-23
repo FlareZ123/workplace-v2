@@ -179,3 +179,16 @@ def iter_xmp_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]:
                 safe_lang = re.sub(r"[^A-Za-z0-9_.-]+", "_", lang) or "unspecified"
                 label = f"xmp:{field_label}:element-{element_index}:item-{item_index}:lang-{safe_lang}"
                 yield label, value
+        # RDF/XML permits simple literal properties on rdf:Description
+        # as XML attributes. Photoshop commonly serializes Headlines and
+        # other caption metadata in this form.
+        description_tag = "{" + NS["rdf"] + "}Description"
+        for description_index, description in enumerate(root.iter(description_tag)):
+            value = description.attrib.get(tag, "").strip()
+            if value:
+                lang = description.attrib.get(
+                    "{http://www.w3.org/XML/1998/namespace}lang", ""
+                )
+                safe_lang = re.sub(r"[^A-Za-z0-9_.-]+", "_", lang) or "unspecified"
+                label = f"xmp:{field_label}:description-{description_index}:attribute:lang-{safe_lang}"
+                yield label, value
