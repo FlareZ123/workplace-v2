@@ -14,6 +14,8 @@ jobs:
           python-version: '3.11'
       - name: Test source-defined RC-17 B and D service-order blocks as complete K04 donors
         run: python agents/agent47/k04_rc17_revision_future_donor_sft.py > rc17-donor-result.json
+      - name: Print compact source-pinned result for inspection
+        run: cat rc17-donor-result.json
       - uses: actions/upload-artifact@v4
         with:
           name: rc17-donor-result
