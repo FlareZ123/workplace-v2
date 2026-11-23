@@ -47,3 +47,6 @@ A source-reading blocker was also found in the initial IPTC-IIM/Photoshop APP13 
 
 
 **End-to-end follow-up, 03:17 UTC:** added an additional real-byte JPEG APP13 assertion that `iter_text_streams`, the existing exact K08 scanner's input layer, emits the complete `iptc:CaptionAbstract` from a synthetic Photoshop segment. Focused metadata run [45104837306](https://github.com/FlareZ123/workplace-v2/actions/runs/45104837306) completed **SUCCESS** at `ecf0e75ac55aaec71f573b06e44380335e3883b8`. Thus the native JPEG → IPTC property → exact phrase-candidate stream integration is exercised, and still no historical source item or genuine K08 commitment match is implied.
+
+
+**Full regression follow-up, 03:25 UTC:** manual `suite=full` GitHub Actions [run 45105698717](https://github.com/FlareZ123/workplace-v2/actions/runs/45105698717), head `8bb5ade950ea`, completed **SUCCESS** after the native IPTC fixes. All four groups passed: (1) XMP/IPTC metadata, (2) image/profile K08 intake tests, (3) source-bounded workbook selector, and (4) profile scanner self-test. This supersedes the pending/canceled broad-run state. It validates code functionality on controls only; the archive still contains no historical final K08 caption or physical K04 coupon.
