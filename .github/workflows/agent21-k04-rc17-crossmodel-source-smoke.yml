@@ -16,3 +16,5 @@ jobs:
         run: |
           python agents/agent21/k04_rc17_crossmodel_source_selector_sft.py
           python agents/agent21/k04_rc17_sourceblind_firstword_census_sft.py
+          python agents/agent21/k04_late_clock_mt_witness_sft.py
+          python agents/agent21/k04_mt_two_step_ancestors_sft.py
