@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Bounded K08 STOW14/N23 whole-text selection falsification.
+"""Bounded K08 STOW14/N23 selection falsification.
+
+The literal word-mask/nibble blocks are rejected sanity checks only; source
+selectors are record locators, not word indexes. The source-grounded
+whole-record rule is reproduced separately in k08_whole_record_selection.py.
 
 Reads only the crew note sheet, reconstructed print log, routing sheet and
 acceptance JSON. It never opens the hash-only BX25-08 PDF or private/.
@@ -113,7 +117,7 @@ def main() -> None:
     )
     print("ALL_24_ORDINAL_SELECTORS", [selector_rows[n] for n in range(1, 25)])
 
-    # Test the simplest whole-text edit interpretation: payload LSBs select words.
+    # Rejected literal word-index sanity check only; no source defines this operation.
     for source_id, mask_id in ((23, 23), (20, 23), (23, 20), (20, 20)):
         source_words = notes[source_id]["words"][:16]
         bits = [b & 1 for b in payloads[mask_id]][:len(source_words)]
@@ -127,7 +131,7 @@ def main() -> None:
                 f"HMAC16={mac16} digest={digest} hit={hit}"
             )
 
-    # Test one 14-word selection from the 14 STOW notes.
+    # Rejected literal nibble-as-word-index sanity check; do not extend.
     for label, indices in (
         ("low_nibble", [b & 0x0F for b in payloads[23][:14]]),
         ("high_nibble", [b >> 4 for b in payloads[23][:14]]),
@@ -195,7 +199,7 @@ def main() -> None:
             f"selected={normalize(' '.join(selected))!r}"
         )
 
-    print("DECISION: no source-authenticated complete K08 text-selection rule or HMAC hit")
+    print("DECISION: no text transformation or phrase constructor; N23 is the source-supported whole-record instruction (see k08_whole_record_selection.py).")
     print("LIMIT: note/job suffix join and ACK1 payload integrity are not authenticated;")
     print("       K08 route names crew notes/noticeboard drafts, not spool payloads.")
 
