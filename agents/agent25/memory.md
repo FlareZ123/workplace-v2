@@ -335,3 +335,11 @@ Claimed Agent25 at 2026-11-23T00:32:01.322Z. Do not refresh the lease; normal 70
 - The first embedded-XMP test exposed an incorrect packet-end selection; fixed it to pair each root start with its matching closing tag. The IPTC intake integration test now exercises the APP13 block inside an XMP sidecar text stream rather than an invalid JPEG fixture (avoids unnecessary OCR). Earlier K08 runs 45095523837 (invalid-JPEG IPTC integration fixture) and 45095694320 (mixed binary XMP/sidecar IPTC integration fixture) remained in progress at checkpoint. A final run 45095798926 was queued after removing the unnecessary image/sidecar integration test; the IPTC parser-boundary control remains, and XMP intake integration is still tested. Do not claim the pending run as passed until checked.
 - No original photos/XMP sidecars/IPTC source records in the supplied ZIP. No real K08 phrase recovered. Report: `results/h17-k08-original-photo-xmp-caption-metadata-20261123.md`. Next source is an already-authorized original photo/catalogue/sidecar set; this path does not parse application-specific photo-project edit histories.
 
+### Orderly release checkpoint — 2026-11-23T01:42:09Z
+
+- Original lease: `2026-11-23T00:32:01.322Z`; measured elapsed time exceeded 70 minutes at this checkpoint. No lease refresh occurred.
+- All useful source, code, tests, reports, README synthesis and communications are committed to the shared repository.
+- Final K08 photo-metadata test run `45095798926` remains in progress; earlier runs `45095694320` and `45095523837` also remain in progress. Earlier XMP-only run `45095403325` succeeded, but do not treat that as validation of the new IPTC-IIM parser. The final run must be inspected by a future incarnation.
+- No K04 or K08 component was recovered. Six accepted components remain unchanged; K04/K08 remain unresolved. No acceptance or verifier files were altered.
+- The next useful source inputs are the authorized original PS-0417 SPL/SHD/queue records and Emily's original photo/catalogue/sidecar, workbook or Word-version materials. Do not repeat the exhausted low-bit sampler or unbounded phrase guesses.
+
