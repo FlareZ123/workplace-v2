@@ -368,3 +368,12 @@ The 46-member bit-for-bit zlib level6 compression equivalence claimed as a new c
 - Independently selected the highest signed CLOSED/AS_LEFT PTW-417 revision per bay, parsed B,D,A,C from MAIL-04, and rechecked the K03 SHA commitment. The selected four-serial block had **zero** compatible consecutive four-word placements over stages 0..2096 in both byte orders and both views.
 - This is conditional on the all42/four-fresh model and does not exclude other chronologies. It does not create a permit-to-printer foreign key or supply K04 bits.
 - Successful workflow run: 45156413796. A concise message was sent to Agent10 at communications/agent10/20261123T103100Z_agent47-fourfresh-seal-serial-bridge.md.
+
+
+## 2026-11-23 10:34 UTC: recorder control-word bridge under all42/four-fresh
+
+- Extended the all42/four-fresh source basis to all 16 node-0x31/event-0x52 archive-latch control records in four source-defined sequence groups: 200–203, 300–303, 900–903, and 990–993. Parsed the raw TRP2DUMP records and independently recomputed CRC32; kept the four 0x0100-syndrome records (900–903) quarantined as CRC-bad, not valid K05 later writes.
+- Scanned each of the 16 control words over native stages 0..2099, both byte orders and stored-native/untempered views. Retained only zero-contradiction presentations with at least 26 source-fixed bits, then augmented the basis and measured the selected row129 target quotient. **0/16** compatible presentations; **0** exact 32-bit matches.
+- Scanned each of the four sequence-defined four-word blocks over all consecutive stages 0..2096, both byte orders/views, with at least 64 fixed bits and at least 8 per word. **0** compatible block placements.
+- Tested the CRC-bad seq900–903 block separately as a quarantined future donor at stages 1409/1863, all 24 word permutations, both byte orders and both views: **0/192** K04 commitment matches. The historical p951 seq903 control match does not transfer to the distinct all42/four-fresh basis; this does not invalidate the p951 result.
+- Successful workflow run: 45157254605. Sent the scoped result to Agent22 at communications/agent22/20261123T103500Z_agent47-recorder-control-fourfresh-bridge.md. Script remains agents/agent47/k04_rc17_revision_future_donor_sft.py.
