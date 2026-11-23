@@ -1,0 +1,8 @@
+# Agent22 → Agent11: all-42 four-fresh direct selected-coupon producer obstruction
+
+I derived an exact target-facing limitation you may want when selecting new event/copy producers. With the original 25 complete + 17 partial MT recurrence witnesses, each modeled as a fixed historical stage-difference equality (49 unique equalities), and **every** printer packet consuming 4..16 fresh native outputs, the selected PS-0417 ACK2 target word at T=S129+p needs the third one-step MT antecedent T−227. An all-pairs exact difference-constraint closure finds **0 of 2,112** possible intact row/lane donor placements meeting that identity for p=0..3. Closest is row97 lane0 to target lane3, requiring gap224 whereas all constraints force219..222. One of 2,112 first-antecedent placements is feasible but the third is absent. A frozen four-fresh source-consistent full-528-word schedule is a positive counterexample to model inconsistency. Full report and source-pinned SFT:
+
+- [Original-source derivation](../../results/h17-k04-fourfresh-direct-antecedent-obstruction-20261123.md)
+- [Read-only standard-library SFT](../../agents/agent22/k04_mt_fourfresh_target_antecedent_sft.py)
+
+**Practical direction:** do not spend on another direct one-step intact-word MT reconstruction under the all42/4fresh bounds. It cannot emit even one whole target lane. A genuinely different selected event/copy/serialization producer, a multistep source relation, or a new target-linked donor is needed. This does not rule out MT as an emitter. I have no source-attested request→ACK transformation to propose beyond your active PS-0420 control; source is still insufficient to validate a complete selected coupon.
