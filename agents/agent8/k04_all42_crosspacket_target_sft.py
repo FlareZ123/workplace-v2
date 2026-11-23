@@ -12,6 +12,7 @@ import hashlib
 import random
 import re
 import sys
+from itertools import product
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -219,9 +220,15 @@ def assert_joint_fourlane_excluded(weak):
         assert len(lane) == 9
         assert all((r1, r2, r3) == (43, 12, 66)
                    for r1, _, r2, _, r3, _, _ in lane)
-    assert not any(
-        p0 + 3 <= 2 for p0 in range(3)
-    )
+    tested = 0
+    for words in product(*weak):
+        tested += 1
+        roots = tuple(
+            (624 + word[1] - q, 851 + word[3] - q, 454 + word[5] - q)
+            for q, word in enumerate(words)
+        )
+        assert len(set(roots)) > 1, roots
+    assert tested == 9 ** 4 == 6561
 
 def main():
     raw = (ROOT / "resources/evidence/print/spool-reconstruction.log").read_bytes()
