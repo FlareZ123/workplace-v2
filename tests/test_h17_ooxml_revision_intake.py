@@ -23,7 +23,7 @@ def _docx_bytes() -> bytes:
     <w:p>
       <w:r><w:t xml:space="preserve">The last watch </w:t></w:r>
       <w:del w:id="1" w:author="Emily" w:date="2026-10-02T17:00:00Z">
-        <w:r><w:delText xml:space="preserve">keeps the room empty</w:delText></w:r>
+        <w:r><w:delText xml:space="preserve">keeps the room empty </w:delText></w:r>
       </w:del>
       <w:ins w:id="2" w:author="Emily" w:date="2026-10-02T17:30:00Z">
         <w:r><w:t xml:space="preserve">leaves room </w:t></w:r>
