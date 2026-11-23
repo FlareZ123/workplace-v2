@@ -76,8 +76,7 @@ def main() -> None:
     # Positive arithmetic MT native recurrence control from 624 independent words.
     planted = [(i * 0x9E3779B9 ^ (i << 9) ^ 0xF0101234) & U32
                for i in range(624)]
-    assert planted[397] ^ twist(planted[0], planted[1]) == (
-        planted[397] ^ twist(planted[0], planted[1]))
+    assert planted[397] ^ twist(planted[0], planted[1]) == 0x420FCFC8
 
     exact = defaultdict(list)
     for row, packet in enumerate(native):
