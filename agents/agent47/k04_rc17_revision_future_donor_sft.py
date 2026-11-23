@@ -136,6 +136,146 @@ def main() -> None:
         )
         assert map_native(donor, mapping) == target
 
+
+    # Independent stage bridge: the older p951 study found revision-B
+    # VERIFY -> PURGE as an adjacent source-compatible pair. Test that same
+    # source-defined reverse-service pair, plus C/D controls, against the
+    # distinct all42/four-fresh chronology. Do not select a stage by target
+    # information; scan the complete 0..2096 source range.
+    def quotient_rank(forms, current_basis):
+        residual = [project(form, current_basis)[0] for form in forms]
+        pivots = {}
+        for form in residual:
+            while form:
+                pivot = form.bit_length() - 1
+                if pivot in pivots:
+                    form ^= pivots[pivot]
+                else:
+                    pivots[pivot] = form
+                    break
+        return len(pivots)
+
+    def add_equation(current_basis, form, rhs):
+        while form:
+            pivot = form.bit_length() - 1
+            if pivot in current_basis:
+                previous, previous_rhs = current_basis[pivot]
+                form ^= previous
+                rhs ^= previous_rhs
+            else:
+                current_basis[pivot] = (form, rhs)
+                return True
+        return rhs == 0
+
+    target_forms = [
+        form for q in range(955, 959) for form in expressions[q]
+    ]
+    assert quotient_rank(target_forms, basis) == 128
+    bridge_pairs = []
+    bridge_blocks = []
+    for revision, service_block in blocks.items():
+        reverse_block = b"".join(
+            service_block[4*lane:4*lane+4] for lane in (3, 2, 1, 0)
+        )
+        for endian in ("little", "big"):
+            for stored_native in (False, True):
+                observed = [
+                    int.from_bytes(reverse_block[4*lane:4*lane+4], endian)
+                    for lane in range(4)
+                ]
+                if not stored_native:
+                    observed = [untemper(value) for value in observed]
+
+                # The first two reverse-service words are VERIFY -> PURGE.
+                for q in range(0, 2095):
+                    checks = []
+                    for lane in range(2):
+                        projected = [
+                            project(form, basis) for form in expressions[q+lane]
+                        ]
+                        fixed_mask = sum(
+                            1 << bit for bit, (form, _) in enumerate(projected)
+                            if form == 0
+                        )
+                        fixed_value = sum(
+                            rhs << bit for bit, (form, rhs) in enumerate(projected)
+                            if form == 0
+                        )
+                        checks.append((
+                            fixed_mask.bit_count(),
+                            ((observed[lane] ^ fixed_value) & fixed_mask).bit_count()
+                        ))
+                    fixed_total = sum(x[0] for x in checks)
+                    mismatch_total = sum(x[1] for x in checks)
+                    if mismatch_total or fixed_total < 26 or min(x[0] for x in checks) < 8:
+                        continue
+                    augmented = basis.copy()
+                    consistent = True
+                    for lane in range(2):
+                        for bit, form in enumerate(expressions[q+lane]):
+                            if not add_equation(
+                                augmented, form, (observed[lane] >> bit) & 1
+                            ):
+                                consistent = False
+                                break
+                        if not consistent:
+                            break
+                    if not consistent:
+                        continue
+                    target_rank = quotient_rank(target_forms, augmented)
+                    bridge_pairs.append({
+                        "revision": revision, "stage": q, "endian": endian,
+                        "stored_as_native": stored_native,
+                        "source_fixed_bits": fixed_total,
+                        "added_rank": len(augmented) - len(basis),
+                        "target_bits_fixed": 128 - target_rank,
+                    })
+
+                # Full four-word reverse-service block, same complete scan.
+                for q in range(0, 2097):
+                    checks = []
+                    for lane in range(4):
+                        projected = [
+                            project(form, basis) for form in expressions[q+lane]
+                        ]
+                        fixed_mask = sum(
+                            1 << bit for bit, (form, _) in enumerate(projected)
+                            if form == 0
+                        )
+                        fixed_value = sum(
+                            rhs << bit for bit, (form, rhs) in enumerate(projected)
+                            if form == 0
+                        )
+                        checks.append((
+                            fixed_mask.bit_count(),
+                            ((observed[lane] ^ fixed_value) & fixed_mask).bit_count()
+                        ))
+                    fixed_total = sum(x[0] for x in checks)
+                    mismatch_total = sum(x[1] for x in checks)
+                    if mismatch_total or fixed_total < 64 or min(x[0] for x in checks) < 8:
+                        continue
+                    augmented = basis.copy()
+                    consistent = True
+                    for lane in range(4):
+                        for bit, form in enumerate(expressions[q+lane]):
+                            if not add_equation(
+                                augmented, form, (observed[lane] >> bit) & 1
+                            ):
+                                consistent = False
+                                break
+                        if not consistent:
+                            break
+                    if not consistent:
+                        continue
+                    target_rank = quotient_rank(target_forms, augmented)
+                    bridge_blocks.append({
+                        "revision": revision, "stage": q, "endian": endian,
+                        "stored_as_native": stored_native,
+                        "source_fixed_bits": fixed_total,
+                        "added_rank": len(augmented) - len(basis),
+                        "target_bits_fixed": 128 - target_rank,
+                    })
+
     mask = bytes.fromhex(route["K04"]["masked_component"])
     assert len(mask) == 16
     results = []
@@ -200,6 +340,26 @@ def main() -> None:
         "complete_candidates": len(results),
         "distinct_components": len({x["component"] for x in results}),
         "original_K04_commitment_matches": matches,
+        "fourfresh_reverse_service_pair_bridge": {
+            "compatible_pair_presentations": len(bridge_pairs),
+            "target_informative_pairs": [
+                x for x in bridge_pairs if x["target_bits_fixed"] > 0
+            ],
+            "best_pairs": sorted(
+                bridge_pairs,
+                key=lambda x: (x["target_bits_fixed"], x["source_fixed_bits"]),
+                reverse=True
+            )[:12],
+            "compatible_full_blocks": len(bridge_blocks),
+            "target_informative_full_blocks": [
+                x for x in bridge_blocks if x["target_bits_fixed"] > 0
+            ],
+            "best_full_blocks": sorted(
+                bridge_blocks,
+                key=lambda x: (x["target_bits_fixed"], x["source_fixed_bits"]),
+                reverse=True
+            )[:12],
+        },
         "synthetic_full_coupon_reconstruction": True,
         "interpretation": (
             "B is withdrawn and D-draft is unissued. Any candidate match would "
