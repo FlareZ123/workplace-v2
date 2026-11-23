@@ -192,3 +192,34 @@ def iter_xmp_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]:
                 safe_lang = re.sub(r"[^A-Za-z0-9_.-]+", "_", lang) or "unspecified"
                 label = f"xmp:{field_label}:description-{description_index}:attribute:lang-{safe_lang}"
                 yield label, value
+
+    # Photoshop's standard TextLayers metadata caches complete text per layer.
+    # Keep each layer's name paired with its own text, which can distinguish
+    # a final envelope overlay from an earlier generic photograph caption.
+    layer_section_tag = "{" + NS["photoshop"] + "}TextLayers"
+    list_item_tag = "{" + NS["rdf"] + "}li"
+    layer_name_tag = "{" + NS["photoshop"] + "}LayerName"
+    layer_text_tag = "{" + NS["photoshop"] + "}LayerText"
+
+    def layer_property(item, tag: str) -> str:
+        for node in item.iter():
+            if node.tag == tag:
+                value = "".join(node.itertext()).strip()
+                if value:
+                    return value
+            value = node.attrib.get(tag, "").strip()
+            if value:
+                return value
+        return ""
+
+    for section_index, section in enumerate(root.iter(layer_section_tag)):
+        for layer_index, item in enumerate(section.iter(list_item_tag)):
+            text = layer_property(item, layer_text_tag)
+            if text:
+                name = layer_property(item, layer_name_tag)
+                safe_name = re.sub(r"[^A-Za-z0-9_.-]+", "_", name).strip("_")[:120] or "unnamed"
+                yield (
+                    f"xmp:photoshop:TextLayers:section-{section_index}:"
+                    f"layer-{layer_index}:name-{safe_name}",
+                    text,
+                )
