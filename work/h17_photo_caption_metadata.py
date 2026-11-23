@@ -43,15 +43,21 @@ def _extract_packet(name: str, data: bytes) -> bytes | None:
     lower = name.casefold()
     if lower.endswith(".xmp"):
         return data[:4 * 1024 * 1024]
-    start = min((data.find(token) for token in XMP_STARTS if data.find(token) >= 0), default=-1)
-    if start < 0:
+    pairs = (
+        (b"<x:xmpmeta", b"</x:xmpmeta>"),
+        (b"<xmpmeta", b"</xmpmeta>"),
+        (b"<rdf:RDF", b"</rdf:RDF>"),
+    )
+    found = [(data.find(start_token), start_token, end_token)
+             for start_token, end_token in pairs
+             if data.find(start_token) >= 0]
+    if not found:
         return None
-    ends = [(data.find(token, start), token) for token in XMP_ENDS]
-    ends = [(pos, token) for pos, token in ends if pos >= 0]
-    if not ends:
+    start, _start_token, end_token = min(found, key=lambda item: item[0])
+    end = data.find(end_token, start)
+    if end < 0:
         return data[start:start + 4 * 1024 * 1024]
-    pos, token = min(ends, key=lambda item: item[0])
-    return data[start:pos + len(token)]
+    return data[start:end + len(end_token)]
 
 
 def _field_values(element):
