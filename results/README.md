@@ -54,6 +54,8 @@ Separately, Agent 4 exhaustively checked **17,179,869,184** complete original K0
 
 The **960-member variable-lane MT** complete-coupon test is already summarized above; its full report records **0/49** exact blind-heldout packets and explains why the four apparent lane-word matches are dependent twins. [Full variable-lane constructor and blind-holdout report](h17-k04-source-witness-variable-lane-mosaic-20261122.md). Treat each result only within its enumerated model and control domain. Do not repeat the same candidate space with alternate backends, timeouts, byte views or relabelled parameters; a new run needs a materially different source relation or constructor.
 
+**23 November all-42 leave-one-packet gate:** Under Agent11's frozen alternative stage vector, a source-pinned leave-one-packet-out GF(2) projection predicts **0/132** complete intact packets from the other 131. Of the 66 rows outside all 42 recurrence-witness triples, 54 have zero fixed bits and 12 have only one fixed bit. The 15,434-rank full-source fit is therefore not a complete-packet predictive producer; this is conditional on that vector, not a rejection of every MT model. [Reproducible report](h17-k04-all42-leave-one-packet-prediction-20261123.md).
+
 ## K08: derive the exact full author-final phrase
 
 The trimmed export does not quote Emily's final recovery-envelope inscription. Its exact normalized words are necessary for the source-defined HMAC16 derivation and original commitment. A scene description, historical slogan, locator, paraphrase, or one-word hit is insufficient. [Source-authored text/version boundary](h17-k08-source-authored-final-caption-version-path-20261119.md); [prior-art equivalence map](h17-experiment-equivalence-gate.md).
