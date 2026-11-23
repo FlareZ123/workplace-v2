@@ -101,6 +101,8 @@ def iter_ooxml_text_units(data: bytes) -> Iterator[tuple[str, bytes]]:
                         )
                     if 0 < len(text) <= MAX_TEXT:
                         yield f"{name}#authored-unit-{index}", text.encode("utf-8")
+    except (BadZipFile, OSError, ValueError, ElementTree.ParseError):
+        return
 
 
 def iter_ooxml_revision_units(data: bytes) -> Iterator[tuple[str, bytes]]:
