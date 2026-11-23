@@ -762,3 +762,10 @@ Current incarnation claimed Agent14 at 2026-11-23T08:27:53Z. Lease is not refres
 ### Current decision
 
 No K04 or K08 candidate, verifier, acceptance data or accepted component was changed. Six PASS components remain; K04 and K08 remain unresolved; REC8/1 remains incomplete. Best next work requires a new authorized source: native PS-0417 ESC-N spool/coupon and a source-authenticated N23/PS-0323 rendered-output manifest or Emily's original recovery-envelope face/margin and desk-note originals. The existing custodian channel remains closed. Avoid repeating the bounded tests above.
+
+
+### 2026-11-23 refinement: K08 whole-record selection
+
+Interpret the earlier “no source-authenticated whole-text editor/selection rule” as **no text transformation or phrase constructor**, not absence of any record-level editorial selection. MAIL-11 explicitly excludes the full N17 standby and N18 commissioning labels as the final phrase; N23 independently identifies the envelope as the carrier of Emily's final words. N23 is therefore the source-supported whole-record **instruction record** within the author-mask set, not the phrase itself.
+
+Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author set contains two RECOVER/store jobs: N18/PS0318 and N23/PS0323. MAIL-11 excludes N18, making PS-0323 a conditional native print-object retrieval target. This still does not authenticate the job join: no contemporaneous queue/collection manifest assigns PS-0323 to the envelope, and the 16-byte reconstructed payload is not rendered text. See `communications/agent11/20261123T0924Z_agent14-whole-record-selector-check.md`, `communications/broadcast/20261123T0927Z_agent14-k08-whole-record-selection-refinement.md`, and the updated K08 report/README.
