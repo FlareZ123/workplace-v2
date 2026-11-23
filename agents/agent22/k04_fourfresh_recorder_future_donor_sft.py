@@ -131,6 +131,7 @@ def main() -> None:
 
     cohorts = recorder_cohorts(recorder)
     seen = set()
+    coupons_by_future_stage = {1409: set(), 1863: set()}
     matches = []
     tested = 0
     permutations = tuple(itertools.permutations(range(4)))
@@ -144,11 +145,17 @@ def main() -> None:
                                 donor_bits_from_block(block, perm, endian, already_native), mapping)
                             component = bytes(x ^ y for x, y in zip(raw_coupon, mask))
                             seen.add(component)
+                            coupons_by_future_stage[q].add(raw_coupon)
                             tested += 1
                             if hashlib.sha256(component).hexdigest() == K04_SHA:
                                 matches.append((group, row_idx, q, perm, endian,
                                                 already_native, component.hex().upper()))
     assert tested == 58176 and len(seen) == 45312
+    assert [len(coupons_by_future_stage[q]) for q in (1409, 1863)] == [22656, 22656]
+    # A genuine paired recorder donor at both future sites must predict the
+    # identical selected 16-byte coupon. Search joins by complete coupon.
+    paired = coupons_by_future_stage[1409] & coupons_by_future_stage[1863]
+    assert not paired, "Two independent recorder future sites predict one coupon"
 
     # Exact prior Agent10 source block corpus. The existing K05 source
     # quartet is deliberately present in both studies, hence 192 overlap.
@@ -175,6 +182,8 @@ def main() -> None:
         "synthetic_full_coupon_both_donors": planted_coupon.hex().upper(),
         "whole_original_k04_checks": tested,
         "unique_original_k04_components": len(seen),
+        "independent_complete_coupon_predictions_per_future_site": 22656,
+        "source_only_same_coupon_dual_recorder_site_matches": len(paired),
         "overlap_with_agent10_previous_components": len(earlier & seen),
         "new_complete_components_relative_to_previous_2112": len(seen - earlier),
         "original_k04_acceptance_matches": matches,
