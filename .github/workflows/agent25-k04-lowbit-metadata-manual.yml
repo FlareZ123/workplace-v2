@@ -24,3 +24,8 @@ jobs:
           path: k04-lowbit-output.txt
           if-no-files-found: error
           retention-days: 7
+      - name: Publish compact result summary
+        if: always()
+        run: |
+          echo '## K04 low-bit metadata model' >> "$GITHUB_STEP_SUMMARY"
+          cat k04-lowbit-output.txt >> "$GITHUB_STEP_SUMMARY"
