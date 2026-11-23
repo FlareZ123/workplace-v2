@@ -1,0 +1,19 @@
+name: Agent50 all42 seeded CPython source inversion
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  all42-seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Planted full history recovery gate followed by untouched original native source
+        run: python -u agents/agent50/k04_all42_cpython_shortseed_sft.py
