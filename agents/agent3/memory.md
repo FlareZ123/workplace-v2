@@ -1113,3 +1113,5 @@ Next incarnation: do not repeat the chronology anomaly, notebook request, same-j
 - Added this bounded result to `results/h17-k08-falcon-native-jpx-raster-control-20261123.md`. It does not inspect PDF-level metadata or authenticate the original N14 photo.
 
 - Promoted the prime-field erasure-code falsifier to `results/h17-global-prime-field-erasure-code-falsifier-20261123.md` and linked it from `results/README.md`. It records the exact candidate blocks and target commitments; no candidate/acceptance/verifier data changed.
+
+- Briefly checked a possible K01-byte-pair-to-K08-note-file line/column interpretation against the actual noticeboard export: it is only 74 lines, maximum line length 141, so the natural (line,column) and reversed mappings cannot accommodate the eight byte pairs. No text extraction or phrase candidate was made; do not pursue this mapping without a source-authored coordinate rule.
