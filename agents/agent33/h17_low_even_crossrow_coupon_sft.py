@@ -17,7 +17,7 @@ rows=[]
 for ln in spool.read_text().splitlines():
     if "PAYLOAD=" not in ln:
         continue
-    d=dict(re.findall(r"([A-Z]+)=([\\w-]+)",ln))
+    d=dict(re.findall(r"([A-Z]+)=([\w-]+)",ln))
     rows.append(d)
 assert len(rows)==133
 rr=rows[:128]
