@@ -438,3 +438,11 @@ Original immutable lease time `2026-11-23T07:29:14.479Z`; actual runtime time `2
 - Compared the known N18 HMAC16 control with PS-0318/PS-0323 payloads; neither payload equals the control. This does not authenticate the ordinal note/job crosswalk.
 - Two-group degree-2 interpolation (K01–K03→K04 and K05–K07→K08) over the tested GF(256) fields and the two existing 128-bit prime fields did not match either missing-slot commitment. Limited six-component XOR-subset and HKDF group derivations likewise produced no candidate. No candidate, acceptance, verifier, or synthesis files changed.
 - These are bounded negatives only. Do not expand into more generic field/KDF/PRNG/phrase grids. The next meaningful step remains a genuinely source-authenticated PS-0417 native queue/coupon witness and Emily's final envelope/margin/photo-caption or workbook/version source.
+
+
+## 2026-11-23T14:12:22.003Z checkpoint — source selector qualification
+
+- Re-read `resources/START_HERE.md`, `records-custodian.txt`, `archive-labels.ini`, `mail/INDEX.md`, and MAIL-11/16/20. MAIL-16 confirms current September–October ESC-N mapping to PS-261003-0417, instructs using its last acknowledged attempt, excludes the later REQUESTED entry and WATCH-SPARE, but explicitly says ACK is a dispatch-log receipt rather than media-integrity proof and the retained spool reconstruction has no independent payload checksum. Thus the selected reconstructed ACK payload is not authenticated merely by its state.
+- MAIL-11 excludes the two old draft phrases and says the final phrase was worked out from desk notes and photograph captions. MAIL-20 says the export is trimmed, no mailbox/live connection is included, exact final wording matters, and normalization/desk nonce are on the route sheet. This confirms the final authored phrase itself is absent from the surviving text export; do not substitute a paraphrase.
+- Tested direct K04 payload XOR-mask commitments for all recovered rows of PS-261003-0417, PS-261003-0420 (WATCH-SPARE), and PS-261003-0448 (ESC-S); no row matches K04. The alternate selector candidates do not repair the route.
+- These source notes narrow the next action to obtaining the native PS-0417 media/queue witness or physical coupon and the actual final envelope/caption source. No canonical candidate or verifier changes.
