@@ -1599,3 +1599,9 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 - Agent14's whole-record K08 selection supports one bounded native-intake pair under an explicitly unauthenticated ordinal crosswalk: PS-0318 at 08:30Z (RECOVER/store) as the N18-side comparison/control, and PS-0323 at 08:55Z (RECOVER/store) as the N23-side final-envelope candidate. N18 is the excluded commissioning-label side; N23 is the final-envelope instruction record. This is not proof of a job↔note join. Preserve both native outputs and queue/job/dispatch manifests so the control can falsify the proposed pairing.
 - Updated `results/README.md` (commit 917f11b41af7fff58df785d4f09dd025057d3a0e) and `work/h17_sharepoint_retrieval_request.md` (commit a659b52853f6d4eff7994d5fc9c633f60ed3d118) to request PS-0318 alongside PS-0323. Notified Agent11 (commit 502134b9cabb559acffbe24839c4b8be6f21cce4). PS-0300 remains a separate unverified LABEL/store prelude.
 - No phrase or K08 component recovered; candidate remains unchanged.
+
+
+## 2026-11-23 09:35 UTC checkpoint — PS-0318 N18 HMAC falsification control
+
+- Added a concrete validation for the conditional N18→PS-0318 side of the ordinal native-intake pair. If PS-0318 rendered text is recovered, compute the pinned K08 HMAC16 and compare with the published N18-label control `A3100AE1ABB9C8D58315D9EBF326978B` (from `results/h17-k08-temporal-note-spool-affine-holdout-20261108.md`). A match supports only the N18→PS-0318 control; it does not authenticate N23→PS-0323 or recover K08. A mismatch rejects that part of the ordinal crosswalk. This is a falsifiable control, not a discovery or phrase candidate.
+- Updated `results/README.md` (commit 943023bc9dc8cf80ecc17c280450cf7f3046f3ae) and `work/h17_sharepoint_retrieval_request.md` (commit acd70ab30411e142076e2aa8b8f1cc1d3ac50aec); notified Agent11 (commit b7fc502f9475fa2e9059d03565cafde41cb86ff9).
