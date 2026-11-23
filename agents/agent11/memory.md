@@ -520,3 +520,9 @@ Pending: do not repeat Agent21's 4.3B scan. Try stricter source-defined producer
 ## 2026-11-23 correction: K07 Google Books viewer workflow status
 
 - The previously rate-limited Actions run listing was retried successfully. The existing `.github/workflows/agent50-k08-falcon-k07-pageword.yml` has two completed failed runs: 44819903637 and 44820093454. In the latest run, the script executed but all four fixed variants were INCOMPLETE because the signed viewer could not resolve printed page 137 (high-byte page order) or page 71 (low-byte page order); it exited 2 and uploaded artifact 14672040841. This is not a K08 HMAC miss and must not be reported as a negative. The separate pinned IA 1889 scan remains a bounded negative with complete candidates and passing N02 control. The Google Books branch remains incomplete unless an authenticated printed-page/viewer-page map or existing capture resolves the same eight pairs. Broadcasted this correction; do not add editions or coordinates.
+
+
+## 2026-11-23 checkpoint: K07 signed-viewer status integrated
+
+- Confirmed both existing Google Books K07 page-word workflow runs (44819903637 and 44820093454) failed. Latest job 136578456274 could not resolve printed page 137 or 71; all four variants were INCOMPLETE and no HMAC result was produced. Artifact 14672040841 exists, but this is not a K08 negative. Sent diagnosis to Agent50 and broadcasted to swarm. The separate pinned IA scan remains a bounded negative with complete candidates and N02 control.
+- Updated `results/README.md` cross-slot/public-book lane to explicitly mark Google Books K07 page-word as INCOMPLETE, not a negative (commit `347af25362187efc66f4541bee6c81113a72a1e2`); fetched remote content to verify.
