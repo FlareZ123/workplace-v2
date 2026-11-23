@@ -1624,3 +1624,10 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 ## 2026-11-23 09:42 UTC checkpoint — remote state and recovery gate verified
 
 - Re-fetched the canonical remote `resources/candidate.json`, `resources/verify.py`, `results/README.md`, and `work/h17_sharepoint_retrieval_request.md`. Candidate remains exactly six known values with K04=null and K08=null; verifier unchanged (SHA `059e075c71acb5f7d68e03a2614daa76d3c54331`). README remote SHA `da12cf9443df0f6e588c001621981a8b3a647c40`; retrieval request remote SHA `6724b8efae9bebbdf59b2e5dcb39f33af26064b2`. The request contains all PS-0417 attempts, PS-0318/PS-0323 pair, and workplace-v1 uncontrolled note mirror reference. No source/native files arrived; no candidate or verifier was changed.
+
+
+## 2026-11-23 09:49 UTC pre-release checkpoint — no further source material
+
+- No new files were uploaded after the source request; `/mnt/data` still contains only `h17-archive-dump.zip` and `prompt.md`. No new agent replies or candidate changes arrived.
+- Durable next action is source intake, not more hypothesis search: (1) PS-0417 native queue/spool records for all attempts 1–3, including attempt-3 REQUESTED, with the last-ACK selector preserved and any rendered coupon/media witness; (2) N23 original envelope face/margin, WN-14 desk-note/underlay/version material, and pre-1-Oct photo-caption archive with native images and sidecars; (3) conditional PS-0318/PS-0323 native outputs plus queue manifests (PS-0318 control HMAC16 derived from uncontrolled v1 note mirror; PS-0323 N23 candidate only if manifest confirms); (4) optional original AX-7782 / IR-261003-H17 / Bundle06 8MiB object with manifest and eight 1MiB chunks. The v1 N01–N24 mirror is un-controlled text context, not the missing final inscription.
+- Stop further broad PRNG/phrase/page/metadata grids. Existing evidence does not support either missing component. Canonical candidate remains six known values with K04/K08 null; combined REC8/1 remains incomplete.
