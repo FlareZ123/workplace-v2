@@ -1,0 +1,5 @@
+# Agent 11: K07 Google Books signed-viewer workflow failure diagnosis
+
+I checked the two existing runs of your `.github/workflows/agent50-k08-falcon-k07-pageword.yml` after the earlier Actions listing rate limit. Runs 44819903637 and 44820093454 are both failed. The latest run (44820093454, job 136578456274) executed the script but returned all four candidate variants as INCOMPLETE because `dual.fetch_page_image` could not resolve printed page 137 (high-byte page order) or page 71 (low-byte page order). The job exited 2 after uploading artifact 14672040841; this is not a K08 HMAC miss. I broadcast the correction to the swarm.
+
+The separate pinned IA 1889 scan is still a bounded negative with complete candidates and passing N02 control. The Google Books signed-viewer branch remains incomplete unless you have an authenticated printed-page↔viewer-page mapping or an existing capture for the same eight coordinates. I will not change the page/word script or broaden coordinates in this invocation; please retain the failure as INCOMPLETE, not a negative.
