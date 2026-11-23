@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Source-bound K04 commitment scan for an original Windows SPL/SHD pair.
+"""Read-only K04 exact-commitment SPL scan with separate SHD source attribution.
 
-This composes the existing SPL/SHD pairer with the exact 16-byte K04
-commitment-window scanner. It does not infer a job from a filename: the SHD
-must contain the requested job ID, the SPL/SHD pair must share the pairer's
-container/path/stem key, and the candidate must satisfy the pinned K04 SHA256
-after the exact route-mask operation.
+Every bounded SPL member is scanned for the original 16-byte component
+commitment after the specified route XOR. SHD literal job identifiers and
+same-stem pairing provide context, but are never required for a hash hit.
+Historical physical event attribution remains a separate evidentiary question.
 """
 from __future__ import annotations
 
@@ -45,24 +44,26 @@ class RawIntake(pairer.Intake):
 
 
 def scan_intake(intake, job_id: str, target_digest: bytes, mask: bytes):
+    """Find exact K04 matches first; record native job attribution separately."""
     pairs, unpaired, ambiguous = pairer.pair_members(intake.members)
-    matching = [
-        pair for pair in pairs
-        if job_id in pair["job_id_strings_in_shd"]
-    ]
+    matching = [pair for pair in pairs if job_id in pair["job_id_strings_in_shd"]]
+    paired_by_member = {id(pair["spl"]): pair for pair in pairs}
     pair_reports = []
     candidate_hits = []
-    for pair in matching:
-        spl = pair["spl"]
-        hits = _scan_spl_bytes(
-            spl["name"], spl["data"], target_digest, mask
-        )
+    for spl in intake.members:
+        if spl["ext"] != "SPL":
+            continue
+        pair = paired_by_member.get(id(spl))
+        hits = _scan_spl_bytes(spl["name"], spl["data"], target_digest, mask)
+        if not hits and pair not in matching:
+            continue
+        job_strings = pair["job_id_strings_in_shd"] if pair else []
         pair_reports.append({
-            "container": pair["container"],
-            "parent": pair["parent"],
-            "normalized_stem": pair["normalized_stem"],
-            "pairing_basis": pair["pairing_basis"],
-            "job_id_strings_in_shd": pair["job_id_strings_in_shd"],
+            "container": spl["container"], "parent": spl["parent"],
+            "normalized_stem": spl["normalized_stem"],
+            "pairing_basis": pair["pairing_basis"] if pair else None,
+            "job_id_strings_in_shd": job_strings,
+            "job_id_literal_present": job_id in job_strings,
             "spl": {
                 "name": spl["name"], "size": spl["size"],
                 "sha256": spl["sha256"],
@@ -70,33 +71,29 @@ def scan_intake(intake, job_id: str, target_digest: bytes, mask: bytes):
             "shd": {
                 "name": pair["shd"]["name"], "size": pair["shd"]["size"],
                 "sha256": pair["shd"]["sha256"],
-            },
+            } if pair else None,
             "candidate_hits": hits,
         })
         for hit in hits:
             candidate_hits.append({
                 **hit,
-                "container": pair["container"],
-                "parent": pair["parent"],
-                "normalized_stem": pair["normalized_stem"],
+                "container": spl["container"], "parent": spl["parent"],
+                "normalized_stem": spl["normalized_stem"],
                 "spl_sha256": spl["sha256"],
-                "shd_sha256": pair["shd"]["sha256"],
-                "job_id_strings_in_shd": pair["job_id_strings_in_shd"],
+                "shd_sha256": pair["shd"]["sha256"] if pair else None,
+                "job_id_strings_in_shd": job_strings,
+                "job_id_literal_present": job_id in job_strings,
             })
     components = sorted({hit["component_hex"] for hit in candidate_hits})
-    unique_pair = len(matching) == 1 and not any(
-        item.get("key") == (
-            matching[0]["container"], matching[0]["parent"],
-            matching[0]["normalized_stem"]
-        ) for item in ambiguous
-    ) if matching else False
-    recovered = unique_pair and len(components) == 1
+    recovered = len(components) == 1
+    attributed = recovered and any(hit["job_id_literal_present"] for hit in candidate_hits)
     return {
         "job_id": job_id,
         "paired_member_count": len(pairs),
         "matching_job_pairs": len(matching),
         "ambiguous_pair_groups": len(ambiguous),
         "unpaired_member_count": len(unpaired),
+        "spl_members_scanned": sum(item["ext"] == "SPL" for item in intake.members),
         "pair_reports": pair_reports,
         "candidate_hits": candidate_hits,
         "distinct_component_hex": components,
@@ -104,16 +101,22 @@ def scan_intake(intake, job_id: str, target_digest: bytes, mask: bytes):
         "component_sha256": hashlib.sha256(bytes.fromhex(components[0])).hexdigest()
             if recovered else None,
         "recovered": recovered,
-        "status": "K04 component recovered from job-ID-paired SPL"
-            if recovered else "no unique commitment-matching component in a unique job-ID-paired SPL",
+        "job_id_literal_at_matching_source": attributed,
+        "historical_event_attribution_verified": False,
+        "status": (
+            "K04 exact commitment matched; accompanying SHD mentions logical job; confirm event separately"
+            if attributed else
+            "K04 exact commitment matched; original job association unverified"
+            if recovered else
+            "no unique commitment-matching component in scanned SPL members"
+        ),
         "limitations": [
-            "The SHD job-ID string plus exact container/path/stem pairing is a candidate job association, not a full undocumented SHD parse.",
-            "Class, destination, attempt and ACK state are not inferred from an SPL filename; preserve independent queue/dispatch evidence.",
-            "A matching SHA256 establishes the 16-byte component, while historical event attribution still depends on the paired source records.",
+            "The full original K04 SHA256 is tested against every bounded SPL member, with or without SHD or a literal PS job ID.",
+            "Same-stem pairing and a literal job-ID string do not prove route, RECOVER class, attempt 2, or ACK state.",
+            "Corroborate historical event attribution with a contemporaneous queue/dispatch manifest.",
             "No source member is extracted to disk or modified.",
         ],
     }
-
 
 def scan_source_path(source: Path, job_id: str, target_digest: bytes, mask: bytes):
     patterns = [
