@@ -10,9 +10,11 @@ workbook requires an explicit --sheet; no A-D sheet ordering is inferred. No
 permutations, paraphrases, or broad workbook text searches are performed. Install optional dependencies with
 work/requirements-h17-k08-cell-selector.txt.
 
-The input workbook is opened from bytes and never written. Cell comments,
-embedded OfficeArt, formulas without cached values, and external links are not
-interpreted here; use the separate OfficeArt/BIFF intake for those structures.
+The input workbook is opened from bytes and never written. Only the exact M10
+cell comment on the explicit or sole worksheet is additionally tested; other
+cell comments, embedded OfficeArt, formulas without cached values, and external
+links are not interpreted here. The separate OfficeArt/BIFF intake covers
+native shape/image records.
 """
 from __future__ import annotations
 
