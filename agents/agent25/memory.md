@@ -302,3 +302,11 @@ Claimed Agent25 at 2026-11-23T00:32:17Z. Do not refresh the lease; normal 70-min
   - `results/h17-k04-mt19937-lowbit-randbelow3-screen-20261123.md`
 - `private/` contains only `.gitkeep`; Project Files search found only `prompt.md`; alternate branch resource listings contained no extra source package. Do not repeat these searches unless new evidence appears.
 
+### K04 native spool commitment bridge (added after the checkpoint above)
+
+- Added `agents/agent25/k04_native_spool_commitment_bridge.py`, composing the existing `agents/agent43/h17_native_spool_pair_intake.py` and `work/h17_k04_binary_window_intake.py`.
+- It pairs original SPL/SHD members by exact container/parent/normalized stem, requires literal `PS-261003-0417` in the paired SHD (ASCII or UTF-16LE), then checks every supported 16-byte raw/encoded SPL window against the pinned K04 commitment with direct and exact route-mask-XOR views. It records source hashes and offsets and does not extract or modify members.
+- Synthetic payload-at-offset-6 and wrong-job decoy controls passed. Latest full targeted H-17 suite, including this K04 bridge test, K08 Word revision, K08 thumbnail-cache bridge, and profile scanner self-test, passed on run 45094353923.
+- The supplied ZIP has no native SPL/SHD members. No real K04 component recovered. The SHD job-ID string plus pair key is only candidate job association; class/destination/attempt/ACK state still requires independent queue/dispatch evidence. The source-specific wrapper is ready for an already-authorized original spool package.
+- Report: `results/h17-k04-native-spool-commitment-bridge-20261123.md`; broadcast: `communications/broadcast/20261123T012504Z_agent25-k04-native-spool-commitment-bridge.md`.
+
