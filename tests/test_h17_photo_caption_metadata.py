@@ -142,7 +142,8 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
             if "photoshop:TextLayers" in label
         ]
         self.assertEqual(
-            [(label, payload.decode("utf-8")) for label, payload in intake],
+            [(label.removeprefix("photo.xmp!/"), payload.decode("utf-8"))
+             for label, payload in intake],
             layers,
         )
 
