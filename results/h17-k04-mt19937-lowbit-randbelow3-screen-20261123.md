@@ -40,6 +40,19 @@ Reproducible source and raw output:
 
 The model is rejected under the tested assumptions. In particular, changing from CPython-style top bits to NumPy-style low bits does not explain the source class/destination/route labels across the tested chronology family.
 
+
+## Same-job cross-class copy control
+
+The retained log also has a `PS-261003-0417` `LABEL/bench` ACK at attempt 1 and the routed `RECOVER/bench` ACK at attempt 2. This is a source-specific copy relationship worth checking, but MAIL-14 identifies the spare sticker as a dispatch-number label, not a control group.
+
+The direct one-mask copy hypothesis does not hold:
+- LABEL ACK1 payload: `E1E60D5F6B6DD2225FA6D5A2A63AD932`
+- RECOVER ACK2 payload: `A9A9DC5731A5E2AE879C47215C2559D5`
+- XOR of those payloads: `484FD1085AC8308CD83A9283FA1F80E7`
+- Routing-sheet mask: `8556C8CB6140A7F9A5123AC7571BEE1C`
+
+The XORs differ, and `RECOVER ACK2 XOR mask` is not the LABEL ACK1 payload. This rejects only the direct same-mask cross-class copy, not every possible relation between the two print jobs.
+
 ## Limits
 
 This does not reject every possible NumPy API, metadata call schedule, or PRNG family. It rejects the specific two-`randbelow(3)` plus RECOVER-only conditional-route model, with the stated call orders, bindings, placements and source-compatible chronologies. It does not recover any K04 bits or establish a payload candidate.
