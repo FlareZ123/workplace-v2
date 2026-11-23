@@ -1,0 +1,26 @@
+name: Agent50 xoroshiro++ four-output sum64 conditioning
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sum64-flankfit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Z3
+        run: python -m pip install "z3-solver>=4.12,<5"
+      - name: Unseeded full-middle synthetic recovery gate with output 0 1 4 5
+        run: python agents/agent50/k04_xoropp_sum64_flankfit_sft.py --synthetic --timeout-ms 90000 --max-models 8
+      - name: Source four serializer views after original-independent positive gate
+        run: |
+          for view in 0 1 2 3; do
+            python agents/agent50/k04_xoropp_sum64_flankfit_sft.py --source-view "$view" --timeout-ms 60000 --max-models 8
+          done
