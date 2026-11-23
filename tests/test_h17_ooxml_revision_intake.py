@@ -15,6 +15,8 @@ from work.h17_ooxml_text_intake import (
     iter_ooxml_revision_units,
     iter_ooxml_text_units,
 )
+if str(WORK_DIR) in sys.path:
+    sys.path.remove(str(WORK_DIR))
 
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
