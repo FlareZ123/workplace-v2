@@ -157,6 +157,14 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
         self.assertIn("Keeper envelope caption",
                       [text for label, text in streams if "Headline" in label])
         self.assertIn("Emily", [text for label, text in streams if "ByLine" in label])
+        native_streams = list(iter_text_streams(
+            "desk-photo.jpg", _iptc_jpeg(), 0, [0], [], False, None, []
+        ))
+        self.assertTrue(any(
+            "/iptc:CaptionAbstract:" in label
+            and payload.decode("utf-8") == "The sea keeps the voices after the last watch."
+            for label, payload in native_streams
+        ))
 
     def test_two_real_jpeg_app13_segments_are_read_once_each(self):
         jpeg = _iptc_jpeg()
