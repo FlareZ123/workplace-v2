@@ -82,7 +82,8 @@ def infer_source(states):
     return 'complete', pool
 
 def main():
-    for offset, seed in ((0, 2026), (616, 0xA17E8BC0), (93, 0xCAFEBABE)):
+    for offset, seed in ((-1, 2026), (-1, 0xDEAD9999), (0, 2026),
+                         (616, 0xA17E8BC0), (93, 0xCAFEBABE)):
         initialized, pool, packets = genuine_planted(offset, seed)
         states = base.projection(offset, packets)
         assert all(initialized[i] & m == v for i, (m, v) in enumerate(states))
@@ -91,21 +92,21 @@ def main():
     original = base.source()
     results = {}
     started = time.monotonic()
-    for offset in range(624):
+    for offset in range(-1, 624):
         states = base.projection(offset, original)
         outcome, detail = infer_source(states)
         results[outcome] = results.get(outcome, 0) + 1
         if offset % 100 == 0:
             print('ORIGINAL_PROGRESS', offset, results,
                   round(time.monotonic()-started, 1), flush=True)
-    assert results == {'contradiction': 499, 'bad_init0': 125}, results
+    assert results == {'contradiction': 499, 'bad_init0': 126}, results
     print('ORIGINAL_RESULT', json.dumps({
         'source_sha256': SOURCE_SHA,
-        'offsets_tested': 624,
-        'source_incompatible_offsets': 624,
-        'initial_state_bit_incompatible': 125,
+        'offsets_tested': 625,
+        'source_incompatible_offsets': 625,
+        'initial_state_bit_incompatible': 126,
         'pool4_residue_incompatible': 499,
-        'genuine_numpy_planted_passes': 3,
+        'genuine_numpy_planted_passes': 5,
         'complete_original_pool4_models': 0,
         'selected_ACK2_payload_decoded': False,
         'original_K04_recovered': False,
