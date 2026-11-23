@@ -290,7 +290,8 @@ def extract(path: Path, timeout: int = 60, max_cells: int = MAX_CELLS,
                     if cached is not None and cached != value:
                         add(coord + "<cached>", "cached_value", cached)
                     if comment:
-                        add(coord + "<comment>", "comment", comment)
+                        add(coord + "<comment>", "comment", comment,
+                            comment_author=cell.comment.author)
                     if link:
                         add(coord + "<hyperlink>", "hyperlink", link)
                     if value:
