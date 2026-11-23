@@ -16,7 +16,7 @@ It also parses IPTC-IIM text datasets in Photoshop APP13 resources: Caption/Abst
 
 ## Validation
 
-`tests/test_h17_photo_caption_metadata.py` covers XMP sidecar fields, language alternatives, embedded XMP inside image bytes, integration into the K08 intake, and malformed/unrelated data. The targeted K08 workflow is running the full regression suite plus workbook-selector and profile-scanner controls; record its result after completion.
+`tests/test_h17_photo_caption_metadata.py` covers XMP sidecar elements and RDF attribute properties, language alternatives, embedded XMP, Photoshop text layers, authentic binary JPEG APP13/IPTC resource encoding, multi-section resource traversal, integration into the exact K08 candidate streams and malformed/unrelated data. The focused `suite=metadata` manual workflow [run 45104837306](https://github.com/FlareZ123/workplace-v2/actions/runs/45104837306) passed; the other image/workbook/profile suites were deliberately not re-executed in this targeted run.
 
 ## Limits
 
