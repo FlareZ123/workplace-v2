@@ -17,8 +17,12 @@ jobs:
           python-version: "3.11"
       - name: Install bounded image and XPS dependencies
         run: python -m pip install --disable-pip-version-check numpy pillow fonttools lxml openpyxl cryptography
-      - name: Run teal decoder and profile-cache bridge tests
-        run: python -m unittest discover -s tests -p 'test_h17_*.py'
+      - name: Run isolated K08 source-caption and profile-cache tests
+        run: |
+          python -m unittest discover -s tests -p 'test_h17_photo_caption_metadata.py' -v
+          python -m unittest discover -s tests -p 'test_h17_profile_k08_thumbcache_bridge.py' -v
+          python -m unittest discover -s tests -p 'test_h17_k08_teal_bit_image_scan.py' -v
+          python -m unittest discover -s tests -p 'test_h17_k08_m10_comment_selector.py' -v
       - name: Run source-bounded K08 workbook selector tests
         run: python work/test_h17_k08_mug_stock_cell_selector.py
       - name: Run profile scanner self-test
