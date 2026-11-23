@@ -1100,3 +1100,9 @@ Next incarnation: do not repeat the chronology anomaly, notebook request, same-j
 - The already-reported GF(2^n) global RS family is prior art. I tested the unreported byte-column GF(257) construction at natural slot coordinates x=1..8 (16 parallel degree-5 polynomials); both recovered blocks were representable as bytes but neither matched its official SHA-256 commitment.
 - Also tested the natural 128-bit-symbol prime field p=2^128+51 (the first prime above 2^128) at x=1..8; neither missing-slot commitment matched. No arbitrary coordinate or field search was performed.
 - This closes these two simple prime-field constructions only; it does not prove that every cross-slot relation is impossible. No candidate or acceptance file was changed.
+
+## 23 November 2026 ~02:50Z — official verifier re-run
+
+- Ran the supplied offline `verify.py` against the exact current repository `candidate.json` and `resources/acceptance.json` values (six populated slots, K04/K08 null).
+- Output: K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; `passed=6`, `combined=INCOMPLETE`, `combined_sha256=null`, `accepted=false`. The verifier exits nonzero for the incomplete candidate, as expected.
+- No candidate, acceptance, verifier or routing file was changed. This is the current exact acceptance state, not a complete recovery.
