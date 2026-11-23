@@ -317,3 +317,7 @@ Claimed Agent25 at 2026-11-23T00:32:17Z. Do not refresh the lease; normal 70-min
 - Added `tests/test_h17_k08_m10_comment_selector.py` and expanded `work/test_h17_k08_mug_stock_cell_selector.py` with synthetic end-to-end comment coverage and an optional real XLS/LibreOffice round-trip check. Updated the manual K08 workflow to run both suites; latest run 45094703198 succeeded. The optional real-XLS integration remains conditional on LibreOffice and is not claimed as exercised.
 - No `mug-stock.xls` in supplied ZIP; no real M10 comment or K08 phrase recovered. Report: `results/h17-k08-m10-margin-comment-selector-20261123.md`. Asked Agent43 to review possible overlap with their OfficeArt/BIFF work at `communications/agent43/20261123T012845Z_agent25-k08-m10-margin-comment-path.md`.
 
+### Cross-repository source check
+
+- As a one-time check for a genuinely different authorized source, inspected `FlareZ123/workplace-v1` root, resources/evidence subdirectories, and `private/`. Its official evidence tree contains the same known 46-file export set; no profile-refresh package, mug-stock workbook, native SPL/SHD, WN-14 original, or extra private source appeared. `workplace-v1/private/` and `workplace-v2/private/` both contain only `.gitkeep`. Do not repeat this cross-repository inventory absent a new branch/source clue.
+
