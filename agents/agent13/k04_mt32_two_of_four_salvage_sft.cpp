@@ -35,7 +35,7 @@ static U untemper(U y){
 static U swap32(U x){return __builtin_bswap32(x);}
 static Source make_target(const std::string& mode){
   U original[4]={0x43c5bbfbu,0x583f4856u,0x063fbb64u,0xa5184579u};
-  if(mode=="request1"){
+  if(mode=="request1"||mode=="request1_salvage2"){
     const U request[4]={0x214F3ECDu,0xB12FDB6Au,0xA92ADA80u,0xA4F7330Bu};
     std::copy(std::begin(request),std::end(request),std::begin(original));
   }else if(mode=="request3"){
@@ -137,14 +137,14 @@ static Result scan(std::uint64_t start,std::uint64_t end,Source target,int threa
   return result;
 }
 int main(int argc,char** argv){
-  if(argc!=5){std::fprintf(stderr,"Usage: scan original|original_salvage2|request1|request3|planted|planted2|planted3|tampered start end threads\n");return 2;}
+  if(argc!=5){std::fprintf(stderr,"Usage: scan original|original_salvage2|request1|request1_salvage2|request3|planted|planted2|planted3|tampered start end threads\n");return 2;}
   const std::string mode(argv[1]);
-  if(mode!="original"&&mode!="original_salvage2"&&mode!="request1"&&mode!="request3"&&mode!="planted"&&mode!="planted2"&&mode!="planted3"&&mode!="tampered")return 2;
+  if(mode!="original"&&mode!="original_salvage2"&&mode!="request1"&&mode!="request1_salvage2"&&mode!="request3"&&mode!="planted"&&mode!="planted2"&&mode!="planted3"&&mode!="tampered")return 2;
   const std::uint64_t start=std::strtoull(argv[2],nullptr,0),end=std::strtoull(argv[3],nullptr,0);
   const int threads=std::atoi(argv[4]);
   if(start>=end||end>4294967296ull||start%16||end%16||threads<1||threads>8)return 2;
   const Source target=make_target(mode);
-  const int threshold=(mode=="original_salvage2"||mode=="planted2"||mode=="planted3")?2:4;
+  const int threshold=(mode=="original_salvage2"||mode=="request1_salvage2"||mode=="planted2"||mode=="planted3")?2:4;
   const auto t0=std::chrono::steady_clock::now();
   std::vector<std::thread> jobs;std::vector<Result> results(threads);
   const std::uint64_t partition=(((end-start+threads-1)/threads)+15)/16*16;
