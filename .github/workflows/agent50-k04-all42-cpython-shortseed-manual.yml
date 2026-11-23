@@ -17,3 +17,5 @@ jobs:
           python-version: "3.12"
       - name: Planted full history recovery gate followed by untouched original native source
         run: python -u agents/agent50/k04_all42_cpython_shortseed_sft.py
+      - name: Conditionally reconstruct all 98 exact seed words and complete target coupon
+        run: python -u agents/agent50/k04_all42_n98_seed_completion_sft.py
