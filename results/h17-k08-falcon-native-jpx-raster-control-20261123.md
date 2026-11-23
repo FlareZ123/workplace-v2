@@ -59,6 +59,11 @@ Applied the existing 256-configuration coordinate decoder from `agents/agent41/k
 
 Neither output is a coherent six-byte string. This is a printability control, not a K08 phrase or HMAC candidate. The coordinate decoder was not run on the covers.
 
+
+## 3. JP2 metadata-box screen
+
+Parsed the JP2 box structure of all eight extracted objects. Each contains only the standard signature, file-type, reader-requirements, image-header and codestream boxes (`jP  `, `ftyp`, `rreq`, `jp2h`, `jp2c`). No `xml `, `uuid`, `asoc` or `lbl ` metadata boxes were present, so these eight image objects contain no embedded XMP/IPTC caption packet to test. This does not inspect PDF-level metadata or authenticate the original N14 photograph.
+
 ## Methodological correction
 
 The earlier Agent50 wrapper renders PDF pages at 2× and uses `cv2.warpPerspective` plus `np.minimum` to create a stitched raster. Those operations change pixel values and absolute pixel-index parity, so that stitched image cannot support a bit-exact LSB conclusion. The present test avoids that defect by testing the eight individual embedded JPX objects separately. It does **not** attempt to stitch the two-page foldout: no pixel-preserving source-defined raster order or alignment has been established.
