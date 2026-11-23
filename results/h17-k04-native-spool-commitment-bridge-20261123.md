@@ -1,40 +1,47 @@
-# K04 job-paired native spool commitment bridge (2026-11-23)
+# K04 native spool commitment-first recovery bridge (2026-11-23)
 
-## Purpose
+## Purpose and current decision
 
-The supplied export contains only a reconstructed spool text log; the original native Windows `.SPL/.SHD` objects are absent. The existing pairer and commitment-window scanner were separate tools. This bridge composes them so an authorized original spool package can be tested directly against the unchanged K04 acceptance commitment without reconstructing a PRNG stream.
+The supplied H-17 export contains a reconstructed printer text log but no authenticated original Windows `.SPL/.SHD` objects. The existing intake pairer and exact K04 commitment scanner have been composed into one native-source recovery path. The initial version screened **only** SPL/SHD pairs whose shadow contained the literal application identifier `PS-261003-0417`. Agent43's 23 November review identified a concrete false-negative: Windows spooler job IDs need not equal the application's PS label, and retained binary SHD metadata need not contain that text.
+
+**Current implementation now scans every eligible native SPL for a complete K04 commitment hit, regardless of SHD availability and application-label text.** This is a source-independent selection repair. It does not recover any historical missing K04 component from the current export.
 
 ## Method
 
 `agents/agent25/k04_native_spool_commitment_bridge.py` composes:
-- `agents/agent43/h17_native_spool_pair_intake.py` for bounded, read-only nested-container intake and exact SPL/SHD pairing by container, parent path and normalized filename stem;
-- a literal ASCII or UTF-16LE `PS-261003-0417` hit in the paired SHD;
-- `work/h17_k04_binary_window_intake.py` to scan the paired SPL's raw 16-byte windows and supported encoded 16-byte tokens against the pinned K04 SHA-256, checking both direct component bytes and the exact route-mask XOR.
 
-The wrapper requires one unique job-ID-bearing pair and one distinct commitment-matching component. It records SPL/SHD SHA-256, source path, pair key, candidate encoding, offset and raw window. It does not extract or modify source members.
+1. [Native SPL/SHD pairer](../agents/agent43/h17_native_spool_pair_intake.py) for bounded, read-only native-directory and nested-container intake; metadata association is by same container, parent path and normalized filename stem.
+2. [Exact K04 binary-window scanner](../work/h17_k04_binary_window_intake.py) for **every** discovered SPL byte stream, scanning raw 16-byte windows and supported encoded 16-byte tokens. It accepts SHA256 of a direct 16-byte component or the exact original masked-payload XOR, both compared against the original full 256-bit K04 commitment.
+3. *After complete component detection*, attach optional paired SHD filename/hash and an optional literal ASCII/UTF-16LE application job-ID observation. Report the event-attribution flag as **unverified** regardless of the cryptographic hit.
 
-## Validation
+The output retains per-SPL and per-SHD source SHA256, container/path/stem, scan offsets, encoding, raw candidate windows and all matching complete components. It sets `recovered=true` only when exactly one distinct 16-byte component matches the original commitment across scanned source files. Multiple copies of the same cryptographic component do not create different keys. A missing or mismatched SHD string cannot veto an original cryptographic hit.
 
-The synthetic control plants `payload = component XOR mask` at offset 6 in a synthetic `0417.SPL`, places the exact job ID in its paired `0417.SHD`, and adds a same-stem decoy pair under a different parent with a different job ID. The bridge recovers exactly the planted 16-byte component from the correct pair and ignores the decoy.
+A 16-byte commitment match establishes the correct *key component*. An additional contemporaneous queue/dispatch manifest joining the native Windows spooler numeric job identity and timestamp to the logical `PS-261003-0417 / RECOVER / bench / ACK attempt 2` remains necessary to authenticate historical physical-event attribution.
 
-The test is `tests/test_h17_k04_native_spool_commitment_bridge.py`. It passed with the full targeted H-17 test suite, K08 profile scanner self-test, and revision/cache controls on [GitHub Actions run 45094353923](https://github.com/FlareZ123/workplace-v2/actions/runs/45094353923).
+## End-to-end tests
 
-## Source application and limits
+Agent25's initial synthetic paired-spool/decoy test passed with the previous scanner in [Actions run 45094353923](https://github.com/FlareZ123/workplace-v2/actions/runs/45094353923).
 
-The supplied `h17-archive-dump.zip` has no native SPL/SHD members, so the bridge recovers no real K04 component in this run.
+The amended `self_test()` exercises **three exact complete-component positive scenarios** under the unchanged cryptographic reduction:
 
-A job-ID string in SHD plus filename/container pairing is still a candidate association, not a full parse of undocumented SHD offsets. The wrapper does not infer class, destination, attempt or ACK state from the filename; independent queue/dispatch evidence must establish that the paired object is the routed `PS-261003-0417 / RECOVER / bench / ACK attempt 2` event. A commitment match establishes the 16-byte component, but event attribution must still be supported by the paired records.
+| Synthetic original-source layout | Original K04 component | Literal PS label at matching source |
+| --- | --- | --- |
+| A matching SPL/SHD pair whose SHD carries PS-261003-0417 | Recovered | Yes |
+| A matching SPL with binary/unlabelled SHD, alongside a wrong-payload decoy pair whose SHD *does* carry PS-261003-0417 | Recovered | No |
+| A genuine SPL without a surviving SHD file | Recovered | No |
 
-When an already-authorized original spool directory or archive is available, run:
+The regression establishes that the source selection cannot suppress an exact commitment match. Initial amended self-test completed successfully on [Actions run 45129826120](https://github.com/FlareZ123/workplace-v2/actions/runs/45129826120). The original public unit test's `matching_pairs` and `candidate_offset` result keys were subsequently preserved for compatibility. A second manual run covering that unit test and the amended self-test was dispatched after that compatibility fix.
 
-```bash
-python agents/agent25/k04_native_spool_commitment_bridge.py --source /path/to/authorized/native-spool
-```
+Source/test commits:
+- `a5dd961caded5b0ec8fa3bc54779965a4f963c71`: commitment-first selection;
+- `d1ce458f9c51403e2cafbdf507b8f55b61283993`: three complete-component synthetic cases;
+- `1964a18e8c1f28c797c4c4cbdda73119779b798d`: retain original unit-test API;
+- `418bb6b7f41f1d4f697031ba6b660bc325144d8f`: manual test includes original compatibility test.
 
-The source is scanned in memory under the pairer's size/depth/path-safety limits. Preserve the original SPL/SHD files and independent queue/dispatch metadata.
+## Historical source boundary
 
-## Confidence
+The unchanged `h17-archive-dump.zip` has no native SPL/SHD original for this route. The original copied ACK2's lack of an independent payload-integrity checksum remains. No real K04 component, original physical coupon or 8/8 REC8/1 recovery has been obtained. No source, route, acceptance, verifier or canonical candidate was modified. K08's final exact author-written phrase remains a separate missing source.
 
-- **High:** the source-pair and commitment-window composition passes the planted exact-hit and wrong-job decoy controls.
-- **High:** the full targeted test suite and profile scanner self-test passed.
-- **None:** no native SPL/SHD pair was present in the supplied export, so no actual K04 component or historical event attribution was recovered.
+To run the already-created read-only scanner when authorized native spool files are supplied, use the repo's `agents/agent25/k04_native_spool_commitment_bridge.py` entry point with `--source` set to the preserved original spool folder or archive. Preserve its companion manifest for event attribution.
+
+**Confidence:** High that this specific false-negative is eliminated for exact readable K04 representations in original SPL bytes (three synthetic source structures). Historical K04 and source attribution remain unknown until a target-bearing original is available.
