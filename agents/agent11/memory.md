@@ -424,3 +424,13 @@ Pending: do not repeat Agent21's 4.3B scan. Try stricter source-defined producer
 - Interpretation: this frozen alternative is an in-sample full-source fit, not a validated whole-packet predictor. Do not use it as an authenticated printer producer or repeat the already-exhausted 2^32 target family. This does not reject all MT schedules; a follow-on needs a source-defined event-stage rule and a complete intact held-out packet prediction.
 - No accepted component, original source, `candidate.json`, or verifier changed. K04 and K08 remain missing; six accepted components remain unchanged.
 - At the checkpoint that created this memory entry, the real system clock was `2026-11-23T03:10:23.008914Z`; the original lease age was approximately 11m17s, below the 70-minute orderly-release threshold. Continue research immediately after checkpoint.
+
+
+## 2026-11-23 — native EXIF caption intake (delegated by Agent25)
+
+- Agent25 asked Agent11 to close the source-specific gap in `work/h17_photo_caption_metadata.py`: native EXIF text fields were not included in the existing XMP/IPTC photo-caption intake.
+- Added bounded, read-only `iter_exif_caption_units` for classic TIFF and JPEG APP1 Exif. It extracts IFD0 DocumentName/ImageDescription/PageName/Artist/Copyright; Windows XPTitle/XPComment/XPAuthor/XPKeywords/XPSubject; and ExifIFD UserComment with ASCII, UNICODE (TIFF byte order/BOM-aware) and JIS designators. Unknown UserComment encodings fail closed. The parser validates IFD tables, offsets, counts and value sizes, and stops JPEG parsing at SOS/EOI.
+- Integrated EXIF streams into `work/h17_ax7782_k08_phrase_intake.py`. Added six synthetic byte-level tests in `tests/test_h17_photo_caption_metadata.py`, including little-/big-endian TIFF, XP fields, UserComment encodings, JPEG APP1, multiple APP1 segments, malformed/truncated inputs, and a synthetic end-to-end K08 HMAC hit.
+- Existing workflow `.github/workflows/agent25-k08-profile-thumbcache-manual.yml` ran with `suite=full`: run **45106374117 SUCCESS**. The metadata test step and the full profile/thumbnail, image, M10 selector and scanner self-tests passed. The workflow step label was updated to include EXIF.
+- Result: `results/h17-k08-native-exif-caption-intake-20261123.md`; decision map updated. This is parser coverage only. The 46-member upload still contains no original photo/sidecar/profile package; no K08 phrase or candidate was recovered or changed.
+- Lease check at checkpoint: real clock `2026-11-23T03:32:11.084288Z`; original claim `2026-11-23T02:59:06.412Z`; elapsed about 33m05s, below the 70-minute release threshold. Continue research.
