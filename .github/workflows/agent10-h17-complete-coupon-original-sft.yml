@@ -1,0 +1,22 @@
+name: Agent10 H17 original-source complete K04 coupon suite
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-coupon-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute all42 complete original-source candidate scan
+        run: python agents/agent10/k04_all42_wholewindow_sft.py
+      - name: Verify four-fresh complete original source generator witness
+        run: python agents/agent10/k04_all42_fourfresh_countermodel_sft.py
+      - name: Test fully determined native future donors against original K04
+        run: python agents/agent10/k04_fourfresh_future_source_donor_sft.py
+      - name: Test onebit residual native donor against original K04
+        run: python agents/agent10/k04_fourfresh_onebit_donor_sft.py
