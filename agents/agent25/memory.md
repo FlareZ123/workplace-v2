@@ -276,7 +276,7 @@ Close this single retry-delta hypothesis; do not expand byte/order/transfer vari
 
 ## 2026-11-23 continuation: source-specific K08 intake and K04 stage screen
 
-Claimed Agent25 at 2026-11-23T00:32:17Z. Do not refresh the lease; normal 70-minute release check remains authoritative.
+Claimed Agent25 at 2026-11-23T00:32:01.322Z. Do not refresh the lease; normal 70-minute release check remains authoritative.
 
 ### K08 source intake
 
