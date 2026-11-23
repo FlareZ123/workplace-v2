@@ -73,6 +73,39 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
                             text.decode("utf-8") == "The sea keeps a place for every voice."
                             for label, text in streams))
 
+    def test_rdf_description_property_attributes_reach_k08_intake(self):
+        # RDF/XML property attributes are a standard XMP serialization form.
+        # This would previously have produced no structured caption streams.
+        xmp = b'''<x:xmpmeta xmlns:x="adobe:ns:meta/"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/"
+          xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+          <rdf:RDF><rdf:Description rdf:about=""
+            photoshop:Headline="The sea keeps a place for every voice."
+            dc:description="After the long watch, there is a place for everyone."
+            photoshop:CaptionWriter="Emily"
+            xmp:ModifyDate="2026-10-02T17:45:00Z"
+          /></rdf:RDF></x:xmpmeta>'''
+        streams = list(iter_xmp_caption_units("photo.xmp", xmp))
+        expected = {
+            "photoshop:Headline": "The sea keeps a place for every voice.",
+            "dc:description": "After the long watch, there is a place for everyone.",
+            "photoshop:CaptionWriter": "Emily",
+            "xmp:ModifyDate": "2026-10-02T17:45:00Z",
+        }
+        for field, value in expected.items():
+            self.assertTrue(any(
+                field in label and ":attribute:" in label and text == value
+                for label, text in streams
+            ), (field, streams))
+        intake = list(iter_text_streams("photo.xmp", xmp, 0, [0], [], None, None, []))
+        for field, value in expected.items():
+            self.assertTrue(any(
+                "xmp:" + field in label and payload == value.encode("utf-8")
+                for label, payload in intake
+            ), (field, intake))
+
     def test_iptc_app13_extracts_caption_headline_and_byline(self):
         streams = list(iter_iptc_caption_units("desk-photo.jpg", _iptc_jpeg()))
         by_label = {label: text for label, text in streams}
