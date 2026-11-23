@@ -1098,7 +1098,7 @@ Next incarnation: do not repeat the chronology anomaly, notebook request, same-j
 
 - Tested one materially distinct cross-slot hypothesis motivated by the maintainer's warning against assuming independence: treat K01..K08 as an RS(8,6)/Shamir codeword with K04 and K08 as erasures.
 - The already-reported GF(2^n) global RS family is prior art. I tested the unreported byte-column GF(257) construction at natural slot coordinates x=1..8 (16 parallel degree-5 polynomials); both recovered blocks were representable as bytes but neither matched its official SHA-256 commitment.
-- Also tested the natural 128-bit-symbol prime field p=2^128+51 (the first prime above 2^128) at x=1..8; neither missing-slot commitment matched. No arbitrary coordinate or field search was performed.
+- Also tested the natural 128-bit-symbol prime field p=2^128+51 (the first prime above 2^128) at x=1..8 in both big-endian and little-endian byte interpretations; neither missing-slot commitment matched. No arbitrary coordinate or field search was performed.
 - This closes these two simple prime-field constructions only; it does not prove that every cross-slot relation is impossible. No candidate or acceptance file was changed.
 
 ## 23 November 2026 ~02:50Z — official verifier re-run
