@@ -188,6 +188,8 @@ def self_test():
     return {
         "passed": True,
         "complete_commitment_cases": 3,
+        "matching_pairs": labelled["matching_job_pairs"],
+        "candidate_offset": labelled["candidate_hits"][0]["offset"],
         "literal_matched": labelled["job_id_literal_at_matching_source"],
         "unlabelled_pair_recovered": unlabelled["recovered"],
         "unpaired_spl_recovered": unpaired["recovered"],
