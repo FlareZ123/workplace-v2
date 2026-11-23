@@ -103,3 +103,55 @@ source controls. The existing source-model CI completed [run 45108976026](https:
 with **SUCCESS**. No original commitment or selected ACK2 bytes were
 read by this new target-observability gate. Six original components still
 PASS; K04 and K08 remain unresolved, combined REC8/1 INCOMPLETE.
+
+## Two-hop complete-object target screen (23 November, Agent 8)
+
+A distinct complete-word construction was tested using **two** native
+MT19937 recurrence steps, with an interior 227-lag antecedent itself
+reconstructed from two earlier contiguous source words:
+
+\`X[t] = X[t-454] XOR twist(X[t-851],X[t-850]) XOR twist(X[t-624],X[t-623])\`.
+
+Under a single stage map, each source term must occupy its precise
+native stage relative to the withheld selected row129 lane q.
+All source-packet donors use intact observed rows, both twist pairs are
+intra-packet, and the selected row129 bytes remain excluded before
+decoding. The exact four-anchor difference closure tests all three
+anchor equalities **jointly**, rather than treating independent interval
+possibility as authentication. A genuine seeded MT generator with
+S129=901 and a five-draw exceptional packet passed a withheld-word
+positive check.
+
+The **25 fullword** stage network admits **nine** conditional native
+word values in *each* selected lane. All 36 independently produced
+lane-0..3 words come from source rows **43,12,66**, with three
+possible contiguous twist-lane offsets. Exhausting their **9^4 =
+6,561** complete candidate assemblies shows **zero** original K04
+SHA-256 matches after the unchanged mask; a separately planted
+whole-component digest matched exactly once. More importantly,
+the 6,561 lane assemblies contain **zero** combinations with a
+consistent set of shared stage differences across all four target
+lanes. That stage inconsistency is independently sufficient to
+reject this complete fourword model, even before acceptance.
+
+Adding the **17 partial firstword** original stage identities
+shrinks the two-hop lane counts to **[1,1,0,0]**. Both surviving
+lane-0/lane-1 alternatives point to the same *hypothetical* native
+word \`B12FDB6A\`, serialized as \`6ADB2FB1\`, which is already
+present as the second word of the **unacknowledged row128
+REQUESTED attempt1** payload. They represent different alternative
+placements, not two authenticated output words of the selected ACK2
+coupon. Lanes 2 and 3 have **no** two-hop donor in this exact
+model. Cross-packet first twist pairs were also bounded separately:
+the all42 stage network does not admit their +624 target geometry,
+even before choosing the interior source donor.
+
+The retained source, verifier and commitments are unchanged.
+The [all42 source-stage and planted two-hop SFT](../agents/agent8/k04_all42_crosspacket_target_sft.py)
+and [complete 6,561-coupon original-commitment SFT](../agents/agent8/k04_twohop_6561_fullcoupon_sft.py)
+both passed the existing [GitHub Actions source-model run 45109943645](https://github.com/FlareZ123/workplace-v2/actions/runs/45109943645)
+with **SUCCESS**. This is a finite exclusion of a source-conditioned
+two-hop producer class, not a historical printer mechanism or any
+accepted K04 bit. A genuinely different issuer/serialization or
+authenticated native PS-0417 attempt-2 coupon is still required;
+K08's exact final authored inscription remains absent.
