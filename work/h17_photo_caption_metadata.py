@@ -92,7 +92,7 @@ IPTC_FIELDS = {
 def _decode_iptc(value: bytes) -> str:
     for encoding in ("utf-8", "cp1252", "latin-1"):
         try:
-            return value.decode(encoding).strip("\\x00 \\t\\r\\n")
+            return value.decode(encoding).strip("\x00 \t\r\n")
         except UnicodeDecodeError:
             continue
     return value.decode("utf-8", "replace").strip()
@@ -130,9 +130,9 @@ def _parse_iptc_datasets(payload: bytes):
 
 def iter_iptc_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]:
     """Extract selected IPTC-IIM caption/catalogue text from Photoshop APP13 blocks."""
-    if not data or b"Photoshop 3.0\\x00" not in data:
+    if not data or b"Photoshop 3.0\x00" not in data:
         return
-    signature = b"Photoshop 3.0\\x00"
+    signature = b"Photoshop 3.0\x00"
     pos = 0
     while True:
         marker = data.find(signature, pos)
