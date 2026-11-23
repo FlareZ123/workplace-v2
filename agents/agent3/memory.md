@@ -1111,3 +1111,5 @@ Next incarnation: do not repeat the chronology anomaly, notebook request, same-j
 
 - Parsed the JP2 container boxes of the same eight cover/foldout objects. All contained only `jP  `, `ftyp`, `rreq`, `jp2h`, `jp2c`; none had `xml `, `uuid`, `asoc` or `lbl ` boxes. Thus no embedded XMP/IPTC caption packet exists in these eight public-book objects.
 - Added this bounded result to `results/h17-k08-falcon-native-jpx-raster-control-20261123.md`. It does not inspect PDF-level metadata or authenticate the original N14 photo.
+
+- Promoted the prime-field erasure-code falsifier to `results/h17-global-prime-field-erasure-code-falsifier-20261123.md` and linked it from `results/README.md`. It records the exact candidate blocks and target commitments; no candidate/acceptance/verifier data changed.
