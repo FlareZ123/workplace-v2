@@ -286,7 +286,7 @@ def main() -> None:
     mail04 = checked(ROOT / "evidence/mail/04.eml", MAIL04_SHA).decode("utf-8")
     seal_rows = [json.loads(line) for line in seal_data.decode("utf-8").splitlines() if line]
     assert len(seal_rows) == 44
-    order_match = re.search(r"witness walk was\\s+([A-D,\\s]+)\\.", mail04)
+    order_match = re.search(r"witness walk was\s+([A-D,\s]+)\.", mail04)
     assert order_match
     bay_order = tuple(re.findall(r"[A-D]", order_match.group(1)))
     assert bay_order == ("B", "D", "A", "C")
