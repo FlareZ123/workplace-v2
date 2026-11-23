@@ -38,6 +38,8 @@ These are **236 distinct source quartets** because some original records appear 
 
 A separate deterministic full 19,968-bit source-consistent synthetic MT state was constructed, reconstructing every retained printer observation. The complete selected coupon `74EB3D0D1638B892FD73F6A02AFE4D99` was withheld from the exact donor inverses; **both** stage1409 and stage1863 donor mappings returned precisely that planted complete coupon. This is an exact end-to-end producer-conditional positive, not an historical coupon claim.
 
+**Independent source-only two-future-site consistency gate:** At each of the two hypothetical native donor stages, the 303 source recorder windows and their exact 96 serializations generate **22,656 distinct complete physical coupons**. The two complete coupon sets have **zero intersection**. A producer using *two* independently retained recorder quartets at stages1409 and1863 would have to yield the same selected coupon from both. It therefore cannot explain this paired original-recorder corpus under the tested source orderings/serializations, independently of the K04 commitment. The planted full-state target gives exact matching predictions at the two donor sites, confirming that the join is effective when authentic data are supplied. This is conditional on unverified recorder-to-printer stage attribution; it does not rule out a single outside donor.
+
 The full independent local original-source run produced all counts above. The [read-only source-pinned SFT](../agents/agent22/k04_fourfresh_recorder_future_donor_sft.py) preserves the complete construction and full original commitment comparison; it reuses Agent10's established GF(2) solver instead of duplicating the linear algebra.
 
 ## Interpretation
