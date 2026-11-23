@@ -273,3 +273,32 @@ Close this single retry-delta hypothesis; do not expand byte/order/transfer vari
 - New local source-bound PV follow-up on Agent50's already-known triple `PV seq175,176,177→MT native stages −1567,−1560,−1553` under hypothesized p951. Original printer-only MT rank 15,365 reproduced; a bounded scan of subsequent PV seq178..190 across native stages −1620..−1390 (requiring ≥12 source-fixed top17 float bits) yielded **no new independently matched source-visible PV values**. Unconstrained positions are not a negative. This has no effect on all128 selected K04 free bits, is not a new complete-value constructor, and should not become an atomic result or rerun.
 - **Coordination:** Agent2 reclaimed an independent identity at 22:55:59Z. Sent `communications/agent2/20261122T231557Z_agent25-active-original-source-coordination.md` to avoid duplicate source mechanisms; Agent2 replied via two files under `communications/agent25/` that its distinct xoshiro256++ planted-control inverse failed to solve and no K04 hypothesis was tested on original source. Agent50, Agent3 are also actively leased. Repository recent run `44888479561` already had **all 64** original solver dispositions recovered by Agent3 in `results/h17-k04-64prefix-all-job-disposition-audit-20261121.md`: 24 UNSAT, 40 UNKNOWN, zero SAT. Do not re-audit or rerun.
 - **Useful next work:** seek a demonstrably source-conditioned new **full16-byte selected coupon producer** or **complete authored K08 phrase**, with source-independent planted positive and blind heldout if applicable. Credible native missing sources are selected ESC-N attempt2 coupon/print-host spool and Emily's N23 final margin/envelope/photo-caption. Current local export lacks these; missing provenance alone does not prove mathematical impossibility. Do not invent a seventh slot or declare combined recovery.
+
+## 2026-11-23 continuation: source-specific K08 intake and K04 stage screen
+
+Claimed Agent25 at 2026-11-23T00:32:17Z. Do not refresh the lease; normal 70-minute release check remains authoritative.
+
+### K08 source intake
+
+- Closed the profile-scanner thumbnail-cache gap. `work/h17_profile_k08_phrase_scan.py` now consumes hash-verified `thumbcache*` / `Thumbs.db` profile-metadata entries, carves image bytes in memory with `work/h17_thumbcache_image_carve.py`, verifies each carved-image SHA, and scans the exact two frozen teal layouts through `scan_image_bytes` in `work/h17_k08_teal_bit_image_scan.py`.
+- Cache hits explicitly retain unresolved original-image path/time and N14-to-Emily caption linkage; no hit is historical authentication. Bounds: 32 MiB/image, 25M pixels/image, 4096 unique images.
+- Added revision-aware Word OOXML intake in `work/h17_ooxml_text_intake.py`, integrated through `work/h17_ax7782_k08_phrase_intake.py`. Final view includes normal text plus `w:ins`/`w:moveTo`, excludes `w:del`/`w:moveFrom`; separate original-view and attributed revision-event streams retain revision id/author/date. Comment streams now retain comment id/author/date without duplicate output.
+- Tests: `tests/test_h17_profile_k08_thumbcache_bridge.py`, `tests/test_h17_ooxml_revision_intake.py`; latest full targeted K08 workflow and profile self-test passed: run 45093855749. Earlier thumbcache bridge run 45091655484 also passed.
+- Supplied ZIP has 46 files, no image or thumbnail-cache members, and no DOCX/Word document. No real K08 phrase recovered. Do not repeat wordlists or synthetic tests; next useful source is an already-authorized profile-refresh package containing original image/cache/index or Word revision/comment material. Preserve cache/index and Word revision metadata unchanged.
+
+### K04 source-stage screen
+
+- Added `agents/agent25/k04_numpy_lowbit_conditional_route_sampler_sft.py`, a distinct NumPy legacy RandomState-style low-two-bit `randint(0,3)` mask/reject model. It reused the 170 source-compatible chronologies (families 950–955), three call orders, current/next binding and both leading placements; 95 training gaps and 32 holdouts.
+- All three low-bit planted controls passed. Original source: best 24 training mismatches, zero zero-mismatch training/holdout models, zero route-codebook survivors. Exact model rejected; do not repeat this low-bit family or the already-screened CPython top-bit version. Raw output: `results/h17-k04-lowbit-metadata-screen-45093368403.txt`; report: `results/h17-k04-mt19937-lowbit-randbelow3-screen-20261123.md`; Actions run 45093368403.
+- Also checked the direct same-job cross-class copy hypothesis for PS-261003-0417 LABEL ACK1 versus RECOVER ACK2. Their XOR is `484FD1085AC8308CD83A9283FA1F80E7`, not the route mask `8556C8CB6140A7F9A5123AC7571BEE1C`; ACK2 XOR mask is not LABEL ACK1. This only rejects the simple one-mask copy relation.
+- No K04 bits or accepted candidate recovered. A next K04 effort needs a materially different source event-stage/copy rule tied to job/attempt semantics and a complete held-out 16-byte packet prediction before commitment checking; the original native PS-0417 SPL/SHD/media and host-stage evidence remain the useful source.
+
+### Communications and synthesis
+
+- Broadcast K08 thumbcache bridge, K08 Word revision/copy-path, and K04 low-bit rejection to `communications/broadcast/`.
+- Updated `results/README.md` and reports:
+  - `results/h17-k08-profile-thumbcache-integrated-scan-20261123.md`
+  - `results/h17-k08-word-tracked-revision-copy-path-20261123.md`
+  - `results/h17-k04-mt19937-lowbit-randbelow3-screen-20261123.md`
+- `private/` contains only `.gitkeep`; Project Files search found only `prompt.md`; alternate branch resource listings contained no extra source package. Do not repeat these searches unless new evidence appears.
+
