@@ -3,8 +3,8 @@
 Use new all-42 original-source stage assignment, withholding selected row129.
 Project original 528 full native words backwards through the first true MT
 twist into 624 initialized register words, then use CPython init_by_array
-key-residue compatibility to test genuine seed-key array lengths n=1..128
-at actual output warmups 0..31.
+key-residue compatibility to test genuine seed-key array lengths n=1..623
+at all 624 actual startup output offsets 0..623.
 
 A source-compatible short seed would permit complete selected coupon emission
 once recovered. Negative results exclude only the specified chronology,
@@ -72,9 +72,9 @@ def planted(seed: int, offset: int):
 
 def main():
     positives = 0
-    for n in (1, 4, 16, 128):
+    for n in (1, 4, 16, 128, 623):
         seed = sum(((0x1BADF00D + 31*i) & U) << (i*32) for i in range(n))
-        for offset in (0, 5, 31):
+        for offset in (0, 5, 31, 623):
             actual, packets = planted(seed, offset)
             states = projected_initial_state(offset, packets)
             assert all(value == (mask & word)
@@ -82,7 +82,7 @@ def main():
             assert consistent(term_domains(states, 0), n)
             assert ((states[0][1] ^ 0x80000000) & states[0][0]) == 0
             positives += 1
-    assert positives == 12
+    assert positives == 20
     print("SYNTHETIC_NATIVE_ALL42_SEEDED_PRODUCER", positives, "PASS", flush=True)
 
     raw = (ROOT / "resources/evidence/print/spool-reconstruction.log").read_bytes()
@@ -98,37 +98,41 @@ def main():
     # Disputed ACK2 payload is erased prior to hex parsing or source fitting.
     packets = [None if i == 129 else bytes.fromhex(line[5].decode())
                for i, line in enumerate(lines)]
-    compatible = {n: [] for n in range(1, 129)}
+    compatible = {n: [] for n in range(1, 624)}
     hist = {}
-    for offset in range(32):
+    for offset in range(624):
         states = projected_initial_state(offset, packets)
         if ((states[0][1] ^ 0x80000000) & states[0][0]) != 0:
-            print("ORIGINAL", offset, "CPYTHON_S0_CONTRADICTION", flush=True)
+            if offset % 64 == 0:
+                print("ORIGINAL", offset, "CPYTHON_S0_CONTRADICTION", flush=True)
             continue
         domains = term_domains(states, 0)
         survivors = [n for n in compatible if consistent(domains, n)]
         hist[offset] = {"domains": len(domains), "first_n": min(survivors) if survivors else None}
         for n in survivors:
             compatible[n].append(offset)
-        print("ORIGINAL", offset, "SOURCE_KEY_TERMS", len(domains),
-              "SHORTEST_LENGTH", min(survivors) if survivors else None,
-              "SURVIVORS_N1_128", len(survivors), flush=True)
+        if offset % 64 == 0:
+            print("ORIGINAL", offset, "SOURCE_KEY_TERMS", len(domains),
+                  "SHORTEST_LENGTH", min(survivors) if survivors else None,
+                  "SURVIVORS_N1_623", len(survivors), flush=True)
     summary = {
         "source": SOURCE_SHA,
         "selected_ACK2_payload_parsed": False,
         "stage_model": "alternative all42 native MT original-source exact chronology",
         "native_source_rank": 15434,
         "synthetic_seeded_positive": positives,
-        "tested_real_output_offsets": "0..31",
-        "tested_seed_key_lengths": "1..128",
+        "tested_real_output_offsets": "0..623",
+        "tested_seed_key_lengths": "1..623",
         "live_offset_seedlen_pairs": sum(len(v) for v in compatible.values()),
         "shortest_surviving_seed_length": min(
             (n for n,v in compatible.items() if v), default=None
         ),
         "compatible_offsets_by_seedlen": {
-            str(n): v for n,v in compatible.items() if v
+            str(n): {"count": len(v), "first_offsets": v[:12]}
+            for n,v in compatible.items() if v
         },
-        "per_offset": hist,
+        "eligible_offsets": len(hist),
+        "max_source_key_term_count": max((h["domains"] for h in hist.values()), default=0),
     }
     print("RESULT", json.dumps(summary, sort_keys=True), flush=True)
 
