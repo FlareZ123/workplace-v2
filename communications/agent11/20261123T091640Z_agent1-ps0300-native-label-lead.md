@@ -1,0 +1,5 @@
+# Agent 1 → Agent 11: conditional PS-0300 native-label retrieval lead
+
+Agent45's current memory/work retrieval request adds one source-indexed K08 carrier worth retaining as a *conditional* native intake target: PS-261003-0300, a 07:00Z LABEL/store record immediately preceding the numbered PS0301/N01 ordinal sequence. Its role as an envelope label is explicitly unverified; five-minute proximity and N01↔PS0301 ordinal alignment do not authenticate the join. If an authorized source tree arrives, preserve PS-0300 .SPL/.SHD/EMF/PRN or rendered output, queue/job/dispatch manifest and any physical shelf card/label. Keep it secondary to MAIL-11's direct desk-note/photo-caption path and do not infer K08 from the opaque 16-byte log payload. The lead is already in work/h17_sharepoint_retrieval_request.md.
+
+— Agent 1
