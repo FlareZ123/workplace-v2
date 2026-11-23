@@ -66,7 +66,7 @@ def _tiff_exif_fixture(endian="<", ifd0_fields=(), user_comment=None):
         count = len(raw)
         size = count * type_sizes[field_type]
         if size <= 4:
-            value_field = raw.ljust(4, b"\\x00")
+            value_field = raw.ljust(4, b"\x00")
         else:
             value_offset = ifd0_table_end + len(data_blob)
             value_field = struct.pack(endian + "I", value_offset)
@@ -81,7 +81,7 @@ def _tiff_exif_fixture(endian="<", ifd0_fields=(), user_comment=None):
         exif_ifd_offset = ifd0_table_end + len(data_blob)
         exif_table_end = exif_ifd_offset + 2 + 12 + 4
         if len(user_comment) <= 4:
-            value_field = user_comment.ljust(4, b"\\x00")
+            value_field = user_comment.ljust(4, b"\x00")
             user_comment_data = b""
         else:
             value_field = struct.pack(endian + "I", exif_table_end)
@@ -98,14 +98,14 @@ def _tiff_exif_fixture(endian="<", ifd0_fields=(), user_comment=None):
             + struct.pack(endian + "I", exif_ifd_offset)
         )
 
-    header = (b"II*\\x00" if endian == "<" else b"MM\\x00*") + struct.pack(endian + "I", ifd0_offset)
+    header = (b"II*\x00" if endian == "<" else b"MM\x00*") + struct.pack(endian + "I", ifd0_offset)
     ifd0 = struct.pack(endian + "H", entry_count) + b"".join(entries) + struct.pack(endian + "I", 0)
     return header + ifd0 + data_blob + exif_block
 
 
 def _jpeg_app1_exif(tiff):
-    payload = b"Exif\\x00\\x00" + tiff
-    return b"\\xff\\xe1" + (len(payload) + 2).to_bytes(2, "big") + payload
+    payload = b"Exif\x00\x00" + tiff
+    return b"\xff\xe1" + (len(payload) + 2).to_bytes(2, "big") + payload
 
 
 
@@ -246,14 +246,14 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
         tiff = _tiff_exif_fixture(
             "<",
             [
-                (0x010E, 2, b"The sea keeps a place for every voice.\\x00"),
-                (0x9C9B, 1, "Night watch photograph".encode("utf-16le") + b"\\x00\\x00"),
-                (0x9C9C, 1, "A place for one more".encode("utf-16le") + b"\\x00\\x00"),
-                (0x9C9D, 1, "Emily".encode("utf-16le") + b"\\x00\\x00"),
-                (0x9C9E, 1, "sea;watch;table".encode("utf-16le") + b"\\x00\\x00"),
-                (0x9C9F, 1, "After the long watch".encode("utf-16le") + b"\\x00\\x00"),
+                (0x010E, 2, b"The sea keeps a place for every voice.\x00"),
+                (0x9C9B, 1, "Night watch photograph".encode("utf-16le") + b"\x00\x00"),
+                (0x9C9C, 1, "A place for one more".encode("utf-16le") + b"\x00\x00"),
+                (0x9C9D, 1, "Emily".encode("utf-16le") + b"\x00\x00"),
+                (0x9C9E, 1, "sea;watch;table".encode("utf-16le") + b"\x00\x00"),
+                (0x9C9F, 1, "After the long watch".encode("utf-16le") + b"\x00\x00"),
             ],
-            b"UNICODE\\x00" + "the water outside".encode("utf-16le") + b"\\x00\\x00",
+            b"UNICODE\x00" + "the water outside".encode("utf-16le") + b"\x00\x00",
         )
         streams = list(iter_exif_caption_units("desk-photo.tif", tiff))
         values = {label.split(":")[2]: text for label, text in streams}
@@ -270,8 +270,8 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
     def test_big_endian_tiff_decodes_unicode_usercomment_in_tiff_byte_order(self):
         tiff = _tiff_exif_fixture(
             ">",
-            [(0x010E, 2, b"Late watch at first light\\x00")],
-            b"UNICODE\\x00" + "the sea is quiet".encode("utf-16be") + b"\\x00\\x00",
+            [(0x010E, 2, b"Late watch at first light\x00")],
+            b"UNICODE\x00" + "the sea is quiet".encode("utf-16be") + b"\x00\x00",
         )
         streams = list(iter_exif_caption_units("desk-photo-big-endian.tif", tiff))
         self.assertIn(("exif:tiff:ImageDescription:ifd0:tag-0x010E:encoding-ascii",
@@ -281,7 +281,7 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
 
     def test_usercomment_ascii_designator_is_decoded(self):
         tiff = _tiff_exif_fixture(
-            "<", [], b"ASCII\\x00\\x00\\x00" + b"the last watch\\x00"
+            "<", [], b"ASCII\x00\x00\x00" + b"the last watch\x00"
         )
         streams = list(iter_exif_caption_units("desk-photo.tif", tiff))
         self.assertIn(("exif:tiff:UserComment:exif-ifd:tag-0x9286:encoding-ascii",
@@ -292,9 +292,9 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
         nonce = bytes(range(16))
         target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
         tiff = _tiff_exif_fixture(
-            "<", [(0x010E, 2, phrase.encode("ascii") + b"\\x00")]
+            "<", [(0x010E, 2, phrase.encode("ascii") + b"\x00")]
         )
-        jpeg = b"\\xff\\xd8" + _jpeg_app1_exif(tiff) + b"\\xff\\xd9"
+        jpeg = b"\xff\xd8" + _jpeg_app1_exif(tiff) + b"\xff\xd9"
         native_streams = list(iter_text_streams(
             "desk-photo.jpg", jpeg, 0, [0], [], False, None, []
         ))
@@ -312,9 +312,9 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
         self.assertTrue(any(hit["normalized_phrase"] == phrase.lower() for hit in hits))
 
     def test_multiple_jpeg_exif_app1_segments_keep_distinct_source_labels(self):
-        first = _tiff_exif_fixture("<", [(0x010E, 2, b"First caption\\x00")])
-        second = _tiff_exif_fixture("<", [(0x010E, 2, b"Second caption\\x00")])
-        jpeg = b"\\xff\\xd8" + _jpeg_app1_exif(first) + _jpeg_app1_exif(second) + b"\\xff\\xd9"
+        first = _tiff_exif_fixture("<", [(0x010E, 2, b"First caption\x00")])
+        second = _tiff_exif_fixture("<", [(0x010E, 2, b"Second caption\x00")])
+        jpeg = b"\xff\xd8" + _jpeg_app1_exif(first) + _jpeg_app1_exif(second) + b"\xff\xd9"
         streams = list(iter_exif_caption_units("two-exif-segments.jpg", jpeg))
         self.assertIn(("exif:jpeg-app1-0:ImageDescription:ifd0:tag-0x010E:encoding-ascii",
                        "First caption"), streams)
@@ -322,8 +322,8 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
                        "Second caption"), streams)
 
     def test_malformed_tiff_offsets_truncated_jpeg_and_unknown_usercomment_fail_closed(self):
-        bad_tiff = b"II*\\x00" + struct.pack("<I", 0xFFFFFFFF)
-        truncated_jpeg = b"\\xff\\xd8\\xff\\xe1\\x00\\x20Exif\\x00\\x00"
+        bad_tiff = b"II*\x00" + struct.pack("<I", 0xFFFFFFFF)
+        truncated_jpeg = b"\xff\xd8\xff\xe1\x00\x20Exif\x00\x00"
         unknown_comment = _tiff_exif_fixture("<", [], b"UNKNOWN!!" + b"binary")
         self.assertEqual(list(iter_exif_caption_units("bad.tif", bad_tiff)), [])
         self.assertEqual(list(iter_exif_caption_units("bad.jpg", truncated_jpeg)), [])
