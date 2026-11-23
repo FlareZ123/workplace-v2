@@ -145,6 +145,40 @@ def sample_cells(sheet: Any, coordinates: Iterable[tuple[int, int]], base: int) 
     return cells
 
 
+def evaluate_m10_comments(extracted: dict[str, Any], selected_sheet: str | None,
+                          nonce: bytes, target: bytes) -> list[dict[str, Any]]:
+    """Check only the M10 cell note/comment on an explicit or sole worksheet."""
+    if not selected_sheet:
+        return []
+    expected_source = f"{selected_sheet}!M10<comment>".casefold()
+    results: list[dict[str, Any]] = []
+    for stream in extracted.get("text_streams", []):
+        if stream.get("kind") != "comment":
+            continue
+        source = str(stream.get("source", ""))
+        if source.casefold() != expected_source:
+            continue
+        text = str(stream.get("text", ""))
+        if not text.strip():
+            continue
+        normalized = normalize(text)
+        component = k08_component(nonce, normalized)
+        digest = sha256(component)
+        results.append({
+            "source": source,
+            "cell": "M10",
+            "sheet": selected_sheet,
+            "comment_author": stream.get("comment_author"),
+            "raw_comment_text": text,
+            "normalized_phrase": normalized,
+            "hmac16": component.hex().upper(),
+            "component_sha256": digest,
+            "match": digest == target.hex(),
+            "interpretation": "M10 margin/comment candidate; author metadata is not independent authentication",
+        })
+    return results
+
+
 def evaluate_candidate(cells: list[dict[str, Any]], nonce: bytes, target: bytes,
                        orientation: str, base: int, mapping: str) -> dict[str, Any]:
     complete = all(cell["in_bounds"] and cell["value"] is not None and str(cell["value"]) != ""
@@ -243,8 +277,17 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
                 cells = sample_cells(sheet, pairs, base)
                 candidates.append(evaluate_candidate(cells, nonce, target,
                                                      orientation, base, "single"))
+    comment_sheet = explicit_sheet if explicit_sheet else (
+        sheet_names[0] if len(sheet_names) == 1 else None
+    )
+    m10_comment_candidates = evaluate_m10_comments(
+        extracted, comment_sheet, nonce, target
+    )
     result = {
-        "status": ("MATCH_REVIEW" if any(x["match"] for x in candidates) else
+        "status": ("MATCH_REVIEW" if (
+                       any(x["match"] for x in candidates)
+                       or any(x["match"] for x in m10_comment_candidates)
+                   ) else
                    "NO_K08_MATCH" if candidates and all(x["complete"] for x in candidates) else
                    "INCOMPLETE_OR_NO_MAPPING"),
         "workbook": {"path": str(workbook_path), "size": extracted.get("source_bytes"),
@@ -260,13 +303,16 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
         "sheet_mapping": mapping,
         "k08_target_sha256": target.hex(),
         "candidates": candidates,
+        "m10_comment_candidates": m10_comment_candidates,
+        "m10_comment_sheet": comment_sheet,
         "scope": [
             "Conditional test only: PS-0323-to-keeper-envelope identity is not authenticated by the surviving export.",
             "Only the eight PS-0323-derived cells, their original order, two byte orientations, and zero-/one-based coordinates are tested.",
             "No sheet ordering is inferred; multi-sheet workbooks require an explicit --sheet.",
             "Cell values are joined with one space and processed under the original REC8/1 normalization/HMAC rule.",
             "Formula cells are not used as phrase values because LibreOffice may recalculate them.",
-            "No sheet permutation, cell permutation, paraphrase, comments, embedded OfficeArt, or broad text search is performed.",
+            "Only the M10 cell comment is additionally tested, and only on an explicit or sole worksheet; no broad comment search or embedded OfficeArt scan is performed.",
+            "Comment author metadata is preserved as a clue, not treated as independent identity authentication.",
             "The existing XLS intake converts a temporary copy and confirms the original workbook hash is unchanged."
         ]
     }
