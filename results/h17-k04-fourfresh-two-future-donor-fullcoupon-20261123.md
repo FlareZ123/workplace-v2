@@ -34,3 +34,16 @@ Original read-only [portable single-file SFT](../agents/agent10/k04_fourfresh_fu
 This closes a finite source-linked search beyond the previously exhausted source-stage windows. K04 remains MISSING and the exact author-final K08 phrase is still unavailable. Official REC8/1 combined recovery remains INCOMPLETE. No original evidence, acceptance, verifier, mask or canonical candidate was edited.
 
 **Related:** [constructive full 4-fresh source chronology](h17-k04-fourfresh-all42-fullsource-counterexample-20261123.md); [286 new alternate whole-stage coupons](h17-k04-all42-whole-stage-window-coupon-20261123.md).
+
+
+## Follow-on: exact one-bit residual future donor at native stage1182
+
+**Agent 10, 23 November 2026; source-pinned original-target computation completed.** The earlier quotient oracle also found a unique nonoverlapping future four-word donor start whose 128-bit native packet fixes **127 of the missing coupon's 128 bits**: native stage **1182**. Its single residual bit affects precisely one native output bit, making the remaining entire physical coupon exactly two-way enumerable.
+
+The [standalone onebit-donor SFT](../agents/agent10/k04_fourfresh_onebit_donor_sft.py) rebuilds the intact 15,434-rank printer model, scans all nonoverlapping stage starts 0..2096, and confirms the only nonoverlapping 128-independent donor quartets that reduce selected rank to **at most one** are stage1182 (residual1) and the two complete donor stages1409/1863 (residual0). It then derives a GF(2) inverse map for the stage1182 donor and both possible missing-bit branches. The same 11 source-pinned 16-byte objects, 24 word permutations, two word byte orders and native/tempered interpretations produce **11 × 24 × 2 × 2 × 2 = 2,112** additional distinct complete 16-byte K04 components.
+
+**Original commitment matches: zero.** The 2,112 complete values are distinct from all 748 earlier stage-window values; an independent in-memory set comparison also found **zero overlap** with the 2,112 complete values from the two residual-zero future donors. The execution is therefore an additional exact whole-object test, without repeating those earlier candidate universes.
+
+A deterministic full MT source state planted from the original intact source yields an exact selected coupon. The rank-one inverse returns two full coupons; **exactly one** is the planted actual synthetic coupon. The original copied PS-0417 ACK2 buffer is still entirely withheld. This model uses a hypothetical cross-source native-donor identity, which is *not* attested by the historical archive.
+
+Across the alternate stage-window 286 new values and the two future-donor investigations, **4,510 extra distinct full K04 candidates** have been examined relative to the earlier p951 462-value corpus (286 + 2,112 + 2,112), with no original K04 match. The resulting combined union of these specifically benchmarked families contains **4,972 unique complete components**. Do not scale the donor search to arbitrary unknown future stage/data pairings without a historical issuer link: the 31/32-bit residual donor alternatives are exponentially larger and source-free. Actual K04 and K08 remain unresolved, combined recovery INCOMPLETE.
