@@ -7,8 +7,9 @@ each file's SHA-256 before reading it, and searches decoded text, Office/PDF
 content, JPEG/PNG/TIFF metadata and optional OCR, ZIP/TAR/GZIP members, and
 SQLite text/BLOB columns (notably Sticky Notes' plum.sqlite). XPS/OXPS
 Glyphs/Indices runs are decoded through embedded fonts when mapping is unambiguous.
-Pillow is used
-as a fallback for other supported image formats. It never writes to source files,
+Windows thumbnail-cache databases are carved in memory from hash-verified bytes;
+teal-bit HMAC hits retain an explicit unresolved image-to-caption source link.
+Pillow is used as a fallback for other supported image formats. It never writes to source files,
 does not inspect credential stores, and does not guess PDF passwords.
 
 By default it excludes Outlook PST/OST/NSF stores and all mail-category files.
