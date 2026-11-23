@@ -35,18 +35,29 @@ def main():
         (root/'candidate.json').write_text(json.dumps(prior))
         shutil.copy2(verify,root/'verify.py')
         out=root/'complete.json'
-        result=cli.execute(root,coupon,caption,out)
+        result=cli.execute(root,coupon,caption,out,allow_synthetic_targets=True)
         assert result['accepted'] is True
         assert result['verification']['passed']==8
         assert result['verification']['combined']=='PASS'
         assert json.loads(out.read_text())==complete
-        try:cli.execute(root,coupon,caption,out)
+        assert out.stat().st_mode & 0o777 == 0o600
+        rawcoupon=root/'coupon.bin';rawcoupon.write_bytes(bytes.fromhex(coupon))
+        asciihex=root/'coupon.txt';asciihex.write_text(coupon+'\n')
+        phrase_file=root/'caption.txt';phrase_file.write_text(caption+'\n')
+        assert cli.read_coupon(rawcoupon)==coupon
+        assert cli.read_coupon(asciihex)==coupon
+        assert cli.read_caption(phrase_file).strip()==caption
+        try:cli.execute(root,coupon,caption,out,allow_synthetic_targets=True)
         except FileExistsError:pass
         else:raise AssertionError('Must not overwrite existing accepted key')
         badout=root/'bad.json'
-        bad=cli.execute(root,'00'*16,caption,badout)
+        bad=cli.execute(root,'00'*16,caption,badout,allow_synthetic_targets=True)
         assert not bad['accepted'] and bad['verification']['slots']['K04']=='NO_MATCH'
         assert not badout.exists()
+        # Synthetic targets must be explicitly opted in to by internal test.
+        try:cli.execute(root,coupon,caption,None)
+        except ValueError as exc: assert 'acceptance has changed' in str(exc)
+        else:raise AssertionError('Must reject altered commitments by default')
     original=cli.execute(ROOT,'A9A9DC5731A5E2AE879C47215C2559D5',
         'The sea looks different when you have finally finished your tea',None)
     assert not original['accepted'] and original['verification']['passed']==6
