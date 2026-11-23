@@ -256,9 +256,9 @@ _EXIF_MAX_TEXT_BYTES = 1024 * 1024
 
 
 def _strip_utf16_nul_terminator(raw: bytes) -> bytes:
-    # Do not use bytes.rstrip(b"\\0") on UTF-16LE: it removes the high zero
+    # Do not use bytes.rstrip(b"\0") on UTF-16LE: it removes the high zero
     # byte of the final ASCII character as well as the two-byte terminator.
-    while raw.endswith(b"\\x00\\x00"):
+    while raw.endswith(b"\x00\x00"):
         raw = raw[:-2]
     return raw
 
@@ -266,7 +266,7 @@ def _strip_utf16_nul_terminator(raw: bytes) -> bytes:
 def _decode_exif_text(tag: int, raw: bytes, byteorder: str):
     field_name, kind = EXIF_TEXT_TAGS[tag]
     if kind == "ascii":
-        raw = raw.rstrip(b"\\x00")
+        raw = raw.rstrip(b"\x00")
         if not raw:
             return None
         try:
@@ -281,9 +281,9 @@ def _decode_exif_text(tag: int, raw: bytes, byteorder: str):
                 encoding = "latin-1"
     elif kind == "utf16le":
         raw = _strip_utf16_nul_terminator(raw)
-        if raw.startswith(b"\\xff\\xfe"):
+        if raw.startswith(b"\xff\xfe"):
             raw, encoding = raw[2:], "utf-16le-bom"
-        elif raw.startswith(b"\\xfe\\xff"):
+        elif raw.startswith(b"\xfe\xff"):
             raw, encoding = raw[2:], "utf-16be-bom"
         else:
             encoding = "utf-16le"
@@ -295,17 +295,17 @@ def _decode_exif_text(tag: int, raw: bytes, byteorder: str):
         text = raw.decode(codec, errors="replace")
     else:
         # EXIF UserComment has an eight-byte character-code designator.
-        if raw.startswith(b"ASCII\\x00\\x00\\x00"):
-            body = raw[8:].rstrip(b"\\x00")
+        if raw.startswith(b"ASCII\x00\x00\x00"):
+            body = raw[8:].rstrip(b"\x00")
             if not body:
                 return None
             text = body.decode("ascii", errors="replace")
             encoding = "ascii"
-        elif raw.startswith(b"UNICODE\\x00"):
+        elif raw.startswith(b"UNICODE\x00"):
             body = _strip_utf16_nul_terminator(raw[8:])
-            if body.startswith(b"\\xff\\xfe"):
+            if body.startswith(b"\xff\xfe"):
                 body, codec, encoding = body[2:], "utf-16le", "utf-16le-bom"
-            elif body.startswith(b"\\xfe\\xff"):
+            elif body.startswith(b"\xfe\xff"):
                 body, codec, encoding = body[2:], "utf-16be", "utf-16be-bom"
             else:
                 codec = "utf-16le" if byteorder == "little" else "utf-16be"
@@ -315,8 +315,8 @@ def _decode_exif_text(tag: int, raw: bytes, byteorder: str):
             if not body:
                 return None
             text = body.decode(codec, errors="replace")
-        elif raw.startswith(b"JIS\\x00\\x00\\x00\\x00\\x00"):
-            body = raw[8:].rstrip(b"\\x00")
+        elif raw.startswith(b"JIS\x00\x00\x00\x00\x00"):
+            body = raw[8:].rstrip(b"\x00")
             if not body:
                 return None
             text = body.decode("shift_jis", errors="replace")
@@ -325,7 +325,7 @@ def _decode_exif_text(tag: int, raw: bytes, byteorder: str):
             # Unknown UserComment encodings may be binary. Fail closed rather
             # than promoting arbitrary bytes into candidate phrase streams.
             return None
-    text = text.strip("\\x00 \\t\\r\\n")
+    text = text.strip("\x00 \t\r\n")
     if not text:
         return None
     return field_name, encoding, text
@@ -408,13 +408,13 @@ def iter_exif_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]
     Only recognized TIFF/EXIF signatures and bounded IFD fields are read.
     JPEG scanning stops at SOS/EOI; unknown UserComment encodings are ignored.
     """
-    if data.startswith((b"II*\\x00", b"MM\\x00*")):
+    if data.startswith((b"II*\x00", b"MM\x00*")):
         yield from _iter_tiff_exif_caption_units(data, "tiff")
         return
-    if data.startswith(b"Exif\\x00\\x00"):
+    if data.startswith(b"Exif\x00\x00"):
         yield from _iter_tiff_exif_caption_units(data[6:], "exif-prefix")
         return
-    if not data.startswith(b"\\xff\\xd8"):
+    if not data.startswith(b"\xff\xd8"):
         return
 
     position = 2
@@ -439,7 +439,7 @@ def iter_exif_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]
             break
         payload_start = position + 2
         payload_end = position + segment_length
-        if marker == 0xE1 and data[payload_start:payload_start + 6] == b"Exif\\x00\\x00":
+        if marker == 0xE1 and data[payload_start:payload_start + 6] == b"Exif\x00\x00":
             yield from _iter_tiff_exif_caption_units(
                 data[payload_start + 6:payload_end], f"jpeg-app1-{app1_index}"
             )
