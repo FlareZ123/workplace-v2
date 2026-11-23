@@ -141,10 +141,12 @@ def iter_iptc_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]
         # Advance the outer search before parsing this APP13 block.
         # Otherwise one Photoshop 3.0 signature is rediscovered forever.
         pos = marker + len(signature)
+        next_marker = data.find(signature, pos)
+        section_end = len(data) if next_marker < 0 else next_marker
         cursor = pos
-        while cursor + 12 <= len(data):
-            block = data.find(b"8BIM", cursor)
-            if block < 0 or block + 12 > len(data):
+        while cursor + 12 <= section_end:
+            block = data.find(b"8BIM", cursor, section_end)
+            if block < 0 or block + 12 > section_end:
                 break
             resource_id = int.from_bytes(data[block + 4:block + 6], "big")
             name_length = data[block + 6]
@@ -152,12 +154,12 @@ def iter_iptc_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]
             name_end = name_start + name_length
             padded_name_end = name_start + (((1 + name_length + 1) // 2) * 2) - 1
             size_pos = padded_name_end
-            if size_pos + 4 > len(data):
+            if size_pos + 4 > section_end:
                 break
             resource_size = int.from_bytes(data[size_pos:size_pos + 4], "big")
             resource_start = size_pos + 4
             resource_end = resource_start + resource_size
-            if resource_end > len(data):
+            if resource_end > section_end:
                 break
             if resource_id == 0x0404:
                 for label, text in _parse_iptc_datasets(data[resource_start:resource_end]):
