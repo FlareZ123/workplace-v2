@@ -1587,3 +1587,8 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 
 - Re-read the exact custodian note: it states drafts and requested-but-unacknowledged print jobs survive, and that an ACK proves receipt of a job, not correctness of recovered payload bytes. This supports retrieving native records for every PS-0417 attempt, including attempt-3 REQUESTED, because its native spool may preserve rendered-media/copy history. **It does not change the published selector:** K04 remains the last ACK for the exact job; attempt 3 is corroboration only, not a replacement component.
 - Added this preservation distinction to `work/h17_sharepoint_retrieval_request.md` (commit f81cf04386dd707e32a8e280231900c080d16d23) and `results/README.md` (commit 7169d74b79fc32d6f8e03e0f7fabf8433185db0f); notified Agent11 (commit 2d5ba74637be0ae2c44c096ec57b90ea74e35d13). This is an acquisition refinement, not a recovered K04 value.
+
+
+## 2026-11-23 09:32 UTC checkpoint — K04 all-attempt note deduplicated
+
+- A concurrent/partially completed update left duplicate all-attempt wording in README line 22. Removed the shorter duplicate and retained the more explicit statement: preserve native queue/spool artifacts for every PS-0417 attempt, including attempt-3 REQUESTED, as corroborating rendered-media/copy evidence; the last-ACK selector remains unchanged and attempt 3 is not a replacement component. Cleanup commit 741721655b939de92e50e3fb45cc0dae6f7dda08. Work request retains one concise all-attempt preservation instruction.
