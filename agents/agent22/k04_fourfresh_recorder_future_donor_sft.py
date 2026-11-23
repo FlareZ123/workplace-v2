@@ -21,7 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "agent10"))
 from k04_all42_wholewindow_sft import (
-    ALT_STAGES, K04_SHA, SPOOL_SHA, build_basis, symbolic_words, temper, untemper,
+    ALT_STAGES, K04_SHA, SPOOL_SHA, build_basis, project, symbolic_words, temper, untemper,
 )
 from k04_all42_fourfresh_countermodel_sft import GAP_DELTAS, full_state, native_word
 from k04_fourfresh_future_source_donor_sft import (
@@ -70,6 +70,50 @@ def recorder_cohorts(raw: bytes) -> dict[str, list[bytes]]:
     return cohorts
 
 
+def fully_source_matching_state_with_selected(
+        basis: dict, expressions, stages: list[int],
+        native: list, desired: tuple[int, int, int, int]) -> int:
+    """Construct a genuine full native MT state matching source and target.
+
+    Uses original source equations exclusively, adds exactly 128 equations
+    selecting the four previously withheld native coupon words, then solves
+    the remaining linear state with all unchosen free coordinates set to 0.
+    This is a synthetic non-identifiability proof, not a target recovery.
+    """
+    augmented = dict(basis)
+    for lane, value in enumerate(desired):
+        for bit, formula in enumerate(expressions[stages[129] + lane]):
+            free_form, source_rhs = project(formula, basis)
+            rhs = ((value >> bit) & 1) ^ source_rhs
+            while free_form:
+                pivot = free_form.bit_length() - 1
+                old = augmented.get(pivot)
+                if old is None:
+                    augmented[pivot] = (free_form, rhs)
+                    break
+                free_form ^= old[0]
+                rhs ^= old[1]
+            else:
+                assert rhs == 0
+    assert len(augmented) == len(basis) + 128
+
+    state = 0
+    for pivot in sorted(augmented):
+        formula, rhs = augmented[pivot]
+        bit = rhs ^ ((state & (formula ^ (1 << pivot))).bit_count() & 1)
+        if bit:
+            state |= 1 << pivot
+
+    for row, packet in enumerate(native):
+        if packet is None:
+            continue
+        for lane, word in enumerate(packet):
+            assert native_word(state, expressions[stages[row] + lane]) == word
+    assert tuple(native_word(state, expressions[stages[129] + lane])
+                 for lane in range(4)) == desired
+    return state
+
+
 def main() -> None:
     root = (Path(sys.argv[1]) if len(sys.argv) == 2
             else Path(__file__).resolve().parents[2] / "resources")
@@ -112,6 +156,16 @@ def main() -> None:
     symbols = symbolic_words(0, 2100)
     basis = build_basis(native, tuple(stages), symbols, 0)
     assert len(basis) == 15434
+
+    # Exact source-only non-identifiability certificate: two different full
+    # 19,968-bit original-source-matching MT states that force opposite
+    # 128-bit selected native coupons. Every intact original source word
+    # matches under both states, proving no original coupon bits are fixed.
+    zero_state = fully_source_matching_state_with_selected(
+        basis, symbols, stages, native, (0, 0, 0, 0))
+    ones_state = fully_source_matching_state_with_selected(
+        basis, symbols, stages, native, (0xFFFFFFFF,) * 4)
+    assert zero_state != ones_state
     mappings = {q: donor_mapping(basis, symbols, 955, q) for q in (1409, 1863)}
     assert all(m is not None and len(m) == 128 for m in mappings.values())
 
@@ -216,6 +270,9 @@ def main() -> None:
         "target_native_rank_before_donor": 128,
         "target_reaching_future_native_stages": sorted(mappings),
         "synthetic_full_coupon_both_donors": planted_coupon.hex().upper(),
+        "both_extreme_selected_128bit_native_values_realized_by_exact_original_source_models": True,
+        "all_528_original_intact_native_words_replayed_by_both_models": True,
+        "source_conditional_selected_native_rank": 128,
         "whole_original_k04_checks": tested,
         "unique_original_k04_components": len(seen),
         "independent_complete_coupon_predictions_per_future_site": 22656,
