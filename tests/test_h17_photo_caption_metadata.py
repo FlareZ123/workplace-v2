@@ -83,7 +83,7 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
         self.assertIn("Emily", [text for label, text in streams if "ByLine" in label])
 
     def test_k08_intake_emits_iptc_caption_streams(self):
-        streams = list(iter_text_streams("desk-photo.jpg", _iptc_jpeg(), 0, [0], [], None, None, []))
+        streams = list(iter_text_streams("desk-photo.xmp", XMP + _iptc_jpeg()[2:-2], 0, [0], [], None, None, []))
         self.assertTrue(any("iptc:CaptionAbstract" in label and
                             text.decode("utf-8") == "The sea keeps the voices after the last watch."
                             for label, text in streams))
