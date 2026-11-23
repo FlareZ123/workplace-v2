@@ -68,6 +68,8 @@ The custodian inquiry is closed. Do not recontact that channel, access protected
 
 ## Publication and experiment decision
 
+**23 November K08 profile-cache intake improvement:** the authorized profile phrase scanner now carves intact image payloads from hash-verified Windows thumbnail-cache files in memory and tests only the two frozen teal-bit layouts against the unchanged K08 commitment. Duplicate images are reused; cache bytes are not modified; hits explicitly retain unresolved original-image/N14/Emily linkage. Synthetic bridge, existing teal-decoder tests and profile self-test passed on [run 45091655484](https://github.com/FlareZ123/workplace-v2/actions/runs/45091655484). The supplied ZIP contains no image or thumbnail-cache members, so this closes an intake gap but does not recover K08. [Method, limits and test details](h17-k08-profile-thumbcache-integrated-scan-20261123.md).
+
 A research checkpoint should change one of: **complete K04 bytes, complete K08 phrase, newly observed source object, mechanistic relation, or a discriminating withheld control**. State exact retained inputs, frozen transform, output, unchanged commitment result and narrow excluded domain. A synthetic PASS, UNKNOWN/timeout, locator or finished workflow is not target recovery. Use existing tested runners; batch code, controls, review and decision-changing report once. Do not turn the live map into a chronological append-only log.
 
 For detail: [full previous map](DECISION_MAP_SNAPSHOT_20261121T2208Z.md), [19 November map snapshot](DECISION_MAP_SNAPSHOT_20261119T142355Z.md), [research reports](./), [reusable programs](../work/), [official records](../resources/).
