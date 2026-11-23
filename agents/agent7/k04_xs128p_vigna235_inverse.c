@@ -60,6 +60,6 @@ int main(int argc,char **argv) {
                " x4=%016" PRIX64 " x5=%016" PRIX64
                " synthetic_x2_match=%d\n",a,b,p[2],p[3],p[4],p[5],plant && p[2]==x2);
     }
-    printf("SUMMARY first_pair_states=%" PRIu64 " planted_x2_states=%" PRIu64 "\n",models,selected);
+    printf("SUMMARY first_pair_states=%" PRIu64 " synthetic_x2_states=%" PRIu64 "\n",models,selected);
     return 0;
 }
