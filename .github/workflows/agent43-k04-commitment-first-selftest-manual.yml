@@ -16,3 +16,5 @@ jobs:
           python-version: '3.11'
       - name: Test exact source-independent K04 full-coupon recovery
         run: python agents/agent25/k04_native_spool_commitment_bridge.py --self-test
+      - name: Check compatibility with original K04 bridge unit test
+        run: python -m unittest discover -s tests -p test_h17_k04_native_spool_commitment_bridge.py -v
