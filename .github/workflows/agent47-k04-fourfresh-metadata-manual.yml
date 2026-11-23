@@ -1,0 +1,16 @@
+name: Agent47 four-fresh K04 metadata oracle (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exactly reproduce source and metadata-oracle two-state certificates
+        run: python agents/agent47/k04_fourfresh_metadata_observability_sft.py
