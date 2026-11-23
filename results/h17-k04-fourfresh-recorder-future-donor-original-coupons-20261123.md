@@ -42,6 +42,17 @@ A separate deterministic full 19,968-bit source-consistent synthetic MT state wa
 
 The full independent local original-source run produced all counts above. The [read-only source-pinned SFT](../agents/agent22/k04_fourfresh_recorder_future_donor_sft.py) preserves the complete construction and full original commitment comparison; it reuses Agent10's established GF(2) solver instead of duplicating the linear algebra.
 
+## Follow-on: intact printer issuer/replay donor class
+
+A second complete-coupon construction uses all **132 intact copied historical printer buffers** as hypothetical *later-stage native printer output blocks*, independently of the recorder. Each packet is the actual original 16-byte source value, excluding selected row129 before decoding; the same frozen two future target-reaching MT stages1409/1863, 24 word orders, two endians and two native/tempered interpretations are used.
+
+- **25,344** complete K04 candidate constructions, **25,344 distinct full original components**, **zero** original K04 commitment hits.
+- **Zero** of the 25,344 printer-derived components overlap the previous 45,312 recorder-derived components or the earlier 2,112 source-block future-donor components.
+- Each future donor site yields **12,672** distinct complete printer-derived coupon predictions. Across **both** printer and recorder donor pools, each future stage yields **35,328** distinct coupons, and the two full prediction sets have **zero intersection**. This is an independent source-only falsifier of any hypothesized paired-full-donor mapping from these original blocks.
+- Combined recorder plus printer: **83,520** exact full K04 commitment assignments, **70,656** unique complete components, **70,464** additional unique components beyond the explicitly reconstructed prior 2,112 source-block donor family, all original misses.
+
+This model is stronger in emitter locality because the blocks come from the same preserved printer source. But it assumes a *hypothetical replay or second native-stage emission* of an earlier packet, which the original spool does not attest. A no-match cannot rule out a source-independent physical coupon or a different selected producer. The exact same read-only SFT now reproduces both donor classes and the source-only two-site agreement test.
+
 ## Interpretation
 
 This extends the historical source-linked donor data beyond the eleven accepted/source-prehash blocks and tests **45,120 genuinely new whole-component values** relative to that explicitly enumerated prior future-donor family. The 303 four-control windows include several exploratory reorderings; their native MT stage attribution is **not** documented by the original recorder or printer. No printer/recorder state sharing or authentic physical selected coupon has been established. The exact original K04 commitment rejected every candidate, so no slot was recovered. K08 remains missing and combined REC8/1 INCOMPLETE.
