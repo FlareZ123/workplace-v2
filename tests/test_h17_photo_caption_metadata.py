@@ -39,13 +39,15 @@ def _iptc_jpeg():
         (80, "Emily"),
     ]:
         value = text.encode("utf-8")
-        datasets.append(b"\\x1c\\x02" + bytes([dataset]) +
+        datasets.append(b"\x1c\x02" + bytes([dataset]) +
                         len(value).to_bytes(2, "big") + value)
     iptc = b"".join(datasets)
-    resource = (b"8BIM" + b"\\x04\\x04" + b"\\x00\\x00" +
+    resource = (b"8BIM" + b"\x04\x04" + b"\x00\x00" +
                 len(iptc).to_bytes(4, "big") + iptc +
-                (b"\\x00" if len(iptc) & 1 else b""))
-    return b"\\xff\\xd8" + b"Photoshop 3.0\\x00" + resource + b"\\xff\\xd9"
+                (b"\x00" if len(iptc) & 1 else b""))
+    payload = b"Photoshop 3.0\x00" + resource
+    return (b"\xff\xd8\xff\xed" + (len(payload) + 2).to_bytes(2, "big") +
+            payload + b"\xff\xd9")
 
 
 class PhotoCaptionMetadataTests(unittest.TestCase):
@@ -155,6 +157,18 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
         self.assertIn("Keeper envelope caption",
                       [text for label, text in streams if "Headline" in label])
         self.assertIn("Emily", [text for label, text in streams if "ByLine" in label])
+
+    def test_two_real_jpeg_app13_segments_are_read_once_each(self):
+        jpeg = _iptc_jpeg()
+        app13 = jpeg[2:-2]
+        combined = b"\xff\xd8" + app13 + app13 + b"\xff\xd9"
+        self.assertIn(b"Photoshop 3.0\x00", combined)
+        streams = list(iter_iptc_caption_units("two-segment.jpg", combined))
+        self.assertEqual(len(streams), 6)
+        captions = [text for label, text in streams if "CaptionAbstract" in label]
+        self.assertEqual(
+            captions, ["The sea keeps the voices after the last watch."] * 2
+        )
 
     def test_unrelated_or_malformed_data_produces_no_caption_fields(self):
         self.assertEqual(list(iter_xmp_caption_units("ordinary.txt", b"just words")), [])
