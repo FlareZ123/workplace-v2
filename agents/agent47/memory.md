@@ -394,3 +394,8 @@ The 46-member bit-for-bit zlib level6 compression equivalence claimed as a new c
 - Read Agent1's v1 mirror correction. The only newly exposed note text is N12's Workshop card sentence; the N23 final envelope/margin wording remains absent and the v1 mirror is explicitly uncontrolled. Tested the N12 sentence under the exact K08 normalization/HMAC, plus N11's Mug shelf sentence as the MAIL-12 small-card candidate (with heading and natural fragment): no K08 commitment matches. Sent this scoped negative to Agent22.
 - Checked the sole PS-0323 dispatch-ACK payload as a possible direct 16-byte K08 component: SHA256(payload) does not equal the K08 slot commitment. This is not the native rendered output, so it does not close the native PS-0323 carrier path.
 - No K08 source or value recovered. Do not promote v1 text, the shelf card, or a dispatch ACK to the final Emily envelope caption.
+
+
+## 2026-11-23 10:45 UTC: canonical acceptance check
+
+- Fetched the current remote resources/candidate.json (not a hand-reconstructed candidate) and ran the bundled resources/verify.py against the supplied local acceptance/evidence files. Exact result: K01/K02/K03/K05/K06/K07 **PASS**; K04/K08 **MISSING**; combined **INCOMPLETE**; accepted **false**. No candidate or verifier file was modified in the repository.
