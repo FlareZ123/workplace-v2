@@ -1,8 +1,8 @@
-"""Read structured XMP caption/description fields from original photo files/sidecars.
+"""Read structured XMP, IPTC and native TIFF/EXIF caption fields.
 
 This is a source-specific metadata reader, not OCR or a broad text search. It
-preserves the XMP property and language label so a candidate remains traceable
-to its original caption field.
+preserves carrier, property/tag, IFD and encoding labels so every candidate
+remains traceable to its original caption field.
 """
 from __future__ import annotations
 
