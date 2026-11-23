@@ -225,15 +225,33 @@ def self_test():
         for hit in xps_pair["candidate_hits"]
     ), xps_pair
 
+    # Actual Windows spool exports are often paired filesystem files rather
+    # than ZIP archive members. Check read-only directory intake end to end.
+    import tempfile
+    with tempfile.TemporaryDirectory(prefix="h17-k04-native-") as folder:
+        native_root = Path(folder)
+        (native_root / "0042.SPL").write_bytes(xps.getvalue())
+        (native_root / "0042.SHD").write_bytes(job_id.encode("utf-16le"))
+        physical = RawIntake([
+            ("job:" + job_id, job_id.encode("ascii")),
+            ("job-utf16:" + job_id, job_id.encode("utf-16le")),
+        ])
+        physical.walk_path(native_root)
+        native_dir = scan_intake(physical, job_id, target, mask)
+        assert native_dir["recovered"] and native_dir["paired_member_count"] == 1, native_dir
+        assert native_dir["component_hex"] == component.hex().upper(), native_dir
+        assert any("xps-page-1-joined" in h["source"] for h in native_dir["candidate_hits"]), native_dir
+
     return {
         "passed": True,
-        "complete_commitment_cases": 4,
+        "complete_commitment_cases": 5,
         "matching_pairs": labelled["matching_job_pairs"],
         "candidate_offset": labelled["candidate_hits"][0]["offset"],
         "literal_matched": labelled["job_id_literal_at_matching_source"],
         "unlabelled_pair_recovered": unlabelled["recovered"],
         "unpaired_spl_recovered": unpaired["recovered"],
         "native_xps_spool_recovered": xps_pair["recovered"],
+        "native_windows_directory_recovered": native_dir["recovered"],
         "component_hex": labelled["component_hex"],
     }
 
