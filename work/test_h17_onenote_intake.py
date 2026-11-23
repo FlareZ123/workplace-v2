@@ -124,11 +124,12 @@ class OneNoteIntakeTests(unittest.TestCase):
             path.write_bytes(raw)
             with patch.dict(sys.modules, self._fake_module()):
                 result = intake.extract_onenote_document(path, "OneNote/desk-notes.one")
+            unchanged = path.read_bytes() == raw
 
+        self.assertTrue(unchanged)
         self.assertEqual(result["pages"], 1)
         self.assertEqual(result["historical_revisions"], 1)
         self.assertEqual(result["source_sha256"], hashlib.sha256(raw).hexdigest())
-        self.assertEqual(path.read_bytes(), raw)
         sources = [stream["source"] for stream in result["streams"]]
         texts = [stream["text"] for stream in result["streams"]]
         self.assertTrue(any("revision=0:historical" in source for source in sources))
