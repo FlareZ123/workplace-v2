@@ -22,15 +22,29 @@ from agents.agent43 import h17_native_spool_pair_intake as pairer
 
 
 def _scan_spl_bytes(name: str, data: bytes, target_digest: bytes, mask: bytes):
+    """Apply existing exact K04 native/rendered-media decoder to each SPL."""
     added = str(WORK_DIR) not in sys.path
     if added:
         sys.path.insert(0, str(WORK_DIR))
     try:
-        from h17_k04_binary_window_intake import scan_bytes
-        return scan_bytes(name, data, target_digest, mask, stride=1)
+        from h17_k04_binary_window_intake import scan_member
+
+        report = scan_member(
+            name, data, 0, [0, pairer.MAX_TOTAL, 0, 10000],
+            target_digest, mask, 1, pairer.MAX_MEMBER, 4
+        )
+
+        def hits_under(node):
+            hits = list(node.get("hits", ()))
+            for member in node.get("members", ()):
+                hits.extend(hits_under(member))
+            return hits
+
+        return hits_under(report)
     finally:
         if added:
             sys.path.remove(str(WORK_DIR))
+
 
 
 class RawIntake(pairer.Intake):
