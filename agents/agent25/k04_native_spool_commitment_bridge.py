@@ -199,14 +199,41 @@ def self_test():
     assert unpaired["recovered"] and unpaired["matching_job_pairs"] == 0, unpaired
     assert unpaired["candidate_hits"][0]["shd_sha256"] is None, unpaired
 
+    # A native XPS-spooled .SPL can begin with ZIP/OPC magic; the pairer must
+    # retain its SPL identity and the decoder must join split page glyph runs.
+    xps = io.BytesIO()
+    ns = "http://schemas.microsoft.com/xps/2005/06"
+    printed_hex = payload.hex().upper()
+    with zipfile.ZipFile(xps, "w", zipfile.ZIP_DEFLATED) as package:
+        package.writestr(
+            "[Content_Types].xml",
+            '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"/>',
+        )
+        package.writestr(
+            "Documents/1/Pages/1.fpage",
+            f'<FixedPage xmlns="{ns}"><Glyphs UnicodeString="{printed_hex[:16]}"/>'
+            f'<Glyphs UnicodeString="{printed_hex[16:]}"/></FixedPage>',
+        )
+    xps_pair = intake_zip([
+        ("spool/0042.SPL", xps.getvalue()),
+        ("spool/0042.SHD", job_id.encode("utf-16le")),
+    ])
+    assert xps_pair["recovered"] and xps_pair["paired_member_count"] == 1, xps_pair
+    assert any(
+        "xps-page-1-joined" in hit["source"]
+        and hit["component_hex"] == component.hex().upper()
+        for hit in xps_pair["candidate_hits"]
+    ), xps_pair
+
     return {
         "passed": True,
-        "complete_commitment_cases": 3,
+        "complete_commitment_cases": 4,
         "matching_pairs": labelled["matching_job_pairs"],
         "candidate_offset": labelled["candidate_hits"][0]["offset"],
         "literal_matched": labelled["job_id_literal_at_matching_source"],
         "unlabelled_pair_recovered": unlabelled["recovered"],
         "unpaired_spl_recovered": unpaired["recovered"],
+        "native_xps_spool_recovered": xps_pair["recovered"],
         "component_hex": labelled["component_hex"],
     }
 
