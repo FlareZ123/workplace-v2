@@ -1,4 +1,6 @@
-// Original PS-0417 REQUESTED1 late-stage native scalar MT32 whole-source gate; ≥2 of4 complete words.\n// Selected PS-0417 ACK2 never read; planted native seed12345 phase951 2word-loss control.\n// H-17 full native MT32 unsigned scalar-seed and late selected-job source-stage producer test.
+// Original PS-0417 REQUESTED1 late-stage native scalar MT32 whole-source gate; ≥2 of4 complete words.
+// Selected PS-0417 ACK2 never read; planted native seed12345 phase951 2word-loss control.
+// H-17 full native MT32 unsigned scalar-seed and late selected-job source-stage producer test.
 // Original input: PS-261003-0417 ATTEMPT=1 STATE=REQUESTED raw CD3E4F216ADB2FB180DA2AA90B33F7A4.
 // Original PS-0417 ATTEMPT=2 selected ACK2 and K04 commitment are excluded entirely.
 // g++ -O3 -mavx512f -mavx512dq -std=c++17 -pthread k04_mt32_fullseed_cycle_sft.cpp -o scan
