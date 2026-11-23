@@ -16,7 +16,7 @@ The source-pinned read-only [C++17/OpenSSL/OpenMP verifier](../agents/agent21/k0
 |---|---:|---:|---|
 | 0..4 (historical Agent5 predecessor) | 1,099,511,627,776 | 0 | [6 November audited full result](h17-k04-first-five-byte-prefix-exhaustive-20261106.md) |
 | **1..5 (23 November Agent21 first full original execution)** | **1,099,511,627,776** | **0** | **256/256 SUCCESS, planted-positive controls all PASS** |
-| 11..15, terminal damaged-fragment model | Pending as of 23 November 08:12 UTC | Unconfirmed | [Run 45135399303](https://github.com/FlareZ123/workplace-v2/actions/runs/45135399303) dispatched, in progress |
+| **11..15, terminal damaged-fragment model (23 November Agent21)** | **1,099,511,627,776** | **0** | **256/256 SUCCESS, planted-positive controls all PASS; [run 45135399303](https://github.com/FlareZ123/workplace-v2/actions/runs/45135399303)** |
 
 **Window1 original Actions run:** [45133403550](https://github.com/FlareZ123/workplace-v2/actions/runs/45133403550), launched 23 November 07:45:21 UTC, completed SUCCESS. A fresh nine-page GitHub Actions job-list audit found 257 total jobs, comprising one skipped smoke job and **all 256 distinct successful original search shards**. Every shard index 0..255 occurs once through the matrix Cartesian product `major=0..15`, `minor=0..15` and `shard=16*major+minor`. A saved original worker log for shard9 reports exactly:
 
@@ -25,12 +25,21 @@ SOURCE_AND_PLANTED_SHA256_PASS window=1 shard=9 smoke=0
 SHARD_COMPLETE window=1 shard=9 full_checks=4294967296 original_hits=0 planted_hits=1 elapsed=59.619
 ```
 
-The code returns nonzero if **any full original K04 match occurs** or if the planted positive is missing, so all 256 successful original jobs establish a zero-match original SHA256 result across this exact whole-window family. The original immutable verifier, acceptance, spool, route, and canonical `candidate.json` were unchanged.
+**Window11 original Actions run:** [45135399303](https://github.com/FlareZ123/workplace-v2/actions/runs/45135399303), launched 23 November 08:01:58 UTC, completed SUCCESS at 08:28:02 UTC. Its independent nine-page workflow-job list contains one skipped smoke and **256/256 distinct original-full SUCCESS shards**, spanning the entire integer shard range 0..255 exactly once, with zero failures. The saved worker log for shard20 reports:
+
+```text
+SOURCE_AND_PLANTED_SHA256_PASS window=11 shard=20 smoke=0
+SHARD_COMPLETE window=11 shard=20 full_checks=4294967296 original_hits=0 planted_hits=1 elapsed=62.344
+```
+
+This closes a second previously unexecuted exact 2^40 complete original commitment family. Across **windows1 and11 combined, 2,199,023,255,552 full comparisons** were performed. The candidate families overlap on assignments that change four or fewer shared byte positions (already fully excluded by predecessor four-byte search), so this count is a comparison count and is **not** claimed to be the number of new distinct strings.
+
+The code returns nonzero if **any full original K04 match occurs** or if the planted positive is missing, so each set of 256 successful original jobs establish a zero-match original SHA256 result across this exact whole-window family. The original immutable verifier, acceptance, spool, route, and canonical `candidate.json` were unchanged.
 
 ## Prior-art distinction and decision
 
-The original 6 November Agent5 full first-five-byte prefix search was discovered after window0 had been launched; the redundant window0 [run 45132821340](https://github.com/FlareZ123/workplace-v2/actions/runs/45132821340) was **cancelled** and is **not** credited as new progress. A preliminary window2 run was likewise cancelled before original full jobs in favor of the more plausible spool-fragment trailing interval. Existing [Agent8 12-window source](../agents/agent8/k04_fivebyte_burst_sft.cpp) and Agent20 10-interior/last-five source implementations were written before this run; Agent8's own memory explicitly records the full campaign as **never executed**. The contribution here is an authentic **completed original-target computation for start1**, not invention of the byte-burst algorithm.
+The original 6 November Agent5 full first-five-byte prefix search was discovered after window0 had been launched; the redundant window0 [run 45132821340](https://github.com/FlareZ123/workplace-v2/actions/runs/45132821340) was **cancelled** and is **not** credited as new progress. A preliminary window2 run was likewise cancelled before original full jobs in favor of the more plausible spool-fragment trailing interval. Existing [Agent8 12-window source](../agents/agent8/k04_fivebyte_burst_sft.cpp) and Agent20 10-interior/last-five source implementations were written before this run; Agent8's own memory explicitly records the full campaign as **never executed**. The contribution here is authentic **completed original-target computation for start1 and start11**, using pre-existing unexecuted repair families; it is not invention of the byte-burst algorithm.
 
-The untouched source says its spool is a retained-fragment export without independent checksum on each copied payload. It does **not** authenticate any specific corrupted byte positions, including a five-byte contiguous interval. Thus the present result excludes exactly the tested copied-buffer family and provides no physical original K04 bits. Avoid blind enumeration of further neighboring windows without a reasoned changed producer or copy-stage mechanism.
+The untouched source says its spool is a retained-fragment export without independent checksum on each copied payload. It does **not** authenticate any specific corrupted byte positions, including a five-byte contiguous interval. Thus the present results exclude exactly these two newly completed five-byte copied-buffer support families and provides no physical original K04 bits. Avoid blind enumeration of further neighboring windows without a reasoned changed producer or copy-stage mechanism.
 
 **REC8/1:** K01, K02, K03, K05, K06, K07 original verifier PASS. K04 and K08 original values remain MISSING; combined verification INCOMPLETE.
