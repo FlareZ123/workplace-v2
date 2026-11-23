@@ -39,6 +39,8 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
 import h17_ax7782_k08_phrase_intake as phrase
+import h17_k08_teal_bit_image_scan as teal_image
+import h17_thumbcache_image_carve as thumbcache
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
@@ -299,6 +301,10 @@ def scan_inventory(
     skipped: list[dict[str, str]] = []
     files_considered = files_scanned = sqlite_files = sqlite_tables = 0
     streams_scanned = spans_tested = bytes_scanned = 0
+    thumbnail_cache_files_scanned = thumbnail_cache_images_found = 0
+    thumbnail_cache_unique_images_scanned = thumbnail_cache_duplicate_images = 0
+    thumbnail_cache_images_skipped_limit = thumbnail_cache_image_hmac_hits = 0
+    seen_thumbnail_images: dict[str, list[dict[str, Any]]] = {}
     global_budget = [0]
     started = time.monotonic()
 
@@ -407,10 +413,67 @@ def scan_inventory(
             errors.append({"source": display_name, "error": f"scan-error:{type(exc).__name__}:{exc}"})
 
         if "thumbcache" in lower_name or lower_name.endswith("thumbs.db"):
-            errors.append({
-                "source": display_name,
-                "error": "thumbnail-cache image payloads are not decoded by this phrase scan; on an authorized read-only profile copy, run work/h17_thumbcache_image_carve.py, then work/h17_k08_teal_bit_image_scan.py on the extracted images",
-            })
+            thumbnail_cache_files_scanned += 1
+            try:
+                carved = thumbcache.carve_bytes(
+                    data,
+                    display_name,
+                    max_image_bytes=32 * 1024 * 1024,
+                    max_pixels=25_000_000,
+                )
+                thumbnail_cache_images_found += len(carved)
+                for image in carved:
+                    image_bytes = data[image.offset:image.offset + image.length]
+                    image_sha256 = hashlib.sha256(image_bytes).hexdigest()
+                    if len(image_bytes) != image.length or image_sha256 != image.sha256:
+                        errors.append({
+                            "source": display_name,
+                            "error": f"thumbnail-cache-carved-image-integrity:{image.offset}",
+                        })
+                        continue
+
+                    cached_matches = seen_thumbnail_images.get(image_sha256)
+                    if cached_matches is None:
+                        if thumbnail_cache_unique_images_scanned >= 4096:
+                            thumbnail_cache_images_skipped_limit += 1
+                            continue
+                        cached_matches = teal_image.scan_image_bytes(
+                            image_bytes,
+                            f"{display_name}@0x{image.offset:x}",
+                            nonce,
+                            target.hex(),
+                            max_words=min(max_phrase_words, 48),
+                        )
+                        seen_thumbnail_images[image_sha256] = cached_matches
+                        thumbnail_cache_unique_images_scanned += 1
+                    else:
+                        thumbnail_cache_duplicate_images += 1
+
+                    # A cache hit proves only that an exact committed phrase was
+                    # encoded in these image bytes. The byte-carver does not
+                    # recover the original image path, capture time, N14 link,
+                    # or Emily authorship, so preserve that uncertainty.
+                    for match in cached_matches:
+                        hits.append({
+                            "source": display_name,
+                            "source_type": "thumbnail_cache_image_candidate",
+                            "source_offset": image.offset,
+                            "image_sha256": image_sha256,
+                            "frame": match["frame"],
+                            "layout": match["layout"],
+                            "phrase": match["phrase"],
+                            "source_link_status": (
+                                "unresolved: thumbnail-cache carving does not recover "
+                                "the original image path/time or N14-to-Emily caption link"
+                            ),
+                            "historical_authentication": "not established",
+                        })
+                        thumbnail_cache_image_hmac_hits += 1
+            except Exception as exc:
+                errors.append({
+                    "source": display_name,
+                    "error": f"thumbnail-cache-scan:{type(exc).__name__}:{exc}",
+                })
 
     return {
         "schema": "h17-profile-k08-phrase-scan/v1",
@@ -427,6 +490,16 @@ def scan_inventory(
         "sqlite_schema_streams": sqlite_tables,
         "text_streams_scanned": streams_scanned,
         "normalized_contiguous_spans_tested": spans_tested,
+        "thumbnail_cache": {
+            "files_scanned": thumbnail_cache_files_scanned,
+            "images_found": thumbnail_cache_images_found,
+            "unique_images_scanned": thumbnail_cache_unique_images_scanned,
+            "duplicate_images_reused": thumbnail_cache_duplicate_images,
+            "images_skipped_limit": thumbnail_cache_images_skipped_limit,
+            "image_hmac_hits": thumbnail_cache_image_hmac_hits,
+            "max_unique_images": 4096,
+            "max_image_pixels": 25_000_000,
+        },
         "bytes_scanned": bytes_scanned,
         "max_phrase_words": max_phrase_words,
         "hits": hits,
