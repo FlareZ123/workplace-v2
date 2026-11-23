@@ -290,7 +290,8 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
     def test_jpeg_app1_exif_caption_reaches_k08_phrase_stream_and_hmac(self):
         phrase = "The sea keeps a place for every voice."
         nonce = bytes(range(16))
-        target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
+        normalized_phrase = phrase_intake.normalize(phrase)
+        target = hashlib.sha256(phrase_intake.k08_component(nonce, normalized_phrase)).digest()
         tiff = _tiff_exif_fixture(
             "<", [(0x010E, 2, phrase.encode("ascii") + b"\x00")]
         )
@@ -309,7 +310,7 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
                 phrase_intake.scan_phrase_spans(
                     text, nonce, target, source + " [" + label + "]", 16, hits
                 )
-        self.assertTrue(any(hit["normalized_phrase"] == phrase.lower() for hit in hits))
+        self.assertTrue(any(hit["normalized_phrase"] == normalized_phrase for hit in hits))
 
     def test_multiple_jpeg_exif_app1_segments_keep_distinct_source_labels(self):
         first = _tiff_exif_fixture("<", [(0x010E, 2, b"First caption\x00")])
