@@ -1,34 +1,31 @@
-name: Agent21 K04 five-byte contiguous burst original commitment
+# Critic 2026-11-23: Retain reproducible smoke controls; retire the
+# unconditioned 256-job, 2^40-per-window original-target search.
+# Earlier full runs and source remain in Git history and the linked report.
+# A distinct copy/producer mechanism can justify a separately scoped run.
+name: Agent21 K04 five-byte copy-burst smoke control
 
 on:
   workflow_dispatch:
     inputs:
       window:
-        description: First replaced byte position (0..11)
+        description: "Five-byte offset (0..11); synthetic smoke controls only"
         type: choice
         required: true
         default: '0'
         options: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
-      mode:
-        description: Smoke test or complete 2^40 assignment per window
-        type: choice
-        required: true
-        default: smoke
-        options: [smoke, full]
 
 permissions:
   contents: read
 
 jobs:
   smoke:
-    if: inputs.mode == 'smoke'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - name: Build source-pinned exhaustive verifier
+      - name: Build source-pinned five-byte verifier
         run: g++ -O3 -std=c++17 -fopenmp -Wno-deprecated-declarations agents/agent21/k04_fivebyte_contiguous_sft.cpp -lcrypto -o /tmp/h17_fivebyte
-      - name: Check authentic evidence and planted whole-object positives at three shards
+      - name: Validate preserved originals and planted whole-object controls
         env:
           WINDOW: ${{ inputs.window }}
           OMP_NUM_THREADS: '4'
@@ -36,26 +33,3 @@ jobs:
           /tmp/h17_fivebyte resources "$WINDOW" 0 --smoke
           /tmp/h17_fivebyte resources "$WINDOW" 169 --smoke
           /tmp/h17_fivebyte resources "$WINDOW" 255 --smoke
-
-  original-full:
-    if: inputs.mode == 'full'
-    runs-on: ubuntu-latest
-    timeout-minutes: 65
-    strategy:
-      fail-fast: false
-      matrix:
-        major: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        minor: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build source-pinned exhaustive verifier
-        run: g++ -O3 -std=c++17 -fopenmp -Wno-deprecated-declarations agents/agent21/k04_fivebyte_contiguous_sft.cpp -lcrypto -o /tmp/h17_fivebyte
-      - name: Exhaust assigned 2^32 complete K04 candidates
-        env:
-          WINDOW: ${{ inputs.window }}
-          OMP_NUM_THREADS: '4'
-          MAJOR: ${{ matrix.major }}
-          MINOR: ${{ matrix.minor }}
-        run: |
-          SHARD=$((16*MAJOR+MINOR))
-          /tmp/h17_fivebyte resources "$WINDOW" "$SHARD"
