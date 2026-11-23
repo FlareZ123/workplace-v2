@@ -37,6 +37,7 @@ from typing import Iterator
 
 import h17_ax7782_object_intake as intake
 from h17_ooxml_text_intake import iter_ooxml_revision_units, iter_ooxml_text_units
+from h17_photo_caption_metadata import iter_xmp_caption_units
 
 HEX_RE = re.compile(r"(?<![A-Fa-f0-9])[A-Fa-f0-9]{16,4096}(?![A-Fa-f0-9])")
 B64_RE = re.compile(r"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{24,4096}={0,2}(?![A-Za-z0-9+/])")
@@ -306,6 +307,9 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
     if depth > intake.MAX_DEPTH:
         yield name, data
         return
+    # Extract structured XMP caption fields before generic text/OCR handling.
+    for label, text in iter_xmp_caption_units(name, data):
+        yield f"{name}!/{label}", text.encode("utf-8", "replace")
     kind = intake.magic(data)
     if kind == "zip":
         for label, authored in iter_ooxml_text_units(data):
