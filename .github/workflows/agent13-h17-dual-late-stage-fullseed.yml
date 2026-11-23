@@ -1,0 +1,38 @@
+name: Agent13 H17 PS0417 Dual Late Native Fullseed
+on:
+  push:
+    paths:
+      - ".github/workflows/agent13-h17-dual-late-stage-fullseed.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-mt32-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact original dual REQUESTED1 and REQUESTED3 native producer test
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q avx512f /proc/cpuinfo
+          g++ -O3 -mavx512f -mavx512dq -std=c++17 -pthread agents/agent13/k04_mt32_dual_request_latephase_twoof4_sft.cpp -o /tmp/agent13_k04_native
+          /tmp/agent13_k04_native planted2 12336 12352 1 > /tmp/control2.log
+          /tmp/agent13_k04_native planted3 12336 12352 1 > /tmp/control3.log
+          grep -q "CONTROL planted2 PASS" /tmp/control2.log
+          grep -q "CONTROL planted3 PASS" /tmp/control3.log
+          low=$(( ${{ matrix.shard }} * 268435456 ))
+          high=$(( low + 268435456 ))
+          /tmp/agent13_k04_native original "$low" "$high" 4 | tee /tmp/agent13_shard.log
+          grep -q "^SUMMARY mode=original begin=$low end=$high seeds=268435456 " /tmp/agent13_shard.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent13-late-mt32-shard-${{ matrix.shard }}
+          path: /tmp/agent13_shard.log
+          retention-days: 14
