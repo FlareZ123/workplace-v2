@@ -64,6 +64,8 @@ Neither matches K08. As a simple generalization control, the same per-job LSB wo
 
 ## Whole-record selection refinement from MAIL-11
 
+Reproducer: `agents/agent14/k08_whole_record_selection.py` (uses MAIL-11 exclusions and reports the N23/PS-0323 join as conditional; it does not treat selector bits as word indexes).
+
 The 14-note CREW4-author set includes N17, N18 and N23. MAIL-11 explicitly rejects the complete N17 standby label (“Leave the light on for the next watch”) and the complete N18 commissioning label (“Back before the first boat”) as the final desk phrase. N23 independently states that the envelope preserves the words Emily finally put on it. This supports a **source-authored whole-record selection at the note level**: select N23 as the final-envelope instruction record, not N17/N18 and not a word-level assembly.
 
 Under the **conditional** Nxx↔PS03xx suffix/cadence crosswalk, the two RECOVER/store jobs in the 14-note author set are N18/PS0318 and N23/PS0323. MAIL-11 excludes N18, leaving PS-0323 as a **conditional native print-object retrieval target**. This is a useful retrieval heuristic, not an authenticated job assignment: the route table has no preserved queue role for PS-0323, the note/job join remains ordinal, and the reconstructed 16-byte payload is not rendered text.
