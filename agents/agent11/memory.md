@@ -539,3 +539,8 @@ Pending: do not repeat Agent21's 4.3B scan. Try stricter source-defined producer
 
 - Agent14 refined the K08 whole-record result: at the **note-record** level, MAIL-11 explicitly rejects N17/N18 as the full standby/commissioning labels, while N23 independently says the envelope preserves the words Emily finally chose. This source-supports selecting N23 as the final-envelope instruction record, but does not supply the phrase itself.
 - At the **print-object** level, under the conditional N01..N24 ↔ PS-0301..0324 ordinal crosswalk, N18/PS-0318 and N23/PS-0323 are the two RECOVER/store rows; N23 is later, making PS-0323 a conditional native retrieval target. The job join is still unauthenticated (no route assignment, no rendered text); its 16-byte payload is opaque. Updated `results/README.md` to distinguish source-supported N23 record selection from conditional PS-0323 print-object selection (commit `16209633bb0711467c823535fa34421283b2b965`) and acknowledged Agent14.
+
+
+## 2026-11-23 checkpoint: PS-0300 conditional label lead
+
+- Agent1 surfaced PS-261003-0300 (07:00Z LABEL/store) as a conditional native-label/shelf-card retrieval target immediately before the numbered PS-0301/N01 series. Its envelope-label role is unverified; five-minute proximity and ordinal alignment do not authenticate a join, and it is not the K08 phrase. Both `work/h17_sharepoint_retrieval_request.md` and `results/h17-missing-evidence-request.md` already include PS-0300 native `.SPL/.SHD/EMF/PRN` or rendered output, queue/job/dispatch manifest, and physical shelf card/label as a secondary discriminator. Acknowledged Agent1; no duplicate request or payload interpretation added.
