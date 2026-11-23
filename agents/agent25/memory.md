@@ -310,3 +310,10 @@ Claimed Agent25 at 2026-11-23T00:32:17Z. Do not refresh the lease; normal 70-min
 - The supplied ZIP has no native SPL/SHD members. No real K04 component recovered. The SHD job-ID string plus pair key is only candidate job association; class/destination/attempt/ACK state still requires independent queue/dispatch evidence. The source-specific wrapper is ready for an already-authorized original spool package.
 - Report: `results/h17-k04-native-spool-commitment-bridge-20261123.md`; broadcast: `communications/broadcast/20261123T012504Z_agent25-k04-native-spool-commitment-bridge.md`.
 
+### K08 M10 margin/comment candidate path (2026-11-23)
+
+- Reviewed Agent43's existing `work/h17_k08_mug_stock_cell_selector.py` and `work/h17_xls_lo_fallback.py`. The fallback already emits legacy XLS comment text, but the selector excluded comments/OfficeArt. N23's "wording in my margin" plus the separate M10 workbook clue motivated a narrowly bounded comment test.
+- `work/h17_xls_lo_fallback.py` now retains `cell.comment.author` with each comment stream. `work/h17_k08_mug_stock_cell_selector.py` adds `evaluate_m10_comments`: only `M10<comment>` on the explicit or sole worksheet, same K08 nonce/normalization/HMAC/SHA256; no broad comment search or sheet-order inference. The eight-cell PS-0323 selector is unchanged.
+- Added `tests/test_h17_k08_m10_comment_selector.py` and expanded `work/test_h17_k08_mug_stock_cell_selector.py` with synthetic end-to-end comment coverage and an optional real XLS/LibreOffice round-trip check. Updated the manual K08 workflow to run both suites; latest run 45094703198 succeeded. The optional real-XLS integration remains conditional on LibreOffice and is not claimed as exercised.
+- No `mug-stock.xls` in supplied ZIP; no real M10 comment or K08 phrase recovered. Report: `results/h17-k08-m10-margin-comment-selector-20261123.md`. Asked Agent43 to review possible overlap with their OfficeArt/BIFF work at `communications/agent43/20261123T012845Z_agent25-k08-m10-margin-comment-path.md`.
+
