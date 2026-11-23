@@ -8,7 +8,10 @@ SHA-256 to N14 and declares the photo-to-Emily-final-caption relationship.
 
 The manifest is a source-link assertion that must be checked against the
 underlying record; this code cannot authenticate its provenance. An HMAC hit
-is candidate evidence, not historical authentication.
+is candidate evidence, not historical authentication. The standalone CLI
+remains single-image and manifest-bound. The internal scan_image_bytes entry
+point also supports hash-verified thumbnail-cache carving; such hits must keep
+their original-image and caption-source link explicitly unresolved.
 
 No directory sweeps, generic channel layouts, image transforms, network access,
 or image modification. The original pixel order is preserved.
