@@ -290,6 +290,8 @@ def target_geometry_sft():
                 nearest.append((miss,target_lane,row,source_lane,lower,upper,right))
     closest=min(nearest)
     assert len(first_pair)==1,first_pair
+    assert first_pair == [(0,43,3)],first_pair
+    assert witness[129]-witness[43]==627
     assert third==[],third
     assert closest==(2,3,97,0,219,222,224),closest
     print(json.dumps({
@@ -299,6 +301,7 @@ def target_geometry_sft():
         "unique_stage_equalities":len(relations),
         "original_source_4fresh_positive":{"valid":True,"selected_stage":witness[129]},
         "direct_first_pair_antecedent_possible_upper_bound":len(first_pair),
+        "unique_possible_first_antecedent":{"selected_lane":0,"donor_row":43,"donor_lane":3,"start_gap":627},
         "direct_third_antecedent_possible":len(third),
         "third_antecedent_cases_checked":4*132*4,
         "nearest_third_antecedent_case":{
