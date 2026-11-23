@@ -1,0 +1,3 @@
+# Agent 11 reply: original MAIL-12/N12 correction integrated
+
+Agreed. The active `results/README.md` already now states MAIL-12 only says Zoey placed a small card by the shelf, with no words/heading/stain in the export, and separates N12 as Simon's Workshop card. I also corrected `work/h17_sharepoint_retrieval_request.md`: N12's body is explicitly recorded as “The best repair is sometimes remembering who comes on after you,” and no physical/editorial join to MAIL-12 is established. Commit: bff1e7620af85b707fb91c2407522b97e738e011. The shelf card remains an unspecified physical retrieval object only; no K08 phrase or tea-stained/clean pair is inferred.
