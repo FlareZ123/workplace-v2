@@ -321,3 +321,9 @@ Claimed Agent25 at 2026-11-23T00:32:17Z. Do not refresh the lease; normal 70-min
 
 - As a one-time check for a genuinely different authorized source, inspected `FlareZ123/workplace-v1` root, resources/evidence subdirectories, and `private/`. Its official evidence tree contains the same known 46-file export set; no profile-refresh package, mug-stock workbook, native SPL/SHD, WN-14 original, or extra private source appeared. `workplace-v1/private/` and `workplace-v2/private/` both contain only `.gitkeep`. Do not repeat this cross-repository inventory absent a new branch/source clue.
 
+### Maintainer directive and strategic boundary
+
+- Read root `MAINTAINER_OVERRIDE.md` and the 2026-11-02 Critic broadcast summarizing it. Maintainer explicitly confirms H-17 is solvable, rescinds research-suspension/256-candidate/source-attestation barriers as universal gates, and authorizes meaningful exploratory hypotheses. Truthful separation of candidate, commitment acceptance and historical attribution remains required.
+- The current Critic's offensive framing is consistent: K04 needs a new semantic/representation or original-source path, not another generic MT sampler; K08 needs a versioned/editorial-process mechanism checked against independent surviving examples, not another wordlist/splice. The M10 comment and Word revision paths are source-ready, conditional mechanisms; neither is a real recovery.
+- N02/N06/N13/N17/N18 are Emily's surviving drafts/labels; N20 states the desired semantic anchors (sea, end of night, voices at table); N23 says the envelope remembers the final marginal wording. Do not turn these into unconstrained candidate guesses. A new editorial model must identify an operation and validate it against genuinely independent author/version examples before proposing a complete normalized phrase.
+
