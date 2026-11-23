@@ -39,7 +39,7 @@ EXPECTED_ASSIGNMENTS = 2_224_128
 
 
 def normalize(text: str) -> str:
-    return " ".join(re.sub(r"[^a-z0-9\\s]", " ", text.lower()).split())
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", text.lower()).split())
 
 
 def component(text: str, nonce: bytes) -> bytes:
@@ -47,7 +47,7 @@ def component(text: str, nonce: bytes) -> bytes:
 
 
 def note_body(source: str, number: int) -> str:
-    match = re.search(rf"(?m)^N{number:02d} / [^\\n]*\\n([^\\n]+)$", source)
+    match = re.search(rf"(?m)^N{number:02d} / [^\n]*\n([^\n]+)$", source)
     if match is None:
         raise ValueError(f"Missing N{number:02d}")
     return match.group(1).split(": ", 1)[-1]
