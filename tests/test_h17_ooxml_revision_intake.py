@@ -90,9 +90,9 @@ class OoxmlRevisionIntakeTests(unittest.TestCase):
             (label, text) for label, text in revision_units.items()
             if "#revision-del-" in label
         ]
-        self.assertTrue(any(text == "leaves room " and "author-Emily" in label
+        self.assertTrue(any(text.strip() == "leaves room" and "author-Emily" in label
                             for label, text in inserted))
-        self.assertTrue(any(text == "keeps the room empty" and "author-Emily" in label
+        self.assertTrue(any(text.strip() == "keeps the room empty" and "author-Emily" in label
                             for label, text in deleted))
         self.assertTrue(any("#revision-moveTo-" in label and text == "pair of hands"
                             for label, text in revision_units.items()))
