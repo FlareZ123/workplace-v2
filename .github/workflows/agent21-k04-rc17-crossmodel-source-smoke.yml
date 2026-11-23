@@ -1,0 +1,16 @@
+name: Agent21 K04 RC17 independent footer crossmodel source test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  original-source-crossmodel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Evaluate original source with synthetic controls
+        run: python agents/agent21/k04_rc17_crossmodel_source_selector_sft.py
