@@ -63,3 +63,43 @@ Source-pinned [portable Python SFT](../agents/agent8/k04_stage_conditioned_targe
 The fully source-pinned 42-witness addendum, including the REQUESTED1 alias and absent three target lanes, now also has a direct assertion in the same SFT and [passed manual GitHub Actions run 45059022883](https://github.com/FlareZ123/workplace-v2/actions/runs/45059022883) on 22 November 2026. The original copied selected ACK2 PAYLOAD remains withheld from source fitting.
 
 The stage-network conditional exact two-/three-donor lane model is excluded as an authentic K04 construction. It does **not** exclude a different printer generator, other consumption bounds, unknown interpacket words, mixed views, copied-payload corruption, an independently sourced native coupon, or the unobserved physical print. This contributes **zero authenticated K04 bits**. K08 final words also remain unknown; REC8/1 remains six PASS, K04/K08 MISSING, combined INCOMPLETE. Future work should require an actual selected-stage witness or a new producer with intact-source predictive power rather than enlarge the same donor grid.
+
+## Immediate cross-packet antecedents (23 November 2026, Agent 8)
+
+The original target-stage calculation above takes two MT twist antecedents
+from consecutive word lanes within one observed packet. A separate, exact
+source-linked gate tests the missing boundary geometry: the antecedents are
+**row r lane 3 and row r+1 lane 0**, requiring their native stages to be
+consecutive, with the +397 donor in an intact earlier row k lane i. This
+requires \`S[r+1]-S[r]=4\`, \`S[k]-S[r]=400-i\`, and
+\`S[129]-S[r]=627-q\` for selected target lane q=0..3. Selected ACK2
+payload bytes are withheld.
+
+Using the original **25 fullword witness** interval system (ACK min4,
+REQUESTED min0, any native gap max100), exactly **28** r/k/i/q assignments
+individually satisfy all three original interval bounds. Full joint
+difference-constraint feasibility leaves **one**: row43 lane3 + row44
+lane0 + row97 lane2 -> selected lane3 native tempered **64EC58DA**
+(bytes **DA58EC64**). It is the same row130 copied word highlighted in
+the earlier fourrow candidate and supplies no new authentic value.
+
+Adding the original **17 partial firstword** stage witnesses eliminates
+**all 28** individual interval candidates, before any target-byte
+generation. The all-42 graph therefore has **zero** immediately
+cross-packet donor geometries for every selected target lane, extending
+the earlier within-packet zero/one-lane boundary to adjacent-packet
+twist antecedents. This is a **conditional source-stage exclusion**, not a
+proof of the historical printer producer and not a complete K04 coupon.
+
+The executed [standalone target-stage gate](../agents/agent8/k04_all42_crosspacket_target_sft.py)
+recomputes all 42 untouched source witnesses, asserts a real seeded MT
+cross-packet withheld-word positive, and compares six other original
+cross-packet word identities under both stage graphs. Two of those six
+original identities remain stage-compatible under all42; the gate does
+not falsely exclude every cross-packet recurrence. Its exact
+four-anchor closure decisions also agreed with an independent
+SciPy/HiGHS linear-program feasibility check on each of the six
+source controls. The existing source-model CI completed [run 45108976026](https://github.com/FlareZ123/workplace-v2/actions/runs/45108976026)
+with **SUCCESS**. No original commitment or selected ACK2 bytes were
+read by this new target-observability gate. Six original components still
+PASS; K04 and K08 remain unresolved, combined REC8/1 INCOMPLETE.
