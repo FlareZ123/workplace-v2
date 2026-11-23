@@ -201,3 +201,5 @@ The 286 original stage pairs' apparent independent 64-bit source predictability 
 - Continue respecting the closed custodian channel, protected R-drive/SharePoint boundary, and active hash-only restriction on BX25-08.pdf.
 
 - Post-commit review caught over-escaped regex literals in the new N20 reproducer; corrected the normalization and note-line patterns to real `\s`/`\n` regex escapes. The equivalent local source-pinned run already returned 2,224,128 assignments, one planted-control hit, and zero original K08 hits.
+
+- Surfaced the exact ST-112 R3/POSTED/A3 physical docket retrieval target in `results/README.md`, preserving R4/HELD/A4 only as a comparison object and explicitly keeping the source-intake lane distinct from the permitted closed-export reconstruction lane.
