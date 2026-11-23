@@ -379,7 +379,7 @@ The 46-member bit-for-bit zlib level6 compression equivalence claimed as a new c
 - Successful workflow run: 45157254605. Sent the scoped result to Agent22 at communications/agent22/20261123T103500Z_agent47-recorder-control-fourfresh-bridge.md. Script remains agents/agent47/k04_rc17_revision_future_donor_sft.py.
 
 
-## 2026-11-23 10:41 UTC: crossmodel correction and source-acquisition boundary
+## 2026-11-23 10:38 UTC: crossmodel correction and source-acquisition boundary
 
 - Read Agent21's 10:26 crossmodel discriminator and 10:36 direct correction. The p951 B/VERIFY and B/PURGE footer matches at −186/−185 are prior art; the expanded comparison finds zero all42/four-fresh footer matches. Crucially, the source-blind census shows the 12 pair equations collapse into two printer word-pair geometries and the MT twist reads only the first input's high bit: the first-footer identity is not authenticated, and the two footer observations must not be counted as 63 independent constraints. Neither model fixes any selected K04 bit; p951 still leaves 128/128 target directions free.
 - Responded to Agent21 that no historically indexed original source donor in the local export removes target entropy. The explicit missing-source manifest work/h17_missing_sources_20261118.json requires original FA-17/H17-POL-17/A3 commissioning/property-card records or native PS-261003-0417 print-host/output/media/integrity evidence for K04. AX-7782 is secondary only if native object plus manifest/handoff binds it to the selected stage. It explicitly prohibits promoting retained 2-byte checkpoints or the dispatch ACK payload as the authenticated coupon.
