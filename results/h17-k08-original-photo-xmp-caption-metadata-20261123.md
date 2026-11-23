@@ -1,4 +1,4 @@
-# K08 original-photo XMP caption metadata intake (2026-11-23)
+# K08 original-photo XMP/IPTC caption metadata intake (2026-11-23)
 
 ## Source basis
 
@@ -12,7 +12,7 @@ Added `work/h17_photo_caption_metadata.py` and integrated it into `work/h17_ax77
 - XMP `Label`, `CreateDate`, `ModifyDate`;
 - TIFF `DateTime`, EXIF `DateTimeOriginal`, and IPTC Core `Location`.
 
-This is not OCR or a broad wordlist. It reads source-authored metadata fields and emits separately labelled text streams so the unchanged K08 HMAC scanner can test exact complete phrases.
+It also parses IPTC-IIM text datasets in Photoshop APP13 resources: Caption/Abstract, Headline, By-line, ObjectName, Keywords, DateCreated, TimeCreated, City, CountryName and CopyrightNotice. This is not OCR or a broad wordlist. It reads source-authored metadata fields and emits separately labelled text streams so the unchanged K08 HMAC scanner can test exact complete phrases.
 
 ## Validation
 
@@ -20,7 +20,7 @@ This is not OCR or a broad wordlist. It reads source-authored metadata fields an
 
 ## Limits
 
-The supplied 46-file ZIP contains no original incident-period photographs or XMP sidecars. No K08 phrase or real metadata hit was recovered. This reader does not yet parse legacy IPTC-IIM APP13 resources or application-specific photo-project edit histories. A hit in a caption field remains a draft unless independently linked to Emily's final H-17 incident-envelope wording.
+The supplied 46-file ZIP contains no original incident-period photographs or XMP sidecars. No K08 phrase or real metadata hit was recovered. This reader does not yet parse application-specific photo-project edit histories. A hit in a caption field remains a draft unless independently linked to Emily's final H-17 incident-envelope wording.
 
 The next useful source is an already-authorized original photo/catalogue/sidecar set with preserved paths, hashes and timestamps. Do not substitute public reposts, resized thumbnails, or unrelated modern captions.
 
