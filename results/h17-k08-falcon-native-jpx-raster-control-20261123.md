@@ -12,7 +12,7 @@ Retrieved the retained GitHub Actions artifact `14479741922` (`agent41-k08-falco
 
 The PDF in this artifact is 19,125,467 bytes with SHA-256:
 
-`0f237b5b4b9c75d9f72d21b1b9fbcf63b1e4f6c2c9e1c8b0f4a6fbe4c9b8d0c3`
+`0f237b073f5768b77b5badc78836a76e35fc84cd67e5c3542175831b87564d3b`
 
 **Important:** this differs from the SHA-256 recorded by the earlier acquisition report (`071e2f…00167`). The title, author, publication year, Internet Archive item identifier and page count agree, but byte identity with that earlier PDF has not been established. Results below are explicitly tied to the artifact PDF hash above, not asserted as a byte-identical reproduction of the earlier acquisition.
 
@@ -51,7 +51,7 @@ Applied the exact two `SOURCE_LITERAL_LAYOUTS` from `work/h17_k08_teal_bit_image
 Applied the existing 256-configuration coordinate decoder from `agents/agent41/k08_multislot_teal_coordinate_control.py` separately to each high-resolution native JPX page after lossless PNG serialization and the decoder's own grayscale conversion.
 
 - Page 343: six configurations had at least five printable output bytes; best was hex `2B317B5E2B36`, ASCII `+1{^+6`.
-- Page 344: four configurations had at least five printable output bytes; best was hex `60B149677C2E`, ASCII `\x60B149677C2E` (non-coherent punctuation/text).
+- Page 344: four configurations had at least five printable output bytes; best was hex `60B149677C2E`, escaped ASCII `\\x60.Ig|.`.
 
 Neither output is a coherent six-byte string. This is a printability control, not a K08 phrase or HMAC candidate.
 
