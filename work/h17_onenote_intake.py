@@ -5,8 +5,9 @@ provides a PageHistory API and a history fixture/test. This adapter deliberately
 emits every historical revision and the current page separately; it never
 chooses a final version or modifies the source file.
 
-Only .one section files are handled here. .onepkg/CAB extraction is intentionally
-left to the profile-container intake layer.
+Only individual .one section files are handled here. .onepkg/CAB extraction and
+OneNoteOfflineCache.onecache decoding are not implemented; the profile scanner
+retains its generic fallback for those files.
 """
 from __future__ import annotations
 
