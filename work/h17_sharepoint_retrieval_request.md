@@ -72,6 +72,10 @@ Prioritize the first three because the surviving bookmark set directly points to
 
 PS-261003-0300 is a 07:00Z LABEL/store spool record preceding the numbered spool series; its role as an envelope label is unverified, and the five-minute ordinal proximity does not authenticate that role. If an independently authorized local copy is supplied, retain its native .SPL/.SHD/EMF/PRN or rendered output, queue/job/dispatch manifest, and any physical shelf card/label with collection receipt. Keep PS-0323 as an unverified payload candidate; the N23→PS0323 join is not source-authenticated.
 
+## K08 shelf-card and caption carriers
+
+MAIL-12 says the small card by the shelf contains the words and warns that its heading is only the place where it was pinned. N12 identifies the tea-stained shelf card as the relevant one, not the clean card. If an independently authorized local copy exists, preserve both the tea-stained card and clean comparison card in situ; capture front and back, heading/pin location, paper/ink, handwriting, and any associated photograph or caption sidecar. Keep heading/location metadata separate from the phrase itself. Do not assume the card was printed by PS-0300 or PS-0323 without the native queue/job/dispatch manifest.
+
 ## K08 caption sidecars
 
 Also retrieve the pre-incident crew photograph/galley-caption archive in full, including original images and any N25–N36 caption sidecars, authorship, timestamps, revision history, thumbnail/preview cache and unsaved/AutoRecover copies. The retained N01–N24 text is not the final envelope wording.
