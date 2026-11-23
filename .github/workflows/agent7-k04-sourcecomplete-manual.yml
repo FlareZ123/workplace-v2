@@ -1,0 +1,16 @@
+name: Agent7 K04 complete-source inverse controls
+on:
+  workflow_dispatch:
+jobs:
+  complete-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout read-only original resources and exact inverse sources
+        uses: actions/checkout@v4
+      - name: Build V8/Vigna complete inverses and scan 12.25m original coupons
+        run: python agents/agent7/k04_xs128p_complete_windows_sft.py --root resources
+      - name: Build raw-state exact emitters and scan 88.08m original coupons
+        run: python agents/agent7/k04_xs128p_stateemitters_sft.py --root resources
