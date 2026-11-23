@@ -7,6 +7,7 @@ to its original caption field.
 from __future__ import annotations
 
 import re
+import struct
 from collections.abc import Iterator
 from xml.etree import ElementTree
 
@@ -228,3 +229,219 @@ def iter_xmp_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]:
                     f"layer-{layer_index}:name-{safe_name}",
                     text,
                 )
+
+
+# Native TIFF/EXIF caption fields. These are distinct from XMP and IPTC:
+# several camera and Windows photo workflows store the only authored caption
+# in ImageDescription, UserComment, or XP* tags.
+EXIF_TEXT_TAGS = {
+    0x010D: ("DocumentName", "ascii"),
+    0x010E: ("ImageDescription", "ascii"),
+    0x011D: ("PageName", "ascii"),
+    0x013B: ("Artist", "ascii"),
+    0x8298: ("Copyright", "ascii"),
+    0x9C9B: ("XPTitle", "utf16le"),
+    0x9C9C: ("XPComment", "utf16le"),
+    0x9C9D: ("XPAuthor", "utf16le"),
+    0x9C9E: ("XPKeywords", "utf16le"),
+    0x9C9F: ("XPSubject", "utf16le"),
+    0x9286: ("UserComment", "usercomment"),
+}
+_TIFF_TYPE_SIZES = {
+    1: 1, 2: 1, 3: 2, 4: 4, 5: 8, 6: 1, 7: 1,
+    8: 2, 9: 4, 10: 8, 11: 4, 12: 8, 13: 4,
+}
+_EXIF_MAX_IFD_ENTRIES = 4096
+_EXIF_MAX_TEXT_BYTES = 1024 * 1024
+
+
+def _strip_utf16_nul_terminator(raw: bytes) -> bytes:
+    # Do not use bytes.rstrip(b"\\0") on UTF-16LE: it removes the high zero
+    # byte of the final ASCII character as well as the two-byte terminator.
+    while raw.endswith(b"\\x00\\x00"):
+        raw = raw[:-2]
+    return raw
+
+
+def _decode_exif_text(tag: int, raw: bytes, byteorder: str):
+    field_name, kind = EXIF_TEXT_TAGS[tag]
+    if kind == "ascii":
+        raw = raw.rstrip(b"\\x00")
+        if not raw:
+            return None
+        try:
+            text = raw.decode("ascii")
+            encoding = "ascii"
+        except UnicodeDecodeError:
+            try:
+                text = raw.decode("utf-8")
+                encoding = "utf-8"
+            except UnicodeDecodeError:
+                text = raw.decode("latin-1")
+                encoding = "latin-1"
+    elif kind == "utf16le":
+        raw = _strip_utf16_nul_terminator(raw)
+        if raw.startswith(b"\\xff\\xfe"):
+            raw, encoding = raw[2:], "utf-16le-bom"
+        elif raw.startswith(b"\\xfe\\xff"):
+            raw, encoding = raw[2:], "utf-16be-bom"
+        else:
+            encoding = "utf-16le"
+        if len(raw) & 1:
+            raw = raw[:-1]
+        if not raw:
+            return None
+        codec = encoding.removesuffix("-bom")
+        text = raw.decode(codec, errors="replace")
+    else:
+        # EXIF UserComment has an eight-byte character-code designator.
+        if raw.startswith(b"ASCII\\x00\\x00\\x00"):
+            body = raw[8:].rstrip(b"\\x00")
+            if not body:
+                return None
+            text = body.decode("ascii", errors="replace")
+            encoding = "ascii"
+        elif raw.startswith(b"UNICODE\\x00"):
+            body = _strip_utf16_nul_terminator(raw[8:])
+            if body.startswith(b"\\xff\\xfe"):
+                body, codec, encoding = body[2:], "utf-16le", "utf-16le-bom"
+            elif body.startswith(b"\\xfe\\xff"):
+                body, codec, encoding = body[2:], "utf-16be", "utf-16be-bom"
+            else:
+                codec = "utf-16le" if byteorder == "little" else "utf-16be"
+                encoding = codec
+            if len(body) & 1:
+                body = body[:-1]
+            if not body:
+                return None
+            text = body.decode(codec, errors="replace")
+        elif raw.startswith(b"JIS\\x00\\x00\\x00\\x00\\x00"):
+            body = raw[8:].rstrip(b"\\x00")
+            if not body:
+                return None
+            text = body.decode("shift_jis", errors="replace")
+            encoding = "shift_jis"
+        else:
+            # Unknown UserComment encodings may be binary. Fail closed rather
+            # than promoting arbitrary bytes into candidate phrase streams.
+            return None
+    text = text.strip("\\x00 \\t\\r\\n")
+    if not text:
+        return None
+    return field_name, encoding, text
+
+
+def _iter_tiff_exif_caption_units(tiff: bytes, carrier: str) -> Iterator[tuple[str, str]]:
+    """Read bounded IFD0 and ExifIFD caption tags from one TIFF header."""
+    if len(tiff) < 8:
+        return
+    if tiff[:2] == b"II":
+        endian, byteorder = "<", "little"
+    elif tiff[:2] == b"MM":
+        endian, byteorder = ">", "big"
+    else:
+        return
+    # Classic TIFF/EXIF only. BigTIFF uses a different header and IFD layout.
+    if struct.unpack_from(endian + "H", tiff, 2)[0] != 42:
+        return
+    ifd0_offset = struct.unpack_from(endian + "I", tiff, 4)[0]
+    visited: set[int] = set()
+
+    def parse_ifd(offset: int, ifd_name: str):
+        found = []
+        if offset in visited or offset < 8 or offset + 2 > len(tiff):
+            return found, None
+        visited.add(offset)
+        entry_count = struct.unpack_from(endian + "H", tiff, offset)[0]
+        table_end = offset + 2 + entry_count * 12 + 4
+        if entry_count > _EXIF_MAX_IFD_ENTRIES or table_end > len(tiff):
+            return found, None
+        exif_ifd_offset = None
+        for entry_index in range(entry_count):
+            entry = offset + 2 + entry_index * 12
+            tag, field_type, count = struct.unpack_from(endian + "HHI", tiff, entry)
+            value_field = tiff[entry + 8:entry + 12]
+            if tag == 0x8769 and field_type in (4, 13) and count == 1:
+                exif_ifd_offset = struct.unpack(endian + "I", value_field)[0]
+            if tag not in EXIF_TEXT_TAGS:
+                continue
+            if field_type not in _TIFF_TYPE_SIZES or count == 0:
+                continue
+            if count > _EXIF_MAX_TEXT_BYTES:
+                continue
+            if tag in (0x9C9B, 0x9C9C, 0x9C9D, 0x9C9E, 0x9C9F) and field_type not in (1, 7):
+                continue
+            if tag in (0x010D, 0x010E, 0x011D, 0x013B, 0x8298) and field_type not in (2, 7):
+                continue
+            if tag == 0x9286 and field_type not in (1, 7):
+                continue
+            value_size = count * _TIFF_TYPE_SIZES[field_type]
+            if value_size > _EXIF_MAX_TEXT_BYTES:
+                continue
+            if value_size <= 4:
+                raw = value_field[:value_size]
+            else:
+                value_offset = struct.unpack(endian + "I", value_field)[0]
+                if value_offset < 8 or value_offset + value_size > len(tiff):
+                    continue
+                raw = tiff[value_offset:value_offset + value_size]
+            decoded = _decode_exif_text(tag, raw, byteorder)
+            if decoded:
+                field_name, encoding, text = decoded
+                label = (
+                    f"exif:{carrier}:{field_name}:{ifd_name}:"
+                    f"tag-0x{tag:04X}:encoding-{encoding}"
+                )
+                found.append((label, text))
+        return found, exif_ifd_offset
+
+    ifd0_fields, exif_ifd_offset = parse_ifd(ifd0_offset, "ifd0")
+    yield from ifd0_fields
+    if exif_ifd_offset:
+        exif_fields, _unused = parse_ifd(exif_ifd_offset, "exif-ifd")
+        yield from exif_fields
+
+
+def iter_exif_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]:
+    """Yield authored EXIF caption fields from classic TIFF or JPEG APP1 data.
+
+    Only recognized TIFF/EXIF signatures and bounded IFD fields are read.
+    JPEG scanning stops at SOS/EOI; unknown UserComment encodings are ignored.
+    """
+    if data.startswith((b"II*\\x00", b"MM\\x00*")):
+        yield from _iter_tiff_exif_caption_units(data, "tiff")
+        return
+    if data.startswith(b"Exif\\x00\\x00"):
+        yield from _iter_tiff_exif_caption_units(data[6:], "exif-prefix")
+        return
+    if not data.startswith(b"\\xff\\xd8"):
+        return
+
+    position = 2
+    app1_index = 0
+    while position + 4 <= len(data):
+        if data[position] != 0xFF:
+            break
+        while position < len(data) and data[position] == 0xFF:
+            position += 1
+        if position >= len(data):
+            break
+        marker = data[position]
+        position += 1
+        if marker in (0xD9, 0xDA):  # EOI or start of compressed scan
+            break
+        if marker == 0x01 or 0xD0 <= marker <= 0xD7:  # standalone markers
+            continue
+        if position + 2 > len(data):
+            break
+        segment_length = int.from_bytes(data[position:position + 2], "big")
+        if segment_length < 2 or position + segment_length > len(data):
+            break
+        payload_start = position + 2
+        payload_end = position + segment_length
+        if marker == 0xE1 and data[payload_start:payload_start + 6] == b"Exif\\x00\\x00":
+            yield from _iter_tiff_exif_caption_units(
+                data[payload_start + 6:payload_end], f"jpeg-app1-{app1_index}"
+            )
+            app1_index += 1
+        position = payload_end
