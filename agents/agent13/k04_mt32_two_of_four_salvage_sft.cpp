@@ -108,9 +108,10 @@ static Result scan(std::uint64_t start,std::uint64_t end,Source target,int threa
       s[623]=_mm512_xor_si512(_mm512_xor_si512(s[396],shr(y,1)),magic);
     }
     V following[3]={twist0(s[0],s[1],s[397]),twist0(s[1],s[2],s[398]),twist0(s[2],s[3],s[399])};
-    for(unsigned i=0;i<624;++i){
+    for(unsigned i=0;i<627;++i){
       __mmask16 mask=0;
-      for(const V& c:candidates)mask|=_mm512_cmpeq_epi32_mask(s[i],c);
+      V probe=(i<624?s[i]:following[i-624]);
+      for(const V& c:candidates)mask|=_mm512_cmpeq_epi32_mask(probe,c);
       while(mask){
         int lane=__builtin_ctz(mask);mask&=mask-1;
         ++result.first;
@@ -120,6 +121,7 @@ static Result scan(std::uint64_t start,std::uint64_t end,Source target,int threa
         for(int back=0;back<4;++back){
           if(int(i)<back)break;
           const unsigned phase=i-back;
+          if(phase>=624)continue;
           U w[4];
           for(unsigned j=0;j<4;++j){
             const unsigned k=phase+j;
