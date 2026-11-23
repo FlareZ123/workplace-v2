@@ -1,0 +1,16 @@
+name: Agent47 K04 RC-17 revision future-donor SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-revision-donor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test source-defined RC-17 B and D service-order blocks as complete K04 donors
+        run: python agents/agent47/k04_rc17_revision_future_donor_sft.py
