@@ -37,6 +37,21 @@ There are no matches for the other ten original B/C/D-draft footer strips under 
 
 The initial p951 B footer match had already been discovered in Agent4's earlier source work. **New contribution:** this exact original-source controlled, broadened-phase *cross-model* comparison is a reproducible selection result against the 23-November four-fresh countermodel, not a claim to have discovered the B footer values for the first time. The bounded program also tests p951 over a wider phase range than the earlier local footer report (through2095).
 
+## Source-blind direct native recurrence audit: the two footer anchors are correlated
+
+A complementary [source-blind original SFT](../agents/agent21/k04_rc17_sourceblind_firstword_census_sft.py) uses **no assumed p951/all-42 stage mapping** and no symbolic printer state fit. It enumerates every ordered pair of **distinct original RC-17 footer strips** (12×11), both byte orders and both raw/native or MT-tempered views. For each pair and each of the 528 retained native printer words, calculate `X_future = X_middle XOR twist(footer_first,footer_second)`, and look up a *later* original intact printer word. All original source hashes pass; selected row129 is excluded before reading its payload. A 624-word planted native MT recurrence control passes.
+
+There are **278,784 ordered first/second-footer and middle-printer-word proposal computations**, yielding **12 exact later-word identities**, all in little-endian tempered view. They collapse to only **two printer source word-pair geometries**:
+
+| Last RC-17 footer input | Printer middle | Printer future | Number of different possible first RC-17 footers |
+| --- | --- | --- | ---: |
+| B/PURGE `759E0027` | row28 lane2 | row59 lane3 | **5** |
+| B/VERIFY `C130C9BB` | row28 lane1 | row59 lane2 | **7** |
+
+One concrete exact native MT relationship is `X[59,3] = X[28,2] XOR twist(native(B/VERIFY),native(B/PURGE))`. The opposite footer order also has an exact source-blind relationship, but at **different adjacent printer lanes**. Crucially, `twist(a,b)` depends on **only a's high bit** and b's low31 bits. All five/seven alternative first-footer strips in the two families have the needed same high bit, so a full32-bit equality **does not authenticate the first-footer identity or its entire 32-bit payload**. This degeneracy explains why a stage-conditioned second footer can add as little as one new source rank bit even when its individual 31-bit parities are all satisfied. A bit-flipped high-bit control fails.
+
+The two distinct B footer values are therefore **correlated source anchors**. Counting their reported 32- and 31-parity stage matches as 63 *independent* new observations is invalid. They still distinguish the two frozen source stage models under the stated informative-phase scan, but this audit further limits the evidentiary strength of a hypothetical common RC-17/print issuer. The direct source-blind test and corrected manual workflow both passed [GitHub Actions run 45157265853](https://github.com/FlareZ123/workplace-v2/actions/runs/45157265853) at 10:34 UTC. Neither original K04 coupon nor any K08 final word is recovered.
+
 ## What this permits and what it does not
 
 If the RC-17 revision B footer controls and printed 16-byte buffers came from one coherent MT producer, their retained numerical relationships **support prioritizing p951 over the specific all-42 four-fresh chronology** when planning a future original-source donor test. Two consecutive high-information p951 matches from a second document are stronger model-selective content than fitting the 528 original printer words alone.
