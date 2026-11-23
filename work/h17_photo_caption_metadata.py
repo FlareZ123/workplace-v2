@@ -158,7 +158,7 @@ def iter_iptc_caption_units(name: str, data: bytes) -> Iterator[tuple[str, str]]
                 break
             if resource_id == 0x0404:
                 for label, text in _parse_iptc_datasets(data[resource_start:resource_end]):
-                    yield f"{name}!/{label}", text
+                    yield label, text
             cursor = resource_end + (resource_size & 1)
 
 
