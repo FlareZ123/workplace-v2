@@ -106,6 +106,46 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
                 for label, payload in intake
             ), (field, intake))
 
+    def test_photoshop_text_layers_preserve_full_words_and_layer_names(self):
+        # Adobe's Photoshop TextLayers caches authored text independently of
+        # IPTC dc:description and may contain multiple editorial versions.
+        xmp = b'''<x:xmpmeta xmlns:x="adobe:ns:meta/"
+          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+          xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/">
+          <rdf:RDF><rdf:Description rdf:about="">
+            <photoshop:TextLayers><rdf:Seq>
+              <rdf:li rdf:parseType="Resource">
+                <photoshop:LayerName>Keeper envelope final</photoshop:LayerName>
+                <photoshop:LayerText>The sea keeps a place for every voice.</photoshop:LayerText>
+              </rdf:li>
+              <rdf:li rdf:parseType="Resource"
+                photoshop:LayerName="Older draft"
+                photoshop:LayerText="Leave the light on for the next watch." />
+            </rdf:Seq></photoshop:TextLayers>
+          </rdf:Description></rdf:RDF>
+        </x:xmpmeta>'''
+        expected = [
+            ("name-Keeper_envelope_final", "The sea keeps a place for every voice."),
+            ("name-Older_draft", "Leave the light on for the next watch."),
+        ]
+        layers = [
+            (label, text) for label, text in iter_xmp_caption_units("photo.xmp", xmp)
+            if "photoshop:TextLayers" in label
+        ]
+        self.assertEqual(len(layers), 2)
+        for (part, text), (label, actual) in zip(expected, layers):
+            self.assertIn(part, label)
+            self.assertEqual(actual, text)
+        intake = [
+            (label, payload) for label, payload in
+            iter_text_streams("photo.xmp", xmp, 0, [0], [], None, None, [])
+            if "photoshop:TextLayers" in label
+        ]
+        self.assertEqual(
+            [(label, payload.decode("utf-8")) for label, payload in intake],
+            layers,
+        )
+
     def test_iptc_app13_extracts_caption_headline_and_byline(self):
         streams = list(iter_iptc_caption_units("desk-photo.jpg", _iptc_jpeg()))
         by_label = {label: text for label, text in streams}
