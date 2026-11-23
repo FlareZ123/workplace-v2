@@ -94,14 +94,8 @@ def synthetic_tests(binaries: dict[str, Path], route_mask: bytes) -> None:
     rng = random.Random(20261123)
     for variant in VARIANTS:
         for trial in range(4):
-            a, b = rng.getrandbits(64), rng.getrandbits(64)
-            values = [(a + b) & MASK64]
-            for _ in range(5):
-                a, b = step(a, b, variant)
-                values.append((a + b) & MASK64)
-            source_state = (a, b)
-            # Reconstruct the initial state after the first output from six
-            # generated values, including the held-out x2 selector.
+            # Recover an independently planted state from only the first
+            # two outputs; x2 is a disambiguating positive-control witness.
             state = (rng.getrandbits(64), rng.getrandbits(64))
             output = [(state[0] + state[1]) & MASK64]
             cursor = state
@@ -128,7 +122,7 @@ def synthetic_tests(binaries: dict[str, Path], route_mask: bytes) -> None:
         for direction in ("f", "b"):
             state = states[0] if direction == "f" else states[4]
             for window in (2, 42, 1234):
-                position = window if direction == "f" else 6 - window
+                position = window if direction == "f" else 4 - window
                 coupon = pack(sum(states[position]) & MASK64,
                               sum(states[position + 1]) & MASK64, perm, endian)
                 component = bytes(a ^ b for a, b in zip(coupon, route_mask))
