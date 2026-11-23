@@ -157,6 +157,40 @@ def main() -> None:
     paired = coupons_by_future_stage[1409] & coupons_by_future_stage[1863]
     assert not paired, "Two independent recorder future sites predict one coupon"
 
+    # Distinct same-emitter control: the exact 132 original intact printer
+    # buffers, as if a native printer buffer were replayed at a later stage.
+    # This does not assert a genuine historical replay or shared state.
+    original_printer = [
+        bytes.fromhex(record[5].decode())
+        for i, record in enumerate(rows) if i != 129
+    ]
+    assert len(original_printer) == len(set(original_printer)) == 132
+    printer_seen = set()
+    printer_sites = {q: set() for q in mappings}
+    printer_hits = []
+    printer_tested = 0
+    for block in original_printer:
+        for q, mapping in mappings.items():
+            for perm in permutations:
+                for endian in ("little", "big"):
+                    for already_native in (False, True):
+                        raw_coupon = map_native(
+                            donor_bits_from_block(block, perm, endian, already_native), mapping)
+                        component = bytes(x ^ y for x, y in zip(raw_coupon, mask))
+                        printer_seen.add(component)
+                        printer_sites[q].add(raw_coupon)
+                        printer_tested += 1
+                        if hashlib.sha256(component).hexdigest() == K04_SHA:
+                            printer_hits.append((block.hex().upper(), q, perm, endian,
+                                                 already_native, component.hex().upper()))
+    assert printer_tested == len(printer_seen) == 25344
+    assert [len(printer_sites[q]) for q in (1409, 1863)] == [12672, 12672]
+    assert not printer_hits
+    assert len(printer_seen & seen) == 0
+    assert not (printer_sites[1409] & printer_sites[1863])
+    assert not ((printer_sites[1409] | coupons_by_future_stage[1409])
+                & (printer_sites[1863] | coupons_by_future_stage[1863]))
+
     # Exact prior Agent10 source block corpus. The existing K05 source
     # quartet is deliberately present in both studies, hence 192 overlap.
     earlier = set()
@@ -170,6 +204,8 @@ def main() -> None:
                             donor_bits_from_block(block, perm, endian, already_native), mapping)
                         earlier.add(bytes(x ^ y for x, y in zip(raw_coupon, mask)))
     assert (len(earlier), len(earlier & seen), len(seen - earlier)) == (2112, 192, 45120)
+    assert len(earlier & printer_seen) == 0
+    assert len((seen | printer_seen) - earlier) == 70464
 
     assert not matches, "Original K04 hit requires independent source adjudication"
     print(json.dumps({
@@ -184,6 +220,15 @@ def main() -> None:
         "unique_original_k04_components": len(seen),
         "independent_complete_coupon_predictions_per_future_site": 22656,
         "source_only_same_coupon_dual_recorder_site_matches": len(paired),
+        "intact_printer_replay_4fresh_future_checks": printer_tested,
+        "intact_printer_replay_unique_components": len(printer_seen),
+        "printer_recorder_complete_component_overlap": len(printer_seen & seen),
+        "intact_printer_replay_original_k04_matches": printer_hits,
+        "all_recorder_printer_cross_site_complete_coupon_joins":
+            len((printer_sites[1409] | coupons_by_future_stage[1409])
+                & (printer_sites[1863] | coupons_by_future_stage[1863])),
+        "all_new_complete_components_relative_to_previous_2112":
+            len((seen | printer_seen) - earlier),
         "overlap_with_agent10_previous_components": len(earlier & seen),
         "new_complete_components_relative_to_previous_2112": len(seen - earlier),
         "original_k04_acceptance_matches": matches,
