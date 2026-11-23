@@ -32,3 +32,5 @@ jobs:
         run: python agents/agent8/k04_mt_global_ack_shortgap_milp_sft.py
       - name: Check all42 immediate cross-packet K04 target donors
         run: python agents/agent8/k04_all42_crosspacket_target_sft.py
+      - name: Exhaust original K04 two-hop donor complete-coupon superset
+        run: python agents/agent8/k04_twohop_6561_fullcoupon_sft.py
