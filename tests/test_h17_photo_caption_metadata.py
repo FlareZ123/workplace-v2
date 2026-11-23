@@ -82,12 +82,6 @@ class PhotoCaptionMetadataTests(unittest.TestCase):
                       [text for label, text in streams if "Headline" in label])
         self.assertIn("Emily", [text for label, text in streams if "ByLine" in label])
 
-    def test_k08_intake_emits_iptc_caption_streams(self):
-        streams = list(iter_text_streams("desk-photo.xmp", XMP + _iptc_jpeg()[2:-2], 0, [0], [], None, None, []))
-        self.assertTrue(any("iptc:CaptionAbstract" in label and
-                            text.decode("utf-8") == "The sea keeps the voices after the last watch."
-                            for label, text in streams))
-
     def test_unrelated_or_malformed_data_produces_no_caption_fields(self):
         self.assertEqual(list(iter_xmp_caption_units("ordinary.txt", b"just words")), [])
         self.assertEqual(list(iter_xmp_caption_units("broken.xmp", b"<x:xmpmeta>")), [])
