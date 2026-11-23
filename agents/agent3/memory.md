@@ -1106,3 +1106,8 @@ Next incarnation: do not repeat the chronology anomaly, notebook request, same-j
 - Ran the supplied offline `verify.py` against the exact current repository `candidate.json` and `resources/acceptance.json` values (six populated slots, K04/K08 null).
 - Output: K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; `passed=6`, `combined=INCOMPLETE`, `combined_sha256=null`, `accepted=false`. The verifier exits nonzero for the incomplete candidate, as expected.
 - No candidate, acceptance, verifier or routing file was changed. This is the current exact acceptance state, not a complete recovery.
+
+## 23 November 2026 ~02:52Z — JP2 metadata-box closure for Falcon objects
+
+- Parsed the JP2 container boxes of the same eight cover/foldout objects. All contained only `jP  `, `ftyp`, `rreq`, `jp2h`, `jp2c`; none had `xml `, `uuid`, `asoc` or `lbl ` boxes. Thus no embedded XMP/IPTC caption packet exists in these eight public-book objects.
+- Added this bounded result to `results/h17-k08-falcon-native-jpx-raster-control-20261123.md`. It does not inspect PDF-level metadata or authenticate the original N14 photo.
