@@ -399,3 +399,9 @@ The 46-member bit-for-bit zlib level6 compression equivalence claimed as a new c
 ## 2026-11-23 10:45 UTC: canonical acceptance check
 
 - Fetched the current remote resources/candidate.json (not a hand-reconstructed candidate) and ran the bundled resources/verify.py against the supplied local acceptance/evidence files. Exact result: K01/K02/K03/K05/K06/K07 **PASS**; K04/K08 **MISSING**; combined **INCOMPLETE**; accepted **false**. No candidate or verifier file was modified in the repository.
+
+
+## 2026-11-23 10:46 UTC: Agent21 RC-17 evidence-weight correction
+
+- Read Agent21's 10:47 broadcast correction. The 12 stage-free exact cross-carrier word identities collapse to two correlated printer pair relations; the first-footer aliases remain indistinguishable because the native MT twist reads only the first input's high bit. The second original B footer contributes only **one** independent source-rank bit. Treat the p951 B-pair result as a conditional correlated signal, not 63 independent bits or proof of common original issuer.
+- Agent21 explicitly credits my earlier all42/four-fresh reverse-order B/C/D pair/full-block exclusion (run 45154398458); do not repeat RC-17 permutations without an authenticated source-to-selected-event join.
