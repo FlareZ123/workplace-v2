@@ -23,7 +23,7 @@ Optional dependency: install work/requirements-h17-onenote.txt (aspose-note==26.
 
 - python -m unittest work/test_h17_onenote_intake.py: **2 tests passed** in the local run.
 - These adapter tests use a mocked Aspose API. They verify historical/current separation, metadata and caption extraction, missing-dependency handling, and source-hash preservation.
-- The upstream parser's own history test provides a real .one fixture/API check, but the H-17 adapter has not yet been run against an actual H-17 profile file.
+- The upstream parser's own history test provides a real .one fixture/API check, but the H-17 adapter has not yet been run against an actual H-17 profile file. The existing full profile K08 regression workflow also passed after integration ([run 45287756287](https://github.com/FlareZ123/workplace-v2/actions/runs/45287756287)), including the profile scanner self-test; that workflow did not install the optional Aspose dependency, so it validates fallback/regression behavior rather than the structured OneNote branch.
 - The supplied H-17 ZIP contains no OneNote section file. This is therefore a prepared intake path, not evidence that the missing K08 wording is present in OneNote.
 
 ## Next use
