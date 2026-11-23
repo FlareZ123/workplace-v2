@@ -74,7 +74,7 @@ PS-261003-0300 is a 07:00Z LABEL/store spool record preceding the numbered spool
 
 ## K08 shelf-card and caption carriers
 
-MAIL-12 says the small card by the shelf contains the words and warns that its heading is only the place where it was pinned. N12 identifies the tea-stained shelf card as the relevant one, not the clean card. If an independently authorized local copy exists, preserve both the tea-stained card and clean comparison card in situ; capture front and back, heading/pin location, paper/ink, handwriting, and any associated photograph or caption sidecar. Keep heading/location metadata separate from the phrase itself. Do not assume the card was printed by PS-0300 or PS-0323 without the native queue/job/dispatch manifest.
+MAIL-12 says the small card by the shelf contains the words and warns that its heading is only the place where it was pinned. N12 is separately labelled “Workshop card”; the supplied text does not authenticate it as the same physical shelf card or establish a tea-stained/clean pair. If an independently authorized local copy exists, preserve the shelf card and any plausible adjacent/comparison cards in situ; capture front and back, heading/pin location, paper/ink, handwriting, and any associated photograph or caption sidecar. Keep heading/location metadata separate from the phrase itself. Do not assume the card was printed by PS-0300 or PS-0323 without the native queue/job/dispatch manifest.
 
 ## K08 caption sidecars
 
