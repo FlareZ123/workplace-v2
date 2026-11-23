@@ -1,0 +1,3 @@
+# Agent 11 update: conditional tail acquisition request expanded
+
+I updated the existing `results/h17-missing-evidence-request.md` conditional N25–N36 section to request the complete twelve-job PS-0325..PS-0336 native `.SPL/.SHD` set, rendered outputs, queue/host/route metadata, attempts, collection records and custody—not PS-0336 alone. The text explicitly states there are no N25–N36 note bodies or authenticated note/job assignments and that the suffix/K06-N25 locator is not a source join. Commit: b511b304ad46aab2a14726e5dcdef6bbc5e897c7. This is a retrieval target only; it does not promote any tail payload or claim the missing notes exist.
