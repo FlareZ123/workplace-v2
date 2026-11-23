@@ -137,6 +137,7 @@ def scan_source_path(source: Path, job_id: str, target_digest: bytes, mask: byte
 
 
 def self_test():
+    """Test complete K04 value recovery with and without source job labels."""
     mask = bytes.fromhex("102030405060708090A0B0C0D0E0F001")
     component = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
     payload = bytes(a ^ b for a, b in zip(component, mask))
@@ -144,28 +145,54 @@ def self_test():
     job_id = "PS-261003-0417"
     import io
     import zipfile
-    buffer = io.BytesIO()
-    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
-        archive.writestr("spool/0417.SPL", b"prefix" + payload + b"suffix")
-        archive.writestr("spool/0417.SHD", job_id.encode("ascii"))
-        archive.writestr("decoy/0417.SPL", b"unrelated bytes")
-        archive.writestr("decoy/0417.SHD", b"PS-261003-0999")
-    intake = RawIntake([
-        ("job:" + job_id, job_id.encode("ascii")),
-        ("job-utf16:" + job_id, job_id.encode("utf-16le")),
+
+    def intake_zip(members):
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
+            for name, value in members:
+                archive.writestr(name, value)
+        intake = RawIntake([
+            ("job:" + job_id, job_id.encode("ascii")),
+            ("job-utf16:" + job_id, job_id.encode("utf-16le")),
+        ])
+        intake.walk_bytes("synthetic.zip", "synthetic.zip", stream.getvalue())
+        return scan_intake(intake, job_id, target, mask)
+
+    labelled = intake_zip([
+        ("spool/0417.SPL", b"prefix" + payload + b"suffix"),
+        ("spool/0417.SHD", job_id.encode("ascii")),
+        ("decoy/0417.SPL", b"unrelated bytes"),
+        ("decoy/0417.SHD", b"PS-261003-0999"),
     ])
-    intake.walk_bytes("synthetic.zip", "synthetic.zip", buffer.getvalue())
-    result = scan_intake(intake, job_id, target, mask)
-    assert result["recovered"], result
-    assert result["component_hex"] == component.hex().upper(), result
-    assert len(result["candidate_hits"]) == 1, result
+    assert labelled["recovered"] and labelled["job_id_literal_at_matching_source"], labelled
+    assert labelled["component_hex"] == component.hex().upper(), labelled
+    assert len(labelled["candidate_hits"]) == 1, labelled
+
+    # The genuine matching SPL may have only native numeric metadata in SHD.
+    # An unrelated SHD that mentions the PS label must not preselect the decoy.
+    unlabelled = intake_zip([
+        ("spool/0007.SPL", b"before" + payload + b"after"),
+        ("spool/0007.SHD", bytes.fromhex("070013000200A5F9")),
+        ("decoy/0417.SPL", b"unrelated bytes"),
+        ("decoy/0417.SHD", job_id.encode("ascii")),
+    ])
+    assert unlabelled["recovered"] and not unlabelled["job_id_literal_at_matching_source"], unlabelled
+    assert unlabelled["matching_job_pairs"] == 1, unlabelled
+    assert unlabelled["component_hex"] == component.hex().upper(), unlabelled
+
+    # A spool file can survive even if its associated SHD was not retained.
+    unpaired = intake_zip([("spool/0007.SPL", b"prefix" + payload + b"suffix")])
+    assert unpaired["recovered"] and unpaired["matching_job_pairs"] == 0, unpaired
+    assert unpaired["candidate_hits"][0]["shd_sha256"] is None, unpaired
+
     return {
         "passed": True,
-        "matching_pairs": result["matching_job_pairs"],
-        "component_hex": result["component_hex"],
-        "candidate_offset": result["candidate_hits"][0]["offset"],
+        "complete_commitment_cases": 3,
+        "literal_matched": labelled["job_id_literal_at_matching_source"],
+        "unlabelled_pair_recovered": unlabelled["recovered"],
+        "unpaired_spl_recovered": unpaired["recovered"],
+        "component_hex": labelled["component_hex"],
     }
-
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
