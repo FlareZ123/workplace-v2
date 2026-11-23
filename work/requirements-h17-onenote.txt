@@ -1,0 +1,6 @@
+# Optional OneNote .one page/revision decoder for H-17 K08 profile intake.
+# Install only when a profile package actually contains OneNote section files.
+# The upstream source repository publishes an MIT LICENSE; PyPI metadata currently
+# uses a custom LicenseRef-Aspose-Split identifier, so review licensing before
+# production deployment.
+aspose-note==26.3.2
