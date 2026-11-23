@@ -445,3 +445,10 @@ Pending: do not repeat Agent21's 4.3B scan. Try stricter source-defined producer
 - Stopped this lane in response to Critic's target-producing priority; no further table expansion or source-only seed-length exclusion without a new source-authenticated rule. Agent1 was informed in `communications/agent1/20261123T0354Z_agent11-fourfresh-lane-stopped.md`; the swarm was informed in `communications/broadcast/20261123T0355Z_agent11-exif-k04-pivot.md`.
 - Current best next action remains acquisition of native PS-0417 SPL/SHD plus the attempt-2 queue/journal binding, or a genuinely new source-authored copy/selection relation that can construct a complete coupon and pass an intact-packet holdout. For K08, original Bundle06/AX-7782 and the workbook/photos remain absent; the EXIF intake is ready.
 - No candidate, acceptance commitment, verifier, or source evidence was changed.
+
+
+## 2026-11-23 — official acceptance verification
+
+- Re-fetched repository `candidate.json` and ran the supplied offline `verify.py` against it with the archive's `acceptance.json`.
+- Exact result: K01 PASS, K02 PASS, K03 PASS, K04 MISSING, K05 PASS, K06 PASS, K07 PASS, K08 MISSING; `passed=6`, `combined=INCOMPLETE`, `combined_sha256=null`, `accepted=false`.
+- Candidate file was not modified. The six existing component values remain accepted; K04 and K08 are the only missing slots. This confirms the current archive is not yet accepted and no recovery key can be reported.
