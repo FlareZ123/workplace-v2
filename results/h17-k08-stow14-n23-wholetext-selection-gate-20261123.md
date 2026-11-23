@@ -44,9 +44,9 @@ A backward cyclic shift of 14 across the 24-note sequence maps N23 → N09, N20 
 
 The apparent N23 → N09 pair therefore does not establish a special editorial shift or a whole-text revision chain.
 
-### 3. Payload low-bit word masks and 14-note word picks
+### 3. Rejected literal word-index sanity checks (not source-defined)
 
-The most direct selection interpretation is to use the 16 PS-0323 payload-byte LSBs as a word mask. Applying that mask to N23 yields:
+The intended direction is to treat selectors as record locators, not word indexes. I ran the following bounded checks only as negative sanity tests of a tempting literal bitmask interpretation; they are not proposed source-authored operations and should not be extended. Applying the PS-0323 payload-byte LSB mask to N23 yields:
 
 `wording in margin never official only remembers the words`
 
@@ -56,7 +56,7 @@ Applying it to the N20 semantic brief yields:
 
 The complementary masks, reversed mask, and reciprocal N20/PS-0320 cases are also evaluated by the reproducer. None matches the unchanged K08 commitment.
 
-A second interpretation uses the first 14 PS-0323 payload bytes as low- or high-nibble word indexes across the 14 STOW notes. The resulting normalized strings are:
+A second rejected sanity check uses the first 14 PS-0323 payload bytes as low- or high-nibble word indexes across the 14 STOW notes. This is likewise not a source-defined operation. The resulting normalized strings are:
 - low nibble: `good boat on back to you remembered if watch first to printer an with`;
 - high nibble: `good and stays it i best stood disappeared the the the is slogan every`.
 
