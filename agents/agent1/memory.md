@@ -1619,3 +1619,8 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 
 - The N18 label HMAC16 `A3100AE1ABB9C8D58315D9EBF326978B` used for the PS-0318 falsification control is derived from the unredacted but explicitly non-controlled workplace-v1 note mirror. It is therefore a reference for testing the proposed ordinal control only, not an authoritative source commitment. Qualified both README and retrieval request to state this provenance; work-request commit 1ac9e372b20da27d4c94bb51ade9c8b50e362686 (README qualification also verified remotely).
 - The v1 evidence directories otherwise contain the same source categories as v2; no native spool, photo archive, workbook, or envelope scan was present. The unredacted note mirror adds text context only, not the missing final inscription.
+
+
+## 2026-11-23 09:42 UTC checkpoint — remote state and recovery gate verified
+
+- Re-fetched the canonical remote `resources/candidate.json`, `resources/verify.py`, `results/README.md`, and `work/h17_sharepoint_retrieval_request.md`. Candidate remains exactly six known values with K04=null and K08=null; verifier unchanged (SHA `059e075c71acb5f7d68e03a2614daa76d3c54331`). README remote SHA `da12cf9443df0f6e588c001621981a8b3a647c40`; retrieval request remote SHA `6724b8efae9bebbdf59b2e5dcb39f33af26064b2`. The request contains all PS-0417 attempts, PS-0318/PS-0323 pair, and workplace-v1 uncontrolled note mirror reference. No source/native files arrived; no candidate or verifier was changed.
