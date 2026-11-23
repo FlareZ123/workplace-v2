@@ -62,6 +62,14 @@ A second interpretation uses the first 14 PS-0323 payload bytes as low- or high-
 
 Neither matches K08. As a simple generalization control, the same per-job LSB word mask does not reconstruct the explicit N17 standby label (selects only `light the`) or N18 commissioning label (selects only `before the boat`). These are exploratory operations, not source-defined encodings.
 
+## Whole-record selection refinement from MAIL-11
+
+The 14-note CREW4-author set includes N17, N18 and N23. MAIL-11 explicitly rejects the complete N17 standby label (“Leave the light on for the next watch”) and the complete N18 commissioning label (“Back before the first boat”) as the final desk phrase. N23 independently states that the envelope preserves the words Emily finally put on it. This supports a **source-authored whole-record selection at the note level**: select N23 as the final-envelope instruction record, not N17/N18 and not a word-level assembly.
+
+Under the **conditional** Nxx↔PS03xx suffix/cadence crosswalk, the two RECOVER/store jobs in the 14-note author set are N18/PS0318 and N23/PS0323. MAIL-11 excludes N18, leaving PS-0323 as a **conditional native print-object retrieval target**. This is a useful retrieval heuristic, not an authenticated job assignment: the route table has no preserved queue role for PS-0323, the note/job join remains ordinal, and the reconstructed 16-byte payload is not rendered text.
+
+Thus a whole-record selection is supported at the level of identifying N23 as the instruction record; no whole-text transformation or exact phrase was recovered. The PS-0323 print-object link remains conditional pending a contemporaneous queue/collection manifest.
+
 ## Decision and next useful evidence
 
 STOW14 and N23/PS-0323 remain useful **source locators**, not a recovered phrase or authenticated text editor. The convergence on N09 is worth retaining as a conditional base-text lead if an authenticated WN-14/Bundle-06 or native print manifest arrives; it does not justify turning the opaque spool payload into K08 words.
