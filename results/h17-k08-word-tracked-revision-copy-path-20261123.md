@@ -30,7 +30,7 @@ A phrase found in a deleted revision or original-view paragraph is not automatic
 
 The test verifies that the final view reconstructs the exact normalized phrase, the original view remains distinct, revision events retain author/date/id labels, and the final phrase's synthetic K08 commitment matches the final view rather than the original view.
 
-The full targeted K08 suite, including the thumbnail-cache bridge and profile-scanner self-test, passed on [GitHub Actions run 45093855749](https://github.com/FlareZ123/workplace-v2/actions/runs/45093855749).
+The full targeted K08 suite, including the thumbnail-cache bridge and profile-scanner self-test, passed on [GitHub Actions run 45094353923](https://github.com/FlareZ123/workplace-v2/actions/runs/45094353923).
 
 ## Application and limits
 
