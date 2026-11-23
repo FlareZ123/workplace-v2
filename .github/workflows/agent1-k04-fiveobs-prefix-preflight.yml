@@ -1,0 +1,22 @@
+name: Agent1 K04 five-observation xoroshiro exact inverted-coupon preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-gated-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install system libz3 for stdlib ctypes bitvector inverse
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libz3-4
+      - name: Seven full-withheld-coupon synthetic positives and wrong-prefix UNSAT
+        run: python3 agents/agent1/k04_xoropp_fiveobs_prefix_sft.py --preflight --seconds 20
+      - name: Source-selected first historical 16-bit prefix, big-endian hypothesis
+        run: python3 agents/agent1/k04_xoropp_fiveobs_prefix_sft.py --original --endian big --prefix 0 --seconds 20
+      - name: Source-selected first historical 16-bit prefix, little-endian hypothesis
+        run: python3 agents/agent1/k04_xoropp_fiveobs_prefix_sft.py --original --endian little --prefix 0 --seconds 20
