@@ -20,8 +20,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q avx512f /proc/cpuinfo
-          g++ -O3 -mavx512f -mavx512dq -std=c++17 -pthread agents/agent13/k04_mt32_dual_request_latephase_twoof4_sft.cpp -o /tmp/agent13_k04_native
+          if grep -q avx512f /proc/cpuinfo; then
+            g++ -O3 -mavx512f -mavx512dq -std=c++17 -pthread agents/agent13/k04_mt32_dual_request_latephase_twoof4_sft.cpp -o /tmp/agent13_k04_native
+          else
+            grep -q avx2 /proc/cpuinfo
+            g++ -O3 -mavx2 -std=c++17 -pthread agents/agent13/k04_mt32_dual_request_latephase_twoof4_avx2_sft.cpp -o /tmp/agent13_k04_native
+          fi
           /tmp/agent13_k04_native planted2 12336 12352 1 > /tmp/control2.log
           /tmp/agent13_k04_native planted3 12336 12352 1 > /tmp/control3.log
           grep -q "CONTROL planted2 PASS" /tmp/control2.log
