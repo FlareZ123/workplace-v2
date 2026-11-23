@@ -30,7 +30,7 @@ The amended `self_test()` exercises **three exact complete-component positive sc
 | A matching SPL with binary/unlabelled SHD, alongside a wrong-payload decoy pair whose SHD *does* carry PS-261003-0417 | Recovered | No |
 | A genuine SPL without a surviving SHD file | Recovered | No |
 
-The regression establishes that the source selection cannot suppress an exact commitment match. Initial amended self-test completed successfully on [Actions run 45129826120](https://github.com/FlareZ123/workplace-v2/actions/runs/45129826120). The original public unit test's `matching_pairs` and `candidate_offset` result keys were subsequently preserved for compatibility. A second manual run covering that unit test and the amended self-test was dispatched after that compatibility fix.
+The regression establishes that the source selection cannot suppress an exact commitment match. Initial amended self-test completed successfully on [Actions run 45129826120](https://github.com/FlareZ123/workplace-v2/actions/runs/45129826120). The original public unit test's `matching_pairs` and `candidate_offset` result keys were subsequently preserved for compatibility. The [second manual Actions run 45130094612](https://github.com/FlareZ123/workplace-v2/actions/runs/45130094612) then **passed both the amended three-case self-test and the original compatibility unit test**.
 
 Source/test commits:
 - `a5dd961caded5b0ec8fa3bc54779965a4f963c71`: commitment-first selection;
