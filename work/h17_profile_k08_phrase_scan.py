@@ -42,6 +42,7 @@ if str(HERE) not in sys.path:
 import h17_ax7782_k08_phrase_intake as phrase
 import h17_k08_teal_bit_image_scan as teal_image
 import h17_thumbcache_image_carve as thumbcache
+import h17_onenote_intake as onenote
 from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
@@ -305,6 +306,8 @@ def scan_inventory(
     thumbnail_cache_files_scanned = thumbnail_cache_images_found = 0
     thumbnail_cache_unique_images_scanned = thumbnail_cache_duplicate_images = 0
     thumbnail_cache_images_skipped_limit = thumbnail_cache_image_hmac_hits = 0
+    onenote_files_scanned = onenote_pages_scanned = 0
+    onenote_historical_revisions_scanned = onenote_streams_scanned = 0
     seen_thumbnail_images: dict[str, list[dict[str, Any]]] = {}
     global_budget = [0]
     started = time.monotonic()
@@ -346,6 +349,45 @@ def scan_inventory(
         lower_name = display_name.casefold()
 
         try:
+            structured_onenote = False
+            if path.suffix.casefold() == ".one":
+                try:
+                    onenote_result = onenote.extract_onenote_document(path, display_name)
+                except onenote.OneNoteDependencyUnavailable as exc:
+                    errors.append({
+                        "source": display_name,
+                        "error": f"onenote-decoder-unavailable:{exc}",
+                    })
+                except Exception as exc:
+                    errors.append({
+                        "source": display_name,
+                        "error": f"onenote-decoder:{type(exc).__name__}:{exc}",
+                    })
+                else:
+                    onenote_files_scanned += 1
+                    onenote_pages_scanned += int(onenote_result.get("pages", 0))
+                    onenote_historical_revisions_scanned += int(
+                        onenote_result.get("historical_revisions", 0)
+                    )
+                    for warning in onenote_result.get("warnings", []):
+                        errors.append({
+                            "source": display_name,
+                            "error": f"onenote-history-warning:{warning}",
+                        })
+                    for stream in onenote_result.get("streams", []):
+                        stream_text = str(stream.get("text", ""))
+                        if not stream_text:
+                            continue
+                        stream_source = str(stream.get("source", display_name))
+                        streams_scanned += 1
+                        onenote_streams_scanned += 1
+                        spans_tested += _scan_stream(
+                            stream_source,
+                            stream_text.encode("utf-8", "replace"),
+                            nonce, target, max_phrase_words, hits,
+                        )
+                    structured_onenote = bool(onenote_result.get("streams"))
+
             if data.startswith(SQLITE_MAGIC):
                 sqlite_files += 1
                 for source, stream_data in _sqlite_text_streams(
@@ -369,13 +411,14 @@ def scan_inventory(
                         source, stream_data, nonce, target, max_phrase_words, hits
                     )
             else:
-                for source, stream_data in phrase.iter_text_streams(
-                    display_name, data, 0, global_budget, errors, ocr, None
-                ):
-                    streams_scanned += 1
-                    spans_tested += _scan_stream(
-                        source, stream_data, nonce, target, max_phrase_words, hits
-                    )
+                if not structured_onenote:
+                    for source, stream_data in phrase.iter_text_streams(
+                        display_name, data, 0, global_budget, errors, ocr, None
+                    ):
+                        streams_scanned += 1
+                        spans_tested += _scan_stream(
+                            source, stream_data, nonce, target, max_phrase_words, hits
+                        )
                 if could_contain_xps(data):
                     for label, stream_data in extract_xps_text(data):
                         streams_scanned += 1
@@ -489,6 +532,14 @@ def scan_inventory(
         "files_scanned": files_scanned,
         "sqlite_files_scanned": sqlite_files,
         "sqlite_schema_streams": sqlite_tables,
+        "onenote": {
+            "files_scanned": onenote_files_scanned,
+            "pages_scanned": onenote_pages_scanned,
+            "historical_revisions_scanned": onenote_historical_revisions_scanned,
+            "text_streams_scanned": onenote_streams_scanned,
+            "version_selection": "not performed; current and historical pages are emitted separately",
+            "dependency": "optional aspose-note package; see work/requirements-h17-onenote.txt",
+        },
         "text_streams_scanned": streams_scanned,
         "normalized_contiguous_spans_tested": spans_tested,
         "thumbnail_cache": {
