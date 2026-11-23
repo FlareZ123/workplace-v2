@@ -126,7 +126,10 @@ class Intake:
 
     def walk_bytes(self, name, container, data, depth=0):
         kind = magic(data)
-        if kind == "raw":
+        # A native spool file can itself be an OPC ZIP/XPS package. Preserve
+        # its SPL identity for pairing and let the commitment scanner decode
+        # the package's rendered content.
+        if kind == "raw" or Path(name).suffix.casefold() in (".spl", ".shd"):
             self.add(name, container, str(PurePosixPath(name).parent), data)
             return
         if depth >= self.max_depth:
@@ -149,7 +152,9 @@ class Intake:
                             self.errors.append({"name": item.filename, "reason": "decompressed ZIP member exceeds size cap"})
                             continue
                         child_name = f"{name}!/{item.filename}"
-                        if magic(child) in ("zip", "tar", "gzip"):
+                        if Path(item.filename).suffix.casefold() in (".spl", ".shd"):
+                            self.add(item.filename, container, str(PurePosixPath(item.filename).parent), child)
+                        elif magic(child) in ("zip", "tar", "gzip"):
                             self.walk_bytes(child_name, child_name, child, depth + 1)
                         else:
                             self.add(item.filename, container, str(PurePosixPath(item.filename).parent), child)
@@ -173,7 +178,9 @@ class Intake:
                             self.errors.append({"name": item.name, "reason": "decompressed TAR member exceeds size cap"})
                             continue
                         child_name = f"{name}!/{item.name}"
-                        if magic(child) in ("zip", "tar", "gzip"):
+                        if Path(item.name).suffix.casefold() in (".spl", ".shd"):
+                            self.add(item.name, container, str(PurePosixPath(item.name).parent), child)
+                        elif magic(child) in ("zip", "tar", "gzip"):
                             self.walk_bytes(child_name, child_name, child, depth + 1)
                         else:
                             self.add(item.name, container, str(PurePosixPath(item.name).parent), child)
