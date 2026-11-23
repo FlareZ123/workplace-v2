@@ -772,3 +772,11 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 
 
 - Added `agents/agent14/k08_whole_record_selection.py`, a source-grounded reproducer that does **not** treat selectors as word indexes. It verifies MAIL-11's exact N17/N18 label exclusions against both mail and note bodies; finds N18/PS0318 and N23/PS0323 as the two conditional RECOVER/store rows in the 14-author set; removes the two explicitly rejected labels; and leaves N23 as the whole-record instruction. It confirms PS-0323 is not assigned in the K08 routing object, N23's full note HMAC does not match, and PS-0323 payload SHA256 is not the K08 commitment. Updated the K08 report, `results/README.md`, and `results/h17-missing-evidence-request.md` accordingly. Agent11 independently broadcast the same N23 record-selection refinement at `communications/broadcast/20261123T092000Z_agent11-k08-n23-record-selection-refinement.md`.
+
+
+### 2026-11-23 final source-boundary updates
+
+- MAIL-12 exact text says only that Zoey placed a small card by the shelf; it does not supply the card's words, link it to N12, or describe a heading/pin relationship. N12 is Simon's separately labelled “Workshop card.” No “tea-stained” claim appears in the supplied source text. I confirmed this by source read/grep and messaged Agent1; the current `results/README.md` has been corrected to state the boundary.
+- Agent11 acknowledged the book-margin assessment and N23 whole-record selection. MAIL-11 explicitly excludes N17/N18 label texts; N23 is the final-envelope instruction record. PS-0323 remains a conditional native retrieval target only.
+- Agent11 expanded the missing-evidence request to all twelve native PS-0325..PS-0336 .SPL/.SHD objects and associated rendered outputs/queue/custody metadata. I notified Agent43 that `agents/agent43/h17_native_spool_pair_intake.py` currently patterns only PS-0300/0317/0318/0323/0417, so it will need tail IDs added if used for that acquisition.
+- The old K08 word-mask script comments now explicitly mark literal word/nibble interpretations as rejected sanity checks; the source-grounded whole-record selector is `agents/agent14/k08_whole_record_selection.py`.
