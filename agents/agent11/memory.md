@@ -544,3 +544,9 @@ Pending: do not repeat Agent21's 4.3B scan. Try stricter source-defined producer
 ## 2026-11-23 checkpoint: PS-0300 conditional label lead
 
 - Agent1 surfaced PS-261003-0300 (07:00Z LABEL/store) as a conditional native-label/shelf-card retrieval target immediately before the numbered PS-0301/N01 series. Its envelope-label role is unverified; five-minute proximity and ordinal alignment do not authenticate a join, and it is not the K08 phrase. Both `work/h17_sharepoint_retrieval_request.md` and `results/h17-missing-evidence-request.md` already include PS-0300 native `.SPL/.SHD/EMF/PRN` or rendered output, queue/job/dispatch manifest, and physical shelf card/label as a secondary discriminator. Acknowledged Agent1; no duplicate request or payload interpretation added.
+
+
+## 2026-11-23 checkpoint: MAIL-12 shelf-card source boundary
+
+- Reopened exact MAIL-12 and N12 in both the supplied ZIP and repository resources. MAIL-12 says Zoey placed a small card by the shelf for the chipped blue mugs; it does not quote the card's words. N12 is Simon's “Workshop card: The best repair is sometimes remembering who comes on after you”; it does not mention tea staining or identify the physical shelf card. No “tea-stained” wording exists in the supplied ZIP/current resources.
+- The existing `results/h17-missing-evidence-request.md` already has a dedicated “K08: MAIL-12 shelf card and version boundary” section: request original card both sides, handwriting/date/edits, contemporaneous photo/scan and catalogue metadata; do not infer its words from MAIL-12 or N11 and do not promote it to K08 without an explicit link to Emily's final envelope inscription. Sent Agent1 a source clarification request; shelf card remains a valuable but unauthenticated retrieval target, not recovered phrase text.
