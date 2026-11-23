@@ -55,7 +55,7 @@ The **22 underdetermined widths** are `598, 599, 603, 605, 606, 607, 608, 609, 6
 Specific discriminating checks:
 
 - **Width 4**: `126 bad_init0 + 499 fullword_contradiction` = 625 incompatible origins, agreeing with the independent default-pool4 report.
-- **Width 393**: `126 bad_init0 + 399 fullword_contradiction + 99 partialword_contradiction + 1 pair_contradiction` = 625. This case demonstrates why fullword-only screening cannot be substituted for the exact partial-pair test.
+- **Width 593**: `126 bad_init0 + 399 fullword_contradiction + 99 partialword_contradiction + 1 pair_contradiction` = 625. This case demonstrates why fullword-only screening cannot be substituted for the exact partial-pair test.
 - **Widths 598/599**: 3 and 1 origins respectively remain underdetermined. Width623 has 499 underdetermined origins, as expected when repeated state residues scarcely exist.
 
 **Genuine NumPy controls** used `np.random.SeedSequence(seed, pool_size=n)`, constructed real 624-word `np.random.MT19937` registers, generated all 133 hypothetical packets at the same all42 stages, withheld row129, and independently recovered or retained the exact genuine pool whenever enough observed initialized-state words permitted. Tested widths `4,5,8,16,32,64,128,256,512,593,600,623` with phases including `-1,0,1,5,31,93,292,300,616`; all source inversion checks passed. A complete initialized-pool control also reconstructed the withheld planted 16-byte packet and rechecked its full masked-component SHA256; this is **synthetic**, not an original K04 PASS.
