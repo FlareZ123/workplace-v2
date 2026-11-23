@@ -8,10 +8,12 @@ carrier test, not a claim that either revision was authorized for K06.
 from __future__ import annotations
 
 import hashlib
+import itertools
 import json
 import random
 import re
 import sys
+import zlib
 from pathlib import Path
 
 sys.path.insert(0, "agents/agent10")
@@ -28,6 +30,8 @@ LABEL_SHA = "146fa698f44bc9b9fa7a443d8dc71a2e23ff0f883dabd01512f8ade82d3666ad"
 DOCREG_SHA = "20d8dc63a28bab7084b6919207c50fb5bf957054f30b71c3ced0b3b5507e7f2c"
 SEAL_SHA = "c00944558636fbcc7e91b81e8e838ffd13fcd5a30d121b41951888766a8a0e32"
 MAIL04_SHA = "c9e83a610f9240c3abd4b4d435588bd9056de34edf6fa3e6d7aca88d8a21f439"
+RECORDER_SHA = "5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba"
+RECORDER_FORMAT_SHA = "78ff213040de20f81bc582cdfc25a4d0930ceb2d3956dbcc944b775b88fd7b22"
 EXPECTED = {
     "B": "D82A73E9E1DB4379759E0027C130C9BB",
     "C": "5DBF40EE52FAAED9A536D3326CF0D95A",
@@ -412,6 +416,136 @@ def main() -> None:
                     "target_bits_fixed": 128 - target_rank,
                 })
 
+
+    # Recorder control-word bridge. The source format marks node 0x31/event
+    # 0x52 as preserved archive-latch control words. Keep CRC-good and CRC-bad
+    # records distinguished; the latter are exploratory only, not valid later
+    # writes under the format note.
+    recorder_data = checked(ROOT / "evidence/recorder/trip-recorder.raw", RECORDER_SHA)
+    checked(ROOT / "evidence/recorder/format-note.txt", RECORDER_FORMAT_SHA)
+    assert recorder_data[:8] == b"TRP2DUMP"
+    assert int.from_bytes(recorder_data[8:10], "little") == 2
+    assert int.from_bytes(recorder_data[10:12], "little") == 24
+    assert int.from_bytes(recorder_data[12:16], "little") == 88
+    assert len(recorder_data) == 16 + 88 * 24
+    recorder_controls = []
+    for i in range(88):
+        rec = recorder_data[16+i*24:16+(i+1)*24]
+        node = int.from_bytes(rec[4:6], "little")
+        event = rec[6]
+        latch = rec[7]
+        seq = int.from_bytes(rec[8:12], "little")
+        if node != 49 or event != 82:
+            continue
+        stored_crc = int.from_bytes(rec[20:24], "little")
+        calculated_crc = zlib.crc32(rec[:20]) & 0xffffffff
+        recorder_controls.append({
+            "seq": seq, "latch": latch, "control": rec[12:16],
+            "crc_good": stored_crc == calculated_crc,
+            "crc_syndrome": stored_crc ^ calculated_crc,
+        })
+    assert len(recorder_controls) == 16
+    control_by_seq = {r["seq"]: r for r in recorder_controls}
+    sequence_groups = {
+        "seq200_203": (200, 201, 202, 203),
+        "seq300_303": (300, 301, 302, 303),
+        "seq900_903_crc_bad": (900, 901, 902, 903),
+        "seq990_993_K05": (990, 991, 992, 993),
+    }
+    assert set(control_by_seq) == {
+        200, 201, 202, 203, 300, 301, 302, 303,
+        900, 901, 902, 903, 990, 991, 992, 993
+    }
+    assert all(control_by_seq[q]["crc_good"] for q in
+               sequence_groups["seq200_203"] + sequence_groups["seq300_303"]
+               + sequence_groups["seq990_993_K05"])
+    assert all(not control_by_seq[q]["crc_good"]
+               and control_by_seq[q]["crc_syndrome"] == 0x100
+               for q in sequence_groups["seq900_903_crc_bad"])
+
+    recorder_word_matches = []
+    for row in recorder_controls:
+        for endian in ("little", "big"):
+            stored = int.from_bytes(row["control"], endian)
+            for stored_native in (False, True):
+                observed = stored if stored_native else untemper(stored)
+                for stage in range(2100):
+                    fixed_mask = fixed_masks[stage]
+                    fixed_bits = fixed_mask.bit_count()
+                    mismatch = ((observed ^ fixed_values[stage]) & fixed_mask).bit_count()
+                    if mismatch or fixed_bits < 26:
+                        continue
+                    augmented = basis.copy()
+                    consistent = True
+                    for bit, form in enumerate(expressions[stage]):
+                        if not add_equation(augmented, form, (observed >> bit) & 1):
+                            consistent = False
+                            break
+                    if not consistent:
+                        continue
+                    target_rank = quotient_rank(target_forms, augmented)
+                    recorder_word_matches.append({
+                        "sequence": row["seq"], "latch": row["latch"],
+                        "crc_good": row["crc_good"],
+                        "crc_syndrome": row["crc_syndrome"],
+                        "control": row["control"].hex().upper(),
+                        "stage": stage, "endian": endian,
+                        "stored_as_native": stored_native,
+                        "source_fixed_bits": fixed_bits,
+                        "added_rank": len(augmented) - len(basis),
+                        "target_bits_fixed": 128 - target_rank,
+                    })
+
+    recorder_block_matches = []
+    recorder_blocks = {}
+    for label, seqs in sequence_groups.items():
+        block = b"".join(control_by_seq[q]["control"] for q in seqs)
+        recorder_blocks[label] = block
+        for endian in ("little", "big"):
+            stored_words = [
+                int.from_bytes(block[4*lane:4*lane+4], endian)
+                for lane in range(4)
+            ]
+            for stored_native in (False, True):
+                observed_words = (
+                    stored_words if stored_native
+                    else [untemper(value) for value in stored_words]
+                )
+                for q in range(2097):
+                    checks = []
+                    for lane in range(4):
+                        fixed_mask = fixed_masks[q+lane]
+                        fixed_bits = fixed_mask.bit_count()
+                        mismatch = (
+                            (observed_words[lane] ^ fixed_values[q+lane]) & fixed_mask
+                        ).bit_count()
+                        checks.append((fixed_bits, mismatch))
+                    fixed_total = sum(x[0] for x in checks)
+                    mismatch_total = sum(x[1] for x in checks)
+                    if mismatch_total or fixed_total < 64 or min(x[0] for x in checks) < 8:
+                        continue
+                    augmented = basis.copy()
+                    consistent = True
+                    for lane in range(4):
+                        for bit, form in enumerate(expressions[q+lane]):
+                            if not add_equation(
+                                augmented, form, (observed_words[lane] >> bit) & 1
+                            ):
+                                consistent = False
+                                break
+                        if not consistent:
+                            break
+                    if not consistent:
+                        continue
+                    target_rank = quotient_rank(target_forms, augmented)
+                    recorder_block_matches.append({
+                        "block": label, "stage": q, "endian": endian,
+                        "stored_as_native": stored_native,
+                        "source_fixed_bits": fixed_total,
+                        "added_rank": len(augmented) - len(basis),
+                        "target_bits_fixed": 128 - target_rank,
+                    })
+
     mask = bytes.fromhex(route["K04"]["masked_component"])
     assert len(mask) == 16
     results = []
@@ -459,6 +593,28 @@ def main() -> None:
                         "endian": endian,
                         "stored_as_native": already_native,
                         "coupon": coupon.hex().upper(),
+                        "component": component.hex().upper(),
+                        "sha256_match": hashlib.sha256(component).hexdigest() == K04_SHA,
+                    })
+
+
+    # The four CRC-bad seq900..903 controls are not authoritative later writes,
+    # but test this single source-defined block as an explicitly quarantined
+    # future donor. Do not mix it into the accepted recorder/K05 path.
+    bad_crc_block = recorder_blocks["seq900_903_crc_bad"]
+    bad_crc_donor_candidates = []
+    for permutation in itertools.permutations(range(4)):
+        for endian in ("little", "big"):
+            for already_native in (False, True):
+                donor_bits = donor_bits_from_block(
+                    bad_crc_block, permutation, endian, already_native
+                )
+                for q, mapping in mappings.items():
+                    coupon = map_native(donor_bits, mapping)
+                    component = bytes(a ^ b for a, b in zip(coupon, mask))
+                    bad_crc_donor_candidates.append({
+                        "permutation": list(permutation), "endian": endian,
+                        "stored_as_native": already_native, "stage": q,
                         "component": component.hex().upper(),
                         "sha256_match": hashlib.sha256(component).hexdigest() == K04_SHA,
                     })
@@ -517,6 +673,36 @@ def main() -> None:
                 reverse=True
             )[:20],
             "selected_four_serial_block_matches": selected_block_matches,
+        },
+        "recorder_control_fourfresh_bridge": {
+            "control_records": len(recorder_controls),
+            "sequence_groups": {
+                name: {
+                    "sequences": list(seqs),
+                    "raw_block": recorder_blocks[name].hex().upper(),
+                    "all_crc_good": all(control_by_seq[q]["crc_good"] for q in seqs),
+                }
+                for name, seqs in sequence_groups.items()
+            },
+            "serial_presentations_with_26plus_source_fixed_bits": len(recorder_word_matches),
+            "exact_32bit_control_matches": [
+                x for x in recorder_word_matches if x["source_fixed_bits"] == 32
+            ],
+            "historical_p951_seq903_matches": [
+                x for x in recorder_word_matches if x["sequence"] == 903
+            ],
+            "best_control_matches": sorted(
+                recorder_word_matches,
+                key=lambda x: (x["target_bits_fixed"], x["source_fixed_bits"]),
+                reverse=True
+            )[:20],
+            "compatible_four_word_blocks": recorder_block_matches,
+            "quarantined_bad_crc_block_future_donors": {
+                "candidate_count": len(bad_crc_donor_candidates),
+                "K04_commitment_matches": [
+                    x for x in bad_crc_donor_candidates if x["sha256_match"]
+                ],
+            },
         },
         "synthetic_full_coupon_reconstruction": True,
         "interpretation": (
