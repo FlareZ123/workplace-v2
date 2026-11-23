@@ -19,7 +19,7 @@ It does not search other cells' comments, infer a worksheet order, or scan arbit
 
 - `tests/test_h17_k08_m10_comment_selector.py` checks exact M10 selection, author retention, rejection of M9/other-sheet comments, rejection of ordinary cell text, and fail-closed behavior when no sheet mapping exists.
 - `work/test_h17_k08_mug_stock_cell_selector.py` now includes a synthetic end-to-end M10 comment match alongside the existing eight-cell HMAC control. Its optional real legacy-XLS round-trip also plants an Emily-attributed M10 comment and checks that the fallback preserves it.
-- The targeted K08 workflow now runs both the `tests/` suite and the workbook-selector test script; the real LibreOffice integration remains conditional on LibreOffice availability.
+- The targeted K08 workflow now runs both the `tests/` suite and `work/test_h17_k08_mug_stock_cell_selector.py`; both completed successfully on [run 45094703198](https://github.com/FlareZ123/workplace-v2/actions/runs/45094703198). The optional real LibreOffice integration remains conditional on LibreOffice availability and is not claimed as exercised by this run.
 
 ## Source limits
 
