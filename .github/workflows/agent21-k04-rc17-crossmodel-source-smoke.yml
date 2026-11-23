@@ -13,4 +13,6 @@ jobs:
         with:
           python-version: '3.12'
       - name: Evaluate original source with synthetic controls
-        run: python agents/agent21/k04_rc17_crossmodel_source_selector_sft.py
+        run: |
+          python agents/agent21/k04_rc17_crossmodel_source_selector_sft.py
+          python agents/agent21/k04_rc17_sourceblind_firstword_census_sft.py
