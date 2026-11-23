@@ -44,8 +44,8 @@ static Source make_target(const std::string& mode){
     const int perm[4]={2,0,3,1};
     for(int j=0;j<4;++j)original[j]=(j%2==0)?words[perm[j]]:swap32(words[perm[j]]);
     if(mode=="tampered"||mode=="planted2"||mode=="planted3")original[0]^=1u;
-    if(mode=="planted2"||mode=="planted3")original[1]^=1u;
-    if(mode=="planted3")original[2]^=1u;
+    if(mode=="tampered"||mode=="planted2"||mode=="planted3")original[1]^=1u;
+    if(mode=="tampered"||mode=="planted3")original[2]^=1u;
   }
   Source t{};
   for(int i=0;i<4;++i){
