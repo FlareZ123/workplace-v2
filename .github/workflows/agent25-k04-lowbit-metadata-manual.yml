@@ -1,0 +1,19 @@
+name: Agent 25 K04 MT19937 low-bit metadata test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run planted control and source-compatible chronology search
+        run: python agents/agent25/k04_numpy_lowbit_conditional_route_sampler_sft.py
