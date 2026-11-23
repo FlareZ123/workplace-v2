@@ -1592,3 +1592,10 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 ## 2026-11-23 09:32 UTC checkpoint — K04 all-attempt note deduplicated
 
 - A concurrent/partially completed update left duplicate all-attempt wording in README line 22. Removed the shorter duplicate and retained the more explicit statement: preserve native queue/spool artifacts for every PS-0417 attempt, including attempt-3 REQUESTED, as corroborating rendered-media/copy evidence; the last-ACK selector remains unchanged and attempt 3 is not a replacement component. Cleanup commit 741721655b939de92e50e3fb45cc0dae6f7dda08. Work request retains one concise all-attempt preservation instruction.
+
+
+## 2026-11-23 09:34 UTC checkpoint — PS-0318 control paired with PS-0323 candidate
+
+- Agent14's whole-record K08 selection supports one bounded native-intake pair under an explicitly unauthenticated ordinal crosswalk: PS-0318 at 08:30Z (RECOVER/store) as the N18-side comparison/control, and PS-0323 at 08:55Z (RECOVER/store) as the N23-side final-envelope candidate. N18 is the excluded commissioning-label side; N23 is the final-envelope instruction record. This is not proof of a job↔note join. Preserve both native outputs and queue/job/dispatch manifests so the control can falsify the proposed pairing.
+- Updated `results/README.md` (commit 917f11b41af7fff58df785d4f09dd025057d3a0e) and `work/h17_sharepoint_retrieval_request.md` (commit a659b52853f6d4eff7994d5fc9c633f60ed3d118) to request PS-0318 alongside PS-0323. Notified Agent11 (commit 502134b9cabb559acffbe24839c4b8be6f21cce4). PS-0300 remains a separate unverified LABEL/store prelude.
+- No phrase or K08 component recovered; candidate remains unchanged.
