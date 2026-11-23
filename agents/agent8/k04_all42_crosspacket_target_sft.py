@@ -128,6 +128,101 @@ def planted_mt_control():
     return f"{temper(predicted):08X}"
 
 
+
+def stage_interval_possible(d, r, target, delta):
+    return d[r][target] >= delta and d[target][r] >= -delta
+
+
+def three_root_joint_possible(d, a, v, u):
+    """All three source stage roots must share ONE selected stage S129."""
+    starts = (129, a[0], v[0], u[0])
+    table = [[d[x][y] for y in starts] for x in starts]
+    for i, (_, _, distance) in enumerate((a, v, u), 1):
+        table[i][0] = min(table[i][0], distance)
+        table[0][i] = min(table[0][i], -distance)
+    for mid in range(4):
+        via = table[mid]
+        for i in range(4):
+            first = table[i][mid]
+            for j in range(4):
+                length = first + via[j]
+                if length < table[i][j]:
+                    table[i][j] = length
+    return all(table[i][i] >= 0 for i in range(4))
+
+
+def twohop_donors(d, native):
+    """Expand X[t-227] once more using X[t-454] and a second MT twist.
+
+    X[t] = X[t-454] XOR twist(X[t-851], X[t-850])
+                    XOR twist(X[t-624], X[t-623]).
+    Both twists are contiguous WORD PAIRS within intact source packets.
+    """
+    result = []
+    for q in range(4):
+        a = [(r, p, 624 + p - q)
+             for r in range(129) if native[r] is not None
+             for p in range(3) if stage_interval_possible(d, r, 129, 624 + p - q)]
+        v = [(r, p, 851 + p - q)
+             for r in range(129) if native[r] is not None
+             for p in range(3) if stage_interval_possible(d, r, 129, 851 + p - q)]
+        u = [(r, i, 454 + i - q)
+             for r in range(129) if native[r] is not None
+             for i in range(4) if stage_interval_possible(d, r, 129, 454 + i - q)]
+        lane = []
+        for first in a:
+            for second in v:
+                for last in u:
+                    if not three_root_joint_possible(d, first, second, last):
+                        continue
+                    ar, ap, _ = first
+                    vr, vp, _ = second
+                    ur, ui, _ = last
+                    native_word = (
+                        native[ur][ui]
+                        ^ twist(native[vr][vp], native[vr][vp + 1])
+                        ^ twist(native[ar][ap], native[ar][ap + 1])
+                    )
+                    lane.append((ar, ap, vr, vp, ur, ui, f"{temper(native_word):08X}"))
+        result.append(lane)
+    return result
+
+
+def planted_twohop_control():
+    # Seven native draws per event, except one five-draw packet:
+    # S129-S40=623, S129-S7=852, S129-S64=455.
+    gaps = [7] * 132
+    gaps[8] = 5
+    starts = [0]
+    for gap in gaps:
+        starts.append(starts[-1] + gap)
+    assert (starts[129] - starts[40],
+            starts[129] - starts[7],
+            starts[129] - starts[64]) == (623, 852, 455)
+    rng = random.Random(0x417A11)
+    words = [untemper(rng.getrandbits(32)) for _ in range(starts[-1] + 4)]
+    predicted = (
+        words[starts[64] + 2]
+        ^ twist(words[starts[7] + 2], words[starts[7] + 3])
+        ^ twist(words[starts[40]], words[starts[40] + 1])
+    )
+    assert predicted == words[starts[129] + 1]
+    return f"{temper(predicted):08X}"
+
+
+def assert_joint_fourlane_excluded(weak):
+    # All 25-witness two-hop possibilities share source rows (43,12,66).
+    # With a single S129, the three stage distances must coincide across
+    # all q=0..3. For top pair positions p=0..2, p-q cannot be constant
+    # over four target lanes, a structural obstruction.
+    for lane in weak:
+        assert len(lane) == 9
+        assert all((r1, r2, r3) == (43, 12, 66)
+                   for r1, _, r2, _, r3, _, _ in lane)
+    assert not any(
+        p0 + 3 <= 2 for p0 in range(3)
+    )
+
 def main():
     raw = (ROOT / "resources/evidence/print/spool-reconstruction.log").read_bytes()
     assert hashlib.sha256(raw).hexdigest() == SOURCE_SHA
@@ -160,6 +255,16 @@ def main():
         strong_ctl.append(joint_possible(strong, r, k, q, i, l))
     assert weak_ctl == [False, False, False, True, True, True]
     assert strong_ctl == [False, False, False, True, True, False]
+    weak_twohop = twohop_donors(weak, native)
+    strong_twohop = twohop_donors(strong, native)
+    assert_joint_fourlane_excluded(weak_twohop)
+    one = [(43, 0, 12, 2, 66, 3, "B12FDB6A")]
+    assert strong_twohop == [one, one, [], []], strong_twohop
+    print("SEEDED_MT_TWOHOP_CONTROL PASS", planted_twohop_control())
+    print("TWOHOP_SOURCE_25_COUNTS", [len(lane) for lane in weak_twohop])
+    print("TWOHOP_SOURCE_ALL42_COUNTS", [len(lane) for lane in strong_twohop])
+    print("TWOHOP_SOURCE_ALL42_SURVIVORS", strong_twohop)
+    print("TWOHOP_25_JOINT_FOUR_WORD_COUPONS", 0)
     print("SEEDED_MT_CROSSPACKET_CONTROL PASS", planted_mt_control())
     print("SOURCE_SHA256", SOURCE_SHA)
     print("WITNESSES", 25, 17)
