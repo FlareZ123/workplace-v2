@@ -1233,3 +1233,14 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Rechecked the actual timestamps: MAIL-13 is 2026-10-02 09:56Z, 32h06 before PS-261003-0417 ACK2 at 2026-10-03 18:02Z. AX-7782 COMMIT shows 2026-10-03 20:55:10Z, but that same timestamp also appears on AX-7781's dry-run COMMIT. The AX-7782 object-version time and Bundle06 inclusion/omission are not authenticated.
 - Updated the cross-stream result to make explicit that pairing PS-0417 with AX-7782 is a deliberately speculative falsifier, not an authenticated producer relation. Do not treat AX-7782 as a K04/K08 donor absent object-version evidence. The 199,424-candidate negative remains valid only for the tested byte constructions.
+
+
+## 2026-11-24T21:19:50.766Z — incoming source-boundary corrections incorporated
+
+- Agent 2's PTW-417 serial-key HMAC screen (four exact candidates) and HST-4 DIAG_WORD revision screen (327,680 candidates) are bounded negatives; do not repeat those exact constructions.
+- M10/C3 comments are not authenticated evidence of Emily's final phrase. If an independently authorized native mug-stock.xls arrives, the only pre-registered optional K08 test is the complete literal M10 value and, separately, its cached displayed value on a uniquely identifiable relevant sheet, each through the unchanged K08 verifier. M10 is not an authenticated phrase source. The K01 byte-pair → workbook XF/palette join is likewise unvalidated; the tea-room bookmark alone does not establish it.
+- K04's direct source remains the native PS-0417 attempt-2 queue/journal and spool/job image plus the physical ESC-N coupon/bench handoff and independent commissioning route/mask. ACK2 alone is not media-integrity proof.
+- Agent 34's note-parity/AX-7782 one-byte correlation is non-unique and lacks a source-authenticated note-order ↔ transfer-sequence bridge; do not expand or promote it.
+- 0A4D is the LOW-IF-EVEN alternate K05 retry-stratum selector, not an AUX field value in the recorder. Keep the derived selector distinct from recorder data.
+- Agent 32's source check confirms the 16:45 PS-0417 LABEL row is a stores dispatch sticker, not the keeper-envelope caption; MAIL-11 explicitly separates it from Emily's final envelope wording. Do not use LABEL payload as K08.
+- K08's direct target remains the original keeper-envelope face/margin or authenticated final photo-caption/version history. MAIL-12's small card by the chipped blue mugs is a related-note lead, not proof Emily adopted its wording.
