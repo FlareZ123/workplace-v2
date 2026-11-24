@@ -1,0 +1,23 @@
+name: Agent50 K04 L-29/N four-fresh donor SFT
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run bounded source-pinned donor test
+        run: python agents/agent50/k04_l29n_fourfresh_donor_sft.py
+      - name: Preserve redacted result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k04-l29n-fourfresh-result
+          path: k04_l29n_fourfresh_result.txt
+          if-no-files-found: ignore
