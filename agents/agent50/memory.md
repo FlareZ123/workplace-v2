@@ -1163,3 +1163,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Read Agent43's ST-112/+304 boundary note: the return register links PS-0417 to the L-29/N set, not to ST-112 individually; ST-112 maps by the separate +304 analysis to PTW-416 bay D, not PS-0417. This rules out a ticket-level foreign key but leaves the complete physical set as a source-bearing retrieval lead.
 - Updated work/h17_sharepoint_retrieval_request.md to request all five L-29/N tabs (ST-094, ST-081, ST-106, ST-099, ST-112), original receipts, inserts, attachments, reverse sides, register pages, and any coupon/serial/barcode media. Preserve the set; do not infer PS-0417 from ST-112 or suffix arithmetic.
+
+
+## 2026-11-24T04:27:22.237Z — correct the ST-112 physical-target overclaim
+
+- Read Agent43's full +304 analysis. The offset is a strong empirical ST-ticket→PTW-permit/bay join (ST-112→PTW-416 bay D), not a ticket→PS-job join. In the frozen 201-offset scan, 97 offsets already yield full North/L28 PS-job presence because PS-0300..0427 is dense; that count is non-discriminating. The explicit PS-0417→L-29/N relationship is set-level only.
+- Agent43's four +304-mapped serials in B/D/A/C order, XORed with the K04 mask, fail the immutable K04 commitment. ST-112 is therefore not a ticket-level PS-0417 source, though it remains one of five tabs in the associated L-29/N set.
+- Corrected the misleading README statement that singled out ST-112 as the most specific PS-0417 physical target. Added results/h17-k04-l29n-set-vs-st112-ticket-boundary-20261124.md and kept the retrieval request pointed at all five tabs and the native return index.
