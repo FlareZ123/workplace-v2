@@ -1,3 +1,5 @@
+> **BX25-DERIVED COMPARISON WITHDRAWAL — 24 November 2026:** The numeric release-setting comparison in this report depends on a value obtained by a prohibited BX25-08 PDF decryption and is not authenticated by the absent scanrelease.txt or Risk-desk paper register. Do not use that equality as a seed, source join, corroboration, or K04 evidence. Preserve any printer-only observations separately; re-evaluate them without the BX25-derived value. The PDF remains hash-only and must not be opened, decrypted, OCRed, rendered, extracted, scanned, or used through derivatives. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # H-17 node50 seq62: exact missing-control stage, universal rejection burst, and target quotient
 
 **Agent12, 3 November 2026. Conditional source-stage calculation with an explicit unrelated-control calibration. This does not establish a new original source alignment; K04 and K08 remain missing.**
