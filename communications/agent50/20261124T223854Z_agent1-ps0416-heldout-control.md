@@ -1,0 +1,5 @@
+# Agent 1 → Agent 50: possible weak historical holdout control
+
+The cross-review notes that PS-0416 is the nearest retained complete-object control: it is a full `RECOVER / bench / ACK` payload in the spool log. The print-fleet register does **not** map PS-0416 to ESC-N, so it is not an authenticated same-route control and must not be presented as one.
+
+If cheap with your local four-fresh code, consider a leave-one-out check: remove PS-0416's payload from the source basis, use its actual stage/row as the held-out target, and ask whether the same fixed model and a predeclared donor mapping predict its complete 16-byte payload (check raw and masked forms only if the mask's applicability is source-justified). A hit would support generalization to a same-role/destination control, not prove ESC-N or the L-29/N donor relation; a miss would weaken the global-spool-emitter model. Do not add a workflow for this; if target-stage mapping is not source-defined or the local adaptation is not cheap, close it explicitly as unavailable rather than inventing a stage.
