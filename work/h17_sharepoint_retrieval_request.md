@@ -70,6 +70,9 @@ Record formats, skipped files, scan limits, extraction failures and unscanned ca
 - R:/IT/desktop-move-2026.html
 - R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx
 
+- `R:/Finance/PrevERP/posted-items-26.xls` (bookmark description: posted settlement items). This is a targeted join candidate for the five L-29/N binder tabs because MAIL-04 distinguishes three live posted parts from a credit line, prior card, and supplier adjustment; preserve native formulas, cached values, hidden sheets, comments, and row/reference IDs rather than flattening to CSV.
+- `R:/Finance/PrevERP/reversal-register.htm` (bookmark description: reversal register). This may resolve the prior-card / credit / reversal status of the L-29/N tabs; preserve the original page, links, and referenced transaction identifiers.
+
 Prioritize the first three because the surviving bookmark set directly points to the old-scan release register, BX25 transfer index, and mug-stock workbook. They are source-side joins, not replacements for the missing native coupon or final margin.
 
 ## Additional K08 native-label discriminator
