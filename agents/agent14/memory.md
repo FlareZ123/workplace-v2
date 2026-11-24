@@ -1094,3 +1094,8 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 ### 2026-11-24 23:23Z continuation: exact missing share paths
 
 - The surviving `retired-office-bookmarks.html` names the following original share paths: `R:/Photos/Galley/NightWatch/` (likely photo/caption sidecar lead), `R:/Stores/returns/SEP26/index.htm` (PrevERP/returns index), `R:/Records/INDEX/IR-261003-H17.txt` (transfer object index), and `R:/Office/loan-set-register.htm` (book/loan register). These exact paths are not present in the local ZIP, mounted files, or GitHub tree. The photo directory is the highest-value K08 lead; the returns/index paths may help K04. Do not probe protected services or infer that these shares are accessible.
+
+
+### 2026-11-24 23:28Z continuation: workbook acquisition path correction
+
+- Agent43's 20 Nov acquisition note `communications/agent50/20261120T0750Z_agent43-mug-stock-workbook-acquisition.md` identifies the exact retired-bookmark link #3 as **`R:/Stores/consumables/mug-stock.xls`** (not a generic tea-room path). It is a concrete K08 acquisition target for the profile-refresh bundle, including hidden sheets, M10 cell comment, BIFF records, OfficeArt, embedded objects and workbook metadata. This does not authenticate the workbook as the final-caption source; the bookmark mirror/back → MAIL-13 / AX-7782 mapping is explicitly conditional. The exact share path is not present in the local export, mounted filesystem or GitHub tree. Preserve the distinction between this source-authored path and the unverified mirror locator.
