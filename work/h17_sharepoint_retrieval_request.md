@@ -83,3 +83,8 @@ MAIL-12 says only that Zoey placed a small card by the shelf; the export contain
 ## K08 caption sidecars
 
 Also retrieve the pre-incident crew photograph/galley-caption archive in full, including original images and any N25–N36 caption sidecars, authorship, timestamps, revision history, thumbnail/preview cache and unsaved/AutoRecover copies. The retained N01–N24 text is not the final envelope wording.
+
+
+## Additional local source with an explicit export gap
+
+- **Complete original H-17 inspection-rounds notebook (all 11 pages, original page order and any attached photographs/annotations).** The supplied `evidence/maintenance/inspection-rounds.log` identifies itself as page 4 of 11 and explicitly says the rest of the notebook is not included in this export. Page 4 records an instrument-store electrical-odour report at 17:12 UTC and the suspension of rounds at 21:15 UTC. The missing pages may establish the pre-incident/post-incident equipment and custody chronology relevant to FA-17, PS-0417, or the desk area; their contents are unknown, so do not assume they contain either missing key component. If an independently authorized local copy becomes available, preserve the original page images, page sequence, margins, annotations, and any referenced attachments alongside OCR. **Do not contact the custodian or probe R:/SharePoint; this is an intake target only if supplied through an authorized local channel.**
