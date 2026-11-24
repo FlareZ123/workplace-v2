@@ -296,11 +296,44 @@ def main() -> int:
         "top_color_pages": map_report,
     }
 
-    out_path = ROOT / "agents" / "agent21" / "broads-pageword-results.json"
-    out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(json.dumps(report, indent=2, ensure_ascii=False))
     matched = any(x["match"] for x in report["page_word_sequences"].values())
     matched = matched or bool(report["selected_page_span_hits"]) or bool(report["full_book_span_hits"])
+
+    # This probe reads accepted component bytes and a K08 nonce locally. Never
+    # publish their coordinate pairs, candidate phrases, MACs, or target values.
+    # Preserve only an aggregate, reproducible outcome summary.
+    safe_report = {
+        "status": "candidate_match_requires_private_review" if matched else "bounded_negative",
+        "book_hypothesis": report["book_hypothesis"],
+        "pdf_sha256": pdf_hash,
+        "pdf_pages": len(doc),
+        "tested": {
+            "coordinate_page_count": len(target_pages),
+            "page_word_sequence_tests": len(report["page_word_sequences"]),
+            "selected_page_span_hits": len(report["selected_page_span_hits"]),
+            "full_book_span_hits": len(report["full_book_span_hits"]),
+            "map_scan_page_range": [start_index, len(doc) - 1],
+        },
+        "outcome": {
+            "candidate_match": matched,
+            "exact_phrase_recovered": False,
+            "map_probe": {
+                "top_ranked_color_scan_pages": [item["pdf_page_index"] for item in map_report],
+                "max_teal_fraction": max(
+                    (item["teal_fraction"] for item in map_report), default=0.0
+                ),
+            },
+        },
+        "limitations": [
+            "The title is not named in the surviving H-17 evidence; this remains an unverified candidate.",
+            "The map may be omitted from this scan or the physical copy/edition may differ.",
+            "No candidate, acceptance, routing, or verifier data was changed.",
+            "Accepted-component coordinates, candidate wording, and nonce-derived values are intentionally omitted.",
+        ],
+    }
+    out_path = ROOT / "agents" / "agent21" / "broads-pageword-results.json"
+    out_path.write_text(json.dumps(safe_report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(json.dumps(safe_report, indent=2, ensure_ascii=False))
     print("K08_MATCH", matched)
     return 0
 
