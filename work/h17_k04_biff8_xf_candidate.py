@@ -100,6 +100,29 @@ def parse_xf_payload(payload: bytes) -> XFPattern:
     )
 
 
+def parse_palette_payload(payload: bytes) -> dict[int, tuple[int, int, int, int]]:
+    """Parse a BIFF8 PALETTE payload; custom entries begin at colour index 8."""
+    if len(payload) < 2:
+        raise XFError("BIFF8 PALETTE payload is shorter than its count field")
+    count = struct.unpack_from("<H", payload, 0)[0]
+    expected_length = 2 + 4 * count
+    if len(payload) != expected_length:
+        raise XFError(
+            f"BIFF8 PALETTE payload length mismatch: expected {expected_length}, got {len(payload)}"
+        )
+    palette = {}
+    for i in range(count):
+        red, green, blue, reserved = payload[2 + 4 * i: 6 + 4 * i]
+        palette[8 + i] = (red, green, blue, reserved)
+    return palette
+
+
+def palette_color(index: int, palette: dict[int, tuple[int, int, int, int]]) -> tuple[int, int, int] | None:
+    """Resolve a custom PALETTE index; built-in/system indexes return None."""
+    entry = palette.get(index)
+    return None if entry is None else entry[:3]
+
+
 def effective_cell_pattern(cell_xf_index: int, xf_payloads: Sequence[bytes]) -> XFPattern:
     """Resolve a cell XF's effective fill pattern using fAtrPat inheritance."""
     if not 0 <= cell_xf_index < len(xf_payloads):
