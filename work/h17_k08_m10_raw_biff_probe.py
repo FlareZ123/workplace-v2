@@ -248,7 +248,7 @@ def extract_m10(workbook: bytes) -> list[dict[str, Any]]:
 
 
 def inspect_workbook(path: Path, resources: Path) -> dict[str, Any]:
-    work_dir = Path(__file__).resolve().parents[2] / "work"
+    work_dir = Path(__file__).resolve().parent
     work_dir_text = str(work_dir)
     if work_dir_text not in sys.path:
         sys.path.insert(0, work_dir_text)
