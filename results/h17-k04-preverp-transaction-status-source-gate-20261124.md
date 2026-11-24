@@ -48,3 +48,8 @@ Do not attribute the binder classification to MAIL-04; that message is the PTW-4
 If an independently authorized local copy appears, preserve the native workbook's formulas, cached values, hidden sheets, comments, row IDs and transaction references, plus the reversal register's original links and transaction identifiers. Join by native transaction/line IDs, run, account and folio; resolve revision and reversal status before considering any 16-byte field or ordered 4×4-byte references. Keep all five North tabs and the South/Watch-Spare controls intact.
 
 No R:/ access, protected-service probing, custodian contact, K04 candidate, or acceptance change was performed.
+
+
+## Conditional four-reference hypothesis (not source-established)
+
+The print-fleet note's North tab order is ST-094, ST-081, ST-106, ST-099, ST-112. One possible construction, **only if the original PrevERP ledger and physical binder confirm the row roles**, is a 16-byte coupon formed from four native 4-byte transaction/reference fields for tabs 01, 02, 03 and 05 in that order (three live parts plus a tab-05 credit line), excluding tab 04's prior-card history. This is Agent45's bounded structural hypothesis, not a current finding: the supplied CSV labels ST-112 R3 as catch cleaning and R4 as a held duplicate, not as a credit; the visible guide-shim credit is ST-151 on the South set. The original records must resolve this apparent discrepancy before any four-reference candidate is assembled. Test a literal 16-byte coupon/reference field first; do not substitute ticket suffixes or infer that four references exist.
