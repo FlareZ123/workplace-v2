@@ -1,3 +1,5 @@
+> **BX25-08 QUARANTINE / SUPERSESSION — 24 November 2026:** This prior-art snapshot predates the current source boundary. Any BX25-08 PDF-derived release value, decrypted page content, URI, host/asset attribution, or property-declaration claim is withdrawn and must not be used as a seed, join, corroboration, or evidence. The supplied PDF is hash-only: do not open, decrypt, OCR, render, extract, scan, or rely on derivatives. Preserve only the original encrypted bytes and SHA-256. Re-evaluate any affected cross-source claim using independently supplied, authorized records only. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # H-17 duplicate-source cross-repository gate (20 October 2026)
 
 ## Discovery: research in workplace-v1 precedes this repository
