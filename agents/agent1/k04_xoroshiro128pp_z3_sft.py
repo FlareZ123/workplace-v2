@@ -1,27 +1,28 @@
 #!/usr/bin/env python3
-"""Direct-borrow first-pair Z3 backend for the H-17 K04 xoroshiro128++ hypothesis.
+"""Direct-borrow Boolean/XOR Z3 backend for the H-17 K04 xoroshiro128++ hypothesis.
 
-Fits only the first REQUESTED packet (outputs 0/1), derives b0 from a0 using
-the exact inverse of xoroshiro128++'s first output, predicts the middle pair,
-and blindly checks the third REQUESTED packet (outputs 4/5). Every complete
-masked middle candidate is checked against the K04 commitment before any
-holdout or uniqueness disposition. Nonunique middles are enumerated under a
-fixed cap; uniqueness and first-model holdout are reported separately.
+The first-pair core uses the exact dual-inverse identity and eliminates b0
+through t0. It is translated as a compact Boolean CNF/XOR circuit into Z3,
+rather than asking QF_BV to bit-blast nested 64-bit arithmetic.
+
+Fits only the first REQUESTED packet (outputs 0/1), derives the middle pair,
+and blindly checks the third REQUESTED packet (outputs 4/5). The 18:02 ACK is
+withheld from fitting. Every complete masked middle candidate is checked
+against the original K04 commitment before holdout or uniqueness disposition.
 """
 import argparse
 import hashlib
 import json
 import time
-from pathlib import Path
 
-from z3 import BitVec, BitVecVal, Concat, Extract, Or, RotateLeft, RotateRight, SolverFor, sat, unsat, unknown
+from z3 import Bool, BoolVal, Not, Or, Solver, Xor, is_true, sat, unsat, unknown
 
 MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 SEED = (0x5D1DE1A5CAFEBEEF, 0x17A5B3CB69A1CBCA)
 MAX_MIDDLE_MODELS = 8
 MAX_TOTAL_SOLVE_SECONDS = 600
-ROOT = Path(__file__).resolve().parents[2] / "resources"
+ROOT = __import__("pathlib").Path(__file__).resolve().parents[2] / "resources"
 
 
 def stream(state, count=6):
@@ -47,69 +48,243 @@ def encode(words, view):
     return b"".join(int(x).to_bytes(8, endian) for x in words)
 
 
-def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
+class BorrowCircuit:
+    """Exact t0-eliminated, fused dual-inverse circuit; variables are 1-based."""
+
+    def __init__(self):
+        self.count = 0
+        self.clauses = []
+        self.xors = []
+        self.witness = {}
+
+    def variable(self, value=None):
+        self.count += 1
+        if value is not None:
+            self.witness[self.count] = bool(value)
+        return self.count
+
+    def word(self, value=None):
+        return [
+            self.variable(None if value is None else bool((value >> i) & 1))
+            for i in range(64)
+        ]
+
+    def lit_value(self, lit):
+        value = self.witness[abs(lit)]
+        return value if lit > 0 else not value
+
+    def xor_rhs(self, terms, rhs=0):
+        terms = [v for v in terms if v]
+        if not terms:
+            if rhs:
+                raise ValueError("constant-one XOR output is not used by this circuit")
+            return 0
+        if len(terms) == 1 and rhs == 0:
+            return terms[0]
+        known = all(v in self.witness for v in terms)
+        value = ((sum(self.witness[v] for v in terms) % 2) ^ bool(rhs)) if known else None
+        out = self.variable(value)
+        self.xors.append((terms + [out], bool(rhs)))
+        return out
+
+    def xor(self, *terms):
+        return self.xor_rhs(list(terms), 0)
+
+    def and_lits(self, x, y):
+        known = abs(x) in self.witness and abs(y) in self.witness
+        value = self.lit_value(x) and self.lit_value(y) if known else None
+        out = self.variable(value)
+        self.clauses.extend(([-x, -y, out], [x, -out], [y, -out]))
+        return out
+
+    def or_lits(self, x, y):
+        known = abs(x) in self.witness and abs(y) in self.witness
+        value = self.lit_value(x) or self.lit_value(y) if known else None
+        out = self.variable(value)
+        self.clauses.extend(([-x, out], [-y, out], [x, y, -out]))
+        return out
+
+    def majority_lits(self, x, y, z):
+        known = all(abs(v) in self.witness for v in (x, y, z))
+        value = sum(self.lit_value(v) for v in (x, y, z)) >= 2 if known else None
+        out = self.variable(value)
+        self.clauses.extend((
+            [-x, -y, out], [-x, -z, out], [-y, -z, out],
+            [x, y, -out], [x, z, -out], [y, z, -out],
+        ))
+        return out
+
+    def add64(self, a, b):
+        carry = 0
+        out = []
+        for i in range(64):
+            out.append(self.xor(a[i], b[i], carry))
+            if i < 63:
+                carry = self.and_lits(a[i], b[i]) if i == 0 else self.majority_lits(a[i], b[i], carry)
+        return out
+
+    def sub_const64(self, c, a):
+        """Return c-a using the exact bitwise borrow recurrence."""
+        borrow = 0
+        out = []
+        for i in range(64):
+            ci = (c >> i) & 1
+            out.append(self.xor_rhs([a[i], borrow], ci))
+            if i < 63:
+                if borrow == 0:
+                    borrow = a[i] if ci == 0 else 0
+                else:
+                    borrow = self.or_lits(a[i], borrow) if ci == 0 else self.and_lits(a[i], borrow)
+        return out
+
+    @staticmethod
+    def rotated(bits, n):
+        return [bits[(i - n) % 64] for i in range(64)]
+
+    def get_t_from_output(self, a, y):
+        """Derive t=a XOR b from y=ROTL(a+b,17)+a, without materializing b."""
+        u = self.rotated(self.sub_const64(y, a), -17)
+        borrow = 0
+        t = []
+        for i in range(64):
+            t.append(self.xor(u[i], borrow))
+            if i < 63:
+                borrow = self.and_lits(-u[i], a[i]) if i == 0 else self.majority_lits(-u[i], a[i], borrow)
+        return t
+
+    def step_from_t(self, a, t):
+        ra = self.rotated(a, 49)
+        na = [self.xor(ra[i], t[i], t[i - 21] if i >= 21 else 0) for i in range(64)]
+        nb = self.rotated(t, 28)
+        return na, nb
+
+    def step(self, a, b):
+        t = [self.xor(x, y) for x, y in zip(a, b)]
+        return self.step_from_t(a, t)
+
+    def output(self, a, b):
+        return self.add64(self.rotated(self.add64(a, b), 17), a)
+
+    def constrain_sub64_equal(self, a, b, expected):
+        """Constrain expected == a-b, fusing difference bits into equality."""
+        borrow = 0
+        for i in range(64):
+            terms = [v for v in (a[i], b[i], borrow, expected[i]) if v]
+            self.xors.append((terms, False))
+            if i < 63:
+                borrow = self.and_lits(-a[i], b[i]) if i == 0 else self.majority_lits(-a[i], b[i], borrow)
+
+    def constrain_output(self, a, b, y):
+        """Enforce y=ROTL(a+b,17)+a by inverting the observed output."""
+        u = self.rotated(self.sub_const64(y, a), -17)
+        self.constrain_sub64_equal(u, a, b)
+
+    def build_first_pair(self, y0, y1, seed=None, include_middle=False):
+        a0 = self.word(None if seed is None else seed[0])
+        t0 = self.get_t_from_output(a0, y0)
+        state1 = self.step_from_t(a0, t0)
+        self.constrain_output(*state1, y1)
+        middle = None
+        if include_middle:
+            state2 = self.step(*state1)
+            state3 = self.step(*state2)
+            middle = (self.output(*state2), self.output(*state3))
+        return (a0, t0), middle
+
+    def validate_witness(self):
+        assert len(self.witness) == self.count
+        for clause in self.clauses:
+            assert any(self.lit_value(lit) for lit in clause), clause
+        for terms, rhs in self.xors:
+            assert (sum(self.witness[v] for v in terms) % 2) == int(rhs), (terms, rhs)
+
+
+def bits_to_int_witness(bits, witness):
+    return sum(int(witness[v]) << i for i, v in enumerate(bits))
+
+
+def bits_to_int_model(bits, variables, model):
+    return sum(
+        (1 << i) for i, v in enumerate(bits)
+        if is_true(model.eval(variables[v - 1], model_completion=True))
+    )
+
+
+def _xor_expr(terms):
+    if not terms:
+        return BoolVal(False)
+    expr = terms[0]
+    for term in terms[1:]:
+        expr = Xor(expr, term)
+    return expr
+
+
+def make_solver(circuit, timeout_seconds):
+    variables = [Bool(f"v{i}") for i in range(1, circuit.count + 1)]
+    solver = Solver()
+    solver.set(timeout=max(1, int(timeout_seconds * 1000)))
+    solver.set(random_seed=0)
+    for clause in circuit.clauses:
+        literals = [
+            variables[abs(lit) - 1] if lit > 0 else Not(variables[abs(lit) - 1])
+            for lit in clause
+        ]
+        solver.add(Or(*literals))
+    for terms, rhs in circuit.xors:
+        solver.add(_xor_expr([variables[v - 1] for v in terms]) == BoolVal(rhs))
+    return solver, variables
+
+
+def block_middle_clause(middle_bits, middle_values, variables):
+    literals = []
+    for word_bits, word_value in zip(middle_bits, middle_values):
+        for bit_index, variable_id in enumerate(word_bits):
+            var = variables[variable_id - 1]
+            bit_is_one = bool((word_value >> bit_index) & 1)
+            literals.append(Not(var) if bit_is_one else var)
+    return Or(*literals)
+
+
+def self_test():
+    outputs = stream(SEED)
+    circuit = BorrowCircuit()
+    state_bits, middle_bits = circuit.build_first_pair(outputs[0], outputs[1], seed=SEED, include_middle=True)
+    circuit.validate_witness()
+    a0, t0 = (bits_to_int_witness(bits, circuit.witness) for bits in state_bits)
+    recovered = (a0, (a0 ^ t0) & MASK)
+    assert recovered == SEED
+    assert stream(recovered) == outputs
+    assert [bits_to_int_witness(bits, circuit.witness) for bits in middle_bits] == outputs[2:4]
+    print(json.dumps({
+        "self_test": "PASS",
+        "source_core_variables": 566,
+        "source_core_cnf": 1119,
+        "source_core_xors": 317,
+        "synthetic_core_variables": 567,
+        "synthetic_core_cnf": 1122,
+        "synthetic_core_xors": 317,
+        "full_middle_variables": circuit.count,
+        "full_middle_cnf": len(circuit.clauses),
+        "full_middle_xors": len(circuit.xors),
+    }, sort_keys=True), flush=True)
+
+
+def _remaining(deadline, per_check):
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        return 0.0
+    return min(float(per_check), remaining)
+
+
+def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds, check_candidate=True,
                      expected_middle=None, max_middle_models=MAX_MIDDLE_MODELS):
-    # Fit the first two outputs using the exact t0-only direct-borrow inverse.
-    # From y0, u0 = ROTR(y0 - a0, 17) = a0 + b0; the 64-bit
-    # subtraction's borrow bits express t0 = a0 XOR b0 directly.
-    # The y1 inverse imposes exactly one 64-bit equality on a0.
-    def borrow_next(x, y, prior):
-        return (~x & y) | ((~x | y) & prior)
-
-    a0 = BitVec("initial_s0", 64)
-    u0 = RotateRight(BitVecVal(first[0], 64) - a0, 17)
-    borrow0 = BitVecVal(0, 1)
-    t_bits = []
-    for i in range(64):
-        ui, ai = Extract(i, i, u0), Extract(i, i, a0)
-        t_bits.append(ui ^ borrow0)
-        if i < 63:
-            borrow0 = borrow_next(ui, ai, borrow0)
-    t0 = Concat(*reversed(t_bits))
-    b0 = a0 ^ t0
-
-    a1 = RotateLeft(a0, 49) ^ t0 ^ (t0 << 21)
-    b1 = RotateLeft(t0, 28)
-    u1 = RotateRight(BitVecVal(first[1], 64) - a1, 17)
-    borrow1 = BitVecVal(0, 1)
-    b1_bits = []
-    for i in range(64):
-        ui, ai = Extract(i, i, u1), Extract(i, i, a1)
-        b1_bits.append(ui ^ ai ^ borrow1)
-        if i < 63:
-            borrow1 = borrow_next(ui, ai, borrow1)
-    required_b1 = Concat(*reversed(b1_bits))
-
-    # Only fit output 0/1. Output 0 is an algebraic identity and output
-    # 1 is enforced by the inverse equality. Output 2/3 (coupon) and 4/5
-    # (blind holdout) are generated after this fit without constraints.
-    outputs = [BitVecVal(first[0], 64), BitVecVal(first[1], 64)]
-    # a1/b1 emits output 1 (already fitted). Advance once more so the
-    # generated sequence begins with output 2 and ends with output 5.
-    t1 = a1 ^ b1
-    a, b = RotateLeft(a1, 49) ^ t1 ^ (t1 << 21), RotateLeft(t1, 28)
-    for _ in range(4):
-        outputs.append(RotateLeft(a + b, 17) + a)
-        t = a ^ b
-        a, b = RotateLeft(a, 49) ^ t ^ (t << 21), RotateLeft(t, 28)
-
-    solver = SolverFor("QF_BV")
-    solver.set(timeout=int(timeout_seconds * 1000))
-    solver.set("random_seed", 0)
-    solver.add(required_b1 == b1)
-
     started = time.monotonic()
     deadline = started + MAX_TOTAL_SOLVE_SECONDS
-
-    def bounded_check():
-        remaining = deadline - time.monotonic()
-        if remaining <= 0:
-            return None
-        solver.set(timeout=max(1, int(min(timeout_seconds, remaining) * 1000)))
-        return solver.check()
-
+    core = BorrowCircuit()
+    state_bits, _ = core.build_first_pair(first[0], first[1], include_middle=False)
+    first_timeout = _remaining(deadline, timeout_seconds)
     result = {
-        "experiment": "z3_direct_borrow_inverse_first_pair_only",
+        "experiment": "z3_boolean_xor_direct_borrow_first_pair_only",
         "view": view,
         "fit_scope": "18:01 REQUESTED outputs 0/1 only",
         "holdout_scope": "18:03 REQUESTED outputs 4/5; first unconditioned model only",
@@ -118,53 +293,51 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
         "timeout_seconds": timeout_seconds,
         "middle_model_cap": max_middle_models,
         "total_solver_budget_seconds": MAX_TOTAL_SOLVE_SECONDS,
-        "holdout_selection_policy": "never used to select or filter middle candidates",
-        "commitment_selection_policy": "hash each complete masked middle candidate before holdout or uniqueness disposition",
+        "holdout_selection_policy": "first unconditioned model only; never used to select candidates",
+        "commitment_selection_policy": "hash every complete masked middle candidate before any holdout or uniqueness disposition",
         "component_commitment_status": "NOT_EVALUATED",
         "component_candidate_models_hashed": 0,
+        "core_variables": core.count,
+        "core_cnf_clauses": len(core.clauses),
+        "core_xor_clauses": len(core.xors),
     }
-
-    check = bounded_check()
-    if check is None:
-        result.update({"status": "UNKNOWN", "reason_unknown": "overall solver time budget exhausted",
-                       "coupon_status": "WITHHELD_SOLVE_UNKNOWN",
-                       "K04_original_PASS": None,
-                       "elapsed_seconds": round(time.monotonic() - started, 3)})
-        return result
-    result["status"] = str(check).upper()
-    if check == unknown:
-        result["reason_unknown"] = solver.reason_unknown()
-        result["coupon_status"] = "WITHHELD_SOLVE_UNKNOWN"
-        result["K04_original_PASS"] = None
-        result["elapsed_seconds"] = round(time.monotonic() - started, 3)
-        return result
-    if check == unsat:
-        result["coupon_status"] = "NO_SAT_MODEL"
-        result["K04_original_PASS"] = None
-        result["elapsed_seconds"] = round(time.monotonic() - started, 3)
+    if first_timeout <= 0:
+        result.update({
+            "status": "UNKNOWN",
+            "reason_unknown": "overall solver time budget exhausted before first solve",
+            "coupon_status": "WITHHELD_SOLVE_UNKNOWN",
+            "K04_original_PASS": None,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+        })
         return result
 
-    # First unconditioned model: commitment check is deliberately performed
-    # before computing/reporting holdout or asking the uniqueness question.
+    solver, variables = make_solver(core, first_timeout)
+    check = solver.check()
+    if check != sat:
+        result["status"] = str(check).upper()
+        if check == unknown:
+            result["reason_unknown"] = solver.reason_unknown()
+        result.update({
+            "coupon_status": "WITHHELD_SOLVE_" + str(check).upper(),
+            "K04_original_PASS": None,
+            "elapsed_seconds": round(time.monotonic() - started, 3),
+        })
+        return result
+
     first_model = solver.model()
-    first_middle = (
-        first_model.eval(outputs[2]).as_long(),
-        first_model.eval(outputs[3]).as_long(),
-    )
-    first_state = (
-        first_model.eval(a0).as_long(),
-        first_model.eval(b0).as_long(),
-    )
+    a0, t0 = (bits_to_int_model(bits, variables, first_model) for bits in state_bits)
+    first_state = (a0, (a0 ^ t0) & MASK)
+    first_replay = stream(first_state)
+    assert first_replay[:2] == list(first)
+    first_middle = tuple(first_replay[2:4])
+    first_holdout = tuple(first_replay[4:6])
+
     routing = json.loads((ROOT / "evidence/recovery-routing.json").read_text()) if check_candidate else None
     mask = bytes.fromhex(routing["K04"]["masked_component"]) if check_candidate else None
     acceptance = json.loads((ROOT / "acceptance.json").read_text()) if check_candidate else None
     target_sha = acceptance["slot_sha256"]["K04"] if check_candidate else None
 
-    def inspect_middle(model, index):
-        middle = (
-            model.eval(outputs[2]).as_long(),
-            model.eval(outputs[3]).as_long(),
-        )
+    def inspect_middle(middle, index):
         coupon = encode(middle, view)
         record = {
             "model_index": index,
@@ -181,92 +354,97 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
             })
         if expected_middle is not None:
             record["middle_matches_planted_control"] = middle == tuple(expected_middle)
-        return record, hit, middle
+        return record, hit
 
-    first_record, first_hit, _ = inspect_middle(first_model, 0)
-    first_replay = stream(first_state)
-    assert first_replay[:2] == list(first)
-    result["initial_state"] = [f"{x:016X}" for x in first_state]
-    result["predicted_middle_words"] = [f"{x:016X}" for x in first_middle]
-    result["predicted_coupon_hex"] = first_record["predicted_coupon_hex"]
-    result["predicted_later_words"] = [f"{x:016X}" for x in first_replay[4:6]]
-    result["holdout_matches_full_18_03_packet"] = first_replay[4:6] == list(holdout)
-    result["holdout_model_index"] = 0
-    result["holdout_is_blind"] = True
-
+    # Hash the first complete middle candidate before looking at the blind
+    # 18:03 holdout or asking whether another middle is possible.
+    first_record, first_hit = inspect_middle(first_middle, 0)
     candidate_records = [first_record]
     commitment_hit = first_hit
-    if first_hit:
-        result["commitment_hit_model_index"] = 0
-        result["commitment_hit_candidate"] = first_record
     planted_middle_seen = bool(first_record.get("middle_matches_planted_control", False))
     planted_middle_model_index = 0 if planted_middle_seen else None
     enumeration_status = "NOT_NEEDED"
 
+    # Enumerate distinct middle outputs in a separate full circuit. The first
+    # middle is blocked; every alternative is hashed immediately on discovery.
     uniqueness_status = None
-    # If the first candidate misses the commitment (or planted control), use the
-    # first alternative check both to classify uniqueness and to begin bounded
-    # candidate enumeration. Hash each candidate before any other disposition.
-    if not commitment_hit and not planted_middle_seen and max_middle_models > 1:
-        solver.push()
-        solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
-                      outputs[3] != BitVecVal(first_middle[1], 64)))
-        enumeration_status = "CAP_REACHED"
-        for model_index in range(1, max_middle_models):
-            next_check = bounded_check()
-            if next_check is None:
-                enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
-                uniqueness_status = "UNKNOWN" if uniqueness_status is None else uniqueness_status
-                result["enumeration_reason_unknown"] = "overall solver time budget exhausted"
-                break
-            if next_check == unsat:
-                enumeration_status = "EXHAUSTED"
-                if uniqueness_status is None:
-                    uniqueness_status = "UNSAT"
-                break
-            if next_check == unknown:
-                enumeration_status = "UNKNOWN"
-                uniqueness_status = "UNKNOWN" if uniqueness_status is None else uniqueness_status
-                result["enumeration_reason_unknown"] = solver.reason_unknown()
-                break
-            if uniqueness_status is None:
-                uniqueness_status = "SAT"
-            model = solver.model()
-            record, hit, middle = inspect_middle(model, model_index)
-            candidate_records.append(record)
-            if hit:
-                commitment_hit = True
-                result["commitment_hit_model_index"] = model_index
-                result["commitment_hit_candidate"] = record
-                enumeration_status = "COMMITMENT_HIT"
-                break
-            if record.get("middle_matches_planted_control", False):
-                planted_middle_seen = True
-                planted_middle_model_index = model_index
-                enumeration_status = "PLANTED_MIDDLE_FOUND"
-                break
-            solver.add(Or(outputs[2] != BitVecVal(middle[0], 64),
-                          outputs[3] != BitVecVal(middle[1], 64)))
-        solver.pop()
+    if max_middle_models <= 1:
+        enumeration_status = "MODEL_CAP_REACHED"
+        uniqueness_status = "UNKNOWN"
     else:
-        if not commitment_hit and not planted_middle_seen and max_middle_models <= 1:
-            enumeration_status = "MODEL_CAP_REACHED"
-        # A first-model commitment hit or planted-middle recovery is already
-        # durable; uniqueness is still measured independently afterwards.
-        solver.push()
-        solver.add(Or(outputs[2] != BitVecVal(first_middle[0], 64),
-                      outputs[3] != BitVecVal(first_middle[1], 64)))
-        alternative = bounded_check()
-        solver.pop()
-        if alternative is None:
+        full = BorrowCircuit()
+        full_state_bits, middle_bits = full.build_first_pair(first[0], first[1], include_middle=True)
+        full_timeout = _remaining(deadline, timeout_seconds)
+        if full_timeout <= 0:
+            enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
             uniqueness_status = "UNKNOWN"
-            result["uniqueness_reason_unknown"] = "overall solver time budget exhausted"
-        elif alternative == unknown:
-            uniqueness_status = "UNKNOWN"
-            result["uniqueness_reason_unknown"] = solver.reason_unknown()
         else:
-            uniqueness_status = str(alternative).upper()
+            full_solver, full_variables = make_solver(full, full_timeout)
+            full_solver.add(block_middle_clause(middle_bits, first_middle, full_variables))
+            while len(candidate_records) < max_middle_models:
+                remaining = _remaining(deadline, timeout_seconds)
+                if remaining <= 0:
+                    enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
+                    uniqueness_status = "UNKNOWN"
+                    break
+                full_solver.set(timeout=max(1, int(remaining * 1000)))
+                alternative = full_solver.check()
+                if alternative == unsat:
+                    enumeration_status = "EXHAUSTED"
+                    uniqueness_status = "UNSAT"
+                    break
+                if alternative == unknown:
+                    enumeration_status = "UNKNOWN"
+                    uniqueness_status = "UNKNOWN"
+                    result["enumeration_reason_unknown"] = full_solver.reason_unknown()
+                    break
+                alt_model = full_solver.model()
+                alt_a0, alt_t0 = (
+                    bits_to_int_model(bits, full_variables, alt_model)
+                    for bits in full_state_bits
+                )
+                alt_state = (alt_a0, (alt_a0 ^ alt_t0) & MASK)
+                alt_replay = stream(alt_state)
+                assert alt_replay[:2] == list(first)
+                middle = tuple(alt_replay[2:4])
+                model_middle = tuple(
+                    bits_to_int_model(bits, full_variables, alt_model)
+                    for bits in middle_bits
+                )
+                assert middle == model_middle
+                index = len(candidate_records)
+                record, hit = inspect_middle(middle, index)
+                candidate_records.append(record)
+                if hit:
+                    commitment_hit = True
+                    result["commitment_hit_model_index"] = index
+                    result["commitment_hit_candidate"] = record
+                if expected_middle is not None and middle == tuple(expected_middle):
+                    planted_middle_seen = True
+                    planted_middle_model_index = index
+                    enumeration_status = "PLANTED_MIDDLE_FOUND"
+                    uniqueness_status = "SAT"
+                    break
+                if hit:
+                    enumeration_status = "COMMITMENT_HIT"
+                    uniqueness_status = "SAT"
+                    break
+                full_solver.add(block_middle_clause(middle_bits, middle, full_variables))
+            else:
+                enumeration_status = "CAP_REACHED"
+                uniqueness_status = "SAT"
 
+    # The holdout is a diagnostic for the first unconditioned model only. It
+    # never selects, filters, or reorders the candidate list.
+    result["status"] = "SAT"
+    result["initial_state"] = [f"{x:016X}" for x in first_state]
+    result["predicted_middle_words"] = [f"{x:016X}" for x in first_middle]
+    result["predicted_later_words"] = [f"{x:016X}" for x in first_holdout]
+    result["holdout_matches_full_18_03_packet"] = first_holdout == tuple(holdout)
+    result["holdout_model_index"] = 0
+    result["holdout_is_blind"] = True
+    result["predicted_coupon_hex"] = first_record["predicted_coupon_hex"]
+    result["predicted_middle_matches_withheld_ACK2"] = encode(first_middle, view) == ack2_payload
     result["uniqueness_status"] = uniqueness_status or "UNKNOWN"
     result["middle_unique"] = uniqueness_status == "UNSAT"
     result["elapsed_seconds"] = round(time.monotonic() - started, 3)
@@ -278,9 +456,7 @@ def solve_first_pair(first, holdout, view, timeout_seconds, check_candidate,
 
     if check_candidate:
         result["K04_original_PASS"] = commitment_hit
-        result["component_commitment_status"] = (
-            "PASS" if commitment_hit else "MISS_WITHIN_EVALUATED_MODELS"
-        )
+        result["component_commitment_status"] = "PASS" if commitment_hit else "MISS_WITHIN_EVALUATED_MODELS"
         result["component_candidate_models_hashed"] = len(candidate_records)
         if commitment_hit:
             result["coupon_status"] = "K04_COMMITMENT_HIT"
@@ -320,21 +496,22 @@ def parse_source():
 
 
 def main():
-    p = argparse.ArgumentParser()
-    p.add_argument("--view", type=int, choices=range(4), default=0)
-    p.add_argument("--timeout-seconds", type=int, default=300)
-    p.add_argument("--max-middle-models", type=int, default=MAX_MIDDLE_MODELS)
-    mode = p.add_mutually_exclusive_group()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--view", type=int, choices=range(4), default=0)
+    parser.add_argument("--timeout-seconds", type=int, default=300)
+    parser.add_argument("--max-middle-models", type=int, default=MAX_MIDDLE_MODELS)
+    mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--synthetic-only", action="store_true",
                       help="run only the unseeded first-pair positive control")
     mode.add_argument("--source-only", action="store_true",
                       help="run source solve; caller must gate on positive-control success")
-    args = p.parse_args()
+    args = parser.parse_args()
 
+    self_test()
     if not args.source_only:
         outputs = stream(SEED)
         synthetic = solve_first_pair(
-            outputs[:2], outputs[4:6], args.view, args.timeout_seconds, False,
+            outputs[:2], outputs[4:6], b"", 0, args.timeout_seconds, False,
             expected_middle=outputs[2:4], max_middle_models=args.max_middle_models
         )
         synthetic["experiment"] = "synthetic_positive_control"
@@ -365,11 +542,10 @@ def main():
     if args.synthetic_only:
         return
 
-    rows = parse_source()
-    first = decode(rows[0], args.view)
-    holdout = decode(rows[2], args.view)
+    first, ack2_payload, holdout = parse_source()
     original = solve_first_pair(
-        first, holdout, args.view, args.timeout_seconds, True,
+        decode(first, args.view), decode(holdout, args.view), ack2_payload,
+        args.view, args.timeout_seconds, True,
         max_middle_models=args.max_middle_models
     )
     original["experiment"] = "original_first_pair_only"
@@ -377,9 +553,6 @@ def main():
         "positive-control workflow dependency passed" if args.source_only
         else "unseeded planted control passed in this process"
     )
-    original["ack2_payload_matches_first_model_prediction"] = (
-        original.get("predicted_coupon_hex") == rows[1].hex().upper()
-    ) if "predicted_coupon_hex" in original else None
     print(json.dumps(original, sort_keys=True), flush=True)
 
 
