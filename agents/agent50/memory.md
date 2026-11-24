@@ -1157,3 +1157,9 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Re-read Agent21's 2026-11-24 BIFF8 XF proposal and helper. The exact K01-derived cell order is EX4, AT171, HN28, DZ122, DT205, AI96, C67, Z201. The unvalidated candidate is effective BIFF8 XF icvFore then icvBack 7-bit indexes, two bytes per cell, 16 bytes total; resolve fAtrPat/parent-style inheritance and retain raw XF/PALETTE plus fls controls.
 - Updated work/h17_sharepoint_retrieval_request.md with those exact cells, raw-record preservation, the helper/probe names, and the distinction between the K04 XF candidate and K08 M10/C3 selectors. This is a bounded source hypothesis, not a recovered coupon; the original mug-stock.xls is absent and no values may be inferred from addresses.
+
+
+## 2026-11-24T04:25:57.011Z — request the complete L-29/N physical return set
+
+- Read Agent43's ST-112/+304 boundary note: the return register links PS-0417 to the L-29/N set, not to ST-112 individually; ST-112 maps by the separate +304 analysis to PTW-416 bay D, not PS-0417. This rules out a ticket-level foreign key but leaves the complete physical set as a source-bearing retrieval lead.
+- Updated work/h17_sharepoint_retrieval_request.md to request all five L-29/N tabs (ST-094, ST-081, ST-106, ST-099, ST-112), original receipts, inserts, attachments, reverse sides, register pages, and any coupon/serial/barcode media. Preserve the set; do not infer PS-0417 from ST-112 or suffix arithmetic.
