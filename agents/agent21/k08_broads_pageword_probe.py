@@ -34,7 +34,10 @@ def normalize(value: str) -> str:
 
 
 def words(value: str) -> list[str]:
-    return WORD_RE.findall(normalize(value))
+    # Count apostrophized words as one token; remove punctuation only after
+    # token boundaries have been established.
+    return [re.sub(r"[^a-z0-9]", "", token.lower().replace("’", "'"))
+            for token in WORD_RE.findall(value)]
 
 
 def k08_matches(phrase: str, nonce: bytes, target: str) -> tuple[bool, str, str]:
@@ -70,7 +73,11 @@ def locate_printed_pages(doc: fitz.Document) -> dict[int, list[tuple[int, list[t
             marker = str(target)
             # Printed folios are isolated numeric lines in this scan. Keep all
             # hits so the report exposes ambiguous page-number matches.
-            if any(text.strip() == marker for _, _, text in lines):
+            # Printed folios are at the top or bottom margin. This avoids
+            # mistaking table-of-contents entries (e.g. "205") for folios.
+            height = page.rect.height
+            if any(text.strip() == marker and (y0 < height * 0.12 or y1 > height * 0.88)
+                   for y0, y1, text in lines):
                 located[target].append((page_index, lines))
     return located
 
@@ -203,6 +210,77 @@ def main() -> int:
                         "width": width, "phrase": phrase,
                         "hmac16": mac_hex, "sha256": digest,
                     })
+
+
+    # Map-back hypothesis: scan all pages at low resolution and rank color pages
+    # by a conservative teal score. This does not assume that any one page is
+    # the map; the top candidates and pixel samples are preserved for review.
+    try:
+        from PIL import Image
+        import io
+
+        k07 = bytes.fromhex(candidate["K07"])
+        k07_points = [(k07[i], k07[i + 1]) for i in range(0, 16, 2)]
+        map_scores = []
+        for page_index, page in enumerate(doc):
+            pix = page.get_pixmap(matrix=fitz.Matrix(0.12, 0.12),
+                                  colorspace=fitz.csRGB, alpha=False)
+            im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+            im = im.resize((256, 256))
+            data = list(im.getdata())
+            colored = sum(1 for r, g, b in data if max(r, g, b) - min(r, g, b) > 24)
+            teal = sum(1 for r, g, b in data
+                       if g > 65 and b > 65 and r < 190 and abs(g - b) < 110)
+            map_scores.append({
+                "pdf_page_index": page_index,
+                "page_width": round(page.rect.width, 1),
+                "page_height": round(page.rect.height, 1),
+                "landscape": page.rect.width > page.rect.height,
+                "color_fraction": round(colored / len(data), 5),
+                "teal_fraction": round(teal / len(data), 5),
+                "text_excerpt": normalize(page.get_text("text"))[:180],
+                "image": im,
+            })
+        top = sorted(map_scores, key=lambda x: (x["teal_fraction"], x["color_fraction"]), reverse=True)[:12]
+        map_report = []
+        for item in top:
+            im = item["image"]
+            samples = []
+            for x, y in k07_points:
+                r, g, b = im.getpixel((x, y))
+                samples.append({"xy": [x, y], "rgb": [r, g, b],
+                                "teal_min": min(g, b), "teal_max": max(g, b)})
+            # Try the two byte channels most naturally associated with teal,
+            # plus a parity-gated low/high bit read.
+            g_bytes = bytes(s["rgb"][1] for s in samples)
+            b_bytes = bytes(s["rgb"][2] for s in samples)
+            min_bytes = bytes(s["teal_min"] for s in samples)
+            max_bytes = bytes(s["teal_max"] for s in samples)
+            low_even_high_odd_gb = []
+            low_even_high_odd_bg = []
+            for i, s in enumerate(samples):
+                g, b = s["rgb"][1], s["rgb"][2]
+                low_even_high_odd_gb.append((g & 1) if i % 2 == 0 else ((b >> 7) & 1))
+                low_even_high_odd_bg.append((b & 1) if i % 2 == 0 else ((g >> 7) & 1))
+            item_out = {k: v for k, v in item.items() if k != "image"}
+            item_out["samples"] = samples
+            item_out["channel_bytes"] = {
+                "green_hex": g_bytes.hex(), "green_ascii": g_bytes.decode("ascii", "replace"),
+                "blue_hex": b_bytes.hex(), "blue_ascii": b_bytes.decode("ascii", "replace"),
+                "teal_min_hex": min_bytes.hex(), "teal_min_ascii": min_bytes.decode("ascii", "replace"),
+                "teal_max_hex": max_bytes.hex(), "teal_max_ascii": max_bytes.decode("ascii", "replace"),
+            }
+            item_out["parity_bit_reads"] = {
+                "G_LSB_even_B_MSB_odd": "".join(str(x) for x in low_even_high_odd_gb),
+                "B_LSB_even_G_MSB_odd": "".join(str(x) for x in low_even_high_odd_bg),
+            }
+            map_report.append(item_out)
+        report["k07_map_pixel_probe"] = {
+            "coordinate_pairs": k07_points,
+            "top_color_pages": map_report,
+        }
+    except Exception as exc:
+        report["k07_map_pixel_probe_error"] = repr(exc)
 
     out = ROOT / "agents" / "agent21" / "broads-pageword-results.json"
     out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
