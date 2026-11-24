@@ -50,11 +50,13 @@ def load_inputs(root: Path):
         data_lines = [line for line in f if not line.startswith("#")]
     all_rows = list(csv.DictReader(data_lines))
     selected = {}
+    south_credit = None
     for row in all_rows:
-        if (row["source"], row["run"], row["posting"], row["account"], row["folio_or_jacket"]) == (
-            "L29", "R3", "POSTED", "FA-17", "H17-POL-17/A3"
-        ):
-            selected[row["line_ref"]] = row
+        if row["source"] == "L29" and row["run"] == "R3" and row["posting"] == "POSTED":
+            if row["account"] == "FA-17" and row["folio_or_jacket"] == "H17-POL-17/A3":
+                selected[row["line_ref"]] = row
+            elif row["line_ref"] == "ST-151" and row["account"] == "LV-42" and row["folio_or_jacket"] == "CS-18/5":
+                south_credit = row
     expected = {
         "ST-094": ("18.40", "lid-plate labour"),
         "ST-081": ("4.20", "guide rail"),
@@ -64,7 +66,9 @@ def load_inputs(root: Path):
     }
     for ticket, (amount, description) in expected.items():
         assert (selected[ticket]["amount_eur"], selected[ticket]["description"]) == (amount, description)
-    return acceptance, routing, refs, binder, selected
+    assert south_credit is not None
+    assert (south_credit["amount_eur"], south_credit["description"]) == ("0.00", "guide shim credit")
+    return acceptance, routing, refs, binder, selected, south_credit
 
 
 def build_candidates(refs, rows, ticket_numbers, amounts_cents, five_refs):
@@ -180,17 +184,18 @@ def main():
     parser.add_argument("--root", type=Path, default=Path("resources"),
                         help="resource root containing evidence/ and acceptance.json")
     args = parser.parse_args()
-    acceptance, routing, refs, binder, selected = load_inputs(args.root)
+    acceptance, routing, refs, binder, selected, south_credit = load_inputs(args.root)
     mask = bytes.fromhex(routing["K04"]["masked_component"])
     target = acceptance["slot_sha256"]["K04"]
     selectors = {
         "tabs_01_04_four_repair_items": ["ST-094", "ST-081", "ST-106", "ST-099"],
         "tabs_01_02_03_05_conditional_three_plus_tab05": ["ST-094", "ST-081", "ST-106", "ST-112"],
+        "three_positive_north_plus_explicit_l29s_credit": ["ST-094", "ST-081", "ST-106", "ST-151"],
     }
     all_values = set()
     results = []
     for name, tickets in selectors.items():
-        rows = [selected[t] for t in tickets]
+        rows = [selected[t] if t in selected else south_credit for t in tickets]
         numbers = [int(t.split("-")[1]) for t in tickets]
         amounts = [int(Decimal(r["amount_eur"]) * 100) for r in rows]
         candidates = build_candidates(refs, rows, numbers, amounts, [t for _, t, _ in binder])
@@ -208,8 +213,9 @@ def main():
             "commitment_matches": len(matches),
             "matching_transformations": matches,
         })
-    assert [r["candidate_transformations"] for r in results] == [159, 159]
-    assert [r["unique_coupon_values"] for r in results] == [156, 156]
+    assert [r["candidate_transformations"] for r in results] == [159, 159, 159]
+    assert [r["unique_coupon_values"] for r in results] == [156, 156, 156]
+    assert len(all_values) == 284
     print(json.dumps({
         "hypothesis": "K04 coupon is a four-reference object derived from the ESC-N / L-29/N binder trail",
         "results": results,
