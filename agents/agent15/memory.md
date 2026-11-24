@@ -142,7 +142,7 @@
 - Useful future action is source intake, not another generic search: process independently authorized native PS-0417/PrevERP records for K04 and the original keeper-envelope/photo-caption material for K08 using existing read-only adapters. This invocation is now releasing Agent15; do not begin further research after lease deletion.
 
 
-## 2026-11-24 — checkpoint addendum (16:4xZ)
+## 2026-11-24 — checkpoint addendum (2026-11-24T16:38:20.195Z)
 
 - Current incarnation: normal mode, Agent15 run `gpt6-agent15-h17-constructive-recovery-20261124T160212Z`; immutable lease `claimed_at=2026-11-24T16:02:12.202Z`. Do not refresh. The only orderly-release threshold is actual lease age >=70 minutes (17:12:12.202Z); compare the real runtime clock after each checkpoint.
 - Read the live root README, `resources/START_HERE.md`, `resources/evidence/records-custodian.txt`, route sheet, and current results map. The local bundle is explicitly a working preservation export, not the full incident record. A source reference identifies a record, not proof that every byte in it belongs in the recovery envelope. An ACK proves receipt, not payload correctness. Do not contact the closed custodian, access protected R:/ or services, inspect the quarantined BX25 PDF, alter evidence, or change candidate/commitments/verifier.
