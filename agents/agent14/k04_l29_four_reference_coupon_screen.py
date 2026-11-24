@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bounded, read-only K04 screen for the L-29/N four-reference hypothesis.
+"""Bounded, read-only K04 screen for two L-29/N four-reference hypotheses.
 
 Run from repository root:
   python agents/agent14/k04_l29_four_reference_coupon_screen.py
@@ -29,8 +29,7 @@ def load_inputs(root: Path):
     fleet_path = root / "evidence" / "h17-supplemental-office-files" / "print-fleet-retirement-note.txt"
     csv_path = root / "evidence" / "h17-supplemental-office-files" / "supplier-reconciliation-L29.csv"
     fleet_text = fleet_path.read_text(encoding="utf-8")
-    fleet_line = next(line for line in fleet_text.splitlines() if line.startswith("PS-261003-0417"))
-    fleet_fields = fleet_line.split()
+    fleet_fields = next(line for line in fleet_text.splitlines() if line.startswith("PS-261003-0417")).split()
     assert fleet_fields == ["PS-261003-0417", "ESC-N", "L-29/N", "FA-17", "H17-POL-17/A3"]
     refs = fleet_fields[1:]
 
@@ -39,14 +38,13 @@ def load_inputs(root: Path):
         m = re.match(r"^L-29/N\s+(\d{2})\s+(ST-\d{3})\s+(.+)$", line)
         if m:
             binder.append((m.group(1), m.group(2), m.group(3)))
-    expected_binder = [
+    assert binder == [
         ("01", "ST-094", "lid plate, return"),
         ("02", "ST-081", "edge guide, exchange"),
         ("03", "ST-106", "separator, refit"),
         ("04", "ST-099", "hinge, retain"),
         ("05", "ST-112", "catch, clean"),
     ]
-    assert binder == expected_binder
 
     with csv_path.open("r", encoding="utf-8", newline="") as f:
         data_lines = [line for line in f if not line.startswith("#")]
@@ -57,27 +55,25 @@ def load_inputs(root: Path):
             "L29", "R3", "POSTED", "FA-17", "H17-POL-17/A3"
         ):
             selected[row["line_ref"]] = row
-    selected_rows = [selected[ref] for _, ref, _ in binder[:4]]
-    expected = [
-        ("ST-094", "18.40", "lid-plate labour"),
-        ("ST-081", "4.20", "guide rail"),
-        ("ST-106", "12.50", "separator fitting"),
-        ("ST-099", "0.00", "hinge realignment"),
-    ]
-    assert [(r["line_ref"], r["amount_eur"], r["description"]) for r in selected_rows] == expected
-    amounts_cents = [int(Decimal(r["amount_eur"]) * 100) for r in selected_rows]
-    ticket_numbers = [int(r["line_ref"].split("-")[1]) for r in selected_rows]
-    return acceptance, routing, refs, binder, selected_rows, ticket_numbers, amounts_cents
+    expected = {
+        "ST-094": ("18.40", "lid-plate labour"),
+        "ST-081": ("4.20", "guide rail"),
+        "ST-106": ("12.50", "separator fitting"),
+        "ST-099": ("0.00", "hinge realignment"),
+        "ST-112": ("0.00", "catch cleaning"),
+    }
+    for ticket, (amount, description) in expected.items():
+        assert (selected[ticket]["amount_eur"], selected[ticket]["description"]) == (amount, description)
+    return acceptance, routing, refs, binder, selected
 
 
-def build_candidates(refs, binder, rows, ticket_numbers, amounts_cents):
+def build_candidates(refs, rows, ticket_numbers, amounts_cents, five_refs):
     candidates = []
 
     def add(label, coupon):
         if len(coupon) == 16:
             candidates.append((label, coupon))
 
-    # Four tab-ordered repair references: tabs 01-04. Tab 05 is "catch, clean".
     for t_endian, a_endian in itertools.product(("big", "little"), repeat=2):
         add(f"ticket16+amount16:{t_endian}/{a_endian}", b"".join(
             t.to_bytes(2, t_endian) + a.to_bytes(2, a_endian)
@@ -91,13 +87,10 @@ def build_candidates(refs, binder, rows, ticket_numbers, amounts_cents):
         add(f"ticket_u32_{endian}", b"".join(t.to_bytes(4, endian) for t in ticket_numbers))
         add(f"amount_cents_u32_{endian}", b"".join(a.to_bytes(4, endian) for a in amounts_cents))
 
-    # One 32-bit record checksum per selected ticket row.
     for delim in ("", "\n", "\r\n"):
         for endian in ("big", "little"):
             add(f"fullrow_crc32:{delim!r}:{endian}", b"".join(
-                zlib.crc32((r["line_ref"] + "," + ",".join(r[k] for k in (
-                    "source", "run", "posting", "account", "folio_or_jacket", "amount_eur", "description"
-                )) + delim).encode()).to_bytes(4, endian)
+                zlib.crc32((",".join(r[k] for k in r.keys()) + delim).encode()).to_bytes(4, endian)
                 for r in rows
             ))
     for delimiter in ("", "|", ","):
@@ -107,7 +100,6 @@ def build_candidates(refs, binder, rows, ticket_numbers, amounts_cents):
                 for r, a in zip(rows, amounts_cents)
             ))
 
-    # Four 4-byte fingerprints per selected ticket reference.
     hash_fns = {
         "crc32": lambda b: zlib.crc32(b).to_bytes(4, "big"),
         "md5_first4": lambda b: hashlib.md5(b).digest()[:4],
@@ -127,7 +119,6 @@ def build_candidates(refs, binder, rows, ticket_numbers, amounts_cents):
         for hname, fn in hash_fns.items():
             add(f"{source}:{hname}", b"".join(fn(v) for v in values))
 
-    # ASCII representations and four float32 amount words.
     ascii_values = {
         "four_zero_padded_ticket_ids": "".join(f"{n:04d}" for n in ticket_numbers),
         "four_ticket_ids_space_pad": "".join(f"{n:03d}" for n in ticket_numbers).ljust(16, " "),
@@ -141,8 +132,6 @@ def build_candidates(refs, binder, rows, ticket_numbers, amounts_cents):
         add(f"float32_amounts_{endian}", b"".join(struct.pack(endian + "f", a / 100) for a in amounts_cents))
         add(f"float32_amounts_reverse_{endian}", b"".join(struct.pack(endian + "f", a / 100) for a in amounts_cents[::-1]))
 
-    # Whole-set digests of four-tab and five-tab reference lists / selected rows.
-    five_refs = ["ST-094", "ST-081", "ST-106", "ST-099", "ST-112"]
     input_values = {
         "four_ids_nodiv": "".join(five_refs[:4]).encode(),
         "four_ids_comma": ",".join(five_refs[:4]).encode(),
@@ -167,7 +156,6 @@ def build_candidates(refs, binder, rows, ticket_numbers, amounts_cents):
         for hname, fn in hash128.items():
             add(f"{input_name}:{hname}", fn(payload))
 
-    # The four non-job fields in the exact print-fleet route row.
     ref_hashes = {
         "crc32": lambda b: zlib.crc32(b).to_bytes(4, "big"),
         "md5_first4": lambda b: hashlib.md5(b).digest()[:4],
@@ -184,7 +172,6 @@ def build_candidates(refs, binder, rows, ticket_numbers, amounts_cents):
         payload = sep.join(refs).encode()
         for hname, fn in hash128.items():
             add(f"route_refs_join:{sep!r}:{hname}", fn(payload))
-
     return candidates
 
 
@@ -193,26 +180,45 @@ def main():
     parser.add_argument("--root", type=Path, default=Path("resources"),
                         help="resource root containing evidence/ and acceptance.json")
     args = parser.parse_args()
-    acceptance, routing, refs, binder, rows, tickets, amounts = load_inputs(args.root)
+    acceptance, routing, refs, binder, selected = load_inputs(args.root)
     mask = bytes.fromhex(routing["K04"]["masked_component"])
     target = acceptance["slot_sha256"]["K04"]
-    candidates = build_candidates(refs, binder, rows, tickets, amounts)
-    matches = []
-    for label, coupon in candidates:
-        component = bytes(a ^ b for a, b in zip(coupon, mask))
-        if hashlib.sha256(component).hexdigest() == target:
-            matches.append(label)
+    selectors = {
+        "tabs_01_04_four_repair_items": ["ST-094", "ST-081", "ST-106", "ST-099"],
+        "tabs_01_02_03_05_conditional_three_plus_tab05": ["ST-094", "ST-081", "ST-106", "ST-112"],
+    }
+    all_values = set()
+    results = []
+    for name, tickets in selectors.items():
+        rows = [selected[t] for t in tickets]
+        numbers = [int(t.split("-")[1]) for t in tickets]
+        amounts = [int(Decimal(r["amount_eur"]) * 100) for r in rows]
+        candidates = build_candidates(refs, rows, numbers, amounts, [t for _, t, _ in binder])
+        matches = []
+        for label, coupon in candidates:
+            all_values.add(coupon)
+            component = bytes(a ^ b for a, b in zip(coupon, mask))
+            if hashlib.sha256(component).hexdigest() == target:
+                matches.append(label)
+        results.append({
+            "selector": name,
+            "tickets_in_order": tickets,
+            "candidate_transformations": len(candidates),
+            "unique_coupon_values": len({coupon for _, coupon in candidates}),
+            "commitment_matches": len(matches),
+            "matching_transformations": matches,
+        })
+    assert [r["candidate_transformations"] for r in results] == [159, 159]
+    assert [r["unique_coupon_values"] for r in results] == [156, 156]
     print(json.dumps({
         "hypothesis": "K04 coupon is a four-reference object derived from the ESC-N / L-29/N binder trail",
-        "selected_tabs": [f"{tab}:{ref}" for tab, ref, _ in binder[:4]],
-        "excluded_tab": f"{binder[4][0]}:{binder[4][1]} ({binder[4][2]})",
-        "candidate_transformations": len(candidates),
-        "unique_coupon_values": len({coupon for _, coupon in candidates}),
-        "commitment_matches": len(matches),
-        "matching_transformations": matches,
+        "results": results,
+        "total_candidate_transformations": sum(r["candidate_transformations"] for r in results),
+        "total_unique_coupon_values": len(all_values),
+        "total_commitment_matches": sum(r["commitment_matches"] for r in results),
         "source_files_unchanged": True,
     }, indent=2))
-    return 0 if matches else 1
+    return 0
 
 
 if __name__ == "__main__":
