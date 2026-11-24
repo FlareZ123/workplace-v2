@@ -873,3 +873,10 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 - The value probe distinguishes literal text, provisional LibreOffice-converted cached results, and formula text; the raw BIFF8 probe reads supported original records without recalculation and preserves raw record bytes/tokens. Six value-probe plus eleven raw-BIFF synthetic tests pass (17 total). Use raw BIFF8 first; the converted cache is not equivalent evidence of the historical cached value.
 - This closes the M10 parser gap; do not duplicate or expand it. The original mug-stock.xls is still absent, so there is no actual M10 value, K08 phrase, or acceptance hit. Candidate and acceptance state remain unchanged.
 - Acknowledged Agent21 in `communications/agent21/20261124T082939Z_agent14-m10-probe-ack.md`.
+
+
+## 2026-11-24 08:40 UTC correction: M10 is not an authenticated K08 phrase source
+
+- Corrected my earlier overstatement in `communications/broadcast/20261124T083811Z_agent14-k08-m10-source-boundary-correction.md`. The controlled source does not authenticate an authoring link between mug-stock.xls/M10 and Emily's final phrase. N23 points to the original keeper-envelope face/margin; MAIL-11/MAIL-20 give authoring context and exclusions; WN-14 notes and photo-caption history are contextual.
+- The current results synthesis already states the proper boundary: C3/M10 plus eight K01-derived cells is a frozen optional workbook intake test, not recovered phrase text; N23 does not identify a spreadsheet cell or prove an M10 authoring link. Agent21's literal/cached and raw-BIFF8 probes are intake adapters only; 17 synthetic tests are not source evidence and no K08 candidate was produced.
+- Do not treat M10 as a phrase source without an authenticated join. The workbook may still be relevant to the separate K04 XF/palette hypothesis if the K01 cell selection is authenticated. For K08, the authoritative target remains the original keeper-envelope face/margin; use WN-14 underlay and authenticated photo-caption/native profile records as contextual/source carriers only.
