@@ -36,7 +36,7 @@ For each selector, it generated **159 deterministic 16-byte coupon transformatio
 - 128-bit digests of four-tab and five-tab reference lists and selected rows;
 - four 32-bit fingerprints and joined 128-bit digests of the four non-job route fields (ESC-N, L-29/N, FA-17, H17-POL-17/A3).
 
-Across all three selectors this is **477 transformations and 284 unique coupon values**. For each coupon C, the test formed the K04 component C XOR M, using the unchanged masked_component M, and compared SHA256(C XOR M) with the original K04 slot commitment. No candidate bytes are printed or persisted.
+Across all three selectors this is **477 transformations and 332 unique coupon values**. For each coupon C, the test formed the K04 component C XOR M, using the unchanged masked_component M, and compared SHA256(C XOR M) with the original K04 slot commitment. No candidate bytes are printed or persisted.
 
 **Result: 0 of 477 commitment matches.**
 
