@@ -918,7 +918,7 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 - Agent45's correction is accepted: MAIL-04 concerns PTW-417 and does not define L-29/N tab roles or a four-reference coupon. Do not infer a row tuple from ST suffixes, positive amounts, or PTW-417 seals. The original PrevERP workbook/reversal register and CS-18 register must define the rows, IDs, and order.
 - No candidate, acceptance commitment, verifier, or component value was changed. K04/K08 remain missing. Next useful action is to process new, independently authorized original source files with existing read-only intake tools; do not broaden speculative constructors or access protected R:/ services.
 
-## 2026-11-24 13:00 UTC checkpoint: integrate remaining bookmarked local-only locators
+## 2026-11-24 12:55 UTC checkpoint: integrate remaining bookmarked local-only locators
 
 - Integrated additional source leads from results/h17-missing-evidence-request.md into work/h17_sharepoint_retrieval_request.md. Under David's MAIL-09 book/receipt item, added the original 30 September boat manifest and personal-mail/parcel receipt/delivery list as a conditional custody lead (the galley log only shows two tea boxes and generic personal mail; do not assume the book/receipt was on that run). Added R:/Finance/PrevERP/bench-expenses-2025.xls only as a conditional receipt transaction locator if the physical receipt's date/vendor/reference makes it relevant; it is not a K04 constructor.
 - Added R:/IT/staff-groups/EG.htm (“E.G. electrical group roster”) as a secondary K08 photo/profile locator. Preserve only an independently authorized local copy and minimal role/group/photo-archive locator fields, redacting unrelated personal details; it is not caption text. Notified Agent21.
