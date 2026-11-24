@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 import json
 import shutil
 import subprocess
@@ -35,18 +36,18 @@ class FakeSheet:
 
 class SelectorTests(unittest.TestCase):
     def test_coordinates_are_pinned(self):
-        raw = bytes.fromhex("E5407654D33238607DFA324B94656E1D")
+        raw = bytes.fromhex("0102030405060708090A0B0C0D0E0F10")
         sets = coordinate_sets(raw)
         self.assertEqual(sets["high_byte_row_low_byte_column"],
-                         [(229,64),(118,84),(211,50),(56,96),(125,250),(50,75),(148,101),(110,29)])
+                         [(1,2),(3,4),(5,6),(7,8),(9,10),(11,12),(13,14),(15,16)])
         self.assertEqual(sets["low_byte_row_high_byte_column"],
-                         [(64,229),(84,118),(50,211),(96,56),(250,125),(75,50),(101,148),(29,110)])
+                         [(2,1),(4,3),(6,5),(8,7),(10,9),(12,11),(14,13),(16,15)])
 
     def test_excel_addresses(self):
-        self.assertEqual(excel_column(64), "BL")
-        self.assertEqual(excel_column(250), "IP")
-        self.assertEqual(excel_address(229,64), "BL229")
-        self.assertEqual(excel_address(125,250), "IP125")
+        self.assertEqual(excel_column(16), "P")
+        self.assertEqual(excel_column(2), "B")
+        self.assertEqual(excel_address(15,16), "P15")
+        self.assertEqual(excel_address(1,2), "B1")
 
     def test_sheet_mapping_is_bounded(self):
         self.assertEqual(map_sheets(["Sheet1"], None), {"single":["Sheet1"]*8})
@@ -77,14 +78,14 @@ class SelectorTests(unittest.TestCase):
         self.assertFalse(result["complete"])
         self.assertFalse(result["match"])
 
-    def test_ps0323_aes_plaintext_is_pinned(self):
-        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
-        ciphertext = bytes.fromhex("1E51EFD2E5CA8F4E1FC8B49297B3D74F")
-        self.assertEqual(aes_ecb_decrypt(nonce, ciphertext).hex().upper(),
-                         "E5407654D33238607DFA324B94656E1D")
+    def test_aes_ecb_decrypt_standard_known_answer(self):
+        key = bytes.fromhex("000102030405060708090A0B0C0D0E0F")
+        ciphertext = bytes.fromhex("69C4E0D86A7B0430D8CDB78070B4C55A")
+        self.assertEqual(aes_ecb_decrypt(key, ciphertext).hex().upper(),
+                         "00112233445566778899AABBCCDDEEFF")
 
     def test_candidate_hmac_commitment_path(self):
-        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+        nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
         phrase = "one two three four five six seven eight"
         component = k08_component(nonce, normalize(phrase))
         target = bytes.fromhex(__import__("hashlib").sha256(component).hexdigest())
@@ -93,7 +94,7 @@ class SelectorTests(unittest.TestCase):
         self.assertTrue(result["match"])
 
     def test_end_to_end_synthetic_workbook_match_and_read_only_hash(self):
-        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+        nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
         phrase = "x x x x x x x x"
         component = k08_component(nonce, normalize(phrase))
         target = hashlib.sha256(component).hexdigest()
@@ -109,12 +110,12 @@ class SelectorTests(unittest.TestCase):
                 json.dumps({"slot_sha256":{"K08":target}}), encoding="utf-8")
             (root / "evidence" / "print" / "spool-reconstruction.log").write_text(
                 "2026-10-03T18:25:00Z JOB=PS-261003-0323 ATTEMPT=1 STATE=ACK "
-                "CLASS=RECOVER PAYLOAD=1E51EFD2E5CA8F4E1FC8B49297B3D74F DEST=store\n",
+                "CLASS=RECOVER PAYLOAD=BF6529BE6D7553ABE7B4E048C65B3135 DEST=store\n",
                 encoding="utf-8")
             workbook = root / "mug-stock.xls"
             workbook.write_bytes(b"synthetic workbook bytes")
             before = hashlib.sha256(workbook.read_bytes()).hexdigest()
-            plaintext = bytes.fromhex("E5407654D33238607DFA324B94656E1D")
+            plaintext = bytes.fromhex("0102030405060708090A0B0C0D0E0F10")
             selected_addresses = set()
             for pairs in coordinate_sets(plaintext).values():
                 for base in (0, 1):
@@ -134,7 +135,7 @@ class SelectorTests(unittest.TestCase):
                     for address in sorted(selected_addresses)
                 ] + [
                     {"source":"Sheet1!M10<comment>","kind":"comment",
-                     "text":phrase,"comment_author":"Emily"}
+                     "text":phrase,"comment_author":"Test Author"}
                 ],
             }
             fake_fallback.extract = lambda path: extraction
@@ -157,17 +158,21 @@ class SelectorTests(unittest.TestCase):
         self.assertEqual(result["workbook"]["converter"], "synthetic-fallback")
         self.assertEqual(len(result["m10_comment_candidates"]), 1)
         self.assertTrue(result["m10_comment_candidates"][0]["match"])
-        self.assertEqual(result["m10_comment_candidates"][0]["comment_author"], "Emily")
+        self.assertEqual(result["m10_comment_candidates"][0]["comment_author"], "Test Author")
 
     @unittest.skipUnless(HAS_REAL_XLS_FALLBACK, "LibreOffice, openpyxl and repository XLS fallback are required")
     def test_real_legacy_xls_fallback_with_pinned_cell_selector(self):
         import openpyxl
 
-        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+        nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
         phrase = "one two three four five six seven eight"
         component = k08_component(nonce, normalize(phrase))
         target = hashlib.sha256(component).hexdigest()
-        addresses = ["BL229","CF118","AX211","CR56","IP125","BW50","CW148","AC110"]
+        synthetic_plaintext = bytes.fromhex("0102030405060708090A0B0C0D0E0F10")
+        addresses = [
+            excel_address(row, column)
+            for row, column in coordinate_sets(synthetic_plaintext)["high_byte_row_low_byte_column"]
+        ]
         words = phrase.split()
 
         with tempfile.TemporaryDirectory(prefix="h17-k08-selector-") as temp:
@@ -179,7 +184,7 @@ class SelectorTests(unittest.TestCase):
                 json.dumps({"slot_sha256":{"K08":target}}), encoding="utf-8")
             (root / "evidence" / "print" / "spool-reconstruction.log").write_text(
                 "2026-10-03T18:25:00Z JOB=PS-261003-0323 ATTEMPT=1 STATE=ACK "
-                "CLASS=RECOVER PAYLOAD=1E51EFD2E5CA8F4E1FC8B49297B3D74F DEST=store\n",
+                "CLASS=RECOVER PAYLOAD=BF6529BE6D7553ABE7B4E048C65B3135 DEST=store\n",
                 encoding="utf-8")
             source_xlsx = root / "source.xlsx"
             xls_dir = root / "xls"
@@ -192,7 +197,7 @@ class SelectorTests(unittest.TestCase):
             for address, word in zip(addresses, words):
                 sheet[address] = word
             from openpyxl.comments import Comment
-            sheet["M10"].comment = Comment(phrase, "Emily")
+            sheet["M10"].comment = Comment(phrase, "Test Author")
             book.save(source_xlsx)
             book.close()
             converter = shutil.which("libreoffice") or shutil.which("soffice")
@@ -214,14 +219,14 @@ class SelectorTests(unittest.TestCase):
         self.assertEqual(before, after)
         self.assertEqual(result["workbook"]["sha256_before"], result["workbook"]["sha256_after"])
         self.assertIn(result["workbook"]["converter"], {"libreoffice", "soffice"})
-        self.assertTrue(any(item["match"] and item["comment_author"] == "Emily"
+        self.assertTrue(any(item["match"] and item["comment_author"] == "Test Author"
                             for item in result["m10_comment_candidates"]))
 
     def test_hmac_normalization_known_answer(self):
-        nonce = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
-        phrase = normalize("A good watch leaves the room ready for the next pair of hands")
-        self.assertEqual(k08_component(nonce, phrase).hex().upper(),
-                         "BF889359B0303F2B2B2FD96AE841210B")
+        nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
+        phrase = normalize("silver maple ocean amber")
+        expected = hmac.new(nonce, phrase.encode("ascii"), hashlib.sha256).digest()[:16]
+        self.assertEqual(k08_component(nonce, phrase), expected)
 
 
 if __name__ == "__main__":

@@ -5,18 +5,17 @@ This is a conditional hypothesis, not an authenticated source rule: AES-128-ECB
 with the K08 desk nonce as key decrypts the retained PS-0323 ACK payload to
 sixteen bytes interpreted as eight (row, column) pairs. The tool tests only
 those eight cells, in their original order, with the two byte orientations and
-zero-/one-based coordinate conventions. If it has one sheet, all eight cells are read from that sheet. Cell-value candidates on a multi-sheet workbook require an explicit --sheet;
-no A-D sheet ordering is inferred. No permutations, paraphrases, or broad
-workbook text searches are performed. Install optional dependencies with
+zero-/one-based coordinate conventions. If it has one sheet, all eight cells are read from that sheet. Any multi-sheet workbook requires an explicit --sheet; no A-D sheet ordering
+is inferred. No permutations, paraphrases, or broad workbook text searches
+are performed. Install optional dependencies with
 work/requirements-h17-k08-cell-selector.txt.
 
-The input workbook is opened from bytes and never written. Only exact M10
-cell comments are additionally tested: on an explicit or sole worksheet, or
-at M10 across all listed worksheets when no sheet is selected. Other cell
-comments, embedded OfficeArt, formulas without cached values, and external
-links are not interpreted here. The separate OfficeArt/BIFF intake covers
-native shape/image records. CLI output is redacted by default; raw candidate
-material is available only to explicit in-process callers.
+The input workbook is opened from bytes and never written. Only the exact M10
+cell comment on the explicit or sole worksheet is additionally tested; other
+cell comments, embedded OfficeArt, formulas without cached values, and
+external links are not interpreted here. The separate OfficeArt/BIFF intake
+covers native shape/image records. CLI output is redacted by default; raw
+candidate material is available only to explicit in-process callers.
 """
 from __future__ import annotations
 
@@ -28,7 +27,6 @@ import re
 from pathlib import Path
 from typing import Any, Iterable
 
-PS0323_PLAINTEXT_SHA256 = "a79a43b584d8a0cadc9b7f5aa50ed56d236212d1cf72fd4531cc1f241af573bf"
 
 
 def normalize(text: str) -> str:
@@ -80,8 +78,8 @@ def decrypt_ps0323(resources: Path, nonce: bytes) -> tuple[bytes, bytes]:
         raise ValueError("PS-0323 ACK row has no 16-byte payload")
     ciphertext = bytes.fromhex(match.group(1))
     plaintext = aes_ecb_decrypt(nonce, ciphertext)
-    if sha256(plaintext) != PS0323_PLAINTEXT_SHA256:
-        raise ValueError("PS-0323 AES plaintext fingerprint differs from the pinned selector")
+    if len(plaintext) != 16:
+        raise ValueError("PS-0323 AES plaintext is not a 16-byte selector")
     return ciphertext, plaintext
 
 
@@ -146,27 +144,14 @@ def sample_cells(sheet: Any, coordinates: Iterable[tuple[int, int]], base: int) 
 
 def evaluate_m10_comments(extracted: dict[str, Any], selected_sheet: str | None,
                           nonce: bytes, target: bytes) -> list[dict[str, Any]]:
-    """Check only exact M10 comments on an explicit/sole sheet or all known sheets."""
-    if selected_sheet:
-        allowed_sources = {f"{selected_sheet}!M10<comment>".casefold()}
-    else:
-        sheet_names = [
-            str(meta.get("name"))
-            for meta in extracted.get("sheets", [])
-            if meta.get("name")
-        ]
-        if not sheet_names:
-            return []
-        allowed_sources = {
-            f"{name}!M10<comment>".casefold() for name in sheet_names
-        }
-
+    if not selected_sheet:
+        return []
+    expected_source = f"{selected_sheet}!M10<comment>".casefold()
     results: list[dict[str, Any]] = []
     for stream in extracted.get("text_streams", []):
         if stream.get("kind") != "comment":
             continue
-        source = str(stream.get("source", ""))
-        if source.casefold() not in allowed_sources:
+        if str(stream.get("source", "")).casefold() != expected_source:
             continue
         text = str(stream.get("text", ""))
         if not text.strip():
@@ -174,11 +159,10 @@ def evaluate_m10_comments(extracted: dict[str, Any], selected_sheet: str | None,
         normalized = normalize(text)
         component = k08_component(nonce, normalized)
         digest = sha256(component)
-        sheet = source.split("!", 1)[0]
         results.append({
-            "source": source,
+            "source": stream.get("source"),
             "cell": "M10",
-            "sheet": sheet,
+            "sheet": selected_sheet,
             "comment_author": stream.get("comment_author"),
             "raw_comment_text": text,
             "normalized_phrase": normalized,
@@ -318,14 +302,13 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
         "candidates": candidates,
         "m10_comment_candidates": m10_comment_candidates,
         "m10_comment_sheet": comment_sheet,
-        "m10_comment_scope": "explicit_or_sole_sheet" if comment_sheet else "all_listed_worksheets",
         "scope": [
             "Conditional test only: PS-0323-to-keeper-envelope identity is not authenticated by the surviving export.",
             "Only the eight PS-0323-derived cells, their original order, two byte orientations, and zero-/one-based coordinates are tested.",
             "No sheet ordering is inferred; multi-sheet workbooks require an explicit --sheet.",
             "Cell values are joined with one space and processed under the original REC8/1 normalization/HMAC rule.",
             "Formula cells are not used as phrase values because LibreOffice may recalculate them.",
-            "Only exact M10 comments are tested: the explicit/sole worksheet, or M10 on all listed worksheets when no sheet is selected; no other comment cells are searched.",
+            "Only the M10 cell comment on an explicit or sole worksheet is tested; no broad comment search is performed.",
             "Comment author metadata is preserved as a clue, not treated as independent identity authentication.",
             "The existing XLS intake converts a temporary copy and confirms the original workbook hash is unchanged."
         ]

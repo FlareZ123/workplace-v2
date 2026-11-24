@@ -10,11 +10,7 @@ if str(WORK_DIR) not in sys.path:
     sys.path.insert(0, str(WORK_DIR))
 
 from work.h17_k08_mug_stock_cell_selector import (
-    evaluate_m10_comments,
-    k08_component,
-    normalize,
-    redact_result,
-    sha256,
+    evaluate_m10_comments, k08_component, normalize, redact_result, sha256,
 )
 if str(WORK_DIR) in sys.path:
     sys.path.remove(str(WORK_DIR))
@@ -23,7 +19,7 @@ if str(WORK_DIR) in sys.path:
 class K08M10CommentSelectorTests(unittest.TestCase):
     def setUp(self):
         self.nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
-        self.phrase = "The sea is quiet when the last watch ends."
+        self.phrase = "silver maple ocean amber"
         self.target = bytes.fromhex(
             sha256(k08_component(self.nonce, normalize(self.phrase)))
         )
@@ -33,47 +29,31 @@ class K08M10CommentSelectorTests(unittest.TestCase):
             "sheets": [{"name": "Sheet1"}, {"name": "Sheet2"}],
             "text_streams": [
                 {"source": "Sheet1!M10<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Emily"},
+                 "text": self.phrase, "comment_author": "Test Author"},
                 {"source": "Sheet1!M9<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Emily"},
+                 "text": self.phrase, "comment_author": "Test Author"},
                 {"source": "Sheet2!M10<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Other"},
+                 "text": self.phrase, "comment_author": "Other Test Author"},
                 {"source": "Sheet1!A1<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Emily"},
+                 "text": self.phrase, "comment_author": "Test Author"},
             ],
         }
         result = evaluate_m10_comments(extracted, "Sheet1", self.nonce, self.target)
         self.assertEqual(len(result), 1)
         self.assertTrue(result[0]["match"])
         self.assertEqual(result[0]["source"], "Sheet1!M10<comment>")
-        self.assertEqual(result[0]["comment_author"], "Emily")
+        self.assertEqual(result[0]["comment_author"], "Test Author")
         self.assertEqual(result[0]["normalized_phrase"], normalize(self.phrase))
 
-    def test_no_mapping_checks_exact_m10_on_all_known_sheets(self):
+    def test_no_sheet_mapping_means_no_comment_search(self):
         extracted = {
             "sheets": [{"name": "Sheet1"}, {"name": "Sheet2"}],
             "text_streams": [
                 {"source": "Sheet1!M10<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Emily"},
+                 "text": self.phrase, "comment_author": "Test Author"},
                 {"source": "Sheet2!M10<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Other"},
-                {"source": "Sheet1!M9<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Emily"},
-                {"source": "Sheet2!A1<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Other"},
+                 "text": self.phrase, "comment_author": "Other Test Author"},
             ],
-        }
-        result = evaluate_m10_comments(extracted, None, self.nonce, self.target)
-        self.assertEqual({item["sheet"] for item in result}, {"Sheet1", "Sheet2"})
-        self.assertEqual(len(result), 2)
-        self.assertTrue(all(item["match"] for item in result))
-
-    def test_no_sheet_metadata_fails_closed(self):
-        extracted = {
-            "text_streams": [
-                {"source": "Sheet1!M10<comment>", "kind": "comment",
-                 "text": self.phrase, "comment_author": "Emily"}
-            ]
         }
         self.assertEqual(
             evaluate_m10_comments(extracted, None, self.nonce, self.target), []
@@ -84,7 +64,7 @@ class K08M10CommentSelectorTests(unittest.TestCase):
             "sheets": [{"name": "Sheet1"}],
             "text_streams": [
                 {"source": "Sheet1!M10", "kind": "cell",
-                 "text": self.phrase, "comment_author": "Emily"}
+                 "text": self.phrase, "comment_author": "Test Author"}
             ],
         }
         self.assertEqual(
