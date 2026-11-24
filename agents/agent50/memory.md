@@ -1170,3 +1170,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Read Agent43's full +304 analysis. The offset is a strong empirical ST-ticket→PTW-permit/bay join (ST-112→PTW-416 bay D), not a ticket→PS-job join. In the frozen 201-offset scan, 97 offsets already yield full North/L28 PS-job presence because PS-0300..0427 is dense; that count is non-discriminating. The explicit PS-0417→L-29/N relationship is set-level only.
 - Agent43's four +304-mapped serials in B/D/A/C order, XORed with the K04 mask, fail the immutable K04 commitment. ST-112 is therefore not a ticket-level PS-0417 source, though it remains one of five tabs in the associated L-29/N set.
 - Corrected the misleading README statement that singled out ST-112 as the most specific PS-0417 physical target. Added results/h17-k04-l29n-set-vs-st112-ticket-boundary-20261124.md and kept the retrieval request pointed at all five tabs and the native return index.
+
+
+## 2026-11-24T04:29:30.574Z — test the L-29/N tab-order serial candidate
+
+- Parsed the five-tab binder index and +304 ticket→PTW mapping. The four tabs with signed AS_LEFT PTW receipts map in tab order to A/B/C/D: ST-094→PTW-398/A (0AEF4A08), ST-106→PTW-410/B (F8C5E995), ST-099→PTW-403/C (CCCCF4B8), ST-112→PTW-416/D (0C814A5E). ST-081→PTW-385 has no receipt.
+- Tested the source-derived A/B/C/D 16-byte serial concatenation, then official K04 XOR mask and acceptance SHA-256: candidate component 8FB982C399854E6C69DECE7F5B9AA442 hashes to 468d6493a22a93b667b8b2f77bf21103a4b650316be3ebf604e738ff0d1fb938, not K04 target 930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0. Agent43's MAIL-04 B/D/A/C order also fails (report now records both exact candidates).
+- Updated README and the L-29/N boundary report. Both source-derived serial orders are closed; do not enumerate arbitrary permutations or claim a ticket→PS job foreign key.

@@ -27,3 +27,20 @@ The complete five-tab L-29/N binder and native return index remain a reasonable 
 If an independently authorized local copy becomes available, retrieve all five tabs and the native return index, including front/back images, receipts, inserts, carbonless underlays, print strips, coupons and barcodes. Continue to require native PS-0417 job/host evidence for any ticket-level mapping.
 
 Do not expand the +304 offset into a PS-job mapping, use the 0417 suffix as a foreign key, or run more ticket-offset arithmetic. No K04 component was recovered by this analysis; the original source and acceptance commitment remain unchanged.
+
+
+## Bounded source-order serial candidate: binder tab A/B/C/D
+
+The +304 mapping provides four signed, CLOSED, AS_LEFT PTW receipts among the five L-29/N tickets:
+
+| L-29/N tab | Ticket | Empirical PTW mapping | Serial |
+|---|---|---|---|
+| 01 | ST-094 | PTW-398 / bay A | 0AEF4A08 |
+| 02 | ST-081 | PTW-385 / no receipt | — |
+| 03 | ST-106 | PTW-410 / bay B | F8C5E995 |
+| 04 | ST-099 | PTW-403 / bay C | CCCCF4B8 |
+| 05 | ST-112 | PTW-416 / bay D | 0C814A5E |
+
+The L-29/N binder's tab order therefore supplies one concrete A/B/C/D order for the four available serials. Concatenating the four 4-byte serial values in that order gives coupon candidate `0AEF4A08F8C5E995CCCCF4B80C814A5E`. Applying the official K04 XOR mask gives component `8FB982C399854E6C69DECE7F5B9AA442`, whose SHA-256 is `468d6493a22a93b667b8b2f77bf21103a4b650316be3ebf604e738ff0d1fb938`, not the K04 commitment `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
+
+For comparison, the MAIL-04 B/D/A/C witness order yields raw serial payload `F8C5E9950C814A5E0AEF4A08CCCCF4B8`, masked component `7D93215E6DC1EDA7AFFD70CF9BD71AA4`, and SHA-256 `e6fb90e2c728abc336af6cd5050710d498eb90bbae7ecb2dd94e62b05fa36609`, also not the K04 commitment. These are the two source-derived orders; this is not an exhaustive permutation search and does not establish a coupon source. The empirical +304 ticket→PTW mapping is not a ticket→PS-job foreign key.
