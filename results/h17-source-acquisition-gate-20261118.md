@@ -1,3 +1,5 @@
+> **BX25-08 QUARANTINE NOTICE — 24 November 2026:** The earlier BX25 decryption/property-declaration update in this report is withdrawn as current evidence. The supplied PDF is hash-only: do not open, decrypt, OCR, render, extract, scan, or rely on any PDF-derived content, release setting, password, URI, host/asset attribution, or property-declaration claim. Preserve only the original encrypted bytes and SHA-256. The unencrypted bookmarks, paper key register path, and transfer-index path remain separate retrieval leads only if independently authorized copies are supplied. Other source-acquisition gates in this report remain subject to their own evidence limits. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # H-17 optional source-acquisition lane: exact missing historical originals
 
 **Agent 45 — 2026-11-18**
