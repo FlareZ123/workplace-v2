@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Read-only raw-BIFF8 M10 text extractor and K08 commitment probe.
+"""Read-only raw-BIFF8 exact-cell text probe for the conditional K08 workbook path.
 
-Unlike the LibreOffice fallback, this reads the original OLE/BIFF8 stream and
-never recalculates formula caches. It is deliberately narrow: only M10 on each
-worksheet is inspected. Supported text carriers are LABEL, RSTRING, LABELSST
-(with a single-record SST), and a FORMULA record whose original cached result
-is a STRING record. SST continuation chains and unsupported encodings fail
-closed rather than being guessed.
+The default is M10; the only alternate is the pre-registered P212 locator.
+The probe reads original OLE/BIFF8 records and never recalculates formula
+caches. Supported text carriers are LABEL, RSTRING, LABELSST (single-record
+SST), and FORMULA with an original cached STRING. Unsupported forms fail
+closed. CLI output redacts phrase text, HMAC bytes, nonce and raw records.
 """
 from __future__ import annotations
 
@@ -32,8 +31,8 @@ RID_RSTRING = 0x00D6
 RID_LABELSST = 0x00FD
 RID_FORMULA = 0x0006
 RID_STRING = 0x0207
-TARGET_ROW = 9
-TARGET_COL = 12
+DEFAULT_CELL = "M10"
+SUPPORTED_CELLS = ("M10", "P212")
 
 
 def normalize(text: str) -> str:
@@ -125,6 +124,21 @@ def _record_bytes(record_id: int, payload: bytes) -> bytes:
     return struct.pack("<HH", record_id, len(payload)) + payload
 
 
+def parse_a1_address(address: str) -> tuple[int, int]:
+    """Return zero-based BIFF8 (row, column) for one exact A1 address."""
+    match = re.fullmatch(r"([A-Z]+)([1-9][0-9]*)", address.upper())
+    if not match:
+        raise ValueError(f"invalid A1 cell address: {address!r}")
+    letters, row_text = match.groups()
+    column = 0
+    for character in letters:
+        column = column * 26 + ord(character) - ord("A") + 1
+    row = int(row_text)
+    if not (1 <= row <= 65536 and 1 <= column <= 256):
+        raise ValueError(f"A1 cell address is outside BIFF8 limits: {address!r}")
+    return row - 1, column - 1
+
+
 def _biff_record_iterator():
     work_dir = Path(__file__).resolve().parent
     work_dir_text = str(work_dir)
@@ -171,7 +185,10 @@ def parse_workbook_stream(workbook: bytes) -> dict[str, Any]:
     return {"sheets": sheets, "sst": sst}
 
 
-def extract_m10(workbook: bytes) -> list[dict[str, Any]]:
+def extract_cell(workbook: bytes, cell_address: str = DEFAULT_CELL) -> list[dict[str, Any]]:
+    """Extract original BIFF text records for one exact cell; never serialize this raw result."""
+    address = cell_address.upper()
+    target_row, target_col = parse_a1_address(address)
     _iter_biff_records = _biff_record_iterator()
     parsed = parse_workbook_stream(workbook)
     results = []
@@ -196,13 +213,13 @@ def extract_m10(workbook: bytes) -> list[dict[str, Any]]:
             if len(payload) < 6:
                 raise ValueError(f"short BIFF cell record 0x{record_id:04X}")
             row, col, xf = struct.unpack_from("<HHH", payload, 0)
-            if (row, col) != (TARGET_ROW, TARGET_COL):
+            if (row, col) != (target_row, target_col):
                 continue
             base = {
                 "sheet": sheet["name"],
                 "sheet_visibility": sheet["visibility"],
                 "sheet_type": sheet["sheet_type"],
-                "cell": "M10",
+                "cell": address,
                 "record_id": f"0x{record_id:04X}",
                 "xf_index": xf,
                 "record_offset": record_offset,
@@ -247,13 +264,51 @@ def extract_m10(workbook: bytes) -> list[dict[str, Any]]:
     return results
 
 
-def inspect_workbook(path: Path, resources: Path) -> dict[str, Any]:
+def extract_m10(workbook: bytes) -> list[dict[str, Any]]:
+    """Backward-compatible exact M10 extractor."""
+    return extract_cell(workbook, "M10")
+
+
+def _safe_record_summary(cell: dict[str, Any]) -> dict[str, Any]:
+    """Summarize source record identity without exposing phrase or raw record bytes."""
+    summary = {
+        key: cell[key]
+        for key in ("sheet", "sheet_visibility", "sheet_type", "cell",
+                    "record_id", "xf_index", "record_offset", "value_kind")
+        if key in cell
+    }
+    raw_record_hex = cell.get("raw_record_hex")
+    if isinstance(raw_record_hex, str):
+        summary["raw_record_sha256"] = hashlib.sha256(bytes.fromhex(raw_record_hex)).hexdigest()
+    raw_text = cell.get("raw_text")
+    if isinstance(raw_text, str):
+        summary["text_length"] = len(raw_text)
+        summary["text_sha256"] = hashlib.sha256(raw_text.encode("utf-8")).hexdigest()
+    for source_key, output_key in (
+        ("formula_tokens_hex", "formula_tokens_sha256"),
+        ("string_record_hex", "string_record_sha256"),
+        ("formula_cached_result_hex", "formula_cached_result_sha256"),
+    ):
+        raw_hex = cell.get(source_key)
+        if isinstance(raw_hex, str):
+            summary[output_key] = hashlib.sha256(bytes.fromhex(raw_hex)).hexdigest()
+    if "sst_index" in cell:
+        summary["sst_index"] = cell["sst_index"]
+    return summary
+
+
+def inspect_workbook(
+    path: Path, resources: Path, cell_address: str = DEFAULT_CELL
+) -> dict[str, Any]:
     work_dir = Path(__file__).resolve().parent
     work_dir_text = str(work_dir)
     if work_dir_text not in sys.path:
         sys.path.insert(0, work_dir_text)
     from h17_biff_officeart import CompoundFile
 
+    cell_address = cell_address.upper()
+    if cell_address not in SUPPORTED_CELLS:
+        raise ValueError(f"cell must be one of {SUPPORTED_CELLS}; got {cell_address!r}")
     path = path.expanduser().absolute()
     info = path.lstat()
     if path.is_symlink() or not path.is_file():
@@ -265,7 +320,7 @@ def inspect_workbook(path: Path, resources: Path) -> dict[str, Any]:
     nonce, target = load_rules(resources)
     cfb = CompoundFile(source_bytes)
     stream_name, workbook_stream = cfb.read_stream(("Workbook", "Book"))
-    cells = extract_m10(workbook_stream)
+    cells = extract_cell(workbook_stream, cell_address)
     after = hashlib.sha256(path.read_bytes()).hexdigest()
     if before != after:
         raise RuntimeError("original workbook bytes changed during raw BIFF inspection")
@@ -277,29 +332,37 @@ def inspect_workbook(path: Path, resources: Path) -> dict[str, Any]:
             hmac16 = component(nonce, normalized)
             digest = hashlib.sha256(hmac16).hexdigest()
             candidates.append({
-                **cell,
-                "normalized_phrase": normalized,
-                "hmac16": hmac16.hex().upper(),
+                "sheet": cell["sheet"],
+                "sheet_visibility": cell["sheet_visibility"],
+                "cell": cell_address,
+                "record_id": cell["record_id"],
+                "value_kind": cell["value_kind"],
+                "text_sha256": hashlib.sha256(raw_text.encode("utf-8")).hexdigest(),
+                "normalized_text_sha256": hashlib.sha256(normalized.encode("utf-8")).hexdigest(),
                 "component_sha256": digest,
                 "match": hmac.compare_digest(digest, target.hex()),
                 "value_provenance": "original BIFF8 cell record/cache bytes; no LibreOffice recalculation",
             })
     matches = [item for item in candidates if item["match"]]
+    safe_records = [_safe_record_summary(cell) for cell in cells]
     return {
-        "status": "MATCH_REQUIRES_SOURCE_REVIEW" if matches else "NO_RAW_M10_VALUE_MATCH" if candidates else "NO_RAW_M10_TEXT_VALUE",
-        "workbook": {"path": str(path), "size_bytes": info.st_size, "sha256_before": before,
+        "status": "MATCH_REQUIRES_SOURCE_REVIEW" if matches else
+                  f"NO_RAW_{cell_address}_VALUE_MATCH" if candidates else
+                  f"NO_RAW_{cell_address}_TEXT_VALUE",
+        "cell": cell_address,
+        "workbook": {"name": path.name, "size_bytes": info.st_size, "sha256_before": before,
                      "sha256_after": after, "source_unchanged": True, "stream_name": stream_name},
-        "k08_target_sha256": target.hex(),
-        "k08_desk_nonce_hex": nonce.hex().upper(),
-        "m10_records": cells,
+        "candidate_material_redacted": True,
+        "cell_records": safe_records,
         "candidate_count": len(candidates),
         "match_count": len(matches),
         "candidates": candidates,
         "limitations": [
-            "Only M10 on worksheet substreams is examined; no neighboring cells or comments are scanned.",
+            f"Only exact {cell_address} on worksheet substreams is examined; no neighboring cells or comments are scanned.",
             "Only LABEL, RSTRING, LABELSST with a single-record SST, and FORMULA cached STRING are decoded.",
             "SST CONTINUE chains, encrypted workbooks, and unsupported record forms fail closed.",
-            "Formula expression tokens are preserved but never treated as phrase text.",
+            "Formula expression tokens are preserved only as hashes and never treated as phrase text.",
+            "Candidate text, normalized phrase, HMAC bytes, nonce, and raw BIFF records are not emitted.",
             "A hash hit still requires original workbook custody and independent authorship/context review.",
         ],
     }
@@ -309,10 +372,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workbook", required=True, type=Path)
     parser.add_argument("--resources", type=Path, default=Path("resources"))
+    parser.add_argument("--cell", choices=SUPPORTED_CELLS, default=DEFAULT_CELL,
+                        help="inspect only this pre-registered exact cell (default: M10)")
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
     try:
-        result = inspect_workbook(args.workbook, args.resources)
+        result = inspect_workbook(args.workbook, args.resources, args.cell)
     except Exception as exc:
         parser.error(str(exc))
     encoded = json.dumps(result, indent=2, sort_keys=True) + "\n"
