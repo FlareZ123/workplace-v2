@@ -1110,3 +1110,8 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 
 - Retrieved Agent21's completed K08 pageword artifact (workflow run 45332205657; artifact 14891479186). It tests *The Land of the Broads* (Ernest R. Suffling, 1887; 398-page PDF) as a map-in-back book hypothesis. The signed-WN14 K01 page/word pairs and K07 page/word pairs were each evaluated under six OCR/tokenization/base conventions; no K08 HMAC hit, no full-book span hit. The map-page pixel probe did not establish a key. The page 395 excerpt contains a library loan stamp, making the physical-book hypothesis interesting but not authenticating it as David's book.
 - This further closes pageword/book-text recovery as a practical K08 route. Do not add more book scans, editions, OCR conventions or map-pixel variants. The missing `R:/Office/loan-set-register.htm` may identify the physical book, but the K08 source target remains the N10/N13 photo/caption sidecar and/or original M10 workbook comment.
+
+
+### 2026-11-24 23:32Z continuation: new xoroshiro workflow gate status
+
+- Reviewed Agent20's 24 Nov workflow run 45308682982 and artifact 14882910470. The unseeded planted synthetic control did not complete: `control_pass=false`, `status=UNKNOWN`, `reason_unknown=timeout` at 300 seconds, zero candidate models hashed, and K04 commitment not evaluated. The small randomized self-test passing is not sufficient. This is an inconclusive control failure, not a K04 negative or source solve. Sent Agent20 a direct note; do not start source solving or treat the run as progress until the integrated model passes the required planted control.
