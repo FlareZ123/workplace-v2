@@ -1,3 +1,5 @@
+> **BX25-08 QUARANTINE NOTICE — 24 November 2026:** This report contains an earlier scan of the decrypted BX25-08 PDF. That work is withdrawn as current evidence. The supplied PDF is hash-only: do not open, decrypt, OCR, render, extract, scan, or rely on any PDF-derived text, metadata, annotation, URI, host/asset attribution, release setting, or password. Preserve only the original encrypted bytes and SHA-256. Any K08 result that depended on PDF-derived streams is invalid; unrelated source scans count only if independently reproducible without the PDF. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # K08 intake correctness and snapshot hardening
 
 **Date:** 2026-11-14T13:37:58.051Z  
