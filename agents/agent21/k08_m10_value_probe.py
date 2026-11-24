@@ -78,7 +78,7 @@ def evaluate_m10_values(extracted: dict[str, Any], nonce: bytes,
     formulas: list[dict[str, Any]] = []
     seen: set[tuple[str, str, str]] = set()
 
-    for stream in extracted.get('text_streams', []):
+    for stream in extracted.get("text_streams", []):
         if stream.get("kind") != "cell":
             continue
         source = str(stream.get("source", ""))
@@ -112,7 +112,7 @@ def evaluate_m10_values(extracted: dict[str, Any], nonce: bytes,
                         cached_value, nonce, target,
                         formula_text=raw_value,
                         cache_provenance="LibreOffice-converted data_only value; may have been recalculated",
-              ))
+                    ))
             continue
 
         if data_type.casefold() in {"e", "b"}:
@@ -126,7 +126,7 @@ def evaluate_m10_values(extracted: dict[str, Any], nonce: bytes,
                     raw_value, nonce, target, data_type=data_type,
                     value_provenance="cell value from converted read-only workbook copy",
                 ))
-        if isinstance(cached_value, str) and cached_value .strip() and cached_value != raw_value:
+        if isinstance(cached_value, str) and cached_value.strip() and cached_value != raw_value:
             key = (source, "converted_cached_value", cached_value)
             if key not in seen:
                 seen.add(key)
@@ -149,54 +149,71 @@ def evaluate_m10_values(extracted: dict[str, Any], nonce: bytes,
         "candidates": candidates,
         "formula_records": formulas,
         "scope": [
-            "Only exact M10 is evaluated on each worksheet listed by the source intake adapter.",
+            "Only exact M10 cell values are evaluated, on each worksheet listed by the source intake adapter.",
             "No sheet ordering, hidden-sheet priority, neighboring-cell search, or comment search is inferred.",
             "Formula text is context only and is never hashed as the keeper phrase.",
             "Formula cached values are separate provisional candidates because LibreOffice may recalculate them.",
-            "A commitment hit is a candidate requiring verification against the original BIFF stream and authorship; not by itself an authenticity finding.",
+            "A commitment hit is a candidate requiring verification against the original BIFF cell/cache bytes and historical authorship; it is not by itself an authenticity finding.",
             "No workbook source bytes are modified.",
         ],
     }
 
 
-def inspect_workbook(workbook]\ÛÝ\Ù\Î]
-HOXÝÜÝ[WNÛÜØÛÚÈHÛÜØÛÚË^[\ÙJ
-KXÛÛ]J
-B[ÈHÛÜØÛÚËÝ]
+def inspect_workbook(workbook: Path, resources: Path) -> dict[str, Any]:
+    workbook = workbook.expanduser().absolute()
+    info = workbook.lstat()
+    if workbook.is_symlink() or not workbook.is_file():
+        raise ValueError("workbook must be a regular, non-symlink file")
+    nonce, target = load_rules(resources)
+    work_dir = Path(__file__).resolve().parents[2] / "work"
+    sys.path.insert(0, str(work_dir))
+    try:
+        from h17_xls_lo_fallback import extract as extract_xls
+    except ImportError as exc:
+        raise RuntimeError("work/h17_xls_lo_fallback.py and its optional dependencies are required") from exc
+    extracted = extract_xls(workbook)
+    before = extracted.get("source_sha256_before")
+    after = extracted.get("source_sha256_after")
+    if not extracted.get("source_unchanged") or not before or before != after:
+        raise RuntimeError("legacy XLS intake did not confirm unchanged source bytes")
+    evaluated = evaluate_m10_values(extracted, nonce, target)
+    return {
+        "workbook": {
+            "path": str(workbook),
+            "size_bytes": info.st_size,
+            "sha256_before": before,
+            "sha256_after": after,
+            "source_unchanged": True,
+            "converter": extracted.get("converter"),
+            "formula_values_note": extracted.get("formula_values_note"),
+        },
+        "k08_target_sha256": target.hex(),
+        "k08_desk_nonce_hex": nonce.hex().upper(),
+        "sheet_inventory": extracted.get("sheets", []),
+        **evaluated,
+    }
 
-BYÛÜØÛÚË\×ÜÞ[[[Ê
-HÜÝÛÜØÛÚË\×Ù[J
-NZ\ÙH[YQ\ÜÛÜØÛÚÈ]\ÝHHYÝ[\Û\Þ[[[È[HBÛÙK\Ù]HØYÜ[\Ê\ÛÝ\Ù\ÊBÛÜ×Ù\H]
-×Ù[W×ÊK\ÛÛJ
-K\[ÖÌHÈÛÜÈÞ\Ë][Ù\
-ÝÛÜ×Ù\JBNÛHM×Þ×Û×Ù[XÚÈ[\Ü^XÝ\È^XÝÞÂ^Ù\[\Ü\Ü\È^ÎZ\ÙH[[YQ\ÜÛÜËÚM×Þ×Û×Ù[XÚËH[]ÈÜ[Û[\[[ÚY\È\H\]Z\YHÛH^Â^XÝYH^XÝÞÊÛÜØÛÚÊBYÜHH^XÝYÙ]
-ÛÝ\ÙWÜÚLMØYÜHBY\H^XÝYÙ]
-ÛÝ\ÙWÜÚLMØY\BYÝ^XÝYÙ]
-ÛÝ\ÙWÝ[Ú[ÙYHÜÝYÜHÜYÜHOHY\Z\ÙH[[YQ\ÜYØXÞHÈ[ZÙHYÝÛÛ\H[Ú[ÙYÛÝ\ÙH]\ÈB][X]YH][X]WÛLLÝ[Y\Ê^XÝYÛÙK\Ù]
-B]\ÂÛÜØÛÚÈÂ]ÝÛÜØÛÚÊKÚ^WØ]\È[ËÝÜÚ^KÚLMØYÜHYÜKÚLMØY\Y\ÛÝ\ÙWÝ[Ú[ÙYYKÛÛ\\^XÝYÙ]
-ÛÛ\\KÜ][WÝ[Y\×ÛÝH^XÝYÙ]
-Ü][WÝ[Y\×ÛÝHKKÌÝ\Ù]ÜÚLM\Ù]^
 
-KÌÙ\Ú×ÛÛÙWÚ^ÛÙK^
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--workbook", required=True, type=Path)
+    parser.add_argument("--resources", type=Path, default=Path("resources"))
+    parser.add_argument("--json-out", type=Path)
+    args = parser.parse_args()
+    try:
+        result = inspect_workbook(args.workbook, args.resources)
+    except Exception as exc:
+        parser.error(str(exc))
+    encoded = json.dumps(result, indent=2, sort_keys=True) + "\n"
+    if args.json_out:
+        out = args.json_out.expanduser().absolute()
+        if out == args.workbook.expanduser().absolute():
+            parser.error("--json-out must not overwrite the source workbook")
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(encoded, encoding="utf-8")
+    print(encoded, end="")
+    return 0
 
-K\\
-KÚY]Ú[[ÜH^XÝYÙ]
-ÚY]È×JK
-][X]YBYXZ[
-HO[\Ù\H\Ü\ÙK\Ý[Y[\Ù\\ØÜ\[ÛW×ÙØ××ÊB\Ù\YØ\Ý[Y[
-K]ÛÜØÛÚÈ\]Z\YUYK\OT]
-B\Ù\YØ\Ý[Y[
-K\\ÛÝ\Ù\È\OT]Y][T]
-\ÛÝ\Ù\ÈJB\Ù\YØ\Ý[Y[
-KZÛÛ[Ý]\OT]
-B\ÜÈH\Ù\\ÙWØ\ÜÊ
-BN\Ý[H[ÜXÝÝÛÜØÛÚÊ\ÜËÛÜØÛÚË\ÜË\ÛÝ\Ù\ÊB^Ù\^Ù\[Û\È^Î\Ù\\ÜÝ^ÊJB[ÛÙYHÛÛ[\Ê\Ý[[[LÛÜÚÙ^\ÏUYJH
-ÈY\ÜËÛÛÛÝ]Ý]H\ÜËÛÛÛÝ]^[\ÙJ
-KXÛÛ]J
-BYÝ]OH\ÜËÛÜØÛÚË^[\ÙJ
-KXÛÛ]J
-N\Ù\\ÜKZÛÛ[Ý]]\ÝÝÝ\Ü]HHÛÝ\ÙHÛÜØÛÚÈBÝ]\[ZÙ\\[ÏUYK^\ÝÛÚÏUYJBÝ]Ü]WÝ^
-[ÛÙY[ÛÙ[ÏH]NB[
-[ÛÙY[HB]\Y×Û[YW×ÈOH×ÛXZ[×ÈZ\ÙHÞ\Ý[Q^]
-XZ[
-JB
+
+if __name__ == "__main__":
+    raise SystemExit(main())
