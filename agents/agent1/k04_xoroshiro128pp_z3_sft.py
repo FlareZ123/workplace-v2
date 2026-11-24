@@ -19,7 +19,7 @@ import re
 import time
 from pathlib import Path
 
-from z3 import BitVec, BitVecVal, Or, RotateLeft, SolverFor, sat, unsat, unknown
+from z3 import BitVec, BitVecVal, Or, RotateLeft, SolverFor, sat, simplify, unsat, unknown
 
 MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
@@ -95,6 +95,11 @@ def self_test():
         recovered = (a0, b0)
         assert recovered == state
         assert stream(recovered, 2) == [y0, y1]
+        p_expr = BitVecVal(total, 64)
+        _, symbolic_y1, symbolic_middle, symbolic_holdout = z3_sequence_from_sum(y0, p_expr)
+        assert simplify(symbolic_y1).as_long() == y1
+        assert [simplify(x).as_long() for x in symbolic_middle] == stream(state)[2:4]
+        assert [simplify(x).as_long() for x in symbolic_holdout] == stream(state)[4:6]
     print(json.dumps({
         "self_test": "PASS",
         "algebraic_unknown_bits": 64,
@@ -219,6 +224,11 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     first_model = solver.model()
     first_record, first_hit, first_state, first_replay = inspect_model(first_model, 0)
     candidate_records = [first_record]
+    # Block the first complete middle pair before asking for alternatives.
+    solver.add(Or(
+        middle_exprs[0] != BitVecVal(first_replay[2], 64),
+        middle_exprs[1] != BitVecVal(first_replay[3], 64),
+    ))
     commitment_hit = first_hit
     planted_middle_seen = bool(first_record.get("middle_matches_planted_control", False))
     planted_middle_model_index = 0 if planted_middle_seen else None
