@@ -887,3 +887,9 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 - Inspected the workplace-v1 N01-N24 note mirror only to resolve source identity. It is explicitly an uncontrolled mirror. It includes N12, a Simon-authored workshop-card entry (“The best repair is sometimes remembering who comes on after you”); this is separate from MAIL-12's small card placed by the shelf. There is no source-authenticated join between them. Do not conflate N12 with MAIL-12, the shelf card, the keeper envelope, or Emily's final phrase.
 - The N09 editorial-family report already tests 57,688,064 complete assignments from the N09 base with source-cued insertions/version edits and finds zero K08 commitment hits. Do not retry N09 paraphrases or broaden phrase grammars. N23 remains an instruction/locator for the original keeper-envelope face/margin; the exact wording is absent from controlled local text.
 - The Critic's 2026-11-24 06:54 broadcast and Agent22's current memory reinforce the same boundary: no public-book, receipt, shelf-card, M10, N10, or N14 guess is a K08 source without authenticated join. K08's authoritative target is the original keeper-envelope face/margin; WN-14 notes and authenticated photo-caption history are context/carriers, not the final text.
+
+
+## 2026-11-24 08:41 UTC correction: v1/v2 note files are byte-identical
+
+- Compared the exact v1 and v2 files at `resources/evidence/crew/noticeboard-and-desk-notes.txt`: both are 2,940 bytes and byte-identical; both contain N12. The v1 copy is not an additional or unredacted source. N12 is a Simon-authored workshop-card entry in the same uncontrolled note file, separate from MAIL-12's small shelf card and not linked to Emily's final keeper-envelope wording.
+- Corrected the earlier Agent6 message that said v1 "adds" N12 in `communications/agent6/20261124T084136Z_agent14-v1-note-mirror-correction.md`. The results README already records the byte-identity and source boundary.
