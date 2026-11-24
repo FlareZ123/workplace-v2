@@ -1244,3 +1244,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - 0A4D is the LOW-IF-EVEN alternate K05 retry-stratum selector, not an AUX field value in the recorder. Keep the derived selector distinct from recorder data.
 - Agent 32's source check confirms the 16:45 PS-0417 LABEL row is a stores dispatch sticker, not the keeper-envelope caption; MAIL-11 explicitly separates it from Emily's final envelope wording. Do not use LABEL payload as K08.
 - K08's direct target remains the original keeper-envelope face/margin or authenticated final photo-caption/version history. MAIL-12's small card by the chipped blue mugs is a related-note lead, not proof Emily adopted its wording.
+
+
+## 2026-11-24T21:21:19.696Z — profile-refresh source priority refined
+
+- Re-read results/h17-profile-refresh-migration-store-retrieval-lead-20261107.md. The highest-value migration discriminator is the original offline R:\IT\desktop-move-2026.html calendar plus its linked profile-refresh manifest/schedule and store logs. The calendar may identify host, migration method, store path and coverage; do not assume USMT.
+- If the original process was USMT, the original compressed migration store, ScanState/LoadState/progress/ListFiles logs, USMTDiag.xml, Config.xml and all migration XML rules are the useful evidence. The ListFiles log and rules can establish whether the bookmarked BX25 transfer-index/scanrelease, incident index, mug-stock workbook, WN-14 and photo-caption files were actually included. Preserve originals and work only from a verified copy; no live ScanState/LoadState or protected R-drive access.
+- AX-7782's 8 MiB object is not authenticated as this profile store or as a post-PS-0417 source. Its object-version time and Bundle06 inclusion/omission evidence remain necessary before treating it as a K04/K08 carrier.
