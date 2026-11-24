@@ -28,7 +28,7 @@ The best path contains sequence values:
 
 `7, 9, 10, 12, 13, 14, 24, 25, 39, 41, 42, 43, 44, 45, 54, 55, 61, 63, 64, 70`
 
-Its joint ranks sum to **599**. A deterministic permutation test (Python seed `20261123`, 1,000 permutations of the 72 record assignments) had maximum path length **9** and maximum joint rank **228**, versus 20 / 599 in the actual sequence order. This is an empirical permutation comparison, not a formal p-value for all possible source models.
+Its joint ranks sum to **599**. A deterministic permutation test (Python seed `20261123`, 1,000 permutations of the 72 record assignments) had maximum path length **9** and maximum joint rank **228**, versus 20 / 599 in the actual sequence order. The same 1,000 permutation paths had at most 6 fully determined latch matches and at most 8 total compatible latch values, versus 11/12 fully determined and 19/20 compatible in the actual sequence path. This is an empirical permutation comparison, not a formal p-value for all possible source models.
 
 ## Emitter evidence
 
