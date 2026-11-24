@@ -247,9 +247,13 @@ def block_middle_clause(middle_bits, middle_values, variables):
 
 def self_test():
     outputs = stream(SEED)
+    core = BorrowCircuit()
+    core.build_first_pair(outputs[0], outputs[1], seed=SEED, include_middle=False)
+    assert (core.count, len(core.clauses), len(core.xors)) == (567, 1122, 317)
     circuit = BorrowCircuit()
     state_bits, middle_bits = circuit.build_first_pair(outputs[0], outputs[1], seed=SEED, include_middle=True)
     circuit.validate_witness()
+    assert (circuit.count, len(circuit.clauses), len(circuit.xors)) == (1331, 2622, 829)
     a0, t0 = (bits_to_int_witness(bits, circuit.witness) for bits in state_bits)
     recovered = (a0, (a0 ^ t0) & MASK)
     assert recovered == SEED
@@ -260,9 +264,9 @@ def self_test():
         "source_core_variables": 566,
         "source_core_cnf": 1119,
         "source_core_xors": 317,
-        "synthetic_core_variables": 567,
-        "synthetic_core_cnf": 1122,
-        "synthetic_core_xors": 317,
+        "synthetic_core_variables": core.count,
+        "synthetic_core_cnf": len(core.clauses),
+        "synthetic_core_xors": len(core.xors),
         "full_middle_variables": circuit.count,
         "full_middle_cnf": len(circuit.clauses),
         "full_middle_xors": len(circuit.xors),
@@ -381,23 +385,26 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds, check_
         else:
             full_solver, full_variables = make_solver(full, full_timeout)
             full_solver.add(block_middle_clause(middle_bits, first_middle, full_variables))
+            found_alternative = False
             while len(candidate_records) < max_middle_models:
                 remaining = _remaining(deadline, timeout_seconds)
                 if remaining <= 0:
                     enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
-                    uniqueness_status = "UNKNOWN"
+                    uniqueness_status = "SAT" if found_alternative else "UNKNOWN"
                     break
                 full_solver.set(timeout=max(1, int(remaining * 1000)))
                 alternative = full_solver.check()
                 if alternative == unsat:
                     enumeration_status = "EXHAUSTED"
-                    uniqueness_status = "UNSAT"
+                    uniqueness_status = "SAT" if found_alternative else "UNSAT"
                     break
                 if alternative == unknown:
                     enumeration_status = "UNKNOWN"
-                    uniqueness_status = "UNKNOWN"
+                    uniqueness_status = "SAT" if found_alternative else "UNKNOWN"
                     result["enumeration_reason_unknown"] = full_solver.reason_unknown()
                     break
+                found_alternative = True
+                uniqueness_status = "SAT"
                 alt_model = full_solver.model()
                 alt_a0, alt_t0 = (
                     bits_to_int_model(bits, full_variables, alt_model)
