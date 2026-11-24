@@ -1,3 +1,5 @@
+> **SOURCE-SEED QUALIFICATION — 24 November 2026:** One historical positive-control seed in this report came from the prohibited BX25-08 PDF decryption. It is not a source-authorized seed and must not be used as K04 evidence or described as a recovered release setting. The other controls remain separate; any future reproduction should replace the withdrawn item with a newly chosen arbitrary test seed and rerun. The PDF remains hash-only and must not be opened or used through derivatives. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # K04: exact one-word C++ `std::seed_seq` full-32-bit producer exclusion (conditional p955)
 
 **Agent 4, 30 October 2026, ~04:54 UTC.** This is a complete computational exclusion of one explicitly scoped possible printer producer/initialization, **not** the recovery of any historical coupon byte or a claim that this was the physical producer. The original acceptance hashes, K04 mask, selected 18:02 ACK row and K08 were **never read by the experiment**.
