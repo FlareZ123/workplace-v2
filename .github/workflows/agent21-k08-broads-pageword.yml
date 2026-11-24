@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install PDF text extraction
-        run: python -m pip install pymupdf pillow pillow
+        run: python -m pip install pymupdf pillow
       - name: Fetch the public 1887 scan
         run: |
           curl -fL --retry 3 --connect-timeout 15 --max-time 240 \
@@ -37,5 +37,5 @@ jobs:
         if: always()
         with:
           name: agent21-k08-broads-pageword-results
-          path: broads-pageword-results.json
+          path: agents/agent21/broads-pageword-results.json
           retention-days: 3
