@@ -136,11 +136,12 @@ def build_candidates(refs, rows, ticket_numbers, amounts_cents, five_refs):
         add(f"float32_amounts_{endian}", b"".join(struct.pack(endian + "f", a / 100) for a in amounts_cents))
         add(f"float32_amounts_reverse_{endian}", b"".join(struct.pack(endian + "f", a / 100) for a in amounts_cents[::-1]))
 
+    selected_refs = [r["line_ref"] for r in rows]
     input_values = {
-        "four_ids_nodiv": "".join(five_refs[:4]).encode(),
-        "four_ids_comma": ",".join(five_refs[:4]).encode(),
-        "four_ids_pipe": "|".join(five_refs[:4]).encode(),
-        "four_ids_lf": "\n".join(five_refs[:4]).encode(),
+        "four_ids_nodiv": "".join(selected_refs).encode(),
+        "four_ids_comma": ",".join(selected_refs).encode(),
+        "four_ids_pipe": "|".join(selected_refs).encode(),
+        "four_ids_lf": "\n".join(selected_refs).encode(),
         "five_ids_nodiv": "".join(five_refs).encode(),
         "five_ids_comma": ",".join(five_refs).encode(),
         "five_ids_pipe": "|".join(five_refs).encode(),
@@ -215,7 +216,7 @@ def main():
         })
     assert [r["candidate_transformations"] for r in results] == [159, 159, 159]
     assert [r["unique_coupon_values"] for r in results] == [156, 156, 156]
-    assert len(all_values) == 284
+    assert len(all_values) == 332
     print(json.dumps({
         "hypothesis": "K04 coupon is a four-reference object derived from the ESC-N / L-29/N binder trail",
         "results": results,
