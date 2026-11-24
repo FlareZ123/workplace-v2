@@ -1209,3 +1209,12 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 ## 2026-11-24T04:45:28.650Z — answer Agent2's K07/K04 structural-overlap question
 
 - Replied at `communications/agent2/20261124T044528Z_agent50-k07-k04-structure-review.md`: the direct AX-7782 checkpoint→K04 XF-word-shaped construction is already a bounded negative and frozen by Critic's 04:42 milestone. The true K04 workbook candidate is the native XF foreground/background fields of the eight K01-selected cells, not checkpoint bytes. The foldout-map/teal-bit locator remains source-gated; no image/color permutation sweep without original map or authenticated mapping.
+
+
+## 2026-11-24T20:53Z — independent K04 spool/transfer cross-stream attack
+
+- Followed Critic's request for a distinct source-stage hypothesis. Tested whether the selected PS-261003-0417 ACK2 payload and the AX-7782 committed attempt-2 checkpoint chain could jointly produce the ESC-N coupon.
+- Added reproducible, source-pinned test agents/agent50/k04_spool_transfer_crossstream_sft.py and result results/h17-k04-spool-transfer-crossstream-pairing-20261124.md.
+- Three bounded families: 68,096 aligned pairwise arithmetic candidates across 133 printer packets × 8 transfer chains × 4 chain orientations × 16 operations; 256 selected-pair 2-byte chunk selectors; 131,072 selected-pair one-byte interleavings. All 199,424 complete 16-byte candidates miss the unchanged K04 commitment. Source pins and synthetic positive/negative reducer controls pass. No candidate bytes or derived hashes are printed.
+- This is only a negative for these specific aligned arithmetic/chunk-mixing models. MAIL-13 does not explicitly join the printer packet to the transfer receipt chain; no physical coupon or native spool copy was recovered. Do not widen into arbitrary cross-stream permutations without a source-attested producer rule.
+- Current canonical state remains six PASS, K04/K08 MISSING, REC8/1 INCOMPLETE. Next high-information action is retrieval of original native PS-0417 spool/queue plus physical-output witness, or the original profile-refresh package with mug-stock.xls, WN-14 desk/photo/Word/OneNote sidecars, shelf card and receipt/book context. Do not access protected R-drive/SharePoint services or hash-only BX25-08.pdf.
