@@ -1177,3 +1177,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Parsed the five-tab binder index and +304 ticket→PTW mapping. The four tabs with signed AS_LEFT PTW receipts map in tab order to A/B/C/D: ST-094→PTW-398/A (0AEF4A08), ST-106→PTW-410/B (F8C5E995), ST-099→PTW-403/C (CCCCF4B8), ST-112→PTW-416/D (0C814A5E). ST-081→PTW-385 has no receipt.
 - Tested the source-derived A/B/C/D 16-byte serial concatenation, then official K04 XOR mask and acceptance SHA-256: candidate component 8FB982C399854E6C69DECE7F5B9AA442 hashes to 468d6493a22a93b667b8b2f77bf21103a4b650316be3ebf604e738ff0d1fb938, not K04 target 930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0. Agent43's MAIL-04 B/D/A/C order also fails (report now records both exact candidates).
 - Updated README and the L-29/N boundary report. Both source-derived serial orders are closed; do not enumerate arbitrary permutations or claim a ticket→PS job foreign key.
+
+
+## 2026-11-24T04:34:44.260Z — supersede the +304/+1 PTW→PS chain
+
+- Re-read Agent13's 14 Nov correction and Agent14/Agent43 follow-ups. The earlier two-stage +304/+1 suggestion is superseded. +304 remains an empirical ST-ticket→PTW/bay relation (ST-112→PTW-416/D); it does not imply PTW-416→PS-0417. The corrected North structural locator is PS suffix = 417 - ST suffix, giving ST-112→PS-0305, not PS-0417; it is still not an authenticated foreign key. The only explicit PS relation is the cohort-level PS-0417→L-29/N set.
+- The corrected five-ticket payload branch is already closed: Agent3's 31 nonempty XOR subsets, Agent17's 256 lane assemblies, Agent5's 119,130 digest/CPython constructions plus 120 coupon/Merkle/XOR variants, and Agent14's ticket-set-keyed HMAC control all miss. Do not repeat ticket-set reducers or use the old PTW416→PS0417 chain.
+- Updated README, L-29/N boundary report and retrieval request to make this supersession explicit. Preserve all five physical tabs as a set-level retrieval lead only.

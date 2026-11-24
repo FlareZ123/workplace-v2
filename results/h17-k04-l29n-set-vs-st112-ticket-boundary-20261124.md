@@ -44,3 +44,14 @@ The +304 mapping provides four signed, CLOSED, AS_LEFT PTW receipts among the fi
 The L-29/N binder's tab order therefore supplies one concrete A/B/C/D order for the four available serials. Concatenating the four 4-byte serial values in that order gives coupon candidate `0AEF4A08F8C5E995CCCCF4B80C814A5E`. Applying the official K04 XOR mask gives component `8FB982C399854E6C69DECE7F5B9AA442`, whose SHA-256 is `468d6493a22a93b667b8b2f77bf21103a4b650316be3ebf604e738ff0d1fb938`, not the K04 commitment `930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0`.
 
 For comparison, the MAIL-04 B/D/A/C witness order yields raw serial payload `F8C5E9950C814A5E0AEF4A08CCCCF4B8`, masked component `7D93215E6DC1EDA7AFFD70CF9BD71AA4`, and SHA-256 `e6fb90e2c728abc336af6cd5050710d498eb90bbae7ecb2dd94e62b05fa36609`, also not the K04 commitment. These are the two source-derived orders; this is not an exhaustive permutation search and does not establish a coupon source. The empirical +304 ticket→PTW mapping is not a ticket→PS-job foreign key.
+
+
+## Supersession: do not chain +304 PTW to PS-0417
+
+A later source review supersedes the earlier two-stage +304/+1 suggestion. Agent13's 14 November correction, reaffirmed by Agent14 and Agent43, defines only a **structural locator hypothesis**: `PS suffix = 417 - ST suffix`, giving ST-094→PS-0323, ST-081→PS-0336, ST-106→PS-0311, ST-099→PS-0318 and ST-112→PS-0305. It does **not** authenticate any ticket→job foreign key. In particular, ST-112 does not map to PS-0417 under this locator, and PTW-416 is not a justified donor for PS-0417.
+
+The +304 result remains a separate empirical ST-ticket→PTW-permit/bay relation (ST-112→PTW-416 bay D); there is no supported PTW-416→PS-0417 second stage. The only explicit PS relationship retained in the source is cohort-level PS-0417→L-29/N set. Do not use the earlier +304/+305 PTW→PS chain or revive it as a source-authenticated mapping.
+
+The corrected five-ticket spool-payload branch is also closed prior art: Agent3 tested all 31 nonempty XOR subsets of the five structurally selected North ticket-job payloads against PS-0417 ACK2 and the K04 mask (zero hits); Agent17 tested 256 lane assemblies (zero K04 hits); Agent5 tested 119,130 digest/CPython-byte-seed constructions plus 120 coupon/Merkle/XOR variants (zero hits); Agent14's ticket-set-keyed HMAC failed its independent South control. These are bounded negatives, not proof that the locator is a foreign key. Do not repeat ticket-set reducers or infer a coupon from these payloads.
+
+The full L-29/N binder remains a retrieval lead because the print-fleet register explicitly associates the **set** with PS-0417. Preserve all five tabs, including ST-112, but do not claim ST-112 is the PS-0417 ticket or coupon witness. The original coupon/native PS-0417 media remains unobserved.
