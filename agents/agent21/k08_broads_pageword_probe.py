@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Test the source-selected K01 page/word coordinates against a public map-back book.
+"""Bounded K08 hypothesis test against the 1887 Land of the Broads scan.
 
-This is a bounded hypothesis test, not an assertion that this is the authenticated
-book. It reads the accepted K01 bytes and K08 commitment from the repository,
-locates printed page numbers in the supplied PDF, and tests the eight (page,word)
-pairs in signed A/B/C/D order. It also searches contiguous spans on those eight
-pages. No candidate or acceptance file is modified.
+Tests both accepted 16-byte components as (page,word) pairs, searches source-
+selected pages and the full OCR text for the exact K08 commitment, and samples
+the back-of-book colour map at K07 byte-pair coordinates. This is exploratory:
+a match must still be checked against the source context and edition.
 """
 from __future__ import annotations
 
@@ -16,7 +15,8 @@ import re
 import sys
 from pathlib import Path
 
-import fitz  # PyMuPDF
+import fitz
+from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[2]
 CANDIDATE = ROOT / "resources" / "candidate.json"
@@ -24,7 +24,6 @@ ACCEPTANCE = ROOT / "resources" / "acceptance.json"
 ROUTING = ROOT / "resources" / "evidence" / "recovery-routing.json"
 
 WORD_RE = re.compile(r"[A-Za-z0-9]+(?:['’][A-Za-z0-9]+)*")
-TARGET_PAGES = (4, 171, 28, 122, 205, 96, 67, 201)
 
 
 def normalize(value: str) -> str:
@@ -34,73 +33,130 @@ def normalize(value: str) -> str:
 
 
 def words(value: str) -> list[str]:
-    # Count apostrophized words as one token; remove punctuation only after
-    # token boundaries have been established.
+    # Apostrophized words count as one token; punctuation is removed only after
+    # boundaries have been established.
     return [re.sub(r"[^a-z0-9]", "", token.lower().replace("’", "'"))
             for token in WORD_RE.findall(value)]
 
 
-def k08_matches(phrase: str, nonce: bytes, target: str) -> tuple[bool, str, str]:
+def k08(phrase: str, nonce: bytes, target: str) -> tuple[bool, str, str]:
     normalized = normalize(phrase)
     mac = hmac.new(nonce, normalized.encode("utf-8"), hashlib.sha256).digest()[:16]
     digest = hashlib.sha256(mac).hexdigest()
     return digest == target, mac.hex().upper(), digest
 
 
-def line_texts(page: fitz.Page) -> list[tuple[float, float, str]]:
-    result: list[tuple[float, float, str]] = []
-    data = page.get_text("dict")
-    for block in data.get("blocks", []):
+def page_lines(page: fitz.Page) -> list[tuple[float, float, str]]:
+    result = []
+    for block in page.get_text("dict").get("blocks", []):
         if block.get("type") != 0:
             continue
         for line in block.get("lines", []):
             spans = line.get("spans", [])
-            text = "".join(span.get("text", "") for span in spans).strip()
+            text = "".join(s.get("text", "") for s in spans).strip()
             if text:
-                y0 = min(span["bbox"][1] for span in spans)
-                y1 = max(span["bbox"][3] for span in spans)
-                result.append((y0, y1, text))
-    return sorted(result, key=lambda item: (item[0], item[1]))
+                result.append((min(s["bbox"][1] for s in spans),
+                               max(s["bbox"][3] for s in spans), text))
+    return sorted(result, key=lambda x: (x[0], x[1]))
 
 
-def locate_printed_pages(doc: fitz.Document) -> dict[int, list[tuple[int, list[tuple[float, float, str]]]]]:
-    located: dict[int, list[tuple[int, list[tuple[float, float, str]]]]] = {
-        p: [] for p in TARGET_PAGES
-    }
+def locate_pages(doc: fitz.Document, target_pages: list[int]) -> dict[int, dict]:
+    found = {p: [] for p in target_pages}
     for page_index, page in enumerate(doc):
-        lines = line_texts(page)
-        for target in TARGET_PAGES:
-            marker = str(target)
-            # Printed folios are isolated numeric lines in this scan. Keep all
-            # hits so the report exposes ambiguous page-number matches.
-            # Printed folios are at the top or bottom margin. This avoids
-            # mistaking table-of-contents entries (e.g. "205") for folios.
-            height = page.rect.height
-            if any(text.strip() == marker and (y0 < height * 0.12 or y1 > height * 0.88)
-                   for y0, y1, text in lines):
-                located[target].append((page_index, lines))
-    return located
+        height = page.rect.height
+        lines = page_lines(page)
+        for p in target_pages:
+            for y0, y1, text in lines:
+                if text.strip() == str(p) and (y0 < height * 0.15 or y1 > height * 0.85):
+                    # Prefer margin folios; the page-index heuristic is used
+                    # only to disambiguate duplicate OCR numbers.
+                    margin_distance = min(y0, height - y1)
+                    found[p].append((page_index, margin_distance, lines))
+    selected = {}
+    for p, hits in found.items():
+        hits = sorted(hits, key=lambda x: (abs(x[0] - (p + 19)), x[1]))
+        selected[p] = {
+            "all_pdf_page_indices": [h[0] for h in hits],
+            "selected_pdf_page_index": hits[0][0] if hits else (p + 19 if p + 19 < len(doc) else None),
+            "lines": hits[0][2] if hits else None,
+        }
+    return selected
 
 
-def extract_modes(lines: list[tuple[float, float, str]], page_height: float, page_no: int) -> dict[str, list[str]]:
-    all_lines = [text for _, _, text in lines if text.strip() != str(page_no)]
-    # Running headers/folios are outside the main text block. The PDF has
-    # variable top/bottom placement, so retain a second full-page mode.
-    body_lines = [
-        text for y0, y1, text in lines
-        if y0 >= 34 and y1 <= page_height - 34 and text.strip() != str(page_no)
-        and "THE LAND OF THE BROADS" not in text.upper()
-    ]
-    # A conservative mode strips only the book-title running header and folio.
-    no_running_header = [
-        text for text in all_lines
-        if "THE LAND OF THE BROADS" not in text.upper()
-    ]
+def page_modes(lines, page_height: float, page_no: int) -> dict[str, list[str]]:
+    all_lines = [t for _, _, t in lines if t.strip() != str(page_no)]
+    body = [t for y0, y1, t in lines
+            if y0 >= 34 and y1 <= page_height - 34
+            and t.strip() != str(page_no)
+            and "THE LAND OF THE BROADS" not in t.upper()]
+    no_header = [t for t in all_lines if "THE LAND OF THE BROADS" not in t.upper()]
     return {
         "all_except_folio": words(" ".join(all_lines)),
-        "body_blocks": words(" ".join(body_lines)),
-        "no_running_header": words(" ".join(no_running_header)),
+        "body_blocks": words(" ".join(body)),
+        "no_running_header": words(" ".join(no_header)),
     }
+
+
+def spans(tokens: list[str], nonce: bytes, target: str, min_width=2, max_width=20):
+    for start in range(len(tokens)):
+        for width in range(min_width, min(max_width, len(tokens) - start) + 1):
+            phrase = " ".join(tokens[start:start + width])
+            match, mac, digest = k08(phrase, nonce, target)
+            if match:
+                yield {"start_1based": start + 1, "width": width,
+                       "phrase": phrase, "hmac16": mac, "sha256": digest}
+
+
+def teal_stats(im: Image.Image) -> tuple[float, float]:
+    pixels = list(im.getdata())
+    n = len(pixels)
+    colored = sum(1 for r, g, b in pixels if max(r, g, b) - min(r, g, b) > 24)
+    teal = sum(1 for r, g, b in pixels
+               if g > 65 and b > 65 and r < 190 and min(g, b) - r > 18)
+    return colored / n, teal / n
+
+
+def pixel_probe(im: Image.Image, points: list[tuple[int, int]]) -> dict:
+    # Normalize candidate map to a 256-square coordinate plane. Also test the
+    # transposed coordinate convention and common scan rotations/reflections.
+    variants = {
+        "xy": im,
+        "yx": ImageOps.transpose(im),
+        "rot90": im.rotate(90, expand=False),
+        "rot180": im.rotate(180, expand=False),
+        "rot270": im.rotate(270, expand=False),
+        "flip_x": ImageOps.mirror(im),
+        "flip_y": ImageOps.flip(im),
+        "transpose_rot90": ImageOps.transpose(im).rotate(90, expand=False),
+    }
+    result = {}
+    for name, image in variants.items():
+        image = image.resize((256, 256))
+        samples = []
+        for x, y in points:
+            r, g, b = image.getpixel((x, y))
+            samples.append([r, g, b])
+        g_bytes = bytes(p[1] for p in samples)
+        b_bytes = bytes(p[2] for p in samples)
+        min_bytes = bytes(min(p[1], p[2]) for p in samples)
+        bits = {
+            "green_lsb": "".join(str(p[1] & 1) for p in samples),
+            "blue_lsb": "".join(str(p[2] & 1) for p in samples),
+            "green_msb": "".join(str((p[1] >> 7) & 1) for p in samples),
+            "blue_msb": "".join(str((p[2] >> 7) & 1) for p in samples),
+            "G_LSB_even_B_MSB_odd": "".join(str((p[1] & 1) if i % 2 == 0 else ((p[2] >> 7) & 1))
+                                               for i, p in enumerate(samples)),
+            "B_LSB_even_G_MSB_odd": "".join(str((p[2] & 1) if i % 2 == 0 else ((p[1] >> 7) & 1))
+                                               for i, p in enumerate(samples)),
+        }
+        result[name] = {
+            "rgb_samples": samples,
+            "green_hex": g_bytes.hex(), "green_ascii": g_bytes.decode("ascii", "replace"),
+            "blue_hex": b_bytes.hex(), "blue_ascii": b_bytes.decode("ascii", "replace"),
+            "teal_min_hex": min_bytes.hex(), "teal_min_ascii": min_bytes.decode("ascii", "replace"),
+            "bit_reads": bits,
+        }
+    return result
 
 
 def main() -> int:
@@ -112,182 +168,140 @@ def main() -> int:
     acceptance = json.loads(ACCEPTANCE.read_text(encoding="utf-8"))
     routing = json.loads(ROUTING.read_text(encoding="utf-8"))
     k01 = bytes.fromhex(candidate["K01"])
-    coords = [(k01[i], k01[i + 1]) for i in range(0, 16, 2)]
-    assert tuple(page for page, _ in coords) == TARGET_PAGES
+    k07 = bytes.fromhex(candidate["K07"])
+    k01_coords = [(k01[i], k01[i + 1]) for i in range(0, 16, 2)]
+    k07_coords = [(k07[i], k07[i + 1]) for i in range(0, 16, 2)]
     nonce = bytes.fromhex(routing["K08"]["desk_nonce"])
     target = acceptance["slot_sha256"]["K08"]
-
     pdf_path = Path(sys.argv[1])
-    pdf_hash = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
     doc = fitz.open(pdf_path)
-    located = locate_printed_pages(doc)
+    pdf_hash = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
 
-    report: dict[str, object] = {
+    target_pages = sorted(set([p for p, _ in k01_coords] +
+                              [p for p, _ in k07_coords] + [212]))
+    located = locate_pages(doc, target_pages)
+    report = {
         "book_hypothesis": "The Land of the Broads (Ernest R. Suffling, 1887)",
         "pdf_sha256": pdf_hash,
         "pdf_pages": len(doc),
-        "k01_page_word_pairs": coords,
         "k08_target_sha256": target,
+        "K01_page_word_pairs": k01_coords,
+        "K07_page_word_pairs": k07_coords,
         "pages": {},
-        "candidate_sequences": {},
-        "contiguous_span_hits": [],
+        "page_word_sequences": {},
+        "selected_page_span_hits": [],
+        "full_book_span_hits": [],
+        "k07_map_pixel_probe": {},
     }
 
-    page_modes: dict[int, dict[str, list[str]]] = {}
-    page_candidates: dict[int, list[int]] = {}
-    for page_no in TARGET_PAGES:
-        hits = located[page_no]
-        page_candidates[page_no] = [idx for idx, _ in hits]
-        page_report: dict[str, object] = {"pdf_page_indices": page_candidates[page_no], "modes": {}}
-        if hits:
-            # If the scan has duplicate folios, report each, but use the first
-            # exact folio hit for the canonical extraction.
-            page_index, lines = hits[0]
-            modes = extract_modes(lines, doc[page_index].rect.height, page_no)
-            page_modes[page_no] = modes
-            for mode, tokens in modes.items():
-                page_report["modes"][mode] = {
-                    "word_count": len(tokens),
-                    "selected_1based": tokens[coords[TARGET_PAGES.index(page_no)][1] - 1]
-                    if len(tokens) >= coords[TARGET_PAGES.index(page_no)][1] else None,
-                    "selected_0based": tokens[coords[TARGET_PAGES.index(page_no)][1]]
-                    if len(tokens) > coords[TARGET_PAGES.index(page_no)][1] else None,
-                    "excerpt_first_24": tokens[:24],
-                }
-        else:
-            page_report["missing"] = True
-        report["pages"][str(page_no)] = page_report
+    modes_by_page = {}
+    for p in target_pages:
+        loc = located[p]
+        idx = loc["selected_pdf_page_index"]
+        page_report = {"all_pdf_page_indices": loc["all_pdf_page_indices"],
+                       "selected_pdf_page_index": idx}
+        if idx is not None:
+            lines = loc["lines"] or page_lines(doc[idx])
+            modes = page_modes(lines, doc[idx].rect.height, p)
+            modes_by_page[p] = modes
+            page_report["modes"] = {
+                mode: {"word_count": len(tokens),
+                       "first_20": tokens[:20]}
+                for mode, tokens in modes.items()
+            }
+        report["pages"][str(p)] = page_report
 
-    orderings = {
-        "signed_ABCD_order": list(TARGET_PAGES),
-        "reverse_signed_order": list(reversed(TARGET_PAGES)),
-        "ascending_page_order": sorted(TARGET_PAGES),
-    }
-    for mode in ("all_except_folio", "body_blocks", "no_running_header"):
-        for index_base in (0, 1):
-            for ordering_name, page_order in orderings.items():
-                selected: list[str] = []
+    for component_name, coords in (("K01", k01_coords), ("K07", k07_coords)):
+        for mode in ("all_except_folio", "body_blocks", "no_running_header"):
+            for base in (0, 1):
+                selected = []
                 complete = True
-                for page_no in page_order:
-                    modes = page_modes.get(page_no)
+                for p, word_no in coords:
+                    modes = modes_by_page.get(p)
                     if not modes:
                         complete = False
                         break
-                    word_index = coords[TARGET_PAGES.index(page_no)][1] - index_base
                     tokens = modes[mode]
-                    if word_index < 0 or word_index >= len(tokens):
+                    index = word_no - base
+                    if index < 0 or index >= len(tokens):
                         complete = False
                         break
-                    selected.append(tokens[word_index])
-                if not complete:
-                    continue
-                phrase = " ".join(selected)
-                match, mac_hex, digest = k08_matches(phrase, nonce, target)
-                key = f"{mode}|index_base={index_base}|{ordering_name}"
-                report["candidate_sequences"][key] = {
-                    "words": selected,
-                    "phrase": phrase,
-                    "normalized": normalize(phrase),
-                    "hmac16": mac_hex,
-                    "sha256": digest,
-                    "match": match,
-                }
+                    selected.append(tokens[index])
+                if complete:
+                    phrase = " ".join(selected)
+                    match, mac, digest = k08(phrase, nonce, target)
+                    report["page_word_sequences"][f"{component_name}|{mode}|base={base}"] = {
+                        "words": selected, "phrase": phrase,
+                        "normalized": normalize(phrase),
+                        "hmac16": mac, "sha256": digest, "match": match,
+                    }
 
-    # The source-selected pages are also a bounded text corpus. Search all
-    # contiguous spans of 2..20 words on those pages for the exact K08 commitment.
-    for page_no in TARGET_PAGES:
-        modes = page_modes.get(page_no)
-        if not modes:
-            continue
-        tokens = modes["body_blocks"]
-        for start in range(len(tokens)):
-            for width in range(2, min(20, len(tokens) - start) + 1):
-                phrase = " ".join(tokens[start:start + width])
-                match, mac_hex, digest = k08_matches(phrase, nonce, target)
-                if match:
-                    report["contiguous_span_hits"].append({
-                        "page": page_no, "start_1based": start + 1,
-                        "width": width, "phrase": phrase,
-                        "hmac16": mac_hex, "sha256": digest,
-                    })
+    # Search spans on all coordinate pages plus P212.
+    for p in target_pages:
+        modes = modes_by_page.get(p)
+        if modes:
+            for hit in spans(modes["body_blocks"], nonce, target):
+                report["selected_page_span_hits"].append({"page": p, **hit})
 
+    # Search all OCR text, including phrases crossing page boundaries. Headers
+    # and isolated folios are stripped; the source remains a single bounded book.
+    all_tokens = []
+    for page in doc:
+        raw_lines = page.get_text("text").splitlines()
+        body_lines = [line for line in raw_lines
+                      if line.strip() and "THE LAND OF THE BROADS" not in line.upper()
+                      and not re.fullmatch(r"\s*\d{1,4}\s*", line)]
+        all_tokens.extend(words(" ".join(body_lines)))
+    for hit in spans(all_tokens, nonce, target):
+        report["full_book_span_hits"].append(hit)
 
-    # Map-back hypothesis: scan all pages at low resolution and rank color pages
-    # by a conservative teal score. This does not assume that any one page is
-    # the map; the top candidates and pixel samples are preserved for review.
-    try:
-        from PIL import Image
-        import io
+    # The map is explicitly described as being at the back. Restrict image
+    # scoring to the last 80 scans rather than rasterizing the whole book.
+    map_scores = []
+    start_index = max(0, len(doc) - 80)
+    for page_index in range(start_index, len(doc)):
+        page = doc[page_index]
+        pix = page.get_pixmap(matrix=fitz.Matrix(0.12, 0.12),
+                              colorspace=fitz.csRGB, alpha=False)
+        im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+        im = im.resize((256, 256))
+        color_fraction, teal_fraction = teal_stats(im)
+        map_scores.append({
+            "pdf_page_index": page_index,
+            "page_width": round(page.rect.width, 1),
+            "page_height": round(page.rect.height, 1),
+            "landscape": page.rect.width > page.rect.height,
+            "color_fraction": round(color_fraction, 5),
+            "teal_fraction": round(teal_fraction, 5),
+            "text_excerpt": normalize(page.get_text("text"))[:180],
+            "image": im,
+        })
+    top = sorted(map_scores, key=lambda x: (x["teal_fraction"], x["color_fraction"]), reverse=True)[:12]
+    points = k07_coords
+    map_report = []
+    for item in top:
+        im = item["image"]
+        # Crop to non-white map content as well as testing the full page.
+        gray = ImageOps.grayscale(im)
+        bbox = gray.point(lambda p: 255 if p < 245 else 0).getbbox()
+        cropped = im.crop(bbox) if bbox else im
+        cropped = cropped.resize((256, 256))
+        out = {k: v for k, v in item.items() if k != "image"}
+        out["full_page_samples"] = pixel_probe(im, points)
+        out["content_crop_samples"] = pixel_probe(cropped, points)
+        map_report.append(out)
+    report["k07_map_pixel_probe"] = {
+        "coordinate_pairs": points,
+        "scanned_pdf_page_range": [start_index, len(doc) - 1],
+        "top_color_pages": map_report,
+    }
 
-        k07 = bytes.fromhex(candidate["K07"])
-        k07_points = [(k07[i], k07[i + 1]) for i in range(0, 16, 2)]
-        map_scores = []
-        for page_index, page in enumerate(doc):
-            pix = page.get_pixmap(matrix=fitz.Matrix(0.12, 0.12),
-                                  colorspace=fitz.csRGB, alpha=False)
-            im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
-            im = im.resize((256, 256))
-            data = list(im.getdata())
-            colored = sum(1 for r, g, b in data if max(r, g, b) - min(r, g, b) > 24)
-            teal = sum(1 for r, g, b in data
-                       if g > 65 and b > 65 and r < 190 and abs(g - b) < 110)
-            map_scores.append({
-                "pdf_page_index": page_index,
-                "page_width": round(page.rect.width, 1),
-                "page_height": round(page.rect.height, 1),
-                "landscape": page.rect.width > page.rect.height,
-                "color_fraction": round(colored / len(data), 5),
-                "teal_fraction": round(teal / len(data), 5),
-                "text_excerpt": normalize(page.get_text("text"))[:180],
-                "image": im,
-            })
-        top = sorted(map_scores, key=lambda x: (x["teal_fraction"], x["color_fraction"]), reverse=True)[:12]
-        map_report = []
-        for item in top:
-            im = item["image"]
-            samples = []
-            for x, y in k07_points:
-                r, g, b = im.getpixel((x, y))
-                samples.append({"xy": [x, y], "rgb": [r, g, b],
-                                "teal_min": min(g, b), "teal_max": max(g, b)})
-            # Try the two byte channels most naturally associated with teal,
-            # plus a parity-gated low/high bit read.
-            g_bytes = bytes(s["rgb"][1] for s in samples)
-            b_bytes = bytes(s["rgb"][2] for s in samples)
-            min_bytes = bytes(s["teal_min"] for s in samples)
-            max_bytes = bytes(s["teal_max"] for s in samples)
-            low_even_high_odd_gb = []
-            low_even_high_odd_bg = []
-            for i, s in enumerate(samples):
-                g, b = s["rgb"][1], s["rgb"][2]
-                low_even_high_odd_gb.append((g & 1) if i % 2 == 0 else ((b >> 7) & 1))
-                low_even_high_odd_bg.append((b & 1) if i % 2 == 0 else ((g >> 7) & 1))
-            item_out = {k: v for k, v in item.items() if k != "image"}
-            item_out["samples"] = samples
-            item_out["channel_bytes"] = {
-                "green_hex": g_bytes.hex(), "green_ascii": g_bytes.decode("ascii", "replace"),
-                "blue_hex": b_bytes.hex(), "blue_ascii": b_bytes.decode("ascii", "replace"),
-                "teal_min_hex": min_bytes.hex(), "teal_min_ascii": min_bytes.decode("ascii", "replace"),
-                "teal_max_hex": max_bytes.hex(), "teal_max_ascii": max_bytes.decode("ascii", "replace"),
-            }
-            item_out["parity_bit_reads"] = {
-                "G_LSB_even_B_MSB_odd": "".join(str(x) for x in low_even_high_odd_gb),
-                "B_LSB_even_G_MSB_odd": "".join(str(x) for x in low_even_high_odd_bg),
-            }
-            map_report.append(item_out)
-        report["k07_map_pixel_probe"] = {
-            "coordinate_pairs": k07_points,
-            "top_color_pages": map_report,
-        }
-    except Exception as exc:
-        report["k07_map_pixel_probe_error"] = repr(exc)
-
-    out = ROOT / "agents" / "agent21" / "broads-pageword-results.json"
-    out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    out_path = ROOT / "agents" / "agent21" / "broads-pageword-results.json"
+    out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2, ensure_ascii=False))
-    any_match = any(x["match"] for x in report["candidate_sequences"].values())
-    any_match = any_match or bool(report["contiguous_span_hits"])
-    print("K08_MATCH", any_match)
+    matched = any(x["match"] for x in report["page_word_sequences"].values())
+    matched = matched or bool(report["selected_page_span_hits"]) or bool(report["full_book_span_hits"])
+    print("K08_MATCH", matched)
     return 0
 
 
