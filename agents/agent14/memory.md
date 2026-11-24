@@ -1018,3 +1018,9 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 
 - Searched the owner's only other matching repository, `FlareZ123/workplace-v1`, after the maintainer directive to seek additional documents. Its `resources/` tree has no files beyond the v2 resource set; no workbook/image/archive asset is present, and path-history queries for the incident desk index and mug-stock.xls returned no commits. Its `results/h17-candidate.json` is the same six-pass / K04-null / K08-null candidate, not an alternate recovery.
 - Repository search for additional owner repositories found only workplace-v1 and workplace-v2. This closes the obvious predecessor-repository source path; it does not imply that the referenced original AX-7782 object or network-share files never existed.
+
+### External index and predecessor-only physical routes
+
+- The v1-only source-route reports identify two conditional original-material mechanisms: a negative image on spent thermal-transfer ribbon for the 18:02Z RECOVER print, and latent writing impressions on paper beneath Emily's WN-14 desk notes. Neither is evidenced as surviving, and the actual FA-17 print technology / underleaf placement is unknown. The current README closes further custodian contact; do not open another issue or probe equipment.
+- The unlocked BX25/08 page footer gives an electronic correspondence index URL, `https://noyes-energy-group.pages.dev/`. A read-only web open returned inaccessible; exact-domain web search and GitHub repository search found no public index/source. Do not bypass access controls or probe protected services. The original AX-7782 Bundle06 object, native mug-stock.xls, and original photo/caption sidecars remain absent from both v2 and v1 resource trees.
+- Ran the unchanged local verifier against the canonical six-slot candidate: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE. No candidate or source was changed.
