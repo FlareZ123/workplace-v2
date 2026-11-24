@@ -250,6 +250,14 @@ def test_raid6_and_cauchy() -> tuple[int, int]:
         trials += 1
         hits += int(matches(slot, bytes(p)))
 
+    # K01..K06 as data, with K07=P and K08=Q: recover missing K04.
+    k04_from_p = bytearray(16)
+    for key in ("K07", "K01", "K02", "K03", "K05", "K06"):
+        for j, value in enumerate(known[key]):
+            k04_from_p[j] ^= value
+    trials += 1
+    hits += int(matches("K04", bytes(k04_from_p)))
+
     fields = irreducible_polynomials(8)
     for poly in fields:
         for alpha in range(2, 256):
@@ -267,6 +275,29 @@ def test_raid6_and_cauchy() -> tuple[int, int]:
                     trials += 1
                     hits += int(matches(slot, bytes(q)))
 
+                # K01..K06 as data, K07=Q: recover K04, then K08=P.
+                data_123456 = ("K01", "K02", "K03", "K04", "K05", "K06")
+                numerator = bytearray(known["K07"])
+                for i, key in enumerate(data_123456):
+                    if key == "K04":
+                        continue
+                    coefficient = coefficients[i]
+                    for j, value in enumerate(known[key]):
+                        numerator[j] ^= gf_mul(value, coefficient, poly, 8)
+                recovered = bytes(
+                    gf_mul(value, gf_inv(coefficients[3], poly, 8), poly, 8)
+                    for value in numerator
+                )
+                trials += 1
+                hits += int(matches("K04", recovered))
+                p_after_recovery = bytearray(16)
+                for key, value in zip(data_123456, (known["K01"], known["K02"], known["K03"],
+                                                    recovered, known["K05"], known["K06"])):
+                    for j, byte in enumerate(value):
+                        p_after_recovery[j] ^= byte
+                trials += 1
+                hits += int(matches("K08", bytes(p_after_recovery)))
+
         # Cauchy 6+2 parity, common consecutive x/y choices.
         for base in (0, 1):
             xs = [base + i for i in range(6)]
@@ -283,6 +314,34 @@ def test_raid6_and_cauchy() -> tuple[int, int]:
                                 ("K04", parities[1]), ("K08", parities[0])):
                 trials += 1
                 hits += int(matches(slot, value))
+
+            # K01..K06 as data with K07 as one Cauchy parity; recover K04
+            # and check the other parity as K08.
+            data_123456 = ("K01", "K02", "K03", "K04", "K05", "K06")
+            for known_parity_index, missing_parity_index in ((0, 1), (1, 0)):
+                y_known = ys[known_parity_index]
+                y_missing = ys[missing_parity_index]
+                coefs_known = [gf_inv(x ^ y_known, poly, 8) for x in xs]
+                coefs_missing = [gf_inv(x ^ y_missing, poly, 8) for x in xs]
+                numerator = bytearray(known["K07"])
+                for i, key in enumerate(data_123456):
+                    if key == "K04":
+                        continue
+                    for j, value in enumerate(known[key]):
+                        numerator[j] ^= gf_mul(value, coefs_known[i], poly, 8)
+                recovered = bytes(
+                    gf_mul(value, gf_inv(coefs_known[3], poly, 8), poly, 8)
+                    for value in numerator
+                )
+                trials += 1
+                hits += int(matches("K04", recovered))
+                other = bytearray(16)
+                for i, key in enumerate(data_123456):
+                    value = recovered if key == "K04" else known[key]
+                    for j, byte in enumerate(value):
+                        other[j] ^= gf_mul(byte, coefs_missing[i], poly, 8)
+                trials += 1
+                hits += int(matches("K08", bytes(other)))
     return trials, hits
 
 
