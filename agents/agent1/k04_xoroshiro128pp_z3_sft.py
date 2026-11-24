@@ -19,7 +19,7 @@ import re
 import time
 from pathlib import Path
 
-from z3 import BitVec, BitVecVal, Or, RotateLeft, SolverFor, sat, simplify, unsat, unknown
+from z3 import BitVec, BitVecVal, Or, RotateLeft, Then, sat, simplify, unsat, unknown
 
 MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
@@ -142,7 +142,9 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     total = BitVec("sum_state0", 64)
     (a0_expr, b0_expr), predicted_y1, middle_exprs, holdout_exprs = z3_sequence_from_sum(y0, total)
 
-    solver = SolverFor("QF_BV")
+    # Agent24's tested explicit bit-blast path is materially more direct than
+    # the default QF_BV tactic for this one-sum equation.
+    solver = Then("simplify", "bit-blast", "sat").solver()
     first_timeout = _remaining(deadline, timeout_seconds)
     result = {
         "experiment": "xoroshiro128pp_one_sum_variable_first_pair",
