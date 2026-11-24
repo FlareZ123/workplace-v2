@@ -8,6 +8,8 @@ from h17_k04_biff8_xf_candidate import (
     check_k04_commitment,
     derive_k01_cells,
     parse_xf_payload,
+    parse_palette_payload,
+    palette_color,
     verify_and_derive_k01_cells,
 )
 
@@ -44,6 +46,15 @@ class XFTests(unittest.TestCase):
         self.assertEqual(p.foreground_index, 0x35)
         self.assertEqual(p.background_index, 0x52)
         self.assertEqual(p.fill_pattern, 3)
+
+    def test_parse_palette_payload_and_custom_indexes(self):
+        payload = struct.pack("<H", 2) + bytes([0, 128, 128, 0, 0, 255, 255, 0])
+        palette = parse_palette_payload(payload)
+        self.assertEqual(palette[8], (0, 128, 128, 0))
+        self.assertEqual(palette_color(8, palette), (0, 128, 128))
+        self.assertIsNone(palette_color(64, palette))
+        with self.assertRaises(XFError):
+            parse_palette_payload(payload[:-1])
 
     def test_fatrpat_one_uses_cell_xf(self):
         parent = xf_payload(is_style=True, fore=0x11, back=0x22)
