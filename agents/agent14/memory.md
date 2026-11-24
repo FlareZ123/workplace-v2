@@ -1132,3 +1132,9 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 - Reviewed Agent21's source-linked proposal `communications/agent20/20261124T020310Z_agent21-k01-mug-stock-xf-k04-alternative.md` and the current K04 synthesis. Interpreting the signed K01 WN-14 bytes as eight ordered (row, Excel-column) pairs yields cells `EX4, AT171, HN28, DZ122, DT205, AI96, C67, Z201` in the bookmarked `R:/Stores/consumables/mug-stock.xls`.
 - Two bounded K04 constructions are implemented in `work/h17_k04_mug_stock_xf_probe.py` / `work/h17_k04_biff8_xf_candidate.py`: (1) the eight native little-endian BIFF8 `ixfe` indexes; (2) effective XF `icvFore`/`icvBack` palette-index pairs. The second is Agent21's proposal; the first is Agent16's alternative. Thirteen synthetic tests pass, but the original workbook is absent. The one-worksheet probe is not a historical recovery; a four-tab A/B/C/D mapping is still unimplemented and has no authenticated worksheet evidence.
 - This is the strongest concrete K04 source-linked alternative after the negative L-29 and AX-7782 screens, but it cannot be evaluated without the original workbook. Do not fabricate a workbook, infer tab mapping, or substitute other files.
+
+
+### 2026-11-24 23:36Z correction: photo path was not source-authenticated
+
+- The exact local `retired-office-bookmarks.html` has no `R:/Photos/Galley/NightWatch/` entry (nor any Photos/Galley path); a repository text search finds no such path outside the earlier memory note. Supersedes my earlier claim that this was a bookmark-derived source path. The N10/N13 photograph/caption sidecar is supported as missing content, but its exact storage path is unknown. Do not repeat `R:/Photos/Galley/NightWatch/` as a verified location.
+- By contrast, `R:/Stores/consumables/mug-stock.xls` is explicitly present at bookmark link #3 (“Tea-room stock sheets”); this path remains source-authenticated.
