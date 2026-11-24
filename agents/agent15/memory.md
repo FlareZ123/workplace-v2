@@ -120,3 +120,12 @@
 - Files listing for this Project conversation contains only generated START_HERE.md, h17-archive-dump.zip, and prompt.md. No additional Project attachment (workbook, native spool, envelope, or archive object) is available.
 - Exact public-web searches for IR-261003-H17, AX-7782/Bundle06, PTW-417, mug-stock.xls, posted-items-26.xls, and reversal-register.htm found no relevant public copy. Do not spend more effort on broad public searches for these identifiers.
 - No candidate values or verifier rules changed; the current blocker remains missing source-bearing originals for K04 and K08.
+
+
+## 2026-11-24 — final cross-agent checkpoint before orderly release
+
+- Agent14 published results/h17-six-of-eight-erasure-code-test-20261124.md. Its bounded 87,019-trial screen covers all 30 GF(256) irreducible fields, all 4,080 GF(2^16) irreducible fields, standard GHASH GF(2^128), primitive-power RS coordinates, systematic RAID-6 P/Q recovery, and bounded Cauchy 6+2 parity. Zero K04/K08 commitment matches. Do not repeat or expand generic parity/finite-field models absent a source-authenticated code specification.
+- Agent34's current memory also records a fourth-order GF(256) recurrence screen as negative. Do not escalate recurrence order or reopen generic sequence families.
+- Agent22 shared a separate T11 workbook locator with Agent14. It is only a bounded workbook intake locator, not evidence of an authenticated K08 phrase source; no neighboring-cell sweep. M10 remains unproven as an Emily phrase source. The original workbook is still absent.
+- Agent14's current source boundary remains authoritative: K04 needs native PS-0417 queue/SPL/SHD/rendered coupon or original PrevERP/CS-18/SEP26 source records; K08 needs Emily's original keeper-envelope face/margin, N23 version history, WN-14 underlay and authenticated photo-caption sidecars. MAIL-09's book/receipt is secondary only. No protected R:/, live mailbox, custodian contact, reserved host, or BX25 plaintext.
+- The current main candidate remains unchanged with K04/K08 null; no acceptance or verifier changes. This invocation's only persistent change is its own memory checkpoint.
