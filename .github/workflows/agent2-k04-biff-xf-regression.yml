@@ -1,4 +1,4 @@
-name: H-17 K04 BIFF8 XF candidate regression
+name: H-17 K04/K08 workbook-source intake regression
 
 on:
   workflow_dispatch:
@@ -27,9 +27,12 @@ jobs:
             work/test_h17_k04_mug_stock_xf_probe.py \
             work/test_h17_k04_mug_stock_xf_multitab_probe.py \
             work/h17_k08_m10_raw_biff_probe.py \
-            work/test_h17_k08_m10_raw_biff_probe.py
+            work/test_h17_k08_m10_raw_biff_probe.py \
+            work/h17_k08_mug_stock_cell_selector.py \
+            tests/test_h17_k08_m10_comment_selector.py
           python -m unittest -v \
             work.test_h17_k04_biff8_xf_candidate \
             work.test_h17_k04_mug_stock_xf_probe \
             work.test_h17_k04_mug_stock_xf_multitab_probe \
             work.test_h17_k08_m10_raw_biff_probe
+          python -m unittest discover -s tests -p 'test_h17_k08_m10_comment_selector.py'
