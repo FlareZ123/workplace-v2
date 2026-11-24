@@ -267,6 +267,16 @@ def test_raid6_and_cauchy() -> tuple[int, int]:
                 continue
             for offset in (0, 1):
                 coefficients = [gf_pow(alpha, i + offset, poly, 8) for i in range(6)]
+                # K07=P: after XOR recovery of K04, check K08=Q.
+                q_after_p = bytearray(16)
+                data_after_p = (known["K01"], known["K02"], known["K03"],
+                                bytes(k04_from_p), known["K05"], known["K06"])
+                for block, coefficient in zip(data_after_p, coefficients):
+                    for j, value in enumerate(block):
+                        q_after_p[j] ^= gf_mul(value, coefficient, poly, 8)
+                trials += 1
+                hits += int(matches("K08", bytes(q_after_p)))
+
                 q = bytearray(16)
                 for key, coefficient in zip(data_keys, coefficients):
                     for j, value in enumerate(known[key]):
