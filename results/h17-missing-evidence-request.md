@@ -351,7 +351,9 @@ A qualified forensic document examiner should assess suitability and first exami
 
 A negative finding is limited to the specific sheets and methods examined. Paper thickness, storage, pressure and intervening layers affect recovery; no detected impression does not prove the papers were never in contact. See [the expanded underleaf examination plan](h17-k08-underleaf-indentation-acquisition-20261107.md).
 
-## 7 November 2026: request both competing ST↔PTW↔PS index mappings
+## Historical ST↔PTW↔PS offset hypotheses (superseded 24 November 2026)
+
+**Supersession:** The 24 November L-29/N boundary review found no source-authenticated ticket→PS join. The only supported relation is PS-0417→the L-29/N five-tab set. The +304 result is an empirical ST→PTW association (ST-112→PTW-416/bay D); no PTW→PS second stage is supported. The +300/+304 and +305/+306 offset chains and their derived PS neighbours below are historical hypotheses only. Do not use them to select a ticket, job, coupon bytes, or current retrieval priority. Preserve the analyses for audit; prioritize the complete five-tab L-29/N binder, native return index, and original PS-0417 queue/media/coupon. See [the 24 November ticket-boundary correction](h17-k04-l29n-set-vs-st112-ticket-boundary-20261124.md).
 
 A later source-derived audit identifies two plausible numeric offsets between the five posted FA-17 L-29/N service tickets and the same-suffix PTW/PS records. **Neither is an authenticated crosswalk.** The +304 mapping has stronger controls in the surviving export (four matched North tickets land in bays A/B/C/D in binder order, and the earlier FA-17 L-28/N holdout matches 2/2 rather than 1/2 for +300), but the original September index or a paired original ticket is still required. Do not retrieve only the +300 set, and do not promote +304 to fact.
 
@@ -374,7 +376,7 @@ The candidate ticket neighbours for the spool gaps and selected job also differ:
 | PS-261003-0396 | ST-096 | ST-092 |
 | PS-261003-0417 (selected attempt 2) | ST-117 | ST-113 |
 
-**Specific records to request together if an authorized new custody path or unsolicited delivery becomes available:**
+**Historical retrieval ideas from the superseded offset hypotheses (not current selectors):**
 
 1. The original R:/Stores/returns/SEP26/index.htm and its native metadata, vendor ticket list, index history, and any source/backup copies.
 2. The signed North and South cabinet binder pages, front and back, including all attachments, print strips, carbonless duplicates, underlays, corrections, voids and receipt images for both candidate PTW/PS sets above.
@@ -385,7 +387,9 @@ The candidate ticket neighbours for the spool gaps and selected job also differ:
 7. The original ST-092 and ST-096 packets together, including serial slips and attachments. Under +304, ST-092 maps to PTW-396; under +300, ST-096 maps to PTW-396. The retained PTW-396 receipt is bay C, revision 1, serial `SG-9929E382`, closed/AS_LEFT/signed. Check which original ticket, if either, explicitly cites that permit/serial. This is the most direct local-record discriminator for the gap-96 offset; the retained receipt alone does not choose a ticket.
 
 The +304 audit's four North matches, four distinct bays, binder-order alignment, and 2/2 L-28/N FA-17 holdout are evidence for prioritizing that first-stage PTW candidate during retrieval. They are still a pattern inferred from the supplied records. The +300 candidate remains listed because it is a live competing explanation and the original index is absent. The shared cassette, asset and folio links establish a cohort/provenance association, not an individual ticket-to-job pair. See the reproducible offset audit (h17-k04-st-ptw-ps-offset-ambiguity-20261107.md) and the current source synthesis (results/README.md).
-## 7 November 2026: lane-specific second-stage PTW→PS locator hypothesis
+### Historical lane-specific PTW→PS locator hypothesis (superseded 24 November 2026)
+
+**Supersession:** The later source review withdraws this second-stage join. Keep the analysis below only for historical audit; do not perform further offset arithmetic or retrieve records on the assumption that these predicted ticket→PS links are valid.
 
 A separate, potentially compatible mapping now extends the candidate ST→PTW first stage. The two print-fleet tab-05 anchors yield PTW→PS `+1` on FA-17/ESC-N and `+2` on LV-42/ESC-S, giving composite ST→PS `+305/+306`. This is not the same hypothesis as assuming the PTW suffix equals the PS suffix in the preceding table.
 
@@ -398,7 +402,7 @@ Independent checks in the retained spool export:
 
 The two tab-05 pairs used to derive the offsets are anchors, not independent validation. The L-28/N and ST-121 rows are holdouts, but no supplied source explicitly binds these tickets to the predicted PS jobs. A six-control PTW-serial producer screen found no simple CPython/HMAC/BLAKE2 payload matches; this does not falsify the locator. Treat the two-stage join as a promising retrieval hypothesis only. See [the full lane-specific ticket-to-spool screen and SFT](h17-k04-lane-specific-ticket-to-spool-offset-screen-20261107.md).
 
-**Additional records to request if an authorized path or unsolicited delivery becomes available:**
+**Historical retrieval ideas from the superseded second-stage hypothesis (not current selectors):**
 
 1. The native SEP26 index and source schema/history, explicitly asking whether it defines a two-stage ST→PTW and PTW→PS relation or lane-specific offsets.
 2. Original PTW receipts and linked source tickets for predicted PTW-385 and South PTW-425/434/439/446/455, including bay, serial, revision, signer, ticket reference and any PS/job reference. The retained PTW export covers only PTW-390..416, so it cannot test North ST-081→PTW-385 or any South `+304` first-stage prediction.
@@ -455,7 +459,7 @@ The unencrypted retired-office bookmarks also include a **“Cassette service re
 
 4. **Conditional native MAIL-16 source/thread retrieval.** The local redacted EML has no In-Reply-To/References headers or native attachment structure, and the custodian says repeated quoted reply material was omitted. However, the incident-date namespace analysis finds that all 20 exported Message-IDs use IR261003 while 15/20 displayed Date headers predate 3 October; original transmission headers are not authenticated. First authenticate the original mail system/namespace and export provenance from the custodian, mailbox inventory, archive index or source manifest. Only then retrieve by authenticated mailbox folder/UID, original Message-ID/thread ID or source record identifier, preserving raw RFC822/MIME, Received/delivery headers, quoted history, attachments and inline images. Do not query using exported identifiers such as mail-16@records.h17.local. The 07:49Z/18:03Z forward-reference is a prepublication excerpt gap, not proof of a real send-time contradiction. If no original namespace/identifier can be authenticated, stop native-thread lookup and treat MAIL-16 as a prepublication excerpt; keep the separate old-drawing request independent. See [incident-date mail namespace analysis](h17-mail-incident-namespace-prepublication-20261104.md) and [prepublication dependency](h17-mail13-mail16-prepublication-dependency-20261104.md).
 
-5. **Competing PS-0417 ticket neighbours and L-29/N return index.** Request the original Stores return index for cassette set **L-29/N**, the complete original ticket packets for **ST-112 (+305 candidate)**, **ST-113 (+304 candidate)** and **ST-117 (+300 candidate)**, and any original crosswalk linking those tickets to PS-261003-0417 / ESC-N / FA-17. Include posted/unposted/voided/held/reversed/duplicate versions, account/folio, creation/settlement timestamps, work-order attachments, carbonless copies, part descriptions, cassette identifiers and any explicit PTW/PS cross-reference. These are competing hypotheses, not established mappings; the supplier CSV's ST-112 R3/POSTED row and the L-29/N retirement note do not themselves authenticate a PS-0417 join or coupon bytes. Preserve sequence gaps. The 7 November Critic direction assigns the +300 line to Agent8 and requires original paired-source validation before further offset computation.
+5. **Full L-29/N return set and any explicit PS-0417 crosswalk (no ticket-offset inference).** Request the original Stores return index and complete five-tab North packet—ST-094, ST-081, ST-106, ST-099 and ST-112—with front/back pages, signatures, attachments, posting and settlement records, carbonless copies, receipts, coupons, serials, underlays, native transaction/reference IDs and any source record explicitly linking the set to PS-261003-0417 / ESC-N / FA-17. Preserve ST-112 R3/POSTED/A3 and ST-112 R4/HELD/A4 as distinct versions. The retained source links PS-0417 to the L-29/N set, not to an individual ticket. Do not use +304/+305 arithmetic to choose a ticket or job, and do not request ST-113 or ST-117 on the basis of offset predictions. If those records appear in the original return index, preserve them as unselected controls.
 
 6. **Native print-host/device copy-stage artifacts.** After independently identifying host OS and queue/port, preserve the native PS-0417 attempt 1/2/3 and earlier LABEL control. If Windows is confirmed, include original .SPL/.SHD files and metadata, Microsoft-Windows-PrintService/Admin and Operational EVTX, driver/processor/port configuration, device-local job history, retained job buffer and print-completion/media-eject receipt. Preserve the physical ESC-N coupon or retained media separately with chain of custody. ACK remains dispatch evidence, not media-integrity evidence.
 
