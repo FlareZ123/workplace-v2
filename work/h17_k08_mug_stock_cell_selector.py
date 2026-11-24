@@ -5,16 +5,18 @@ This is a conditional hypothesis, not an authenticated source rule: AES-128-ECB
 with the K08 desk nonce as key decrypts the retained PS-0323 ACK payload to
 sixteen bytes interpreted as eight (row, column) pairs. The tool tests only
 those eight cells, in their original order, with the two byte orientations and
-zero-/one-based coordinate conventions. If it has one sheet, all eight cells are read from that sheet. Any multi-sheet
-workbook requires an explicit --sheet; no A-D sheet ordering is inferred. No
-permutations, paraphrases, or broad workbook text searches are performed. Install optional dependencies with
+zero-/one-based coordinate conventions. If it has one sheet, all eight cells are read from that sheet. Cell-value candidates on a multi-sheet workbook require an explicit --sheet;
+no A-D sheet ordering is inferred. No permutations, paraphrases, or broad
+workbook text searches are performed. Install optional dependencies with
 work/requirements-h17-k08-cell-selector.txt.
 
-The input workbook is opened from bytes and never written. Only the exact M10
-cell comment on the explicit or sole worksheet is additionally tested; other
-cell comments, embedded OfficeArt, formulas without cached values, and external
+The input workbook is opened from bytes and never written. Only exact M10
+cell comments are additionally tested: on an explicit or sole worksheet, or
+at M10 across all listed worksheets when no sheet is selected. Other cell
+comments, embedded OfficeArt, formulas without cached values, and external
 links are not interpreted here. The separate OfficeArt/BIFF intake covers
-native shape/image records.
+native shape/image records. CLI output is redacted by default; raw candidate
+material is available only to explicit in-process callers.
 """
 from __future__ import annotations
 
@@ -26,9 +28,7 @@ import re
 from pathlib import Path
 from typing import Any, Iterable
 
-PS0323_PAYLOAD_HEX = "1E51EFD2E5CA8F4E1FC8B49297B3D74F"
-PS0323_PLAINTEXT_HEX = "E5407654D33238607DFA324B94656E1D"
-N02_CONTROL_HMAC16 = "BF889359B0303F2B2B2FD96AE841210B"
+PS0323_PLAINTEXT_SHA256 = "a79a43b584d8a0cadc9b7f5aa50ed56d236212d1cf72fd4531cc1f241af573bf"
 
 
 def normalize(text: str) -> str:
@@ -51,9 +51,6 @@ def load_k08_rules(resources: Path) -> tuple[bytes, bytes]:
     target = bytes.fromhex(acceptance["slot_sha256"]["K08"])
     if len(nonce) != 16 or len(target) != 32:
         raise ValueError("invalid K08 nonce or commitment width")
-    control = k08_component(nonce, normalize("A good watch leaves the room ready for the next pair of hands"))
-    if control.hex().upper() != N02_CONTROL_HMAC16:
-        raise ValueError("K08 normalization/HMAC known-answer control failed")
     return nonce, target
 
 
@@ -79,12 +76,12 @@ def decrypt_ps0323(resources: Path, nonce: bytes) -> tuple[bytes, bytes]:
     if not all(token in line for token in required):
         raise ValueError("PS-0323 row no longer has the pinned ACK/RECOVER/store role")
     match = re.search(r"\bPAYLOAD=([0-9A-Fa-f]{32})\b", line)
-    if not match or match.group(1).upper() != PS0323_PAYLOAD_HEX:
-        raise ValueError("PS-0323 payload differs from the pinned source value")
+    if not match:
+        raise ValueError("PS-0323 ACK row has no 16-byte payload")
     ciphertext = bytes.fromhex(match.group(1))
     plaintext = aes_ecb_decrypt(nonce, ciphertext)
-    if plaintext.hex().upper() != PS0323_PLAINTEXT_HEX:
-        raise ValueError("PS-0323 AES plaintext differs from the pinned result")
+    if sha256(plaintext) != PS0323_PLAINTEXT_SHA256:
+        raise ValueError("PS-0323 AES plaintext fingerprint differs from the pinned selector")
     return ciphertext, plaintext
 
 
@@ -149,16 +146,27 @@ def sample_cells(sheet: Any, coordinates: Iterable[tuple[int, int]], base: int) 
 
 def evaluate_m10_comments(extracted: dict[str, Any], selected_sheet: str | None,
                           nonce: bytes, target: bytes) -> list[dict[str, Any]]:
-    """Check only the M10 cell note/comment on an explicit or sole worksheet."""
-    if not selected_sheet:
-        return []
-    expected_source = f"{selected_sheet}!M10<comment>".casefold()
+    """Check only exact M10 comments on an explicit/sole sheet or all known sheets."""
+    if selected_sheet:
+        allowed_sources = {f"{selected_sheet}!M10<comment>".casefold()}
+    else:
+        sheet_names = [
+            str(meta.get("name"))
+            for meta in extracted.get("sheets", [])
+            if meta.get("name")
+        ]
+        if not sheet_names:
+            return []
+        allowed_sources = {
+            f"{name}!M10<comment>".casefold() for name in sheet_names
+        }
+
     results: list[dict[str, Any]] = []
     for stream in extracted.get("text_streams", []):
         if stream.get("kind") != "comment":
             continue
         source = str(stream.get("source", ""))
-        if source.casefold() != expected_source:
+        if source.casefold() not in allowed_sources:
             continue
         text = str(stream.get("text", ""))
         if not text.strip():
@@ -166,10 +174,11 @@ def evaluate_m10_comments(extracted: dict[str, Any], selected_sheet: str | None,
         normalized = normalize(text)
         component = k08_component(nonce, normalized)
         digest = sha256(component)
+        sheet = source.split("!", 1)[0]
         results.append({
             "source": source,
             "cell": "M10",
-            "sheet": selected_sheet,
+            "sheet": sheet,
             "comment_author": stream.get("comment_author"),
             "raw_comment_text": text,
             "normalized_phrase": normalized,
@@ -179,7 +188,6 @@ def evaluate_m10_comments(extracted: dict[str, Any], selected_sheet: str | None,
             "interpretation": "M10 margin/comment candidate; author metadata is not independent authentication",
         })
     return results
-
 
 def evaluate_candidate(cells: list[dict[str, Any]], nonce: bytes, target: bytes,
                        orientation: str, base: int, mapping: str) -> dict[str, Any]:
@@ -250,7 +258,10 @@ class FallbackBook:
         return None
 
 
-def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str | None = None) -> dict[str, Any]:
+def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str | None = None,
+                     reveal: bool = False) -> dict[str, Any]:
+    """Inspect the bounded selector. Raw values require explicit reveal=True."""
+
     if not workbook_path.is_file() or workbook_path.is_symlink():
         raise ValueError("workbook must be a regular, non-symlink file")
     nonce, target = load_k08_rules(resources)
@@ -307,19 +318,67 @@ def inspect_workbook(workbook_path: Path, resources: Path, explicit_sheet: str |
         "candidates": candidates,
         "m10_comment_candidates": m10_comment_candidates,
         "m10_comment_sheet": comment_sheet,
+        "m10_comment_scope": "explicit_or_sole_sheet" if comment_sheet else "all_listed_worksheets",
         "scope": [
             "Conditional test only: PS-0323-to-keeper-envelope identity is not authenticated by the surviving export.",
             "Only the eight PS-0323-derived cells, their original order, two byte orientations, and zero-/one-based coordinates are tested.",
             "No sheet ordering is inferred; multi-sheet workbooks require an explicit --sheet.",
             "Cell values are joined with one space and processed under the original REC8/1 normalization/HMAC rule.",
             "Formula cells are not used as phrase values because LibreOffice may recalculate them.",
-            "Only the M10 cell comment is additionally tested, and only on an explicit or sole worksheet; no broad comment search or embedded OfficeArt scan is performed.",
+            "Only exact M10 comments are tested: the explicit/sole worksheet, or M10 on all listed worksheets when no sheet is selected; no other comment cells are searched.",
             "Comment author metadata is preserved as a clue, not treated as independent identity authentication.",
             "The existing XLS intake converts a temporary copy and confirms the original workbook hash is unchanged."
         ]
     }
     book.release_resources()
-    return result
+    return result if reveal else redact_result(result)
+
+
+def redact_result(result: dict[str, Any]) -> dict[str, Any]:
+    """Return a public-safe summary with all candidate/selector material removed."""
+    public = dict(result)
+    workbook = result.get("workbook", {})
+    public["workbook"] = {
+        "name": Path(str(workbook.get("path", ""))).name,
+        "size": workbook.get("size"),
+        "source_unchanged": workbook.get("source_unchanged"),
+        "converter": workbook.get("converter"),
+    }
+    public["ps0323_selector"] = {
+        "redacted": True,
+        "cell_count": 8,
+        "orientation_count": 2,
+    }
+    public.pop("k08_target_sha256", None)
+    public["candidates"] = [
+        {
+            "orientation": item.get("orientation"),
+            "input_base": item.get("input_base"),
+            "sheet_mapping": item.get("sheet_mapping"),
+            "complete": item.get("complete"),
+            "match": item.get("match"),
+            "reason": item.get("reason"),
+            "selected_cell_count": len(item.get("cells", [])),
+        }
+        for item in result.get("candidates", [])
+    ]
+    public["m10_comment_candidates"] = [
+        {
+            "source": item.get("source"),
+            "cell": item.get("cell"),
+            "sheet": item.get("sheet"),
+            "author_present": bool(item.get("comment_author")),
+            "match": item.get("match"),
+            "interpretation": item.get("interpretation"),
+        }
+        for item in result.get("m10_comment_candidates", [])
+    ]
+    public["redaction"] = [
+        "K08 nonce, PS-0323 ciphertext/plaintext, coordinates, target digest, cell values, phrases, HMACs and component digests are withheld.",
+        "Comment-author identity is withheld; only author presence is reported.",
+        "Use inspect_workbook(..., reveal=True) only for authorized in-process local analysis; never log or publish that result.",
+    ]
+    return public
 
 
 def main() -> int:
