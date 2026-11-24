@@ -141,7 +141,7 @@ class SelectorTests(unittest.TestCase):
             previous_fallback = sys.modules.get("h17_xls_lo_fallback")
             sys.modules["h17_xls_lo_fallback"] = fake_fallback
             try:
-                result = inspect_workbook(workbook, root)
+                result = inspect_workbook(workbook, root, reveal=True)
             finally:
                 if previous_fallback is None:
                     sys.modules.pop("h17_xls_lo_fallback", None)
@@ -206,7 +206,7 @@ class SelectorTests(unittest.TestCase):
             source_xls = xls_dir / "source.xls"
             self.assertTrue(source_xls.is_file(), proc.stderr or proc.stdout)
             before = hashlib.sha256(source_xls.read_bytes()).hexdigest()
-            result = inspect_workbook(source_xls, root)
+            result = inspect_workbook(source_xls, root, reveal=True)
             after = hashlib.sha256(source_xls.read_bytes()).hexdigest()
 
         self.assertEqual(result["status"], "MATCH_REVIEW")
