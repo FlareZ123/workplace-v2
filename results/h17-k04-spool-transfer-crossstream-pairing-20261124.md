@@ -6,7 +6,7 @@
 
 Could the missing 16-byte ESC-N coupon be reconstructed from a relationship between the selected printer packet and the final archive-transfer receipt chain, rather than treating either record as a standalone source?
 
-This is a speculative copy/transfer-stage hypothesis. The retained sources do not explicitly join PS-0417 to AX-7782: MAIL-13 describes the handoff print as carrying a reference and receipt chain, not the whole archive. The test was therefore designed as a bounded falsifier, not as an asserted production rule.
+This is a speculative copy/transfer-stage hypothesis. The retained sources do not explicitly join PS-0417 to AX-7782: MAIL-13 is dated 2026-10-02 09:56Z, 32h06 before PS-0417 ACK2 at 2026-10-03 18:02Z, and describes a handoff print with a reference/receipt chain, not the whole archive. AX-7782's 2026-10-03 20:55:10Z COMMIT is after ACK2, but the same receipt timestamp also appears on AX-7781's dry-run COMMIT; the object-version time and Bundle06 inclusion/omission remain unverified. This pairing is therefore a deliberately speculative falsifier, not an authenticated producer relation.
 
 ## Source selection
 
@@ -38,7 +38,7 @@ No K04 candidate was promoted. The combined REC8/1 result remains incomplete.
 
 ## Interpretation and limits
 
-This rejects only the tested aligned arithmetic and chunk-interleaving relationships between the retained printer and transfer records. It does **not** show that the physical coupon is absent, authenticate the ACK2 payload, or rule out an unpreserved native spool/host-stage transformation. It also does not test the separate, source-gated mug-stock workbook hypothesis.
+This rejects only the tested aligned arithmetic and chunk-interleaving relationships between the retained printer and transfer records. Given the unresolved transfer chronology and object-version gate, do not treat AX-7782 as an authenticated K04/K08 donor. It does **not** show that the physical coupon is absent, authenticate the ACK2 payload, or rule out an unpreserved native spool/host-stage transformation. It also does not test the separate, source-gated mug-stock workbook hypothesis.
 
 The useful next evidence remains the native PS-0417 spool/queue record and independent physical-output witness, or the original profile-refresh source package containing the native workbook and WN-14/photo sidecars. Do not expand this into arbitrary cross-stream permutations without a new source-authenticated relationship.
 
