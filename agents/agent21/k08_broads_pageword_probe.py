@@ -121,13 +121,13 @@ def pixel_probe(im: Image.Image, points: list[tuple[int, int]]) -> dict:
     # transposed coordinate convention and common scan rotations/reflections.
     variants = {
         "xy": im,
-        "yx": ImageOps.transpose(im),
+        "yx": im.transpose(Image.Transpose.TRANSPOSE),
         "rot90": im.rotate(90, expand=False),
         "rot180": im.rotate(180, expand=False),
         "rot270": im.rotate(270, expand=False),
         "flip_x": ImageOps.mirror(im),
         "flip_y": ImageOps.flip(im),
-        "transpose_rot90": ImageOps.transpose(im).rotate(90, expand=False),
+        "transpose_rot90": im.transpose(Image.Transpose.TRANSPOSE).rotate(90, expand=False),
     }
     result = {}
     for name, image in variants.items():
