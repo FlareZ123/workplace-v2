@@ -217,3 +217,10 @@ Workplace-v1 original-target evidence is extensive (>180 reports), already exclu
 - MAIL-16 says the physical coupon was left in the September cassette return binder; the surviving bookmark `R:/Stores/returns/SEP26/index.htm` is only a locator. The return index/binder contents are not in the supplied export. This is a more defensible K04 source boundary than the dispatch-log payload.
 - MAIL-20 explicitly states Emily's final wording was left on the keeper-envelope face and the margin note contains only the earlier draft. K08 therefore requires the original envelope face (or an independently authenticated image/photo-caption/profile copy); the M10 workbook comment is not an authenticated phrase source. This corroborates Agent14's correction.
 - These mail statements are source facts; the actual coupon and final phrase are not present in the surviving local export. No new component or key was recovered.
+
+
+### 2026-11-24T22:08:09.228Z — print-fleet source clarification
+
+- The retained print-fleet return register (26-1004-B) confirms PS-261003-0417 → ESC-N / L-29/N / FA-17 / H17-POL-17/A3 and the five L-29/N tabs ST-094, ST-081, ST-106, ST-099, ST-112. It gives no printer make/model or media format.
+- It explicitly says rollers and feed brackets were handled on a separate monthly consumables return. The `mug-stock.xls` bookmark under `R:/Stores/consumables/` is a plausible locator for that separate return, but the workbook is absent and no actual XF/palette or numeric-seed field has been recovered.
+- The September cassette-return index `R:/Stores/returns/SEP26/index.htm` remains missing; MAIL-16 places the physical coupon in that binder. Do not infer printer technology from the retained fleet note alone.
