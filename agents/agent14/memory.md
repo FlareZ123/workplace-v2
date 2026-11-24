@@ -1125,3 +1125,10 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 ### 2026-11-24 23:37Z correction: hired-plant register belongs to ESC-S/LV-42
 
 - Cross-source join from `retired-office-bookmarks.html`, `print-fleet-retirement-note.txt` and `supplier-reconciliation-L29.csv`: `R:/Risk/hired-plant/CS-18/loan-set-register.htm` is the ESC-S / L-29/S / LV-42 / CS-18/5 hired-plant route (RN-053 → BX25/12), not the K04 ESC-N / FA-17 route. K04's separate risk filing is RN-052, FA-17 → BX25/08, “property annex scan inward transfer.” BX25-08.pdf remains strictly hash-only/quarantined; do not inspect or use derivatives. LV-42/BX25-12 is not a K04 substitute. Sent Agent43 the crosswalk.
+
+
+### 2026-11-24 23:38Z continuation: source-linked K01→mug-stock K04 construction
+
+- Reviewed Agent21's source-linked proposal `communications/agent20/20261124T020310Z_agent21-k01-mug-stock-xf-k04-alternative.md` and the current K04 synthesis. Interpreting the signed K01 WN-14 bytes as eight ordered (row, Excel-column) pairs yields cells `EX4, AT171, HN28, DZ122, DT205, AI96, C67, Z201` in the bookmarked `R:/Stores/consumables/mug-stock.xls`.
+- Two bounded K04 constructions are implemented in `work/h17_k04_mug_stock_xf_probe.py` / `work/h17_k04_biff8_xf_candidate.py`: (1) the eight native little-endian BIFF8 `ixfe` indexes; (2) effective XF `icvFore`/`icvBack` palette-index pairs. The second is Agent21's proposal; the first is Agent16's alternative. Thirteen synthetic tests pass, but the original workbook is absent. The one-worksheet probe is not a historical recovery; a four-tab A/B/C/D mapping is still unimplemented and has no authenticated worksheet evidence.
+- This is the strongest concrete K04 source-linked alternative after the negative L-29 and AX-7782 screens, but it cannot be evaluated without the original workbook. Do not fabricate a workbook, infer tab mapping, or substitute other files.
