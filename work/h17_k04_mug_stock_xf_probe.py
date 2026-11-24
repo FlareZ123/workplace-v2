@@ -2,10 +2,11 @@
 """Bounded read-only K04 probe for the K01-selected cells in mug-stock.xls.
 
 The only cells inspected are the eight addresses derived from the accepted
-K01 component. For each worksheet, the probe reads their original BIFF8
-cell-XF indexes, resolves effective pattern attributes, extracts icvFore/
-icvBack, and tests the resulting 16-byte candidate through the official K04
-XOR/hash rule. It does not scan arbitrary cells, images, or OfficeArt.
+K01 component. For each worksheet, the probe checks two bounded, complete
+16-byte candidates: the native little-endian cell-XF (ixfe) indexes and the
+effective BIFF8 icvFore/icvBack index pairs. It does not scan arbitrary cells,
+images, or OfficeArt. Candidate bytes, raw XF records, and mask material are
+redacted from its output.
 
 Run from a repository checkout:
   python work/h17_k04_mug_stock_xf_probe.py /path/to/mug-stock.xls
@@ -30,9 +31,7 @@ from h17_k04_biff8_xf_candidate import (  # noqa: E402
     assemble_k04_payload,
     check_k04_commitment,
     effective_cell_pattern,
-    palette_color,
     parse_palette_payload,
-    parse_xf_payload,
     verify_and_derive_k01_cells,
 )
 
@@ -238,33 +237,43 @@ def probe_sheet(
     if missing:
         result["status"] = "INCOMPLETE"
         return result
-    payload = assemble_k04_payload(cell_xf_indices, xfs)
-    check = check_k04_commitment(payload, mask, target_hash)
-    styles = []
-    for address, xf_index in zip(cells, cell_xf_indices):
-        cell_xf = parse_xf_payload(xfs[xf_index])
-        effective = effective_cell_pattern(xf_index, xfs)
-        styles.append(
-            {
-                "cell": address,
-                "cell_xf_index": xf_index,
-                "cell_fAtrPat": cell_xf.has_own_pattern,
-                "cell_parent_xf_index": cell_xf.parent_index,
-                "cell_xf_payload_hex": cell_xf.raw_payload.hex().upper(),
-                "effective_fill_pattern_fls": effective.fill_pattern,
-                "icvFore": effective.foreground_index,
-                "icvBack": effective.background_index,
-                "fore_rgb": palette_color(effective.foreground_index, palette),
-                "back_rgb": palette_color(effective.background_index, palette),
-                "effective_xf_payload_hex": effective.raw_payload.hex().upper(),
-            }
-        )
+    colour_payload = assemble_k04_payload(cell_xf_indices, xfs)
+    colour_check = check_k04_commitment(colour_payload, mask, target_hash)
+
+    # BIFF8 cell records store ixfe as a uint16 little-endian field. Preserve
+    # those native field bytes in K01 selector order as a distinct candidate.
+    ixfe_payload = b"".join(struct.pack("<H", index) for index in cell_xf_indices)
+    ixfe_check = check_k04_commitment(ixfe_payload, mask, target_hash)
+
+    effective_patterns = [
+        effective_cell_pattern(xf_index, xfs) for xf_index in cell_xf_indices
+    ]
+    any_match = colour_check["pass"] or ixfe_check["pass"]
     status = (
         "COMMITMENT_MATCH_REQUIRES_SOURCE_REVIEW"
-        if check["pass"]
+        if any_match
         else "MISS_WITHIN_TESTED_XF_MODEL"
     )
-    result.update({"status": status, **check, "styles": styles})
+    result.update(
+        {
+            "status": status,
+            "candidate_material_redacted": True,
+            "colour_index_check": {
+                "pass": colour_check["pass"],
+                "sha256": colour_check["sha256"],
+            },
+            "raw_ixfe_little_endian_check": {
+                "pass": ixfe_check["pass"],
+                "sha256": ixfe_check["sha256"],
+            },
+            "style_coherence": {
+                "effective_fill_patterns_uniform": len(
+                    {pattern.fill_pattern for pattern in effective_patterns}
+                ) == 1,
+                "custom_palette_present": bool(palette),
+            },
+        }
+    )
     return result
 
 
@@ -301,19 +310,13 @@ def main() -> int:
             for s in sheets
         ]
         output = {
-            "workbook": str(args.workbook),
+            "workbook_name": args.workbook.name,
             "workbook_sha256": hashlib.sha256(workbook_bytes).hexdigest(),
             "k01_component_sha256": hashlib.sha256(bytes.fromhex(k01_hex)).hexdigest(),
             "k01_cells": list(k01_cells),
             "xf_count": len(parsed["xfs"]),
             "custom_palette_count": len(parsed["palette"]),
-            "palette_payload_hex": (
-                None
-                if parsed["palette_payload"] is None
-                else parsed["palette_payload"].hex().upper()
-            ),
-            "k04_mask_hex": mask.hex().upper(),
-            "k04_target_sha256": target_hash,
+            "candidate_material_redacted": True,
             "results": results,
         }
         print(json.dumps(output, indent=2))
