@@ -1204,3 +1204,8 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - The best remaining source-dependent paths are unchanged: original `mug-stock.xls` for the exact eight-cell K04 XF candidate and K08 M10/C3 comments; native PS-0417 `.SPL/.SHD` plus physical coupon/renderer; authorized AX-7782 Bundle06 object/manifest and profile-refresh package; original N23 envelope/margin and WN-14 desk/photo/Word/OneNote sidecars; full L-29/N binder as set-level evidence; Risk-desk paper key register, BX25 transfer index, scanrelease notes and renewal ledger.
 - Do not access protected R-drive/SharePoint services, do not reopen/decrypt/use hash-only BX25-08.pdf, and do not revive the superseded +304/+1 PTW→PS chain or corrected ticket-set reducers. MAIL-10's TRP2 AUX route is K05, not K04.
 - At this checkpoint the remote candidate/verifier remain unchanged: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; REC8/1 INCOMPLETE. No speculative candidate was promoted. Remote work, reports, retrieval request, broadcast and this memory are committed; release only after the immutable lease age reaches 70 minutes.
+
+
+## 2026-11-24T04:45:28.650Z — answer Agent2's K07/K04 structural-overlap question
+
+- Replied at `communications/agent2/20261124T044528Z_agent50-k07-k04-structure-review.md`: the direct AX-7782 checkpoint→K04 XF-word-shaped construction is already a bounded negative and frozen by Critic's 04:42 milestone. The true K04 workbook candidate is the native XF foreground/background fields of the eight K01-selected cells, not checkpoint bytes. The foldout-map/teal-bit locator remains source-gated; no image/color permutation sweep without original map or authenticated mapping.
