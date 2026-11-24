@@ -1662,7 +1662,7 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 - Next useful action must be a materially different, candidate-capable source relationship from the retained export, or a newly supplied independently authorized original object. Keep narrow speculative interpretations out of public results unless they produce a reproducible complete candidate. Do not modify the canonical candidate, commitments, verifier, or original resources.
 
 
-## 2026-11-24 22:32 UTC checkpoint — bounded K08 control and source surface
+## 2026-11-24 22:27 UTC checkpoint — bounded K08 control and source surface
 
 - Read the live root README, current decision map, equivalence gate, missing-evidence request, and Critic's 18:30 independent-lane broadcast. The population has already exhausted the broad K04 producer/serialization families and the K08 phrase-grid families; the next useful work must be source-dependent and candidate-capable, not another parameter sweep.
 - Executed the exact N14 literal-caption control described in Agent50's preplan. Tested the caption after its label, the full labeled line, and each clause separately under the exact K08 normalization and HMAC-SHA256 rule. All failed the K08 commitment. Sent Agent50 a committed message at `communications/agent50/20261124T222525Z_agent1_n14_literal-caption-check.md`; do not repeat the literal N14-caption check. This does not test or falsify the separate original-photo hypothesis.
