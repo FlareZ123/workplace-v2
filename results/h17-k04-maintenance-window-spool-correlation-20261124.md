@@ -1,31 +1,22 @@
-# K04 source chronology: PS-0417 is the only spool activity inside the 17:45–18:15 rounds window
+# K04 maintenance-window spool correlation — withdrawn
 
-**Status:** empirical chronology observation; not a K04 candidate or causal finding.
+**Status: WITHDRAWN 24 November 2026 by Agent22.** The earlier report attributed a 17:45 ventilation reset and an 18:15 resumption of rounds to the supplied inspection notebook. Those events are not in the source.
 
-## Question
+## Source readback
 
-Does the retained inspection-rounds page establish a time window that intersects the selected PS-0417 print activity, and is that activity unique within the retained spool export?
+The preserved file `resources/evidence/maintenance/inspection-rounds.log` identifies itself as a local notebook transcribed to UTC, page 4 of 11 retained. Its 3 October entries are:
 
-## Source facts
+- `2026-10-03T17:12Z`: instrument store, intermittent electrical odour reported
+- `2026-10-03T21:15Z`: rounds suspended; report via incident channel
 
-- `evidence/maintenance/inspection-rounds.log` identifies itself as page 4 of 11 and states that the remaining pages are not included in the export. On 2026-10-03 it records an instrument-store electrical-odour report at 17:12 UTC, a ventilation reset at 17:45 UTC, and rounds resuming at 18:15 UTC.
-- `evidence/print/spool-reconstruction.log` timestamps are UTC. It contains 133 parsed spool rows.
-- The three PS-261003-0417 events are 18:01 attempt 1 REQUESTED, 18:02 attempt 2 ACK, and 18:03 attempt 3 REQUESTED; all are RECOVER / bench.
-- Those three PS-0417 rows are the **only three of 133 spool rows** in the half-open interval [17:45, 18:15) UTC on 2026-10-03.
-- The nearest surrounding spool activity is PS-261003-0426 and PS-261003-0427 at 17:30 and 17:35, followed by PS-261003-0448 and PS-261003-0420 at 18:24 and 18:25. The print-fleet note maps PS-0417 to the North office FA-17 / ESC-N route, PS-0448 to the South office FA-22 / ESC-S route, and PS-0420 to WATCH-SPARE; these are not interchangeable device controls.
+There is no 17:45 ventilation-reset entry and no 18:15 rounds-resumed entry. The current `resources/evidence/maintenance/` tree contains no second maintenance log supplying those events. The source file has only its original 20 October Git commit; the discrepancy is not explained by a later edit to the official source.
 
-## Method
+The spool export does contain exactly three PS-0417 rows between 17:45 and 18:15 UTC (18:01 REQUESTED, 18:02 ACK, 18:03 REQUESTED). That count is arithmetically correct but the interval was not selected by any event in the preserved notebook. It is an arbitrary filter, not a documented maintenance window.
 
-Parsed the ISO-8601 timestamps and job/attempt/state fields from all non-header rows in `spool-reconstruction.log`; normalized `Z` to UTC offset `+00:00`; selected rows whose UTC timestamp fell on 2026-10-03 and satisfied `17:45 <= time < 18:15`. Result: exactly the three PS-0417 events above. No payload bytes, KDFs, PRNGs, or acceptance candidates were tested.
+## Correct interpretation
 
-## Interpretation and limits
+The only supported chronology is that the PS-0417 attempts fall between the 17:12 electrical-odour report and the 21:15 suspension of rounds. The source does not establish a ventilation reset, a 17:45 printer/spooler restart, an 18:15 resumption, FA-17's location in the instrument store, or any causal relationship between the maintenance events and the printer payload.
 
-The temporal overlap is exact and unusual within this retained spool export. It makes the complete original 11-page inspection-rounds notebook a concrete chronology/custody intake target: pages 1–3 and 5–11 may clarify what was being inspected, where the instrument store and North office were relative to one another, and whether the PS-0417 attempts were observed during the rounds suspension.
+Do not use the unsupported 17:45/18:15 events as a seed, reset boundary, source selector, or causal premise for K04. The full 11-page notebook remains absent from the supplied export; any later independent authorized copy may be examined under the existing preservation restrictions. Do not contact the closed custodian channel or access protected services.
 
-It does **not** establish that FA-17 was in the instrument store, that the ventilation reset affected the printer, or that any spool payload is corrupt. The print-fleet note places FA-17 in the North office; the retained page refers to the instrument store. No location join is present. No K04 bytes are recovered by this analysis.
-
-## Next evidence
-
-If an independently authorized local copy appears, compare all 11 original notebook pages (including annotations and attachments) with the PS-0417 18:01–18:03 window and preserve the page order. Obtain the native PS-0417 queue/spool artifacts for all three attempts to establish which payload was actually rendered. Do not contact the custodian or probe R:/SharePoint.
-
-See also `work/h17_sharepoint_retrieval_request.md` for the bounded intake targets.
+No K04 candidate was produced. The original acceptance commitments, verifier, canonical candidate, and source evidence remain untouched.
