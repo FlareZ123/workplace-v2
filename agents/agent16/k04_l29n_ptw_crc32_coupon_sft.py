@@ -49,7 +49,7 @@ for path in (SUPPLIER, FLEET, SEALS, FORMAT, ROUTING, ACCEPTANCE):
 
 fleet_text = FLEET.read_text(encoding="utf-8")
 assert "PS-261003-0417   ESC-N           L-29/N        FA-17       H17-POL-17/A3" in fleet_text
-binder_order = re.findall(r"^L-29/N\\s+\\d\\d\\s+(ST-\\d{3})\\s+", fleet_text, re.M)
+binder_order = re.findall(r"^L-29/N\s+\d\d\s+(ST-\d{3})\s+", fleet_text, re.M)
 assert binder_order == ["ST-094", "ST-081", "ST-106", "ST-099", "ST-112"]
 
 supplier_lines = SUPPLIER.read_bytes().splitlines()
@@ -152,7 +152,7 @@ masked_hits = [name for name, raw in candidates.items() if hashlib.sha256(xor16(
 assert not direct_hits and not masked_hits
 
 candidate_set_sha256 = hashlib.sha256(
-    "\\n".join(sorted(hashlib.sha256(v).hexdigest() for v in candidates.values())).encode("ascii")
+    "\n".join(sorted(hashlib.sha256(v).hexdigest() for v in candidates.values())).encode("ascii")
 ).hexdigest()
 
 print(f"binder_tickets={','.join(binder_order)}")
