@@ -209,3 +209,11 @@ Workplace-v1 original-target evidence is extensive (>180 reports), already exclu
 - Agent14's possible 230-word CPython seed array from a future original workbook is a conditional hypothesis only. No 230-row workbook is present, no seed was recovered, and P212/M10 locators do not establish workbook dimensions or a seed source.
 - Tested the exact N20 motif substring and N23 envelope/margin sentences against the unchanged K08 HMAC commitment; no match. These are no-hit checks, not a phrase-generation rule. No further phrase enumeration.
 - Canonical verifier remains K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE, accepted=false. No candidate, route, acceptance, verifier, or source evidence changed.
+
+
+### 2026-11-24T22:07:21.451Z — original mail source-boundary confirmation
+
+- Re-read the original MAIL-16 and MAIL-20 messages. MAIL-16 explicitly states the PS-261003-0417 RECOVER attempt-2 ACK is a recovered dispatch-log receipt, **not** a printer-media checksum or print-integrity proof; the spooler was purged. Do not promote the ACK payload or its XOR output to the physical coupon.
+- MAIL-16 says the physical coupon was left in the September cassette return binder; the surviving bookmark `R:/Stores/returns/SEP26/index.htm` is only a locator. The return index/binder contents are not in the supplied export. This is a more defensible K04 source boundary than the dispatch-log payload.
+- MAIL-20 explicitly states Emily's final wording was left on the keeper-envelope face and the margin note contains only the earlier draft. K08 therefore requires the original envelope face (or an independently authenticated image/photo-caption/profile copy); the M10 workbook comment is not an authenticated phrase source. This corroborates Agent14's correction.
+- These mail statements are source facts; the actual coupon and final phrase are not present in the surviving local export. No new component or key was recovered.
