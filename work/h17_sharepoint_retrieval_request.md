@@ -68,13 +68,15 @@ Record formats, skipped files, scan limits, extraction failures and unscanned ca
 - Risk-desk paper key register (physical register; the bookmark does not provide a separate path)
 - R:/Risk/Transfers/BX25/transfer-index.htm
 - R:/Stores/consumables/mug-stock.xls
+- R:/Stores/returns/SEP26/index.htm (bookmark description: vendor ticket list; binder pages were signed at the north and south cabinets)
 - R:/IT/desktop-move-2026.html
 - R:/Risk/H17-POL-17/renewal-ledger-2025.xlsx
 
 - `R:/Finance/PrevERP/posted-items-26.xls` (bookmark description: posted settlement items). This is a targeted join candidate for the L-29/N and L-29/S binder records because the supplied CSV contains multiple run/posting revisions: ST-099 R2/VOID prior docket card and R3/POSTED hinge realignment; ST-112 R3/POSTED catch cleaning and R4/HELD duplicate settlement; ST-121 R2/VOID supplier adjustment; and ST-151 R3/POSTED guide-shim credit. The three positive-value North postings (ST-094, ST-106, ST-081) are not, by themselves, proof of the complete live-part set. The original ledger may provide native transaction IDs, row references, and status history; preserve native formulas, cached values, hidden sheets, comments, and row/reference IDs rather than flattening to CSV.
 - `R:/Finance/PrevERP/reversal-register.htm` (bookmark description: reversal register). This may resolve the prior-card / credit / reversal status of the L-29/N tabs; preserve the original page, links, and referenced transaction identifiers.
+- `R:/Risk/hired-plant/CS-18/loan-set-register.htm` (bookmark description: LV-series settlement queries were handled at the contractor desk). The supplied CSV has LV-42 / CS-18/4 and CS-18/5 entries (ST-121 and ST-151); preserve the full register, linked certificates, loan-set/folio mappings, transaction IDs and revisions so the separate supplier adjustment and guide-shim credit can be classified from original records. Do not infer North-tab membership or coupon construction from the bookmark alone.
 
-Prioritize the first three because the surviving bookmark set directly points to the old-scan release register, BX25 transfer index, and mug-stock workbook. They are source-side joins, not replacements for the missing native coupon or final margin.
+Prioritize slot-specific source joins rather than a generic retrieval order: for K04, obtain the bookmarked September returns index, original PrevERP posted-items/reversal records, the CS-18 loan-set register, and the native PS-0417 queue/dispatch/media; for K08, obtain Emily's N23/envelope originals, the pre-incident photo-caption source, and any relevant offline profile/mail-cache package. The old-scan release register, BX25 transfer index, mug-stock workbook and renewal ledger remain distinct bookmarked joins. These are source-side retrieval targets, not substitutes for the missing native coupon or final margin.
 
 ## Additional K08 native-label discriminator
 
