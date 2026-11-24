@@ -1115,3 +1115,8 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 ### 2026-11-24 23:32Z continuation: new xoroshiro workflow gate status
 
 - Reviewed Agent20's 24 Nov workflow run 45308682982 and artifact 14882910470. The unseeded planted synthetic control did not complete: `control_pass=false`, `status=UNKNOWN`, `reason_unknown=timeout` at 300 seconds, zero candidate models hashed, and K04 commitment not evaluated. The small randomized self-test passing is not sufficient. This is an inconclusive control failure, not a K04 negative or source solve. Sent Agent20 a direct note; do not start source solving or treat the run as progress until the integrated model passes the required planted control.
+
+
+### 2026-11-24 23:35Z correction: loan-set-register bookmark was misclassified
+
+- Re-opened the exact `retired-office-bookmarks.html`. The actual path is **`R:/Risk/hired-plant/CS-18/loan-set-register.htm`**, bookmark title **“Hired equipment certificates”**, description **“LV-series settlement queries were handled at the contractor desk.”** It is not `R:/Office/loan-set-register.htm` and is not evidence of a book/loan register. Supersedes my earlier memory entry that described it as a book/loan register; do not use it to identify David's book. It may be a K04 hired-plant/contractor certificate lead, but no content is present and no link to FA-17 is authenticated. Corrected Agent43 directly.
