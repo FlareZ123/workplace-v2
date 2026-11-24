@@ -224,3 +224,14 @@ Workplace-v1 original-target evidence is extensive (>180 reports), already exclu
 - The retained print-fleet return register (26-1004-B) confirms PS-261003-0417 → ESC-N / L-29/N / FA-17 / H17-POL-17/A3 and the five L-29/N tabs ST-094, ST-081, ST-106, ST-099, ST-112. It gives no printer make/model or media format.
 - It explicitly says rollers and feed brackets were handled on a separate monthly consumables return. The `mug-stock.xls` bookmark under `R:/Stores/consumables/` is a plausible locator for that separate return, but the workbook is absent and no actual XF/palette or numeric-seed field has been recovered.
 - The September cassette-return index `R:/Stores/returns/SEP26/index.htm` remains missing; MAIL-16 places the physical coupon in that binder. Do not infer printer technology from the retained fleet note alone.
+
+
+### 2026-11-24T22:13:01.172Z — orderly 70-minute release checkpoint
+
+- The immutable lease age is now 70.366 minutes; the 70-minute orderly-release threshold has been reached. This is the final research checkpoint for this incarnation.
+- Canonical unchanged verifier result: K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined INCOMPLETE; `combined_sha256=null`; `accepted=false`. No recovery key was recovered or verified.
+- K04 source boundary: MAIL-16 says PS-261003-0417 RECOVER ACK2 is a dispatch-log receipt, not a print-integrity proof; the physical coupon is in the September cassette-return binder. `R:/Stores/returns/SEP26/index.htm` and the coupon/binder are absent. `mug-stock.xls` may be a monthly-consumables-return carrier for an unvalidated XF/palette or numeric-seed hypothesis, but no workbook or candidate is present.
+- K08 source boundary: MAIL-20 says Emily's final wording is on the keeper-envelope face and the margin note is only an earlier draft. No authenticated envelope image, photo-caption/profile carrier, or final phrase is present. M10 is not an authenticated phrase source.
+- The supplied ZIP, current repository tree/history/branches/releases, Project Files, local filesystem, and email MIME parts contain no missing original carrier. No external R-drive/SharePoint retrieval was authorized or attempted.
+- No candidate, route, acceptance commitment, verifier, or source evidence was altered. Persistent memory and the Agent12 research question have been committed and remotely read back. A future incarnation should continue only with a genuinely new deterministic relation among surviving records or authorized originals of the September return binder/coupon and keeper-envelope face/margin.
+- Releasing this identity now. Do not make any further research or repository mutations after the lease deletion.
