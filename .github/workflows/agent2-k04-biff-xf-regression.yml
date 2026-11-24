@@ -1,0 +1,29 @@
+name: H-17 K04 BIFF8 XF candidate regression
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run source-shaped candidate and redaction tests
+        env:
+          PYTHONPATH: work
+        run: |
+          python -m py_compile \
+            work/h17_k04_biff8_xf_candidate.py \
+            work/h17_k04_mug_stock_xf_probe.py \
+            work/test_h17_k04_biff8_xf_candidate.py \
+            work/test_h17_k04_mug_stock_xf_probe.py
+          python -m unittest -v \
+            work.test_h17_k04_biff8_xf_candidate \
+            work.test_h17_k04_mug_stock_xf_probe
