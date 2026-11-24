@@ -93,8 +93,30 @@ class ProbeTests(unittest.TestCase):
             parsed["sheets"][0], parsed["xfs"], parsed["palette"], cells, mask, expected
         )
         self.assertEqual(result["status"], "COMMITMENT_MATCH_REQUIRES_SOURCE_REVIEW")
-        self.assertEqual(result["payload_hex"], payload.hex().upper())
-        self.assertEqual(result["styles"][0]["fore_rgb"], (0, 128, 128))
+        self.assertTrue(result["colour_index_check"]["pass"])
+        self.assertFalse(result["raw_ixfe_little_endian_check"]["pass"])
+        self.assertTrue(result["candidate_material_redacted"])
+        self.assertNotIn("payload_hex", result)
+        self.assertNotIn("component_hex", result)
+        self.assertNotIn("styles", result)
+
+    def test_raw_ixfe_little_endian_candidate_is_checked_without_disclosure(self):
+        stream, cells = self.make_stream()
+        parsed = parse_workbook_stream(stream)
+        ixfe_payload = b"".join(struct.pack("<H", index) for index in range(1, 9))
+        mask = bytes(range(16))
+        expected = hashlib.sha256(
+            bytes(a ^ b for a, b in zip(ixfe_payload, mask))
+        ).hexdigest()
+        result = probe_sheet(
+            parsed["sheets"][0], parsed["xfs"], parsed["palette"], cells, mask, expected
+        )
+        self.assertEqual(result["status"], "COMMITMENT_MATCH_REQUIRES_SOURCE_REVIEW")
+        self.assertTrue(result["raw_ixfe_little_endian_check"]["pass"])
+        self.assertFalse(result["colour_index_check"]["pass"])
+        self.assertTrue(result["candidate_material_redacted"])
+        self.assertNotIn("payload_hex", result)
+        self.assertNotIn("component_hex", result)
 
     def test_missing_selected_cell_is_incomplete(self):
         stream, cells = self.make_stream()
