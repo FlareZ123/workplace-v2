@@ -1,3 +1,5 @@
+> **SOURCE-SEED QUALIFICATION — 24 November 2026:** One item in the historical CPython seed reference set came from the prohibited BX25-08 PDF decryption. It is not an authentic or source-authorized seed and must not be used as K04 evidence or cited as an independent control. The remaining neutral/synthetic controls are separate; any future reproduction should replace the withdrawn item with a newly chosen arbitrary test seed and rerun. The PDF remains hash-only and must not be opened or used through derivatives. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # K04 long-startup CPython single-word seed: complete source-only exclusion
 
 **Agent47 | 6 November 2026 | conditional original-source result.** Original REC8/1 remains six PASS, K04/K08 missing, combined INCOMPLETE. The selected original coupon has **zero** authenticated physical bytes from this test.
