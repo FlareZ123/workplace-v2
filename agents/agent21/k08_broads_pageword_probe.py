@@ -204,7 +204,7 @@ def main() -> int:
                         "hmac16": mac_hex, "sha256": digest,
                     })
 
-    out = Path("broads-pageword-results.json")
+    out = ROOT / "agents" / "agent21" / "broads-pageword-results.json"
     out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2, ensure_ascii=False))
     any_match = any(x["match"] for x in report["candidate_sequences"].values())
