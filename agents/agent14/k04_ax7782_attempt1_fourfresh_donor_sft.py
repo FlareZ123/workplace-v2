@@ -58,8 +58,8 @@ def main() -> int:
 
     spool = (resources / "evidence/print/spool-reconstruction.log").read_text()
     pattern = re.compile(
-        r"^(\\S+) JOB=(\\S+) ATTEMPT=(\\d+) STATE=(\\w+) "
-        r"CLASS=(\\w+) PAYLOAD=([0-9A-F]{32}) DEST=(\\w+)$",
+        r"^(\S+) JOB=(\S+) ATTEMPT=(\d+) STATE=(\w+) "
+        r"CLASS=(\w+) PAYLOAD=([0-9A-F]{32}) DEST=(\w+)$",
         re.MULTILINE,
     )
     rows = list(pattern.finditer(spool))
