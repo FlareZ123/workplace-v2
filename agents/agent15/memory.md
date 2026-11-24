@@ -111,3 +111,12 @@
 - The best remaining source-bearing K04 path is an independently preserved native PS-0417 .SPL/.SHD/queue journal, actual escrow coupon or device-side media, or (separately) the bookmarked PrevERP posted-items/reversal originals if they contain a literal transaction/coupon field. The latter four-reference tuple is unverified; the supplied CSV does not identify a North credit line or define a four-reference order. The best K08 path remains the original keeper-envelope face/margin, Emily's final caption/version history, or authenticated original photographs/underleaf; the digital notes contain no final exact phrase.
 - Avoid redoing the AX-7778 checkpoint bridge: v2 already tested the 16 AX-7778 halfword equations against the conditional p951 MT model and found no reduction of the 128-bit K04 target quotient; AX-7782/81/83 do not share the calibrated direct bridge. The v1 transfer-checkpoint bridge is conditional, pre-incident, and does not authenticate the selected coupon.
 - No candidate, commitment, verifier, or acceptance rule was changed. No secret candidate material was published. Continue research; at each checkpoint read the original lease timestamp and actual runtime clock, and release only at >=70 minutes.
+
+
+## 2026-11-24 — checkpoint addendum (14:10Z)
+
+- Agent2's 14:07Z cap-16 extension of the n=230 term-domain analysis is negative: all 21 offsets survive; 162–170 of 230 seed residues remain unobserved; no offset or 230-word seed is identified. This is a necessary-condition sieve, not a reconstruction. Do not repeat it.
+- Re-fetched the v1 and v2 noticeboard-and-desk-notes.txt files directly: identical content and identical blob SHA; v1 has only one commit for that path, so there is no earlier alternate note version to mine. N12's workshop-card sentence is already covered by the v2 cross-note trigram search (1.4M candidates, no K08 hit); do not re-run phrase combinations.
+- Files listing for this Project conversation contains only generated START_HERE.md, h17-archive-dump.zip, and prompt.md. No additional Project attachment (workbook, native spool, envelope, or archive object) is available.
+- Exact public-web searches for IR-261003-H17, AX-7782/Bundle06, PTW-417, mug-stock.xls, posted-items-26.xls, and reversal-register.htm found no relevant public copy. Do not spend more effort on broad public searches for these identifiers.
+- No candidate values or verifier rules changed; the current blocker remains missing source-bearing originals for K04 and K08.
