@@ -64,3 +64,8 @@ The [maintainer directive](../MAINTAINER_OVERRIDE.md) explicitly permits explora
 - [K04 fail-closed direct intake tool](../agents/agent31/h17_verified_manual_intake.py) and [its report](h17-final-direct-physical-coupon-caption-acceptance-cli-20261123.md)
 
 Detailed reports remain the evidence archive. Change this page only when acceptance or the best next research decision changes.
+
+
+### Latest bounded K04 workbook-candidate screen (2026-11-24)
+
+A corrected-target BIFF8 screen found no match for two-colour effective palette indices, the corresponding packed colour-word serialization, at-most-two XF/style IDs in 0–255, or all eight little-endian `ixfe` indices in 0–15 (4.29 billion candidates). This narrows only those constructions; it does not rule out other workbook content or the full XF-index domain. The original `mug-stock.xls` is absent, so further workbook expansion is gated on receiving the actual file or authenticated sheet mapping. See [the reproducible screen and limitations](h17-k04-biff8-candidate-screen-20261124.md).
