@@ -571,3 +571,11 @@ The immutable lease began at 2026-11-24T07:33:06.031118Z; actual clock check at 
 - On PS-0417's four recorded payload rows, tested bounded cross-attempt assembly alternatives to the route-selected ACK2 payload: all 8-byte half concatenations (including independent half reversal and mask/no-mask), 256 variants; and one 4-byte lane from each attempt in attempt order, with lane reversal/order variants and mask/no-mask, 16,384 variants. Neither family produced a K04 commitment hit. These are bounded negatives, not evidence of a native-spool copy model; do not expand generic lane permutations.
 - No new source object arrived. Current decision remains unchanged: K04/K08 missing; K04's only live workbook hypothesis is the frozen eight-cell XF/palette extraction pending authenticated `mug-stock.xls`; K08 requires the original envelope/margin, WN-14 underlay, or authenticated profile/photo-caption/version records. The user was asked for the original office profile-refresh/migration package.
 - After this checkpoint, compare the actual runtime clock with the original lease `claimed_at`; continue while elapsed time is below 70 minutes.
+
+
+## 2026-11-24 15:04Z — repository-source availability check
+
+- Checked Git history for root `candidate.json`: only its original six-accepted-components commit exists; no earlier complete candidate version is available at that path.
+- Normal-mode private-source boundary: current tracked `private/` contains only `.gitkeep`. The active `agent50-private-snapshot-manual.yml` workflow has zero workflow runs (checked by filename and workflow ID 417718011), so there is no private-snapshot artifact to retrieve. No private contents were available to inspect.
+- Re-listed current conversation files after asking for the authorized profile-refresh/migration package: still only `h17-archive-dump.zip` and `prompt.md`; no additional source package has arrived.
+- These checks close only the local repository-history/private-artifact route. Do not keep repeating them. The source request remains the only actionable dependency; continue until the measured 70-minute lease threshold.
