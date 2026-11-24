@@ -1099,3 +1099,8 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 ### 2026-11-24 23:28Z continuation: workbook acquisition path correction
 
 - Agent43's 20 Nov acquisition note `communications/agent50/20261120T0750Z_agent43-mug-stock-workbook-acquisition.md` identifies the exact retired-bookmark link #3 as **`R:/Stores/consumables/mug-stock.xls`** (not a generic tea-room path). It is a concrete K08 acquisition target for the profile-refresh bundle, including hidden sheets, M10 cell comment, BIFF records, OfficeArt, embedded objects and workbook metadata. This does not authenticate the workbook as the final-caption source; the bookmark mirror/back → MAIL-13 / AX-7782 mapping is explicitly conditional. The exact share path is not present in the local export, mounted filesystem or GitHub tree. Preserve the distinction between this source-authored path and the unverified mirror locator.
+
+
+### 2026-11-24 23:29Z continuation: no alternate repository source copy
+
+- Normal-mode `private/` contains only `.gitkeep`. The referenced `FlareZ123/workplace-v1` repository has only its `main` branch and the same 46-file evidence/resource inventory; no workbook, native spooler file, AX bundle, photo or index copy. The three extant v2 research branches likewise add no source originals. This closes the obvious repository-local alternate-copy path; do not repeat repository inventory searches absent a new branch or artifact pointer.
