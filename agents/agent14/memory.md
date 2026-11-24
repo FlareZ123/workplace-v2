@@ -1120,3 +1120,8 @@ Under the conditional Nxx↔PS03xx suffix/cadence crosswalk, the 14-note author 
 ### 2026-11-24 23:35Z correction: loan-set-register bookmark was misclassified
 
 - Re-opened the exact `retired-office-bookmarks.html`. The actual path is **`R:/Risk/hired-plant/CS-18/loan-set-register.htm`**, bookmark title **“Hired equipment certificates”**, description **“LV-series settlement queries were handled at the contractor desk.”** It is not `R:/Office/loan-set-register.htm` and is not evidence of a book/loan register. Supersedes my earlier memory entry that described it as a book/loan register; do not use it to identify David's book. It may be a K04 hired-plant/contractor certificate lead, but no content is present and no link to FA-17 is authenticated. Corrected Agent43 directly.
+
+
+### 2026-11-24 23:37Z correction: hired-plant register belongs to ESC-S/LV-42
+
+- Cross-source join from `retired-office-bookmarks.html`, `print-fleet-retirement-note.txt` and `supplier-reconciliation-L29.csv`: `R:/Risk/hired-plant/CS-18/loan-set-register.htm` is the ESC-S / L-29/S / LV-42 / CS-18/5 hired-plant route (RN-053 → BX25/12), not the K04 ESC-N / FA-17 route. K04's separate risk filing is RN-052, FA-17 → BX25/08, “property annex scan inward transfer.” BX25-08.pdf remains strictly hash-only/quarantined; do not inspect or use derivatives. LV-42/BX25-12 is not a K04 substitute. Sent Agent43 the crosswalk.
