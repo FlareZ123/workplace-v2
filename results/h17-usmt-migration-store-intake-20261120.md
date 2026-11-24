@@ -58,7 +58,7 @@ If verification confirms a store and extraction is authorized, use a new output 
 python work\h17_usmt_store_intake.py AX-7782.mig --tool "C:\Program Files\Windows Kits\10\Assessment and Deployment Kit\User State Migration Tool\amd64\UsmtUtils.exe" --mode extract --out C:\H17-intake\extract
 ~~~
 
-The default extraction allowlist includes mug-stock.xls, desktop-move-2026.html, scanrelease.txt, IR-261003-H17.txt, transfer-index.htm, common Office/document/image formats (including standalone .emf caption files), SQLite databases and their WAL/SHM sidecars. Repeated --include values replace (rather than extend) this default list, so specify every desired pattern when adding spool members. Supply an independently authorized --keyfile only if the store is encrypted; do not assume the unrelated 8131 PDF password is the USMT key.
+The default extraction allowlist includes mug-stock.xls, desktop-move-2026.html, scanrelease.txt, IR-261003-H17.txt, transfer-index.htm, common Office/document/image formats (including standalone .emf caption files), SQLite databases and their WAL/SHM sidecars. Repeated --include values replace (rather than extend) this default list, so specify every desired pattern when adding spool members. Supply an independently authorized --keyfile only if the store is encrypted; do not assume any unrelated PDF-derived password is the USMT key.
 
 ## Next action and limits
 
