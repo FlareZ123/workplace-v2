@@ -14,7 +14,7 @@ Crucially, adding the recorder observations raises the p951 basis rank from **15
 ## Pinned sources and method
 
 - Printer source: `resources/evidence/print/spool-reconstruction.log`, SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`.
-- Recorder source: `resources/evidence/recorder/trip-recorder.raw`, SHA-256 `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba` (2,128 bytes; 88 CRC-good records; node 50 has 72 records with sequence values 0–71).
+- Recorder source: `resources/evidence/recorder/trip-recorder.raw`, SHA-256 `5ebc6204ed773102237dd287772de96d19740e163b49b4075537d937888657ba` (2,128 bytes; 88 records total / 84 CRC-good; node 50 has 72 CRC-good records with sequence values 0–71).
 - Existing source model: `agents/agent49/k04_p951_symbolic_basis.py`. Its 133 packet starts and selected row 129 at native stage 951 were reused unchanged; the selected payload remained omitted. The source-only printer basis has rank 15,365.
 
 For each node-50 record and candidate control stage (s), the test:
