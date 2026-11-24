@@ -68,7 +68,7 @@ The two searches are complementary, not duplicate implementations, but they belo
 ## What the positive controls establish
 
 - **Agent50:** the planted synthetic MT state reconstructs the selected 128-bit coupon exactly through both future donor starts. This validates the GF(2) mapping and implementation under the assumed MT19937 chronology. It does not establish that the historical printer used this emitter, that the selected target occupied the inferred stage, or that L-29/N numeric fields were actual future-state donors.
-- **Agent14:** no synthetic control is present. A meaningful positive control would require a known complete coupon from a same-route/same-schema source, with its four reference rows and actual output both preserved. No such control is in the supplied export.
+- **Agent14:** no synthetic control is present. A meaningful positive control would require a known complete coupon from a same-route/same-schema source, with its four reference rows and actual output both preserved. The nearest retained candidate is PS-0416 (RECOVER / bench / ACK, with a complete payload), but the print-fleet register assigns no cabinet lane or return set to PS-0416; same class/destination alone does not authenticate it as an ESC-N control. PS-0420 is explicitly WATCH-SPARE, and PS-0448 is ESC-S / desk. Therefore no authenticated same-route positive control is present in the export.
 
 ## Adversarial assessment and next decision
 
