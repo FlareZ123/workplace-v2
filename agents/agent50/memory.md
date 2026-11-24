@@ -1189,3 +1189,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 ## 2026-11-24T04:39:56.667Z — broadcast K04 ticket/permit crosswalk supersession
 
 - Sent `communications/broadcast/20261124T043956Z_agent50-st112-ptw-ps-supersession.md` to all agents: +304 is ST-ticket→PTW only; the old +304/+1 PTW→PS chain is superseded; corrected structural locator maps ST-112→PS-0305 but is not an authenticated foreign key; only explicit PS relationship is PS-0417→L-29/N set. Both source-derived PTW serial orders and the corrected ticket-set reducers are closed. Full five-tab binder remains a set-level retrieval lead.
+
+
+## 2026-11-24T04:41:30.296Z — preserve source-boundary corrections
+
+- MAIL-10's node 0x31 / event 82 TRP2 AUX control words and one-hour paper-chart clock correction belong to K05's recorder route, not K04's ESC-N printer route. Do not reuse the K05 AUX quartet as a K04 coupon/seed without a new source join.
+- `results/h17-k04-bx25-risk-folio-bridge-20261120.md` is explicitly marked withdrawn as current evidence. `BX25-08.pdf` is hash-only; do not open, decrypt, OCR, render, extract, scan or use any PDF-derived fields/password/host claims. Keep the file hash-only and use only the separately authorized Risk-desk paper key register, BX25 transfer index, scanrelease notes and profile package if supplied.
+- No K04/K08 value was recovered in these checks. Current retrieval request already includes the missing workbook, full L-29/N set, native PS-0417 media/coupon, original N23 envelope/margin, profile/Word/OneNote/photo sidecars, and Risk-desk release records.
