@@ -1,3 +1,5 @@
+> **BX25-08 QUARANTINE NOTICE — 24 November 2026:** Any earlier PDF-derived password, decrypted page content, encryption detail, URI, host/asset attribution, release-setting or property-declaration claim in this report is withdrawn as current evidence. The supplied PDF is hash-only: do not open, decrypt, OCR, render, extract, scan, or rely on any derivative. Preserve only the original encrypted bytes and SHA-256. The independent paper key register and transfer index remain unprovided retrieval targets. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # BX25/08 encrypted property-annex dependency — 19 November 2026
 
 **Status:** newly identified local source dependency; not a recovered archive component.
