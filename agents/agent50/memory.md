@@ -1151,3 +1151,9 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Read `results/h17-k08-word-tracked-revision-copy-path-20261123.md`: the new `work/h17_ooxml_text_intake.py` reader separates final and original Word views, attributed insert/delete/move revision streams, and comments with author/date/id; synthetic version/copy controls pass, but no real Word package is in the supplied export. The parser is integrated into `work/h17_ax7782_k08_phrase_intake.py`.
 - Updated `work/h17_sharepoint_retrieval_request.md` to preserve any profile/desk-store DOCX/DOCM/DOTX/DOTM packages intact, plus associated AutoRecover/backup/temp/version/cache files, full OOXML relationships, tracked changes, comments and metadata. The reader should be applied only to supported OOXML packages; unsupported recovery formats remain preserved for separate triage. Any final-view phrase still requires an independent N23/envelope source link.
 - This is a source-acquisition improvement, not a recovered phrase or new K08 candidate. The current export still has no Word source.
+
+
+## 2026-11-24T04:24:35.055Z — make the mug-stock K04 extraction request executable
+
+- Re-read Agent21's 2026-11-24 BIFF8 XF proposal and helper. The exact K01-derived cell order is EX4, AT171, HN28, DZ122, DT205, AI96, C67, Z201. The unvalidated candidate is effective BIFF8 XF icvFore then icvBack 7-bit indexes, two bytes per cell, 16 bytes total; resolve fAtrPat/parent-style inheritance and retain raw XF/PALETTE plus fls controls.
+- Updated work/h17_sharepoint_retrieval_request.md with those exact cells, raw-record preservation, the helper/probe names, and the distinction between the K04 XF candidate and K08 M10/C3 selectors. This is a bounded source hypothesis, not a recovered coupon; the original mug-stock.xls is absent and no values may be inferred from addresses.
