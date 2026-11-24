@@ -52,17 +52,31 @@ with csv_path.open(newline="", encoding="utf-8") as stream:
         if not line or not line.startswith("#"):
             stream.seek(position)
             break
-    records = {row["line_ref"]: row for row in csv.DictReader(stream)}
+    records = {}
+    for row in csv.DictReader(stream):
+        records.setdefault(row["line_ref"], []).append(row)
 
-for ticket in tab_order:
-    row = records[ticket]
+def select_r3_posted(ticket: str) -> dict[str, str]:
+    candidates = [
+        row for row in records[ticket]
+        if row["run"] == "R3" and row["posting"] == "POSTED"
+    ]
+    assert len(candidates) == 1, f"Expected one R3 POSTED row for {ticket}"
+    row = candidates[0]
     assert row["source"] == "L29"
-    assert row["run"] == "R3" and row["posting"] == "POSTED"
     assert row["account"] == "FA-17"
     assert row["folio_or_jacket"] == "H17-POL-17/A3"
+    return row
+
+for ticket in tab_order:
+    select_r3_posted(ticket)
+assert len(records["ST-112"]) == 2
+assert {(row["run"], row["posting"]) for row in records["ST-112"]} == {
+    ("R3", "POSTED"), ("R4", "HELD")
+}
 
 def add_forms(label: str, tickets: list[str]) -> None:
-    selected = [records[t] for t in tickets]
+    selected = [select_r3_posted(t) for t in tickets]
     suffixes = [int(t.rsplit("-", 1)[1]) for t in tickets]
     cents = [int(decimal.Decimal(r["amount_eur"]) * 100) for r in selected]
     packed = [(suffix << 16) | amount for suffix, amount in zip(suffixes, cents)]
