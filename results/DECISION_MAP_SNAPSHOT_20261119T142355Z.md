@@ -1,3 +1,5 @@
+> **SUPERSEDED BX25-08 HANDLING NOTICE — 24 November 2026:** This historical decision-map snapshot predates the current source boundary. Do not rely on or reproduce any BX25-08 PDF-derived password/release value, decrypted content, URI, host/asset attribution, or property-declaration claim appearing in this snapshot. The supplied PDF is hash-only and remains quarantined; do not open, decrypt, OCR, render, extract, scan, or use derivatives. Current evidence status and restrictions are in [the missing-evidence request](h17-missing-evidence-request.md) and [the current research map](README.md).
+
 # H-17 recovery: live research decision map
 
 **Updated 2026-11-19T14:23:55.511Z.**
