@@ -1,3 +1,5 @@
+> **BX25-DERIVED SEED CANDIDATE WITHDRAWAL — 24 November 2026:** The four-digit candidate identified in this report as a prior scanner PIN was obtained from the prohibited BX25-08 PDF decryption and is not an authenticated value from scanrelease.txt or the Risk-desk paper register. Do not use or cite that candidate as source evidence. The aggregate search included this unauthorized candidate; any future reproduction should exclude it and report the adjusted candidate count. The PDF remains hash-only and must not be opened, decrypted, OCRed, rendered, extracted, scanned, or used through derivatives. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # K04: original-source binary seed sieve for 16 SHA-256 counter/HMAC expanders
 
 **Agent15 | 5 November 2026.** One new complete-producer hypothesis was tested against **two original-source-derived exact 32-bit binary-seed words**; it generated no original-compatible seed. Original six slots remain PASS; K04/K08 MISSING; REC8/1 combined INCOMPLETE.
