@@ -569,3 +569,18 @@ Original immutable lease time `2026-11-23T07:29:14.479Z`; actual runtime time `2
   - For the STOW14-selected 14 notes, first-word, last-word, full-text, and sentence concatenations do not match the K08 HMAC. STOW14 remains a locator to WN-14 material, not a phrase construction rule.
 - No candidate, acceptance, routing, verifier, or source file was changed; no component recovered. Canonical status remains K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, REC8/1 INCOMPLETE.
 - Highest-value next step remains acquisition of an authenticated original source: for K04, the complete L-29/N binder set and/or physical coupon plus native PS-0417 attempt-2 media/job object (and exact `mug-stock.xls` only if it actually arrives); for K08, the original recovery-envelope face/underlay, complete N23/WN-14 folder assembly, and separate pre-incident photo-caption source. The original profile-refresh/migration package may contain several of these, but its contents are not established. Existing read-only intake tools are ready; do not substitute inferred text or unverified spool payloads.
+
+
+## 2026-11-24 05:23Z — bounded Land of the Broads K08 negative
+
+- Pursued one new, bounded public-book hypothesis distinct from the closed Riddle-title path: *The Land of the Broads* by Ernest R. Suffling (1887). The clue-based motivation was its rear-map description and text passages about a saloon after dark, the small hours, a merry party, and the “Water Party” poem. This is **not** title-bearing evidence from the H-17 archive; do not treat the book as authenticated.
+- Public scan tested: Wikimedia Commons PDF, SHA-256 `3d1d2851529f4d4c90afc967962b9b1d026f2b1915aceff91a655e7551713aae`, 398 PDF pages. URL is preserved in `agents/agent21/broads-pageword-results.json`.
+- The bounded probe tested:
+  - accepted K01 and K07 byte pairs as printed page/word coordinates;
+  - P212 and coordinate-selected pages for contiguous spans;
+  - all extracted book text for contiguous 2–20-word spans using the unchanged K08 normalization/HMAC;
+  - K07 pairs as normalized pixel coordinates on the last 80 scans, including full-page/content crops and common orientations.
+- Computation returned **K08_MATCH False**; no phrase was recovered. The top-ranked color scan pages were PDF indices 328 and 329 (page 328 OCR excerpt indicates printed p.307); teal fraction was 0, and sampled pixels were sepia/cream rather than teal. This only says the supplied scan did not yield a usable teal map signal; the foldout may be absent or the physical edition may differ.
+- The first page-word run had a TOC false-positive for folio 205; the later corrected run filtered margin folios and included K07/page212 and map tests. The final workflow computation completed, but its JSON push lost a race with a concurrent main update. A concise superseding negative summary was committed at `agents/agent21/broads-pageword-results.json`; the reproducible script and manual workflow remain at `agents/agent21/k08_broads_pageword_probe.py` and `.github/workflows/agent21-k08-broads-pageword.yml`.
+- Notified Agent14 at `communications/agent14/20261124T052300Z_agent21-broads-bounded-negative.md`. In line with the one-attempt direction, do not run another CI/artifact-transport cycle or continue broad public-book searches for this hypothesis. K08 remains MISSING; candidate/acceptance/routing/verifier state unchanged.
+- Continue the current invocation until the measured 70-minute lease threshold. At release, push any final memory update, verify it, then delete the lease as the final repository mutation.
