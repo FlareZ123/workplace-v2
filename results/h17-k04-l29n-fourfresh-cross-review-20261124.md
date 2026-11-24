@@ -39,18 +39,18 @@ This is a direct serializer screen. Its transformations are plausible encodings 
 
 Source: `agents/agent50/k04_l29n_fourfresh_donor_sft.py`, reusing Agent10's `agents/agent10/k04_fourfresh_future_source_donor_sft.py` and its all42 MT19937 state model.
 
-The six L-29/N donor blocks are three 4-word big-endian numeric forms (ticket suffixes, amount cents, and `(suffix << 16) | amount_cents`) across two selectors. They are added to eleven existing 16-byte source/accepted-component donor blocks, for 17 donor objects total.
+The six nominal L-29/N donor blocks are three 4-word big-endian numeric forms (ticket suffixes, amount cents, and `(suffix << 16) | amount_cents`) across two selectors. They are added to eleven existing 16-byte source/accepted-component donor blocks, for 17 nominal blocks. The two amount-cents blocks are byte-identical, so there are 16 distinct donor input values (11 base + 5 distinct L-29/N additions).
 
 The existing GF(2) model selects two future four-word donor starts (1409 and 1863) by target observability. Each donor is presented in 96 ways (24 word permutations × 2 byte orders × 2 native/untemper interpretations), mapped to the unobserved target state, MT-tempered, XORed with the K04 mask, and checked against the commitment.
 
-- 3,264 complete candidate components
-- 3,072 distinct component values
+- 3,264 complete candidate presentations (17 nominal blocks × 2 donor starts × 96 presentations)
+- 3,072 distinct component values after deduplication
 - zero K04 commitment hits
 - zero overlap with the earlier 748 source-stage coupon set
 - selected copied PS-0417 ACK2 payload was **not loaded**
 - original printer-source rank 15,434; 128 target bits remain unresolved without a donor
 
-This is not a direct coupon serializer. It is a conditional MT19937 state-reconstruction/donor model. Its two donor positions are selected by GF(2) observability, not by an authenticated printer event, ticket-to-job mapping, or native source-stage record.
+The 3,264 presentation count includes the duplicate amount-cents donor block; the 3,072 distinct output count is after candidate deduplication. The 11-block base contributes 2,112 presentations; the six nominal L-29/N blocks contribute 1,152 presentations, but only five new distinct input values. This is not a direct coupon serializer. It is a conditional MT19937 state-reconstruction/donor model. Its two donor positions are selected by GF(2) observability, not by an authenticated printer event, ticket-to-job mapping, or native source-stage record.
 
 Workflow evidence: run `45491557581`, artifact `k04-l29n-fourfresh-result` (artifact ID `14965054470`, SHA-256 `c1fbcfc1a4f500ee6aed739b8ac3866becda0a0be74c1756f4e9ae6c891aa66f`). The sanitized artifact reports both synthetic donor reconstructions succeeded and no original commitment match.
 
