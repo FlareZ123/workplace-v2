@@ -1144,3 +1144,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Independently parsed all 133 spool rows: only PS-0417 and PS-0420 have multiple events. PS-0417 is the target; PS-0420 is WATCH-SPARE and is not an authenticated ESC-N control. The other RECOVER/bench ACK rows are singletons without route assignments. The Critic's 00:05Z suggestion is therefore stale; no generic prior-ACK or metadata-emitter sweep should be repeated.
 - Directly checked whether the conditional PS-0323/N23 payload is itself the K08 HMAC16 component: SHA-256 of its 16 bytes does not match the immutable K08 commitment. The N23↔PS-0323 association remains conditional, so no additional transform was pursued.
 - Updated the public research map and broadcast this correction. Next meaningful K04 work requires independently preserved PS-0417 native queue/media or an authenticated ESC-N control; K08 requires the original N23 envelope/margin or native photo/sidecar/profile source. Do not access protected R-drive/SharePoint or reopen the hash-only PDF.
+
+
+## 2026-11-24T04:21:12.686Z — extend K08 profile retrieval to Word revision carriers
+
+- Read `results/h17-k08-word-tracked-revision-copy-path-20261123.md`: the new `work/h17_ooxml_text_intake.py` reader separates final and original Word views, attributed insert/delete/move revision streams, and comments with author/date/id; synthetic version/copy controls pass, but no real Word package is in the supplied export. The parser is integrated into `work/h17_ax7782_k08_phrase_intake.py`.
+- Updated `work/h17_sharepoint_retrieval_request.md` to preserve any profile/desk-store DOCX/DOCM/DOTX/DOTM packages intact, plus associated AutoRecover/backup/temp/version/cache files, full OOXML relationships, tracked changes, comments and metadata. The reader should be applied only to supported OOXML packages; unsupported recovery formats remain preserved for separate triage. Any final-view phrase still requires an independent N23/envelope source link.
+- This is a source-acquisition improvement, not a recovered phrase or new K08 candidate. The current export still has no Word source.
