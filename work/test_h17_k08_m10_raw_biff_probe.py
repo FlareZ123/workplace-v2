@@ -11,8 +11,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_biff_officeart
 
 from h17_k08_m10_raw_biff_probe import (
-    EXPECTED_N02_HMAC16, component, decode_xl_unicode, extract_m10,
-    inspect_workbook, normalize, parse_workbook_stream,
+    EXPECTED_N02_HMAC16, component, decode_xl_unicode, extract_cell, extract_m10,
+    inspect_workbook, normalize, parse_a1_address, parse_workbook_stream,
 )
 
 NONCE = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
@@ -129,6 +129,17 @@ class RawM10BiffTests(unittest.TestCase):
         self.assertEqual(result[0]["formula_tokens_hex"], "1E0100")
         self.assertIn("string_record_hex", result[0])
 
+    def test_exact_p212_locator_is_supported_without_neighbor_scanning(self):
+        self.assertEqual(parse_a1_address("P212"), (211, 15))
+        stream = workbook_stream([label_record(PHRASE, row=211, col=15)])
+        result = extract_cell(stream, "P212")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["cell"], "P212")
+        self.assertEqual(result[0]["raw_text"], PHRASE)
+        self.assertEqual(extract_cell(stream, "M10"), [])
+        with self.assertRaisesRegex(ValueError, "outside BIFF8 limits"):
+            parse_a1_address("IW1")
+
     def test_neighbor_cell_is_ignored(self):
         stream = workbook_stream([label_record(PHRASE, row=9, col=11)])
         self.assertEqual(extract_m10(stream), [])
@@ -187,7 +198,47 @@ class RawM10BiffTests(unittest.TestCase):
         self.assertEqual(result["status"], "MATCH_REQUIRES_SOURCE_REVIEW")
         self.assertEqual(result["match_count"], 1)
         self.assertTrue(result["workbook"]["source_unchanged"])
+        self.assertTrue(result["candidate_material_redacted"])
+        self.assertNotIn("raw_text", result["cell_records"][0])
+        self.assertNotIn("hmac16", result["candidates"][0])
+        self.assertNotIn("normalized_phrase", result["candidates"][0])
+        self.assertNotIn("k08_desk_nonce_hex", result)
+        self.assertNotIn("k08_target_sha256", result)
+        self.assertNotIn("path", result["workbook"])
         self.assertEqual(before, after)
+
+    def test_end_to_end_p212_commitment_hit_is_redacted(self):
+        stream = workbook_stream([label_record(PHRASE, row=211, col=15)])
+        target = hashlib.sha256(component(NONCE, PHRASE)).hexdigest()
+
+        class FakeCompoundFile:
+            def __init__(self, _data):
+                pass
+
+            def read_stream(self, _names):
+                return "Workbook", stream
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            resources = root / "resources"
+            (resources / "evidence").mkdir(parents=True)
+            (resources / "evidence" / "recovery-routing.json").write_text(
+                json.dumps({"K08": {"desk_nonce": NONCE.hex()}}), encoding="utf-8")
+            (resources / "acceptance.json").write_text(
+                json.dumps({"slot_sha256": {"K08": target}}), encoding="utf-8")
+            workbook = root / "mug-stock.xls"
+            workbook.write_bytes(b"original source placeholder")
+            with patch.object(h17_biff_officeart, "CompoundFile", FakeCompoundFile):
+                result = inspect_workbook(workbook, resources, "P212")
+
+        self.assertEqual(result["status"], "MATCH_REQUIRES_SOURCE_REVIEW")
+        self.assertEqual(result["cell"], "P212")
+        self.assertEqual(result["match_count"], 1)
+        self.assertTrue(result["candidate_material_redacted"])
+        self.assertNotIn("raw_text", result["cell_records"][0])
+        self.assertNotIn("hmac16", result["candidates"][0])
+        self.assertNotIn("normalized_phrase", result["candidates"][0])
+        self.assertNotIn("k08_desk_nonce_hex", result)
 
 
 if __name__ == "__main__":
