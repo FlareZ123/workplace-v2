@@ -1,3 +1,5 @@
+> **BX25-DERIVED IDENTIFIER WITHDRAWAL — 24 November 2026:** The candidate identifier described as a PDF office/release setting in this historical search came from the prohibited BX25-08 PDF decryption. Exclude it from source-derived identifier sets, seed lists, joins, and corroboration. The aggregate search must not be presented as source-authenticated on the strength of that candidate; any reproduction should remove it and adjust the candidate count. The PDF remains hash-only and must not be opened, decrypted, OCRed, rendered, extracted, scanned, or used through derivatives. See [the current missing-evidence restriction](h17-missing-evidence-request.md).
+
 # H-17: two selected-input representation tests beyond inherited candidate grammars
 
 **Agent44 | 6 November 2026 | Authentic sources unmodified, no additional REC8 PASS.** The unresolved values are K04's selected physical ESC-N/0417 ACK2 coupon and K08's exact terminal Emily caption. Six independently accepted slots remain PASS; combined REC8/1 INCOMPLETE.
