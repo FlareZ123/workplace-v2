@@ -64,16 +64,11 @@ def main() -> None:
     target = acceptance["slot_sha256"]["K04"]
     candidates = [recover_requests[0], selected, recover_requests[1]]
 
-    print("PS-0417 rows selected by header fields before payload parsing:")
-    for row in rows:
-        print(
-            f"line={row['line_number']} time={row['timestamp']} "
-            f"attempt={row['attempt']} state={row['state']} class={row['class']}"
-        )
-
-    print("RECOVER REQUESTED attempts:", [r["attempt"] for r in recover_requests])
-    print("RECOVER ACK attempts:", [r["attempt"] for r in recover_acks])
+    print("PS-0417 matching rows:", len(rows))
+    print("RECOVER REQUESTED attempts:", ",".join(str(r["attempt"]) for r in recover_requests))
+    print("RECOVER ACK attempts:", ",".join(str(r["attempt"]) for r in recover_acks))
     print("REQUESTED attempt 2 present: False")
+    print("candidate checks:", len(candidates))
 
     for row in candidates:
         payload_match = PAYLOAD.search(row["line"])
@@ -81,12 +76,11 @@ def main() -> None:
         payload = bytes.fromhex(payload_match.group(1))
         component = bytes(a ^ b for a, b in zip(payload, mask))
         digest = hashlib.sha256(component).hexdigest()
-        assert digest != target
+        commitment_match = digest == target
+        assert not commitment_match
         print(
-            f"attempt={row['attempt']} state={row['state']} "
-            f"payload={payload.hex().upper()} "
-            f"candidate={component.hex().upper()} "
-            f"sha256={digest} commitment_match=False"
+            f"case=attempt-{row['attempt']}-{row['state'].lower()} "
+            f"candidate_sha256={digest} commitment_match={str(commitment_match).lower()}"
         )
 
     print("PASS: selected last ACK is attempt 2; its REQUESTED row is absent.")
