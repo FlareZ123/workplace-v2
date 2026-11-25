@@ -7,7 +7,7 @@ candidate block B it checks both SHA256(B) and SHA256(B XOR route_mask) against
 the K04 component commitment. It also descends into ZIP, TAR, and GZIP members
 without extracting them to disk. No heuristic transformations are attempted.
 
-The default target/mask are the current REC8/1 K04 acceptance/routing values.
+The target and route mask are loaded from local acceptance/routing files at runtime and are never emitted.
 Use --self-test to validate raw, masked, and ASCII-hex detection without any
 historical source files. Inputs are never modified.
 """
@@ -26,6 +26,8 @@ import tarfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from h17_redaction import redact_sensitive
+
 from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 from h17_k04_image_barcode_intake import read_image_barcodes
 from h17_k04_emf_dib_intake import extract_emf_dib_bmps
@@ -38,8 +40,6 @@ from h17_emf_text import extract_emf_text
 from h17_xps_text import could_contain_xps, extract_xps_text
 from h17_xps_glyph_indices import extract_xps_glyph_streams
 
-DEFAULT_TARGET = "930a52a1bab97ca2966332137c99e99298ea6182fb32ab63a3421dfb4fd8c9e0"
-DEFAULT_MASK = "8556C8CB6140A7F9A5123AC7571BEE1C"
 DEFAULT_MAX_MEMBER = 256 * 1024 * 1024
 DEFAULT_MAX_TOTAL = 512 * 1024 * 1024
 DEFAULT_MAX_DEPTH = 4
@@ -502,7 +502,7 @@ def run_scan(root: Path, target_hex: str, mask_hex: str, stride: int,
 
 def self_test():
     component = bytes(range(16))
-    mask = bytes.fromhex(DEFAULT_MASK)
+    mask = bytes(range(16))
     payload = bytes(a ^ b for a, b in zip(component, mask))
     target = hashlib.sha256(component).digest()
     blob = b"prefix" + payload + b"middle=" + component.hex().encode("ascii") + b"=suffix"
@@ -544,11 +544,22 @@ def self_test():
             "grouped_hex_and_base64": "PASS"}
 
 
+def load_k04_rules(resources: Path) -> tuple[str, str]:
+    route = json.loads((resources / "evidence" / "recovery-routing.json").read_text(encoding="utf-8"))
+    acceptance = json.loads((resources / "acceptance.json").read_text(encoding="utf-8"))
+    mask_hex = str(route["K04"]["masked_component"])
+    target_hex = str(acceptance["slot_sha256"]["K04"])
+    if len(target_hex) != 64 or len(mask_hex) != 32:
+        raise ValueError("invalid K04 commitment or route-mask width")
+    bytes.fromhex(target_hex)
+    bytes.fromhex(mask_hex)
+    return target_hex, mask_hex
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, help="native spool file or directory, or AX-7782 object")
-    parser.add_argument("--target-sha256", default=DEFAULT_TARGET, help="K04 component commitment (64 hex chars)")
-    parser.add_argument("--mask", default=DEFAULT_MASK, help="16-byte route mask (32 hex chars)")
+    parser.add_argument("--resources", type=Path, default=Path(__file__).resolve().parents[1] / "resources")
     parser.add_argument("--stride", type=int, default=1, help="raw-window byte stride; default 1 is exhaustive")
     parser.add_argument("--max-member-bytes", type=int, default=DEFAULT_MAX_MEMBER)
     parser.add_argument("--max-total-bytes", type=int, default=DEFAULT_MAX_TOTAL)
@@ -562,13 +573,10 @@ def main():
         return
     if args.input is None:
         parser.error("--input is required unless --self-test is used")
-    if len(args.target_sha256) != 64 or len(args.mask) != 32:
-        parser.error("target must be 64 hex chars and mask must be 32 hex chars")
     try:
-        bytes.fromhex(args.target_sha256)
-        bytes.fromhex(args.mask)
-    except ValueError:
-        parser.error("target and mask must be valid hexadecimal")
+        target_hex, mask_hex = load_k04_rules(args.resources)
+    except Exception as exc:
+        parser.error(type(exc).__name__)
     if (args.stride < 1 or args.max_member_bytes < 1 or args.max_total_bytes < 1
             or args.max_depth < 0 or args.max_members < 1):
         parser.error("stride/member/total limits must be positive and max-depth nonnegative")
@@ -579,8 +587,9 @@ def main():
         input_path = args.input.resolve()
         if output_path == input_path or (input_path.is_dir() and input_path in output_path.parents):
             parser.error("--json-out must be outside the input file/directory; source inputs remain read-only")
-    result = run_scan(args.input, args.target_sha256, args.mask, args.stride,
+    result = run_scan(args.input, target_hex, mask_hex, args.stride,
                       args.max_member_bytes, args.max_total_bytes, args.max_depth, args.max_members)
+    result = redact_sensitive(result)
     output = json.dumps(result, indent=2, sort_keys=True)
     if args.json_out:
         args.json_out.write_text(output + "\n", encoding="utf-8")
