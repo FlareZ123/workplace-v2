@@ -37,11 +37,6 @@ _SENSITIVE_FRAGMENTS = (
     "desk_nonce", "route_mask_hex", "checkpoint_chain_hex",
     "raw_record_hex", "k08_target_sha256",
 )
-_SAFE_HMAC_SUFFIXES = (
-    "_count", "_counts", "_status", "_passed", "_pass", "_match", "_matches",
-)
-
-
 def _basename(value: Any) -> str:
     """Return a basename for POSIX, Windows, UNC and PathLike inputs."""
     raw = os.fspath(value) if isinstance(value, os.PathLike) else str(value)
@@ -76,17 +71,35 @@ def _redact_diagnostic_string(value: str) -> str:
 def _sensitive_key(key: str) -> bool:
     normalized = key.casefold()
     if "hmac" in normalized:
-        return not normalized.endswith(_SAFE_HMAC_SUFFIXES)
+        return True
     return normalized in _SENSITIVE_EXACT or any(
         fragment in normalized for fragment in _SENSITIVE_FRAGMENTS
     )
+
+
+def _safe_hmac_metadata(key: str, value: Any) -> bool:
+    """Preserve only typed scalar HMAC status/count flags, never match payloads."""
+    normalized = key.casefold()
+    if "hmac" not in normalized:
+        return False
+    if normalized.endswith(("_count", "_matches")):
+        return isinstance(value, int) and not isinstance(value, bool)
+    if normalized.endswith("_status"):
+        return (
+            isinstance(value, str)
+            and len(value) <= 32
+            and re.fullmatch(r"[A-Za-z0-9_-]+", value) is not None
+        )
+    if normalized.endswith(("_match", "_pass", "_passed")):
+        return isinstance(value, bool)
+    return False
 
 
 def _walk(value: Any) -> Any:
     if isinstance(value, dict):
         clean = {}
         for key, item in value.items():
-            if _sensitive_key(str(key)):
+            if _sensitive_key(str(key)) and not _safe_hmac_metadata(str(key), item):
                 continue
             normalized_key = str(key).casefold()
             if normalized_key in _DIAGNOSTIC_KEYS and isinstance(item, str):
