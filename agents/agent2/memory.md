@@ -1131,3 +1131,11 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Checked the uploaded ZIP's raw structure: 56 central-directory entries, EOCD exactly at EOF, no trailing payload and no unclaimed gaps between local entries and central directory.
 - The public 1889 Falcon scan is clean and is not authenticated as David's physical copy. MAIL-06/MAIL-09/N23 leave the physical book-margin hypothesis open, but the export does not include that copy or Emily's handwriting. The boundary and next-step warning were sent in `communications/agent11/20261125T080452Z_agent2-physical-book-margin-boundary.md`.
 - Highest-value unresolved source carriers remain: native PS-0417 spool/driver files and the missing attempt-2 REQUESTED body for K04; for K08, the original keeper-envelope face, Emily's authenticated margin/photo-caption version history, Zoey's physical shelf card, or David's actual annotated book. Avoid more public-scan OCR/page-word, map-pixel, PRNG, or phrase-grammar sweeps absent a new source object.
+
+
+## 2026-11-25 continuation — rolling PTW-state family closure
+
+- Re-ran the repository's `resources/work/test_rolling_ptw_xoroshiro128pp.py` model against the local evidence: 22 same-suffix PTW/PS training pairs, 64 state/serialization configurations, 0 exact packet matches. This same-suffix join is not source-authenticated.
+- Bounded extension: global xoroshiro128++ output warm-up offsets 0–1024 across the same configurations; 0 exact matches. Also tested xoroshiro128+, xoroshiro128**, and xorshift128+ with 0–64 global warm-up offsets across the same state/serialization family; 0 exact matches.
+- This closes the explicitly untested warm-up/nearby-variant extension of that rolling-state hypothesis. Do not expand the same-suffix PTW→PS PRNG family or treat it as a K04 candidate absent a new source-authenticated join.
+- The uploaded ZIP and `resources/evidence/` have the same 46 evidence files; repository-only `resources/candidate.json` and `resources/work/` add the six-slot baseline and scripts, not new source evidence. The decisive K04/K08 carriers remain the native PS-0417 coupon/spool witness and the final envelope/margin or teal-card/photo witness; neither is in the supplied export.
