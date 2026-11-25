@@ -61,6 +61,11 @@ def _redact_string(value: str) -> str:
 
 
 _DIAGNOSTIC_KEYS = {"error", "exception", "diagnostic", "stderr", "stdout", "traceback", "message"}
+_SAFE_HMAC_STATUSES = {
+    "match", "no_match", "hit", "no_hit", "pass", "passed", "fail", "failed",
+    "missing", "not_found", "not_checked", "not_tested", "invalid", "ok",
+    "unknown", "unavailable", "verified", "unverified", "error",
+}
 
 
 def _redact_diagnostic_string(value: str) -> str:
@@ -85,11 +90,7 @@ def _safe_hmac_metadata(key: str, value: Any) -> bool:
     if normalized.endswith(("_count", "_matches")):
         return isinstance(value, int) and not isinstance(value, bool)
     if normalized.endswith("_status"):
-        return (
-            isinstance(value, str)
-            and len(value) <= 32
-            and re.fullmatch(r"[A-Za-z0-9_-]+", value) is not None
-        )
+        return isinstance(value, str) and value.casefold() in _SAFE_HMAC_STATUSES
     if normalized.endswith(("_match", "_pass", "_passed")):
         return isinstance(value, bool)
     return False
