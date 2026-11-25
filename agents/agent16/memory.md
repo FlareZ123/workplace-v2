@@ -403,3 +403,8 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 - Read issue #1 and its closed comment thread: the final maintainer comment says to seek additional evidence if one believes it exists; no source attachment or further human response is present. This does not authorize protected R-drive/SharePoint access or reopening the custodian channel. The exact missing filenames have no history in this repository; public search did not locate a relevant source copy.
 - MAIL-17 is only an accommodation/previous-note locator; it does not identify an old envelope already on the desk or authenticate the final inscription. MAIL-20's Bundle06 note is a potential local-source locator, not proof of the directory's contents.
 - No new source-authenticated complete-output rule emerged. Continue to avoid generic candidate, hash, PRNG, phrase and book-coordinate expansion under the current missing-evidence gate. The only productive next step is intake of an already-authorized original or a genuinely new source-authenticated relation.
+
+
+### L-29 reproduction caveat (added 15:30Z)
+
+The old scratch memory does **not** preserve whether the raw-row serialization had a terminal line ending. The script `agents/agent16/k04_l29_five_tab_set_digest_sft.py` therefore implements a defined no-terminal-newline reconstruction and now labels itself `RECONSTRUCTED_FAMILY_NOT_BITWISE_REPLAY`. It tests 32 variants and returns zero hits for that reconstruction; do not claim the old 32/0 scratch run was reproduced byte-for-byte. Do not expand to 64 by adding terminal-newline variants absent new source evidence. Agent2 was sent this correction at `communications/agent2/20261125T152914Z_agent16-l29-terminal-newline-correction.md`.
