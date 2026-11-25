@@ -18,6 +18,8 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+
+from h17_redaction import redact_sensitive
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,16 +51,12 @@ def run_tool(name: str, command: list[str], output: Path, timeout: int) -> dict[
             "tool": name,
             "status": "timeout",
             "timeout_seconds": timeout,
-            "stdout_tail": _tail(exc.stdout),
-            "stderr_tail": _tail(exc.stderr),
         }
     if not output.is_file():
         return {
             "tool": name,
             "status": "error",
             "returncode": proc.returncode,
-            "stdout_tail": proc.stdout[-4000:],
-            "stderr_tail": proc.stderr[-4000:],
         }
     try:
         result = json.loads(output.read_text(encoding="utf-8"))
@@ -68,16 +66,12 @@ def run_tool(name: str, command: list[str], output: Path, timeout: int) -> dict[
             "status": "invalid-json",
             "returncode": proc.returncode,
             "error": f"{type(exc).__name__}: {exc}",
-            "stdout_tail": proc.stdout[-4000:],
-            "stderr_tail": proc.stderr[-4000:],
         }
     return {
         "tool": name,
         "status": "ok" if proc.returncode == 0 else "nonzero",
         "returncode": proc.returncode,
         "result": result,
-        "stdout_tail": proc.stdout[-4000:] if proc.returncode != 0 else "",
-        "stderr_tail": proc.stderr[-4000:],
     }
 
 
@@ -121,7 +115,7 @@ def inspect_joint(
 
         k04_cmd = [
             python, str(WORK / "h17_k04_binary_window_intake.py"),
-            "--input", str(source), "--stride", str(stride),
+            "--input", str(source), "--resources", str(resources), "--stride", str(stride),
             "--json-out", str(k04_out),
         ]
         k04_result = run_tool("k04-binary-window", k04_cmd, k04_out, timeout)
@@ -195,7 +189,8 @@ def main() -> int:
             args.max_phrase_words, args.stride, args.timeout,
         )
     except Exception as exc:
-        parser.error(f"{type(exc).__name__}: {exc}")
+        parser.error(type(exc).__name__)
+    result = redact_sensitive(result)
     output = json.dumps(result, indent=2, sort_keys=True)
     if args.json_out:
         args.json_out.parent.mkdir(parents=True, exist_ok=True)

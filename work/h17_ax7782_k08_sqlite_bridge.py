@@ -356,6 +356,7 @@ def main(argv: Iterable[str] | None = None) -> int:
                                 args.ocr, args.max_phrase_words, args.pdf_password)
     except Exception as exc:
         parser.error(str(exc))
+    result = redact_sensitive(result)
     output = json.dumps(result, indent=2, sort_keys=True)
     if args.json_out:
         args.json_out.parent.mkdir(parents=True, exist_ok=True)
