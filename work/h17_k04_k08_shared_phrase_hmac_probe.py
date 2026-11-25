@@ -33,7 +33,7 @@ def add_spans(target: dict[str, set[str]], source: str, text: str,
     # Include whole-source and paragraph windows so a line wrap or paragraph
     # break cannot hide a phrase under the route's whitespace-collapsing rule.
     chunks: list[str] = [text]
-    chunks.extend(p.strip() for p in re.split(r"\\n\\s*\\n", text) if p.strip())
+    chunks.extend(p.strip() for p in re.split(r"\n\s*\n", text) if p.strip())
     for line in text.splitlines():
         line = line.strip()
         if not line:
