@@ -21,7 +21,7 @@ import re
 import sys
 from pathlib import Path
 
-from h17_redaction import redact_sensitive
+from h17_redaction import redact_by_default, redact_sensitive
 from typing import Any
 
 EXPECTED_SYNTHETIC_HMAC16 = "D80E9E725D394C7F1B60CCDD801F7407"
@@ -69,6 +69,7 @@ def _candidate(source: str, sheet: str, sheet_state: str, value_kind: str,
     }
 
 
+@redact_by_default
 def evaluate_m10_values(extracted: dict[str, Any], nonce: bytes,
                         target: bytes) -> dict[str, Any]:
     """Evaluate only exact M10 cell-value streams from the XLS intake adapter."""
@@ -161,6 +162,7 @@ def evaluate_m10_values(extracted: dict[str, Any], nonce: bytes,
     }
 
 
+@redact_by_default
 def inspect_workbook(workbook: Path, resources: Path) -> dict[str, Any]:
     workbook = workbook.expanduser().absolute()
     info = workbook.lstat()
@@ -178,7 +180,7 @@ def inspect_workbook(workbook: Path, resources: Path) -> dict[str, Any]:
     after = extracted.get("source_sha256_after")
     if not extracted.get("source_unchanged") or not before or before != after:
         raise RuntimeError("legacy XLS intake did not confirm unchanged source bytes")
-    evaluated = evaluate_m10_values(extracted, nonce, target)
+    evaluated = evaluate_m10_values(extracted, nonce, target, reveal=True)
     return {
         "workbook": {
             "path": str(workbook),
