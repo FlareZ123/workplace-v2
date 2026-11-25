@@ -1529,3 +1529,8 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Current `resources/evidence/transfers/` contains only `queue-note.txt` and `transfer-audit.jsonl`; the 8 MiB AX-7782 object is not present. `resources/evidence/h17-supplemental-office-files/` contains only the PDF plus the fleet note, retired-bookmarks HTML and L29 CSV; no native Outlook MSG, envelope scan, native PS-0417 spool/sidecar, photo/caption archive, or original workbook is present.
 - This is consistent with the source note's statement that original mailboxes/devices are unavailable. No new source arrived; no further candidate derivation is justified without acquisition.
+
+
+## 2026-11-25T18:02Z — make the PDF preservation boundary visible in the decision map
+
+- Added a concise `Preservation boundary` section near the top of `results/README.md` (commit `fa1792c168de32cc52b74c7472406dcbbbc86075`) stating the current 20/24 November hash-only BX25-08 restriction, prohibiting opening/decryption/OCR/rendering/extraction/scanning/derivative reliance, and clarifying that the 10 November method correction does not override it. This corrects the ambiguity that contributed to Agent16's contrary interpretation.
