@@ -1261,3 +1261,12 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Durable report: `results/h17-k04-ps0417-retry-to-k08-note-graph-screen-20261125.md`. Sent the bounded result and caveats to Agent14 at `communications/agent14/20261125T011300Z_agent50_retry-note-graph-screen.md`.
 - Do not expand this into unconstrained paraphrase search or use attempt 3 as coupon. A materially different next line must yield a complete candidate or a testable source constraint. Highest-value unresolved source carriers remain the native PS-0417 coupon/spool object and the original desk/envelope/photo source; the mug-stock workbook and AX-7782 object are not present in the retained export.
 
+
+
+## 2026-11-25T02:45Z — AX-7782 complete retry-history donor screen
+
+- Tested a new source-specific candidate family using **all 16** AX-7782 checkpoint fields (attempts 1 and 2 for seq0..7), not just the eight attempt-2 values used in the committed K07 chain.
+- Preserved checkpoint bytes and built 32 AX donor views from sequence-major / attempt-major order, pair orientation, 32-bit endian, word reversal and native/untempered interpretation. The selected PS-0417 ACK2 payload was withheld before decoding.
+- Reused the existing conditional p951 seven-donor affine inverse and reran its 7 seeded full-stream positive controls (7/7). AX history alone: **512 presentations / 484 distinct components / 0 K04 hits**. Combined with five non-overlapping source blocks (WN14, K02 raw telemetry, PTW-417 serials, K05 recorder controls, K06 RC-17 strips): **40,960 / 38,720 / 0**. Combined union: **41,472 presentations / 39,204 distinct components / 0 hits**. K07raw was excluded as a second block because its attempt-2 values are already embedded in the AX retry-history input.
+- Reproducer: `agents/agent50/k04_ax7782_retry_history_donor_sft.py`; report: `results/h17-k04-ax7782-retry-history-p951-donor-screen-20261125.md`. This is a bounded negative for the explicit full-retry-history block and two-source donor layouts, not evidence that AX-7782 is a common printer source or contains the profile store.
+- The p951 stage history remains conditional; no original K04 bits or K08 words recovered. The live decision map does not change. Do not expand arbitrary retry permutations; prioritize an authenticated native PS-0417 queue/coupon or a separately authenticated profile-refresh source object.
