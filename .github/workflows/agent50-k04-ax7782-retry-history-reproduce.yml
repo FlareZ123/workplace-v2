@@ -25,7 +25,9 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          data = json.loads(Path('/tmp/ax7782-donor-result.json').read_text())
+          raw = Path('/tmp/ax7782-donor-result.json').read_text()
+start = raw.index('{')
+data = json.loads(raw[start:])
           out = Path('results/h17-k04-ax7782-retry-history-donor-reproduction-20261125.md')
           out.write_text(
               '# K04 AX-7782 retry-history donor reproduction\n\n'
