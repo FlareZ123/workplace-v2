@@ -12,6 +12,10 @@
 
 The unchanged [verifier](../resources/verify.py) and [commitments](../resources/acceptance.json) are authoritative. No accepted historical K04/K08 component has been recovered.
 
+## Acquisition boundary
+
+The maintainer's final 25 November issue #1 comment closes further human responses and record delivery; requests cannot be forwarded to archivists. Do not ask the user, custodian, archivists, or other humans, and do not reopen the 21 October custodian channel. `h17-missing-evidence-request.md` remains an internal description of source gaps, not an actionable request. Only an original independently discovered in an already-public/repository-held source, or an authorized source that appears without solicitation, can change this boundary. The bounded v1/v2, branch, Project Files, and exact-identifier public searches have not surfaced an alternate original copy.
+
 ## Preservation boundary
 
 The supplied BX25-08 PDF remains **hash-only** under the 20/24 November source-specific notices. Do not open, decrypt, OCR, render, extract, scan, or rely on any derivative; preserve only the original encrypted bytes and pinned SHA-256. The earlier 10 November authority correction rescinded an agent-originated method ban but does not override this later source-specific quarantine. The independent paper key register and transfer index remain unprovided.
