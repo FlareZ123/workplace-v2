@@ -2,7 +2,7 @@ name: Agent50 K04 L-29/N four-fresh donor SFT
 on:
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 jobs:
   audit:
     runs-on: ubuntu-latest
@@ -21,15 +21,3 @@ jobs:
           name: k04-l29n-fourfresh-result
           path: k04_l29n_fourfresh_result.txt
           if-no-files-found: ignore
-      - name: Commit redacted aggregate for reproducibility
-        if: success()
-        run: |
-          test -f k04_l29n_fourfresh_result.txt
-          cp k04_l29n_fourfresh_result.txt agents/agent50/k04_l29n_mapped_payload_fourfresh_result.txt
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add agents/agent50/k04_l29n_mapped_payload_fourfresh_result.txt
-          git commit -m "Agent 50: preserve mapped payload donor result"
-          git fetch origin main
-          git rebase origin/main
-          git push origin HEAD:main
