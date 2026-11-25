@@ -26,8 +26,8 @@ jobs:
           import json
           from pathlib import Path
           raw = Path('/tmp/ax7782-donor-result.json').read_text()
-start = raw.index('{')
-data = json.loads(raw[start:])
+          start = raw.index('{')
+          data = json.loads(raw[start:])
           out = Path('results/h17-k04-ax7782-retry-history-donor-reproduction-20261125.md')
           out.write_text(
               '# K04 AX-7782 retry-history donor reproduction\n\n'
@@ -40,8 +40,6 @@ data = json.loads(raw[start:])
           )
           PY
       - name: Commit reproduction record
-        env:
-          GH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
