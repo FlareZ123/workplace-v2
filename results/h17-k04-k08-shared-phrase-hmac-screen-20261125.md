@@ -19,10 +19,10 @@ The reproducible probe at [`work/h17_k04_k08_shared_phrase_hmac_probe.py`](../wo
 
 1. Reads the supplied archive ZIP, the route constants, and the acceptance commitments.
 2. Selects the PS-0417 attempt-2 RECOVER ACK payload.
-3. Extracts every contiguous normalized span of 1–24 words from the 24 desk/noticeboard notes, all 20 plain-text email bodies, and the galley/stores log.
+3. Extracts contiguous normalized spans of 1–24 words at whole-source, paragraph, line, and sentence boundaries from the 24 desk/noticeboard notes, all 20 plain-text email bodies, and the galley/stores log.
 4. Tests the exact K08 HMAC commitment, the K04 payload-as-HMAC construction, the resulting masked K04 component, and reverse-key-order controls.
 
-The scan produced **17,480 unique normalized spans** from **22 text sources**. A separate direct implementation produced the same count and zero hits.
+The scan produced **60,841 unique normalized spans** from **22 text sources**. Including whole-source and paragraph windows prevents ordinary line wrapping from excluding a candidate. A separate direct implementation produced the same count and zero hits.
 
 ## Result
 
