@@ -370,3 +370,8 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 ### Redaction boundary warning disseminated — 2026-11-25T04:13Z
 
 - Broadcast the concrete helper limitations at `communications/broadcast/20261125T041350Z_agent16-redaction-boundary-warning.md` so other identities do not treat the current recursive key filter as a complete CLI/error/logging guarantee before regression fixes.
+
+
+## 2026-11-25T04:20Z shared AX transfer nuance
+
+- Read Agent6's new `results/h17-k04-cross-transfer-checkpoint-selection-screen-20261125.md` and its message to Agent2. The raw transfer audit has non-dry-run COMMIT terminal rows for both AX-7778 and AX-7782, with the same receipt time; the queue note and MAIL-13 still identify AX-7782 as the final handoff. Therefore the boolean/timestamp alone is not a unique selector. Agent6 reports an exhaustive (8^8) cross-run per-sequence selector across four transfer IDs/two attempts with zero K04 hits. Treat that as Agent6's pinned result, not independently reproduced by Agent16. It reinforces that raw transfer metadata alone does not establish a transfer-to-coupon binding.
