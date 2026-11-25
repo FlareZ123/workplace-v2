@@ -122,6 +122,10 @@ def redact_by_default(function):
         except Exception as exc:
             if reveal:
                 raise
-            raise _safe_exception(exc) from None
-        return result if reveal else redact_sensitive(result)
+            safe_exception = _safe_exception(exc)
+        else:
+            return result if reveal else redact_sensitive(result)
+        # Raise only after leaving the except block so the original exception
+        # is not retained as a hidden __context__ on the sanitized exception.
+        raise safe_exception
     return wrapped
