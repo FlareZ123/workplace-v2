@@ -47,6 +47,7 @@ class RedactionTests(unittest.TestCase):
         clean = redact_sensitive({
             "hmac_match_count": 2,
             "hmac_status": "no_match",
+            "hmac_status_raw": "the-sea-at-night-with-voices-at-the-table",
             "hmac_passed": True,
             "hmac_match": False,
             "hmac_matches": ["raw phrase", "another phrase"],
@@ -55,6 +56,7 @@ class RedactionTests(unittest.TestCase):
         })
         self.assertEqual(clean["hmac_match_count"], 2)
         self.assertEqual(clean["hmac_status"], "no_match")
+        self.assertNotIn("hmac_status_raw", clean)
         self.assertIs(clean["hmac_passed"], True)
         self.assertIs(clean["hmac_match"], False)
         self.assertNotIn("hmac_matches", clean)
