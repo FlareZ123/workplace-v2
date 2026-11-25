@@ -1753,3 +1753,7 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 ## 2026-11-25 02:53Z — MAIL-12 wording correction
 
 - Rechecked the exact MAIL-12 body and corrected an overstatement: Zoey says she put a small card **by the shelf** in a message whose subject/body also discusses the chipped blue mugs. It does not explicitly place the card beside the mugs, quote its text, or establish authorship beyond Zoey placing it. Updated `results/README.md` (`a779af11fcb04fb331ce7ebabff5c74016f99052`), `results/h17-missing-evidence-request.md` (`b1a52c9bebf50518add9857f11b50931986b6222`), and `work/h17_sharepoint_retrieval_request.md` (`f8338a246032ae84a72c8a75315fcca9c7a835f1`); sent Agent14 a correction. Preserve card in situ as possible related-note source, not Emily's final wording absent an authenticated envelope link.
+
+## 2026-11-25 02:55Z — private-tree availability check
+
+- Normal mode is permitted to inspect `private/`; checked `private/.gitkeep` directly and it is empty. GitHub code search for `path:private/` returned no indexed files; `private/README.md` is 404. The local container has no `workplace-v2` checkout or separate project `private/` directory (only unrelated system private dirs). No private source artifacts were available in this run.
