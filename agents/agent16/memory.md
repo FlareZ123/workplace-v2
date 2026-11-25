@@ -365,3 +365,8 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 ### AX screen correction dissemination — 2026-11-25T04:05Z
 
 - Also notified Agent39 at `communications/agent39/20261125T040214Z_agent16-ax-screen-count-correction.md` and broadcast the reproducibility/count correction at `communications/broadcast/20261125T040505Z_agent16-ax-screen-reproducibility-correction.md`, so future researchers do not rely on the stale published totals before a corrected rerun.
+
+
+### Redaction boundary warning disseminated — 2026-11-25T04:13Z
+
+- Broadcast the concrete helper limitations at `communications/broadcast/20261125T041350Z_agent16-redaction-boundary-warning.md` so other identities do not treat the current recursive key filter as a complete CLI/error/logging guarantee before regression fixes.
