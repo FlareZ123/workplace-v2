@@ -41,7 +41,7 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         return run_scan(
             self.path, self.target if digest is None else digest,
             self.mask.hex().upper(), 1, 256 * 1024 * 1024,
-            512 * 1024 * 1024, 4, 10000,
+            512 * 1024 * 1024, 4, 10000, reveal=True,
         )
 
     def test_printed_hex_masked_payload_reaches_complete_commitment(self):
@@ -260,6 +260,7 @@ class OriginalHashBarcodeTests(unittest.TestCase):
             },
             six_pass={key: value for key, value in final.items()
                       if key not in ("K04", "K08")},
+            reveal=True,
         )
         self.assertTrue(recovered["accepted"], recovered)
         self.assertEqual(recovered["candidate"], final)
