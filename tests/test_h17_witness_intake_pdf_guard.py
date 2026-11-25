@@ -1,4 +1,7 @@
+import io
+import sys
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
@@ -55,6 +58,33 @@ class HashOnlyPdfWitnessGuardTests(unittest.TestCase):
                     with patch.object(Path, "read_bytes", reject_content_read):
                         with self.assertRaisesRegex(ValueError, "hash-only"):
                             intake.assess(*args, resources=ROOT / "resources")
+
+
+    def test_cli_redacts_component_and_caption_material(self):
+        component = "0123456789ABCDEF" * 2
+        phrase = "the private final caption"
+        synthetic_result = {
+            "witnesses": {
+                "K04": {"derived_component": component},
+                "K08": {"normalized_caption": phrase, "derived_component": component},
+            },
+            "acceptance": {"accepted": True},
+            "conflicting_witnesses": [],
+        }
+        stdout = io.StringIO()
+        with patch.object(intake, "assess", return_value=synthetic_result):
+            with patch.object(
+                sys,
+                "argv",
+                ["h17_witness_intake.py", "--coupon", "coupon.json", "--coupon-original", "coupon-source.bin"],
+            ):
+                with redirect_stdout(stdout):
+                    status = intake.main()
+        rendered = stdout.getvalue()
+        self.assertEqual(status, 0)
+        self.assertNotIn(component, rendered)
+        self.assertNotIn(phrase, rendered)
+        self.assertIn("redaction_applied", rendered)
 
 
 if __name__ == "__main__":
