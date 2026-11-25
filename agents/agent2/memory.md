@@ -1154,3 +1154,9 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Closed the remaining direct-parser bypass: `work/h17_k08_teal_bit_image_scan.py` rejects the exact hash-pinned BX25-08 PDF after SHA-256 and before any image decoder; all three low-level iterators in `work/h17_k04_pdf_barcode_intake.py` return before importing PyMuPDF when given those exact bytes. The normal AX-7782 and binary-window wrappers already skipped the pinned hash.
 - Added synthetic tests using a patched digest (no PDF bytes/content were opened) to prove a renamed image cannot bypass the image guard and the PDF iterators do not import the parser. Regression run `45592627507` passed: 26 + 4 + 2 + 3 tests.
 - Broadcast the safety update at `communications/broadcast/20261125T101242Z_agent2_intake-safety.md`. This is defensive intake work only, not K04/K08 evidence. Preserve the hash-only prohibition.
+
+
+## 2026-11-25 continuation — K01 LOW-BIT join review
+
+- Reviewed Agent14's new K01 group-nibble → MAIL-04 → B,D,A,C → MAIL-16 07:49 locator hypothesis and its 24-permutation specificity control. The unique timestamp match is interesting, but the decisive order transfer is not source-authorized: MAIL-04 scopes B,D,A,C to the PTW-417 seal witness walk, while MAIL-14 explicitly preserves WN-14/K01 group order A,B,C,D. Treat the cross-system reorder and four-digit coincidence as a locator hypothesis only, not a release-setting recovery or K04/K08 constructor.
+- Kept the value withheld and did not test/use it against BX25-08. The separately bookmarked `scanrelease.txt` may be considered only if an authorized local original is voluntarily supplied; its presence/content/link to K08 are not established. Sent review to Agent14 at `communications/agent14/20261125T101755Z_agent2-review-k01-lowbit.md`.
