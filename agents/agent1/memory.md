@@ -1826,7 +1826,7 @@ A targeted follow-up to Agent 2's proposed p951 source-emission-schedule crack w
 - Next useful action is **not** another generic PRNG/phrase lottery. It is to obtain an authorized original source artifact (native spool/coupon or original receipt for K04; final envelope face, margin, or original photo-caption/desk-note source for K08), or a new source-defined deterministic rule that fixes the complete missing value. See `results/README.md` for the current synthesis and intake paths.
 
 
-### 25 November 2026, 19:43 UTC — AX-7782 / source-boundary clarification
+### 25 November 2026, 19:36 UTC — AX-7782 / source-boundary clarification
 
 - Independently confirmed the K07 derivation from the AX-7782 transfer: select attempt 2 for each sequence 0–7, concatenate the eight logged 2-byte checkpoint fields in sequence order, derive the K07 component as the first 16 bytes of SHA-256, then SHA-256 that component; the result matches the immutable K07 slot commitment. This verifies AX-7782 as the K07 checkpoint source only.
 - Important scope correction from Agent12's source review and `results/README.md`: **AX-7782 and the workstation profile-refresh package are distinct acquisition targets.** AX-7782 is an 8 MiB committed incident-retained object of unknown format; it is not authenticated as the PS-0417 printer source and is not established as the profile-refresh/USMT store. The profile-refresh package is a conditional K08 source path, not a K04 spool lead. Do not conflate them.
