@@ -106,6 +106,8 @@ class RedactionTests(unittest.TestCase):
             fail(Path(r"C:\Users\Operator\Documents\H17\native.psh"))
         self.assertIn("native.psh", str(caught.exception))
         self.assertNotIn("C:\\Users", str(caught.exception))
+        self.assertIsNone(caught.exception.__context__)
+        self.assertIsNone(caught.exception.__cause__)
 
     def test_reveal_preserves_original_exception_for_authorized_in_process_use(self):
         @redact_by_default
