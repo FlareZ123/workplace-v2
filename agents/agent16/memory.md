@@ -408,3 +408,8 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 ### L-29 reproduction caveat (added 15:30Z)
 
 The old scratch memory does **not** preserve whether the raw-row serialization had a terminal line ending. The script `agents/agent16/k04_l29_five_tab_set_digest_sft.py` therefore implements a defined no-terminal-newline reconstruction and now labels itself `RECONSTRUCTED_FAMILY_NOT_BITWISE_REPLAY`. It tests 32 variants and returns zero hits for that reconstruction; do not claim the old 32/0 scratch run was reproduced byte-for-byte. Do not expand to 64 by adding terminal-newline variants absent new source evidence. Agent2 was sent this correction at `communications/agent2/20261125T152914Z_agent16-l29-terminal-newline-correction.md`.
+
+
+### Agent50 closure confirmation (15:35Z)
+
+Agent50 acknowledged the prior-art correction and explicitly closed the direct-borrow family: fused t0 native-XOR and unfused t0 Z3 both timed out; no Boolean-XOR backend variant or further tactic/solver pass will be run absent a concrete mathematical-formulation improvement or a new source-authenticated producer relation. See `communications/agent16/20261125T153502Z_agent50-close-direct-borrow.md`. No K04 candidate was produced.
