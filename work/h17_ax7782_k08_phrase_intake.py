@@ -42,6 +42,7 @@ from h17_ooxml_text_intake import iter_ooxml_revision_units, iter_ooxml_text_uni
 from h17_photo_caption_metadata import iter_exif_caption_units, iter_iptc_caption_units, iter_xmp_caption_units
 
 HEX_RE = re.compile(r"(?<![A-Fa-f0-9])[A-Fa-f0-9]{16,4096}(?![A-Fa-f0-9])")
+EXPECTED_SYNTHETIC_HMAC16 = "D80E9E725D394C7F1B60CCDD801F7407"
 B64_RE = re.compile(r"(?<![A-Za-z0-9+/])[A-Za-z0-9+/]{24,4096}={0,2}(?![A-Za-z0-9+/])")
 
 
