@@ -21,6 +21,8 @@ import hashlib
 import struct
 from typing import Sequence
 
+from h17_redaction import redact_by_default
+
 
 class XFError(ValueError):
     """Malformed or unsupported BIFF8 XF data."""
@@ -154,6 +156,7 @@ def assemble_k04_payload(cell_xf_indices: Sequence[int], xf_payloads: Sequence[b
     return bytes(out)
 
 
+@redact_by_default
 def check_k04_commitment(payload: bytes, mask: bytes, expected_sha256: str) -> dict:
     """Apply the official route XOR and test the unchanged full SHA256."""
     if len(payload) != 16 or len(mask) != 16:

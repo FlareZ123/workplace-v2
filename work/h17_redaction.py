@@ -23,7 +23,7 @@ _SENSITIVE_EXACT = {
     "formula_text", "formula_tokens_hex", "string_record_hex",
     "comment_author", "author", "text", "value", "raw_value", "cached_value",
     "context", "comment", "caption", "formula", "cell_value",
-    "actual_sha256", "expected_sha256",
+    "actual_sha256", "expected_sha256", "sha256",
     "raw_hits", "text_hits", "raw_text_carving",
     "text_sha256", "normalized_text_sha256",
     "crc16", "crc32_ieee", "adler32", "md5",
