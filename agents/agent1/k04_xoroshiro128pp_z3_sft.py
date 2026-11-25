@@ -126,6 +126,19 @@ def self_test():
         assert simplify(symbolic_y1).as_long() == y1
         assert [simplify(x).as_long() for x in symbolic_middle] == stream(state)[2:4]
         assert [simplify(x).as_long() for x in symbolic_holdout] == stream(state)[4:6]
+    for probe in ("0123456789ABCDEF", "00112233445566778899AABBCCDDEEFF"):
+        try:
+            assert_public_safe({"synthetic_probe": probe})
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError("public output guard accepted a raw 64/128-bit value")
+    try:
+        assert_public_safe({"predicted_coupon_hex": "synthetic"})
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("public output guard accepted a forbidden candidate field")
     emit_public_result({
         "self_test": "PASS",
         "algebraic_unknown_bits": 64,
@@ -251,11 +264,6 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     first_model = solver.model()
     first_record, first_hit, first_state, first_replay = inspect_model(first_model, 0)
     candidate_records = [first_record]
-    # Block the first complete middle pair before asking for alternatives.
-    solver.add(Or(
-        middle_exprs[0] != BitVecVal(first_replay[2], 64),
-        middle_exprs[1] != BitVecVal(first_replay[3], 64),
-    ))
     commitment_hit = first_hit
     planted_middle_seen = bool(first_record.get("middle_matches_planted_control", False))
     planted_middle_model_index = 0 if planted_middle_seen else None
@@ -263,54 +271,67 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     uniqueness_status = None
     enumeration_status = "NOT_NEEDED"
 
-    # Each alternative is required to have a different complete middle pair.
-    # The candidate is hashed immediately after extraction, before the next
-    # uniqueness/holdout disposition.
-    if max_middle_models <= 1:
-        enumeration_status = "MODEL_CAP_REACHED"
+    if first_hit:
+        # A commitment hit is decisive; do not spend the remaining budget on
+        # uniqueness enumeration after the cryptographic candidate is found.
+        result["commitment_hit_model_index"] = 0
+        result["commitment_hit_candidate"] = first_record
+        enumeration_status = "COMMITMENT_HIT"
         uniqueness_status = "UNKNOWN"
     else:
-        while len(candidate_records) < max_middle_models:
-            remaining = _remaining(deadline, timeout_seconds)
-            if remaining <= 0:
-                enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
-                uniqueness_status = "SAT" if found_alternative else "UNKNOWN"
-                break
-            solver.set(timeout=max(1, int(remaining * 1000)))
-            alternative = solver.check()
-            if alternative == unsat:
-                enumeration_status = "EXHAUSTED"
-                uniqueness_status = "SAT" if found_alternative else "UNSAT"
-                break
-            if alternative == unknown:
-                enumeration_status = "UNKNOWN"
-                uniqueness_status = "SAT" if found_alternative else "UNKNOWN"
-                result["enumeration_reason_unknown"] = solver.reason_unknown()
-                break
-            alt_model = solver.model()
-            record, hit, alt_state, alt_replay = inspect_model(alt_model, len(candidate_records))
-            candidate_records.append(record)
-            found_alternative = True
-            uniqueness_status = "SAT"
-            if hit:
-                commitment_hit = True
-                result["commitment_hit_model_index"] = record["model_index"]
-                result["commitment_hit_candidate"] = record
-            if expected_middle is not None and alt_replay[2:4] == list(expected_middle):
-                planted_middle_seen = True
-                planted_middle_model_index = record["model_index"]
-                enumeration_status = "PLANTED_MIDDLE_FOUND"
-                break
-            if hit:
-                enumeration_status = "COMMITMENT_HIT"
-                break
-            solver.add(Or(
-                middle_exprs[0] != BitVecVal(alt_replay[2], 64),
-                middle_exprs[1] != BitVecVal(alt_replay[3], 64),
-            ))
+        # Block the first complete middle pair before asking for alternatives.
+        solver.add(Or(
+            middle_exprs[0] != BitVecVal(first_replay[2], 64),
+            middle_exprs[1] != BitVecVal(first_replay[3], 64),
+        ))
+        # Each alternative is required to have a different complete middle pair.
+        # The candidate is hashed immediately after extraction, before the next
+        # uniqueness/holdout disposition.
+        if max_middle_models <= 1:
+            enumeration_status = "MODEL_CAP_REACHED"
+            uniqueness_status = "UNKNOWN"
         else:
-            enumeration_status = "CAP_REACHED"
-            uniqueness_status = "SAT"
+            while len(candidate_records) < max_middle_models:
+                remaining = _remaining(deadline, timeout_seconds)
+                if remaining <= 0:
+                    enumeration_status = "TOTAL_BUDGET_EXHAUSTED"
+                    uniqueness_status = "SAT" if found_alternative else "UNKNOWN"
+                    break
+                solver.set(timeout=max(1, int(remaining * 1000)))
+                alternative = solver.check()
+                if alternative == unsat:
+                    enumeration_status = "EXHAUSTED"
+                    uniqueness_status = "SAT" if found_alternative else "UNSAT"
+                    break
+                if alternative == unknown:
+                    enumeration_status = "UNKNOWN"
+                    uniqueness_status = "SAT" if found_alternative else "UNKNOWN"
+                    result["enumeration_reason_unknown"] = solver.reason_unknown()
+                    break
+                alt_model = solver.model()
+                record, hit, alt_state, alt_replay = inspect_model(alt_model, len(candidate_records))
+                candidate_records.append(record)
+                found_alternative = True
+                uniqueness_status = "SAT"
+                if hit:
+                    commitment_hit = True
+                    result["commitment_hit_model_index"] = record["model_index"]
+                    result["commitment_hit_candidate"] = record
+                if expected_middle is not None and alt_replay[2:4] == list(expected_middle):
+                    planted_middle_seen = True
+                    planted_middle_model_index = record["model_index"]
+                    enumeration_status = "PLANTED_MIDDLE_FOUND"
+                    break
+                if hit:
+                    enumeration_status = "COMMITMENT_HIT"
+                    break
+                solver.add(Or(
+                    middle_exprs[0] != BitVecVal(alt_replay[2], 64),
+                    middle_exprs[1] != BitVecVal(alt_replay[3], 64),
+                ))
+            else:
+                enumeration_status = "CAP_REACHED"
+                uniqueness_status = "SAT"
 
     # Hashes above precede this independent holdout comparison. Only the first
     # unconditioned model is reported against REQUESTED3; it is never a filter.
