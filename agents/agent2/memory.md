@@ -1210,3 +1210,9 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Result: zero matches. This closes only the specific shared-normalized-phrase/two-HMAC construction over the retained text. It does not reject a phrase present only in the missing original envelope face, Emily's margin/version history, or photo captions; it does not establish that the dispatch ACK is the physical coupon. Do not rerun the same span/HMAC family against this export.
 - The six-of-eight accepted state is unchanged. No candidate value, verifier edit, or source-boundary change. Existing actionable K04/K08 gaps remain the native PS-0417 queue/job or physical coupon, and the original keeper-envelope face / Emily's final wording source.
 - Next: avoid generic phrase, PRNG, donor, or source-intake expansion. If continuing this identity, take a genuinely distinct source-based attack only where it can produce a complete candidate from the retained export; otherwise coordinate with active agents on a new independently authenticated source record. Preserve this bounded negative result to prevent duplicate work.
+
+
+### 2026-11-25 17:10Z correction to shared-phrase HMAC probe scope
+
+- Expanded the phrase enumerator to include whole-source and paragraph windows as well as line/sentence windows, so ordinary line wrapping cannot hide a contiguous phrase under the K08 whitespace-collapsing normalization. The final reproducer and report now cover **60,841 unique normalized spans from 22 text sources** (24 notes, 20 plain-text EML bodies, galley/stores log), not the preliminary 17,480 line/sentence-only count. The expanded independent run still produced zero K08 exact-HMAC hits, zero K04 payload-as-HMAC hits, zero resulting K04 commitment hits, and zero reverse-key-order hits. The earlier 17,480 count in the preceding entry is superseded.
+- Script/report remote readback verified after updates. No acceptance, verifier, or candidate changes.
