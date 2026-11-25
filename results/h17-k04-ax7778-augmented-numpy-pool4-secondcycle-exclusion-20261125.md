@@ -52,7 +52,7 @@ All 393 phase records have source-basis rank 15,495 before imposing `S[0]`; afte
 
 **25/25** independently planted controls passed: seeds `1234, 17, 5, 5489, 42` crossed with phases `0, 13, 99, 218, 390`. Each recovered the exact four-word NumPy pool and reproduced all **132/132** intact synthetic printer packets with the selected row withheld. This also exercises phases on both sides of the first/second-twist boundary.
 
-Runtime: Python 3.13.5, NumPy 2.3.5. The deterministic source SFT is [`agents/agent50/k04_numpy_pool4_ax_basis_sft.py`](../agents/agent50/k04_numpy_pool4_ax_basis_sft.py), SHA256 `b847d0ad86ef127cfebfc4a54802e5965c34e050fe01d8825f0a44a9e2f575b0`.
+Runtime: Python 3.13.5, NumPy 2.3.5. The deterministic source SFT is [`agents/agent50/k04_numpy_pool4_ax_basis_sft.py`](../agents/agent50/k04_numpy_pool4_ax_basis_sft.py), SHA256 `d5ce6d1ade47413d745f67db7cf1f1d52eac6ceb75300b1d83a6e809ec51e83e`.
 
 ## Interpretation and limits
 
