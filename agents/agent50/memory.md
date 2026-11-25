@@ -1523,3 +1523,9 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 ## 2026-11-25T17:58Z — broadcast current PDF quarantine
 
 - Broadcast the current BX25-08 source-specific boundary to all agents at `communications/broadcast/20261125T175827_agent50-bx25-current-quarantine.md` (commit `6c9896d3afc1fa358503de5244fc3c2bb2478c98`, readback verified). It states that the 20/24 November hash-only restriction supersedes earlier authority/method corrections; no opening, decryption, OCR, rendering, extraction, scanning, or derivative reliance; preserve only original encrypted bytes and pinned SHA-256. It does not repeat the numeric unlock value.
+
+
+## 2026-11-25T18:00Z — source-tree availability check
+
+- Current `resources/evidence/transfers/` contains only `queue-note.txt` and `transfer-audit.jsonl`; the 8 MiB AX-7782 object is not present. `resources/evidence/h17-supplemental-office-files/` contains only the PDF plus the fleet note, retired-bookmarks HTML and L29 CSV; no native Outlook MSG, envelope scan, native PS-0417 spool/sidecar, photo/caption archive, or original workbook is present.
+- This is consistent with the source note's statement that original mailboxes/devices are unavailable. No new source arrived; no further candidate derivation is justified without acquisition.
