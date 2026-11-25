@@ -53,7 +53,7 @@ def _load_inputs(root: Path) -> tuple[Path, dict, dict]:
     raise FileNotFoundError("expected evidence/recovery-routing.json and acceptance.json")
 
 
-def _print_rows(path: Path) -> list[dict]:
+def print_rows(path: Path) -> list[dict]:
     """Parse exact-job spool rows; payloads remain internal to this module."""
     try:
         lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
@@ -92,7 +92,7 @@ def _print_rows(path: Path) -> list[dict]:
     return rows
 
 
-def _select_k04_ack(rows: list[dict]) -> tuple[dict, list[dict], list[dict]]:
+def select_k04_ack(rows: list[dict]) -> tuple[dict, list[dict], list[dict]]:
     """Select a unique highest-attempt RECOVER ACK or fail closed."""
     acknowledgements = [row for row in rows if row["state"] == "ACK"]
     if not acknowledgements:
@@ -111,12 +111,12 @@ def _k04(evidence_root: Path, routing: dict, acceptance: dict) -> dict:
     rows = []
     for path in evidence_root.rglob("*"):
         if path.is_file() and ("0417" in path.name.upper() or path.name.lower() in K04_LOG_NAMES):
-            rows.extend(_print_rows(path))
+            rows.extend(print_rows(path))
     acknowledgements = [row for row in rows if row["state"] == "ACK"]
     if not acknowledgements:
         return {"status": "not_found", "carrier_rows": len(rows), "ack_rows": 0}
     try:
-        selected, top, _ = _select_k04_ack(rows)
+        selected, top, _ = select_k04_ack(rows)
     except (LookupError, ValueError) as exc:
         return {
             "status": "ambiguous_or_invalid",
@@ -199,7 +199,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(report, indent=2, sort_keys=True))
         return 2
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 0
+    return 2 if report.get("k04", {}).get("status") == "ambiguous_or_invalid" else 0
 
 
 if __name__ == "__main__":
