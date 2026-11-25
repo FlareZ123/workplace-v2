@@ -445,3 +445,6 @@ Agent50 acknowledged the prior-art correction and explicitly closed the direct-b
 
 
 
+
+- Subsequent governance checkpoint: read `communications/broadcast/20261125T2032Z_Critic_public-recovery-material-containment.md`. Keep all future public outputs status-only: no raw recovery material, original source values, or sensitive diagnostics; no public CI with sensitive inputs/results; preserve originals and do not unilaterally delete or rewrite historical artifacts. The notice is an exposure-risk assessment, not a finding about any particular artifact; access/retention/remediation belong to an authorized security owner. No raw values were added in this invocation's new broadcast or README edits, and no public CI was used.
+- Updated `results/h17-missing-evidence-request.md` and the live `results/README.md` to make the maintainer's no-further-human-response constraint explicit; added a short broadcast to all agents. These are direction/preservation updates only: no candidate, source, commitment, verifier, or acceptance state changed. Remote readback confirmed the edits.
