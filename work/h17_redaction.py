@@ -7,6 +7,8 @@ Use reveal=True only for explicitly authorized in-process analysis.
 """
 from __future__ import annotations
 
+import os
+import re
 from pathlib import Path
 from typing import Any
 from functools import wraps
@@ -35,10 +37,39 @@ _SENSITIVE_FRAGMENTS = (
     "desk_nonce", "route_mask_hex", "checkpoint_chain_hex",
     "raw_record_hex", "k08_target_sha256",
 )
+_SAFE_HMAC_SUFFIXES = (
+    "_count", "_counts", "_status", "_passed", "_pass", "_match", "_matches",
+)
+
+
+def _basename(value: Any) -> str:
+    """Return a basename for POSIX, Windows, UNC and PathLike inputs."""
+    raw = os.fspath(value) if isinstance(value, os.PathLike) else str(value)
+    normalized = raw.replace("\\", "/").rstrip("/")
+    return normalized.rsplit("/", 1)[-1].rstrip(".,;:)]}")
+
+
+def _redact_string(value: str) -> str:
+    """Scrub paths and labelled HMAC material embedded in diagnostic strings."""
+    text = value
+    path_patterns = (
+        r"(?i)\b[A-Z]:[\\/][^\s\"'<>|]+",
+        r"\\\\[^\s\"'<>|]+",
+        r"(?<![:\w/])/(?!/)[^\s\"'<>|]+",
+    )
+    for pattern in path_patterns:
+        text = re.sub(pattern, lambda match: _basename(match.group(0)), text)
+    # If a diagnostic mentions HMAC, remove any long hex value in that same
+    # diagnostic even when the producer uses a non-standard field label.
+    if "hmac" in text.casefold():
+        text = re.sub(r"(?i)\b[0-9a-f]{16,}\b", "[redacted]", text)
+    return text
 
 
 def _sensitive_key(key: str) -> bool:
     normalized = key.casefold()
+    if "hmac" in normalized:
+        return not normalized.endswith(_SAFE_HMAC_SUFFIXES)
     return normalized in _SENSITIVE_EXACT or any(
         fragment in normalized for fragment in _SENSITIVE_FRAGMENTS
     )
@@ -50,8 +81,8 @@ def _walk(value: Any) -> Any:
         for key, item in value.items():
             if _sensitive_key(str(key)):
                 continue
-            if (str(key).casefold() == "path" or str(key).casefold().endswith("_path")) and isinstance(item, str):
-                clean[key] = Path(item).name
+            if (str(key).casefold() == "path" or str(key).casefold().endswith("_path")) and isinstance(item, (str, os.PathLike)):
+                clean[key] = _basename(item)
             else:
                 clean[key] = _walk(item)
         return clean
@@ -59,6 +90,10 @@ def _walk(value: Any) -> Any:
         return [_walk(item) for item in value]
     if isinstance(value, bytes):
         return {"redacted": True, "byte_length": len(value)}
+    if isinstance(value, os.PathLike):
+        return _basename(value)
+    if isinstance(value, str):
+        return _redact_string(value)
     return value
 
 
@@ -70,10 +105,23 @@ def redact_sensitive(value: Any) -> Any:
     return clean
 
 
+def _safe_exception(exc: Exception) -> Exception:
+    safe_args = tuple(_walk(arg) for arg in exc.args)
+    try:
+        return type(exc)(*safe_args)
+    except Exception:
+        return RuntimeError(f"{type(exc).__name__}: diagnostic details redacted")
+
+
 def redact_by_default(function):
-    """Decorator: raw return values require an explicit in-process reveal=True."""
+    """Decorator: raw returns and diagnostics require explicit in-process reveal=True."""
     @wraps(function)
     def wrapped(*args, reveal: bool = False, **kwargs):
-        result = function(*args, **kwargs)
+        try:
+            result = function(*args, **kwargs)
+        except Exception as exc:
+            if reveal:
+                raise
+            raise _safe_exception(exc) from None
         return result if reveal else redact_sensitive(result)
     return wrapped
