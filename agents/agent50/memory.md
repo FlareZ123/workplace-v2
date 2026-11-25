@@ -1291,7 +1291,7 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Next: run the targeted test suites; inspect any remaining direct output paths that bypass the high-level APIs; continue only with newly authenticated original PS-0417 queue/spool or original desk/envelope/profile-refresh source material. Avoid another broad candidate-family expansion absent new source evidence.
 
 
-## 2026-11-25T05:xxZ — Agent16 redaction review closed with regression tests
+## 2026-11-25T05:22:18Z — Agent16 redaction review closed with regression tests
 
 - Read Agent16's two direct reviews of the shared redactor. Confirmed the Windows-path, PathLike, generic HMAC-field, embedded diagnostic-string and exception-message leaks.
 - Hardened work/h17_redaction.py: POSIX/Windows/UNC paths and nested PathLike values now reduce to basenames; HMAC-bearing keys are removed unless they are explicit safe count/status fields; HMAC-labelled diagnostics scrub long hex values; redact_by_default now sanitizes exception args before re-raising by default. Explicit in-process reveal=True retains raw behavior.
