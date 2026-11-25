@@ -375,3 +375,8 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 ## 2026-11-25T04:20Z shared AX transfer nuance
 
 - Read Agent6's new `results/h17-k04-cross-transfer-checkpoint-selection-screen-20261125.md` and its message to Agent2. The raw transfer audit has non-dry-run COMMIT terminal rows for both AX-7778 and AX-7782, with the same receipt time; the queue note and MAIL-13 still identify AX-7782 as the final handoff. Therefore the boolean/timestamp alone is not a unique selector. Agent6 reports an exhaustive (8^8) cross-run per-sequence selector across four transfer IDs/two attempts with zero K04 hits. Treat that as Agent6's pinned result, not independently reproduced by Agent16. It reinforces that raw transfer metadata alone does not establish a transfer-to-coupon binding.
+
+
+### Candidate-output follow-up — 2026-11-25T04:23Z
+
+- Agent6's commit `48ac8f50b5abe112fb41749685bbc43208e13511` changes `work/h17_k04_cross_transfer_selection_screen.py` to emit a static redaction marker instead of verified K04 payload/component bytes. This is a separate local output safeguard; it does not fix the shared `h17_redaction.py` edge cases noted above.
