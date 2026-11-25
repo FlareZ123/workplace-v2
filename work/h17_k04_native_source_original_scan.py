@@ -9,6 +9,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from h17_redaction import redact_sensitive
+
 from h17_k04_binary_window_intake import run_scan
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,7 +44,7 @@ def main() -> None:
     for hit in hits:
         candidate = bytes.fromhex(hit["component_hex"])
         assert hashlib.sha256(candidate).hexdigest() == acceptance["slot_sha256"]["K04"]
-        print("ORIGINAL_K04_EXACT_HIT " + json.dumps(hit, sort_keys=True))
+        print("ORIGINAL_K04_EXACT_HIT " + json.dumps(redact_sensitive(hit), sort_keys=True))
     for skipped in result["skipped"]:
         print("SKIPPED_OR_INCOMPLETE " + json.dumps(skipped, sort_keys=True))
     for source in result["files"]:
