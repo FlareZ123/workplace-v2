@@ -135,28 +135,39 @@ def synthetic_positive_control():
     second_packet = stream[4:8]
     third_packet = stream[8:12]
 
-    reversed_once = reverse_previous_packet(tuple(third_packet))
-    assert reversed_once is not None and reversed_once[0] == second_packet
-    reversed_twice = reverse_previous_packet(tuple(reversed_once[0]))
-    assert reversed_twice is not None and reversed_twice[0] == first_packet
-
+    # Exercise a nontrivial word permutation and independent per-word endian.
+    order = (2, 0, 3, 1)
+    flip = 0b1010
+    late_packet = serialize(third_packet, order, flip)
+    expected_first = serialize(first_packet, order, flip)
+    expected_second = serialize(second_packet, order, flip)
     synthetic_mask = bytes(range(16))
     target = hashlib.sha256(
-        bytes(
-            a ^ b
-            for a, b in zip(
-                b"".join(word.to_bytes(4, "little") for word in first_packet),
-                synthetic_mask,
-            )
-        )
+        bytes(a ^ b for a, b in zip(expected_first, synthetic_mask))
     ).hexdigest()
-    recovered_payload = b"".join(
-        word.to_bytes(4, "little") for word in reversed_twice[0]
-    )
-    recovered_component = bytes(
-        a ^ b for a, b in zip(recovered_payload, synthetic_mask)
-    )
-    assert hashlib.sha256(recovered_component).hexdigest() == target
+
+    found_one = False
+    found_two = False
+    for view_order, view_flip, words in late_request_views(late_packet):
+        reversed_once = reverse_previous_packet(words)
+        if reversed_once is None:
+            continue
+        one_packet = serialize(reversed_once[0], view_order, view_flip)
+        if one_packet != expected_second:
+            continue
+        found_one = True
+        reversed_twice = reverse_previous_packet(tuple(reversed_once[0]))
+        if reversed_twice is None:
+            continue
+        two_packet = serialize(reversed_twice[0], view_order, view_flip)
+        if two_packet != expected_first:
+            continue
+        found_two = True
+        recovered_component = bytes(
+            a ^ b for a, b in zip(two_packet, synthetic_mask)
+        )
+        assert hashlib.sha256(recovered_component).hexdigest() == target
+    assert found_one and found_two
 
 def main():
     root_value = os.environ.get("H17_SOURCE_ROOT")
