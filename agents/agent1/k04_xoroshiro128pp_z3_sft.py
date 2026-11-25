@@ -224,6 +224,11 @@ def parse_source():
             stamp, *fields = line.split()
             rows[stamp] = dict(x.split("=", 1) for x in fields)
     assert len(rows) == 133
+    job_ack_stamps = [
+        stamp for stamp, row in rows.items()
+        if row["JOB"] == "PS-261003-0417" and row["STATE"] == "ACK"
+    ]
+    assert job_ack_stamps and max(job_ack_stamps) == "2026-10-03T18:02:00Z"
     trio = [rows[f"2026-10-03T18:0{minute}:00Z"] for minute in (1, 2, 3)]
     assert all(x["JOB"] == "PS-261003-0417" and x["CLASS"] == "RECOVER" for x in trio)
     assert [x["DEST"] for x in trio] == ["bench", "bench", "bench"]
@@ -511,6 +516,7 @@ def main():
     original["experiment"] = "original_direct_borrow_first_pair"
     original["source_partition"] = "CLASS=RECOVER, DEST=bench"
     original["source_sequence"] = "18:01 REQUESTED -> 18:02 ACK -> 18:03 REQUESTED"
+    original["last_ack_for_job_verified"] = True
     original["control_gate"] = (
         "positive-control workflow dependency passed" if args.source_only
         else "unseeded planted control passed in this process"
