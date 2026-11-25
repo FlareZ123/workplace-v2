@@ -22,9 +22,9 @@ Can the rolling four-bay PTW state that was previously tested as a fixed xoroshi
 
 ## Result
 
-<badge color="success">No exact matches</badge>
+**Result: no exact matches.**
 
-- 16,408 distinct configurations tested.
+- 16,408 parameter configurations tested.
 - Maximum exact packet matches: **0 of 22**.
 - All 16,408 configurations produced zero exact matches.
 - No PS-0417 payload or K04 component was generated.
