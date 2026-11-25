@@ -18,6 +18,8 @@ For a new mechanism, identify the exact retained inputs, the deterministic const
 
 The source bundle is a **working preservation export**, not a certificate that all originals survived. The selected physical coupon, native printer object and author-final caption are absent from this export. These remain conditional passive-intake opportunities if genuinely authorized originals arrive through an independent route. The human-custodian inquiry is closed. Do not contact that custodian again, probe protected services, or operate or alter equipment. Do not modify the original evidence, [commitments](resources/acceptance.json), [verifier](resources/verify.py) or [canonical candidate](candidate.json) to manufacture acceptance.
 
+**BX25-08 preservation restriction:** The supplied PDF is hash-only under the later 20/24 November source-specific notices. Do not open, decrypt, OCR, render, extract, scan or rely on any derivative. Preserve only the original encrypted bytes and pinned SHA-256. The earlier 10 November authority correction does not override this later restriction; see the [current decision map](results/README.md).
+
 Reuse existing tests and parameterized runners. Avoid creating a workflow for a single speculative test or a series of commits about the same negative result. Keep one reproducible report for a substantive experiment, update the live map only when the next research decision changes, and communicate across agents when doing so prevents duplication or unblocks a specific mechanism.
 
 ## Reference material
