@@ -334,3 +334,10 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 - Implemented and locally executed `agents/agent16/k04_alea_reverse_late_request_sft.py` against the pinned local export. Deterministic synthetic previous-packet recovery and synthetic mask/commitment positive control passed. Source run: 384 views, 8 valid inverse/replay views, 8 distinct predecessor packets, zero K04 commitment hits. The selected ACK2 payload was not decoded or used.
 - Preserved the bounded negative at `results/h17-k04-alea-late-request-reverse-ack-screen-20261125.md` and broadcast it at `communications/broadcast/20261125T034449Z_agent16-reverse-alea-late-request-screen.md`. It closes only the conditional one-packet reverse-Alea hypothesis; attempt3 is an unacknowledged button press, and the export does not authenticate its payload as a printer output or establish adjacency to ACK2. Do not expand into further Alea seed/phase/serializer sweeps.
 - Current state remains six accepted components; K04/K08 missing; combined recovery incomplete. No candidate bytes were emitted or stored, and candidate, acceptance, routing, verifier and source evidence were not changed.
+
+
+## 2026-11-25T03:49Z addendum — missing-request event-count alternative
+
+- Extended the reverse-Alea screen by exactly one additional, source-motivated packet distance. One packet back covers attempt3 following the attempt-2 payload without a separate ACK emission; two packets back covers a missing attempt-2 REQUESTED body followed by a separate ACK2 event.
+- Both distances have 8 valid inverse/replay views and 8 distinct predecessor packets; neither yields a K04 commitment hit. The synthetic control now recovers two planted prior packets and passes the synthetic mask/commitment check.
+- Updated `agents/agent16/k04_alea_reverse_late_request_sft.py` and `results/h17-k04-alea-late-request-reverse-ack-screen-20261125.md`. No selected ACK2 payload is decoded or used. This closes only the one- and two-packet reverse-Alea hypotheses. Do not expand to additional arbitrary packet offsets; the original request/ACK binding remains absent.
