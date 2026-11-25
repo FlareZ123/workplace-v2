@@ -326,7 +326,7 @@ def main() -> int:
         print(json.dumps(output, indent=2))
         return 0
     except (OSError, KeyError, ValueError, XFError) as exc:
-        print(json.dumps({"status": "ERROR", "error": str(exc)}, indent=2), file=sys.stderr)
+        print(json.dumps(redact_sensitive({"status": "ERROR", "error": str(exc)}), indent=2), file=sys.stderr)
         return 1
 
 
