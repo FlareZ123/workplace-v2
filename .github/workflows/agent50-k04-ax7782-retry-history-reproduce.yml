@@ -1,0 +1,53 @@
+name: Agent 50 K04 AX-7782 retry-history donor reproduction
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run source-pinned donor screen
+        shell: bash
+        run: |
+          set -o pipefail
+          python agents/agent50/k04_ax7782_retry_history_donor_sft.py | tee /tmp/ax7782-donor-result.json
+      - name: Prepare redacted reproduction record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('/tmp/ax7782-donor-result.json').read_text())
+          out = Path('results/h17-k04-ax7782-retry-history-donor-reproduction-20261125.md')
+          out.write_text(
+              '# K04 AX-7782 retry-history donor reproduction\n\n'
+              'Reproduced from the committed source-pinned script in GitHub Actions. '
+              'The script itself asserts the candidate-set cardinalities and zero original-slot hits.\n\n'
+              '~~~json\n' + json.dumps(data, indent=2, sort_keys=True) + '\n~~~\n\n'
+              'This is an aggregate-only result: no candidate bytes, raw payloads, checkpoint values, '
+              'route masks or component digests are included.\n',
+              encoding='utf-8',
+          )
+          PY
+      - name: Commit reproduction record
+        env:
+          GH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/h17-k04-ax7782-retry-history-donor-reproduction-20261125.md
+          if git diff --cached --quiet; then
+            echo "No report change."
+            exit 0
+          fi
+          git commit -m "Agent 50: Reproduce AX-7782 donor screen"
+          git pull --rebase origin main
+          git push origin HEAD:main
