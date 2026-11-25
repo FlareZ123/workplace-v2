@@ -59,8 +59,8 @@ def main() -> int:
     args = parser.parse_args()
 
     acceptance = json.loads(args.acceptance.read_text(encoding="utf-8"))
-    targets = {slot: bytes.fromhex(value)
-               for slot, value in acceptance["slot_sha256"].items()}
+    targets = {slot: bytes.fromhex(entry["sha256"])
+               for slot, entry in acceptance["slots"].items()}
 
     with zipfile.ZipFile(args.zip) as archive:
         route = json.loads(archive.read("evidence/recovery-routing.json"))
@@ -97,6 +97,17 @@ def main() -> int:
                 if body is not None:
                     add_spans(candidates, name, body.get_content())
 
+    # Positive controls use the same route constants and reduction functions,
+    # but an isolated synthetic target so no original acceptance data is changed.
+    planted_phrase = b"synthetic phrase for H-17 probe self-test"
+    planted_k08 = hmac16(nonce, planted_phrase)
+    planted_k08_target = hashlib.sha256(planted_k08).digest()
+    planted_k04_payload = hmac16(mask, planted_phrase)
+    planted_k04_component = bytes(a ^ b for a, b in zip(planted_k04_payload, mask))
+    planted_k04_target = hashlib.sha256(planted_k04_component).digest()
+    assert hashlib.sha256(hmac16(nonce, planted_phrase)).digest() == planted_k08_target
+    assert hashlib.sha256(bytes(a ^ b for a, b in zip(hmac16(mask, planted_phrase), mask))).digest() == planted_k04_target
+
     hits = {
         "K08_exact_HMAC": [],
         "K04_payload_is_HMAC": [],
@@ -130,6 +141,7 @@ def main() -> int:
         "selected_payload_hex": selected_payload.hex().upper(),
         "K04_mask_hex": mask.hex().upper(),
         "K08_nonce_hex": nonce.hex().upper(),
+        "synthetic_positive_controls": {"K04": True, "K08": True},
         "hits": {name: values for name, values in hits.items()},
         "interpretation": (
             "No match rejects this shared-phrase HMAC construction for the "
