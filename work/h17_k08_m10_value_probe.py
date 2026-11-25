@@ -20,9 +20,11 @@ import json
 import re
 import sys
 from pathlib import Path
+
+from h17_redaction import redact_sensitive
 from typing import Any
 
-EXPECTED_N02_HMAC16 = "BF889359B0303F2B2B2FD96AE841210B"
+EXPECTED_SYNTHETIC_HMAC16 = "D80E9E725D394C7F1B60CCDD801F7407"
 
 
 def normalize(text: str) -> str:
@@ -41,8 +43,8 @@ def load_rules(resources: Path) -> tuple[bytes, bytes]:
     target = bytes.fromhex(acceptance["slot_sha256"]["K08"])
     if len(nonce) != 16 or len(target) != 32:
         raise ValueError("invalid K08 nonce or commitment width")
-    control = k08_component(nonce, "A good watch leaves the room ready for the next pair of hands")
-    if control.hex().upper() != EXPECTED_N02_HMAC16:
+    control = k08_component(bytes(range(16)), "A good watch leaves the room ready for the next pair of hands")
+    if control.hex().upper() != EXPECTED_SYNTHETIC_HMAC16:
         raise ValueError("K08 normalization/HMAC known-answer control failed")
     return nonce, target
 
@@ -204,6 +206,7 @@ def main() -> int:
         result = inspect_workbook(args.workbook, args.resources)
     except Exception as exc:
         parser.error(str(exc))
+    result = redact_sensitive(result)
     encoded = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.json_out:
         out = args.json_out.expanduser().absolute()
