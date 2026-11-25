@@ -12,14 +12,14 @@ from typing import Any
 from functools import wraps
 
 _SENSITIVE_EXACT = {
-    "candidate", "candidate_bytes", "candidate_hex",
+    "candidate", "candidate_bytes", "candidate_hex", "candidate_phrase",
     "component", "component_hex", "component_sha256", "expected_component_sha256",
     "chain_hex", "checkpoint_chain_hex", "selected_checkpoints", "checkpoint",
-    "normalized_phrase", "normalized_caption", "raw_text", "raw_record_hex",
+    "phrase", "raw_phrase", "normalized_phrase", "normalized_caption", "raw_text", "raw_record_hex",
     "raw_payload", "payload", "payload_hex",
-    "hmac", "hmac16", "nonce", "desk_nonce", "desk_nonce_hex",
-    "target", "target_sha256", "k08_target_sha256",
-    "route_mask", "route_mask_hex", "mask", "mask_hex",
+    "hmac", "hmac16", "hmac_hex", "nonce", "nonce_hex", "desk_nonce", "desk_nonce_hex",
+    "target", "target_hex", "target_sha256", "slot_sha256", "k08_target_sha256",
+    "route_mask", "route_mask_hex", "mask", "mask_hex", "raw_component", "actual_component", "expected_component",
     "formula_text", "formula_tokens_hex", "string_record_hex",
     "comment_author", "author", "text", "value", "raw_value", "cached_value",
     "context", "comment", "caption", "formula", "cell_value",
@@ -50,7 +50,7 @@ def _walk(value: Any) -> Any:
         for key, item in value.items():
             if _sensitive_key(str(key)):
                 continue
-            if str(key).casefold() == "path" and isinstance(item, str):
+            if (str(key).casefold() == "path" or str(key).casefold().endswith("_path")) and isinstance(item, str):
                 clean[key] = Path(item).name
             else:
                 clean[key] = _walk(item)
