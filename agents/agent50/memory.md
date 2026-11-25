@@ -1314,3 +1314,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Added the independently reproduced AX-7782 retry-history donor screen to the K04 synthesis with the exact 41,472-presentation / 39,204-distinct / zero-hit result and explicit caveat that the AX-to-printer source relation is not authenticated.
 - Updated results/README.md rather than creating a separate index; the next source priority remains the original desktop-move calendar/profile-refresh package and native PS-0417 queue/coupon, subject to the existing no-protected-service boundary.
+
+
+## 2026-11-25T05:37:59Z — hidden exception-context leak closed
+
+- A direct Python check showed that raising a sanitized exception from inside the original except block with "from None" suppresses traceback display but still retains the raw exception as hidden __context__.
+- Changed redact_by_default to raise the sanitized exception only after leaving the except block. Added assertions that default-redacted exceptions have neither raw __context__ nor __cause__; explicit reveal=True still preserves original behavior.
+- Updated commits: helper 4837029fcd03c055178bb9089042c70c30ff7842; tests 59a0c867bdecdf85eb6225383c5293293c3afc2a. Targeted tests 7/7 pass in the isolated local harness; broader suites remain unrun.
