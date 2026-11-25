@@ -64,13 +64,20 @@ class CompleteNativeRecoveryTests(unittest.TestCase):
             "K08": {"desk_nonce": self.nonce.hex().upper()},
         }
 
-    def execute(self, base=None):
+    def execute(self, base=None, reveal=True):
         return recover_complete(
             self.spool, self.caption,
             targets=self.targets, routing=self.routing,
             six_pass=self.base if base is None else base,
-            reveal=True,
+            reveal=reveal,
         )
+
+    def test_default_complete_result_redacts_key_material(self):
+        result = self.execute(reveal=False)
+        self.assertTrue(result["redaction_applied"])
+        self.assertNotIn("candidate", result)
+        self.assertNotIn("normalized_phrase", repr(result))
+        self.assertNotIn("component_hex", repr(result))
 
     def test_complete_synthetic_eight_slot_acceptance(self):
         result = self.execute()
