@@ -66,16 +66,11 @@ def _redact_string(value: str) -> str:
 
 
 _DIAGNOSTIC_KEYS = {"error", "exception", "diagnostic", "stderr", "stdout", "traceback", "message"}
-_DIAGNOSTIC_SENSITIVE_TERMS = re.compile(
-    r"(?i)(?:\b(?:phrase|caption|component|payload|nonce|mask|candidate|digest|checkpoint|secret|recovery\s+key)\b|hmac)"
-)
 
 
 def _redact_diagnostic_string(value: str) -> str:
-    text = _redact_string(value)
-    if _DIAGNOSTIC_SENSITIVE_TERMS.search(text):
-        return "[redacted diagnostic]"
-    return text
+    """Free-form diagnostics can embed arbitrary source text; hide by default."""
+    return "[redacted diagnostic]"
 
 
 def _sensitive_key(key: str) -> bool:
