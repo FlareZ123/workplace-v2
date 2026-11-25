@@ -1337,3 +1337,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - K04's direct missing evidence is the native PS-0417 attempt-2 REQUESTED body and the record binding it to ACK2, complete native .SPL/.SHD or equivalent driver-level job image, physical ESC-N coupon/bench handoff witness, and independent route/mask commissioning record. Keep SEP26, ST-112 R3/R4, the separate monthly consumables return, and PrevERP posted-items/reversal records as distinct discriminators; do not infer a ticket-level PS job foreign key from the supplied CSV.
 - K08's authority is Emily's original final keeper-envelope face. Supporting originals are Emily's WN-14 loose desk-note/margin versions, authenticated photo/galley-caption version history, and the small card Zoey placed by the shelf (preserve in situ, both sides and context); none substitutes for the final inscription without an authenticated link. First profile-refresh discriminator remains the original R:/IT/desktop-move-2026.html calendar plus linked manifest/schedule/logs. Do not assume USMT or that AX-7782 is the profile store.
 - No protected R-drive/SharePoint access, no closed-channel custodian contact, and no use of BX25-08 PDF content. No original source artifact is present in the current workspace.
+
+
+## 2026-11-25T05:44:21Z — fail-closed free-form diagnostics
+
+- Strengthened the default redaction boundary after an unlabelled raw phrase was shown to survive keyword-based diagnostic scrubbing. Free-form string values under error/exception/diagnostic/stderr/stdout/traceback/message keys are now always generic redacted diagnostics; decorated exception string args are also always generic. Structured path fields and PathLike args still reduce to basenames. Explicit in-process reveal=True is unchanged.
+- Exact committed helper/test source hashes match local files; 8/8 targeted tests pass, including unlabelled phrase as the entire exception message. Broader work/ and agents/agent31/ suites remain unrun.
+- Current helper/test commits: helper 8d2d84c81eeae2a518a27a39369a1e2e9753fc7f; tests 5a28b36bc038efb5ee6c01bdec80021a5a690f65.
