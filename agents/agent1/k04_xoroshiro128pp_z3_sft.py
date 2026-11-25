@@ -494,7 +494,7 @@ def main():
         args.view, args.timeout_seconds, True,
         max_middle_models=args.max_middle_models
     )
-    original["experiment"] = "original_first_pair_only"
+    original["experiment"] = "original_direct_borrow_first_pair"
     original["source_partition"] = "CLASS=RECOVER, DEST=bench"
     original["source_sequence"] = "18:01 REQUESTED -> 18:02 ACK -> 18:03 REQUESTED"
     original["control_gate"] = (
