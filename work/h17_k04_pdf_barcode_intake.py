@@ -12,6 +12,9 @@ https://pymupdf.readthedocs.io/en/latest/page.html
 from __future__ import annotations
 
 from collections.abc import Iterator
+import hashlib
+
+from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 
 _MAX_PAGES = 24
 _MAX_RENDER_PIXELS = 20_000_000
@@ -19,8 +22,15 @@ _MAX_PDF_IMAGE_BYTES = 32 * 1024 * 1024
 _MAX_TOTAL_IMAGE_BYTES = 128 * 1024 * 1024
 
 
+def _is_hash_only_pdf(data: bytes) -> bool:
+    """Identify the quarantined PDF using SHA-256 only; never parse its bytes."""
+    return hashlib.sha256(data).hexdigest() == OPAQUE_PDF_SHA256
+
+
 def iter_pdf_embedded_files(data: bytes) -> Iterator[tuple[str, bytes]]:
     """Extract actual PDF portfolio /EmbeddedFiles attachments, read-only."""
+    if _is_hash_only_pdf(data):
+        return
     try:
         import pymupdf
     except ImportError:
@@ -64,6 +74,8 @@ def iter_pdf_coupon_text(data: bytes) -> Iterator[tuple[str, bytes]]:
     or punctuation separators to support multi-run hexadecimal labels.
     The original 16-byte hash determines acceptance, not a text guess.
     """
+    if _is_hash_only_pdf(data):
+        return
     try:
         import pymupdf
     except ImportError:
@@ -107,6 +119,8 @@ def iter_pdf_barcode_images(data: bytes) -> Iterator[tuple[str, bytes]]:
     An encrypted PDF produces no images. Any missing optional backend is
     visible as the absence of outputs; the caller owns coverage diagnostics.
     """
+    if _is_hash_only_pdf(data):
+        return
     try:
         import pymupdf
     except ImportError:
