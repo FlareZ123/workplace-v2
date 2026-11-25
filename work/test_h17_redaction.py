@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from h17_redaction import redact_sensitive
+from h17_redaction import redact_sensitive, redact_by_default
 
 
 class RedactionTests(unittest.TestCase):
@@ -64,6 +64,55 @@ class RedactionTests(unittest.TestCase):
         self.assertEqual(clean["path"], "source.bin")
         self.assertNotIn("secret", repr(clean))
         self.assertEqual(clean["blob"], {"redacted": True, "byte_length": 3})
+
+    def test_windows_paths_pathlike_and_hmac_key_variants(self):
+        windows = r"C:\Users\Operator\Documents\H17\native.psh"
+        clean = redact_sensitive({
+            "path": windows,
+            "url": "https://example.com/private/file",
+            "path_object": Path(windows),
+            "nested": {"source_path": Path(r"D:\private\mug-stock.xls")},
+            "hmac_sha256": "A" * 64,
+            "expected_hmac": "B" * 64,
+            "hmac_key": "C" * 32,
+            "hmac_digest": "D" * 64,
+            "hmac_match_count": 2,
+            "hmac_status": "no_match",
+        })
+        self.assertEqual(clean["path"], "native.psh")
+        self.assertEqual(clean["url"], "https://example.com/private/file")
+        self.assertEqual(clean["path_object"], "native.psh")
+        self.assertEqual(clean["nested"]["source_path"], "mug-stock.xls")
+        self.assertEqual(clean["hmac_match_count"], 2)
+        self.assertEqual(clean["hmac_status"], "no_match")
+        serialized = repr(clean)
+        for secret in ("A" * 64, "B" * 64, "C" * 32, "D" * 64, "C:\\Users", "D:\\private"):
+            self.assertNotIn(secret, serialized)
+
+    def test_redacts_paths_and_hmac_values_inside_error_strings(self):
+        clean = redact_sensitive({
+            "errors": [{"error": r"cannot read C:\Users\Operator\H17\native.psh; expected_hmac=" + "A" * 64}],
+        })
+        error = clean["errors"][0]["error"]
+        self.assertIn("native.psh", error)
+        self.assertNotIn("C:\\Users", error)
+        self.assertNotIn("A" * 64, error)
+
+    def test_decorator_redacts_exception_diagnostics(self):
+        @redact_by_default
+        def fail(path):
+            raise ValueError(f"original source unavailable: {path}")
+        with self.assertRaises(ValueError) as caught:
+            fail(Path(r"C:\Users\Operator\Documents\H17\native.psh"))
+        self.assertIn("native.psh", str(caught.exception))
+        self.assertNotIn("C:\\Users", str(caught.exception))
+
+    def test_reveal_preserves_original_exception_for_authorized_in_process_use(self):
+        @redact_by_default
+        def fail(path):
+            raise ValueError(f"original source unavailable: {path}")
+        with self.assertRaisesRegex(ValueError, r"C:\\Users"):
+            fail(Path(r"C:\Users\Operator\Documents\H17\native.psh"), reveal=True)
 
 
 if __name__ == "__main__":
