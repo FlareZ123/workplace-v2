@@ -16,8 +16,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+WORK = Path(__file__).resolve().parent
 RESOURCES = ROOT / "resources"
+sys.path.insert(0, str(WORK))
 sys.path.insert(0, str(RESOURCES))
+from h17_ax7782_object_intake import OPAQUE_PDF_SHA256  # noqa: E402; hash-only source policy
 from verify import evaluate, no_duplicates  # noqa: E402; the original unmodified archive verifier
 
 
@@ -27,6 +30,20 @@ def sha256_file(path: Path) -> str:
         for block in iter(lambda: handle.read(1048576), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def checked_witness_hash(path: Path | None, label: str) -> str | None:
+    """Hash a supplied witness without inspecting it; reject the quarantined PDF."""
+    if path is None:
+        return None
+    if path.is_symlink() or not path.is_file():
+        raise ValueError(f"{label} must be a regular, non-symlink file")
+    digest = sha256_file(path)
+    if digest == OPAQUE_PDF_SHA256:
+        raise ValueError(
+            f"{label} is the hash-pinned BX25-08 PDF; it is hash-only and cannot be used as a witness"
+        )
+    return digest
 
 
 def normalize_caption(text: str) -> str:
@@ -91,6 +108,12 @@ def assess(
         raise ValueError("--caption-original is required with --caption")
     if coupon is None and caption is None:
         raise ValueError("Provide at least one new original-source witness")
+    # The quarantined BX25-08 PDF may be hashed, but must never be read as a
+    # coupon/caption transcription or used as either original-source witness.
+    coupon_transcription_sha = checked_witness_hash(coupon, "coupon transcription")
+    coupon_original_sha = checked_witness_hash(coupon_original, "coupon original")
+    caption_transcription_sha = checked_witness_hash(caption, "caption transcription")
+    caption_original_sha = checked_witness_hash(caption_original, "caption original")
     baseline = evaluate(candidate, targets)
     previously_verified = {
         key: candidate[key] for key in ("K04", "K08") if baseline["slots"][key] == "PASS"
@@ -130,8 +153,8 @@ def assess(
         payload = bytes.fromhex(payload_hex)
         candidate["K04"] = bytes(a ^ b for a, b in zip(payload, mask)).hex().upper()
         result["witnesses"]["K04"] = {
-            "original_sha256": sha256_file(coupon_original),
-            "transcription_sha256": hashlib.sha256(coupon_bytes).hexdigest(),
+            "original_sha256": coupon_original_sha,
+            "transcription_sha256": coupon_transcription_sha,
             "job": job,
             "attempt": attempt,
             "timestamp_utc": timestamp.isoformat(),
@@ -145,8 +168,8 @@ def assess(
         nonce = bytes.fromhex(routing["K08"]["desk_nonce"])
         candidate["K08"] = hmac.new(nonce, normalized.encode("utf-8"), hashlib.sha256).digest()[:16].hex().upper()
         result["witnesses"]["K08"] = {
-            "original_sha256": sha256_file(caption_original),
-            "transcription_sha256": hashlib.sha256(caption_bytes).hexdigest(),
+            "original_sha256": caption_original_sha,
+            "transcription_sha256": caption_transcription_sha,
             "normalized_caption": normalized,
             "derived_component": candidate["K08"],
         }
