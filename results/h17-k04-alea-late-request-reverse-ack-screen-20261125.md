@@ -24,7 +24,7 @@ The second case is conditional. MAIL-16 identifies attempt 3 as a button press t
 - Apply the inverse a second time for the explicit missing-request/separate-ACK alternative.
 - For each recovered 16-byte predecessor, apply the routed K04 mask and test the full K04 SHA-256 commitment. Candidate bytes and candidate hashes are never printed or written.
 
-A deterministic synthetic positive control recovers two planted preceding packets and passes the synthetic mask/commitment check.
+A deterministic synthetic positive control exercises a nontrivial word permutation and independent per-word endianness, recovers two planted preceding packets, and passes the synthetic mask/commitment check.
 
 ## Result
 
