@@ -24,6 +24,8 @@ import re
 import tempfile
 from collections import defaultdict
 from pathlib import Path, PurePosixPath
+
+from h17_redaction import redact_by_default, redact_sensitive
 from typing import Any, Iterable, Iterator
 
 import h17_ax7782_k08_phrase_intake as phrase_intake
