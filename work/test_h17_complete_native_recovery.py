@@ -69,6 +69,7 @@ class CompleteNativeRecoveryTests(unittest.TestCase):
             self.spool, self.caption,
             targets=self.targets, routing=self.routing,
             six_pass=self.base if base is None else base,
+            reveal=True,
         )
 
     def test_complete_synthetic_eight_slot_acceptance(self):

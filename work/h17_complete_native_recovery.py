@@ -15,6 +15,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from h17_redaction import redact_by_default
+
 from resources.verify import evaluate
 from h17_ax7782_k08_phrase_intake import (
     decode_text_variants, iter_text_streams, normalize,
@@ -35,6 +37,7 @@ def _regular_source(path: Path) -> Path:
     return path
 
 
+@redact_by_default
 def recover_complete(
     k04_source: Path,
     k08_source: Path,
@@ -66,7 +69,7 @@ def recover_complete(
         k04_source,
         targets["slot_sha256"]["K04"],
         routing["K04"]["masked_component"],
-        1, SOURCE_LIMIT, TOTAL_LIMIT, 4, 10_000,
+        1, SOURCE_LIMIT, TOTAL_LIMIT, 4, 10_000, reveal=True,
     )
     k04_candidates = {
         hit["component_hex"]
