@@ -25,7 +25,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'work'))
-from h17_redaction import redact_sensitive
+from h17_redaction import redact_by_default, redact_sensitive
 import re
 
 
@@ -96,6 +96,7 @@ def read_caption(path: Path) -> str:
         raise ValueError('Caption file must be a regular UTF-8 text file under 1 MB')
     return path.read_text(encoding='utf-8-sig')
 
+@redact_by_default
 def execute(root: Path, coupon_hex: str, caption: str, output: Path | None, *, allow_synthetic_targets: bool=False) -> dict:
     acceptance, routing, baseline, verifier = paths(root)
     if not (acceptance.is_file() and routing.is_file() and baseline.is_file() and verifier.is_file()):

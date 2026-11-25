@@ -269,7 +269,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
             with zipfile.ZipFile(archive_path, "a", compression=zipfile.ZIP_STORED) as archive:
                 archive.writestr(name, b"\x00" * filler_len)
             self.assertEqual(archive_path.stat().st_size, 8 * 1048576)
-            result = phrase_intake.inspect_object(archive_path, resources)
+            result = phrase_intake.inspect_object(archive_path, resources, reveal=True)
             hits = result["K08_search"]["original_commitment_hits"]
             self.assertTrue(any(hit["normalized_phrase"] == phrase for hit in hits))
             self.assertTrue(result["transfer"]["K07_commitment_pass"])
