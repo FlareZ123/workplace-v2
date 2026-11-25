@@ -234,7 +234,7 @@ def main() -> None:
     assert not ax_only_hits and not cross_source_hits
 
     print(json.dumps({
-        "selected_ACK2_payload_loaded": False,
+        "selected_ACK2_payload_decoded": False,
         "AX7782_attempt_rows": 16,
         "AX_word_views": len(ax_views),
         "nonoverlapping_source_blocks": sorted(groups),
