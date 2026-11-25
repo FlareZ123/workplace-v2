@@ -27,6 +27,8 @@ from io import BytesIO
 from pathlib import Path
 from typing import Iterator
 
+from h17_redaction import redact_sensitive
+
 import numpy as np
 from PIL import Image
 
@@ -286,16 +288,16 @@ def main() -> int:
     parser.add_argument("--evidence-root", type=Path, required=True, help="directory containing recovery-routing.json and acceptance.json")
     parser.add_argument("--max-words", type=int, default=48)
     args = parser.parse_args()
-    nonce, commitment = load_commitment(args.evidence_root)
     try:
+        nonce, commitment = load_commitment(args.evidence_root)
         result = scan_authorized_n14_image(
             args.image, args.source_manifest, nonce, commitment,
             max_words=args.max_words,
         )
     except Exception as exc:
-        print(json.dumps({"error": f"{type(exc).__name__}: {exc}", "matches": []}, indent=2))
+        print(json.dumps(redact_sensitive({"error": f"{type(exc).__name__}: {exc}", "matches": []}), indent=2))
         return 2
-    print(json.dumps(result, indent=2))
+    print(json.dumps(redact_sensitive(result), indent=2))
     return 0 if result["matches"] else 1
 
 
