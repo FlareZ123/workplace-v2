@@ -50,7 +50,7 @@ def _basename(value: Any) -> str:
 
 
 def _redact_string(value: str) -> str:
-    """Scrub paths and labelled HMAC material embedded in diagnostic strings."""
+    """Scrub paths and long hex tokens embedded in strings."""
     text = value
     path_patterns = (
         r"(?i)\b[A-Z]:[\\/][^\s\"'<>|]+",
@@ -59,10 +59,22 @@ def _redact_string(value: str) -> str:
     )
     for pattern in path_patterns:
         text = re.sub(pattern, lambda match: _basename(match.group(0)), text)
-    # If a diagnostic mentions HMAC, remove any long hex value in that same
-    # diagnostic even when the producer uses a non-standard field label.
-    if "hmac" in text.casefold():
-        text = re.sub(r"(?i)\b[0-9a-f]{16,}\b", "[redacted]", text)
+    # Long hex values can be components, nonces, masks or digests even when
+    # the producer omitted a sensitive field label.
+    text = re.sub(r"(?i)\b[0-9a-f]{16,}\b", "[redacted]", text)
+    return text
+
+
+_DIAGNOSTIC_KEYS = {"error", "exception", "diagnostic", "stderr", "stdout", "traceback", "message"}
+_DIAGNOSTIC_SENSITIVE_TERMS = re.compile(
+    r"(?i)(?:\b(?:phrase|caption|component|payload|nonce|mask|candidate|digest|checkpoint|secret|recovery\s+key)\b|hmac)"
+)
+
+
+def _redact_diagnostic_string(value: str) -> str:
+    text = _redact_string(value)
+    if _DIAGNOSTIC_SENSITIVE_TERMS.search(text):
+        return "[redacted diagnostic]"
     return text
 
 
@@ -81,7 +93,10 @@ def _walk(value: Any) -> Any:
         for key, item in value.items():
             if _sensitive_key(str(key)):
                 continue
-            if (str(key).casefold() == "path" or str(key).casefold().endswith("_path")) and isinstance(item, (str, os.PathLike)):
+            normalized_key = str(key).casefold()
+            if normalized_key in _DIAGNOSTIC_KEYS and isinstance(item, str):
+                clean[key] = _redact_diagnostic_string(item)
+            elif (normalized_key == "path" or normalized_key.endswith("_path")) and isinstance(item, (str, os.PathLike)):
                 clean[key] = _basename(item)
             else:
                 clean[key] = _walk(item)
@@ -106,7 +121,10 @@ def redact_sensitive(value: Any) -> Any:
 
 
 def _safe_exception(exc: Exception) -> Exception:
-    safe_args = tuple(_walk(arg) for arg in exc.args)
+    safe_args = tuple(
+        _redact_diagnostic_string(arg) if isinstance(arg, str) else _walk(arg)
+        for arg in exc.args
+    )
     try:
         return type(exc)(*safe_args)
     except Exception:
