@@ -309,12 +309,14 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
         record = {
             "model_index": index,
             "complete_middle_constructed": True,
+            "holdout_matches_full_18_03_packet": tuple(replay[4:6]) == tuple(holdout),
         }
         hit = False
         if check_candidate:
             component = bytes(x ^ y for x, y in zip(coupon, mask))
             hit = hashlib.sha256(component).hexdigest() == target_sha
             record.update({
+                "middle_matches_withheld_ACK2": coupon == ack2_payload,
                 "K04_original_PASS": hit,
                 "component_commitment_status": "PASS" if hit else "MISS",
             })
