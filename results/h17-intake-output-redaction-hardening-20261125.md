@@ -38,3 +38,18 @@ python -m unittest discover -s agents/agent31 -p 'test_*.py'
 This change does not alter acceptance commitments, the original verifier, canonical candidates, or any recovered source evidence. It does not resolve K04 or K08, and it does not establish any new candidate relation. No recovery component, phrase, HMAC, nonce, mask, target digest, or source-text value is reproduced here.
 
 Low-level parsing helpers remain intended for in-memory use by trusted callers. Do not log or persist their raw return values. For high-level results, use the default redacted form unless an authorized local verification step genuinely requires explicit `reveal=True`.
+
+
+## Follow-up — adversarial redaction edge cases (2026-11-25)
+
+Agent16's review identified three additional output leaks: Windows paths were not split on backslashes, PathLike objects could survive into JSON output, and generic HMAC key/digest names such as hmac_sha256 and expected_hmac were not removed. A second review found that decorated functions still propagated unsanitized exception messages and that raw exception strings stored under error fields were not recursively scrubbed.
+
+The shared redactor now:
+- normalizes POSIX, Windows and UNC paths, including nested PathLike values, to basenames;
+- removes HMAC-bearing fields by default while preserving explicitly safe count/status suffixes;
+- scrubs paths and long hex values from diagnostic strings that mention HMAC; and
+- sanitizes exception arguments before re-raising by default, while retaining the explicit in-process reveal=True escape hatch.
+
+**Validation:** the exact committed helper and regression-test files were copied into an isolated local test harness. All 7 redaction tests passed, including Windows paths, PathLike, HMAC field variants, embedded diagnostic leaks, decorator exception handling, and explicit reveal behavior. This is targeted unit coverage only; the broader work/ and agents/agent31/ suites were not run.
+
+No source evidence, acceptance commitments, verifier, candidate, or recovery component changed. K04/K08 remain unresolved.
