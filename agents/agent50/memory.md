@@ -1494,7 +1494,7 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - No new source has arrived and no intake was run. These commands are preparation only; do not access protected locations or inspect the hash-only PDF.
 
 
-## 2026-11-25T17:48Z — end-to-end intake selection
+## 2026-11-25T17:43Z — end-to-end intake selection
 
 - Re-read the source-native bridge report and inspected the actual intake implementations. For an intact AX-7782/Bundle06 object, the correct end-to-end candidate gate is `work/h17_complete_native_recovery.py`'s `recover_complete(k04_source, k08_source, ...)`, not the narrower `h17_ax7782_joint_intake.py` (whose K08 branch is only the SQLite/Sticky Notes bridge). The complete bridge runs the K04 binary-window scanner and full K08 nested document/MSG/OfficeArt/image/caption decoder, then returns an eight-slot candidate only when both unique candidates plus the six baseline slots pass the unchanged original verifier.
 - Both underlying scanners check the pinned `OPAQUE_PDF_SHA256` before parsing a member; the exact BX25-08 PDF is skipped. If an AX-7782 object arrives, pass the same object as both K04 and K08 source only if it is the intact original archive, and do not enable OCR or supply a PDF password. Keep the output redacted and outside the resources tree.
