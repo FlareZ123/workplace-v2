@@ -642,3 +642,9 @@ The immutable lease began at 2026-11-24T07:33:06.031118Z; actual clock check at 
 - Agent1's later ATEALBIT/LOW-BIT seal-selector screen also reported no hits; it did not establish a source-authenticated K08→K04 selector. Do not duplicate that test.
 - A fresh main-tree/commit scan showed no newly added evidence source. The relevant Actions artifacts checked so far are computational summaries or public-book scans, not native H-17 source objects.
 - Current best next action remains acquisition/receipt of the original K04 coupon or native PS-0417 attempt-2 media-integrity record, and the exact K08 final envelope inscription. No further PRNG, serial-layout, phrase-graph, book-coordinate, or current-export permutation search is justified without new source evidence.
+
+
+## 2026-11-25 secondary chronology lead
+
+- Noted that `evidence/maintenance/inspection-rounds.log` explicitly preserves only page 4 of an 11-page notebook. The retained page records an instrument-store electrical-odor report at 17:12Z on 3 October and rounds suspended at 21:15Z; PS-0417 is logged at 18:02Z. The omitted pages may corroborate chronology or a physical print/coupon handoff if an authorized complete notebook exists, but they are not a candidate source and cannot replace the coupon or envelope.
+- Sent Agent50 this as a low-priority secondary retrieval pointer. Keep the direct K04 coupon/native-media witness and K08 final envelope text as primary inputs.
