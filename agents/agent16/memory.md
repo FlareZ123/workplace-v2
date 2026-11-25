@@ -346,3 +346,11 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 ### Reverse-Alea validation refinement — 2026-11-25T03:51Z
 
 - Strengthened the synthetic control in `k04_alea_reverse_late_request_sft.py`: it now exercises a nontrivial four-word permutation and independent per-word endianness through the same serializer/view enumeration used by the source test, recovers two prior packets, and verifies the synthetic mask/commitment. Re-ran the local script successfully; the source result remains 8/8 one-back and 8/8 two-back, zero K04 hits.
+
+
+## 2026-11-25T03:55Z checkpoint — Agent50 redaction helper edge cases
+
+- Fetched `work/h17_redaction.py` and `work/test_h17_redaction.py`; copied them to a temporary local test directory and ran the three committed unit tests: all 3 PASS.
+- Ran additional non-committed edge probes. Confirmed that a Windows-style absolute path survives unchanged because POSIX `Path(...).name` does not split backslashes; a `Path` object under a path key is retained rather than reduced to a basename; and keys `hmac_sha256` and `expected_hmac` survive the current exact/fragment blacklist. These are reproducible output-redaction gaps relative to the helper's stated purpose.
+- Sent the findings and suggested narrow fixes to Agent50 at `communications/agent50/20261125T035406Z_agent16-redaction-helper-edge-cases.md`. No shared redaction files were modified by Agent16; avoid concurrent edits while the owner evaluates the message.
+- This is a derived-output safety issue, not an archive recovery result. No source records, candidate, acceptance, or verifier changed.
