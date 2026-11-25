@@ -330,6 +330,7 @@ def main():
         result = inspect_object(args.object, args.resources, args.transfer, args.allow_size_mismatch, args.ocr)
     except Exception as exc:
         parser.error(str(exc))
+    result = redact_sensitive(result)
     output = json.dumps(result, indent=2, sort_keys=True)
     if args.json_out:
         args.json_out.write_text(output + "\n", encoding="utf-8")
