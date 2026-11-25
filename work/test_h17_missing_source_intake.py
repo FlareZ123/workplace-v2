@@ -1,16 +1,16 @@
-#!/usr/bin/env python3
-"""Regression tests for fail-closed K04 ACK selection."""
-import importlib.util
+"""Synthetic regression tests for the redacted H-17 missing-source intake."""
+import hashlib
+import hmac
+import json
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
+from work.h17_missing_source_intake import normalize, print_rows, run_intake, select_k04_ack
+
 SCRIPT = Path(__file__).with_name("h17_missing_source_intake.py")
-SPEC = importlib.util.spec_from_file_location("h17_missing_source_intake", SCRIPT)
-INTAKE = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(INTAKE)
 
 
 def record(attempt, state="ACK", cls="RECOVER", payload="A" * 32,
@@ -24,9 +24,9 @@ def record(attempt, state="ACK", cls="RECOVER", payload="A" * 32,
 class K04AckSelectionTests(unittest.TestCase):
     def test_job_identifier_must_match_exactly(self):
         with tempfile.TemporaryDirectory() as td:
-            p = Path(td) / "spool-reconstruction.log"
-            p.write_text(record(2, payload="A" * 32, job="PS-261003-04170"))
-            parsed = INTAKE.print_rows(p)
+            path = Path(td) / "spool-reconstruction.log"
+            path.write_text(record(2, job="PS-261003-04170"))
+            parsed = print_rows(path)
         self.assertEqual(parsed, [])
 
     def test_later_requested_attempt_does_not_displace_ack(self):
@@ -36,17 +36,17 @@ class K04AckSelectionTests(unittest.TestCase):
             record(3, state="REQUESTED", payload="3" * 32),
         ]
         with tempfile.TemporaryDirectory() as td:
-            p = Path(td) / "spool-reconstruction.log"
-            p.write_text("".join(rows))
-            parsed = INTAKE.print_rows(p)
-        selected, top, _ = INTAKE.select_k04_ack(parsed)
+            path = Path(td) / "spool-reconstruction.log"
+            path.write_text("".join(rows))
+            parsed = print_rows(path)
+        selected, top, _ = select_k04_ack(parsed)
         self.assertEqual(selected["attempt"], 2)
         self.assertEqual(selected["payload"], "2" * 32)
         self.assertEqual(len(top), 1)
 
     def test_conflicting_highest_ack_payloads_fail_closed(self):
         with self.assertRaisesRegex(ValueError, "conflicting payloads"):
-            INTAKE.select_k04_ack([
+            select_k04_ack([
                 {"attempt": 2, "state": "ACK", "class": "RECOVER", "payload": "A" * 32,
                  "path": "a/queue.log", "line": 1, "timestamp": "2026-10-03T18:02:00Z", "dest": "bench"},
                 {"attempt": 2, "state": "ACK", "class": "RECOVER", "payload": "B" * 32,
@@ -54,7 +54,7 @@ class K04AckSelectionTests(unittest.TestCase):
             ])
 
     def test_identical_duplicate_highest_ack_is_deterministic(self):
-        selected, top, _ = INTAKE.select_k04_ack([
+        selected, top, _ = select_k04_ack([
             {"attempt": 2, "state": "ACK", "class": "RECOVER", "payload": "A" * 32,
              "path": "a/queue.log", "line": 1, "timestamp": "2026-10-03T18:02:00Z", "dest": "bench"},
             {"attempt": 2, "state": "ACK", "class": "RECOVER", "payload": "A" * 32,
@@ -66,7 +66,7 @@ class K04AckSelectionTests(unittest.TestCase):
 
     def test_highest_ack_must_be_recover(self):
         with self.assertRaisesRegex(ValueError, "non-RECOVER"):
-            INTAKE.select_k04_ack([
+            select_k04_ack([
                 {"attempt": 1, "state": "ACK", "class": "RECOVER", "payload": "A" * 32,
                  "path": "a/queue.log", "line": 1, "timestamp": "", "dest": "bench"},
                 {"attempt": 2, "state": "ACK", "class": "LABEL", "payload": "B" * 32,
@@ -75,49 +75,105 @@ class K04AckSelectionTests(unittest.TestCase):
 
     def test_source_path_line_timestamp_and_destination_are_preserved(self):
         with tempfile.TemporaryDirectory() as td:
-            p = Path(td) / "queue.log"
-            p.write_text(record(2, payload="A" * 32, timestamp="2026-10-03T18:02:00Z", dest="bench"))
-            rows = INTAKE.print_rows(p)
+            path = Path(td) / "queue.log"
+            path.write_text(record(2, timestamp="2026-10-03T18:02:00Z", dest="bench"))
+            rows = print_rows(path)
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0]["path"], str(p))
+        self.assertEqual(rows[0]["path"], str(path))
         self.assertEqual(rows[0]["line"], 1)
         self.assertEqual(rows[0]["timestamp"], "2026-10-03T18:02:00Z")
         self.assertEqual(rows[0]["dest"], "bench")
 
-    def test_cli_exits_nonzero_on_conflicting_highest_ack(self):
+
+class MissingSourceIntakeRedactionTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.resources = Path(self.temp.name) / "resources"
+        self.evidence = self.resources / "evidence"
+        (self.evidence / "print").mkdir(parents=True)
+        (self.evidence / "crew").mkdir(parents=True)
+
+        self.mask = bytes(range(16, 32))
+        self.nonce = bytes(range(32, 48))
+        self.component = bytes(range(16))
+        self.coupon = bytes(a ^ b for a, b in zip(self.component, self.mask))
+        self.phrase = "A synthetic watch at the table"
+        k08_component = hmac.new(
+            self.nonce, normalize(self.phrase).encode("ascii"), hashlib.sha256
+        ).digest()[:16]
+        routing = {
+            "K04": {"masked_component": self.mask.hex()},
+            "K08": {"desk_nonce": self.nonce.hex()},
+        }
+        acceptance = {
+            "slot_sha256": {
+                "K04": hashlib.sha256(self.component).hexdigest(),
+                "K08": hashlib.sha256(k08_component).hexdigest(),
+            }
+        }
+        (self.evidence / "recovery-routing.json").write_text(json.dumps(routing), encoding="utf-8")
+        (self.resources / "acceptance.json").write_text(json.dumps(acceptance), encoding="utf-8")
+        self.spool = self.evidence / "print" / "spool-reconstruction.log"
+        self.spool.write_text(record(2, payload=self.coupon.hex().upper()), encoding="utf-8")
+        self.notes = self.evidence / "crew" / "noticeboard-and-desk-notes.txt"
+        self.notes.write_text(self.phrase, encoding="utf-8")
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_synthetic_matches_emit_status_but_no_recovery_material(self):
+        report = run_intake(self.evidence)
+        rendered = json.dumps(report)
+        self.assertTrue(report["k04"]["commitment_match"])
+        self.assertEqual(report["k08"]["commitment_matches"], 1)
+        self.assertTrue(report["redaction_applied"])
+        for secret in (self.coupon.hex(), self.component.hex(), self.mask.hex(), self.nonce.hex(), self.phrase):
+            self.assertFalse(secret in rendered, "sensitive material leaked")
+        for key in ('"payload"', '"component"', '"phrase"', '"nonce"', '"mask"', '"sha256"'):
+            self.assertFalse(key in rendered, "sensitive field emitted")
+
+    def test_pdf_is_not_a_k08_text_carrier(self):
+        self.notes.unlink()
+        desk_images = self.evidence / "desk-images"
+        desk_images.mkdir()
+        (desk_images / "BX25-08.pdf").write_text(self.phrase, encoding="utf-8")
+        report = run_intake(self.evidence)
+        self.assertEqual(report["k08"]["commitment_matches"], 0)
+
+    def test_nonrecover_highest_ack_fails_closed_without_payload(self):
+        with self.spool.open("a", encoding="utf-8") as stream:
+            stream.write(record(3, cls="LABEL", payload=self.coupon.hex().upper()))
+        report = run_intake(self.evidence)
+        rendered = json.dumps(report)
+        self.assertEqual(report["k04"]["status"], "ambiguous_or_invalid")
+        self.assertFalse(self.coupon.hex() in rendered, "payload leaked on selection failure")
+
+    def test_cli_exits_nonzero_on_conflicting_highest_ack_without_leaking(self):
         with tempfile.TemporaryDirectory() as td:
-            root = Path(td)
-            (root / "a").mkdir()
-            (root / "b").mkdir()
-            (root / "a" / "queue.log").write_text(record(2, payload="A" * 32))
-            (root / "b" / "queue.log").write_text(record(2, payload="B" * 32))
+            resources = Path(td) / "resources"
+            evidence = resources / "evidence"
+            (evidence / "a").mkdir(parents=True)
+            (evidence / "b").mkdir(parents=True)
+            mask = bytes(range(16))
+            nonce = bytes(range(16, 32))
+            (evidence / "recovery-routing.json").write_text(json.dumps({
+                "K04": {"masked_component": mask.hex()},
+                "K08": {"desk_nonce": nonce.hex()},
+            }), encoding="utf-8")
+            (resources / "acceptance.json").write_text(json.dumps({
+                "slot_sha256": {"K04": "0" * 64, "K08": "1" * 64}
+            }), encoding="utf-8")
+            (evidence / "a" / "queue.log").write_text(record(2, payload="A" * 32), encoding="utf-8")
+            (evidence / "b" / "queue.log").write_text(record(2, payload="B" * 32), encoding="utf-8")
             result = subprocess.run(
-                [sys.executable, str(SCRIPT), str(root)],
+                [sys.executable, str(SCRIPT), str(evidence)],
                 capture_output=True, text=True, check=False,
             )
         self.assertEqual(result.returncode, 2)
-        self.assertIn("K04 FAIL-CLOSED", result.stdout)
-        self.assertNotIn("K04 component", result.stdout)
-
-    def test_current_export_shape_selects_attempt2_recover_ack(self):
-        expected = "A9A9DC5731A5E2AE879C47215C2559D5"
-        with tempfile.TemporaryDirectory() as td:
-            p = Path(td) / "spool-reconstruction.log"
-            p.write_text(
-                record(1, cls="LABEL", payload="E1E60D5F6B6DD2225FA6D5A2A63AD932",
-                       timestamp="2026-10-03T16:45:00+00:00", dest="bench")
-                + record(1, state="REQUESTED", payload="CD3E4F216ADB2FB180DA2AA90B33F7A4",
-                         timestamp="2026-10-03T18:01:00Z", dest="bench")
-                + record(2, payload=expected, timestamp="2026-10-03T18:02:00Z", dest="bench")
-                + record(3, state="REQUESTED", payload="44D53DFC29D7943A95D89371DA58EC64",
-                         timestamp="2026-10-03T18:03:00Z", dest="bench")
-            )
-            rows = INTAKE.print_rows(p)
-        selected, top, _ = INTAKE.select_k04_ack(rows)
-        self.assertEqual(selected["attempt"], 2)
-        self.assertEqual(selected["class"], "RECOVER")
-        self.assertEqual(selected["payload"], expected)
-        self.assertEqual(len(top), 1)
+        self.assertIn("ambiguous_or_invalid", result.stdout)
+        self.assertNotIn("A" * 32, result.stdout)
+        self.assertNotIn("B" * 32, result.stdout)
+        self.assertNotIn('"payload"', result.stdout)
 
 
 if __name__ == "__main__":
