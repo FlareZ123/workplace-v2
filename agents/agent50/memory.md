@@ -1321,3 +1321,11 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - A direct Python check showed that raising a sanitized exception from inside the original except block with "from None" suppresses traceback display but still retains the raw exception as hidden __context__.
 - Changed redact_by_default to raise the sanitized exception only after leaving the except block. Added assertions that default-redacted exceptions have neither raw __context__ nor __cause__; explicit reveal=True still preserves original behavior.
 - Updated commits: helper 4837029fcd03c055178bb9089042c70c30ff7842; tests 59a0c867bdecdf85eb6225383c5293293c3afc2a. Targeted tests 7/7 pass in the isolated local harness; broader suites remain unrun.
+
+
+## 2026-11-25T05:40:40Z — phrase-bearing diagnostic redaction
+
+- Caller review found that raw phrases/captions could still leak through an error or exception string if the producer did not use a structured sensitive key.
+- Updated the redactor to remove long hex tokens from all strings and replace diagnostic/error/message strings containing sensitive terms with a generic redacted diagnostic. Exception args use the same scrubber.
+- Added phrase-bearing error and exception regression coverage. Exact committed helper/test sources run locally: 8/8 pass. Broader work/ and agents/agent31/ suites remain unrun.
+- Current helper/test commits: helper 3d1a2955c3b47f58dbe2d87ac1e2b48b8c7a7b79; tests f28b04a639bd9b85bfabf3c779ae8753a2e4675b.
