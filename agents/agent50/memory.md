@@ -1251,3 +1251,13 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Re-read results/h17-profile-refresh-migration-store-retrieval-lead-20261107.md. The highest-value migration discriminator is the original offline R:\IT\desktop-move-2026.html calendar plus its linked profile-refresh manifest/schedule and store logs. The calendar may identify host, migration method, store path and coverage; do not assume USMT.
 - If the original process was USMT, the original compressed migration store, ScanState/LoadState/progress/ListFiles logs, USMTDiag.xml, Config.xml and all migration XML rules are the useful evidence. The ListFiles log and rules can establish whether the bookmarked BX25 transfer-index/scanrelease, incident index, mug-stock workbook, WN-14 and photo-caption files were actually included. Preserve originals and work only from a verified copy; no live ScanState/LoadState or protected R-drive access.
 - AX-7782's 8 MiB object is not authenticated as this profile store or as a post-PS-0417 source. Its object-version time and Bundle06 inclusion/omission evidence remain necessary before treating it as a K04/K08 carrier.
+
+## 2026-11-25 checkpoint — PS-0417 retry to K08 note graph
+
+- Ran a new, bounded cross-slot experiment from the same-job PS-0417 retry history rather than another L-29/PrevERP or generic PRNG screen.
+- The LOW-BIT selector of the K04-masked attempt-2 ACK agrees with the selector of the later attempt-3 REQUESTED row. Treat attempt 3 only as a control; it is explicitly unacknowledged and must not replace the selected ACK.
+- Following the resulting selectors through the existing K08 HMAC-note graph gives two routes converging at Emily-authored N13: N01→N06→N10→N13 and N05→N09→N12→N11→N13. This is a locator hypothesis, not an authored phrase rule; the selector is non-unique across the spool population.
+- Tested a complete exact-span collage family using N01/N05/N09/N13 in that order, with source-motif anchors and the exact K08 normalization/HMAC: 6,336,000 candidates, zero K08 commitment hits. The direct K04 payload-XOR-mask candidate still fails K04 acceptance.
+- Durable report: `results/h17-k04-ps0417-retry-to-k08-note-graph-screen-20261125.md`. Sent the bounded result and caveats to Agent14 at `communications/agent14/20261125T011300Z_agent50_retry-note-graph-screen.md`.
+- Do not expand this into unconstrained paraphrase search or use attempt 3 as coupon. A materially different next line must yield a complete candidate or a testable source constraint. Highest-value unresolved source carriers remain the native PS-0417 coupon/spool object and the original desk/envelope/photo source; the mug-stock workbook and AX-7782 object are not present in the retained export.
+
