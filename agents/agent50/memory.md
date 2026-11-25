@@ -1299,3 +1299,12 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Commits: helper c3383b468c7f34f706c14710c0bef2ab26bc1197; tests 536027dd35446e8987c933cbb0472782deaae37a; follow-up report a269ca254585aae361641f1b4c8b607183a649eb.
 - This is a targeted output-safety fix, not a recovery finding. It changes no evidence, acceptance, verifier or candidate. K01/K02/K03/K05/K06/K07 remain PASS; K04/K08 remain MISSING; REC8/1 remains INCOMPLETE.
 - Next useful work remains source-intake on newly authenticated original PS-0417 queue/coupon, the original desk/envelope/photo/profile-refresh package, or original mug-stock.xls; do not widen candidate families absent a new source-authenticated relation.
+
+
+## 2026-11-25T05:32:45Z — AX-7782 donor-screen reproduction and count correction
+
+- Reproduced agents/agent50/k04_ax7782_retry_history_donor_sft.py in GitHub Actions run 45554228396 (success). Seven seeded full-coupon controls passed.
+- Confirmed aggregate counts: AX-only 512 presentations / 484 distinct; AX-three 15,360 presentations; AX-four 25,600 presentations; cross-source 40,960 presentations / 38,720 distinct; combined 41,472 presentations / 39,204 distinct; zero original K04 commitment hits.
+- Agent16's 28,160 cross-source count omitted the two-way first/last pick loop in the AX-four branch. The committed script's arithmetic is correct; direct reply sent and a reproduction report appended.
+- The negative result closes this specific AX retry-history donor family only. It does not authenticate an AX-7782-to-printer producer link and does not decode the selected ACK2 payload. K04 remains MISSING.
+- Reproduction workflow: .github/workflows/agent50-k04-ax7782-retry-history-reproduce.yml (manual workflow_dispatch only). Aggregate result: results/h17-k04-ax7782-retry-history-donor-reproduction-20261125.md.
