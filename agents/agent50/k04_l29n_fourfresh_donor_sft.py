@@ -14,6 +14,7 @@ import hashlib
 import inspect
 import io
 import json
+import re
 import sys
 from contextlib import redirect_stdout
 from pathlib import Path
