@@ -104,19 +104,23 @@ class RedactionTests(unittest.TestCase):
             raise ValueError(f"original source unavailable: {path}")
         with self.assertRaises(ValueError) as caught:
             fail(Path(r"C:\Users\Operator\Documents\H17\native.psh"))
-        self.assertIn("native.psh", str(caught.exception))
+        self.assertEqual(str(caught.exception), "[redacted diagnostic]")
         self.assertNotIn("C:\\Users", str(caught.exception))
         self.assertIsNone(caught.exception.__context__)
         self.assertIsNone(caught.exception.__cause__)
 
     def test_redacts_phrase_text_inside_diagnostics_and_exception_messages(self):
         secret_phrase = "The sea keeps watch while the last voices gather at the table"
-        clean = redact_sensitive({"error": f"phrase did not match: {secret_phrase}"})
+        clean = redact_sensitive({
+            "error": f"phrase did not match: {secret_phrase}",
+            "message": secret_phrase,
+        })
         self.assertEqual(clean["error"], "[redacted diagnostic]")
+        self.assertEqual(clean["message"], "[redacted diagnostic]")
 
         @redact_by_default
         def fail_phrase():
-            raise ValueError(f"caption rejected: {secret_phrase}")
+            raise ValueError(secret_phrase)
         with self.assertRaises(ValueError) as caught:
             fail_phrase()
         self.assertNotIn(secret_phrase, str(caught.exception))
