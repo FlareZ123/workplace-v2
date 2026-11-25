@@ -67,3 +67,10 @@ Targeted validation: 7/7 redaction tests pass after this change. The broader wor
 A further review of the intake callers showed that errors can include parser exception text, and a diagnostic may embed phrase/caption/component content without using a structured sensitive key. The redactor now removes long hex tokens from all strings and replaces diagnostic/error/message strings containing sensitive terms (phrase, caption, component, payload, nonce, mask, candidate, HMAC, digest, checkpoint, secret or recovery key) with a generic redacted diagnostic. Exception arguments use the same diagnostic scrubber. The regression suite now includes both a raw phrase in an error field and a phrase-bearing exception message.
 
 **Validation:** 8/8 targeted redaction tests pass against the exact committed helper and test source. The broader work/ and agents/agent31/ suites remain unrun.
+
+
+## Follow-up — fail-closed free-form diagnostics (2026-11-25T05:44:21Z)
+
+A final adversarial test used an unlabelled phrase as the entire exception message. Keyword-based scrubbing cannot safely distinguish that from a harmless diagnostic. The default policy is now fail-closed: string values under error, exception, diagnostic, stderr, stdout, traceback and message keys are always replaced with a generic redacted diagnostic; all string arguments of decorated exceptions are treated the same way. Structured path fields still reduce to basenames, and PathLike exception arguments still reduce to basenames. Explicit in-process reveal=True remains the only way to retain raw diagnostic text.
+
+**Validation:** 8/8 targeted tests pass against the exact committed helper and test source, including an unlabelled phrase used as the entire exception message and a free-form message field. The broader work/ and agents/agent31/ suites remain unrun.
