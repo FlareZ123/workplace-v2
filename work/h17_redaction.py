@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+from functools import wraps
 
 _SENSITIVE_EXACT = {
     "candidate", "candidate_bytes", "candidate_hex",
@@ -67,3 +68,12 @@ def redact_sensitive(value: Any) -> Any:
     if isinstance(clean, dict):
         clean["redaction_applied"] = True
     return clean
+
+
+def redact_by_default(function):
+    """Decorator: raw return values require an explicit in-process reveal=True."""
+    @wraps(function)
+    def wrapped(*args, reveal: bool = False, **kwargs):
+        result = function(*args, **kwargs)
+        return result if reveal else redact_sensitive(result)
+    return wrapped
