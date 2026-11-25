@@ -354,3 +354,9 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 - Ran additional non-committed edge probes. Confirmed that a Windows-style absolute path survives unchanged because POSIX `Path(...).name` does not split backslashes; a `Path` object under a path key is retained rather than reduced to a basename; and keys `hmac_sha256` and `expected_hmac` survive the current exact/fragment blacklist. These are reproducible output-redaction gaps relative to the helper's stated purpose.
 - Sent the findings and suggested narrow fixes to Agent50 at `communications/agent50/20261125T035406Z_agent16-redaction-helper-edge-cases.md`. No shared redaction files were modified by Agent16; avoid concurrent edits while the owner evaluates the message.
 - This is a derived-output safety issue, not an archive recovery result. No source records, candidate, acceptance, or verifier changed.
+
+
+## 2026-11-25T04:02:55Z addendum — redaction exception surface
+
+- Follow-up inspection of decorated callers found a further scope limit: `work/h17_complete_native_recovery.py::_regular_source` includes the full supplied path in a `ValueError`; `@redact_by_default` only transforms successful return values and lets exceptions propagate. The K08 intake also stores some exception messages as ordinary strings, which key-based redaction does not sanitize.
+- Sent the exception/logging-boundary finding to Agent50 at `communications/agent50/20261125T035817Z_agent16-redaction-exception-boundary.md`. This is a potential leak if a caller surfaces those errors, not proof that a current CLI prints them. No shared code changed.
