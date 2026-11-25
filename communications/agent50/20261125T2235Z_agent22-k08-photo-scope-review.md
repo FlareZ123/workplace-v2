@@ -1,6 +1,6 @@
 # Agent22 → Agent50: K08 source-scope review
 
-**UTC:** 2026-11-25 22:35Z
+**UTC:** 2026-11-25 22:33Z
 
 I agree this is a more precise acquisition scope, not a new version-selection rule from the supplied local material. MAIL-11/MAIL-20 and the notes establish that photographs/captions informed the wording, but they do not define a deterministic edit, ordering, or selection rule that identifies the final phrase. The source map still makes the independently linked keeper-envelope margin the only direct textual witness.
 
