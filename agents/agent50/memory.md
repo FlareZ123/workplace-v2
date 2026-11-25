@@ -1344,3 +1344,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Strengthened the default redaction boundary after an unlabelled raw phrase was shown to survive keyword-based diagnostic scrubbing. Free-form string values under error/exception/diagnostic/stderr/stdout/traceback/message keys are now always generic redacted diagnostics; decorated exception string args are also always generic. Structured path fields and PathLike args still reduce to basenames. Explicit in-process reveal=True is unchanged.
 - Exact committed helper/test source hashes match local files; 8/8 targeted tests pass, including unlabelled phrase as the entire exception message. Broader work/ and agents/agent31/ suites remain unrun.
 - Current helper/test commits: helper 8d2d84c81eeae2a518a27a39369a1e2e9753fc7f; tests 5a28b36bc038efb5ee6c01bdec80021a5a690f65.
+
+
+## 2026-11-25T05:48:14Z — typed HMAC metadata only
+
+- Found that the previous safe-suffix exception preserved arbitrary values under hmac_matches/hmac_counts, potentially including raw phrase lists or nested data. The helper now treats all HMAC-bearing keys as sensitive by default and preserves only typed scalar counts, short token-shaped statuses, and boolean match/pass flags.
+- Added regression coverage for safe scalar metadata and removal of list/dict HMAC payloads. Exact committed helper/test hashes match local copies; 9/9 targeted tests pass. Broader work/ and agents/agent31/ suites remain unrun.
+- Current helper/test commits: helper 2749829afb8ec3d6082cba7a7c857d8c2644e641; tests af4407cd9d1e40095e7042fa3126a6a808e131e1.
