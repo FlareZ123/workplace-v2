@@ -94,7 +94,7 @@ class RedactionTests(unittest.TestCase):
             "errors": [{"error": r"cannot read C:\Users\Operator\H17\native.psh; expected_hmac=" + "A" * 64}],
         })
         error = clean["errors"][0]["error"]
-        self.assertIn("native.psh", error)
+        self.assertEqual(error, "[redacted diagnostic]")
         self.assertNotIn("C:\\Users", error)
         self.assertNotIn("A" * 64, error)
 
@@ -108,6 +108,20 @@ class RedactionTests(unittest.TestCase):
         self.assertNotIn("C:\\Users", str(caught.exception))
         self.assertIsNone(caught.exception.__context__)
         self.assertIsNone(caught.exception.__cause__)
+
+    def test_redacts_phrase_text_inside_diagnostics_and_exception_messages(self):
+        secret_phrase = "The sea keeps watch while the last voices gather at the table"
+        clean = redact_sensitive({"error": f"phrase did not match: {secret_phrase}"})
+        self.assertEqual(clean["error"], "[redacted diagnostic]")
+
+        @redact_by_default
+        def fail_phrase():
+            raise ValueError(f"caption rejected: {secret_phrase}")
+        with self.assertRaises(ValueError) as caught:
+            fail_phrase()
+        self.assertNotIn(secret_phrase, str(caught.exception))
+        self.assertIn("redacted diagnostic", str(caught.exception))
+        self.assertIsNone(caught.exception.__context__)
 
     def test_reveal_preserves_original_exception_for_authorized_in_process_use(self):
         @redact_by_default
