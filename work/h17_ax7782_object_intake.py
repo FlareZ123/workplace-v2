@@ -19,6 +19,8 @@ import zipfile
 import zlib
 from pathlib import Path, PurePosixPath
 
+from h17_redaction import redact_by_default, redact_sensitive
+
 ROOT = Path(__file__).resolve().parents[1]
 CHUNK_SIZE = 1_048_576
 CHUNK_COUNT = 8

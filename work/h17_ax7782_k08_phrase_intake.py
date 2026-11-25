@@ -33,6 +33,8 @@ import urllib.parse
 import zipfile
 from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
+
+from h17_redaction import redact_by_default, redact_sensitive
 from typing import Iterator
 
 import h17_ax7782_object_intake as intake
