@@ -100,7 +100,7 @@ spool_path = RESOURCES / "evidence/print/spool-reconstruction.log"
 spool_rows = []
 for line in spool_path.read_text(encoding="utf-8").splitlines():
     match = re.search(
-        r"JOB=PS-261003-(\\d{4}) ATTEMPT=(\\d+) STATE=(\\S+) CLASS=(\\S+) PAYLOAD=([0-9A-F]{32})",
+        r"JOB=PS-261003-(\d{4}) ATTEMPT=(\d+) STATE=(\S+) CLASS=(\S+) PAYLOAD=([0-9A-F]{32})",
         line,
     )
     if match:
