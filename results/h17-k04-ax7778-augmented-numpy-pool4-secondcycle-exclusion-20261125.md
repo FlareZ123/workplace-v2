@@ -32,7 +32,7 @@ For each phase, the NumPy initialization equation for state word `S[i]` was inve
 
 ## Results
 
-<badge color="success">393 / 393 phases excluded</badge>
+**Result: 393 / 393 phases excluded.**
 
 | Result | Count |
 | --- | ---: |
