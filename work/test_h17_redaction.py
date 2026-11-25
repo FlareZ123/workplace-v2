@@ -43,6 +43,24 @@ class RedactionTests(unittest.TestCase):
             self.assertNotIn(secret, serialized)
         self.assertTrue(clean["redaction_applied"])
 
+    def test_hmac_metadata_preserves_only_typed_scalar_status_and_counts(self):
+        clean = redact_sensitive({
+            "hmac_match_count": 2,
+            "hmac_status": "no_match",
+            "hmac_passed": True,
+            "hmac_match": False,
+            "hmac_matches": ["raw phrase", "another phrase"],
+            "hmac_counts": {"phrase": 2},
+            "hmac_sha256": "A" * 64,
+        })
+        self.assertEqual(clean["hmac_match_count"], 2)
+        self.assertEqual(clean["hmac_status"], "no_match")
+        self.assertIs(clean["hmac_passed"], True)
+        self.assertIs(clean["hmac_match"], False)
+        self.assertNotIn("hmac_matches", clean)
+        self.assertNotIn("hmac_counts", clean)
+        self.assertNotIn("hmac_sha256", clean)
+
     def test_removes_source_text_and_sensitive_checksums(self):
         clean = redact_sensitive({
             "candidates": [{
