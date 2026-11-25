@@ -72,8 +72,8 @@ def load_k08_rules(resources: Path):
     target = bytes.fromhex(acceptance["slot_sha256"]["K08"])
     if len(nonce) != 16 or len(target) != 32:
         raise ValueError("invalid original K08 nonce/commitment width")
-    control = k08_component(nonce, normalize("a good watch leaves the room ready for the next pair of hands"))
-    if control.hex().upper() != "BF889359B0303F2B2B2FD96AE841210B":
+    control = k08_component(bytes(range(16)), normalize("a good watch leaves the room ready for the next pair of hands"))
+    if control.hex().upper() != EXPECTED_SYNTHETIC_HMAC16:
         raise ValueError("original K08 normalization/HMAC known-answer check failed")
     return nonce, target
 
@@ -979,6 +979,7 @@ def main() -> None:
                                 args.ocr, args.max_phrase_words, args.pdf_password)
     except Exception as exc:
         parser.error(str(exc))
+    result = redact_sensitive(result)
     output = json.dumps(result, indent=2, sort_keys=True)
     if args.json_out:
         args.json_out.write_text(output + "\n", encoding="utf-8")

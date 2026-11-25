@@ -16,11 +16,16 @@ at agents/agent31/h17_verified_manual_intake.py.
 """
 from __future__ import annotations
 import argparse
+import sys
 import os
 import hashlib
 import hmac
 import json
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / 'work'))
+from h17_redaction import redact_sensitive
 import re
 
 
@@ -138,9 +143,7 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as e:
         print(json.dumps({'accepted': False, 'error': str(e)}, indent=2))
         return 2
-    if args.output is not None and result['accepted']:
-        # The completed key is in a 0600 output; avoid echoing secret bytes or caption.
-        result = {k: v for k, v in result.items() if k not in ('candidate','normalized_caption')}
+    result = redact_sensitive(result)
     print(json.dumps(result, indent=2))
     return 0 if result['accepted'] else 1
 
