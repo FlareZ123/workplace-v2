@@ -21,6 +21,7 @@ RESOURCES = ROOT / "resources"
 sys.path.insert(0, str(WORK))
 sys.path.insert(0, str(RESOURCES))
 from h17_ax7782_object_intake import OPAQUE_PDF_SHA256  # noqa: E402; hash-only source policy
+from h17_redaction import redact_sensitive  # noqa: E402; CLI output is redacted by default
 from verify import evaluate, no_duplicates  # noqa: E402; the original unmodified archive verifier
 
 
@@ -199,9 +200,9 @@ def main() -> int:
     try:
         result = assess(args.coupon, args.coupon_original, args.caption, args.caption_original)
     except (OSError, ValueError, KeyError, TypeError, AssertionError) as exc:
-        print(json.dumps({"error": str(exc), "accepted": False}, indent=2))
+        print(json.dumps(redact_sensitive({"error": str(exc), "accepted": False}), indent=2))
         return 2
-    print(json.dumps(result, indent=2))
+    print(json.dumps(redact_sensitive(result), indent=2))
     return 0 if result["acceptance"]["accepted"] and not result["conflicting_witnesses"] else 1
 
 
