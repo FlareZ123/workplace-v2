@@ -37,12 +37,19 @@ class OriginalHashBarcodeTests(unittest.TestCase):
         image.save(out, "PNG")
         self.path.write_bytes(out.getvalue())
 
-    def scan(self, digest=None):
+    def scan(self, digest=None, reveal=True):
         return run_scan(
             self.path, self.target if digest is None else digest,
             self.mask.hex().upper(), 1, 256 * 1024 * 1024,
-            512 * 1024 * 1024, 4, 10000, reveal=True,
+            512 * 1024 * 1024, 4, 10000, reveal=reveal,
         )
+
+    def test_default_run_scan_redacts_component_bytes(self):
+        self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))
+        public = self.scan(reveal=False)
+        self.assertTrue(public["redaction_applied"])
+        self.assertEqual(len(public["hits"]), 1)
+        self.assertNotIn("component_hex", repr(public))
 
     def test_printed_hex_masked_payload_reaches_complete_commitment(self):
         self.embed(b"K04-PAYLOAD=" + self.payload.hex().upper().encode("ascii"))

@@ -61,6 +61,10 @@ class SQLiteBridgeTests(unittest.TestCase):
             target = hashlib.sha256(component).digest()
 
             result = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16, reveal=True)
+            public = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16)
+            self.assertTrue(public["redaction_applied"])
+            self.assertNotIn("normalized_phrase", repr(public))
+            self.assertNotIn("component_hex", repr(public))
 
             self.assertEqual(result["plum_databases_found"], 1)
             self.assertTrue(result["databases"][0]["wal_present"])
