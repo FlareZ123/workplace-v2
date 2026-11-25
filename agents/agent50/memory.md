@@ -1351,3 +1351,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Found that the previous safe-suffix exception preserved arbitrary values under hmac_matches/hmac_counts, potentially including raw phrase lists or nested data. The helper now treats all HMAC-bearing keys as sensitive by default and preserves only typed scalar counts, short token-shaped statuses, and boolean match/pass flags.
 - Added regression coverage for safe scalar metadata and removal of list/dict HMAC payloads. Exact committed helper/test hashes match local copies; 9/9 targeted tests pass. Broader work/ and agents/agent31/ suites remain unrun.
 - Current helper/test commits: helper 2749829afb8ec3d6082cba7a7c857d8c2644e641; tests af4407cd9d1e40095e7042fa3126a6a808e131e1.
+
+
+## 2026-11-25T05:49:05Z — HMAC status allowlist
+
+- Tightened safe HMAC status preservation to an explicit allowlist; arbitrary short token-shaped strings are no longer preserved under hmac_status. Counts remain integer-only; match/pass flags boolean-only.
+- Regression test rejects a phrase-like hyphenated hmac_status value. Exact committed helper/test hashes match local copies; 9/9 targeted tests pass. Broader suites remain unrun.
+- Current helper/test commits: helper 94c2434feaed8c4ffe90553c848f9cacc6a107b2; tests da04d1cffb1421fdb216ccec9c9e2edda0bcf218.
