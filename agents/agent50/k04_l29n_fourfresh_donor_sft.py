@@ -93,6 +93,27 @@ def add_forms(label: str, tickets: list[str]) -> None:
 add_forms("tabs01_04", tab_order[:4])
 add_forms("tabs01_02_03_05_conditional", [tab_order[0], tab_order[1], tab_order[2], tab_order[4]])
 
+# Add the four North tab-01..04 +305-mapped ACK payloads as independent
+# four-word donor blocks. The selected PS-0417 RECOVER ACK2 remains withheld
+# by the base model; PS-0417 itself is not added as a donor.
+spool_path = RESOURCES / "evidence/print/spool-reconstruction.log"
+spool_rows = []
+for line in spool_path.read_text(encoding="utf-8").splitlines():
+    match = re.search(
+        r"JOB=PS-261003-(\\d{4}) ATTEMPT=(\\d+) STATE=(\\S+) CLASS=(\\S+) PAYLOAD=([0-9A-F]{32})",
+        line,
+    )
+    if match:
+        spool_rows.append(match.groups())
+for ticket in tab_order[:4]:
+    ps_suffix = int(ticket.rsplit("-", 1)[1]) + 305
+    matches = [
+        row for row in spool_rows
+        if int(row[0]) == ps_suffix and row[1] == "1" and row[2] == "ACK"
+    ]
+    assert len(matches) == 1, f"Expected one ACK donor for {ticket} -> PS-{ps_suffix:04d}"
+    base.BLOCKS[f"L29N_PS{ps_suffix:04d}_ACK_payload"] = matches[0][4]
+
 # Run the existing source-pinned model unchanged except for reporting:
 # (1) the additional donor blocks, (2) any commitment hit without raw bytes,
 # and (3) overlap/count diagnostics rather than assumptions about old totals.
