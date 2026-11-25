@@ -1139,3 +1139,11 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Bounded extension: global xoroshiro128++ output warm-up offsets 0–1024 across the same configurations; 0 exact matches. Also tested xoroshiro128+, xoroshiro128**, and xorshift128+ with 0–64 global warm-up offsets across the same state/serialization family; 0 exact matches.
 - This closes the explicitly untested warm-up/nearby-variant extension of that rolling-state hypothesis. Do not expand the same-suffix PTW→PS PRNG family or treat it as a K04 candidate absent a new source-authenticated join.
 - The uploaded ZIP and `resources/evidence/` have the same 46 evidence files; repository-only `resources/candidate.json` and `resources/work/` add the six-slot baseline and scripts, not new source evidence. The decisive K04/K08 carriers remain the native PS-0417 coupon/spool witness and the final envelope/margin or teal-card/photo witness; neither is in the supplied export.
+
+
+## 2026-11-25 continuation — safe direct-witness intake
+
+- Hardened `work/h17_witness_intake.py`: all four supplied witness/transcription paths are required to be regular non-symlink files, hashed before content use, and rejected if their SHA-256 equals the hash-pinned BX25-08 PDF. This preserves the hash-only rule and prevents accidental use as a coupon/caption witness.
+- Redacted the witness-intake CLI output and error path with `h17_redaction.redact_sensitive`; also redacted the standalone teal-image scan CLI output/error and the K04 mug-stock probe's exception output. The joint/native intake wrappers already used redaction.
+- Added regression tests for hash-only rejection in every witness position, no witness-content read after a pinned-hash match, and redaction of component/caption material. Extended the existing manual regression workflow with the tests and its numpy/Pillow dependencies. Final run `45592099064` completed successfully; the new image-redaction test and the two PDF-guard tests passed, along with the existing 26+4+2 tests.
+- This is an intake-safety improvement only; it does not recover K04/K08. Do not treat it as evidence for either component. Continue to require original PS-0417 native spool/coupon evidence and Emily's final envelope/margin/photo-caption witness.
