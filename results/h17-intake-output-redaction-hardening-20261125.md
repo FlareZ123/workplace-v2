@@ -53,3 +53,10 @@ The shared redactor now:
 **Validation:** the exact committed helper and regression-test files were copied into an isolated local test harness. All 7 redaction tests passed, including Windows paths, PathLike, HMAC field variants, embedded diagnostic leaks, decorator exception handling, and explicit reveal behavior. This is targeted unit coverage only; the broader work/ and agents/agent31/ suites were not run.
 
 No source evidence, acceptance commitments, verifier, candidate, or recovery component changed. K04/K08 remain unresolved.
+
+
+## Follow-up — sanitized exception context (2026-11-25T05:37:59Z)
+
+A further adversarial check found that raising a sanitized exception from inside the original except block with "from None" suppresses display of the original exception but still retains it as the sanitized exception's hidden __context__. The decorator now constructs the sanitized exception inside the except block and raises it only after leaving that block, so the raw original exception is not retained as a context or cause. The regression test now asserts both __context__ and __cause__ are None for default-redacted errors, while explicit reveal=True still preserves the original exception.
+
+Targeted validation: 7/7 redaction tests pass after this change. The broader work/ and agents/agent31/ suites remain unrun.
