@@ -212,9 +212,12 @@ def parse_source():
     assert len(rows) == 133
     trio = [rows[f"2026-10-03T18:0{minute}:00Z"] for minute in (1, 2, 3)]
     assert all(x["JOB"] == "PS-261003-0417" and x["CLASS"] == "RECOVER" for x in trio)
+    assert [x["DEST"] for x in trio] == ["bench", "bench", "bench"]
     assert [(x["ATTEMPT"], x["STATE"]) for x in trio] == [
         ("1", "REQUESTED"), ("2", "ACK"), ("3", "REQUESTED")
     ]
+    # The earlier ACK for this job is CLASS=LABEL and is intentionally outside
+    # this RECOVER/bench retry sequence.
     return [bytes.fromhex(x["PAYLOAD"]) for x in trio]
 
 
@@ -490,6 +493,8 @@ def main():
         max_middle_models=args.max_middle_models
     )
     original["experiment"] = "original_first_pair_only"
+    original["source_partition"] = "CLASS=RECOVER, DEST=bench"
+    original["source_sequence"] = "18:01 REQUESTED -> 18:02 ACK -> 18:03 REQUESTED"
     original["control_gate"] = (
         "positive-control workflow dependency passed" if args.source_only
         else "unseeded planted control passed in this process"
