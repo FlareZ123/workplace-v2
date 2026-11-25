@@ -241,7 +241,7 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     solver = Then("simplify", "bit-blast", "sat").solver()
     first_timeout = _remaining(deadline, timeout_seconds)
     result = {
-        "experiment": "xoroshiro128pp_one_sum_variable_first_pair",
+        "experiment": "xoroshiro128pp_direct_borrow_first_pair",
         "solver_logic": "QF_BV",
         "algebraic_unknown_bits": 64,
         "first_observed_output_exactly_eliminated": True,
