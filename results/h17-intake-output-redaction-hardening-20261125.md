@@ -74,3 +74,10 @@ A further review of the intake callers showed that errors can include parser exc
 A final adversarial test used an unlabelled phrase as the entire exception message. Keyword-based scrubbing cannot safely distinguish that from a harmless diagnostic. The default policy is now fail-closed: string values under error, exception, diagnostic, stderr, stdout, traceback and message keys are always replaced with a generic redacted diagnostic; all string arguments of decorated exceptions are treated the same way. Structured path fields still reduce to basenames, and PathLike exception arguments still reduce to basenames. Explicit in-process reveal=True remains the only way to retain raw diagnostic text.
 
 **Validation:** 8/8 targeted tests pass against the exact committed helper and test source, including an unlabelled phrase used as the entire exception message and a free-form message field. The broader work/ and agents/agent31/ suites remain unrun.
+
+
+## Follow-up — typed HMAC metadata only (2026-11-25T05:48:14Z)
+
+A further schema review found that the previous safe-suffix exception treated any value under keys such as hmac_matches or hmac_counts as safe, even if the value was a list of raw phrase matches or a nested dictionary. The redactor now treats every HMAC-bearing key as sensitive by default and preserves only typed scalar metadata: integer counts, short token-shaped status strings, and boolean match/pass flags. Lists, dictionaries, strings containing digests, and other payload-bearing values are removed.
+
+**Validation:** 9/9 targeted redaction tests pass against the exact committed helper and test source, including positive preservation of safe scalar metadata and removal of raw match lists/count dictionaries. The broader work/ and agents/agent31/ suites remain unrun.
