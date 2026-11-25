@@ -24,9 +24,9 @@ def record(attempt, state="ACK", cls="RECOVER", payload="A" * 32,
 class K04AckSelectionTests(unittest.TestCase):
     def test_job_identifier_must_match_exactly(self):
         with tempfile.TemporaryDirectory() as td:
-            path = Path(td) / "spool-reconstruction.log"
-            path.write_text(record(2, job="PS-261003-04170"))
-            parsed = print_rows(path)
+            p = Path(td) / "spool-reconstruction.log"
+            p.write_text(record(2, job="PS-261003-04170"))
+            parsed = print_rows(p, reveal=True)
         self.assertEqual(parsed, [])
 
     def test_later_requested_attempt_does_not_displace_ack(self):
@@ -36,10 +36,10 @@ class K04AckSelectionTests(unittest.TestCase):
             record(3, state="REQUESTED", payload="3" * 32),
         ]
         with tempfile.TemporaryDirectory() as td:
-            path = Path(td) / "spool-reconstruction.log"
-            path.write_text("".join(rows))
-            parsed = print_rows(path)
-        selected, top, _ = select_k04_ack(parsed)
+            p = Path(td) / "spool-reconstruction.log"
+            p.write_text("".join(rows))
+            parsed = print_rows(p, reveal=True)
+        selected, top, _ = select_k04_ack(parsed, reveal=True)
         self.assertEqual(selected["attempt"], 2)
         self.assertEqual(selected["payload"], "2" * 32)
         self.assertEqual(len(top), 1)
@@ -51,7 +51,7 @@ class K04AckSelectionTests(unittest.TestCase):
                  "path": "a/queue.log", "line": 1, "timestamp": "2026-10-03T18:02:00Z", "dest": "bench"},
                 {"attempt": 2, "state": "ACK", "class": "RECOVER", "payload": "B" * 32,
                  "path": "b/queue.log", "line": 1, "timestamp": "2026-10-03T18:02:00Z", "dest": "bench"},
-            ])
+            ], reveal=True)
 
     def test_identical_duplicate_highest_ack_is_deterministic(self):
         selected, top, _ = select_k04_ack([
@@ -59,7 +59,7 @@ class K04AckSelectionTests(unittest.TestCase):
              "path": "a/queue.log", "line": 1, "timestamp": "2026-10-03T18:02:00Z", "dest": "bench"},
             {"attempt": 2, "state": "ACK", "class": "RECOVER", "payload": "A" * 32,
              "path": "b/queue.log", "line": 3, "timestamp": "2026-10-03T18:03:00Z", "dest": "bench"},
-        ])
+        ], reveal=True)
         self.assertEqual(len(top), 2)
         self.assertEqual(selected["path"], "b/queue.log")
         self.assertEqual(selected["timestamp"], "2026-10-03T18:03:00Z")
@@ -71,18 +71,26 @@ class K04AckSelectionTests(unittest.TestCase):
                  "path": "a/queue.log", "line": 1, "timestamp": "", "dest": "bench"},
                 {"attempt": 2, "state": "ACK", "class": "LABEL", "payload": "B" * 32,
                  "path": "b/queue.log", "line": 1, "timestamp": "", "dest": "bench"},
-            ])
+            ], reveal=True)
 
     def test_source_path_line_timestamp_and_destination_are_preserved(self):
         with tempfile.TemporaryDirectory() as td:
-            path = Path(td) / "queue.log"
-            path.write_text(record(2, timestamp="2026-10-03T18:02:00Z", dest="bench"))
-            rows = print_rows(path)
+            p = Path(td) / "queue.log"
+            p.write_text(record(2, timestamp="2026-10-03T18:02:00Z", dest="bench"))
+            rows = print_rows(p, reveal=True)
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0]["path"], str(path))
+        self.assertEqual(rows[0]["path"], str(p))
         self.assertEqual(rows[0]["line"], 1)
         self.assertEqual(rows[0]["timestamp"], "2026-10-03T18:02:00Z")
         self.assertEqual(rows[0]["dest"], "bench")
+
+    def test_parser_helpers_redact_by_default(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "queue.log"
+            path.write_text(record(2, payload="C" * 32))
+            safe_rows = print_rows(path)
+        self.assertNotIn("payload", safe_rows[0])
+        self.assertEqual(safe_rows[0]["path"], "queue.log")
 
 
 class MissingSourceIntakeRedactionTests(unittest.TestCase):
