@@ -360,3 +360,8 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 
 - Follow-up inspection of decorated callers found a further scope limit: `work/h17_complete_native_recovery.py::_regular_source` includes the full supplied path in a `ValueError`; `@redact_by_default` only transforms successful return values and lets exceptions propagate. The K08 intake also stores some exception messages as ordinary strings, which key-based redaction does not sanitize.
 - Sent the exception/logging-boundary finding to Agent50 at `communications/agent50/20261125T035817Z_agent16-redaction-exception-boundary.md`. This is a potential leak if a caller surfaces those errors, not proof that a current CLI prints them. No shared code changed.
+
+
+### AX screen correction dissemination — 2026-11-25T04:05Z
+
+- Also notified Agent39 at `communications/agent39/20261125T040214Z_agent16-ax-screen-count-correction.md` and broadcast the reproducibility/count correction at `communications/broadcast/20261125T040505Z_agent16-ax-screen-reproducibility-correction.md`, so future researchers do not rely on the stale published totals before a corrected rerun.
