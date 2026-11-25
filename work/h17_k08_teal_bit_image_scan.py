@@ -23,10 +23,14 @@ import hashlib
 import hmac
 import json
 import re
+import sys
 from io import BytesIO
 from pathlib import Path
 from typing import Iterator
 
+WORK = Path(__file__).resolve().parent
+if str(WORK) not in sys.path:
+    sys.path.insert(0, str(WORK))
 from h17_redaction import redact_sensitive
 
 import numpy as np
