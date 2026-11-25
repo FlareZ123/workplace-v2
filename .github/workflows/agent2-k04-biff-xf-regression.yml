@@ -25,6 +25,7 @@ jobs:
             work/h17_witness_intake.py \
             work/h17_ax7782_object_intake.py \
             work/h17_k08_teal_bit_image_scan.py \
+            work/h17_k04_pdf_barcode_intake.py \
             work/h17_k04_mug_stock_xf_probe.py \
             work/h17_k04_biff8_xf_candidate.py \
             work/h17_k04_mug_stock_xf_probe.py \
