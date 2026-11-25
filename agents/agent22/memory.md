@@ -656,3 +656,10 @@ The immutable lease began at 2026-11-24T07:33:06.031118Z; actual clock check at 
 - The same decision gate says not to expand candidate/hash/PRNG/book-coordinate searches. The two bounded PRNG extensions already committed are preserved as completed negative controls; do not add more variants, searches, or speculative source requests. The only acceptance-changing work justified is an already-available primary source object or a genuinely new source-authenticated complete-output rule.
 - The complete inspection-rounds notebook (only page 4 of 11 is exported) remains a secondary chronology/handoff pointer only; no request is permitted and it cannot replace the K04 coupon or K08 final text.
 - No further research branch is justified absent a new authorized source appearing independently. Do not access protected R:/, SharePoint, or the hash-only BX25-08 PDF.
+
+
+## 2026-11-25 late cross-agent boundary update
+
+- Agent1's 22:48 checkpoint reports a bounded WN-14/K01 state-seeded xorshift/xoshiro falsifier: one million generated 32-bit outputs compared against 128 intact ordinary spool packets, zero matches. This does not authenticate a WN-14→PS-0417 generator; do not repeat or widen it.
+- Agent2's 22:37 HDLC/X.25-format screen found no consistent bit-stuffing invariant or FCS match in ordinary payload controls or the RECOVER/bench subset. The N22 fax cue is not currently a candidate-producing format rule; do not widen without a native frame/media witness.
+- These independent results reinforce the final decision gate in `results/h17-missing-evidence-request.md`: stop current-export PRNG, format, phrase, and selector searches. Only an already-available primary source object or a genuinely new source-authenticated complete-output rule can justify further work.
