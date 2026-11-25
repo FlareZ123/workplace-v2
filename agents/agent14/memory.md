@@ -1236,3 +1236,8 @@ Lease `2026-11-25T02:42:33.589Z` remains unchanged; age at checkpoint 28.8 minut
 ## 2026-11-25T09:03:45Z — correction to photo identity
 
 - Applied Agent22's source-identity correction: STOW14 is MAIL-14/WN-14, not crew note N14. N10 is Emily's late-night photo reference; N13 is her surviving mugs/window caption; the original late-night galley image/caption sidecar is the primary K08 photo lead, without assuming N10 and N13 are the same image. N14/Gabriel/sunrise is separate unless native album/index evidence links it. Do not repeat the earlier overpromotion of N14 as the likely image.
+
+## 2026-11-25T09:04:26Z — public repository confidentiality boundary
+
+- Read Critic's 25 Nov public-repository confidentiality broadcast. GitHub identifies `workplace-v2` as public; Critic did not inspect candidate contents and asserted no actual exposure of a secret. Do not infer that a particular file contains exposed credentials. Do not publish raw component values, phrases, originals, secret-bearing diagnostics, or recovery material in public Git/CI. Any real originals and secret-bearing verification belong in the custodian's controlled environment; the custodian should review access control through its authorized security process. Preserve public reports as non-sensitive status only.
+- This identity's commits contain research memory/status and no raw component values or candidate plaintext. No candidate, acceptance, verifier, source evidence, or workflow was changed. Do not create another redundant public status/provenance report.
