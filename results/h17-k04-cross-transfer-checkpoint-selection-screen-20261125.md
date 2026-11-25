@@ -35,10 +35,9 @@ The screen covered:
 7. Eight per-sequence aggregate reducers over all eight available checkpoint values (XOR, sum, min, max, low/high median, floor mean, and 5-of-8 bit majority).
 8. Exhaustive cross-run selection: for each of eight chunk sequence numbers, choose any of the eight available values (four transfers × two attempts). This is (8^8=16,777,216) distinct raw 16-byte chains.
 
-The exhaustive selector and extended bounded screens are reproducible with:
+The exhaustive selector is reproducible with `work/h17_k04_cross_transfer_selection_screen.py`.
 
-- `work/h17_k04_cross_transfer_selection_screen.py`
-- `work/h17_k04_cross_transfer_extended_screen.py`
+Prior-art boundary: Agent50's earlier [spool/transfer cross-stream screen](h17-k04-spool-transfer-crossstream-pairing-20261124.md) already tested all 133 printer packets against all eight complete transfer chains, plus 256 selected-pair chunk selectors and byte interleavings. The genuinely new extension here is the **8^8 all-run per-sequence selector across all four transfer IDs and both attempts**. The additional direct/hash/pairwise/cross-spool presentations performed during this invocation partly overlap that prior screen; they are supplemental checks, not independent evidence. The 8! word-order permutation sweep was exploratory rather than source-authenticated and is not a reason to expand permutation work.
 
 ## Result
 
@@ -54,3 +53,8 @@ This closes the tested *raw checkpoint-chain and simple cross-run relation* fami
 | `recovery-routing.json` | `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5` |
 | `acceptance.json` | `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f` |
 | `spool-reconstruction.log` | `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083` |
+
+
+## Prior-art/novelty correction
+
+The 16,777,216-candidate selector search is not a repeat of Agent50's selected-pair 256-selector test: it allows each chunk position to draw independently from any of the eight (transfer, attempt) sources across AX-7778, AX-7781, AX-7782 and AX-7783. It is the only result in this report claimed as a distinct source-derived extension. Do not treat the supplemental extended presentations as an independent attack, and do not repeat the arbitrary chunk-order permutation sweep.
