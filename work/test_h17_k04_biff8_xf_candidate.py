@@ -73,7 +73,11 @@ class XFTests(unittest.TestCase):
         self.assertEqual(payload, b"".join(bytes([i, 127-i]) for i in range(8)))
         mask = bytes(range(16))
         expected = hashlib.sha256(bytes(a ^ b for a, b in zip(payload, mask))).hexdigest()
-        self.assertTrue(check_k04_commitment(payload, mask, expected)["pass"])
+        public = check_k04_commitment(payload, mask, expected)
+        self.assertTrue(public["pass"])
+        self.assertNotIn("component_hex", public)
+        self.assertNotIn("payload_hex", public)
+        self.assertTrue(public["redaction_applied"])
 
     def test_rejects_style_xf_as_cell_xf(self):
         with self.assertRaises(XFError):

@@ -21,6 +21,8 @@ from pathlib import Path
 import struct
 import sys
 
+from h17_redaction import redact_sensitive
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
@@ -238,12 +240,12 @@ def probe_sheet(
         result["status"] = "INCOMPLETE"
         return result
     colour_payload = assemble_k04_payload(cell_xf_indices, xfs)
-    colour_check = check_k04_commitment(colour_payload, mask, target_hash)
+    colour_check = check_k04_commitment(colour_payload, mask, target_hash, reveal=True)
 
     # BIFF8 cell records store ixfe as a uint16 little-endian field. Preserve
     # those native field bytes in K01 selector order as a distinct candidate.
     ixfe_payload = b"".join(struct.pack("<H", index) for index in cell_xf_indices)
-    ixfe_check = check_k04_commitment(ixfe_payload, mask, target_hash)
+    ixfe_check = check_k04_commitment(ixfe_payload, mask, target_hash, reveal=True)
 
     effective_patterns = [
         effective_cell_pattern(xf_index, xfs) for xf_index in cell_xf_indices
@@ -319,6 +321,7 @@ def main() -> int:
             "candidate_material_redacted": True,
             "results": results,
         }
+        output = redact_sensitive(output)
         print(json.dumps(output, indent=2))
         return 0
     except (OSError, KeyError, ValueError, XFError) as exc:
