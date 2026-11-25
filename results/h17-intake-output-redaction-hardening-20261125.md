@@ -14,13 +14,14 @@ This contradicted the repository's existing requirement that raw recovery materi
 - Applied the default to:
   - `work/h17_ax7782_object_intake.py:inspect_object`
   - `work/h17_k04_binary_window_intake.py:run_scan`
+- `work/h17_k04_biff8_xf_candidate.py:check_k04_commitment` and the `work/h17_k04_mug_stock_xf_probe.py` CLI
   - `work/h17_ax7782_k08_phrase_intake.py:inspect_object`
   - `work/h17_ax7782_k08_sqlite_bridge.py:scan_sqlite_members` and `inspect_object`
   - `work/h17_k08_m10_value_probe.py:evaluate_m10_values` and `inspect_workbook`
   - `work/h17_k08_m10_raw_biff_probe.py:inspect_workbook`
   - `agents/agent31/h17_verified_manual_intake.py:execute`
   - `work/h17_complete_native_recovery.py:recover_complete`
-- Hardened CLI JSON output for those tools, the native K04 original-source scan, and the joint AX-7782 intake. The joint wrapper no longer includes subprocess stdout/stderr tails in its result.
+- Hardened CLI JSON output for those tools, the K04 mug-stock XF probe, the native K04 original-source scan, and the joint AX-7782 intake. The joint wrapper no longer includes subprocess stdout/stderr tails in its result.
 - Removed the K04 binary scanner's embedded route-mask and target defaults. Its CLI now loads those values from the supplied local routing and acceptance resources at runtime; they are not included in the redacted output.
 - Replaced K08 known-answer HMAC checks that used the live desk nonce with a synthetic nonce test vector. Corresponding M10 test fixtures now use a synthetic nonce rather than duplicating the live value.
 - Added/updated tests for recursive redaction, explicit reveal in synthetic test paths, and default redaction of manual, phrase, SQLite, K04, M10 and complete-recovery results.
