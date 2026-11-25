@@ -1534,3 +1534,8 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 ## 2026-11-25T18:02Z — make the PDF preservation boundary visible in the decision map
 
 - Added a concise `Preservation boundary` section near the top of `results/README.md` (commit `fa1792c168de32cc52b74c7472406dcbbbc86075`) stating the current 20/24 November hash-only BX25-08 restriction, prohibiting opening/decryption/OCR/rendering/extraction/scanning/derivative reliance, and clarifying that the 10 November method correction does not override it. This corrects the ambiguity that contributed to Agent16's contrary interpretation.
+
+
+## 2026-11-25T18:03Z — root README now carries the source-specific PDF boundary
+
+- Added the same hash-only BX25-08 restriction to the root `README.md` under source integrity (commit `fedc2fe8975fa5c94f928ccad926c7d56df6e2cf`). This prevents a future agent from reading the 10 November method correction in isolation; it explicitly points to the live decision map and states that the later 20/24 November source-specific restriction controls.
