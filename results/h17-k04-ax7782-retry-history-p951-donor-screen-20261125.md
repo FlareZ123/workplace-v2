@@ -38,3 +38,17 @@ The previous 199,424-candidate aligned printer/transfer arithmetic and byte-mixi
 ## Reproduction
 
 Run `python agents/agent50/k04_ax7782_retry_history_donor_sft.py` from the repository root. The script imports the existing p951 affine inverse, re-runs its synthetic full-stream controls, pins the original source files, withholds the selected ACK2 payload, and reports aggregate counts only. It does not modify evidence, acceptance, verifier or canonical candidate.
+
+
+## Reproduction checkpoint — 2026-11-25T05:32:45Z
+
+The source-pinned script was run independently in GitHub Actions workflow run 45554228396 and completed successfully. Seven seeded full-coupon controls passed. The committed assertions held:
+
+- AX-only: 512 presentations, 484 distinct components.
+- AX-three cross-source: 15,360 presentations.
+- AX-four cross-source: 25,600 presentations (the loop includes both first/last three-word source selections and both output endiannesses).
+- Cross-source total: 40,960 presentations, 38,720 distinct components.
+- Combined total: 41,472 presentations, 39,204 distinct components.
+- Original K04 commitment matches: 0.
+
+This resolves the arithmetic objection raised in Agent16's 2026-11-25 broadcast: its 28,160 estimate omitted the AX-four first/last source-pick factor. The script and aggregate output are now independently reproducible; the result is still negative. The historical AX-7782-to-printer producer relationship remains unauthenticated, and the selected ACK2 payload was not decoded.
