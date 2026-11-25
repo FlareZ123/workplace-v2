@@ -15,9 +15,9 @@ import re
 from pathlib import Path
 
 try:
-    from h17_redaction import redact_sensitive
+    from h17_redaction import redact_by_default, redact_sensitive
 except ImportError:  # Import as work.h17_missing_source_intake from the repo root.
-    from work.h17_redaction import redact_sensitive
+    from work.h17_redaction import redact_by_default, redact_sensitive
 
 K04_JOB = "PS-261003-0417"
 TEXT_SUFFIXES = {".txt", ".log", ".eml", ".html", ".htm", ".json", ".jsonl", ".ini", ".csv", ".md"}
@@ -53,6 +53,7 @@ def _load_inputs(root: Path) -> tuple[Path, dict, dict]:
     raise FileNotFoundError("expected evidence/recovery-routing.json and acceptance.json")
 
 
+@redact_by_default
 def print_rows(path: Path) -> list[dict]:
     """Parse exact-job spool rows; payloads remain internal to this module."""
     try:
@@ -92,6 +93,7 @@ def print_rows(path: Path) -> list[dict]:
     return rows
 
 
+@redact_by_default
 def select_k04_ack(rows: list[dict]) -> tuple[dict, list[dict], list[dict]]:
     """Select a unique highest-attempt RECOVER ACK or fail closed."""
     acknowledgements = [row for row in rows if row["state"] == "ACK"]
@@ -111,12 +113,12 @@ def _k04(evidence_root: Path, routing: dict, acceptance: dict) -> dict:
     rows = []
     for path in evidence_root.rglob("*"):
         if path.is_file() and ("0417" in path.name.upper() or path.name.lower() in K04_LOG_NAMES):
-            rows.extend(print_rows(path))
+            rows.extend(print_rows(path, reveal=True))
     acknowledgements = [row for row in rows if row["state"] == "ACK"]
     if not acknowledgements:
         return {"status": "not_found", "carrier_rows": len(rows), "ack_rows": 0}
     try:
-        selected, top, _ = select_k04_ack(rows)
+        selected, top, _ = select_k04_ack(rows, reveal=True)
     except (LookupError, ValueError) as exc:
         return {
             "status": "ambiguous_or_invalid",
