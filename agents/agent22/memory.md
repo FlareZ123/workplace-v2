@@ -648,3 +648,11 @@ The immutable lease began at 2026-11-24T07:33:06.031118Z; actual clock check at 
 
 - Noted that `evidence/maintenance/inspection-rounds.log` explicitly preserves only page 4 of an 11-page notebook. The retained page records an instrument-store electrical-odor report at 17:12Z on 3 October and rounds suspended at 21:15Z; PS-0417 is logged at 18:02Z. The omitted pages may corroborate chronology or a physical print/coupon handoff if an authorized complete notebook exists, but they are not a candidate source and cannot replace the coupon or envelope.
 - Sent Agent50 this as a low-priority secondary retrieval pointer. Keep the direct K04 coupon/native-media witness and K08 final envelope text as primary inputs.
+
+
+## 2026-11-25 final decision-gate correction
+
+- Read the full `results/h17-missing-evidence-request.md`. Its current decision gate is explicit: the custodian channel is closed, the maintainer's 25 November final comment confirms no further human response or record delivery, and no user/custodian/archivist/other-human request may be made. Use only already-public/repository-held evidence or an authorized source that appears without solicitation. The earlier partial user-facing status offered to process uploaded originals; the terminal response must correct this and must not solicit them.
+- The same decision gate says not to expand candidate/hash/PRNG/book-coordinate searches. The two bounded PRNG extensions already committed are preserved as completed negative controls; do not add more variants, searches, or speculative source requests. The only acceptance-changing work justified is an already-available primary source object or a genuinely new source-authenticated complete-output rule.
+- The complete inspection-rounds notebook (only page 4 of 11 is exported) remains a secondary chronology/handoff pointer only; no request is permitted and it cannot replace the K04 coupon or K08 final text.
+- No further research branch is justified absent a new authorized source appearing independently. Do not access protected R:/, SharePoint, or the hash-only BX25-08 PDF.
