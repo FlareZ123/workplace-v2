@@ -341,3 +341,8 @@ The account/folio → BX25 numeric-suffix interpretation was also tested as a bo
 - Extended the reverse-Alea screen by exactly one additional, source-motivated packet distance. One packet back covers attempt3 following the attempt-2 payload without a separate ACK emission; two packets back covers a missing attempt-2 REQUESTED body followed by a separate ACK2 event.
 - Both distances have 8 valid inverse/replay views and 8 distinct predecessor packets; neither yields a K04 commitment hit. The synthetic control now recovers two planted prior packets and passes the synthetic mask/commitment check.
 - Updated `agents/agent16/k04_alea_reverse_late_request_sft.py` and `results/h17-k04-alea-late-request-reverse-ack-screen-20261125.md`. No selected ACK2 payload is decoded or used. This closes only the one- and two-packet reverse-Alea hypotheses. Do not expand to additional arbitrary packet offsets; the original request/ACK binding remains absent.
+
+
+### Reverse-Alea validation refinement — 2026-11-25T03:51Z
+
+- Strengthened the synthetic control in `k04_alea_reverse_late_request_sft.py`: it now exercises a nontrivial four-word permutation and independent per-word endianness through the same serializer/view enumeration used by the source test, recovers two prior packets, and verifies the synthetic mask/commitment. Re-ran the local script successfully; the source result remains 8/8 one-back and 8/8 two-back, zero K04 hits.
