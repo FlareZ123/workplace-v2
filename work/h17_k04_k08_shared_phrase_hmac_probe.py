@@ -59,8 +59,8 @@ def main() -> int:
     args = parser.parse_args()
 
     acceptance = json.loads(args.acceptance.read_text(encoding="utf-8"))
-    targets = {slot: bytes.fromhex(entry["sha256"])
-               for slot, entry in acceptance["slots"].items()}
+    targets = {slot: bytes.fromhex(value)
+               for slot, value in acceptance["slot_sha256"].items()}
 
     with zipfile.ZipFile(args.zip) as archive:
         route = json.loads(archive.read("evidence/recovery-routing.json"))
