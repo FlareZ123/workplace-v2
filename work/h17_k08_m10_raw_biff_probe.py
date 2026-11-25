@@ -18,7 +18,7 @@ import struct
 import sys
 from pathlib import Path
 
-from h17_redaction import redact_sensitive
+from h17_redaction import redact_by_default, redact_sensitive
 from typing import Any
 
 EXPECTED_SYNTHETIC_HMAC16 = "D80E9E725D394C7F1B60CCDD801F7407"
@@ -299,6 +299,7 @@ def _safe_record_summary(cell: dict[str, Any]) -> dict[str, Any]:
     return summary
 
 
+@redact_by_default
 def inspect_workbook(
     path: Path, resources: Path, cell_address: str = DEFAULT_CELL
 ) -> dict[str, Any]:

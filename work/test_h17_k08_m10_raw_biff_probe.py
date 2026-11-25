@@ -202,6 +202,8 @@ class RawM10BiffTests(unittest.TestCase):
         self.assertNotIn("raw_text", result["cell_records"][0])
         self.assertNotIn("hmac16", result["candidates"][0])
         self.assertNotIn("normalized_phrase", result["candidates"][0])
+        self.assertNotIn("component_sha256", result["candidates"][0])
+        self.assertNotIn("text_sha256", result["candidates"][0])
         self.assertNotIn("k08_desk_nonce_hex", result)
         self.assertNotIn("k08_target_sha256", result)
         self.assertNotIn("path", result["workbook"])
