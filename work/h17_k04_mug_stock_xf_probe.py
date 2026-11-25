@@ -21,7 +21,7 @@ from pathlib import Path
 import struct
 import sys
 
-from h17_redaction import redact_sensitive
+from h17_redaction import redact_by_default, redact_sensitive
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -200,6 +200,7 @@ def load_rules(repo_root: Path) -> tuple[str, str, bytes, tuple[str, ...]]:
     return k04_hash, k01_hex, k04_mask, k01_cells
 
 
+@redact_by_default
 def probe_sheet(
     sheet: dict,
     xfs: list[bytes],
