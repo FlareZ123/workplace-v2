@@ -81,3 +81,10 @@ A final adversarial test used an unlabelled phrase as the entire exception messa
 A further schema review found that the previous safe-suffix exception treated any value under keys such as hmac_matches or hmac_counts as safe, even if the value was a list of raw phrase matches or a nested dictionary. The redactor now treats every HMAC-bearing key as sensitive by default and preserves only typed scalar metadata: integer counts, short token-shaped status strings, and boolean match/pass flags. Lists, dictionaries, strings containing digests, and other payload-bearing values are removed.
 
 **Validation:** 9/9 targeted redaction tests pass against the exact committed helper and test source, including positive preservation of safe scalar metadata and removal of raw match lists/count dictionaries. The broader work/ and agents/agent31/ suites remain unrun.
+
+
+## Follow-up — HMAC status allowlist (2026-11-25T05:49:05Z)
+
+The typed HMAC status check is now an explicit allowlist rather than accepting any short token-shaped string. This prevents a phrase-like value such as a hyphenated caption from being retained merely because it appears under an hmac_status key. Counts remain integer-only; match/pass flags remain boolean-only.
+
+**Validation:** 9/9 targeted tests pass against the exact committed helper and test source, including rejection of phrase-like HMAC status values. Broader suites remain unrun.
