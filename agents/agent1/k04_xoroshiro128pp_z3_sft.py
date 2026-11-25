@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
-"""One-sum-variable first-pair inversion for the H-17 K04 xoroshiro128++ hypothesis.
+"""Direct-borrow first-pair inversion for the H-17 K04 xoroshiro128++ hypothesis.
 
-The first observed output is eliminated exactly with P=a0+b0 (mod 2^64):
-    a0 = y0 - ROTL(P,17)
-    b0 = P - a0
-The second observed output is then one QF_BV equation in the single 64-bit
-unknown P. The selected 18:02 ACK payload is withheld from fitting.
+The first output determines u0=ROTR(y0-a0,17). A bitwise borrow chain derives
+t0=a0 XOR b0 from u0 and the sole 64-bit unknown a0. A second borrow chain
+expresses the y1 constraint without either 64-bit output addition. The selected
+18:02 ACK payload is withheld from fitting.
 
-Every complete middle candidate is masked and checked against the original
-K04 commitment before any holdout or uniqueness disposition. The 18:03
+Every complete middle candidate is replayed, masked, and checked against the
+original K04 commitment before any holdout or uniqueness disposition. The 18:03
 REQUESTED packet is a blind diagnostic for the first unconditioned model only.
 """
 import argparse
@@ -19,7 +18,7 @@ import re
 import time
 from pathlib import Path
 
-from z3 import BitVec, BitVecVal, Or, RotateLeft, Then, sat, simplify, unsat, unknown
+from z3 import BitVec, BitVecVal, Concat, Extract, Or, RotateLeft, RotateRight, Then, sat, unsat, unknown
 
 MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
@@ -59,6 +58,35 @@ def rol(x, n):
     return ((x << n) | (x >> (64 - n))) & MASK
 
 
+def ror(x, n):
+    return ((x >> n) | (x << (64 - n))) & MASK
+
+
+def subtract_with_borrow(minuend, subtrahend):
+    """Exact 64-bit subtraction using the direct one-bit borrow recurrence."""
+    borrow = 0
+    result = 0
+    for i in range(64):
+        ui = (minuend >> i) & 1
+        ai = (subtrahend >> i) & 1
+        result |= (ui ^ ai ^ borrow) << i
+        borrow = ((1 - ui) & ai) | (((1 - ui) | ai) & borrow)
+    return result
+
+
+def direct_borrow_t0(y0, a0):
+    """Recover t0=a0 XOR b0 from the first output and a0, without 64-bit add."""
+    u0 = ror((y0 - a0) & MASK, 17)
+    borrow = 0
+    t0 = 0
+    for i in range(64):
+        ui = (u0 >> i) & 1
+        ai = (a0 >> i) & 1
+        t0 |= (ui ^ borrow) << i
+        borrow = ((1 - ui) & ai) | (((1 - ui) | ai) & borrow)
+    return t0
+
+
 def stream(state, count=6):
     a, b = state
     out = []
@@ -79,21 +107,40 @@ def z3_output(a, b):
     return RotateLeft(a + b, 17) + a
 
 
-def z3_sequence_from_sum(y0, total):
-    """Return symbolic initial state, middle outputs, and later holdout."""
-    a0 = BitVecVal(y0, 64) - RotateLeft(total, 17)
-    b0 = total - a0
-    a1, b1 = z3_step(a0, b0)
-    y1 = z3_output(a1, b1)
-    a2, b2 = z3_step(a1, b1)
-    y2 = z3_output(a2, b2)
-    a3, b3 = z3_step(a2, b2)
-    y3 = z3_output(a3, b3)
-    a4, b4 = z3_step(a3, b3)
-    y4 = z3_output(a4, b4)
-    a5, b5 = z3_step(a4, b4)
-    y5 = z3_output(a5, b5)
-    return (a0, b0), y1, (y2, y3), (y4, y5)
+def borrow_next(x, y, prior):
+    # One-bit exact subtraction borrow recurrence: MAJ(~x, y, prior).
+    return (~x & y) | ((~x | y) & prior)
+
+
+def inverse_first_pair(y0, y1, variable_name="first_a0"):
+    """Return (a0, t0, constraints, (a1,b1)) for two successive outputs.
+
+    The only free bit-vector is a0. Both 64-bit additions in the forward
+    output function are eliminated into exact subtraction/borrow constraints.
+    """
+    a0 = BitVec(variable_name, 64)
+    u0 = RotateRight(BitVecVal(y0, 64) - a0, 17)
+    r0 = BitVecVal(0, 1)
+    t_bits = []
+    for i in range(64):
+        ui, ai = Extract(i, i, u0), Extract(i, i, a0)
+        t_bits.append(ui ^ r0)
+        if i < 63:
+            r0 = borrow_next(ui, ai, r0)
+    t0 = Concat(*reversed(t_bits))
+
+    a1 = RotateLeft(a0, 49) ^ t0 ^ (t0 << 21)
+    b1 = RotateLeft(t0, 28)
+    u1 = RotateRight(BitVecVal(y1, 64) - a1, 17)
+    r1 = BitVecVal(0, 1)
+    diff_bits = []
+    for i in range(64):
+        ui, ai = Extract(i, i, u1), Extract(i, i, a1)
+        diff_bits.append(ui ^ ai ^ r1)
+        if i < 63:
+            r1 = borrow_next(ui, ai, r1)
+    required_b1 = Concat(*reversed(diff_bits))
+    return a0, t0, [required_b1 == b1], (a1, b1)
 
 
 def decode(packet, view):
@@ -114,18 +161,16 @@ def self_test():
     rng = random.Random(0x50D0A11)
     tests = [SEED] + [(rng.getrandbits(64), rng.getrandbits(64)) for _ in range(100)]
     for state in tests:
-        y0, y1 = stream(state, 2)
-        total = (state[0] + state[1]) & MASK
-        a0 = (y0 - rol(total, 17)) & MASK
-        b0 = (total - a0) & MASK
-        recovered = (a0, b0)
-        assert recovered == state
-        assert stream(recovered, 2) == [y0, y1]
-        p_expr = BitVecVal(total, 64)
-        _, symbolic_y1, symbolic_middle, symbolic_holdout = z3_sequence_from_sum(y0, p_expr)
-        assert simplify(symbolic_y1).as_long() == y1
-        assert [simplify(x).as_long() for x in symbolic_middle] == stream(state)[2:4]
-        assert [simplify(x).as_long() for x in symbolic_holdout] == stream(state)[4:6]
+        outputs = stream(state, 6)
+        y0, y1 = outputs[:2]
+        t0 = direct_borrow_t0(y0, state[0])
+        recovered_b0 = state[0] ^ t0
+        assert t0 == (state[0] ^ state[1])
+        assert recovered_b0 == state[1]
+        a1, b1 = (rol(state[0], 49) ^ t0 ^ (t0 << 21)) & MASK, rol(t0, 28)
+        u1 = ror((y1 - a1) & MASK, 17)
+        assert subtract_with_borrow(u1, a1) == b1
+        assert stream((state[0], recovered_b0), 6) == outputs
     for probe in ("0123456789ABCDEF", "00112233445566778899AABBCCDDEEFF"):
         try:
             assert_public_safe({"synthetic_probe": probe})
@@ -144,6 +189,7 @@ def self_test():
         "algebraic_unknown_bits": 64,
         "randomized_inverse_cases": len(tests),
         "first_output_exactly_eliminated": True,
+        "second_output_borrow_constraint_replayed": True,
     })
 
 
@@ -178,11 +224,20 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     started = time.monotonic()
     deadline = started + MAX_TOTAL_SOLVE_SECONDS
     y0, y1 = first
-    total = BitVec("sum_state0", 64)
-    (a0_expr, b0_expr), predicted_y1, middle_exprs, holdout_exprs = z3_sequence_from_sum(y0, total)
+    a0_expr, t0_expr, inverse_constraints, (a1_expr, b1_expr) = inverse_first_pair(y0, y1)
+    a2_expr, b2_expr = z3_step(a1_expr, b1_expr)
+    y2_expr = z3_output(a2_expr, b2_expr)
+    a3_expr, b3_expr = z3_step(a2_expr, b2_expr)
+    y3_expr = z3_output(a3_expr, b3_expr)
+    a4_expr, b4_expr = z3_step(a3_expr, b3_expr)
+    y4_expr = z3_output(a4_expr, b4_expr)
+    a5_expr, b5_expr = z3_step(a4_expr, b4_expr)
+    y5_expr = z3_output(a5_expr, b5_expr)
+    middle_exprs = (y2_expr, y3_expr)
+    holdout_exprs = (y4_expr, y5_expr)
 
-    # Agent24's tested explicit bit-blast path is materially more direct than
-    # the default QF_BV tactic for this one-sum equation.
+    # Bit-blast the direct-borrow inverse core; the middle/holdout expressions
+    # are added only for model replay and distinct-middle blocking.
     solver = Then("simplify", "bit-blast", "sat").solver()
     first_timeout = _remaining(deadline, timeout_seconds)
     result = {
@@ -214,7 +269,7 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
         return result
 
     solver.set(timeout=max(1, int(first_timeout * 1000)))
-    solver.add(predicted_y1 == BitVecVal(y1, 64))
+    solver.add(*inverse_constraints)
     check = solver.check()
     if check != sat:
         result["status"] = str(check).upper()
@@ -233,15 +288,18 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     target_sha = acceptance["slot_sha256"]["K04"] if check_candidate else None
 
     def inspect_model(model, index):
-        p_value = model.eval(total).as_long()
-        a0 = (y0 - rol(p_value, 17)) & MASK
-        b0 = (p_value - a0) & MASK
+        a0 = model.eval(a0_expr).as_long()
+        t0 = model.eval(t0_expr).as_long()
+        b0 = a0 ^ t0
         state = (a0, b0)
         replay = stream(state)
         assert replay[:2] == list(first)
+        assert t0 == (a0 ^ b0)
         middle = tuple(replay[2:4])
         symbolic_middle = tuple(model.eval(expr).as_long() for expr in middle_exprs)
+        symbolic_holdout = tuple(model.eval(expr).as_long() for expr in holdout_exprs)
         assert middle == symbolic_middle
+        assert tuple(replay[4:6]) == symbolic_holdout
         coupon = encode(middle, view)
         # Keep the complete candidate internal. Public output carries only
         # model indices and commitment/holdout booleans.
