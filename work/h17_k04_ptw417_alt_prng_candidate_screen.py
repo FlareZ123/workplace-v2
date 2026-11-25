@@ -78,12 +78,16 @@ RES=args.resources; EV=RES/'evidence'
 accept=json.loads((RES/'acceptance.json').read_text())
 routing=json.loads((EV/'recovery-routing.json').read_text())
 target_hash=accept['slot_sha256']['K04']; mask=bytes.fromhex(routing['K04']['masked_component'])
+assert len(target_hash)==64 and len(mask)==16
 rows=[json.loads(x) for x in (EV/'maintenance/seal-receipts.jsonl').read_text().splitlines() if x.strip()]
 by_bay={}
 for bay in 'ABCD':
  xs=[r for r in rows if r.get('permit')=='PTW-417' and r.get('bay')==bay and r.get('state')=='CLOSED' and r.get('fitment')=='AS_LEFT' and r.get('signed') is True]
  assert xs
- rec=max(xs,key=lambda x:x['revision'])
+ max_revision=max(int(x['revision']) for x in xs)
+ latest=[x for x in xs if int(x['revision'])==max_revision]
+ assert len(latest)==1, (bay,max_revision,len(latest))
+ rec=latest[0]
  by_bay[bay]=bytes.fromhex(rec['serial'].split('-',1)[1])
 # PS-0417 ACK2 is a comparison control, not a seed.
 spool=(EV/'print/spool-reconstruction.log').read_text()
