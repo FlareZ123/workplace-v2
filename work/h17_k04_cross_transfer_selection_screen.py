@@ -37,7 +37,7 @@ def main():
         payload=b''.join(x[2] for x in combo)
         component=bytes(a^b for a,b in zip(payload,mask))
         if hashlib.sha256(component).hexdigest()==target:
-            hits.append({'payload':payload.hex().upper(),'component':component.hex().upper(),'selection':[(x[0],x[1]) for x in combo]})
+            hits.append({'verified':True,'selection':[(x[0],x[1]) for x in combo],'candidate_bytes':'[REDACTED]'})
         checked+=1
     print(json.dumps({'transfer_ids':tids,'transfer_status':status,'candidate_count':checked,'hits':hits},indent=2,default=str))
 
