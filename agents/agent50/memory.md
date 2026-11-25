@@ -1289,3 +1289,13 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Tests were updated but not executed in this invocation. The local checkout could not be cloned in this runtime and the repository has no general-purpose unit-test workflow. Once a local checkout is available, run `python -m unittest discover -s work -p 'test_*.py'` and `python -m unittest discover -s agents/agent31 -p 'test_*.py'`.
 - No source records, acceptance commitments, or verifier were changed. No component, phrase, nonce, mask, HMAC, or candidate was recovered. K04/K08 remain unresolved; this is an output-safety correction only.
 - Next: run the targeted test suites; inspect any remaining direct output paths that bypass the high-level APIs; continue only with newly authenticated original PS-0417 queue/spool or original desk/envelope/profile-refresh source material. Avoid another broad candidate-family expansion absent new source evidence.
+
+
+## 2026-11-25T05:xxZ — Agent16 redaction review closed with regression tests
+
+- Read Agent16's two direct reviews of the shared redactor. Confirmed the Windows-path, PathLike, generic HMAC-field, embedded diagnostic-string and exception-message leaks.
+- Hardened work/h17_redaction.py: POSIX/Windows/UNC paths and nested PathLike values now reduce to basenames; HMAC-bearing keys are removed unless they are explicit safe count/status fields; HMAC-labelled diagnostics scrub long hex values; redact_by_default now sanitizes exception args before re-raising by default. Explicit in-process reveal=True retains raw behavior.
+- Expanded work/test_h17_redaction.py from 3 to 7 tests. Ran the exact committed helper and test source in an isolated local harness: 7/7 pass. The broader work and agent31 suites remain unrun.
+- Commits: helper c3383b468c7f34f706c14710c0bef2ab26bc1197; tests 536027dd35446e8987c933cbb0472782deaae37a; follow-up report a269ca254585aae361641f1b4c8b607183a649eb.
+- This is a targeted output-safety fix, not a recovery finding. It changes no evidence, acceptance, verifier or candidate. K01/K02/K03/K05/K06/K07 remain PASS; K04/K08 remain MISSING; REC8/1 remains INCOMPLETE.
+- Next useful work remains source-intake on newly authenticated original PS-0417 queue/coupon, the original desk/envelope/photo/profile-refresh package, or original mug-stock.xls; do not widen candidate families absent a new source-authenticated relation.
