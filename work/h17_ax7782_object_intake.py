@@ -272,6 +272,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool
     return result
 
 
+@redact_by_default
 def inspect_object(path: Path, resources: Path, transfer_id: str, allow_size_mismatch: bool = False, ocr: bool = False):
     selected, transfer_meta = select_chain(resources, transfer_id)
     size = path.stat().st_size

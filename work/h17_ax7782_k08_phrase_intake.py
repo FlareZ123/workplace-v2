@@ -886,6 +886,7 @@ def scan_authored_text_units(text: str, nonce: bytes, target: bytes, source: str
     return tested
 
 
+@redact_by_default
 def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                    ocr: bool = False, max_phrase_words: int = 48,
                    pdf_password: str | None = None) -> dict:
