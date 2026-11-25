@@ -140,6 +140,7 @@ def scan_embedded_raw_span(text: str, nonce: bytes, target: bytes, source: str,
     return spans_tested, starts_tested, truncated
 
 
+@redact_by_default
 def scan_sqlite_members(data: bytes, object_name: str, nonce: bytes,
                         target: bytes, max_words: int = 32,
                         pdf_password: str | None = None) -> dict[str, Any]:
@@ -296,6 +297,7 @@ def scan_sqlite_members(data: bytes, object_name: str, nonce: bytes,
     }
 
 
+@redact_by_default
 def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                    ocr: bool = False, max_phrase_words: int = 32,
                    pdf_password: str | None = None) -> dict[str, Any]:
@@ -304,11 +306,11 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
         raise ValueError("object must be a regular, non-symlink file")
     before_hash = hashlib.sha256(path.read_bytes()).hexdigest()
     base = phrase_intake.inspect_object(path, resources, transfer_id, ocr,
-                                        max_phrase_words, pdf_password)
+                                        max_phrase_words, pdf_password, reveal=True)
     nonce, target = phrase_intake.load_k08_rules(resources)
     data = path.read_bytes()
     sqlite_result = scan_sqlite_members(data, path.name, nonce, target,
-                                        max_phrase_words, pdf_password)
+                                        max_phrase_words, pdf_password, reveal=True)
     after_hash = hashlib.sha256(path.read_bytes()).hexdigest()
     if before_hash != after_hash or base.get("object", {}).get("sha256") != before_hash:
         raise RuntimeError("source object changed during read-only K08 intake")

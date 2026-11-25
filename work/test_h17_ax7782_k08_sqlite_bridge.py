@@ -60,7 +60,7 @@ class SQLiteBridgeTests(unittest.TestCase):
             component = phrase_intake.k08_component(nonce, phrase)
             target = hashlib.sha256(component).digest()
 
-            result = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16)
+            result = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16, reveal=True)
 
             self.assertEqual(result["plum_databases_found"], 1)
             self.assertTrue(result["databases"][0]["wal_present"])
@@ -82,7 +82,7 @@ class SQLiteBridgeTests(unittest.TestCase):
             nonce = bytes(range(16))
             target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
 
-            result = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16)
+            result = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16, reveal=True)
 
             self.assertEqual(result["plum_databases_found"], 1)
             self.assertFalse(result["databases"][0]["wal_present"])
@@ -108,7 +108,7 @@ class SQLiteBridgeTests(unittest.TestCase):
             nonce = bytes(range(16))
             target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
 
-            result = bridge.scan_sqlite_members(compressed.getvalue(), "AX-7782.zip", nonce, target, 16)
+            result = bridge.scan_sqlite_members(compressed.getvalue(), "AX-7782.zip", nonce, target, 16, reveal=True)
 
             self.assertEqual(result["plum_databases_found"], 1)
             self.assertTrue(result["databases"][0]["wal_present"])
@@ -134,7 +134,7 @@ class SQLiteBridgeTests(unittest.TestCase):
             }
             with patch.object(bridge.phrase_intake, "inspect_object", return_value=base), \
                  patch.object(bridge.phrase_intake, "load_k08_rules", return_value=(nonce, target)):
-                result = bridge.inspect_object(object_path, root, max_phrase_words=16)
+                result = bridge.inspect_object(object_path, root, max_phrase_words=16, reveal=True)
             self.assertTrue(result["sqlite_intake"]["source_object_unchanged"])
             self.assertEqual(result["sqlite_intake"]["source_object_sha256"], before)
             self.assertGreater(result["K08_search"]["normalized_contiguous_spans_tested"], 7)
@@ -152,7 +152,7 @@ class SQLiteBridgeTests(unittest.TestCase):
             )
             nonce = bytes(range(16))
             target = hashlib.sha256(phrase_intake.k08_component(nonce, phrase)).digest()
-            result = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16)
+            result = bridge.scan_sqlite_members(archive_bytes, "AX-7782.zip", nonce, target, 16, reveal=True)
             self.assertEqual(result["plum_databases_found"], 0)
             self.assertEqual(result["original_k08_commitment_hits"], [])
 
@@ -162,7 +162,7 @@ class SQLiteBridgeTests(unittest.TestCase):
             archive.writestr("profile/plum.sqlite", b"not a database")
         nonce = bytes(range(16))
         target = bytes(32)
-        result = bridge.scan_sqlite_members(inner.getvalue(), "AX-7782.zip", nonce, target, 16)
+        result = bridge.scan_sqlite_members(inner.getvalue(), "AX-7782.zip", nonce, target, 16, reveal=True)
         self.assertEqual(result["plum_databases_found"], 0)
         self.assertTrue(any("lacks SQLite format 3 header" in item["error"]
                             for item in result["errors"]))
