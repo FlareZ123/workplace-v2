@@ -43,8 +43,15 @@ def assert_public_safe(value):
                 raise AssertionError(f"unsafe public output field: {key}")
             assert_public_safe(item)
     elif isinstance(value, (list, tuple)):
+        if len(value) == 16 and all(
+            isinstance(item, int) and not isinstance(item, bool) and 0 <= item <= 255
+            for item in value
+        ):
+            raise AssertionError("unsafe raw 128-bit byte array in public output")
         for item in value:
             assert_public_safe(item)
+    elif isinstance(value, int) and not isinstance(value, bool) and value > 0xFFFFFFFF:
+        raise AssertionError("unsafe raw 64-bit integer in public output")
     elif isinstance(value, str) and re.fullmatch(r"(?:[0-9A-Fa-f]{16}|[0-9A-Fa-f]{32})", value):
         raise AssertionError("unsafe raw 64/128-bit value in public output")
 
@@ -178,6 +185,13 @@ def self_test():
             pass
         else:
             raise AssertionError("public output guard accepted a raw 64/128-bit value")
+    for probe in (0x0123456789ABCDEF, [0x41] * 16):
+        try:
+            assert_public_safe({"synthetic_probe": probe})
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError("public output guard accepted raw integer/byte-array material")
     try:
         assert_public_safe({"predicted_coupon_hex": "synthetic"})
     except AssertionError:
