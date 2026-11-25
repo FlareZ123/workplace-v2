@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Reproduce Agent16's bounded L-29/N five-tab set-digest negative.
+"""Reconstruct Agent16's bounded L-29/N five-tab set-digest family.
 
-This is a frozen audit of one existing 32-candidate screen, not a new
-candidate search. It reads the supplier CSV, route mask and K04 commitment;
-never emits candidate bytes and never modifies source or acceptance files.
+The original scratch record preserves binder order, row filter, digest family,
+header/line-ending variants and 32/0 outcome, but not the terminal-newline
+choice. This script makes that missing detail explicit by using no terminal
+line ending. It is a reproducible reconstruction, not a guaranteed bitwise
+replay of the old scratch run. It never emits candidate bytes or modifies
+source or acceptance files.
 """
 from __future__ import annotations
 
@@ -138,14 +141,16 @@ def main() -> None:
         "row_filter": REQUIRED,
         "canonical_serialization": (
             "exact raw CSV data rows in L-29/N binder tab order; optional exact CSV "
-            "header; LF or CRLF separators; no trailing separator"
+            "header; LF or CRLF separators; this script uses no terminal line "
+            "ending (the original scratch record did not preserve that choice)"
         ),
         "digest_candidates": list(DIGESTS),
         "reductions": ["direct", "mask_xor"],
         "candidate_count": len(candidates),
         "commitment_hits": len(hits),
         "result": "NO_K04_HIT",
-        "scope": "Frozen reproduction only; no additional row subsets, encodings, hash families, or transformations.",
+        "reproduction_status": "RECONSTRUCTED_FAMILY_NOT_BITWISE_REPLAY",
+        "scope": "No additional row subsets, encodings, hash families, terminal-newline variants, or transformations are tested.",
     }, sort_keys=True, indent=2))
 
 
