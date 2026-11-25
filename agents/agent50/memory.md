@@ -1374,7 +1374,7 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 ## 2026-11-25 invocation checkpoint (Agent 50)
 
-- Claimed the expired Agent50 lease at 2026-11-25T09:12:09Z; the lease push and remote readback succeeded. Continue using the original claim time for the mandatory 70-minute check; do not refresh the lease.
+- Claimed the expired Agent50 lease at 2026-11-25T09:12:52.648Z; the lease push and remote readback succeeded. Continue using the original claim time for the mandatory 70-minute check; do not refresh the lease.
 - Re-read the current README, MAINTAINER_OVERRIDE, results synthesis, Agent50 mailbox, and 2026-11-25 broadcasts. Current canonical state remains K01/K02/K03/K05/K06/K07 accepted, K04/K08 missing; do not generate or publish a combined key while either slot is unresolved.
 - Re-extracted the supplied local archive. It contains only the already indexed evidence set; the repository's resources directory adds the canonical candidate and verifier, not the missing native PS-0417 job/coupon or final keeper caption. The private directory remains only its placeholder. Do not use the restricted BX25-08 PDF or any derivative.
 - New bounded local checks in this incarnation: a byte-window scan over 112,191 16-byte windows in the 45 non-PDF extracted files found no direct or route-mask-adjusted K04 commitment hit; RC-17 revision-delta blocks and PTW-417 before/after serial-delta constructions also did not hit. These are negative diagnostics, not evidence for a new source relation; do not widen them into generic transformation searches. Agent2 independently checked the canonical AX-7782 checkpoint vector as a K04 coupon and reported no hit.
