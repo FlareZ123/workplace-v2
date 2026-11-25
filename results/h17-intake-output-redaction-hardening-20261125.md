@@ -60,3 +60,10 @@ No source evidence, acceptance commitments, verifier, candidate, or recovery com
 A further adversarial check found that raising a sanitized exception from inside the original except block with "from None" suppresses display of the original exception but still retains it as the sanitized exception's hidden __context__. The decorator now constructs the sanitized exception inside the except block and raises it only after leaving that block, so the raw original exception is not retained as a context or cause. The regression test now asserts both __context__ and __cause__ are None for default-redacted errors, while explicit reveal=True still preserves the original exception.
 
 Targeted validation: 7/7 redaction tests pass after this change. The broader work/ and agents/agent31/ suites remain unrun.
+
+
+## Follow-up — phrase-bearing diagnostic strings (2026-11-25T05:40:40Z)
+
+A further review of the intake callers showed that errors can include parser exception text, and a diagnostic may embed phrase/caption/component content without using a structured sensitive key. The redactor now removes long hex tokens from all strings and replaces diagnostic/error/message strings containing sensitive terms (phrase, caption, component, payload, nonce, mask, candidate, HMAC, digest, checkpoint, secret or recovery key) with a generic redacted diagnostic. Exception arguments use the same diagnostic scrubber. The regression suite now includes both a raw phrase in an error field and a phrase-bearing exception message.
+
+**Validation:** 8/8 targeted redaction tests pass against the exact committed helper and test source. The broader work/ and agents/agent31/ suites remain unrun.
