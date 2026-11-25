@@ -1505,3 +1505,9 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Listed the full conversation file surface including generated files and read `START_HERE.md` (file ref `turn252file2`). It identifies IR-261003-H17 / export 06, prepared 2026-10-04 11:40 UTC, and explicitly says the preservation set is trimmed and the original mailboxes and devices are unavailable in this local export. It contains no recovery secrets and instructs use of the offline verifier without changing it.
 - The complete conversation file surface has exactly three items: the uploaded archive ZIP, `prompt.md`, and generated `START_HERE.md`; no additional original source files have been supplied. This confirms the acquisition boundary, not a new derivation.
+
+
+## 2026-11-25T17:54Z — correction to AX-7782 K08 intake description
+
+- Supersedes the 17:43 statement that `h17_ax7782_joint_intake.py`'s K08 branch is only the SQLite bridge. Inspection of `work/h17_ax7782_k08_sqlite_bridge.py` shows `inspect_object(..., reveal=True)` first runs the full companion phrase scanner over nested archives, MIME, PDF, images, metadata and text; it then additionally scans named `plum.sqlite` databases and adjacent WAL/SHM. The exact pinned opaque PDF is skipped by the companion iterator before parsing. Thus the joint intake is a full K04 + K08 + SQLite coordinated path for an intact authorized AX-7782 object, not a SQLite-only K08 path.
+- `work/h17_complete_native_recovery.py` remains useful when K04 and K08 are supplied as separate source objects; it is not the only full path. For either route, do not pass OCR or PDF passwords, and preserve redacted output outside `resources/`.
