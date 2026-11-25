@@ -85,7 +85,7 @@ def main():
         pair_n+=1
     packets={}
     for line in sp.read_text().splitlines():
-        fields=dict(re.findall(r'([A-Z]+)=([^\\s]+)',line))
+        fields=dict(re.findall(r'([A-Z]+)=([^\s]+)',line))
         if fields.get('JOB')=='PS-261003-0417' and 'PAYLOAD' in fields:
             packets[(fields.get('CLASS'),fields.get('ATTEMPT'))]=bytes.fromhex(fields['PAYLOAD'])
     if len(packets)!=4: raise SystemExit(f'expected 4 PS-0417 payloads, got {len(packets)}')
