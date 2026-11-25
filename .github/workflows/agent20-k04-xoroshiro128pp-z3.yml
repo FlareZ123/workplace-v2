@@ -1,21 +1,43 @@
-name: Agent20 K04 xoroshiro128++ Z3 full-domain solve
+name: Agent50 K04 same-job first-pair xoroshiro128++ Z3
 
 on:
   workflow_dispatch:
-    inputs:
-      timeout_ms:
-        description: "Z3 timeout per source view (milliseconds)"
-        required: true
-        default: "300000"
 
 permissions:
   contents: read
 
 jobs:
-  solve:
-    name: "Z3 source view ${{ matrix.view }}"
+  control:
+    name: Unseeded planted positive control
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned Z3
+        run: python -m pip install --disable-pip-version-check z3-solver==4.15.4.0
+      - name: Run unseeded planted first-pair control
+        run: |
+          set -o pipefail
+          python agents/agent1/k04_xoroshiro128pp_z3_sft.py \
+            --view 0 --timeout-seconds 300 --max-middle-models 8 --synthetic-only \
+            | tee k04-first-pair-control.jsonl
+      - name: Upload redacted control disposition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k04-first-pair-unseeded-control
+          path: k04-first-pair-control.jsonl
+          if-no-files-found: warn
+          retention-days: 7
+
+  source:
+    name: Blind source byte view ${{ matrix.view }}
+    needs: control
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
     strategy:
       fail-fast: false
       matrix:
@@ -25,19 +47,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install Z3
-        run: python -m pip install --disable-pip-version-check z3-solver
-      - name: Run synthetic control and full-domain source solve
-        run: >-
-          python agents/agent20/k04_xoroshiro128pp_z3_sft.py
-          --view "${{ matrix.view }}"
-          --timeout-ms "${{ inputs.timeout_ms }}"
-          --control-timeout-ms 120000
-          --result-path "k04-xoroshiro128pp-z3-view-${{ matrix.view }}.json"
-      - name: Upload exact solver disposition
+      - name: Install pinned Z3
+        run: python -m pip install --disable-pip-version-check z3-solver==4.15.4.0
+      - name: Run source first-pair constructor after control gate
+        run: |
+          set -o pipefail
+          python agents/agent1/k04_xoroshiro128pp_z3_sft.py \
+            --view "${{ matrix.view }}" --timeout-seconds 300 --max-middle-models 8 --source-only \
+            | tee "k04-first-pair-view-${{ matrix.view }}.jsonl"
+      - name: Upload redacted source disposition
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: "k04-xoroshiro128pp-z3-view-${{ matrix.view }}"
-          path: "k04-xoroshiro128pp-z3-view-${{ matrix.view }}.json"
+          name: "k04-first-pair-source-view-${{ matrix.view }}"
+          path: "k04-first-pair-view-${{ matrix.view }}.jsonl"
           if-no-files-found: warn
+          retention-days: 7

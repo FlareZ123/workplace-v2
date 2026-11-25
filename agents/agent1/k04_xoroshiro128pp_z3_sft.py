@@ -25,8 +25,34 @@ MASK = (1 << 64) - 1
 SOURCE_SHA = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 SEED = (0x5D1DE1A5CAFEBEEF, 0x17A5B3CB69A1CBCA)
 MAX_MIDDLE_MODELS = 8
-MAX_TOTAL_SOLVE_SECONDS = 600
+MAX_TOTAL_SOLVE_SECONDS = 300
 ROOT = Path(__file__).resolve().parents[2] / "resources"
+
+# Public CI output must never contain a raw 128-bit candidate, 64-bit state
+# word, component, or other reversible recovery value.
+PUBLIC_FORBIDDEN_KEYS = {
+    "sum_state0", "initial_state", "middle_words", "predicted_middle_words",
+    "predicted_later_words", "predicted_coupon_hex", "predicted_component_hex",
+    "coupon_hex", "component_hex", "state_hex", "generated_hex", "middle_hex",
+    "observed_flank_words", "component_sha256", "target_sha256",
+}
+
+def assert_public_safe(value):
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key in PUBLIC_FORBIDDEN_KEYS:
+                raise AssertionError(f"unsafe public output field: {key}")
+            assert_public_safe(item)
+    elif isinstance(value, (list, tuple)):
+        for item in value:
+            assert_public_safe(item)
+    elif isinstance(value, str) and re.fullmatch(r"(?:[0-9A-Fa-f]{16}|[0-9A-Fa-f]{32})", value):
+        raise AssertionError("unsafe raw 64/128-bit value in public output")
+
+def emit_public_result(value):
+    assert_public_safe(value)
+    print(json.dumps(value, sort_keys=True), flush=True)
+
 
 
 def rol(x, n):
@@ -100,12 +126,12 @@ def self_test():
         assert simplify(symbolic_y1).as_long() == y1
         assert [simplify(x).as_long() for x in symbolic_middle] == stream(state)[2:4]
         assert [simplify(x).as_long() for x in symbolic_holdout] == stream(state)[4:6]
-    print(json.dumps({
+    emit_public_result({
         "self_test": "PASS",
         "algebraic_unknown_bits": 64,
         "randomized_inverse_cases": len(tests),
         "first_output_exactly_eliminated": True,
-    }, sort_keys=True), flush=True)
+    })
 
 
 def _remaining(deadline, per_check):
@@ -204,20 +230,19 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
         symbolic_middle = tuple(model.eval(expr).as_long() for expr in middle_exprs)
         assert middle == symbolic_middle
         coupon = encode(middle, view)
+        # Keep the complete candidate internal. Public output carries only
+        # model indices and commitment/holdout booleans.
         record = {
             "model_index": index,
-            "sum_state0": f"{p_value:016X}",
-            "initial_state": [f"{a0:016X}", f"{b0:016X}"],
-            "middle_words": [f"{x:016X}" for x in middle],
-            "predicted_coupon_hex": coupon.hex().upper(),
+            "complete_middle_constructed": True,
         }
         hit = False
         if check_candidate:
             component = bytes(x ^ y for x, y in zip(coupon, mask))
             hit = hashlib.sha256(component).hexdigest() == target_sha
             record.update({
-                "predicted_component_hex": component.hex().upper(),
                 "K04_original_PASS": hit,
+                "component_commitment_status": "PASS" if hit else "MISS",
             })
         if expected_middle is not None:
             record["middle_matches_planted_control"] = middle == tuple(expected_middle)
@@ -292,15 +317,11 @@ def solve_first_pair(first, holdout, ack2_payload, view, timeout_seconds,
     first_holdout = tuple(first_replay[4:6])
     result.update({
         "status": "SAT",
-        "initial_state": [f"{x:016X}" for x in first_state],
-        "sum_state0": first_record["sum_state0"],
-        "predicted_middle_words": first_record["middle_words"],
-        "predicted_later_words": [f"{x:016X}" for x in first_holdout],
+        "first_model_middle_constructed": True,
         "holdout_matches_full_18_03_packet": first_holdout == tuple(holdout),
         "holdout_model_index": 0,
         "holdout_is_blind": True,
-        "predicted_coupon_hex": first_record["predicted_coupon_hex"],
-        "predicted_middle_matches_withheld_ACK2": bytes.fromhex(first_record["predicted_coupon_hex"]) == ack2_payload,
+        "predicted_middle_matches_withheld_ACK2": encode(first_replay[2:4], view) == ack2_payload,
         "uniqueness_status": uniqueness_status or "UNKNOWN",
         "middle_unique": uniqueness_status == "UNSAT",
         "elapsed_seconds": round(time.monotonic() - started, 3),
@@ -366,18 +387,18 @@ def main():
             "unseeded SAT plus planted middle recovered within explicit distinct-middle cap; "
             "first-model holdout and uniqueness are separate diagnostics"
         )
-        print(json.dumps(synthetic, sort_keys=True), flush=True)
+        emit_public_result(synthetic)
         if args.synthetic_only:
             if not control_pass:
                 raise SystemExit(2)
             return
         if not control_pass:
-            print(json.dumps({
+            emit_public_result({
                 "experiment": "original_first_pair_only",
                 "status": "NOT_RUN",
                 "coupon_status": "WITHHELD_CONTROL_FAILED",
                 "reason": "unseeded planted middle was not recovered within the explicit model cap",
-            }, sort_keys=True), flush=True)
+            })
             raise SystemExit(2)
 
     if args.synthetic_only:
@@ -394,7 +415,7 @@ def main():
         "positive-control workflow dependency passed" if args.source_only
         else "unseeded planted control passed in this process"
     )
-    print(json.dumps(original, sort_keys=True), flush=True)
+    emit_public_result(original)
 
 
 if __name__ == "__main__":
