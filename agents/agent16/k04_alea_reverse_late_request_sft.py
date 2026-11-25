@@ -130,30 +130,33 @@ def read_sources(root: Path):
 def synthetic_positive_control():
     initial = [0x10203040, 0x50607080, 0x90A0B0C0]
     initial_carry = 123456
-    stream, _ = forward(initial, initial_carry, 8)
-    previous = stream[:4]
-    current = stream[4:8]
-    reversed_packet = reverse_previous_packet(tuple(current))
-    assert reversed_packet is not None and reversed_packet[0] == previous
+    stream, _ = forward(initial, initial_carry, 9)
+    first_packet = stream[:4]
+    second_packet = stream[4:8]
+    third_packet = stream[8:12]
+
+    reversed_once = reverse_previous_packet(tuple(third_packet))
+    assert reversed_once is not None and reversed_once[0] == second_packet
+    reversed_twice = reverse_previous_packet(tuple(reversed_once[0]))
+    assert reversed_twice is not None and reversed_twice[0] == first_packet
 
     synthetic_mask = bytes(range(16))
     target = hashlib.sha256(
         bytes(
             a ^ b
             for a, b in zip(
-                b"".join(word.to_bytes(4, "little") for word in previous),
+                b"".join(word.to_bytes(4, "little") for word in first_packet),
                 synthetic_mask,
             )
         )
     ).hexdigest()
     recovered_payload = b"".join(
-        word.to_bytes(4, "little") for word in reversed_packet[0]
+        word.to_bytes(4, "little") for word in reversed_twice[0]
     )
     recovered_component = bytes(
         a ^ b for a, b in zip(recovered_payload, synthetic_mask)
     )
     assert hashlib.sha256(recovered_component).hexdigest() == target
-
 
 def main():
     root_value = os.environ.get("H17_SOURCE_ROOT")
@@ -161,30 +164,47 @@ def main():
     synthetic_positive_control()
     late_packet, mask, commitment = read_sources(root)
 
-    valid_views = 0
-    prior_packets = set()
-    commitment_hits = 0
+    one_back_views = 0
+    one_back_packets = set()
+    one_back_hits = 0
+    two_back_views = 0
+    two_back_packets = set()
+    two_back_hits = 0
     for order, flip, words in late_request_views(late_packet):
-        result = reverse_previous_packet(words)
-        if result is None:
+        first = reverse_previous_packet(words)
+        if first is None:
             continue
-        valid_views += 1
-        previous_words, _ = result
-        previous_packet = serialize(previous_words, order, flip)
-        assert len(previous_packet) == 16
-        prior_packets.add(previous_packet)
-        component = bytes(a ^ b for a, b in zip(previous_packet, mask))
-        if hashlib.sha256(component).hexdigest() == commitment:
-            commitment_hits += 1
+        one_back_views += 1
+        one_back_packet = serialize(first[0], order, flip)
+        assert len(one_back_packet) == 16
+        one_back_packets.add(one_back_packet)
+        one_component = bytes(a ^ b for a, b in zip(one_back_packet, mask))
+        if hashlib.sha256(one_component).hexdigest() == commitment:
+            one_back_hits += 1
 
-    assert valid_views == 8, valid_views
-    assert len(prior_packets) == 8, len(prior_packets)
-    assert commitment_hits == 0, commitment_hits
+        # One additional inverse step is the specific missing-attempt-2
+        # alternative: REQUESTED2 body followed by a separate ACK2 event.
+        second = reverse_previous_packet(tuple(first[0]))
+        if second is None:
+            continue
+        two_back_views += 1
+        two_back_packet = serialize(second[0], order, flip)
+        assert len(two_back_packet) == 16
+        two_back_packets.add(two_back_packet)
+        two_component = bytes(a ^ b for a, b in zip(two_back_packet, mask))
+        if hashlib.sha256(two_component).hexdigest() == commitment:
+            two_back_hits += 1
+
+    assert one_back_views == 8, one_back_views
+    assert len(one_back_packets) == 8, len(one_back_packets)
+    assert one_back_hits == 0, one_back_hits
+    assert two_back_views == 8, two_back_views
+    assert len(two_back_packets) == 8, len(two_back_packets)
+    assert two_back_hits == 0, two_back_hits
     print("synthetic_reverse_and_commitment_control=PASS")
     print("late_REQUESTED3_serializer_views=384")
-    print("Alea_MWC3_valid_views=8")
-    print("distinct_previous_full_packet_candidates=8")
-    print("original_K04_commitment_hits=0")
+    print("one_packet_back_valid_views=8 distinct_packets=8 K04_hits=0")
+    print("two_packets_back_valid_views=8 distinct_packets=8 K04_hits=0")
     print("selected_ACK2_payload_decoded=False")
     print("historical_Alea_producer_or_ACK2_binding=NOT_ESTABLISHED")
 
