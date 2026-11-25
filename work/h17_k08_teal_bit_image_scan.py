@@ -31,6 +31,7 @@ from typing import Iterator
 WORK = Path(__file__).resolve().parent
 if str(WORK) not in sys.path:
     sys.path.insert(0, str(WORK))
+from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 from h17_redaction import redact_sensitive
 
 import numpy as np
@@ -224,6 +225,8 @@ def validate_n14_source_manifest(image_path: Path, manifest_path: Path) -> dict:
         raise ValueError("source manifest image_path does not identify the supplied image")
 
     actual_sha256 = hashlib.sha256(image_path.read_bytes()).hexdigest()
+    if actual_sha256 == OPAQUE_PDF_SHA256:
+        raise ValueError("hash-pinned BX25-08 PDF is hash-only and cannot be used as an image witness")
     if str(manifest["image_sha256"]).lower() != actual_sha256:
         raise ValueError("source manifest image_sha256 does not match the original image bytes")
     if not isinstance(manifest["evidence_ref"], str) or not manifest["evidence_ref"].strip():
