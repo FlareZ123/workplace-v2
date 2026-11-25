@@ -13,7 +13,12 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 import hashlib
+import sys
+from pathlib import Path
 
+WORK = Path(__file__).resolve().parent
+if str(WORK) not in sys.path:
+    sys.path.insert(0, str(WORK))
 from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 
 _MAX_PAGES = 24
