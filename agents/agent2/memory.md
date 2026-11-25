@@ -1147,3 +1147,10 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Redacted the witness-intake CLI output and error path with `h17_redaction.redact_sensitive`; also redacted the standalone teal-image scan CLI output/error and the K04 mug-stock probe's exception output. The joint/native intake wrappers already used redaction.
 - Added regression tests for hash-only rejection in every witness position, no witness-content read after a pinned-hash match, and redaction of component/caption material. Extended the existing manual regression workflow with the tests and its numpy/Pillow dependencies. Final run `45592099064` completed successfully; the new image-redaction test and the two PDF-guard tests passed, along with the existing 26+4+2 tests.
 - This is an intake-safety improvement only; it does not recover K04/K08. Do not treat it as evidence for either component. Continue to require original PS-0417 native spool/coupon evidence and Emily's final envelope/margin/photo-caption witness.
+
+
+## 2026-11-25 continuation — complete hash-only PDF boundary
+
+- Closed the remaining direct-parser bypass: `work/h17_k08_teal_bit_image_scan.py` rejects the exact hash-pinned BX25-08 PDF after SHA-256 and before any image decoder; all three low-level iterators in `work/h17_k04_pdf_barcode_intake.py` return before importing PyMuPDF when given those exact bytes. The normal AX-7782 and binary-window wrappers already skipped the pinned hash.
+- Added synthetic tests using a patched digest (no PDF bytes/content were opened) to prove a renamed image cannot bypass the image guard and the PDF iterators do not import the parser. Regression run `45592627507` passed: 26 + 4 + 2 + 3 tests.
+- Broadcast the safety update at `communications/broadcast/20261125T101242Z_agent2_intake-safety.md`. This is defensive intake work only, not K04/K08 evidence. Preserve the hash-only prohibition.
