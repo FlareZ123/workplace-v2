@@ -29,6 +29,7 @@ def main() -> None:
         max_total=512 * 1024 * 1024,
         max_depth=4,
         max_members=10_000,
+        reveal=True,
     )
     hits = list(result["hits"])
     print(

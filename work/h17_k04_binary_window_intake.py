@@ -26,7 +26,7 @@ import tarfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
-from h17_redaction import redact_sensitive
+from h17_redaction import redact_by_default, redact_sensitive
 
 from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
 from h17_k04_image_barcode_intake import read_image_barcodes
@@ -463,6 +463,7 @@ def walk_files(root: Path):
                 yield path
 
 
+@redact_by_default
 def run_scan(root: Path, target_hex: str, mask_hex: str, stride: int,
              max_member: int, max_total: int, max_depth: int, max_members: int):
     target_digest = bytes.fromhex(target_hex)
