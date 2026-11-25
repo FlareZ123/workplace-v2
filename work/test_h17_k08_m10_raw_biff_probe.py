@@ -11,11 +11,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_biff_officeart
 
 from h17_k08_m10_raw_biff_probe import (
-    EXPECTED_N02_HMAC16, component, decode_xl_unicode, extract_cell, extract_m10,
+    EXPECTED_SYNTHETIC_HMAC16, component, decode_xl_unicode, extract_cell, extract_m10,
     inspect_workbook, normalize, parse_a1_address, parse_workbook_stream,
 )
 
-NONCE = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+NONCE = bytes(range(16))
 PHRASE = "The sea is quiet and the mugs are waiting by the window."
 
 
@@ -90,7 +90,7 @@ def multi_workbook_stream(sheet_specs, global_extras=()):
 class RawM10BiffTests(unittest.TestCase):
     def test_normalization_control(self):
         phrase = "A good watch leaves the room ready for the next pair of hands"
-        self.assertEqual(component(NONCE, phrase).hex().upper(), EXPECTED_N02_HMAC16)
+        self.assertEqual(component(NONCE, phrase).hex().upper(), EXPECTED_SYNTHETIC_HMAC16)
         self.assertEqual(normalize("  A-GOOD, watch!\nLEAVES "), "a good watch leaves")
 
     def test_literal_label_is_read_from_original_record(self):

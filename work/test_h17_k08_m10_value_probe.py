@@ -2,10 +2,10 @@ import hashlib
 import unittest
 
 from h17_k08_m10_value_probe import (
-    EXPECTED_N02_HMAC16, evaluate_m10_values, k08_component, normalize,
+    EXPECTED_SYNTHETIC_HMAC16, evaluate_m10_values, k08_component, normalize,
 )
 
-NONCE = bytes.fromhex("5F933DA6A1BD03C32DA5CBC25344F497")
+NONCE = bytes(range(16))
 PHRASE = "The sea is quiet and the mugs are waiting by the window."
 
 
@@ -16,7 +16,7 @@ def target_for(phrase):
 class M10ValueProbeTests(unittest.TestCase):
     def test_route_normalization_known_answer(self):
         phrase = "A good watch leaves the room ready for the next pair of hands"
-        self.assertEqual(k08_component(NONCE, phrase).hex().upper(), EXPECTED_N02_HMAC16)
+        self.assertEqual(k08_component(NONCE, phrase).hex().upper(), EXPECTED_SYNTHETIC_HMAC16)
         self.assertEqual(normalize("  A-GOOD, watch!\nLEAVES "), "a good watch leaves")
 
     def test_literal_m10_value_hits_only_exact_cell(self):
