@@ -233,7 +233,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
     kind = magic(data)
     # OLE/CFB has no member walker here. Scan its original bytes directly so
     # a complete coupon inside a native Workbook/Book/SHD stream is observable.
-    container = kind in {"zip", "tar", "gzip"}
+    container = kind in {"zip", "tar", "gzip"} or name.casefold().endswith((".eml", ".msg"))
     result = {"name": name, "size": len(data), "sha256": sha256, "magic": kind}
     budget[2] += 1
     if budget[2] > budget[3]:
@@ -281,7 +281,7 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                 hit["encoding"] = f"image-{symbol}-{hit['encoding']}"
                 result["hits"].append(hit)
 
-    if not container and kind == "ole-compound" and name.casefold().endswith(".msg"):
+    if kind == "ole-compound" and name.casefold().endswith(".msg"):
         from h17_ax7782_k08_phrase_intake import iter_text_streams
         errors: list[dict] = []
         text_budget = [0]

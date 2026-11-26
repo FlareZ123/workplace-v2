@@ -312,17 +312,23 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
     if budget[0] + len(data) > intake.MAX_TOTAL or len(data) > intake.MAX_MEMBER:
         return
     budget[0] += len(data)
-    if depth > intake.MAX_DEPTH:
-        yield name, data
-        return
-    # Extract structured XMP caption fields before generic text/OCR handling.
-    for label, text in iter_xmp_caption_units(name, data):
-        yield f"{name}!/{label}", text.encode("utf-8", "replace")
-    for label, text in iter_iptc_caption_units(name, data):
-        yield f"{name}!/{label}", text.encode("utf-8", "replace")
-    for label, text in iter_exif_caption_units(name, data):
-        yield f"{name}!/{label}", text.encode("utf-8", "replace")
     kind = intake.magic(data)
+    is_container = kind in {"zip", "tar", "gzip", "ole-compound"} or name.casefold().endswith(".eml")
+    if depth > intake.MAX_DEPTH:
+        if is_container:
+            errors.append({"source": name, "status": "container_depth_limit_raw_suppressed"})
+        else:
+            yield name, data
+        return
+    # Container bytes can include a quarantined nested PDF. Inspect only
+    # their named members/structured text, never their raw compressed carrier.
+    if not is_container:
+        for label, text in iter_xmp_caption_units(name, data):
+            yield f"{name}!/{label}", text.encode("utf-8", "replace")
+        for label, text in iter_iptc_caption_units(name, data):
+            yield f"{name}!/{label}", text.encode("utf-8", "replace")
+        for label, text in iter_exif_caption_units(name, data):
+            yield f"{name}!/{label}", text.encode("utf-8", "replace")
     if kind == "zip":
         for label, authored in iter_ooxml_text_units(data):
             yield f"{name}!/{label}", authored
@@ -375,6 +381,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 })
         content_yielded = False
         unreadable_member = False
+        opaque_member_seen = False
         try:
             with zipfile.ZipFile(io.BytesIO(data)) as archive:
                 if archive.comment:
@@ -382,6 +389,8 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 for item in archive.infolist():
                     path = PurePosixPath(item.filename)
                     if intake.is_opaque_pdf_name(item.filename):
+                        opaque_member_seen = True
+                        content_yielded = True
                         errors.append({
                             "source": f"{name}!/{item.filename}",
                             "status": "skipped_opaque_pdf_by_name",
@@ -408,15 +417,18 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         except (zipfile.BadZipFile, OSError, RuntimeError) as exc:
             errors.append({"source": name, "error": str(exc)})
             unreadable_member = True
-        if not content_yielded or unreadable_member:
+        if (not content_yielded or unreadable_member) and not opaque_member_seen:
             yield name, data
     elif kind == "tar":
         yielded = False
+        opaque_member_seen = False
         try:
             with tarfile.open(fileobj=io.BytesIO(data), mode="r:*") as archive:
                 for item in archive.getmembers():
                     path = PurePosixPath(item.name)
                     if intake.is_opaque_pdf_name(item.name):
+                        opaque_member_seen = True
+                        yielded = True
                         errors.append({
                             "source": f"{name}!/{item.name}",
                             "status": "skipped_opaque_pdf_by_name",
@@ -437,7 +449,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                         yield from iter_text_streams(f"{name}!/{item.name}", stream.read(intake.MAX_MEMBER + 1), depth + 1, budget, errors, ocr, pdf_password, style_metadata)
         except (tarfile.TarError, OSError, EOFError) as exc:
             errors.append({"source": name, "error": str(exc)})
-        if not yielded:
+        if not yielded and not opaque_member_seen:
             yield name, data
     elif kind == "gzip":
         # The gzip header can carry an original filename/comment. The first
@@ -466,6 +478,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     continue
                 filename = part.get_filename() or f"part-{index}"
                 if intake.is_opaque_pdf_name(filename):
+                    yielded = True
                     errors.append({
                         "source": f"{name}!/{filename}",
                         "status": "skipped_opaque_pdf_by_name",

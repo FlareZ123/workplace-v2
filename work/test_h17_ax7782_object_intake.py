@@ -74,7 +74,7 @@ class IntakeTests(unittest.TestCase):
                 "bundle.zip", payload.getvalue(), 0, [0, 1024 * 1024, 0, 10],
                 bytes(32), bytes(16), 1, 1024 * 1024, 2,
             )
-        self.assertEqual(result["children"][0]["status"], "skipped_opaque_pdf_by_name")
+        self.assertEqual(result["members"][0]["status"], "skipped_opaque_pdf_by_name")
 
     def test_container_does_not_raw_scan_opaque_pdf_member(self):
         path = REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
