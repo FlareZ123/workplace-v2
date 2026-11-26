@@ -1,5 +1,6 @@
 """Read-only raster extraction of QR/barcode image carriers from native PDF coupons.
 
+Temporarily quarantined: public entry points deny access before hashing or parsing.
 This is not OCR. Existing image and QR decoders inspect original embedded
 raster images and the preserved PDF page rendering. Do not decrypt protected
 PDFs, infer missing words, or accept a symbol without the original K04
@@ -34,6 +35,9 @@ def _is_hash_only_pdf(data: bytes) -> bool:
 
 def iter_pdf_embedded_files(data: bytes) -> Iterator[tuple[str, bytes]]:
     """Extract actual PDF portfolio /EmbeddedFiles attachments, read-only."""
+    # No independently authenticated PDF or derivative is admitted at present.
+    # Fail before hashing, importing a parser, or opening an in-memory document.
+    raise PermissionError("PDF intake quarantined pending independent source authorization")
     if _is_hash_only_pdf(data):
         return
     try:
@@ -79,6 +83,9 @@ def iter_pdf_coupon_text(data: bytes) -> Iterator[tuple[str, bytes]]:
     or punctuation separators to support multi-run hexadecimal labels.
     The original 16-byte hash determines acceptance, not a text guess.
     """
+    # No independently authenticated PDF or derivative is admitted at present.
+    # Fail before hashing, importing a parser, or opening an in-memory document.
+    raise PermissionError("PDF intake quarantined pending independent source authorization")
     if _is_hash_only_pdf(data):
         return
     try:
@@ -124,6 +131,9 @@ def iter_pdf_barcode_images(data: bytes) -> Iterator[tuple[str, bytes]]:
     An encrypted PDF produces no images. Any missing optional backend is
     visible as the absence of outputs; the caller owns coverage diagnostics.
     """
+    # No independently authenticated PDF or derivative is admitted at present.
+    # Fail before hashing, importing a parser, or opening an in-memory document.
+    raise PermissionError("PDF intake quarantined pending independent source authorization")
     if _is_hash_only_pdf(data):
         return
     try:

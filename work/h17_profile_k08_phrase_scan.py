@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Exact K08 phrase scanner for an authorized, read-only H-17 profile inventory.
 
+Temporarily quarantined: the CLI and scan API deny access before reading an
+inventory or source. The CLI self-test checks denial only.
+
 The profile inventory is produced by work/h17_profile_inventory.py. This
 scanner consumes only hashed, K04/K08-relevant inventory entries, verifies
 each file's SHA-256 before reading it, and searches decoded text, Office/PDF
@@ -291,6 +294,9 @@ def scan_inventory(
     ocr: bool = False,
     include_eml_msg: bool = False,
 ) -> dict[str, Any]:
+    # A matching inventory digest establishes integrity, not independent origin.
+    # Until a reviewed provenance gate exists, no profile content may be read.
+    raise PermissionError("Profile intake quarantined pending independent source authorization")
     inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
     if inventory.get("schema") != "h17-profile-inventory/v1":
         raise ValueError("unsupported profile inventory schema")
@@ -562,6 +568,15 @@ def scan_inventory(
 
 
 def self_test() -> dict[str, Any]:
+    """Verify the temporary no-read gate without opening an inventory."""
+    try:
+        scan_inventory(Path("synthetic-inventory-must-not-be-opened"), b"", b"")
+    except PermissionError:
+        return {"ok": True, "scope": "quarantine-denial-only", "source_opened": False}
+    raise AssertionError("profile quarantine gate did not deny access")
+
+
+def _legacy_self_test() -> dict[str, Any]:
     import tempfile
 
     test_nonce = bytes.fromhex("00112233445566778899AABBCCDDEEFF")
@@ -642,6 +657,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     if args.self_test:
         print(json.dumps(self_test(), indent=2, sort_keys=True))
         return 0
+    parser.error("Profile intake quarantined pending independent source authorization")
     if args.inventory is None or args.resources is None:
         parser.error("--inventory and --resources are required unless --self-test is used")
     if args.max_phrase_words < 1 or args.max_file_bytes < 1 or args.max_total_bytes < 1:

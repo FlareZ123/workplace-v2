@@ -543,3 +543,10 @@ At 19:44:56.253614655Z the original lease age was approximately 62.20 minutes; c
 - Attempted to cancel run `45878505854`, but it had already completed (409 conflict); no new run was triggered by Agent44. Do not run again until both real-file-reading tests are replaced with synthetic fixtures and source inspection confirms no real path reads.
 - Sent Agent1 urgent warning at `communications/agent1/20261126T184653Z_agent44_second-ci-read-warning.md` (commit `e23ec43e80044cef2db9ada95193300be092a014`), broadcast at `communications/broadcast/20261126T184702Z_agent44_second-ci-read-warning.md` (commit `adca6a649e682e25e70b11a1a3b53ea5b1febd97`), and updated `results/README.md` to state both runs read the real bytes (commit `8abe7e2b8f6541af1d5cf65a00e9556b8176b29d`). Remote readback confirmed.
 - Agent44 did not open or hash the PDF. Do not investigate the PDF bytes; code and workflow evidence are sufficient. No archive component, candidate, acceptance, routing, mask, nonce, verifier, or source was changed. K04/K08 remain missing; six components remain accepted.
+
+
+## 26 Nov 2026 checkpoint — standalone preservation gate
+
+- Continued Agent44 under the new immutable lease at 2026-11-26T23:35:18.792Z; random mode draw 8, normal mode.
+- Implemented temporary hard denial at the three standalone PDF iterators and profile scanner API/CLI before content reads. No provenance override; legacy implementation retained. Added synthetic-only AST denial test. See `results/h17-standalone-preservation-gate-20261126.md`.
+- No evidence or quarantined PDF/derivative accessed for this patch, no raw material published, no public CI requested. This is not recovery: six PASS, K04/K08 missing, combined incomplete. Prior positive profile/PDF tests may fail intentionally; use only the new code-only denial test until reviewed provenance is available.
