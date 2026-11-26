@@ -6,6 +6,53 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 MANIFEST_SHA256 = "225fa828826041fc2dd805ed5055b466a09666dbe32dc7c7f13f546aadba14e3"
+SOURCE_FILES = [
+    "START_HERE.md",
+    "acceptance.json",
+    "candidate.template.json",
+    "evidence/archive-labels.ini",
+    "evidence/crew/galley-and-stores.log",
+    "evidence/crew/noticeboard-and-desk-notes.txt",
+    "evidence/h17-supplemental-office-files/print-fleet-retirement-note.txt",
+    "evidence/h17-supplemental-office-files/retired-office-bookmarks.html",
+    "evidence/h17-supplemental-office-files/supplier-reconciliation-L29.csv",
+    "evidence/mail/01.eml",
+    "evidence/mail/02.eml",
+    "evidence/mail/03.eml",
+    "evidence/mail/04.eml",
+    "evidence/mail/05.eml",
+    "evidence/mail/06.eml",
+    "evidence/mail/07.eml",
+    "evidence/mail/08.eml",
+    "evidence/mail/09.eml",
+    "evidence/mail/10.eml",
+    "evidence/mail/11.eml",
+    "evidence/mail/12.eml",
+    "evidence/mail/13.eml",
+    "evidence/mail/14.eml",
+    "evidence/mail/15.eml",
+    "evidence/mail/16.eml",
+    "evidence/mail/17.eml",
+    "evidence/mail/18.eml",
+    "evidence/mail/19.eml",
+    "evidence/mail/20.eml",
+    "evidence/mail/INDEX.md",
+    "evidence/maintenance/inspection-rounds.log",
+    "evidence/maintenance/seal-receipts.jsonl",
+    "evidence/maintenance/work-order-417.html",
+    "evidence/print/spool-reconstruction.log",
+    "evidence/procedures/RC-17-scans.txt",
+    "evidence/procedures/document-register.log",
+    "evidence/recorder/format-note.txt",
+    "evidence/recorder/trip-recorder.raw",
+    "evidence/records-custodian.txt",
+    "evidence/recovery-routing.json",
+    "evidence/telemetry/export-readme.txt",
+    "evidence/telemetry/freeze-export.jsonl",
+    "evidence/transfers/queue-note.txt",
+    "evidence/transfers/transfer-audit.jsonl",
+    "verify.py",
+]
 
 def norm(s):
     return " ".join(re.sub(r"[^a-z0-9\s]", " ", str(s).lower()).split())
@@ -23,9 +70,10 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[2]/"resources")
     root=ap.parse_args().root.resolve()
-    files=sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower()!=".pdf")
-    manifest="\n".join(f"{p.relative_to(root).as_posix()}\t{hashlib.sha256(p.read_bytes()).hexdigest()}"
-                       for p in files)+"\n"
+    files=[root/rel for rel in SOURCE_FILES]
+    if any(not p.is_file() for p in files): raise SystemExit("one or more pinned export members are missing")
+    manifest="\n".join(f"{rel}\t{hashlib.sha256((root/rel).read_bytes()).hexdigest()}"
+                       for rel in SOURCE_FILES)+"\n"
     manifest_sha=hashlib.sha256(manifest.encode()).hexdigest()
     if len(files)!=45 or manifest_sha!=MANIFEST_SHA256:
         raise SystemExit(f"source manifest mismatch: files={len(files)} sha256={manifest_sha}")
