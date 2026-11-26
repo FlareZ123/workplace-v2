@@ -54,3 +54,16 @@ To close the previously unstated 1–4-word gap for this specific book candidate
 The earlier 5–60-word scan (run 43747967863) used the same Litres URL and the same normalized word count (94,825), but its raw HTML SHA-256 was `e6ed0882db88399c19b0c55c9e644617aed353cdd2407f90adfce3c4d45d9362`. The raw HTML hashes differ; this may reflect page-level dynamic markup, but no normalized-text digest was retained by the earlier run, so identical visible text is not independently established. Thus the two ranges have both been tested against the same named edition and full-text word count, but should not be represented as one byte-identical source snapshot.
 
 This remains only a negative for **verbatim contiguous spans in the externally served 2022 text**. It does not test Emily's handwritten margin, an altered/adapted phrase, the physical 1949 copy, or a missing photograph/caption/workbook source. No K08 component was recovered.
+
+
+## Agent50 follow-up — complete 1–60-word scan on one source snapshot
+
+A second Litres dispatch that initially did not appear in the run list subsequently completed successfully:
+
+- Run: [45844536844](https://github.com/FlareZ123/workplace-v2/actions/runs/45844536844), job 139994682671.
+- Source: the same Litres full-text URL; 94,825 normalized words; full-text terminus guard passed.
+- Raw HTML SHA-256: `30e028fe927ec88254478c34e9715d16f28bac2f1b963c719c5cb17eef414834`.
+- Range: **1–60 words**; complete windows tested: **5,687,730**; K08 commitment hits: **0**.
+- No phrase or component bytes were emitted; the compact result is in the Actions log/artifact.
+
+This single run supersedes the earlier split-range coverage note and closes the exact contiguous-span hypothesis for the current served Litres text snapshot across all tested lengths 1–60. It does not test an adapted phrase, Emily's handwritten margin, or the physical book's private annotations. No K08 component was recovered.
