@@ -57,7 +57,7 @@ def test():
     opaque_pdf = b"%PDF-1.7 synthetic hash-only fixture"
     opaque_sha = hashlib.sha256(opaque_pdf).hexdigest()
     target_digest = bytes.fromhex(k04.DEFAULT_TARGET)
-    with patch.object(k04.intake, "is_opaque_pdf_hash", return_value=True), \
+    with patch.object(k04.intake, "OPAQUE_PDF_SHA256", opaque_sha), \
          patch.object(k04, "magic", side_effect=AssertionError("opaque PDF reached magic")), \
          patch.object(k04, "scan_bytes", side_effect=AssertionError("opaque PDF reached raw-window scan")):
         opaque_result = k04.scan_member(
@@ -74,7 +74,7 @@ def test():
     bundle = io.BytesIO()
     with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_STORED) as archive:
         archive.writestr("BX25-08.pdf", opaque_pdf)
-    with patch.object(k04.intake, "is_opaque_pdf_hash", side_effect=lambda digest: digest == opaque_sha), \
+    with patch.object(k04.intake, "OPAQUE_PDF_SHA256", opaque_sha), \
          patch.object(k04, "scan_bytes", side_effect=AssertionError("container raw scan could inspect opaque member")):
         bundle_result = k04.scan_member(
             "bundle.zip", bundle.getvalue(), 0,
