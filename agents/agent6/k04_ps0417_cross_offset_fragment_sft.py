@@ -16,9 +16,9 @@ import tempfile
 from pathlib import Path
 
 ROW_RE = re.compile(
-    r"^\\S+ JOB=(?P<job>\\S+) ATTEMPT=(?P<attempt>\\d+) "
-    r"STATE=(?P<state>\\S+) CLASS=(?P<class>\\S+) "
-    r"PAYLOAD=(?P<payload>[0-9A-F]{32}) DEST=(?P<dest>\\S+)$"
+    r"^\S+ JOB=(?P<job>\S+) ATTEMPT=(?P<attempt>\d+) "
+    r"STATE=(?P<state>\S+) CLASS=(?P<class>\S+) "
+    r"PAYLOAD=(?P<payload>[0-9A-F]{32}) DEST=(?P<dest>\S+)$"
 )
 EXPECTED = [(1, "ACK", "LABEL"), (1, "REQUESTED", "RECOVER"),
             (2, "ACK", "RECOVER"), (3, "REQUESTED", "RECOVER")]
