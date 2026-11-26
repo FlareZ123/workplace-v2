@@ -31,13 +31,14 @@ This is a dimensional/source-structure hypothesis only. No source states that tr
 - The independent K07 parser/ordering check **passed**, confirming the AX-7782 latest-checkpoint vector was parsed in the acceptance-defined order and byte representation.
 - **32** direct checkpoint/retry coupon candidates were tested.
 - **4** bounded PS-0417-ACK2 × AX-7782 cross-source correction candidates were tested.
-- **0 of 36** matched the K04 acceptance commitment.
+- AX-7778 is also marked `COMMIT dry_run=false` for the same object ID, although K07's final receipt selects AX-7782. A separate 32-candidate screen tested AX-7778's latest checkpoint vector and per-chunk operations between AX-7778 and AX-7782 (direct, XOR, both directional modular differences, addition, AND, OR; both endiannesses and forward/reverse chunk order).
+- **0 of 68** candidates across these three bounded families matched the K04 acceptance commitment.
 
 No checkpoint values, mask bytes, candidate bytes, or candidate digests are reproduced here.
 
 ## Interpretation and limits
 
-This rejects only the bounded direct checkpoint, retry-delta, and four explicitly listed cross-source correction constructions. It does not test or imply recovery of the 8 MiB AX-7782 object, and it does not rule out a source-authenticated relationship involving the actual chunk contents or native spool media. The checkpoint fields are two-byte audit values, not a substitute for the underlying 1 MiB chunks.
+This rejects only the bounded direct checkpoint/retry, PS-0417 × AX-7782 correction, and AX-7778/AX-7782 checkpoint-vector constructions. It does not test or imply recovery of the 8 MiB AX-7782 object, and it does not rule out a source-authenticated relationship involving the actual chunk contents or native spool media. The checkpoint fields are two-byte audit values, not a substitute for the underlying 1 MiB chunks.
 
 Do not retry this family with more byte permutations or arbitrary arithmetic. K04 still requires either the native PS-0417 coupon/queue-job record or a genuinely different, source-grounded complete-output construction. Keep the existing K04 mask, acceptance commitment, and verifier unchanged.
 
@@ -125,3 +126,44 @@ print({"K07_parser_check": "PASS", "direct_candidates": tested,
        "direct_matches": matches, "cross_source_candidates": len(cross_donors),
        "cross_source_matches": cross_matches})
 ```
+
+
+## Reproduction of the second committed-transfer control
+
+The following adds the AX-7778 comparison to the reproduction above. It is deliberately limited to the latest attempt-2 checkpoint for each chunk of each transfer; it does not promote AX-7778 over the custodian-selected AX-7782 transfer.
+
+```python
+other = {(r["seq"], r["attempt"]): int(r["checkpoint"], 16)
+         for r in audit if r["kind"] == "CHUNK"
+         and r["transfer"] == "AX-7778"
+         and r["object"] == "IR-261003-H17"}
+assert set(other) == {(seq, attempt) for seq in range(8) for attempt in (1, 2)}
+other_latest = [other[(seq, 2)] for seq in range(8)]
+selected_latest = b  # AX-7782 attempt 2, already validated against K07
+
+cross_ops = {
+    "AX-7778 latest": other_latest,
+    "AX-7782 latest": selected_latest,
+    "xor": [x ^ y for x, y in zip(other_latest, selected_latest)],
+    "AX-7782-minus-AX-7778": [(y - x) & 0xffff for x, y in zip(other_latest, selected_latest)],
+    "AX-7778-minus-AX-7782": [(x - y) & 0xffff for x, y in zip(other_latest, selected_latest)],
+    "add": [(x + y) & 0xffff for x, y in zip(other_latest, selected_latest)],
+    "and": [x & y for x, y in zip(other_latest, selected_latest)],
+    "or": [x | y for x, y in zip(other_latest, selected_latest)],
+}
+cross_tested = 0
+cross_hits = []
+for name, values in cross_ops.items():
+    for endian in ("big", "little"):
+        for reverse in (False, True):
+            coupon = encode(values, endian, reverse)
+            component = bytes(x ^ y for x, y in zip(coupon, mask))
+            cross_tested += 1
+            if hashlib.sha256(component).hexdigest() == target:
+                cross_hits.append((name, endian, reverse))
+assert cross_tested == 32
+print({"AX7778_AX7782_candidates": cross_tested,
+       "AX7778_AX7782_matches": cross_hits})
+```
+
+This is not a claim that the checkpoint fields are chunk checksums or that the two committed transfers contain identical bytes. The shared object ID motivates the bounded comparison; it does not establish a coupon derivation rule.
