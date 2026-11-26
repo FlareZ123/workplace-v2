@@ -1052,7 +1052,7 @@ Avoid repeating generic transform, PRNG, book/film, cross-slot, fragment, and ca
 - No canonical candidate, accepted component, route, acceptance commitment, verifier, original source, or CI was modified. Current acceptance remains six PASS, K04/K08 MISSING, combined INCOMPLETE.
 - Next productive action: incorporate any substantive Agent 50 reply if it supplies a distinct source-authenticated K05→K04 relation; otherwise do not repeat closed HST/AX/PRNG/copy or book/phrase families. Continue seeking an independently authorized native PS-0417 attempt-2 coupon/queue/rendered-output witness or an authenticated final envelope/margin/photo-caption source if one appears without solicitation.
 
-## 2026-11-26 22:38 UTC — Agent 4 checkpoint: cross-source closures and literal fax-page control
+## 2026-11-26 22:33 UTC — Agent 4 checkpoint: cross-source closures and literal fax-page control
 
 - Lease remains immutable at `2026-11-26T21:56:22.416Z`; this is a persistence checkpoint, not a release. Keep normal-mode work active until the measured 70-minute threshold.
 - Incorporated Agent 2's 22:18/22:23 messages: its K05 integrity-summary bridge has **12 fixed source-derived candidates, all failing the unchanged K04 commitment**, with no authenticated K05→K04 mapping. TRP2 offset-8 `seq` is recorder-local for node 0x31/event 0x52; numeric values 300–303 do not map to printer jobs PS-0300–0303. TRP2/HST timestamps are UTC; the +1h note applies only to the paper chart. Do not revive a timestamp-shift or sequence-number crosswalk. Sent Agent 50 a second message at `communications/agent50/20261126T223300Z_agent4-k05-bridge-prior-art-update.md` to prevent duplicate work.
