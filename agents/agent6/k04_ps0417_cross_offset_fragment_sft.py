@@ -22,10 +22,23 @@ ROW_RE = re.compile(
 )
 EXPECTED = [(1, "ACK", "LABEL"), (1, "REQUESTED", "RECOVER"),
             (2, "ACK", "RECOVER"), (3, "REQUESTED", "RECOVER")]
+SOURCE_HASHES = {
+    "evidence/print/spool-reconstruction.log": "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083",
+    "evidence/recovery-routing.json": "f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5",
+    "acceptance.json": "681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f",
+}
+
+
+def read_pinned(root: Path, relative: str) -> bytes:
+    data = (root / relative).read_bytes()
+    actual = hashlib.sha256(data).hexdigest()
+    if actual != SOURCE_HASHES[relative]:
+        raise RuntimeError(f"source identity mismatch for {relative}; refusing to run")
+    return data
 
 
 def load(root: Path):
-    spool = (root / "evidence/print/spool-reconstruction.log").read_text(encoding="ascii")
+    spool = read_pinned(root, "evidence/print/spool-reconstruction.log").decode("ascii")
     rows = []
     for line in spool.splitlines():
         m = ROW_RE.match(line)
@@ -40,8 +53,8 @@ def load(root: Path):
     observed = [(r["attempt"], r["state"], r["class"]) for r in rows]
     if observed != EXPECTED or any(r["dest"] != "bench" for r in rows):
         raise RuntimeError("PS-0417 source-row selector changed; refusing to run")
-    route = json.loads((root / "evidence/recovery-routing.json").read_text())
-    acceptance = json.loads((root / "acceptance.json").read_text())
+    route = json.loads(read_pinned(root, "evidence/recovery-routing.json"))
+    acceptance = json.loads(read_pinned(root, "acceptance.json"))
     return rows, bytes.fromhex(route["K04"]["masked_component"]), bytes.fromhex(acceptance["slot_sha256"]["K04"])
 
 
