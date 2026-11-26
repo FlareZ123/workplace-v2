@@ -305,7 +305,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
     if intake.is_opaque_pdf_name(name):
         budget[0] += len(data)
         errors.append({"source": name, "status": "skipped_opaque_pdf_by_name",
-                       "size": len(data)})
+                       "size": len(data), "pinned_sha256": intake.OPAQUE_PDF_SHA256})
         return
     if style_metadata is None:
         style_metadata = []
@@ -395,6 +395,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                             "source": f"{name}!/{item.filename}",
                             "status": "skipped_opaque_pdf_by_name",
                             "size": item.file_size,
+                            "pinned_sha256": intake.OPAQUE_PDF_SHA256,
                         })
                         continue
                     if item.filename:
@@ -433,6 +434,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                             "source": f"{name}!/{item.name}",
                             "status": "skipped_opaque_pdf_by_name",
                             "size": item.size,
+                            "pinned_sha256": intake.OPAQUE_PDF_SHA256,
                         })
                         continue
                     if (not item.isfile() or item.size > intake.MAX_MEMBER
@@ -482,6 +484,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     errors.append({
                         "source": f"{name}!/{filename}",
                         "status": "skipped_opaque_pdf_by_name",
+                        "pinned_sha256": intake.OPAQUE_PDF_SHA256,
                     })
                     continue
                 payload = part.get_payload(decode=True)

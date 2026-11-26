@@ -182,7 +182,8 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool
     if is_opaque_pdf_name(name):
         budget[0] += len(data)
         return {"name": name, "size": len(data),
-                "status": "skipped_opaque_pdf_by_name"}
+                "status": "skipped_opaque_pdf_by_name",
+                "pinned_sha256": OPAQUE_PDF_SHA256}
     kind = magic(data)
     name_lower = name.casefold()
     name_hits = [term.decode("ascii") for term in TERMS if term.decode("ascii").casefold() in name_lower]

@@ -156,8 +156,9 @@ class K08PhraseIntakeTests(unittest.TestCase):
         ))
         self.assertFalse(any(b"%PDF-" in data for _, data in streams))
         self.assertEqual(len(errors), 1)
-        self.assertEqual(errors[0]["status"], "skipped_opaque_pdf")
-        self.assertEqual(errors[0]["sha256"], phrase_intake.intake.OPAQUE_PDF_SHA256)
+        self.assertEqual(errors[0]["status"], "skipped_opaque_pdf_by_name")
+        self.assertEqual(errors[0]["pinned_sha256"], phrase_intake.intake.OPAQUE_PDF_SHA256)
+        self.assertNotIn("sha256", errors[0])
 
     def test_encrypted_pdf_requires_and_accepts_supplied_password(self):
         from pypdf import PdfWriter

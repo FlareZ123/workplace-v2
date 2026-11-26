@@ -229,7 +229,8 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
         budget[2] += 1
         budget[0] += len(data)
         return {"name": name, "size": len(data),
-                "status": "skipped_opaque_pdf_by_name"}
+                "status": "skipped_opaque_pdf_by_name",
+                "pinned_sha256": OPAQUE_PDF_SHA256}
     kind = magic(data)
     # OLE/CFB has no member walker here. Scan its original bytes directly so
     # a complete coupon inside a native Workbook/Book/SHD stream is observable.
