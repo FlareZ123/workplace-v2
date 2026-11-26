@@ -452,11 +452,14 @@ class K08PhraseIntakeTests(unittest.TestCase):
             and hashlib.sha256(value).digest() == hashlib.sha256(png).digest()
             for carrier, value in streams
         ))
+        direct_teal = list(phrase_intake.iter_m10_teal_bit_text("direct-M10-test", png, errors))
+        self.assertTrue(any(phrase.encode("ascii") in value for _, value in direct_teal),
+                        f"direct M10 bit reader failed; errors={errors!r}")
         self.assertTrue(any(
             "<teal-bit:teal-mask-green-low-if-even:" in carrier
             and phrase.encode("ascii") in value
             for carrier, value in streams
-        ), "source-literal teal-bit payload was not emitted into K08 scanning")
+        ), f"source-literal teal-bit payload was not emitted into K08 scanning; errors={errors!r}")
         hits = []
         for carrier, value in streams:
             for label, text in phrase_intake.decode_text_variants(value, carrier):
