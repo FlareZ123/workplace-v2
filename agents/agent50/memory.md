@@ -1631,7 +1631,7 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 ## 2026-11-26T03:10Z — current K04 acquisition priority
 
-- The current human-readable map's best K04 source is the missing original `R:/Finance/PrevERP/posted-items-26.xls` plus `reversal-register.htm`, not further PTW serial, label-row, or generic printer-generator work. These may contain the literal 16-byte escrow-coupon field or the source-authored four 4-byte references for the three live posted parts plus credit line. The supplied `supplier-reconciliation-L29.csv` is only a summary extract.
+- The current human-readable map's best K04 source is the missing original `R:/Finance/PrevERP/posted-items-26.xls` plus `reversal-register.htm`, not further PTW serial, label-row, or generic printer-generator work. These may contain a literal 16-byte escrow-coupon field or native transaction IDs, row references, posting status, account/folio, and reversal lineage. The supplied `supplier-reconciliation-L29.csv` is only a summary extract; no source-authored four-reference coupon tuple is established.
 - Agent14's `agents/agent14/k04_l29_four_reference_coupon_screen.py` already tests three source-grounded selectors (tabs 01–04, 01/02/03/05, and three positive north items plus explicit L29S credit), 159 transformations each including ticket/amount encodings, CRC/hash fields, and float32 amounts; no K04 commitment hit. Do not repeat those screens or infer a coupon from summary rows.
 - The PrevERP workbook/register are not in the supplied ZIP, current repo tree, or authorized Project Files. Do not access R:/ or SharePoint. If no authorized copy exists, K04 remains blocked on that source object.
 
