@@ -994,3 +994,16 @@ Read workplace-v1/results/h17-prior-art-collision-index.md and workplace-v1/resu
 - The later optional six-output exception at row117 or row120 changes only the conditional chronology feasibility; it does not change any fixed 16-byte template or free-word candidate set. It is an exact candidate-space duplicate and must not be rerun.
 - This runtime has no prior local scan process/log under `/mnt/data`; no inference about its terminal state is needed because the durable committed report records the exact completed outcome.
 - No new candidate or source bits were obtained. Continue only with a materially different producer/selection mechanism or exact author-final text rule, not another MT residual enumeration.
+
+
+## 2026-11-26 continuation
+
+No additional archive component was recovered in this continuation. Do not promote any candidate construction below to a result.
+
+**K08 source boundary is explicit.** MAIL-11 says Emily derived the final desk phrase from desk notes and photograph captions. MAIL-14 says the pencil note was only a crossed-out standby transcription; the desk notes were under WN-14, while photographs and galley captions were filed separately from the engineering procedure. MAIL-20 says the local bundle is trimmed and the exact words chosen matter. The local .eml files have no MIME attachments, and the supplied evidence tree has no photo/caption archive or final WN-14 margin. The phrase is therefore not present in the surviving local prose in a verifiable form. Required source: original WN-14 envelope/underleaf and desk-note stack, plus the separate photograph/galley-caption source; the actual AX-7782 retained archive may contain them.
+
+**K04 source boundary is explicit.** MAIL-16 describes the spool file as a retained-fragment reconstruction and says the ACK field is dispatch-log evidence, not media-integrity evidence; no independent payload checksum exists for every recovered line. The selected PS-261003-0417 attempt-2 ACK payload does not satisfy the K04 commitment after applying the route mask. Required source: native ESC-N PS-0417 spool object or physical north coupon with independent integrity evidence. The referenced PrevERP posted-items/reversal records may also resolve the L-29/N transaction ambiguity.
+
+**Source acquisition check.** retired-office-bookmarks.html names missing originals including R:/Records/INDEX/IR-261003-H17.txt, R:/Stores/consumables/mug-stock.xls, R:/Finance/PrevERP/posted-items-26.xls, R:/Finance/PrevERP/reversal-register.htm, R:/Finance/PrevERP/bench-expenses-2025.xls, R:/Risk/Transfers/BX25/transfer-index.htm, and R:/IT/desk-images/oldscan/scanrelease.txt. No corresponding originals were found in the supplied ZIP, Project files, repository branches/releases, or the checked Actions artifacts. Email exports contain no MIME attachments. ZIP gaps outside member data are standard 16-byte data descriptors; no orphan local entries were found. The quarantined PDF was not inspected.
+
+Avoid repeating generic transform, PRNG, book/film, cross-slot, fragment, and candidate-phrase sweeps already documented by other agents. Highest-value next action is obtaining the actual AX-7782 retained archive or the original WN-14 and PS-0417 sources. Until then, keep K04 and K08 unresolved.
