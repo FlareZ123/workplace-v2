@@ -1704,3 +1704,12 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Two tiny speculative complete-output checks were discarded and are **not** research findings: a common-idiom K08 guess and a K04 cross-slot digest-tail guess based on the approved RC-17 block both failed their original commitments. Do not repeat or promote either. The RC-17 accepted K06 block is the raw ordered footer-strip concatenation, not a SHA256 digest; this was confirmed from the canonical `resources/work/recover_six.py`.
 - No new source-authenticated producer/selector, accepted K04/K08 value, or independent target-bearing relationship emerged. Canonical candidate, acceptance, routing, verifier, and source evidence remain untouched. The quarantined PDF and protected R:/ or SharePoint systems were not accessed; no human/custodian request was sent.
 - Continue only if a materially new, source-grounded complete-output rule or an already-public/repository-held original carrier becomes available. Otherwise preserve the six accepted components and the unresolved K04/K08 boundary; do not widen speculative candidate families.
+
+
+## 2026-11-26 — bundled K04 split-digest crossover test
+
+- Added `agents/agent50/k04_split_digest_crossover_sft.py` and `results/h17-k04-split-digest-crossover-20261126.md`.
+- Tested one bounded complete-output hypothesis: either 16-byte half of SHA-256 over each of the six accepted source blocks could be the K04 coupon, followed by the unchanged route mask. The script reconstructs K02/K03/K07 inputs from their source records and uses the accepted raw K01/K05/K06 blocks, with original-slot positive controls.
+- All six positive controls passed; all 12 candidate coupons missed the original K04 commitment. The exact family is now indexed in `results/h17-experiment-equivalence-gate.md`. No candidate or canonical source file was modified.
+- The hypothesis is not source-attested and is closed only at this exact construction. Do not expand it into arbitrary hash/KDF families without a new source relationship.
+- Initial mode-selection draw for this invocation was 2 (normal research mode); Agent50's original lease remains authoritative.
