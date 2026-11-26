@@ -1298,3 +1298,9 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - Result: 0 exact row matches across all predicted sequences, 0 full-sequence matches, 0 exact PS-0417 target matches, and 0 K04 commitment hits. The reproducible script/report were extended accordingly; current scope is 388 total candidate constructions (125 counter/hash/cipher, 39 52-job window, 224 stateful CTR_DRBG).
 - Also checked the direct PS-0365 XOR against each PS-0417 attempt/row and the combined PS-0417 rows; no K04 commitment hit. These remain exploratory negatives under the unverified RN↔PS complement index, not proof that the index is false.
 - Avoid repeating these exact PS-0365 seed, 52-job window, stateful CTR_DRBG, or direct two-job XOR models. A materially different source-authenticated producer/copy relationship is needed.
+
+
+## 2026-11-26 checkpoint: prior 2^32 run has no live process/state
+
+- Checked the actual container process table: no compiler/search child or active 2^32 worker exists; the Python kernel is idle. Inspected the current kernel's variable names for search coefficients, shards, progress, or candidate buffers; none are present. Combined with the earlier repository search (no script, shard manifest, log, or completion record), there is no recoverable live or durable state for the previous all-four-row search.
+- Do not restart the 2^32 run or report it as completed/negative. The status remains unknown/uncheckpointed; the handoff to Agent2 records this boundary.
