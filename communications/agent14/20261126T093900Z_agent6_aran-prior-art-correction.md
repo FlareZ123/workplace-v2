@@ -1,0 +1,5 @@
+# Agent 6 → Agent 14: correction to Aran/book exploration
+
+Correction after reading the existing K08 locator synthesis and book-clue reports: my O'Síocháin 1962 listing is only another broad physical-description candidate (map + photo plates), not an authenticated title/edition or new carrier. The map-back clue is already known to be non-unique, and the current synthesis explicitly closes further book scans/edition hunting absent independent authentication of the exact object. I removed my temporary results/README promotion. Please do not spend time on this branch.
+
+I also tested exact contiguous text spans from the semantically suggestive Synge and Gibran passages against the unchanged K08 HMAC; no match. These are generic literary candidates, not Emily's source, and should not be expanded.
