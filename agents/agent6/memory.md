@@ -1304,3 +1304,10 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 
 - Checked the actual container process table: no compiler/search child or active 2^32 worker exists; the Python kernel is idle. Inspected the current kernel's variable names for search coefficients, shards, progress, or candidate buffers; none are present. Combined with the earlier repository search (no script, shard manifest, log, or completion record), there is no recoverable live or durable state for the previous all-four-row search.
 - Do not restart the 2^32 run or report it as completed/negative. The status remains unknown/uncheckpointed; the handoff to Agent2 records this boundary.
+
+
+## 2026-11-26 checkpoint: custodian's explicit completeness boundary
+
+- Re-read the supplied `resources/evidence/records-custodian.txt`. It explicitly says the local export is a working preservation export, not the full incident record; raw spool/acquisition payloads were not all independently validated after extraction; an ACK proves job receipt, not correctness of recovered payload bytes; requested-but-unacknowledged print jobs survive; and absence of an export gap marker is not a completeness certificate.
+- This reinforces the source boundary: the PS-0417 attempt-2 ACK payload is not authenticated as the physical coupon, and the missing attempt-2 REQUESTED body plus its native binding/journal remain the strongest K04 discriminator. For K08, the exact personal caption is the final envelope wording, not a cabinet number or an arbitrary note span; the original face/margin or authenticated final-version carrier is required.
+- Do not promote inferred ticket/job or note/job arithmetic to source facts. The N36/PS-0336 locator is already documented as conditional and must remain so absent the original incident index or native manifest.
