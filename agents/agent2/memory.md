@@ -1275,3 +1275,13 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 ## 2026-11-26 additional bounded exclusion
 
 - Tested a 6-of-8 erasure-code shortcut because the six known 16-byte slots could superficially resemble shares. Interpolated the six accepted components at slot coordinates 1,2,3,5,6,7 and evaluated missing slots 4 and 8 using bytewise GF(256) (polynomials 0x11B and 0x11D) and GF(2^128) with the common GCM polynomial. Neither predicted component matched its slot commitment. There is no evidence for a standard 6-of-8 Reed-Solomon/Shamir relation; do not repeat this without a source specification.
+
+
+## 2026-11-26 Falcon soft-mask-aware K08 control
+
+- Corrected the local evidence inventory: archive-labels.ini, procedures/RC-17-scans.txt, and telemetry/freeze-export.jsonl are present in the supplied ZIP; the earlier local extraction had omitted them. A complete non-PDF extraction was made under /mnt/data/h17-full. The three files are already part of the official source set and do not provide a new K04/K08 component.
+- Tested a new, previously unrun mask-aware branch of the public Falcon rear-map teal-bit hypothesis. The 343/344 JPX codestream hashes match the 2026-11-23 native-JPX control. The PDF's separate soft masks were decoded and intersected with the frozen teal HSV gate and source-literal parity-bit layouts.
+- Raw teal pixel counts were 1,065 (page 343) and 24,720 (page 344); visible teal counts after applying the soft masks were zero on both pages. Raw candidate windows were 3 and 17; visible candidate windows were zero; no K08 HMAC match. The raw teal pixels are outside the visible image masks. This closes the visible-teal-carrier interpretation for these Falcon images, not the book's possible locator role or physical identity.
+- Reproducible script: agents/agent2/k08_falcon_softmask_aware_teal_control.py. Report: results/h17-k08-falcon-softmask-aware-teal-control-20261126.md.
+- Additional bounded negatives: the exact contiguous text-span search over Millay's relevant public-domain poems (including Recuerdo, Tavern, Travel, Low-Tide, Inland, Exiled, Alms, Ebb, Eel-Grass and Burial) produced no K08 HMAC hit; a four-word-state xoshiro128++ rolling-PTW model tested 32 source-order/serialization configurations across 22 known packets and produced 0/22 exact matches. Do not expand either speculative family.
+- Next work should remain candidate-producing and source-constrained: seek an authenticated complete-output relation for K04 or K08, rather than repeating raw Falcon teal, generic PRNG, quote, or phrase sweeps. Do not contact the custodian or probe protected R: services.
