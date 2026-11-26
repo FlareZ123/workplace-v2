@@ -1,0 +1,29 @@
+name: Agent1 Irish-poetry K08 source corpus
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "agents/agent1/irish_poetry_download.py"
+
+permissions:
+  contents: read
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Retrieve public-domain OCR text from Internet Archive
+        run: python agents/agent1/irish_poetry_download.py
+      - name: Upload source corpus
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent1-book-of-irish-poetry-1915-text
+          path: work/irish-poetry-1915.txt
+          if-no-files-found: error
+          retention-days: 7
