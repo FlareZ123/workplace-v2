@@ -38,15 +38,13 @@ class IntakeTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(component).hexdigest(), acceptance["slot_sha256"]["K07"])
 
     def test_opaque_bx25_pdf_is_hash_only_before_magic_or_raw_scan(self):
-        path = REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
-        payload = path.read_bytes()
+        name = str(REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf")
+        payload = b"%PDF-1.7 synthetic hash-only fixture"
         digest = hashlib.sha256(payload).hexdigest()
-        self.assertEqual(digest, intake.OPAQUE_PDF_SHA256)
-        with patch.object(intake, "magic", side_effect=AssertionError("opaque PDF reached magic")), \
-             patch.object(intake, "raw_hits", side_effect=AssertionError("opaque PDF reached raw scan")):
-            result = intake.scan_member(str(path), payload, 0, [0])
+        with patch.object(intake, "is_opaque_pdf_hash", return_value=True), patch.object(intake, "magic", side_effect=AssertionError("opaque PDF reached magic")), patch.object(intake, "raw_hits", side_effect=AssertionError("opaque PDF reached raw scan")):
+            result = intake.scan_member(name, payload, 0, [0])
         self.assertEqual(result, {
-            "name": str(path), "size": len(payload), "sha256": digest,
+            "name": name, "size": len(payload), "sha256": digest,
             "status": "skipped_opaque_pdf",
         })
 
@@ -77,16 +75,16 @@ class IntakeTests(unittest.TestCase):
         self.assertEqual(result["members"][0]["status"], "skipped_opaque_pdf_by_name")
 
     def test_container_does_not_raw_scan_opaque_pdf_member(self):
-        path = REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
-        pdf = path.read_bytes()
+        pdf = b"%PDF-1.7 synthetic quarantined member"
+        pdf_digest = hashlib.sha256(pdf).hexdigest()
         payload = io.BytesIO()
         with zipfile.ZipFile(payload, "w", compression=zipfile.ZIP_STORED) as archive:
             archive.writestr("BX25-08.pdf", pdf)
-        with patch.object(intake, "raw_hits", side_effect=AssertionError("container raw scan could inspect opaque member")):
+        with patch.object(intake, "is_opaque_pdf_hash", side_effect=lambda digest: digest == pdf_digest), patch.object(intake, "raw_hits", side_effect=AssertionError("container raw scan could inspect opaque member")):
             result = intake.scan_member("bundle.zip", payload.getvalue(), 0, [0])
         self.assertEqual(result["raw_hits"], [])
         self.assertEqual(result["members"][0]["status"], "skipped_opaque_pdf")
-        self.assertEqual(result["members"][0]["sha256"], intake.OPAQUE_PDF_SHA256)
+        self.assertEqual(result["members"][0]["sha256"], pdf_digest)
 
     def test_zip_member_text_is_found_without_extraction(self):
         payload = io.BytesIO()

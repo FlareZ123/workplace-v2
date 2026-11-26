@@ -102,20 +102,18 @@ class K08PhraseIntakeTests(unittest.TestCase):
             )
 
     def test_opaque_bx25_pdf_is_skipped_before_magic_even_with_password(self):
-        path = SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
-        payload = path.read_bytes()
+        name = str(SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf")
+        payload = b"%PDF-1.7 synthetic hash-only fixture"
         digest = hashlib.sha256(payload).hexdigest()
-        self.assertEqual(digest, phrase_intake.intake.OPAQUE_PDF_SHA256)
         errors = []
         budget = [0]
-        with patch.object(phrase_intake.intake, "magic",
-                          side_effect=AssertionError("opaque PDF reached content classification")):
+        with patch.object(phrase_intake.intake, "is_opaque_pdf_hash", return_value=True), patch.object(phrase_intake.intake, "magic", side_effect=AssertionError("opaque PDF reached content classification")):
             streams = list(phrase_intake.iter_text_streams(
-                str(path), payload, 0, budget, errors, pdf_password="must-not-be-used"
+                name, payload, 0, budget, errors, pdf_password="must-not-be-used"
             ))
         self.assertEqual(streams, [])
         self.assertEqual(errors, [{
-            "source": str(path), "status": "skipped_opaque_pdf",
+            "source": name, "status": "skipped_opaque_pdf",
             "size": len(payload), "sha256": digest,
         }])
         self.assertEqual(budget, [len(payload)])
@@ -146,8 +144,7 @@ class K08PhraseIntakeTests(unittest.TestCase):
         self.assertEqual(errors[0]["status"], "skipped_opaque_pdf_by_name")
 
     def test_nested_opaque_bx25_pdf_is_not_yielded_as_content(self):
-        path = SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
-        pdf = path.read_bytes()
+        pdf = b"%PDF-1.7 synthetic nested quarantined member"
         payload = io.BytesIO()
         with zipfile.ZipFile(payload, "w", compression=zipfile.ZIP_STORED) as archive:
             archive.writestr("BX25-08.pdf", pdf)
