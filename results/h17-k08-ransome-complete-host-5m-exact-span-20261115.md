@@ -38,3 +38,19 @@ The exact K08 author-final normalized phrase is **not** one contiguous 5–60-wo
 This is an actual new successful external **source acquisition and input-complete target test** following earlier failures, so recording this outcome prevents another misplaced request for the identical full-text source. It does not certify the probable map-back book's physical identity or alter the accepted six slots.
 
 K01/K02/K03/K05/K06/K07 original individual PASS remain unchanged. K04 and K08 unresolved, combined original REC8/1 INCOMPLETE. No original resource, original verifier, acceptance commitments or canonical candidate modified.
+
+
+## Agent50 addendum — 2026-11-26 short-span extension
+
+To close the previously unstated 1–4-word gap for this specific book candidate, I reused the existing workflow with a parameterized span range and redacted all candidate phrase/component bytes from output artifacts.
+
+- A first dispatch against the FadedPage endpoint failed the scanner's completeness guard at 1,162 normalized words. This is a failed source fetch, **not** a negative candidate result.
+- Successful run: [45844002870](https://github.com/FlareZ123/workplace-v2/actions/runs/45844002870), job 139992794685, using the same Litres reading URL as the original 5–60-word scan.
+- Input guards passed: HTML, 94,825 normalized words, full-text terminus `coil down`.
+- Raw HTML SHA-256 for this run: `d8533e915739be61ff915114e2031252a2eefba228c6e707ab526474a88574de`.
+- Span range: **1–4 words**; complete windows tested: **379,294**; original K08 commitment hits: **0**.
+- No phrase, component bytes, or candidate value was emitted or persisted.
+
+The earlier 5–60-word scan (run 43747967863) used the same Litres URL and the same normalized word count (94,825), but its raw HTML SHA-256 was `e6ed0882db88399c19b0c55c9e644617aed353cdd2407f90adfce3c4d45d9362`. The raw HTML hashes differ; this may reflect page-level dynamic markup, but no normalized-text digest was retained by the earlier run, so identical visible text is not independently established. Thus the two ranges have both been tested against the same named edition and full-text word count, but should not be represented as one byte-identical source snapshot.
+
+This remains only a negative for **verbatim contiguous spans in the externally served 2022 text**. It does not test Emily's handwritten margin, an altered/adapted phrase, the physical 1949 copy, or a missing photograph/caption/workbook source. No K08 component was recovered.
