@@ -8,7 +8,7 @@ from pathlib import Path
 MANIFEST_SHA256 = "225fa828826041fc2dd805ed5055b466a09666dbe32dc7c7f13f546aadba14e3"
 
 def norm(s):
-    return " ".join(re.sub(r"[^a-z0-9\\s]", " ", str(s).lower()).split())
+    return " ".join(re.sub(r"[^a-z0-9\s]", " ", str(s).lower()).split())
 
 class HTMLFields(HTMLParser):
     def __init__(self):
@@ -54,7 +54,7 @@ def main():
                 if isinstance(body,str): add(rel,"mime:"+part.get_content_type(),body)
         elif ext in {".html",".htm"}:
             txt=raw.decode("utf-8",errors="replace"); add(rel,"raw-html",txt)
-            h=HTMLFields(); h.feed(txt); add(rel,"html-text-and-attrs","\\n".join(h.parts))
+            h=HTMLFields(); h.feed(txt); add(rel,"html-text-and-attrs","\n".join(h.parts))
         elif ext in {".json",".jsonl"}:
             txt=raw.decode("utf-8",errors="replace"); add(rel,"raw-json",txt)
             if ext==".jsonl":
@@ -70,15 +70,15 @@ def main():
                 add(rel,f"row{i}"," ".join(row))
                 for j,cell in enumerate(row): add(rel,f"cell{i}-{j}",cell)
         elif ext==".raw":
-            for i,m in enumerate(re.finditer(rb"[\\x20-\\x7e]{4,}",raw)):
+            for i,m in enumerate(re.finditer(rb"[\x20-\x7e]{4,}",raw)):
                 add(rel,f"ascii-run{i}",m.group().decode("ascii"))
         else:
             txt=raw.decode("utf-8",errors="replace"); add(rel,"raw-text",txt)
             for i,line in enumerate(txt.splitlines()): add(rel,f"line{i}",line)
-            for i,para in enumerate(re.split(r"\\n\\s*\\n",txt)): add(rel,f"paragraph{i}",para)
+            for i,para in enumerate(re.split(r"\n\s*\n",txt)): add(rel,f"paragraph{i}",para)
 
     notes=(root/"evidence/crew/noticeboard-and-desk-notes.txt").read_text()
-    for m in re.finditer(r"(?ms)^N(\\d{2})\\s*(?:\\[[^\\]]+\\])?\\s*\\n(.*?)(?=^N\\d{2}\\b|\\Z)",notes):
+    for m in re.finditer(r"(?ms)^N(\d{2})\s*(?:\[[^\]]+\])?\s*\n(.*?)(?=^N\d{2}\b|\Z)",notes):
         add("evidence/crew/noticeboard-and-desk-notes.txt","note-N"+m.group(1),m.group(2).strip())
 
     route=json.loads((root/"evidence/recovery-routing.json").read_text())
