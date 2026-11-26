@@ -2,7 +2,7 @@
 """Source-specific K08 exact-span test for the identified map-back book candidate.
 
 The script deliberately emits no book quotation. A hit is recorded only as
-its source position, normalized-text SHA-256, and the K08 component bytes.
+its source position and normalized-text SHA-256; no phrase or component bytes are emitted.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ import urllib.request
 from pathlib import Path
 
 SOURCE_URL = os.environ.get("H17_RANSOME_SOURCE_URL", "https://www.fadedpage.com/books/20180428/html.php")
-MIN_WORDS = int(os.environ.get("H17_MIN_WORDS", "5"))
+MIN_WORDS = int(os.environ.get("H17_MIN_WORDS", "5"))  # Book-specific range; crew-vocabulary short-span gate is separate.
 MAX_WORDS = int(os.environ.get("H17_MAX_WORDS", "60"))
 
 
