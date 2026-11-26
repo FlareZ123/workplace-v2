@@ -208,6 +208,137 @@ def main():
                 window_candidates[f"window-{name}-{suffix}-last"] = digest[16:32]
     candidates.extend(window_candidates.items())
 
+    # Stateful NIST AES-128 CTR_DRBG: PS-0365 is the cross-job seed;
+    # generate one 16-byte block for each of the 52 subsequent jobs.
+    stateful_models = 0
+    stateful_row_matches = 0
+    stateful_full_sequences = 0
+    stateful_target_matches = 0
+    if crypto_available:
+        def bxor(a, b):
+            return bytes(x ^ y for x, y in zip(a, b))
+
+        def aes128(key, block):
+            op = Cipher(algorithms.AES(key), modes.ECB()).encryptor()
+            return op.update(block) + op.finalize()
+
+        class CTRDRBG:
+            def __init__(self, entropy):
+                if len(entropy) != 32:
+                    raise RuntimeError("CTR_DRBG seed material must be 32 bytes")
+                self.key = bytes(16)
+                self.v = bytes(16)
+                self.update(entropy)
+
+            def update(self, provided):
+                value = int.from_bytes(self.v, "big")
+                stream = []
+                for _ in range(2):
+                    value = (value + 1) & ((1 << 128) - 1)
+                    stream.append(aes128(self.key, value.to_bytes(16, "big")))
+                material = bxor(b"".join(stream), provided)
+                self.key, self.v = material[:16], material[16:]
+
+            def generate(self, additional=None):
+                if additional is not None:
+                    self.update(additional)
+                value = (int.from_bytes(self.v, "big") + 1) & ((1 << 128) - 1)
+                packet = aes128(self.key, value.to_bytes(16, "big"))
+                self.v = value.to_bytes(16, "big")
+                self.update(additional if additional is not None else bytes(32))
+                return packet
+
+        row_pat = re.compile(
+            r"^(\S+)\s+JOB=PS-261003-(\d{4})\s+ATTEMPT=(\d+)\s+STATE=(\w+)\s+"
+            r"CLASS=(\w+)\s+PAYLOAD=([0-9A-Fa-f]{32})\s+DEST=(\w+)"
+        )
+        spool_rows = []
+        for line in spool_text.splitlines():
+            m = row_pat.search(line)
+            if m:
+                timestamp, job, attempt, state, cls, payload, dest = m.groups()
+                spool_rows.append({
+                    "time": timestamp,
+                    "JOB": "PS-261003-" + job,
+                    "ATTEMPT": attempt,
+                    "STATE": state,
+                    "CLASS": cls,
+                    "bytes": bytes.fromhex(payload),
+                    "DEST": dest,
+                    "jobnum": int(job),
+                })
+        seed_row = next(r for r in spool_rows if
+                        r["jobnum"] == 365 and r["ATTEMPT"] == "1" and
+                        r["STATE"] == "ACK" and r["CLASS"] == "RECOVER" and
+                        r["DEST"] == "bench")
+        sequence_rows = []
+        for job in range(366, 417):
+            matches_for_job = [r for r in spool_rows if
+                               r["jobnum"] == job and r["STATE"] == "ACK"]
+            if len(matches_for_job) != 1:
+                raise RuntimeError("expected one ACK row for PS-%04d" % job)
+            sequence_rows.append(matches_for_job[0])
+        sequence_rows.append(next(r for r in spool_rows if
+                                   r["jobnum"] == 417 and r["ATTEMPT"] == "2" and
+                                   r["STATE"] == "ACK" and r["CLASS"] == "RECOVER" and
+                                   r["DEST"] == "bench"))
+        if len(sequence_rows) != 52:
+            raise RuntimeError("expected 52 subsequent job outputs")
+
+        second_halves = (
+            nonce,
+            mask,
+            hashlib.sha256(seed_row["JOB"].encode()).digest()[:16],
+            hashlib.sha256(seed_row["time"].encode()).digest()[:16],
+            hashlib.md5(seed_row["JOB"].encode()).digest(),
+            hashlib.sha256(seed).digest()[:16],
+            bytes(16),
+            seed,
+        )
+
+        def additional_input(row, mode):
+            if mode == 0:
+                return None
+            if mode == 1:
+                return bytes(32)
+            if mode == 2:
+                text = row["JOB"]
+            elif mode == 3:
+                text = "|".join(row[k] for k in ("JOB", "ATTEMPT", "STATE", "CLASS", "DEST"))
+            elif mode == 4:
+                text = row["time"]
+            elif mode == 5:
+                text = row["JOB"] + "|" + row["time"]
+            else:
+                return hashlib.sha256(bytes([int(row["ATTEMPT"])] )).digest()
+            return hashlib.sha256(text.encode()).digest()
+
+        for second in second_halves:
+            for order in ("first-seed", "second-seed"):
+                entropy = seed + second if order == "first-seed" else second + seed
+                for context_mode in range(7):
+                    for reverse in (False, True):
+                        drbg = CTRDRBG(entropy)
+                        outputs = [
+                            drbg.generate(additional_input(row, context_mode))
+                            for row in sequence_rows
+                        ]
+                        if reverse:
+                            outputs = [value[::-1] for value in outputs]
+                        row_matches = sum(
+                            output == row["bytes"]
+                            for output, row in zip(outputs, sequence_rows)
+                        )
+                        stateful_row_matches += row_matches
+                        stateful_full_sequences += int(row_matches == 52)
+                        stateful_target_matches += int(outputs[-1] == target)
+                        stateful_models += 1
+                        candidates.append((
+                            "CTR-DRBG-PS0365-%d-%s-%d-%s" %
+                            (second_halves.index(second), order, context_mode, "rev" if reverse else "fwd"),
+                            outputs[-1],
+                        ))
+
     commitment_hits = [
         label for label, candidate in candidates
         if matches(candidate, mask, commitment)
@@ -224,6 +355,10 @@ def main():
         "candidate_variants": len(candidates),
         "source_window_jobs": len(ack_rows),
         "window_candidate_variants": len(window_candidates),
+        "stateful_drbg_models": stateful_models,
+        "stateful_drbg_row_matches_total": stateful_row_matches,
+        "stateful_drbg_full_sequence_matches": stateful_full_sequences,
+        "stateful_drbg_target_payload_matches": stateful_target_matches,
         "K04_commitment_hits": commitment_hits,
         "selected_payload_exact_matches": payload_matches,
         "raw_values_emitted": False,
