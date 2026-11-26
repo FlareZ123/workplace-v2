@@ -307,6 +307,11 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         errors.append({"source": name, "status": "skipped_opaque_pdf_by_name",
                        "size": len(data), "pinned_sha256": intake.OPAQUE_PDF_SHA256})
         return
+    if intake.is_pdf_candidate(name, data):
+        budget[0] += len(data)
+        errors.append({"source": name, "status": "skipped_pdf_pending_provenance",
+                       "size": len(data)})
+        return
     if style_metadata is None:
         style_metadata = []
     if budget[0] + len(data) > intake.MAX_TOTAL or len(data) > intake.MAX_MEMBER:
@@ -996,7 +1001,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
         "errors_or_unavailable_decoders": errors,
         "limits": [
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
-            "Encrypted PDFs are never password-guessed; supply --pdf-password only when authorized.",
+            "All .pdf/PDF-magic members are skipped pending independent provenance; --pdf-password does not override this quarantine.",
             "OCR is optional and may not reliably transcribe handwritten marginalia; visually inspect original images when needed.",
             "7z/RAR and SQLite databases other than named Windows Sticky Notes plum.sqlite members are not decoded by this path; the joint runner adds a read-only plum.sqlite/WAL bridge. EMF/EMFSPOOL Unicode text and XPS/OXPS UnicodeString plus complete glyph-index-only runs use bounded dedicated readers; incomplete XPS glyph coverage and empty EMF/XPS text extraction are reported, and bitmap/outline-only text may remain. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with the isolated LibreOffice fallbacks; other OLE streams are decoded when olefile is installed.",
             "The K04 payload is handled by work/h17_k04_binary_window_intake.py, not by this phrase scanner.",

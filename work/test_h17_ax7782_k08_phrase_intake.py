@@ -630,5 +630,19 @@ class K08PhraseIntakeTests(unittest.TestCase):
         self.assertTrue(any("emf-page" in hit["source"] for hit in emf_hits), emf_hits)
 
 
+    def test_neutral_name_pdf_magic_is_skipped_before_magic_or_metadata(self):
+        payload = b"neutral-prefix%PDF-1.7 transformed derivative"
+        errors = []
+        budget = [0]
+        with patch.object(phrase_intake.intake, "magic", side_effect=AssertionError("PDF reached content classification")):
+            streams = list(phrase_intake.iter_text_streams(
+                "neutral.bin", payload, 0, budget, errors,
+            ))
+        self.assertEqual(streams, [])
+        self.assertTrue(any(
+            item.get("status") == "skipped_pdf_pending_provenance"
+            for item in errors
+        ))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

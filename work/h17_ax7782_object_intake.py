@@ -3,7 +3,7 @@
 
 Expected input: eight consecutive 1 MiB chunks. The tool verifies the selected
 transfer chain and K07 commitment, reports common CRC-16 interpretations
-without assuming one, and safely inventories nested ZIP/TAR/PDF/image content.
+without assuming one, and safely inventories nested ZIP/TAR/image content; PDF members are skipped pending independent provenance.
 It never modifies or extracts the source object to disk.
 """
 from __future__ import annotations
@@ -50,6 +50,18 @@ def is_opaque_pdf_name(name: str) -> bool:
         and parts[index + 1].startswith("08")
         for index, part in enumerate(parts)
     )
+PDF_MAGIC_WINDOW = 1024
+
+
+def is_pdf_candidate(name: str, data: bytes) -> bool:
+    """Fail closed on PDF names or a PDF header in the first 1024 bytes.
+
+    This is a quarantine preflight only. No PDF text, attachments, images, or
+    rendered pages are opened unless a separate provenance policy is added.
+    """
+    return str(name).casefold().endswith(".pdf") or b"%PDF-" in bytes(data[:PDF_MAGIC_WINDOW])
+
+
 TERMS = (
     b"IR-261003-H17", b"IR-261003-H17.txt", b"AX-7782",
     b"PS-261003-0417", b"ESC-N", b"H17-POL-17/A3",
@@ -184,6 +196,10 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool
         return {"name": name, "size": len(data),
                 "status": "skipped_opaque_pdf_by_name",
                 "pinned_sha256": OPAQUE_PDF_SHA256}
+    if is_pdf_candidate(name, data):
+        budget[0] += len(data)
+        return {"name": name, "size": len(data), "sha256": sha256,
+                "status": "skipped_pdf_pending_provenance"}
     kind = magic(data)
     name_lower = name.casefold()
     name_hits = [term.decode("ascii") for term in TERMS if term.decode("ascii").casefold() in name_lower]

@@ -104,5 +104,20 @@ class IntakeTests(unittest.TestCase):
         self.assertIn("caption", terms)
 
 
+    def test_neutral_name_pdf_magic_is_skipped_before_magic_or_raw_scan(self):
+        payload = b"neutral-prefix%PDF-1.7 transformed derivative"
+        with patch.object(intake, "magic", side_effect=AssertionError("PDF reached magic")), patch.object(intake, "raw_hits", side_effect=AssertionError("PDF reached raw scan")):
+            result = intake.scan_member("neutral.bin", payload, 0, [0])
+        self.assertEqual(result["status"], "skipped_pdf_pending_provenance")
+
+    def test_k04_scanner_skips_neutral_name_pdf_magic_before_any_scan(self):
+        payload = b"neutral-prefix%PDF-1.7 transformed derivative"
+        with patch.object(k04, "magic", side_effect=AssertionError("PDF reached magic")), patch.object(k04, "scan_bytes", side_effect=AssertionError("PDF reached binary scan")):
+            result = k04.scan_member(
+                "neutral.bin", payload, 0, [0, 1024, 0, 10],
+                bytes(32), bytes(16), 1, 1024, 2,
+            )
+        self.assertEqual(result["status"], "skipped_pdf_pending_provenance")
+
 if __name__ == "__main__":
     unittest.main()

@@ -5,7 +5,7 @@ Scans raw 16-byte windows and standalone ASCII/UTF-16LE/UTF-16BE
 32-hex-character tokens, including native OLE/CFB printer files. For each
 candidate block B it checks both SHA256(B) and SHA256(B XOR route_mask) against
 the K04 component commitment. It also descends into ZIP, TAR, and GZIP members
-without extracting them to disk. No heuristic transformations are attempted.
+without extracting them to disk. PDF-magic and .pdf members are skipped pending independent provenance. No heuristic transformations are attempted.
 
 The target and route mask are loaded from local acceptance/routing files at runtime and are never emitted.
 Use --self-test to validate raw, masked, and ASCII-hex detection without any
@@ -231,6 +231,11 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
         return {"name": name, "size": len(data),
                 "status": "skipped_opaque_pdf_by_name",
                 "pinned_sha256": OPAQUE_PDF_SHA256}
+    if intake.is_pdf_candidate(name, data):
+        budget[2] += 1
+        budget[0] += len(data)
+        return {"name": name, "size": len(data), "sha256": sha256,
+                "status": "skipped_pdf_pending_provenance"}
     kind = magic(data)
     # OLE/CFB has no member walker here. Scan its original bytes directly so
     # a complete coupon inside a native Workbook/Book/SHD stream is observable.
