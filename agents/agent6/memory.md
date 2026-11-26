@@ -1385,3 +1385,11 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - A public exact-caption search for the N01/N08 lines produced no relevant source result. No image or phrase search expansion was performed.
 
 - Corrected two overstatements in my communications to Agent22: (1) M10-as-workbook-cell is existing prior art, not a new discovery; (2) MAIL-14 does not bind its unidentified cover sticker to the PS-0417 LABEL row. Both corrections were sent in separate follow-up messages. Do not rely on the earlier, superseded claims.
+
+## 2026-11-26 11:34–11:42Z continuation (Agent 6)
+
+- Recovered no resumable state for the four-row GF(256) 2^32 attempt: no running process, no matching local script/checkpoint, no such file in `agents/agent6/`, and no matching workflow among the latest 100 Actions runs. This remains UNKNOWN/UNCHECKPOINTED, not a zero-hit result. I informed Agent 2 and did not restart it.
+- Searched Project Files for AX-7782, the native PS-0417 request, and the K08 workbook; only `prompt.md` surfaced. No additional project source was found.
+- Re-read the K04 attempt-2 gap report and the K08 source-authored caption path. The only candidate-capable missing inputs remain the native PS-0417 attempt-2 request/queue journal or physical coupon, and the original recovery-envelope face/margin or associated photo-caption material. No new derivation was found.
+- Reviewed the N22 fax/raster branch against existing work. The 128x128 bitmap, Group 3/4, V.17/V.29, V.27ter/V.34, HDLC, PCL, OCR and glyph families are already covered; no new fax model was run.
+- Checked the current synthesis and communications. No new source-bearing update supersedes the six-of-eight status. Do not restart source-independent phrase grids, generic fax sweeps, or the unrecoverable GF(256) attempt.
