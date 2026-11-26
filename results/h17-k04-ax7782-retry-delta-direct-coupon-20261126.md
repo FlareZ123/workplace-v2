@@ -24,18 +24,20 @@ This is a dimensional/source-structure hypothesis only. No source states that tr
    - attempt-1 AND attempt-2;
    - attempt-1 OR attempt-2.
 5. For each vector, test both big- and little-endian checkpoint encoding and forward and reverse chunk order. Concatenate to 16 bytes, XOR with the exact K04 `masked_component`, and compare SHA-256 of the resulting component to `acceptance.slot_sha256.K04`.
+6. As a separate cross-source correction pilot, XOR the selected PS-0417 attempt-2 ACK payload with each of four 16-byte AX-7782 donors: the accepted K07 component, the raw attempt-2 checkpoint chain, the raw attempt-1 checkpoint chain, and the attempt-1/attempt-2 retry-XOR vector. Apply the K04 mask and test the K04 commitment.
 
 ## Result
 
 - The independent K07 parser/ordering check **passed**, confirming the AX-7782 latest-checkpoint vector was parsed in the acceptance-defined order and byte representation.
-- **32** direct coupon candidates were tested.
-- **0** matched the K04 acceptance commitment.
+- **32** direct checkpoint/retry coupon candidates were tested.
+- **4** bounded PS-0417-ACK2 × AX-7782 cross-source correction candidates were tested.
+- **0 of 36** matched the K04 acceptance commitment.
 
 No checkpoint values, mask bytes, candidate bytes, or candidate digests are reproduced here.
 
 ## Interpretation and limits
 
-This rejects only the bounded direct constructions listed above. It does not test or imply recovery of the 8 MiB AX-7782 object, and it does not rule out a source-authenticated relationship involving the actual chunk contents or native spool media. The checkpoint fields are two-byte audit values, not a substitute for the underlying 1 MiB chunks.
+This rejects only the bounded direct checkpoint, retry-delta, and four explicitly listed cross-source correction constructions. It does not test or imply recovery of the 8 MiB AX-7782 object, and it does not rule out a source-authenticated relationship involving the actual chunk contents or native spool media. The checkpoint fields are two-byte audit values, not a substitute for the underlying 1 MiB chunks.
 
 Do not retry this family with more byte permutations or arbitrary arithmetic. K04 still requires either the native PS-0417 coupon/queue-job record or a genuinely different, source-grounded complete-output construction. Keep the existing K04 mask, acceptance commitment, and verifier unchanged.
 
@@ -46,6 +48,7 @@ Run from the repository root:
 ```python
 import hashlib
 import json
+import re
 from pathlib import Path
 
 root = Path("resources")
@@ -98,6 +101,27 @@ for name, values in ops.items():
             if hashlib.sha256(component).hexdigest() == target:
                 matches.append((name, endian, reverse))
 
-print({"K07_parser_check": "PASS", "K04_candidates": tested,
-       "K04_commitment_matches": matches})
+# Bounded cross-source correction pilot: selected PS-0417 ACK2 XOR one AX-7782 donor.
+spool = (root / "evidence/print/spool-reconstruction.log").read_text()
+m = re.search(r"JOB=PS-261003-0417 ATTEMPT=2 STATE=ACK CLASS=RECOVER PAYLOAD=([0-9A-F]+)", spool)
+assert m
+ack2 = bytes.fromhex(m.group(1))
+attempt1_chain = encode(a, "big", False)
+retry_xor = bytes(x ^ y for x, y in zip(attempt1_chain, k07_chain))
+cross_donors = {
+    "K07 component": k07_component,
+    "K07 raw chain": k07_chain,
+    "attempt1 raw chain": attempt1_chain,
+    "retry XOR": retry_xor,
+}
+cross_matches = []
+for name, donor in cross_donors.items():
+    coupon = bytes(x ^ y for x, y in zip(ack2, donor))
+    component = bytes(x ^ y for x, y in zip(coupon, mask))
+    if hashlib.sha256(component).hexdigest() == target:
+        cross_matches.append(name)
+
+print({"K07_parser_check": "PASS", "direct_candidates": tested,
+       "direct_matches": matches, "cross_source_candidates": len(cross_donors),
+       "cross_source_matches": cross_matches})
 ```
