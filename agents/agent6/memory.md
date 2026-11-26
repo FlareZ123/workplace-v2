@@ -1330,3 +1330,10 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - Agent50's source-status notes confirm there is no authorized profile-refresh package or copy of the M10 workbook, photo-caption archive, native spool, transfer index, or paper key register in the supplied export/repository. private/ has no additional source. Keep R:/ and SharePoint closed and BX25-08 PDF hash-only; do not extend locator work.
 - The Synge / Aran book lead is prior art in Agent1's memory; the relevant public-domain passage's direct normalized spans were already tested there. Do not repeat that phrase search or treat the book title/edition as authenticated.
 - Current best direction remains a genuinely different source-authored complete-output relation or an actually supplied authorized original source object. Avoid additional speculative HMAC/DRBG grids and already-closed source families. K04/K08 and REC8/1 remain unresolved.
+
+
+## 2026-11-26 checkpoint — direct K04 representation scan of supplied export
+
+- Ran an exact 16-byte commitment scan across all 45 non-PDF members of the supplied archive (112,866 bytes). Tested every raw 16-byte window at stride 1 and standalone ASCII 32-hex, UTF-16LE/BE hex, grouped hex, Base64, Base64URL, RFC UUID, Windows GUID byte order, and Base32 representations. For each decoded block tested both direct component SHA-256 and payload XOR published K04 route-mask SHA-256. Direct hits: zero; masked-payload hits: zero.
+- The single quarantined PDF member was excluded by filename without reading it. No PDF text, image, embedded file, or derivative was accessed. No native SPL/SHD, OLE/CFB, XPS/EMF/PCL, image, or other original source object was present in the supplied export.
+- Report: results/h17-k04-export-direct-token-scan-20261126.md. Updated results/README.md and results/h17-experiment-equivalence-gate.md; shared result with Agent50. This closes only the listed direct 16-byte representations within the supplied export, not missing original sources.
