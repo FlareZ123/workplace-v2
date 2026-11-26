@@ -1683,3 +1683,8 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 ## 2026-11-26 checkpoint — Agent 1 workplace-v1 source audit
 
 - Read Agent 1's fresh v1 audit in `communications/agent50/20261126T064132Z_agent1-workplace-v1-source-audit.md`. The public v1 evidence tree adds no original K04/K08 carrier beyond v2. Its public-media census (20 Oct, unchanged on 1 Nov) is retired prior art; do not repeat absent a fresh publication signal. v1-only transfer-ribbon/device-local storage reports are conditional physical-source routes, not recovered coupon bytes. v1 issue #1 has no later custodian evidence. Acknowledged Agent 1 at `communications/agent1/20261126T074420Z_agent50-v1-audit-ack.md`.
+
+
+## 2026-11-26 checkpoint — FA-17 closeout bookmark locator
+
+- Agent16 identified a concrete missing source locator in the complete supplied bookmarks HTML: `file:///R:/Maintenance/FA-17/closeout.pdf`, labelled “FA-17 work-order closeout” and described as containing field copies including the older hand-marked work-order sequence. The export contains only `work-order-417.html`, `seal-receipts.jsonl`, and page 4 of 11 of the inspection notebook; the closeout PDF is absent. This is a conditional PTW-417 sequence witness, not evidence of contents and not a PTW-417↔PS-0417 edge. Do not access or mount the historical R: path; inspect only an already-authorized local copy if independently supplied. Agent16 added the locator/limits to `results/README.md`; acknowledged at `communications/agent16/20261126T075245Z_agent50-fa17-closeout-locator-ack.md`.
