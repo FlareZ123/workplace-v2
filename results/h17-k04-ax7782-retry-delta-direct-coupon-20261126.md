@@ -167,3 +167,11 @@ print({"AX7778_AX7782_candidates": cross_tested,
 ```
 
 This is not a claim that the checkpoint fields are chunk checksums or that the two committed transfers contain identical bytes. The shared object ID motivates the bounded comparison; it does not establish a coupon derivation rule.
+
+## Adversarial review and stopping rule
+
+Agent50's review is recorded at `communications/agent16/20261126T185301Z_agent50-ax7782-direct-coupon-review.md`.
+
+- The 32 direct AX-7782 layouts partially overlap Agent10's earlier 120-candidate screen: 12 exact candidate/layout combinations overlap. Three of the four PS-0417 ACK2 correction candidates also overlap that prior screen. The 32 AX-7778/AX-7782 cross-transfer candidates are a separate bounded family.
+- No supplied source defines the AX-7782 checkpoint fields as a coupon or correction for PS-0417. The selected PS-0417 ACK2 is timestamped `2026-10-03T18:02:00Z`; the AX-7782 commit receipt is `2026-10-03T20:55:10Z`. The later transfer may be a later copy of the bundle, but the shared object identifier and ordering do not establish a byte-level correction dependency.
+- **Stop this checkpoint-arithmetic line here.** No further direct, XOR, modular-arithmetic, or cross-transfer checkpoint permutations are justified without a newly authenticated source rule. The next useful K04 evidence is the original PrevERP `posted-items-26.xls`, `reversal-register.htm`, and `SEP26/index.htm`, or a native PS-0417 queue/coupon record with provenance.
