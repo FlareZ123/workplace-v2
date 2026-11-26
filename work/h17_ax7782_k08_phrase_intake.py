@@ -552,11 +552,13 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     m10_seen_image_digests.add(actual_digest)
                     image_format = str(blip.get("format") or "png").lower()
                     yielded = True
+                    # Run the source-literal M10 bit-plane reader independently;
+                    # a generic image metadata/parser failure must not suppress it.
+                    yield from iter_m10_teal_bit_text(shape_source, image_data, errors)
                     yield from iter_text_streams(
                         f"{shape_source}.{image_format}", image_data, depth + 1,
                         budget, errors, ocr, pdf_password, style_metadata,
                     )
-                    yield from iter_m10_teal_bit_text(shape_source, image_data, errors)
             except Exception as exc:
                 errors.append({
                     "source": name,
@@ -699,11 +701,13 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             image_format = str(item.get("format") or "png").lower()
             image_source = f"{name}!/<image:{item['sheet']}!M10>.{image_format}"
             yielded = True
+            # Keep the source-literal M10 bit-plane read independent of
+            # generic image metadata parsing.
+            yield from iter_m10_teal_bit_text(image_source, image_data, errors)
             yield from iter_text_streams(
                 image_source, image_data, depth + 1, budget, errors,
                 ocr, pdf_password, style_metadata,
             )
-            yield from iter_m10_teal_bit_text(image_source, image_data, errors)
         try:
             import olefile
             with olefile.OleFileIO(io.BytesIO(data)) as compound:
