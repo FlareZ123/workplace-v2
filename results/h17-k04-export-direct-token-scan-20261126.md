@@ -11,7 +11,7 @@ A standalone local implementation of the exact-token scan patterns in [h17_k04_b
 - `SHA256(B) == K04 commitment` (direct component);
 - `SHA256(B XOR route_mask) == K04 commitment` (source payload under the published route rule).
 
-Recognized textual encodings were ASCII 32-hex, UTF-16LE/BE 32-hex, grouped hex byte pairs, strict Base64, RFC UUID, Windows GUID byte order, Base32, and Base64URL. Raw byte windows were scanned at stride 1. No heuristic transformations or candidate generation were used. No OLE/CFB, XPS/EMF/PCL, image, PDF, or nested-container extractor was invoked; those native formats are absent from the non-PDF member set.
+Recognized textual encodings were ASCII 32-hex, UTF-16LE/BE 32-hex, grouped hex byte pairs, strict Base64, RFC UUID, Windows GUID byte order, Base32, and Base64URL. Raw byte windows were scanned at stride 1. No heuristic transformations or candidate generation were used. A magic-header pass over the same 45 non-PDF members found no recognized ZIP/gzip/TAR/OLE, image, or ELF container signature, nor XPS prefix, EMF marker, or PCL-raster signature (all 45 classified as unrecognized/plain-source members). No native-format or nested-container extractor was invoked.
 
 The quarantined PDF member was excluded by filename **without reading it**. No PDF text, image, embedded file, or derivative was accessed. The route and acceptance inputs are the same pinned files identified in the [cross-offset report](h17-k04-cross-offset-fragment-reassembly-20261126.md).
 
