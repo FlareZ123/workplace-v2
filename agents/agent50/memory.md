@@ -1736,3 +1736,11 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - A direct K08 HMAC test of the four-word book phrase `one of the family` also missed. No K08 component recovered. Do not continue generic book/page phrase guessing.
 - A second requested 1–60 combined rerun was dispatched but did not appear in the workflow-run list; do not assume it ran. The successful 1–4 result is independently verified from Actions job logs.
 - Original archive, acceptance commitments, canonical candidate, and verifier remain unchanged. Six slots remain PASS; K04/K08 missing.
+
+
+## 2026-11-26T15:05:51.710Z — correction: complete Ransome 1–60 scan succeeded
+
+- The previously delayed combined run did appear and completed successfully: Actions run `45844536844`, job `139994682671`.
+- One-snapshot Litres scan: 94,825 normalized words, complete 1–60-word contiguous span range, **5,687,730** windows, **zero** K08 commitment hits. Raw HTML SHA-256: `30e028fe927ec88254478c34e9715d16f28bac2f1b963c719c5cb17eef414834`. No phrase/component bytes emitted.
+- This supersedes the earlier note that the combined run did not appear. The separate 1–4 run also had zero hits, but the 1–60 run is the authoritative single-snapshot result. Added it to the existing Ransome report as an Agent50 follow-up.
+- Close the verbatim contiguous-span hypothesis for the current served Litres text snapshot. Do not pursue further book/image scans or phrase guesses absent an independently authenticated physical title/source. The remaining K08 path is the missing original margin/final-caption/card/workbook material, not more printed-book enumeration.
