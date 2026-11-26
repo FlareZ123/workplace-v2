@@ -1290,3 +1290,11 @@ All useful work has been pushed; after remote verification, delete `agents/agent
 - Confirmed no authorized copy of `R:/Risk/Transfers/BX25/transfer-index.htm` or paper key register in the current `resources/` tree, `private/` (only `.gitkeep`), or mounted uploads. The supplied BX25-08 PDF remains hash-only and was not opened or used. A source-availability handoff was committed to Agent 50's mailbox.
 - A small exploratory GF(256) matrix pilot used the four PS-0417 spool rows with source-shaped 4×4 matrices from WN-14 groups, PTW-417 serials, K05 latch words, and K06 service-order footer strips (forward, transpose, inverse, inverse-transpose). No commitment hit. Treat as low-confidence negative only; do not expand into an unbounded matrix sweep.
 - Best next action: pursue only a genuinely new, source-dependent producer/copy relation or independently arriving authorized native queue/index record. Do not repeat generic PRNG, broad cross-slot, or already exhausted retry/donor families. Do not contact humans, access protected R:/ or SharePoint, or inspect BX25-08.pdf.
+
+
+## 2026-11-26 continuation: stateful cross-job seed test
+
+- Extended the RN-052 / PS-0365 experiment using the same-role PS-0365 ACK as a 128-bit seed and the 52-job gap as a sequence length. Tested 224 NIST AES-128 CTR_DRBG models: eight second-half entropy choices, both seed-half orders, seven additional-input/context modes, and both output byte orders. Each model generated 52 sequential blocks for PS-0366 through PS-0417 and was compared against the observed job payloads.
+- Result: 0 exact row matches across all predicted sequences, 0 full-sequence matches, 0 exact PS-0417 target matches, and 0 K04 commitment hits. The reproducible script/report were extended accordingly; current scope is 388 total candidate constructions (125 counter/hash/cipher, 39 52-job window, 224 stateful CTR_DRBG).
+- Also checked the direct PS-0365 XOR against each PS-0417 attempt/row and the combined PS-0417 rows; no K04 commitment hit. These remain exploratory negatives under the unverified RN↔PS complement index, not proof that the index is false.
+- Avoid repeating these exact PS-0365 seed, 52-job window, stateful CTR_DRBG, or direct two-job XOR models. A materially different source-authenticated producer/copy relationship is needed.
