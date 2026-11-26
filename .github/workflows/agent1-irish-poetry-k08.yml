@@ -25,6 +25,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: agent1-book-of-irish-poetry-1915-text
-          path: work/irish-poetry-1915.txt
+          path: |
+            work/irish-poetry-1915.txt
+            work/irish-poetry-1915-files.json
+            work/irish-poetry-1915-pages.*
           if-no-files-found: error
           retention-days: 7
