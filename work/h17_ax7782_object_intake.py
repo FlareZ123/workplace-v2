@@ -59,7 +59,16 @@ def is_pdf_candidate(name: str, data: bytes) -> bool:
     This is a quarantine preflight only. No PDF text, attachments, images, or
     rendered pages are opened unless a separate provenance policy is added.
     """
-    return str(name).casefold().endswith(".pdf") or b"%PDF-" in bytes(data[:PDF_MAGIC_WINDOW])
+    if str(name).casefold().endswith(".pdf"):
+        return True
+    prefix = bytes(data[:PDF_MAGIC_WINDOW])
+    # Do not mistake a ZIP/TAR/GZIP/OLE container that happens to contain a
+    # PDF member for a PDF itself; each member is checked recursively.
+    if (prefix.startswith((b"PK\\x03\\x04", b"PK\\x05\\x06", b"PK\\x07\\x08",
+                           b"\\x1f\\x8b", b"\\xd0\\xcf\\x11\\xe0\\xa1\\xb1\\x1a\\xe1"))
+            or prefix[257:262] == b"ustar"):
+        return False
+    return b"%PDF-" in prefix
 
 
 TERMS = (
