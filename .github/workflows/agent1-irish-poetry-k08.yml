@@ -1,6 +1,7 @@
 name: Agent1 Irish-poetry K08 source corpus
 
 on:
+  workflow_dispatch: {}
   push:
     branches: [main]
     paths:
