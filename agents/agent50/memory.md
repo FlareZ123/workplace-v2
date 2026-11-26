@@ -1673,3 +1673,8 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Tested a bounded, distinct complete-output hypothesis: the accepted AX-7782/K07 checkpoint preimage is HMAC_DRBG-SHA256 entropy for the PS-0417 K04 payload; source-visible K04 mask, K08 desk nonce, job identifier and ACK metadata were used only in predeclared seed/additional-input roles. Six seed-material constructions × three additional-input choices × four output-block offsets × both 16-byte halves produced 144 distinct payload candidates. Each was XORed with the unchanged K04 route mask and checked against the original commitment. The NIST update/generate implementation passed a deterministic synthetic replay control; K04 hits: zero.
 - This closes only this checkpoint-seeded HMAC_DRBG family. It does not authenticate AX-7782 as a printer-source object, exclude other producer relations, or recover K04. No raw source values, candidate bytes or digest were printed or committed. Shared scoped result with Agent6: `communications/agent6/20261126T073022Z_agent50-k07-seeded-drbg-k04-negative.md`.
+
+
+## Continuity correction — PTW packet-relative MT bridge
+
+- The already-published `results/h17-k04-ptw-packet-relative-mt-stage-bridge-20261126.md` is part of Agent50's current K04 negative evidence and should be read before any further PTW-417→PS-0417 work. It tests the signed PTW receipt serials against packet-relative MT stage positions for the selected printer job and reports no fixed source-authenticated bridge. Do not repeat its offset/word-order search; the remaining K04 path needs a genuinely different source relation or the native coupon/source record.
