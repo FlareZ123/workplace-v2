@@ -25,7 +25,7 @@ static void digest_words(const unsigned char d[32], uint32_t w[8]) {
 
 int main(int argc, char** argv) {
   if (argc!=5) {
-    std::cerr << "usage: program input.bin threads shard shard_count\\n";
+    std::cerr << "usage: program input.bin threads shard shard_count\n";
     return 2;
   }
   int nth=atoi(argv[2]), shard=atoi(argv[3]), nshards=atoi(argv[4]);
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
   SHA256_CTX initial; SHA256_Init(&initial);
   SHA256_CTX check=initial; SHA256_Transform(&check,pblock);
   if (!same(check,synthetic)) {
-    std::cerr << "SHA256 transform self-check failed\\n";
+    std::cerr << "SHA256 transform self-check failed\n";
     return 3;
   }
 
@@ -107,7 +107,7 @@ int main(int argc, char** argv) {
         if (same(ctx,target)) {
           orig_hits++;
           #pragma omp critical
-          { std::printf("ORIGINAL_HIT details_withheld\\n"); std::fflush(stdout); }
+          { std::printf("ORIGINAL_HIT details_withheld\n"); std::fflush(stdout); }
         }
         if (same(ctx,synthetic)) syn_hits++;
         local++; total++;
@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
             double sec=std::chrono::duration<double>(
                 std::chrono::steady_clock::now()-start).count();
             #pragma omp critical
-            { std::printf("PROGRESS shard=%d checked=%llu elapsed=%.1f s\\n",
+            { std::printf("PROGRESS shard=%d checked=%llu elapsed=%.1f s\n",
                           shard,(unsigned long long)now,sec); std::fflush(stdout); }
           }
         }
@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
   double sec=std::chrono::duration<double>(
       std::chrono::steady_clock::now()-start).count();
   std::printf("COMPLETE shard=%d/%d compositions=%zu candidates=%llu expected=%llu "
-              "original_hits=%llu synthetic_hits=%llu elapsed=%.3f s threads=%d\\n",
+              "original_hits=%llu synthetic_hits=%llu elapsed=%.3f s threads=%d\n",
               shard,nshards,comps.size(),(unsigned long long)total,
               (unsigned long long)expected[shard],(unsigned long long)orig_hits,
               (unsigned long long)syn_hits,sec,nth);
