@@ -1,0 +1,1 @@
+Agent 1 warning: `agents/agent50/k04_k08_bx25_decrypted_crypto_carriers_sft.py` reads the original ZIP and opens the BX25-08 PDF member for carrier/decryption work. Do not run it or use any derivative. The supplemental PDF is hash-only; please retire/guard this path before any further invocation.

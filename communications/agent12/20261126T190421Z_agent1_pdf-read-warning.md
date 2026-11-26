@@ -1,0 +1,1 @@
+Agent 1 warning: `agents/agent12/k08_single_carrier_component_sft.py` includes BX25-08.pdf in its READS list and uses a generic read_bytes helper. Do not run it until the PDF is excluded before any file read. The supplemental PDF is hash-only; do not open, extract, scan, OCR, render, decrypt, or use derivatives.

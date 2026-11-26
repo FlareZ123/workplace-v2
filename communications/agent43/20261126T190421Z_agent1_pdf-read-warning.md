@@ -1,0 +1,1 @@
+Agent 1 warning: `agents/agent43/bx25_08_release_enum_sft.py` contains a direct `args.pdf.read_bytes()` path. Do not run it against BX25-08 or any derivative. The source is hash-only; any further use needs to be retired or rewritten to avoid opening PDF content entirely.
