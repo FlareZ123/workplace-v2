@@ -12,7 +12,7 @@ The local source MAIL-09 says a book with a map in the back belongs to David and
 - Tested text: the final 821 normalized source words from the chapter ending, including the end of Chapter XX and therefore its page-212 endpoint in the 1903 pagination.
 - Candidate family: every contiguous normalized span of 1–48 words (38,280 spans).
 - Normalization: lowercase; replace every character outside ASCII a–z, digits, and whitespace with a space; collapse whitespace; trim. This matches the K08 route rule.
-- Check: HMAC-SHA256 using the route's decoded desk_nonce as key, normalized UTF-8 phrase as message, first 16 digest bytes against the K08 acceptance commitment.
+- Check: compute component = HMAC-SHA256(decoded desk_nonce, normalized UTF-8 phrase)[:16], then compare SHA256(component) with acceptance.slot_sha256.K08. The final 38,280-span count is from this two-stage check.
 - Result: **0/38,280 matches**. Several obvious chapter-end sentences were also checked directly; none matched.
 
 ## Interpretation and limits
