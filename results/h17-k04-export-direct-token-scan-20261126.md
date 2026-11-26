@@ -6,18 +6,18 @@ Does the supplied local export already contain a complete 16-byte K04 component 
 
 ## Method
 
-For every non-PDF member of the supplied archive, scan every raw 16-byte window and each standalone 16-byte representation recognized by the exact-token scanner in [h17_k04_binary_window_intake.py](../work/h17_k04_binary_window_intake.py). For each decoded 16-byte block B, test both:
+A standalone local implementation of the exact-token scan patterns in [h17_k04_binary_window_intake.py](../work/h17_k04_binary_window_intake.py) scanned every raw 16-byte window and each recognized standalone 16-byte representation in every non-PDF member of the supplied archive. For each decoded 16-byte block B, test both:
 
 - `SHA256(B) == K04 commitment` (direct component);
 - `SHA256(B XOR route_mask) == K04 commitment` (source payload under the published route rule).
 
-Recognized textual encodings were ASCII 32-hex, UTF-16LE/BE 32-hex, grouped hex byte pairs, strict Base64, RFC UUID, Windows GUID byte order, Base32, and Base64URL. Raw byte windows were scanned at stride 1. No heuristic transformations or candidate generation were used.
+Recognized textual encodings were ASCII 32-hex, UTF-16LE/BE 32-hex, grouped hex byte pairs, strict Base64, RFC UUID, Windows GUID byte order, Base32, and Base64URL. Raw byte windows were scanned at stride 1. No heuristic transformations or candidate generation were used. No OLE/CFB, XPS/EMF/PCL, image, PDF, or nested-container extractor was invoked; those native formats are absent from the non-PDF member set.
 
-The quarantined PDF member was excluded by filename **without reading it**. No PDF text, image, embedded file, or derivative was accessed.
+The quarantined PDF member was excluded by filename **without reading it**. No PDF text, image, embedded file, or derivative was accessed. The route and acceptance inputs are the same pinned files identified in the [cross-offset report](h17-k04-cross-offset-fragment-reassembly-20261126.md).
 
 ## Scope and result
 
-<badge color="success">No direct or masked hits</badge>
+**Result: no direct or masked commitment hits.**
 
 - Archive members: 46 total; 45 non-PDF members scanned.
 - Bytes scanned: 112,866.
