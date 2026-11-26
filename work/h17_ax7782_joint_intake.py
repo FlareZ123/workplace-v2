@@ -175,7 +175,7 @@ def main() -> int:
     parser.add_argument("--transfer", default="AX-7782")
     parser.add_argument("--ocr", action="store_true")
     parser.add_argument("--pdf-password", help="password for an independently authorized PDF; never guessed")
-    parser.add_argument("--allow-pdf-source", action="store_true", help="attest independent provenance for non-quarantined PDFs; never use for BX25-08 or derivatives")
+    parser.add_argument("--allow-pdf-source", action="store_true", help="attest independent provenance for K08 phrase PDF intake only; never use for BX25-08 or derivatives")
     parser.add_argument("--max-phrase-words", type=int, default=48)
     parser.add_argument("--stride", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=300)

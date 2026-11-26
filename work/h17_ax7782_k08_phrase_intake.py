@@ -420,7 +420,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                         errors.append({"source": f"{name}!/{item.filename}", "error": str(exc)})
                         continue
                     content_yielded = True
-                    yield from iter_text_streams(f"{name}!/{item.filename}", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
+                    yield from iter_text_streams(f"{name}!/{item.filename}", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source)
         except (zipfile.BadZipFile, OSError, RuntimeError) as exc:
             errors.append({"source": name, "error": str(exc)})
             unreadable_member = True
@@ -454,7 +454,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                             yield f"{name}!/<member-name>", item.name.encode("utf-8", "replace")
                         if item.pax_headers:
                             yield f"{name}!/{item.name}<pax-headers>", json.dumps(item.pax_headers).encode("utf-8", "replace")
-                        yield from iter_text_streams(f"{name}!/{item.name}", stream.read(intake.MAX_MEMBER + 1), depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
+                        yield from iter_text_streams(f"{name}!/{item.name}", stream.read(intake.MAX_MEMBER + 1), depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source)
         except (tarfile.TarError, OSError, EOFError) as exc:
             errors.append({"source": name, "error": str(exc)})
         if not yielded and not opaque_member_seen:
@@ -467,7 +467,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             with gzip.GzipFile(fileobj=io.BytesIO(data)) as stream:
                 child = stream.read(intake.MAX_MEMBER + 1)
             if len(child) <= intake.MAX_MEMBER:
-                yield from iter_text_streams(f"{name}!/<gzip-payload>", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
+                yield from iter_text_streams(f"{name}!/<gzip-payload>", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source)
             else:
                 errors.append({"source": name, "error": "gzip member exceeds size cap"})
         except (OSError, EOFError) as exc:
@@ -507,7 +507,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield f"{name}!/{filename}", body.encode("utf-8", "replace")
                 else:
                     yielded = True
-                    yield from iter_text_streams(f"{name}!/{filename}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
+                    yield from iter_text_streams(f"{name}!/{filename}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source)
         except Exception as exc:
             errors.append({"source": name, "error": f"MIME extraction failed: {exc}"})
         if not yielded:
@@ -728,7 +728,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                             f"{name}!/{stream_name}", payload, errors,
                         )
                     yielded = True
-                    yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
+                    yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source)
         except ImportError:
             if not yielded or fallback_used:
                 errors.append({"source": name, "error": "olefile unavailable; non-Office embedded OLE streams may not be decoded"})
@@ -780,7 +780,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     for image_index, image in enumerate(page.images):
                         if image.data:
                             content_yielded = True
-                            yield from iter_text_streams(f"{name}!/<page-{index + 1}-image-{image_index}>", image.data, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
+                            yield from iter_text_streams(f"{name}!/<page-{index + 1}-image-{image_index}>", image.data, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source)
                 except Exception:
                     pass
                 if ocr and index < 20:
@@ -803,7 +803,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 for index, payload in enumerate(payloads):
                     if isinstance(payload, bytes):
                         content_yielded = True
-                        yield from iter_text_streams(f"{name}!/{filename}[{index}]", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
+                        yield from iter_text_streams(f"{name}!/{filename}[{index}]", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source)
         except Exception as exc:
             errors.append({"source": name, "error": f"PDF extraction unavailable (no password guessing): {exc}"})
         if not content_yielded:
