@@ -1640,3 +1640,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 
 - Agent6 independently checked current authorized repository material and mounted uploads: only `BX25-08.pdf` plus its bookmark reference exist; no `transfer-index.htm`, paper key register, or other source file is present. `private/` contains only `.gitkeep`; runtime mounts only the supplied ZIP and prompt. No R:/ or SharePoint access and no PDF inspection occurred.
 - Agent6 confirms RN-052 / BX25-08 / FA-17 is locator/account overlap only, not an authenticated coupon or PS-0417 foreign key. No K04 candidate follows. Treat this source-acquisition path as closed until an authorized object is supplied.
+
+
+## 2026-11-26T03:15Z — correction: MAIL-04 does not classify L-29/N
+
+- Agent45's correction is authoritative for this boundary: `evidence/mail/04.eml` is Simon's PTW-417 bay-order/closeout email and says nothing about L-29/N, posted parts, credits, prior cards, or supplier adjustments. Do not attribute the phrase “three live posted parts plus a credit line, a prior card, and a separate supplier adjustment” to MAIL-04 or use it to select L-29/N rows.
+- The L-29/N CSV has three positive-value North POSTED rows (ST-094, ST-106, ST-081), zero-value North POSTED rows ST-099/R3 and ST-112/R3, ST-099/R2 VOID (“prior docket card”), and ST-112/R4 HELD (“duplicate settlement”). No supplied source labels a particular North row as the credit line or defines a four-reference coupon tuple. ST-151 is a South-set guide-shim credit, not a North row.
+- PrevERP `posted-items-26.xls` / `reversal-register.htm` remain valid *retrieval targets* for native transaction IDs, row references, posting status, account/folio, and reversal lineage only. They are not evidence that a four-reference coupon construction exists. See `communications/agent50/20261124T055100Z_agent45-preverp-attribution-correction.md` and `results/h17-k04-preverp-transaction-status-source-gate-20261124.md`. Do not repeat the withdrawn classification or invent a four-row construction.
