@@ -1621,3 +1621,9 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - The actual `print-fleet-retirement-note.txt` is a Stores/property-card return register, not printer protocol documentation. `ESC-N` is the cabinet lane for PS-261003-0417, mapped to L-29/N, account FA-17, filing reference H17-POL-17/A3; do not interpret ESC-N as an ESC/P command or fax framing.
 - The only local print source file is `evidence/print/spool-reconstruction.log`. Its PS-0417 rows are index 117 (16:45 LABEL/ACK), 128 (18:01 RECOVER attempt-1 REQUESTED), 129 (18:02 RECOVER attempt-2 ACK, selected control row), and 130 (18:03 RECOVER attempt-3 REQUESTED). The attempt-2 REQUESTED body and its binding to ACK2 are absent; no native `.SPL/.SHD` or queue/job manifest is present in the supplied ZIP.
 - The ACK2 payload is not a verified physical coupon and its masked candidate fails K04. The best next discriminator remains the native attempt-2 request/queue journal plus its binding record, a complete driver-level job image, or a physical coupon/bench handoff receipt. Do not treat the ACK row as the missing request body.
+
+
+## 2026-11-26T03:10Z — BX25-08 provenance boundary
+
+- The local `supplier-reconciliation-L29.csv` contains `RN-052 | RISK | R1 | FILED | FA-17 | BX25/08 | property annex scan inward transfer`, identifying the supplied `BX25-08.pdf` as that property-annex transfer. PS-0417 is also recorded under FA-17, but this account-level overlap does not prove that the PDF contains the K04 coupon or binds to the printer job.
+- Current `results/README.md` explicitly keeps BX25-08 hash-only: do not open, decrypt, OCR, render, extract, scan, or rely on any derivative. The independent paper key register and transfer index remain unprovided. Preserve the quarantine; no attempt was made to inspect the PDF.
