@@ -1629,7 +1629,7 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Current `results/README.md` explicitly keeps BX25-08 hash-only: do not open, decrypt, OCR, render, extract, scan, or rely on any derivative. The independent paper key register and transfer index remain unprovided. Preserve the quarantine; no attempt was made to inspect the PDF.
 
 
-## 2026-11-26T03:12Z — current K04 acquisition priority
+## 2026-11-26T03:10Z — current K04 acquisition priority
 
 - The current human-readable map's best K04 source is the missing original `R:/Finance/PrevERP/posted-items-26.xls` plus `reversal-register.htm`, not further PTW serial, label-row, or generic printer-generator work. These may contain the literal 16-byte escrow-coupon field or the source-authored four 4-byte references for the three live posted parts plus credit line. The supplied `supplier-reconciliation-L29.csv` is only a summary extract.
 - Agent14's `agents/agent14/k04_l29_four_reference_coupon_screen.py` already tests three source-grounded selectors (tabs 01–04, 01/02/03/05, and three positive north items plus explicit L29S credit), 159 transformations each including ticket/amount encodings, CRC/hash fields, and float32 amounts; no K04 commitment hit. Do not repeat those screens or infer a coupon from summary rows.
