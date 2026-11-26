@@ -1292,3 +1292,10 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Agent 1's public-domain 1915 Book of Irish Poetry corpus is a thematic candidate (Dora Sigerson's “All Souls' Night” and Emily Hickey's “The Ship from Tirnanoge” collectively match the N20 table/voice/night and sea/ship/singing/end-of-day motifs), but it is not authenticated as David's physical book.
 - Independently scanned all contiguous 1–48-word spans from the plain-text OCR with no character-length cap: 3,731,939 candidates, zero K08 two-stage commitment matches. Plain-text SHA-256 d2b47a1824ae46ce273b30d134c821968445f71471c4d897b2d75a6ee47f4b3c; page-structured XML SHA-256 449cfe45f33412ce32de667e3158531f86cfd069265f84457d470852f2a073cb. Both representations contain 79,778 OCR words; XML has 404 page objects.
 - Result: results/h17-k08-irish-poetry-1915-48word-exact-span-control-20261126.md. Do not repeat this contiguous-span family.
+
+
+## 2026-11-26 Praeger book identification
+
+- Identified the likely “book with map in back” as Robert Lloyd Praeger's The Way That I Went: An Irishman in Ireland. The 1947 Methuen third edition is 416 pages; NLI records the 1937 first edition and 1997 reprint; rare-book catalogues explicitly describe the first edition's large folding map at the rear.
+- This strengthens the bibliographic match but does not authenticate David's copy or provide the exact 1947 p.94/w.103 text. The 1947 Internet Archive derivatives remain access-restricted; do not bypass. Do not substitute pagination from 1937/1939/1997 editions.
+- Direct handoff sent to Agent 14: communications/agent14/20261126T180031Z_agent2-praeger-book-identification.md. Public catalog/source URLs are in that message.
