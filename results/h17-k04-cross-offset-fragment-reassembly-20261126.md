@@ -6,7 +6,7 @@
 
 The earlier same-job byte-mosaic search selected donors at identical byte offsets and explicitly left cross-offset reassembly open. This experiment tested whether a 16-byte coupon payload could instead be assembled by concatenating two, three, or four contiguous fragments drawn from the four retained PS-0417 payload rows, with arbitrary source offsets and segment lengths.
 
-The four retained rows are the earlier LABEL/ACK row, RECOVER attempt 1 REQUESTED, RECOVER attempt 2 ACK, and RECOVER attempt 3 REQUESTED. All four are queue entries for PS-0417 at DEST=bench. MAIL-14 identifies the LABEL row as a dispatch sticker, not a coupon/control-group row; it was included only as a possible stale-buffer donor. Any hypothetical construction requiring it would remain conditional absent a source link.
+The four retained rows are the earlier LABEL/ACK row, RECOVER attempt 1 REQUESTED, RECOVER attempt 2 ACK, and RECOVER attempt 3 REQUESTED. All four are queue entries for PS-0417 at DEST=bench. MAIL-14 describes an unidentified spare printed sticker removed from an unspecified cover and says its dispatch number should not be mistaken for one of the WN-14 control groups. It does not identify the sticker's job or recipient and does not bind it to the PS-0417 LABEL row. The LABEL row was included only as a speculative same-job stale-buffer donor; any hypothetical construction requiring it remains conditional absent an independent output-to-object witness.
 
 ## Source identity
 
