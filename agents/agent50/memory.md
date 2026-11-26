@@ -1614,3 +1614,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Reviewed the PTW/PS/GF256 prior art before considering alternatives. The suffix join is not an authenticated foreign key; existing work already covers PTW raw/digest/PRNG emitters, source-paired affine publishers, rolling PTW→PS generators, and PTW/recorder MT interleavings. Do not replace the LABEL row with a PTW row in another generic 2^32 coefficient sweep absent a source-authored mapping or independent held-out evidence.
 - Small bounded controls in this incarnation (PCG32 K07-seed→PS-0417 attempt stream; PTW-417 128-bit PCG state/increment; simple PTW serial→packet digest/PCG32/UUID forms; AS_LEFT↔REMOVED and revision-1↔revision-2 serial deltas) produced no exact source-packet or K04 commitment hit. These are not promoted results; do not expand them into generic generator/hash/encoding grids.
 - No new source object or complete K04/K08 construction was recovered. Canonical candidate, acceptance, verifier, route masks/nonces, and source evidence remain unchanged.
+
+
+## 2026-11-26T03:07Z — PS-0417 request/ACK boundary
+
+- The actual `print-fleet-retirement-note.txt` is a Stores/property-card return register, not printer protocol documentation. `ESC-N` is the cabinet lane for PS-261003-0417, mapped to L-29/N, account FA-17, filing reference H17-POL-17/A3; do not interpret ESC-N as an ESC/P command or fax framing.
+- The only local print source file is `evidence/print/spool-reconstruction.log`. Its PS-0417 rows are index 117 (16:45 LABEL/ACK), 128 (18:01 RECOVER attempt-1 REQUESTED), 129 (18:02 RECOVER attempt-2 ACK, selected control row), and 130 (18:03 RECOVER attempt-3 REQUESTED). The attempt-2 REQUESTED body and its binding to ACK2 are absent; no native `.SPL/.SHD` or queue/job manifest is present in the supplied ZIP.
+- The ACK2 payload is not a verified physical coupon and its masked candidate fails K04. The best next discriminator remains the native attempt-2 request/queue journal plus its binding record, a complete driver-level job image, or a physical coupon/bench handoff receipt. Do not treat the ACK row as the missing request body.
