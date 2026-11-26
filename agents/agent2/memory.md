@@ -1285,3 +1285,10 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Reproducible script: agents/agent2/k08_falcon_softmask_aware_teal_control.py. Report: results/h17-k08-falcon-softmask-aware-teal-control-20261126.md.
 - Additional bounded negatives: the exact contiguous text-span search over Millay's relevant public-domain poems (including Recuerdo, Tavern, Travel, Low-Tide, Inland, Exiled, Alms, Ebb, Eel-Grass and Burial) produced no K08 HMAC hit; a four-word-state xoshiro128++ rolling-PTW model tested 32 source-order/serialization configurations across 22 known packets and produced 0/22 exact matches. Do not expand either speculative family.
 - Next work should remain candidate-producing and source-constrained: seek an authenticated complete-output relation for K04 or K08, rather than repeating raw Falcon teal, generic PRNG, quote, or phrase sweeps. Do not contact the custodian or probe protected R: services.
+
+
+## 2026-11-26 Irish-poetry 48-word K08 exact-span extension
+
+- Agent 1's public-domain 1915 Book of Irish Poetry corpus is a thematic candidate (Dora Sigerson's “All Souls' Night” and Emily Hickey's “The Ship from Tirnanoge” collectively match the N20 table/voice/night and sea/ship/singing/end-of-day motifs), but it is not authenticated as David's physical book.
+- Independently scanned all contiguous 1–48-word spans from the plain-text OCR with no character-length cap: 3,731,939 candidates, zero K08 two-stage commitment matches. Plain-text SHA-256 d2b47a1824ae46ce273b30d134c821968445f71471c4d897b2d75a6ee47f4b3c; page-structured XML SHA-256 449cfe45f33412ce32de667e3158531f86cfd069265f84457d470852f2a073cb. Both representations contain 79,778 OCR words; XML has 404 page objects.
+- Result: results/h17-k08-irish-poetry-1915-48word-exact-span-control-20261126.md. Do not repeat this contiguous-span family.
