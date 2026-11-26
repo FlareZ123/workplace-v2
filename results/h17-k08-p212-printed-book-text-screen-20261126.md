@@ -8,7 +8,7 @@ The final K08 phrase may be a contiguous normalized span in text associated with
 
 ## Tests
 
-Both tests used the exact K08 normalization from the route: lowercase; replace characters outside ASCII a–z, digits and whitespace with spaces; collapse whitespace; trim. Each normalized UTF-8 candidate was checked as HMAC-SHA256 using the decoded desk_nonce as key, comparing the first 16 digest bytes with the K08 acceptance commitment. Candidate spans were contiguous, 1–48 words.
+Both tests used the exact K08 normalization from the route: lowercase; replace characters outside ASCII a–z, digits and whitespace with spaces; collapse whitespace; trim. Each candidate produced component = HMAC-SHA256(decoded desk_nonce, normalized UTF-8 phrase)[:16]; SHA256(component) was compared with acceptance.slot_sha256.K08. The final counts below are from this two-stage check. Candidate spans were contiguous, 1–48 words.
 
 | Candidate text | Source window | Words | Spans tested | Matches |
 |---|---|---:|---:|---:|
@@ -21,6 +21,10 @@ Sources:
 - `results/h17-k08-p212-book-candidate-crosscheck-20261119.md`.
 - Praeger excerpt: *Woven Shades of Green*, “From Chapter 8: The Land of Naked Limestone,” reproducing Praeger pp. 211–218: https://dokumen.pub/woven-shades-of-green-an-anthology-of-irish-nature-literature-9781684481415.html
 - Childers 1903 text: https://www.metrici.com/ebta/titles/the_riddle_of_the_sands/the_riddle_of_the_sands_pdf.pdf
+
+## Method correction
+
+An initial draft described the comparison imprecisely. The final counts are from the correct two-stage check: HMAC16 produces the component, then SHA256(component) is compared with the slot commitment. The earlier raw-HMAC-to-slot comparison is invalid and superseded.
 
 ## Interpretation
 
