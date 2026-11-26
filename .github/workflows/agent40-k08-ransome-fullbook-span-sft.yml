@@ -6,6 +6,16 @@ on:
         description: 'New independently checked, legally available complete-edition TXT or HTML URL'
         required: true
         type: string
+      min_words:
+        description: 'Minimum normalized contiguous phrase length (1–60)'
+        required: false
+        default: 5
+        type: number
+      max_words:
+        description: 'Maximum normalized contiguous phrase length (1–60)'
+        required: false
+        default: 60
+        type: number
 permissions:
   contents: read
 jobs:
@@ -17,6 +27,8 @@ jobs:
       - name: Scan every normalized contiguous phrase span
         env:
           H17_RANSOME_SOURCE_URL: ${{ inputs.complete_book_url }}
+          H17_MIN_WORDS: ${{ inputs.min_words }}
+          H17_MAX_WORDS: ${{ inputs.max_words }}
         run: |
           python agents/agent40/k08_ransome_fullbook_span_sft.py \
             resources/evidence/recovery-routing.json \
