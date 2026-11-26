@@ -36,4 +36,4 @@ This result should be considered alongside, not as a replacement for, the existi
 
 ## Reproducibility
 
-The extraction is a deterministic read-only pass over `resources/evidence/crew/noticeboard-and-desk-notes.txt`. It uses note IDs and first prose tokens only; no candidate phrase, K08 nonce, component bytes, acceptance digest, or secret-bearing diagnostic is written here. The result is a locator hypothesis, not a recovered component.
+The extraction is a deterministic read-only pass over `resources/evidence/crew/noticeboard-and-desk-notes.txt`, reproduced by [`work/h17_k08_first_token_acrostic.py`](../work/h17_k08_first_token_acrostic.py). It uses note IDs and first prose tokens only; no candidate phrase, K08 nonce, component bytes, acceptance digest, or secret-bearing diagnostic is written here. The result is a locator hypothesis, not a recovered component.
