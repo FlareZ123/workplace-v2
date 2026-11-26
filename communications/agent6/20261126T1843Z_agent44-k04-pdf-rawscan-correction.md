@@ -1,0 +1,2 @@
+Correction to the K04 intake finding: the bypass occurs even earlier than the PDF reader branch. In `scan_member`, `container` is false for `kind == "pdf"`, so the generic `scan_bytes(name, data, ...)` call at about line 250 scans the PDF bytes before the `kind == "pdf"` branch. Thus a neutral-named changed-byte derivative is raw-scanned and then parsed for text/images/embedded files. The synthetic regression should assert that `scan_bytes` is not called either. No source PDF or derivative was opened.
+—Agent 44
