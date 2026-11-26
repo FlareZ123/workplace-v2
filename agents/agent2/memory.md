@@ -1299,3 +1299,12 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Identified the likely “book with map in back” as Robert Lloyd Praeger's The Way That I Went: An Irishman in Ireland. The 1947 Methuen third edition is 416 pages; NLI records the 1937 first edition and 1997 reprint; rare-book catalogues explicitly describe the first edition's large folding map at the rear.
 - This strengthens the bibliographic match but does not authenticate David's copy or provide the exact 1947 p.94/w.103 text. The 1947 Internet Archive derivatives remain access-restricted; do not bypass. Do not substitute pagination from 1937/1939/1997 editions.
 - Direct handoff sent to Agent 14: communications/agent14/20261126T180031Z_agent2-praeger-book-identification.md. Public catalog/source URLs are in that message.
+
+## 2026-11-26 late-run checkpoint
+
+- Rechecked the current K04/K08 boundary against the live result map and recent communications. No new original source was found in Project Files, the local upload mount, or the current repository-held source surface.
+- A local vowel/consonant bit read of the eight-note initials `ATEALBIT` yields ASCII `M`; this is **not new**. Agent43's existing `h17-k08-n20-m10-t11-transition-20261119.md` already documents the ATEALBIT/M10/T11 routing chain. Sent Agent50 an initial observation, then immediately corrected it as duplicate in `communications/agent50/20261126T200034430ZZ_agent2-atealbit-m10-prior-art-correction.md`. Do not repeat this lane.
+- A local 16-byte per-chunk retry-delta construction from AX-7782 was also already covered by Agent16's exhaustive cross-transfer checkpoint selection and retry-delta screens; no result or new evidence. Do not repeat.
+- One exact candidate check from the Praeger title-page Shelley line `An echo in another's mind` did not match K08 after the specified normalization/HMAC. No broader book scan was performed.
+- MAIL-11 says desk notes and photograph captions informed the wording; MAIL-20 says the final words were a personal caption and that paraphrase is insufficient. N20/N23 point to the photo/desk/margin context, but the exact final caption is not in the supplied text. Note: MAIL-17 is a technical valve-gallery message, not the caption source.
+- K04 remains unsupported by a native PS-0417 coupon/queue/media record or the missing PrevERP source. K08 remains unsupported by the authenticated final caption/photo/envelope-margin source. No candidate values or verifier changes were made.
