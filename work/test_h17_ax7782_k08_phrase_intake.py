@@ -101,21 +101,22 @@ class K08PhraseIntakeTests(unittest.TestCase):
                 f"{name}: decoded carrier did not reach K08 commitment scan",
             )
 
-    def test_opaque_bx25_pdf_is_skipped_before_magic_even_with_password(self):
-        name = str(SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf")
-        payload = b"%PDF-1.7 synthetic hash-only fixture"
-        digest = hashlib.sha256(payload).hexdigest()
+    def test_source_named_bx25_pdf_is_skipped_before_magic_even_with_password(self):
+        # Synthetic fixture only; never read the quarantined source bytes.
+        name = "BX25-08.pdf"
+        payload = b"%PDF-1.7 synthetic quarantined-member fixture"
         errors = []
         budget = [0]
-        with patch.object(phrase_intake.intake, "is_opaque_pdf_hash", return_value=True), patch.object(phrase_intake.intake, "magic", side_effect=AssertionError("opaque PDF reached content classification")):
+        with patch.object(phrase_intake.intake, "magic", side_effect=AssertionError("opaque PDF reached content classification")):
             streams = list(phrase_intake.iter_text_streams(
                 name, payload, 0, budget, errors, pdf_password="must-not-be-used"
             ))
         self.assertEqual(streams, [])
         self.assertEqual(errors, [{
-            "source": name, "status": "skipped_opaque_pdf",
-            "size": len(payload), "sha256": digest,
+            "source": name, "status": "skipped_opaque_pdf_by_name",
+            "size": len(payload), "pinned_sha256": phrase_intake.intake.OPAQUE_PDF_SHA256,
         }])
+        self.assertNotIn("sha256", errors[0])
         self.assertEqual(budget, [len(payload)])
 
     def test_source_named_bx25_derivative_is_skipped_before_magic_or_ocr(self):
