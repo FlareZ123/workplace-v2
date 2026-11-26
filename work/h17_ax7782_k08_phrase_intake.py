@@ -294,7 +294,8 @@ def iter_msg_rtf_text(name: str, payload: bytes,
 def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                       errors: list[dict], ocr: bool = False,
                       pdf_password: str | None = None,
-                      style_metadata: list[dict] | None = None) -> Iterator[tuple[str, bytes]]:
+                      style_metadata: list[dict] | None = None,
+                      allow_pdf_source: bool = False) -> Iterator[tuple[str, bytes]]:
     """Yield text-bearing leaf streams and decoded document text in memory."""
     opaque_sha256 = hashlib.sha256(data).hexdigest()
     if opaque_sha256 == intake.OPAQUE_PDF_SHA256:
@@ -307,7 +308,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         errors.append({"source": name, "status": "skipped_opaque_pdf_by_name",
                        "size": len(data), "pinned_sha256": intake.OPAQUE_PDF_SHA256})
         return
-    if intake.is_pdf_candidate(name, data):
+    if intake.is_pdf_candidate(name, data) and not allow_pdf_source:
         budget[0] += len(data)
         errors.append({"source": name, "status": "skipped_pdf_pending_provenance",
                        "size": len(data)})
@@ -317,7 +318,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
     if budget[0] + len(data) > intake.MAX_TOTAL or len(data) > intake.MAX_MEMBER:
         return
     budget[0] += len(data)
-    kind = intake.magic(data)
+    kind = "pdf" if intake.is_pdf_candidate(name, data) else intake.magic(data)
     is_container = kind in {"zip", "tar", "gzip", "ole-compound"} or name.casefold().endswith(".eml")
     if depth > intake.MAX_DEPTH:
         if is_container:
@@ -419,7 +420,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                         errors.append({"source": f"{name}!/{item.filename}", "error": str(exc)})
                         continue
                     content_yielded = True
-                    yield from iter_text_streams(f"{name}!/{item.filename}", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
+                    yield from iter_text_streams(f"{name}!/{item.filename}", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
         except (zipfile.BadZipFile, OSError, RuntimeError) as exc:
             errors.append({"source": name, "error": str(exc)})
             unreadable_member = True
@@ -453,7 +454,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                             yield f"{name}!/<member-name>", item.name.encode("utf-8", "replace")
                         if item.pax_headers:
                             yield f"{name}!/{item.name}<pax-headers>", json.dumps(item.pax_headers).encode("utf-8", "replace")
-                        yield from iter_text_streams(f"{name}!/{item.name}", stream.read(intake.MAX_MEMBER + 1), depth + 1, budget, errors, ocr, pdf_password, style_metadata)
+                        yield from iter_text_streams(f"{name}!/{item.name}", stream.read(intake.MAX_MEMBER + 1), depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
         except (tarfile.TarError, OSError, EOFError) as exc:
             errors.append({"source": name, "error": str(exc)})
         if not yielded and not opaque_member_seen:
@@ -466,7 +467,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             with gzip.GzipFile(fileobj=io.BytesIO(data)) as stream:
                 child = stream.read(intake.MAX_MEMBER + 1)
             if len(child) <= intake.MAX_MEMBER:
-                yield from iter_text_streams(f"{name}!/<gzip-payload>", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
+                yield from iter_text_streams(f"{name}!/<gzip-payload>", child, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
             else:
                 errors.append({"source": name, "error": "gzip member exceeds size cap"})
         except (OSError, EOFError) as exc:
@@ -506,7 +507,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield f"{name}!/{filename}", body.encode("utf-8", "replace")
                 else:
                     yielded = True
-                    yield from iter_text_streams(f"{name}!/{filename}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
+                    yield from iter_text_streams(f"{name}!/{filename}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
         except Exception as exc:
             errors.append({"source": name, "error": f"MIME extraction failed: {exc}"})
         if not yielded:
@@ -562,7 +563,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield from iter_m10_teal_bit_text(shape_source, image_data, errors)
                     yield from iter_text_streams(
                         f"{shape_source}.{image_format}", image_data, depth + 1,
-                        budget, errors, ocr, pdf_password, style_metadata,
+                        budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source,
                     )
             except Exception as exc:
                 errors.append({
@@ -579,7 +580,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 fallback_used = True
                 for source, payload in iter_text_streams(
                     f"{name}!/LibreOffice-converted.docx", converted_docx,
-                    depth + 1, budget, errors, ocr, pdf_password,
+                    depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source,
                 ):
                     yielded = True
                     yield source, payload
@@ -711,7 +712,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             yield from iter_m10_teal_bit_text(image_source, image_data, errors)
             yield from iter_text_streams(
                 image_source, image_data, depth + 1, budget, errors,
-                ocr, pdf_password, style_metadata,
+                ocr, pdf_password, style_metadata, allow_pdf_source,
             )
         try:
             import olefile
@@ -727,7 +728,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                             f"{name}!/{stream_name}", payload, errors,
                         )
                     yielded = True
-                    yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
+                    yield from iter_text_streams(f"{name}!/{stream_name}", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
         except ImportError:
             if not yielded or fallback_used:
                 errors.append({"source": name, "error": "olefile unavailable; non-Office embedded OLE streams may not be decoded"})
@@ -779,7 +780,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     for image_index, image in enumerate(page.images):
                         if image.data:
                             content_yielded = True
-                            yield from iter_text_streams(f"{name}!/<page-{index + 1}-image-{image_index}>", image.data, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
+                            yield from iter_text_streams(f"{name}!/<page-{index + 1}-image-{image_index}>", image.data, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
                 except Exception:
                     pass
                 if ocr and index < 20:
@@ -802,7 +803,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                 for index, payload in enumerate(payloads):
                     if isinstance(payload, bytes):
                         content_yielded = True
-                        yield from iter_text_streams(f"{name}!/{filename}[{index}]", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata)
+                        yield from iter_text_streams(f"{name}!/{filename}[{index}]", payload, depth + 1, budget, errors, ocr, pdf_password, style_metadata, allow_pdf_source, allow_pdf_source)
         except Exception as exc:
             errors.append({"source": name, "error": f"PDF extraction unavailable (no password guessing): {exc}"})
         if not content_yielded:
@@ -942,7 +943,8 @@ def scan_authored_text_units(text: str, nonce: bytes, target: bytes, source: str
 @redact_by_default
 def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                    ocr: bool = False, max_phrase_words: int = 48,
-                   pdf_password: str | None = None) -> dict:
+                   pdf_password: str | None = None,
+                   allow_pdf_source: bool = False) -> dict:
     selected, transfer_meta = intake.select_chain(resources, transfer_id)
     if not transfer_meta.get("handoff_email_confirms_retained_object"):
         raise ValueError("MAIL-13 does not confirm the retained AX-7782 object")
@@ -968,7 +970,7 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
     streams = 0
     spans_tested = 0
     authored_units_tested = 0
-    for source, stream_data in iter_text_streams(path.name, data, 0, budget, errors, ocr, pdf_password, workbook_style_metadata):
+    for source, stream_data in iter_text_streams(path.name, data, 0, budget, errors, ocr, pdf_password, workbook_style_metadata, allow_pdf_source):
         streams += 1
         seen_normalized: set[str] = set()
         for label, text in decode_text_variants(stream_data, source):
@@ -996,12 +998,13 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                        "max_phrase_words": max_phrase_words,
                        "original_commitment_hits": hits,
                        "ocr_enabled": ocr,
-                       "pdf_password_supplied": pdf_password is not None},
+                       "pdf_password_supplied": pdf_password is not None,
+                       "pdf_source_authorized": allow_pdf_source},
         "workbook_style_metadata": workbook_style_metadata,
         "errors_or_unavailable_decoders": errors,
         "limits": [
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
-            "All .pdf/PDF-magic members are skipped pending independent provenance; --pdf-password does not override this quarantine.",
+            "PDF members are skipped unless --allow-pdf-source explicitly attests independent provenance; the pinned BX25-08 source and path-preserving derivatives remain blocked regardless.",
             "OCR is optional and may not reliably transcribe handwritten marginalia; visually inspect original images when needed.",
             "7z/RAR and SQLite databases other than named Windows Sticky Notes plum.sqlite members are not decoded by this path; the joint runner adds a read-only plum.sqlite/WAL bridge. EMF/EMFSPOOL Unicode text and XPS/OXPS UnicodeString plus complete glyph-index-only runs use bounded dedicated readers; incomplete XPS glyph coverage and empty EMF/XPS text extraction are reported, and bitmap/outline-only text may remain. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with the isolated LibreOffice fallbacks; other OLE streams are decoded when olefile is installed.",
             "The K04 payload is handled by work/h17_k04_binary_window_intake.py, not by this phrase scanner.",
@@ -1014,8 +1017,9 @@ def main() -> None:
     parser.add_argument("--object", required=True, type=Path, help="authorized local AX-7782 8 MiB object")
     parser.add_argument("--resources", type=Path, default=Path("resources"))
     parser.add_argument("--transfer", default="AX-7782")
-    parser.add_argument("--ocr", action="store_true", help="optional OCR for images/scanned PDFs")
-    parser.add_argument("--pdf-password", help="optional password for encrypted PDFs; never guessed")
+    parser.add_argument("--ocr", action="store_true", help="optional OCR for images; PDFs require --allow-pdf-source")
+    parser.add_argument("--pdf-password", help="password for an independently authorized PDF; never guessed")
+    parser.add_argument("--allow-pdf-source", action="store_true", help="attest independent provenance for non-quarantined PDFs; never use for BX25-08 or derivatives")
     parser.add_argument("--max-phrase-words", type=int, default=48)
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()
@@ -1030,7 +1034,7 @@ def main() -> None:
             parser.error("--json-out must be outside the source object and resources tree")
     try:
         result = inspect_object(args.object, args.resources, args.transfer,
-                                args.ocr, args.max_phrase_words, args.pdf_password)
+                                args.ocr, args.max_phrase_words, args.pdf_password, args.allow_pdf_source)
     except Exception as exc:
         parser.error(str(exc))
     result = redact_sensitive(result)

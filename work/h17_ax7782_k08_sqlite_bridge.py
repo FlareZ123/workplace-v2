@@ -145,7 +145,8 @@ def scan_embedded_raw_span(text: str, nonce: bytes, target: bytes, source: str,
 @redact_by_default
 def scan_sqlite_members(data: bytes, object_name: str, nonce: bytes,
                         target: bytes, max_words: int = 32,
-                        pdf_password: str | None = None) -> dict[str, Any]:
+                        pdf_password: str | None = None,
+                        allow_pdf_source: bool = False) -> dict[str, Any]:
     """Scan exact plum.sqlite members and adjacent WAL/SHM for K08 matches."""
     if not 1 <= max_words <= 256:
         raise ValueError("max_words must be between 1 and 256")
@@ -155,7 +156,8 @@ def scan_sqlite_members(data: bytes, object_name: str, nonce: bytes,
     )
     stream_count = 0
     for name, member in phrase_intake.iter_text_streams(
-            object_name, data, 0, [0], errors, ocr=False, pdf_password=pdf_password):
+            object_name, data, 0, [0], errors, ocr=False, pdf_password=pdf_password,
+            allow_pdf_source=allow_pdf_source):
         stream_count += 1
         container, parent, basename = _member_location(name)
         key = (container, parent)
@@ -302,17 +304,18 @@ def scan_sqlite_members(data: bytes, object_name: str, nonce: bytes,
 @redact_by_default
 def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                    ocr: bool = False, max_phrase_words: int = 32,
-                   pdf_password: str | None = None) -> dict[str, Any]:
+                   pdf_password: str | None = None,
+                   allow_pdf_source: bool = False) -> dict[str, Any]:
     """Run the existing K08 object scanner plus the SQLite/WAL extension."""
     if not path.is_file() or path.is_symlink():
         raise ValueError("object must be a regular, non-symlink file")
     before_hash = hashlib.sha256(path.read_bytes()).hexdigest()
     base = phrase_intake.inspect_object(path, resources, transfer_id, ocr,
-                                        max_phrase_words, pdf_password, reveal=True)
+                                        max_phrase_words, pdf_password, allow_pdf_source=allow_pdf_source, reveal=True)
     nonce, target = phrase_intake.load_k08_rules(resources)
     data = path.read_bytes()
     sqlite_result = scan_sqlite_members(data, path.name, nonce, target,
-                                        max_phrase_words, pdf_password, reveal=True)
+                                        max_phrase_words, pdf_password, allow_pdf_source=allow_pdf_source, reveal=True)
     after_hash = hashlib.sha256(path.read_bytes()).hexdigest()
     if before_hash != after_hash or base.get("object", {}).get("sha256") != before_hash:
         raise RuntimeError("source object changed during read-only K08 intake")
@@ -340,7 +343,8 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("--resources", type=Path, default=Path("resources"))
     parser.add_argument("--transfer", default="AX-7782")
     parser.add_argument("--ocr", action="store_true")
-    parser.add_argument("--pdf-password", help="only a separately authorized password; never guessed")
+    parser.add_argument("--pdf-password", help="password for an independently authorized PDF; never guessed")
+    parser.add_argument("--allow-pdf-source", action="store_true", help="attest independent provenance for non-quarantined PDFs; never use for BX25-08 or derivatives")
     parser.add_argument("--max-phrase-words", type=int, default=32)
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args(argv)
@@ -357,7 +361,7 @@ def main(argv: Iterable[str] | None = None) -> int:
             parser.error("--json-out must be outside the source object and resources tree")
     try:
         result = inspect_object(args.object, args.resources, args.transfer,
-                                args.ocr, args.max_phrase_words, args.pdf_password)
+                                args.ocr, args.max_phrase_words, args.pdf_password, args.allow_pdf_source)
     except Exception as exc:
         parser.error(str(exc))
     result = redact_sensitive(result)

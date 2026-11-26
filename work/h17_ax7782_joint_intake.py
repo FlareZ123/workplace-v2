@@ -84,6 +84,7 @@ def inspect_joint(
     max_phrase_words: int = 48,
     stride: int = 1,
     timeout: int = 300,
+    allow_pdf_source: bool = False,
 ) -> dict[str, Any]:
     source = source.expanduser().absolute()
     resources = resources.expanduser().absolute()
@@ -130,6 +131,8 @@ def inspect_joint(
             k08_cmd.append("--ocr")
         if pdf_password is not None:
             k08_cmd.extend(["--pdf-password", pdf_password])
+        if allow_pdf_source:
+            k08_cmd.append("--allow-pdf-source")
         k08_result = run_tool("k08-exact-phrase", k08_cmd, k08_out, timeout)
 
     source_hash_after = sha256_file(source)
@@ -148,6 +151,7 @@ def inspect_joint(
             "transfer": transfer,
             "ocr_enabled": ocr,
             "pdf_password_supplied": pdf_password is not None,
+            "pdf_source_authorized": allow_pdf_source,
             "max_phrase_words": max_phrase_words,
             "k04_raw_window_stride": stride,
             "timeout_per_tool_seconds": timeout,
@@ -170,7 +174,8 @@ def main() -> int:
     parser.add_argument("--resources", type=Path, default=ROOT / "resources")
     parser.add_argument("--transfer", default="AX-7782")
     parser.add_argument("--ocr", action="store_true")
-    parser.add_argument("--pdf-password", help="explicit password only; never guessed")
+    parser.add_argument("--pdf-password", help="password for an independently authorized PDF; never guessed")
+    parser.add_argument("--allow-pdf-source", action="store_true", help="attest independent provenance for non-quarantined PDFs; never use for BX25-08 or derivatives")
     parser.add_argument("--max-phrase-words", type=int, default=48)
     parser.add_argument("--stride", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=300)
@@ -186,7 +191,7 @@ def main() -> int:
     try:
         result = inspect_joint(
             source, resources, args.transfer, args.ocr, args.pdf_password,
-            args.max_phrase_words, args.stride, args.timeout,
+            args.max_phrase_words, args.stride, args.timeout, args.allow_pdf_source,
         )
     except Exception as exc:
         parser.error(type(exc).__name__)

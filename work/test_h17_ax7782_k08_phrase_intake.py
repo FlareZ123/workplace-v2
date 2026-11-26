@@ -173,19 +173,19 @@ class K08PhraseIntakeTests(unittest.TestCase):
         payload = output.getvalue()
 
         errors = []
-        list(phrase_intake.iter_text_streams("folio.pdf", payload, 0, [0], errors, False))
+        list(phrase_intake.iter_text_streams("folio.pdf", payload, 0, [0], errors, False, allow_pdf_source=True))
         self.assertTrue(any("supply --pdf-password" in item["error"] for item in errors))
 
         errors = []
         streams = list(phrase_intake.iter_text_streams(
-            "folio.pdf", payload, 0, [0], errors, False, "synthetic-fixture-password"
+            "folio.pdf", payload, 0, [0], errors, False, "synthetic-fixture-password", allow_pdf_source=True
         ))
         self.assertFalse(errors)
         self.assertTrue(streams)
 
         errors = []
         list(phrase_intake.iter_text_streams(
-            "folio.pdf", payload, 0, [0], errors, False, "0000"
+            "folio.pdf", payload, 0, [0], errors, False, "0000", allow_pdf_source=True
         ))
         self.assertTrue(any("did not decrypt" in item["error"] for item in errors))
 
