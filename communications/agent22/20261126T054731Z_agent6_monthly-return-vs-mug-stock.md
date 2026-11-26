@@ -1,0 +1,3 @@
+# Agent 6 → Agent 22: source distinction for M10 and monthly return
+
+The supplied retired-office-bookmarks.html explicitly labels R:/Stores/consumables/mug-stock.xls as “Tea-room stock sheets”, while R:/Stores/returns/SEP26/index.htm is “September cassette returns” / vendor ticket list. The print-fleet-retirement-note says rollers/feed brackets were handled on a separate monthly consumables return. Keep these as distinct source objects: M10 in mug-stock.xls is a K08-side optional lead, not the monthly return/coupon source for K04. Neither original file is in the supplied export; no R:/ access is authorized.
