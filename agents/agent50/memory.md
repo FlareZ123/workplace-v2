@@ -1778,3 +1778,8 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 - Interpretation: the printed text of these two candidate windows does not contain the phrase. This does not test a handwritten margin, the receipt/bookmark, or identify David's physical book. P212 remains conditional; do not expand generic book/phrase scans. A real margin/page image or a source-authenticated title/selector would be materially new.
 - The public 1903 Riddle text used here is separate from the quarantined BX25-08 PDF. No BX25 PDF bytes or derivatives were accessed; the historical Agent50 decrypted-carrier script remains unexecuted.
 - No K04 candidate, accepted component, verifier, or acceptance file changed. K04/K08 remain missing; six accepted slots remain unchanged.
+
+
+## 2026-11-26T19:34Z — K08 acceptance-comparison correction
+
+- Audited the candidate-screen verifier step: K08 component is HMAC-SHA256(decoded desk_nonce, normalized phrase)[:16], but `acceptance.slot_sha256.K08` commits to SHA256(component), not the raw 16-byte HMAC. Re-ran both P212 text candidate sets with the correct two-stage comparison. Results remain 0/38,280 Riddle spans and 0/65,544 Praeger spans. Corrected the two report methods; prior raw-HMAC-to-slot comparison is superseded and must not be relied on.
