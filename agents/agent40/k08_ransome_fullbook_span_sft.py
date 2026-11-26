@@ -17,8 +17,8 @@ import urllib.request
 from pathlib import Path
 
 SOURCE_URL = os.environ.get("H17_RANSOME_SOURCE_URL", "https://www.fadedpage.com/books/20180428/html.php")
-MIN_WORDS = 5  # 1-4 word sequences have already had a separate exhaustive gate.
-MAX_WORDS = 60
+MIN_WORDS = int(os.environ.get("H17_MIN_WORDS", "5"))
+MAX_WORDS = int(os.environ.get("H17_MAX_WORDS", "60"))
 
 
 class VisibleText(html.parser.HTMLParser):
@@ -55,6 +55,9 @@ def main() -> int:
 
     routing = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
     acceptance = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+    if not (1 <= MIN_WORDS <= MAX_WORDS <= 60):
+        raise SystemExit(f"invalid span range: {MIN_WORDS}..{MAX_WORDS}; expected 1 <= min <= max <= 60")
+
     key = bytes.fromhex(routing["K08"]["desk_nonce"])
     target = acceptance["slot_sha256"]["K08"].lower()
 
@@ -91,7 +94,6 @@ def main() -> int:
                     "end_token_exclusive": start + length,
                     "word_count": length,
                     "normalized_phrase_sha256": hashlib.sha256(phrase.encode("utf-8")).hexdigest(),
-                    "component_hex": component.hex().upper(),
                     "component_sha256": hashlib.sha256(component).hexdigest(),
                 })
 
