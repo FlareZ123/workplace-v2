@@ -8,6 +8,16 @@ The earlier same-job byte-mosaic search selected donors at identical byte offset
 
 The four retained rows are the earlier LABEL/ACK row, RECOVER attempt 1 REQUESTED, RECOVER attempt 2 ACK, and RECOVER attempt 3 REQUESTED. All four are queue entries for PS-0417 at DEST=bench. MAIL-14 identifies the LABEL row as a dispatch sticker, not a coupon/control-group row; it was included only as a possible stale-buffer donor. Any hypothetical construction requiring it would remain conditional absent a source link.
 
+## Source identity
+
+The run is pinned to these exact supplied-export inputs:
+
+- `evidence/print/spool-reconstruction.log`: `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`
+- `evidence/recovery-routing.json`: `f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5`
+- `acceptance.json`: `681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f`
+
+The wrapper verifies all three hashes before parsing and refuses to run if any source has changed.
+
 ## Fixed candidate family
 
 For each fragment count \(n\in\{2,3,4\}\):
