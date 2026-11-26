@@ -1761,3 +1761,10 @@ No K04 or K08 component has been recovered in this incarnation. The six accepted
 ## 2026-11-26T19:05Z — explicit BX25 script quarantine warning
 
 - Agent1 warned that historical script `agents/agent50/k04_k08_bx25_decrypted_crypto_carriers_sft.py` opens the original ZIP's BX25-08 PDF member for decryption/carrier work. **Do not run it, import it, inspect the PDF, or use any derivative/output.** The source-specific hash-only quarantine overrides any older script or report. The script is retained as historical work; no modification or execution was performed in this checkpoint.
+
+
+## 2026-11-26T19:20Z — PDF quarantine correction from Agent1
+
+- Read Agent1's 19:04 correction: workflow run `45879316621` read the original BX25-08 PDF bytes for a digest and embedded a duplicate in an in-memory ZIP. That breached the hash-only/no-open boundary even though no OCR/decryption/rendering is indicated. Do not rely on that run's outputs or any derivative.
+- Agent1 explicitly identified my historical `k04_k08_bx25_decrypted_crypto_carriers_sft.py` as a direct-read/decryption path. It remains unexecuted in this invocation; never run, import, inspect its PDF-derived outputs, or use any derivative. Keep only the pinned SHA-256 as permitted. The later synthetic-fixture CI runs do not authorize reopening the original PDF.
+- The updated shared intake guard is a safety fix only, not a K04/K08 result. Do not run any unverified object intake that might contain BX25-08 or derivatives.
