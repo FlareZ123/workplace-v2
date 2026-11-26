@@ -30,6 +30,26 @@ MAX_TOTAL = 128 * 1024 * 1024
 MAX_DEPTH = 2
 # The withdrawn BX25-08 original is hash-only: never inspect its contents.
 OPAQUE_PDF_SHA256 = "b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425"
+
+
+def is_opaque_pdf_name(name: str) -> bool:
+    """Recognize the quarantined BX25-08 source and path-preserving derivatives.
+
+    This is a name-only preflight. Exact-byte copies with arbitrary names are
+    independently caught by OPAQUE_PDF_SHA256.
+    """
+    normalized = str(name).replace("\\", "/").casefold()
+    parts = PurePosixPath(normalized).parts
+    if ("h17-supplemental-office-files" in parts
+            and PurePosixPath(normalized).suffix.casefold() == ".pdf"):
+        return True
+    if any(part.startswith(("bx25-08", "bx25_08")) for part in parts):
+        return True
+    return any(
+        part == "bx25" and index + 1 < len(parts)
+        and parts[index + 1].startswith("08")
+        for index, part in enumerate(parts)
+    )
 TERMS = (
     b"IR-261003-H17", b"IR-261003-H17.txt", b"AX-7782",
     b"PS-261003-0417", b"ESC-N", b"H17-POL-17/A3",
@@ -159,6 +179,10 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], ocr: bool
         budget[0] += len(data)
         return {"name": name, "size": len(data), "sha256": sha256,
                 "status": "skipped_opaque_pdf"}
+    if is_opaque_pdf_name(name):
+        budget[0] += len(data)
+        return {"name": name, "size": len(data),
+                "status": "skipped_opaque_pdf_by_name"}
     kind = magic(data)
     name_lower = name.casefold()
     name_hits = [term.decode("ascii") for term in TERMS if term.decode("ascii").casefold() in name_lower]

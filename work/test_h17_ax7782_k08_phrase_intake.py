@@ -119,6 +119,31 @@ class K08PhraseIntakeTests(unittest.TestCase):
         }])
         self.assertEqual(budget, [len(payload)])
 
+    def test_source_named_bx25_derivative_is_skipped_before_magic_or_ocr(self):
+        payload = b"%PDF-1.7 transformed derivative"
+        errors = []
+        budget = [0]
+        with patch.object(phrase_intake.intake, "magic", side_effect=AssertionError("quarantined derivative reached content classification")):
+            streams = list(phrase_intake.iter_text_streams(
+                "nested/BX25-08-redacted.pdf", payload, 0, budget, errors,
+                ocr=True, pdf_password="must-not-be-used",
+            ))
+        self.assertEqual(streams, [])
+        self.assertEqual(errors[0]["status"], "skipped_opaque_pdf_by_name")
+        self.assertEqual(budget, [len(payload)])
+
+    def test_nested_zip_member_name_is_skipped_before_read(self):
+        payload = io.BytesIO()
+        with zipfile.ZipFile(payload, "w", compression=zipfile.ZIP_STORED) as archive:
+            archive.writestr("BX25-08-redacted.pdf", b"%PDF-1.7 transformed derivative")
+        errors = []
+        with patch.object(zipfile.ZipFile, "read", side_effect=AssertionError("quarantined ZIP member was read")):
+            streams = list(phrase_intake.iter_text_streams(
+                "bundle.zip", payload.getvalue(), 0, [0], errors,
+            ))
+        self.assertFalse(streams)
+        self.assertEqual(errors[0]["status"], "skipped_opaque_pdf_by_name")
+
     def test_nested_opaque_bx25_pdf_is_not_yielded_as_content(self):
         path = SOURCE_ROOT / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
         pdf = path.read_bytes()

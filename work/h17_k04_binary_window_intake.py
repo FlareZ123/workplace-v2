@@ -28,7 +28,9 @@ from pathlib import Path, PurePosixPath
 
 from h17_redaction import redact_by_default, redact_sensitive
 
-from h17_ax7782_object_intake import OPAQUE_PDF_SHA256
+import h17_ax7782_object_intake as intake
+
+OPAQUE_PDF_SHA256 = intake.OPAQUE_PDF_SHA256
 from h17_k04_image_barcode_intake import read_image_barcodes
 from h17_k04_emf_dib_intake import extract_emf_dib_bmps
 from h17_k04_pdf_barcode_intake import (
@@ -223,6 +225,11 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
         budget[0] += len(data)
         return {"name": name, "size": len(data), "sha256": sha256,
                 "status": "skipped_opaque_pdf"}
+    if intake.is_opaque_pdf_name(name):
+        budget[2] += 1
+        budget[0] += len(data)
+        return {"name": name, "size": len(data),
+                "status": "skipped_opaque_pdf_by_name"}
     kind = magic(data)
     # OLE/CFB has no member walker here. Scan its original bytes directly so
     # a complete coupon inside a native Workbook/Book/SHD stream is observable.
@@ -376,6 +383,13 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                     if (item.is_dir() or item.file_size > max_member or path.is_absolute()
                             or ".." in path.parts or stat.S_ISLNK(mode)):
                         continue
+                    if intake.is_opaque_pdf_name(item.filename):
+                        children.append({
+                            "name": f"{name}!/{item.filename}",
+                            "size": item.file_size,
+                            "status": "skipped_opaque_pdf_by_name",
+                        })
+                        continue
                     with archive.open(item) as stream:
                         child = stream.read(max_member + 1)
                     children.append(scan_member(f"{name}!/{item.filename}", child, depth + 1,
@@ -392,6 +406,13 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
                     path = PurePosixPath(item.name)
                     if (not item.isfile() or item.size > max_member or path.is_absolute()
                             or ".." in path.parts):
+                        continue
+                    if intake.is_opaque_pdf_name(item.name):
+                        children.append({
+                            "name": f"{name}!/{item.name}",
+                            "size": item.size,
+                            "status": "skipped_opaque_pdf_by_name",
+                        })
                         continue
                     stream = archive.extractfile(item)
                     if stream is not None:
@@ -422,11 +443,17 @@ def scan_member(name: str, data: bytes, depth: int, budget: list[int], target_di
             for index, part in enumerate(message.walk()):
                 if part.is_multipart():
                     continue
+                filename = part.get_filename() or f"mime-part-{index}.bin"
+                filename = filename.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
+                if intake.is_opaque_pdf_name(filename):
+                    children.append({
+                        "name": f"{name}!/{filename}",
+                        "status": "skipped_opaque_pdf_by_name",
+                    })
+                    continue
                 payload = part.get_payload(decode=True)
                 if not payload:
                     continue
-                filename = part.get_filename() or f"mime-part-{index}.bin"
-                filename = filename.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
                 child = scan_member(
                     f"{name}!/{filename}", payload, depth + 1, budget,
                     target_digest, mask, stride, max_member, max_depth,

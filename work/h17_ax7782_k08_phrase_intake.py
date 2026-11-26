@@ -302,6 +302,11 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         errors.append({"source": name, "status": "skipped_opaque_pdf",
                        "size": len(data), "sha256": opaque_sha256})
         return
+    if intake.is_opaque_pdf_name(name):
+        budget[0] += len(data)
+        errors.append({"source": name, "status": "skipped_opaque_pdf_by_name",
+                       "size": len(data)})
+        return
     if style_metadata is None:
         style_metadata = []
     if budget[0] + len(data) > intake.MAX_TOTAL or len(data) > intake.MAX_MEMBER:
@@ -376,6 +381,13 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
                     yield f"{name}!/<zip-comment>", archive.comment
                 for item in archive.infolist():
                     path = PurePosixPath(item.filename)
+                    if intake.is_opaque_pdf_name(item.filename):
+                        errors.append({
+                            "source": f"{name}!/{item.filename}",
+                            "status": "skipped_opaque_pdf_by_name",
+                            "size": item.file_size,
+                        })
+                        continue
                     if item.filename:
                         yield f"{name}!/<member-name>", item.filename.encode("utf-8", "replace")
                     if item.comment:
@@ -404,6 +416,13 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             with tarfile.open(fileobj=io.BytesIO(data), mode="r:*") as archive:
                 for item in archive.getmembers():
                     path = PurePosixPath(item.name)
+                    if intake.is_opaque_pdf_name(item.name):
+                        errors.append({
+                            "source": f"{name}!/{item.name}",
+                            "status": "skipped_opaque_pdf_by_name",
+                            "size": item.size,
+                        })
+                        continue
                     if (not item.isfile() or item.size > intake.MAX_MEMBER
                             or budget[0] + item.size > intake.MAX_TOTAL
                             or path.is_absolute() or ".." in path.parts):
@@ -445,10 +464,16 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
             for index, part in enumerate(message.walk()):
                 if part.is_multipart():
                     continue
+                filename = part.get_filename() or f"part-{index}"
+                if intake.is_opaque_pdf_name(filename):
+                    errors.append({
+                        "source": f"{name}!/{filename}",
+                        "status": "skipped_opaque_pdf_by_name",
+                    })
+                    continue
                 payload = part.get_payload(decode=True)
                 if not payload:
                     continue
-                filename = part.get_filename() or f"part-{index}"
                 content_type = part.get_content_type()
                 if content_type.startswith("text/"):
                     charset = part.get_content_charset() or "utf-8"

@@ -11,6 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_ax7782_object_intake as intake
+import h17_k04_binary_window_intake as k04
 
 REPO = Path(__file__).resolve().parents[1]
 
@@ -48,6 +49,32 @@ class IntakeTests(unittest.TestCase):
             "name": str(path), "size": len(payload), "sha256": digest,
             "status": "skipped_opaque_pdf",
         })
+
+    def test_source_named_bx25_derivative_is_skipped_before_magic(self):
+        payload = b"%PDF-1.7 transformed derivative"
+        with patch.object(intake, "magic", side_effect=AssertionError("quarantined derivative reached magic")), patch.object(intake, "raw_hits", side_effect=AssertionError("quarantined derivative reached raw scan")):
+            result = intake.scan_member("nested/BX25-08-redacted.pdf", payload, 0, [0])
+        self.assertEqual(result["status"], "skipped_opaque_pdf_by_name")
+
+    def test_k04_scanner_skips_source_named_bx25_derivative_before_magic(self):
+        payload = b"%PDF-1.7 transformed derivative"
+        with patch.object(k04, "magic", side_effect=AssertionError("quarantined derivative reached magic")):
+            result = k04.scan_member(
+                "nested/BX25-08-redacted.pdf", payload, 0, [0, 1024, 0, 10],
+                bytes(32), bytes(16), 1, 1024, 2,
+            )
+        self.assertEqual(result["status"], "skipped_opaque_pdf_by_name")
+
+    def test_k04_zip_member_name_is_skipped_before_open(self):
+        payload = io.BytesIO()
+        with zipfile.ZipFile(payload, "w", compression=zipfile.ZIP_STORED) as archive:
+            archive.writestr("BX25-08-redacted.pdf", b"%PDF-1.7 transformed derivative")
+        with patch.object(zipfile.ZipFile, "open", side_effect=AssertionError("quarantined ZIP member was opened")):
+            result = k04.scan_member(
+                "bundle.zip", payload.getvalue(), 0, [0, 1024 * 1024, 0, 10],
+                bytes(32), bytes(16), 1, 1024 * 1024, 2,
+            )
+        self.assertEqual(result["children"][0]["status"], "skipped_opaque_pdf_by_name")
 
     def test_container_does_not_raw_scan_opaque_pdf_member(self):
         path = REPO / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
