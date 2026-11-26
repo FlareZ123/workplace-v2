@@ -14,6 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_ax7782_k08_phrase_intake as phrase_intake
+import h17_k08_teal_bit_image_scan  # load NumPy before tests patch sys.modules
 
 SOURCE_ROOT = Path(__file__).resolve().parents[1] / "resources"
 
@@ -386,7 +387,6 @@ class K08PhraseIntakeTests(unittest.TestCase):
         from PIL import Image
         from PIL.PngImagePlugin import PngInfo
         import h17_xls_lo_fallback
-        import h17_k08_teal_bit_image_scan  # import NumPy before patch.dict restores sys.modules
         from test_h17_biff_officeart import cfb
         from test_h17_biff_officeart_blips import bse_record, png_blip, workbook_with_bstore
 
