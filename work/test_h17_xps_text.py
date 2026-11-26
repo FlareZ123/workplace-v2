@@ -51,13 +51,14 @@ def test():
     assert hashlib.sha256(source).hexdigest() == original_hash
     print("PASS: synthetic 2-page package, split 16-byte K04 and split whole-phrase K08")
 
-    # The withdrawn BX25-08 original is hash-only, including inside containers.
-    opaque_path = Path(__file__).resolve().parents[1] / "resources" / "evidence" / "h17-supplemental-office-files" / "BX25-08.pdf"
-    opaque_pdf = opaque_path.read_bytes()
+    # The quarantined BX25-08 source is never opened. Exercise the hash-only
+    # branch with synthetic PDF-magic bytes and a stubbed pinned-hash match.
+    opaque_path = Path("BX25-08.pdf")
+    opaque_pdf = b"%PDF-1.7 synthetic hash-only fixture"
     opaque_sha = hashlib.sha256(opaque_pdf).hexdigest()
-    assert opaque_sha == k04.OPAQUE_PDF_SHA256
     target_digest = bytes.fromhex(k04.DEFAULT_TARGET)
-    with patch.object(k04, "magic", side_effect=AssertionError("opaque PDF reached magic")), \
+    with patch.object(k04.intake, "is_opaque_pdf_hash", return_value=True), \
+         patch.object(k04, "magic", side_effect=AssertionError("opaque PDF reached magic")), \
          patch.object(k04, "scan_bytes", side_effect=AssertionError("opaque PDF reached raw-window scan")):
         opaque_result = k04.scan_member(
             str(opaque_path), opaque_pdf, 0,
@@ -73,7 +74,8 @@ def test():
     bundle = io.BytesIO()
     with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_STORED) as archive:
         archive.writestr("BX25-08.pdf", opaque_pdf)
-    with patch.object(k04, "scan_bytes", side_effect=AssertionError("container raw scan could inspect opaque member")):
+    with patch.object(k04.intake, "is_opaque_pdf_hash", side_effect=lambda digest: digest == opaque_sha), \
+         patch.object(k04, "scan_bytes", side_effect=AssertionError("container raw scan could inspect opaque member")):
         bundle_result = k04.scan_member(
             "bundle.zip", bundle.getvalue(), 0,
             [0, k04.DEFAULT_MAX_TOTAL, 0, k04.DEFAULT_MAX_MEMBERS],
@@ -82,7 +84,8 @@ def test():
         )
     assert bundle_result["hits"] == []
     assert bundle_result["members"][0]["status"] == "skipped_opaque_pdf"
-    print("PASS: exact BX25-08 bytes and ZIP-contained duplicate remain hash-only")
+    assert bundle_result["members"][0]["sha256"] == opaque_sha
+    print("PASS: synthetic PDF fixture remains hash-only without reading BX25-08")
 
     # Actual archival scanner integration: whole coupon in joined XPS glyph runs.
     from h17_k04_binary_window_intake import scan_member

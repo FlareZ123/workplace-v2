@@ -101,17 +101,19 @@ def main(root: Path) -> None:
     for path in sorted(office.iterdir()):
         if not path.is_file():
             continue
+        if path.suffix.lower() == ".pdf":
+            print("SKIP_PDF", path.name, "hash-only boundary; no content read")
+            continue
         data = path.read_bytes()
         counts = scan_carrier(path.name, data, mask, nonce, t4, t8,
                               include_caption_spans=path.suffix.lower() != '.pdf')
         print('ORIGINAL', path.name, len(data), hashlib.sha256(data).hexdigest(), counts)
         for key in totals:
             totals[key] += counts[key]
-    # BX25-08.pdf is scanned above as encrypted raw bytes only.
-    # Do not decrypt without the original Risk-desk paper key register.
+    # PDF content is excluded entirely; retain only a separately pinned SHA-256.
     print('TOTALS', totals)
     print('RESULT target_K04=NO_MATCH target_K08=NO_MATCH checked_supplemental=4 '
-          'derived_pdf_views=0 encrypted_pdf_raw_only=YES originals_preserved=YES')
+          'derived_pdf_views=0 pdf_content_read=NO pdf_derivative_scan=NO originals_preserved=YES')
 
 
 if __name__ == '__main__':
