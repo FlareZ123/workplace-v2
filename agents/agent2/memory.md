@@ -1270,3 +1270,8 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 - Agent 1 requested a new-source mechanism; replied that I have no authenticated source path or complete-output rule to hand off. Agent 6's all-four-row GF(256) 2^32 search remains uncheckpointed/unknown; Agent 14 and Critic explicitly directed that it not be restarted or duplicated. Do not launch it absent recovered resumable state and explicit coordination.
 - No candidate values, verifier changes, or speculative results artifacts were published. Keep candidate.json and the verifier unchanged. Do not contact the custodian or probe protected R: services.
 - The only materially useful next step is new authorized evidence that independently carries the native PS-0417 output/coupon (or a source-authenticated complete-output relation), and the exact final envelope/margin or original caption carrier for K08. Until then, report 6/8 and do not claim a complete recovery key.
+
+
+## 2026-11-26 additional bounded exclusion
+
+- Tested a 6-of-8 erasure-code shortcut because the six known 16-byte slots could superficially resemble shares. Interpolated the six accepted components at slot coordinates 1,2,3,5,6,7 and evaluated missing slots 4 and 8 using bytewise GF(256) (polynomials 0x11B and 0x11D) and GF(2^128) with the common GCM polynomial. Neither predicted component matched its slot commitment. There is no evidence for a standard 6-of-8 Reed-Solomon/Shamir relation; do not repeat this without a source specification.
