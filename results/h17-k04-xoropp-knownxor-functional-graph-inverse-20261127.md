@@ -45,3 +45,37 @@ The mathematical rank formula is exact for any known \`t\`; the sampled distribu
 This is **not** an unanchored inverse: neither \`t\` nor the second output-addition carry vector is an authenticated observation in the surviving 0417 evidence. The graph structure suggests a possible next step for a source-specific or SAT-based elimination: absorb \`v\`'s sequential majority recurrence into the predecessor-graph components and determine whether the feedback width can be reduced below the existing 2^18 known-t search. A planted proof and an independently predicted full packet must precede any claim about K04.
 
 There is **no original K04 commitment hit**, no physical coupon state, and no change to K04/K08 MISSING or the six accepted REC8/1 slots.
+
+
+## Stronger exact rotation-boundary first-output inverse (Agent11 continuation)
+
+The functional graph also permits a **substantially faster unknown-carry inversion** when the initial state XOR word \`t\` and one output \`y0\` are given. Unlike the graph method above, this does **not** assume that the second-addition carry mask is known.
+
+For first-output bit \`j\`, put \`k=(j-17) mod 64\` and \`q[j]=t[k] XOR u[k]\`, where \`u[k]\` is the first-adder carry. The bit equations for the second addition are
+
+\`\`\`
+a[j] = y0[j] XOR q[j] XOR v[j]
+v[j+1] = (q[j] AND v[j]) if y0[j]=1
+         (q[j] OR  v[j]) if y0[j]=0
+v[0] = 0
+\`\`\`
+
+The carry recurrence follows directly by substituting \`a[j]\` into the binary full-adder majority function; it is an exact Boolean identity.
+
+For \`j=0..16\`, \`k=j+47\`, so \`q[j]\` depends only on the state bits at the distinct *latest-zero-of-t* predecessor indices below 47..63. Let their number be \`D\`, at most 17. Enumerate only these **D unique predecessor bits**. Given one assignment, propagate \`a[j],v[j]\` from 0 through 63 using the equations above. For \`j>=17\`, \`k=j-17<j\`; therefore any predecessor of \`k\` was already reconstructed and requires **no additional guess**. Finally reject assignments inconsistent with their reconstructed predecessor bits and replay the exact 64-bit original output.
+
+This enumerates **every** first-output state compatible with \`y0\` and the proposed \`t\`: the genuine predecessor assignment must appear in the enumeration, and each propagation step is forced. The complexity is \`O(64*2^D)\` versus Agent23's previous \`2^18\` low-\`a\`/carry hypotheses per proposed \`t\`. The bound is at most \`2^17\` assignments and normally much lower; it is not an unanchored 64-bit-\`t\` inversion.
+
+### Independent controls and measured speed
+
+The source-free [C++ exact inverter](../agents/agent11/k04_xoropp_knownxor_boundary_sft.cpp) independently checks the first-output roots against Agent23's earlier complete \`2^18\` inversion for 64 planted instances, then validates forward replay at both outputs. On a fixed-seed **100,000-state** synthetic experiment (seed \`20261127\`):
+
+- 100,000 / 100,000 complete planted states recovered.
+- 132,043,516 total boundary assignments, or **1,320.44 per known-\`t\` input on average**, versus 262,144 each for the old fixed-width enumeration: approximately **198.5× fewer assignments** across this trial.
+- 117,588 total valid first-output roots; precisely 100,000 matched the second planted output.
+- 64/64 independent exhaustive reference comparisons agreed on both the number of first-output roots and pair-output roots.
+- Measured C++ wall time **26.96 seconds** for 100,000 cases, including the 64 reference exhaustions, on one local CPU. These timings are hardware- and fixture-dependent.
+
+The random-fixture \`D\` distribution was concentrated around **9**, not 17; the full histogram is emitted by the reproducer. This is a method upgrade, not a new observation that xoroshiro actually produced the original printer record. The same historical packet, output-placement and authenticity caveats apply; **zero original K04 coupon outputs are claimed from the synthetic experiment**.
+
+**Next decisive use:** Take only source-defensible candidate XOR-state words, invert the intact PS-0417 REQUESTED1 output pair using the faster algorithm, and replay all intact REQUESTED3 outputs *before* evaluating any selected physical coupon candidate against the unchanged K04 commitment. A match must still establish the historical producer relation; arbitrary donor lists do not.
