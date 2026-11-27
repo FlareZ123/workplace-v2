@@ -16,15 +16,25 @@ static U word(const array<uint8_t,16>&p,int k,bool little){U x=0;for(int i=0;i<8
 static pair<U,U> decode(const array<uint8_t,16>&p,int view){U a=word(p,0,view&1),b=word(p,1,view&1);if(view&2)swap(a,b);return {a,b};}
 static array<uint8_t,16> encode(U a,U b,int view){array<uint8_t,16>p{};if(view&2)swap(a,b);for(int k=0;k<2;k++){U x=k?b:a;for(int i=0;i<8;i++){int j=(view&1)?i:7-i;p[k*8+j]=uint8_t(x>>(i*8));}}return p;}
 static array<U,6> emit(U a,U b){array<U,6>v{};for(int i=0;i<6;i++){v[i]=rol(a+b,17)+a;U t=a^b;a=rol(a,49)^t^(t<<21);b=rol(t,28);}return v;}
-// z=c+ROTL64(c,17): guess bits c[0..16], derive 47..63,
-// then 17..46; check 47..63 against carry recurrence. Exact O(2^17).
-template<class F> static void invert17(U z,F&&accept){
- for(uint32_t low=0;low<(1u<<17);low++){
-  U c=low;int carry=0;
-  for(int j=0;j<17;j++){int a=bit(c,j),h=bit(z,j)^a^carry;c|=U(h)<<(j+47);carry=maj(a,h,carry);}
-  for(int j=17;j<47;j++){int h=bit(c,j-17),a=bit(z,j)^h^carry;c|=U(a)<<j;carry=maj(a,h,carry);}
-  bool ok=true;for(int j=47;j<64;j++){int a=bit(c,j),h=bit(c,j-17);if((a^h^carry)!=bit(z,j)){ok=false;break;}carry=maj(a,h,carry);}
-  if(ok){if(c+rol(c,17)!=z)throw runtime_error("inverse algebra");accept(c);}
+// Fast exact inverse: split c=(a<<47)|b, 0<=a<2^17, 0<=b<2^47.
+// z = (2^47+1)*a + (2^17+1)*b (mod 2^64).
+// Lift by k*2^64, k in {0,1}; gcd(2^47+1, 2^17+1)=3.
+// A/3 inverse mod B/3 (43691) = 34956. At most THREE possible a per k.
+// Solve b with the modular inverse of B mod 2^64, then verify the exact sum.
+// Constant-sized arithmetic inversion rather than 2^17 carry enumeration.
+constexpr U ROT_A=(1ULL<<47)+1,ROT_B=(1ULL<<17)+1,ROT_B_INV=0xfff80003fffe0001ULL;
+constexpr uint32_t ROT_PERIOD=43691,ROT_A_INV=34956;
+template<class F> static inline void invert17(U z,F&&accept){
+ unsigned k;
+ switch(z%3){case 0:k=0;break;case 2:k=1;break;default:return;}
+ U zz=(z%ROT_B)+(k?122881:0);if(zz>=ROT_B)zz-=ROT_B;
+ if(zz%3)throw runtime_error("mod inverse divisibility failure");
+ U high0=((zz/3)*ROT_A_INV)%ROT_PERIOD;
+ for(U high=high0;high<(1ULL<<17);high+=ROT_PERIOD){
+  U low=(z-ROT_A*high)*ROT_B_INV;
+  if(low>=(1ULL<<47))continue;
+  U x=(high<<47)|low;
+  if(x+rol(x,17)==z)accept(x);
  }
 }
 int main(int argc,char**argv){try{
