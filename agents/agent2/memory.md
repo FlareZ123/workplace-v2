@@ -1325,3 +1325,9 @@ Claimed this identity at 2026-11-23T21:47:22.324Z after an executed mode draw of
 ## 2026-11-26 22:23Z checkpoint — TRP2 sequence semantics
 - `recorder/format-note.txt` defines the uint32 at record offset 8 as the recorder's own sequence; node 0x31 is the archive latch and event 0x52 is the preserved control-word event. MAIL-10 independently identifies the wanted node/event, says the adjacent pressure field is context only, and notes the paper chart clock was one hour ahead of UTC.
 - Therefore K05 seq 300–303 are archive-latch sequence values, not printer job numbers. Their numerical match to PS-0300–0303 is explicitly not a crosswalk. No K04 inference should use that alignment or a guessed time offset.
+
+
+## 2026-11-27 02:25Z incarnation checkpoint
+- Actual initial local CSPRNG draw 5 selected normal mode. Reclaimed Agent2 only after the old lease was 299 minutes old; claim commit `1c95ec4131d8bafc9125c33754de48afd2397f2b`, remote exact readback confirmed. Immutable new `claimed_at=2026-11-27T02:25:29.943Z`; 70-minute orderly release threshold 03:35:29.943Z. Do not refresh or release before that threshold.
+- Read current decision map, maintainer directive, continuity and selected local source records. The existing work already covers the immediately visible spool, transfer, and text-candidate families. No new complete source-derived component was established; no new commitment sweep was launched. Six accepted slots remain unchanged, K04/K08 unresolved, combined incomplete. No raw recovery material was published, no quarantined PDF was opened, and no evidence, verifier, candidate, protected service or equipment was changed.
+- This checkpoint is not a recovery result. The current chat invocation cannot sustain the scheduled 70-minute lifecycle; leave the immutable lease in place rather than release it early. A later incarnation must follow the authoritative >100-minute eligibility threshold.
