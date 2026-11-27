@@ -1,73 +1,93 @@
-"""Source-independent Z/(2^128) quadratic state-transition inverse.
+"""Exact source-independent quadratic transition inversion over Z/(2^128).
 
-Given A->B and U->V plus a further B->X->C via one unknown T(z)=a*z^2+b*z+c,
-returns *every* withheld X when A-U is odd. Uses exact 2-adic Hensel
-lifting of the cubic in the free quadratic coefficient; no original inputs.
-Standalone synthetic controls only. No file or network access.
+Given A->B and U->V, B->X, X->C under common T(z)=a*z²+b*z+c,
+recover every missing middle X when A-U has v2 <=6. Enumerates the
+2-adic lift(s) of the affine pair interpolation and all cubic roots in a.
+No historical inputs, source readers, route masks or target hashes.
 """
 from __future__ import annotations
 import hashlib
-MOD=1<<128
-MASK=MOD-1
+M=1<<128
+MASK=M-1
 
-def solve(A:int,B:int,U:int,V:int,C:int,max_branches:int=50000)->list[int]:
-    # For A-U odd, the affine interpolant is unique over Z/(2^128).
-    if not ((A-U)&1):
-        raise ValueError('this subfamily requires a unit A-U difference')
-    m = ((B-V)*pow((A-U)&MASK,-1,MOD))&MASK
-    k = (B-m*A)&MASK
-    x0 = (m*B+k)&MASK
-    q = ((B-A)*(B-U))&MASK
-    alpha = (x0-A)&MASK
-    beta = (x0-U)&MASK
-    # G(a)=T_a(T_a(B))-C where T_a=L+a(z-A)(z-U).
-    coeff = [(m*x0+k-C)&MASK, (m*q+alpha*beta)&MASK,
-             (q*(alpha+beta))&MASK, (q*q)&MASK]
-    roots = [0]   # Every integer is congruent 0 mod1.
-    for exponent in range(1,129):
-        modulus = 1 << exponent
-        half = modulus >> 1
+def v2(x):
+    x &= MASK
+    return (x&-x).bit_length()-1 if x else 128
+
+def rootlift(coeff, cap=50000):
+    aroots=[0]
+    for shift in range(128):
+        half=1<<shift; modulus=2*half
         nxt=[]
-        for a in roots:
-            for candidate in (a,a+half):
-                # Evaluate exactly mod 2^exponent via arithmetic Horner.
-                value = 0
-                for c in reversed(coeff): value = (value*candidate+c)%modulus
-                if value==0:nxt.append(candidate)
-        roots=nxt
-        if not roots: return []
-        if len(roots)>max_branches:
-            raise RuntimeError(f'singular 2-adic root family exceeds cap at exponent {exponent}')
-    outputs=[]
-    for a in roots:
-        b=(m-a*(A+U))&MASK
-        c=(k+a*A*U)&MASK
-        T=lambda z:((a*z+b)*z+c)&MASK
-        X=T(B)
-        assert X == (x0+a*q)&MASK
-        assert T(A)==B and T(U)==V and T(X)==C
-        outputs.append(X)
-    return outputs
+        for a in aroots:
+            for trial in (a,a+half):
+                val=0
+                for c in coeff[::-1]:val=(val*trial+c)%modulus
+                if val==0:nxt.append(trial)
+        aroots=nxt
+        if not aroots:break
+        if len(aroots)>cap:raise RuntimeError('singular polynomial root explosion')
+    return aroots
 
-def controls():
-    results={'positive':0,'negative_mod2':0,'more_than_one_root':0}
+def recover(A,B,U,V,C,max_lifts=64):
+    D=(A-U)&MASK;E=(B-V)&MASK;v=v2(D)
+    if v>=128:
+        raise ValueError('source anchor points coincide; underdetermined')
+    g=1<<v
+    if E%g:return []
+    if g>max_lifts:raise ValueError('source anchor nonunit valuation requires too many lifts')
+    mmod=M//g
+    m0=( (E//g)*pow(D//g,-1,mmod) )%mmod
+    output=[]
+    for lift in range(g):
+        m=m0+lift*mmod
+        k=(B-m*A)&MASK
+        x0=(m*B+k)&MASK
+        q=(B-A)*(B-U)&MASK
+        alpha=(x0-A)&MASK; beta=(x0-U)&MASK
+        c0=(m*x0+k-C)&MASK
+        c1=(m*q+alpha*beta)&MASK
+        c2=q*(alpha+beta)&MASK
+        c3=q*q&MASK
+        for a in rootlift([c0,c1,c2,c3]):
+            b=(m-a*(A+U))&MASK
+            c=(k+a*A*U)&MASK
+            T=lambda z:((a*z+b)*z+c)&MASK
+            X=T(B)
+            assert T(A)==B and T(U)==V and T(X)==C
+            assert X==((x0+a*q)&MASK)
+            output.append(X)
+    return output
+
+def synthetic():
+    stats={}
+    for v in (0,1,2,3):
+        count=0
+        for i in range(40):
+            def h(t):return int.from_bytes(hashlib.sha256(f'generalring:{v}:{i}:{t}'.encode()).digest()[:16],'big')
+            A=h('A'); U=(A-(1<<v)*(2*(h('D')&0xffff)+1))&MASK
+            assert v2(A-U)==v
+            a,b,c=h('a'),h('b'),h('c')
+            T=lambda z:((a*z+b)*z+c)&MASK
+            B=T(A);V=T(U);X=T(B);C=T(X)
+            roots=recover(A,B,U,V,C)
+            assert X in roots,(v,i)
+            count+=1
+        stats['difference_valuation_'+str(v)]=count
+    return stats
+
+def unit_controls():
+    pos=neg=0
     for i in range(100):
         def h(t):return int.from_bytes(hashlib.sha256(f'mod128:{t}:{i}'.encode()).digest()[:16],'big')
         A=h('A')|1;U=h('U')&~1
         a,b,c=h('a'),h('b'),h('c')
         T=lambda z:((a*z+b)*z+c)&MASK
         B=T(A);V=T(U);X=T(B);C=T(X)
-        roots=solve(A,B,U,V,C)
-        assert X in roots,('fixture',i)
-        results['positive']+=1
-        results['more_than_one_root']+=bool(len(roots)>1)
-        # Perturb the known second flank by one bit in cases with parity
-        # constraints to provide a reliably negative complete-source control.
-        Cflip=C^1
-        bad=solve(A,B,U,V,Cflip)
-        assert not bad, ('parity control unexpectedly found a root',i)
-        results['negative_mod2']+=1
-    return results
+        assert X in recover(A,B,U,V,C);pos+=1
+        assert not recover(A,B,U,V,C^1);neg+=1
+    return {'complete_coupon_positives':pos,'wrong_flank_negatives':neg}
 
 if __name__=='__main__':
-    print(f'synthetic_ring128_controls={controls()}')
+    print('unit_controls',unit_controls())
+    print('general_nonunit_and_unit_controls',synthetic())
