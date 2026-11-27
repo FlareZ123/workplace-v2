@@ -1,0 +1,35 @@
+name: Agent31 synthetic XOR-SAT inverse benchmark
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Obtain reviewed upstream XOR-SAT wheel
+        run: |
+          mkdir -p dist
+          python -m pip download --only-binary=:all: --no-deps --dest dist pycryptosat==5.14.7
+          python -m pip install --no-index --find-links dist pycryptosat==5.14.7
+      - name: Strictly synthetic two-output inversion without an anchor
+        run: |
+          python agents/agent31/k04_xoropp_native_xorsat_synthetic.py --seed 20261127 --outputs 2 --seconds 90 --hint 0
+      - name: Strictly synthetic two-output inversion with partial state hint
+        run: |
+          python agents/agent31/k04_xoropp_native_xorsat_synthetic.py --seed 1847 --outputs 2 --seconds 90 --hint 24
+          python agents/agent31/k04_xoropp_native_xorsat_synthetic.py --seed 314159 --outputs 2 --seconds 90 --hint 32
+      - name: Strictly synthetic four-output inversion without an anchor
+        run: |
+          python agents/agent31/k04_xoropp_native_xorsat_synthetic.py --seed 271828 --outputs 4 --seconds 90 --hint 0
+      - name: Preserve installer for restricted local-only historical screening
+        uses: actions/upload-artifact@v4
+        with:
+          name: pycryptosat-cp313-linux-wheel
+          path: dist/pycryptosat-5.14.7-*.whl
+          retention-days: 1
