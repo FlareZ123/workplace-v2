@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Bounded K08 single-carrier component-construction test.
 
-Reads only the exact 46-file H-17 export under resources/. It excludes the
-selected PS-261003-0417 ACK2 payload and tests five frozen one-carrier maps.
+Reads the 45 permitted members of the 46-file H-17 export under resources/.
+The quarantined BX25-08 PDF is never read: its previously pinned SHA-256 is
+used ONLY for the original manifest proof. The selected PS-261003-0417 ACK2
+payload is excluded; the five frozen single-carrier maps are unchanged.
 The official acceptance data and source files are read-only.
 """
 from __future__ import annotations
@@ -59,6 +61,8 @@ evidence/transfers/queue-note.txt
 evidence/transfers/transfer-audit.jsonl
 verify.py
 """.split()
+RESTRICTED_PDF = "evidence/h17-supplemental-office-files/BX25-08.pdf"
+PINNED_PDF_SHA256 = "b6a6156f596575b988126c6d3e5cbb88d5794cc927a5564c37b6ddb8cecc3425"
 EXPECTED_MANIFEST = "cf169f8c3f56455dd24c8ebbd41651b04b799252781ed910200660c9609f910d"
 EXPECTED_SPOOL = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
 EXPECTED_NOTES = "13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb"
@@ -67,10 +71,18 @@ def sha(data: bytes) -> bytes:
     return hashlib.sha256(data).digest()
 
 def read(rel: str) -> bytes:
+    # Fail before opening the hash-only PDF, including any new PDF path.
+    if rel.lower().endswith(".pdf"):
+        raise ValueError("PDF inputs are quarantined; no content/derivative read")
     return (RES / rel).read_bytes()
 
 def manifest_digest() -> str:
-    rows = [rel + "\0" + hashlib.sha256(read(rel)).hexdigest() for rel in SOURCE_PATHS]
+    # Reconstruct the historical manifest only from safe members and the
+    # *already established* hash. This is NOT a PDF content verification.
+    rows = []
+    for rel in SOURCE_PATHS:
+        digest = PINNED_PDF_SHA256 if rel == RESTRICTED_PDF else hashlib.sha256(read(rel)).hexdigest()
+        rows.append(rel + "\0" + digest)
     return hashlib.sha256("\n".join(sorted(rows)).encode()).hexdigest()
 
 def build_carriers() -> dict[bytes, str]:
@@ -82,7 +94,7 @@ def build_carriers() -> dict[bytes, str]:
     # Exact 32-hex-character fields from the supplied export. Remove only the
     # disputed PS-0417 ACK2 row before scanning the spool source.
     for rel in SOURCE_PATHS:
-        if rel in ("acceptance.json", "verify.py", "candidate.template.json"):
+        if rel == RESTRICTED_PDF or rel in ("acceptance.json", "verify.py", "candidate.template.json"):
             continue
         data = read(rel)
         if rel == "evidence/print/spool-reconstruction.log":
@@ -237,7 +249,8 @@ def main():
     nonce = bytes.fromhex(route["K08"]["desk_nonce"])
     target = acceptance["slot_sha256"]["K08"]
     src = build_carriers()
-    assert len(src) == 536, len(src)
+    assert 0 < len(src) <= 536, len(src)
+    assert all(RESTRICTED_PDF not in label for label in src.values())
     assert bytes.fromhex("A9A9DC5731A5E2AE879C47215C2559D5") not in src
     methods = candidate_methods(nonce)
     checks, original_hits = scan(src, target, methods)
@@ -258,7 +271,10 @@ def main():
         assert controls[name]
 
     report = {
-        "source_files": len(SOURCE_PATHS),
+        "source_files_in_manifest": len(SOURCE_PATHS),
+        "readable_source_files": len(SOURCE_PATHS) - 1,
+        "restricted_pdf_read": False,
+        "restricted_pdf_hash_only": PINNED_PDF_SHA256,
         "source_manifest_sha256": EXPECTED_MANIFEST,
         "distinct_16_byte_carriers": len(src),
         "selected_k04_ack2_excluded": True,
