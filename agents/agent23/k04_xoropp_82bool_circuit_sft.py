@@ -118,3 +118,51 @@ def self_test():
     print('synthetic_exact_roundtrip=128/128 four-output_32bit_anchor='+('PASS' if sat is not None else 'SKIPPED_NO_LIBZ3'))
 
 if __name__=='__main__':self_test()
+
+
+# Two-phase extraction preserves the same Z3 context between check-sat and
+# get-value. A single check-sat+get-value script can time out before producing
+# a model even when a separate check-sat script reaches SAT.
+def solve_complete(observed: Mapping[int,int], t_known_bits: Mapping[int,int]|None=None,
+                   timeout_ms: int=150000) -> tuple[str,tuple[int,int,tuple[int,...]]|None]:
+    import ctypes,re
+    script='(set-option :sat.anf true)\n(set-option :sat.anf.exlin true)\n'+make_circuit(observed,t_known_bits,timeout_ms)
+    lib=ctypes.CDLL('libz3.so.4')
+    lib.Z3_mk_config.restype=ctypes.c_void_p
+    lib.Z3_mk_context.argtypes=[ctypes.c_void_p]
+    lib.Z3_mk_context.restype=ctypes.c_void_p
+    lib.Z3_del_config.argtypes=[ctypes.c_void_p]
+    lib.Z3_del_context.argtypes=[ctypes.c_void_p]
+    lib.Z3_eval_smtlib2_string.argtypes=[ctypes.c_void_p,ctypes.c_char_p]
+    lib.Z3_eval_smtlib2_string.restype=ctypes.c_char_p
+    cfg=lib.Z3_mk_config();ctx=lib.Z3_mk_context(cfg)
+    try:
+        status=(lib.Z3_eval_smtlib2_string(ctx,script.encode()) or b'').decode().strip()
+        assert status in ('sat','unsat','unknown'),status[:256]
+        if status!='sat':return status,None
+        names=[*(f't_{i}' for i in range(64)),*(f'a0_{i}' for i in range(17)),'v0_17']
+        m=(lib.Z3_eval_smtlib2_string(ctx,f'(get-value ({" ".join(names)}))'.encode()) or b'').decode()
+        d={k:int(v=='true') for k,v in re.findall(r'\((t_\d+|a0_\d+|v0_17)\s+(true|false)\)',m)}
+        assert all(n in d for n in names),f'missing model fields {len(d)} of {len(names)}'
+        t=sum(d[f't_{i}']<<i for i in range(64))
+        lo=sum(d[f'a0_{i}']<<i for i in range(17))
+        a,b=exact_initial_from_bits(observed[0],t,lo,d['v0_17'])
+        out=emit(a,b,max(observed)+1)
+        assert all(out[i]==y for i,y in observed.items()),'independent complete model replay failed'
+        return status,(a,b,out)
+    finally:
+        lib.Z3_del_context(ctx);lib.Z3_del_config(cfg)
+
+if __name__=='__main__':
+    import sys
+    if '--slow-unanchored' in sys.argv:
+        import time
+        rng=random.Random(20261127)
+        a,b=rng.getrandbits(64),rng.getrandbits(64)
+        ys=emit(a,b)
+        start=time.monotonic()
+        status,witness=solve_complete({i:ys[i] for i in (0,1,4,5)},timeout_ms=150000)
+        assert status=='sat' and witness is not None
+        aa,bb,outputs=witness
+        assert (a,b)==(aa,bb) and outputs[2:4]==ys[2:4]
+        print('unanchored_synthetic_middle_state_exact=PASS seconds=',round(time.monotonic()-start,3))
