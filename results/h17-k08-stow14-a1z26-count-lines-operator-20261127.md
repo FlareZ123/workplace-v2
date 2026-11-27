@@ -65,6 +65,12 @@ Now apply the independently reconstructed **LOW IF EVEN** row transition: 8 is e
 
 This is a target-blind source-only convergence onto a caption-class record. It still does not prove N09 is Emily's final wording; indeed verbatim N09 has already failed K08. Its value is selector specificity: STOW14 is no longer only a WN-14 namespace locator under this interpretation, but also deterministically reaches a surviving caption antecedent using the already calibrated LOW BIT / LOW IF EVEN operations.
 
+## Clean LOW BIT decode of the cue initials
+
+The four source-literal cues themselves provide a representation-independent selector. Their initials are **C L B M**. Ordinary A1Z26 gives `3,12,2,13`; taking the **LOW BIT** of each value gives `1,0,0,1`. Packing in the same first-bit-as-LSB convention gives decimal **9**, hence **N09**.
+
+This is the cleanest form of the selector found in this run because it does not depend on physical text-line numbering, word-token positions, or choosing between N19's two occurrences of `count`. The input is exactly the source-derived directive `COUNT LINE BETWEEN MARGIN`, and the only reused operation is the already-established LOW BIT convention.
+
 ## Cue-position ambiguity collapses to the same N09
 
 There is a second target-blind route to the same caption record. Within the four A1Z26-selected post-label bodies, the corresponding cue-word positions are:
