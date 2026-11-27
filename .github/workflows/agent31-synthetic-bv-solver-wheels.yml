@@ -1,0 +1,23 @@
+name: Agent31 build local-only bitvector solver toolchain
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  wheels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Acquire official PyPI binary solvers without project data
+        run: |
+          mkdir -p dist
+          python -m pip download --only-binary=:all: --no-deps -d dist pyboolector==3.2.4.38488416565 bitwuzla==0.9.1
+      - name: Preserve wheel-only toolchain
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent31-bv-solver-binaries-only
+          path: dist/*.whl
+          retention-days: 1
