@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import hashlib,re,sys
+import hashlib,hmac,re,sys
 from pathlib import Path
 EXPECTED_SHA='13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb'
 
@@ -102,6 +102,30 @@ def main(path:str)->None:
         lineage.append((cur,cnt,nxt))
         cur=nxt
     assert lineage==[(9,13,13),(13,22,23)]
+    lineage_heads=[words(strip_label(notes[f'N{n:02d}']['body']))[0] for n in (9,13,23)]
+    assert [w.lower() for w in lineage_heads]==['nobody','at','the']
+    def low_value(text:str)->int:
+        return sum((ord(ch)&1)<<i for i,ch in enumerate(text.upper()))
+    assert low_value('WORDS')==19
+    n20_words=[w.lower() for w in words(strip_label(notes['N20']['body']))]
+    assert n20_words[18]=='table'
+    exact_fragment=' '.join([w.lower() for w in lineage_heads]+[n20_words[18]])
+    assert exact_fragment=='nobody at the table'
+    nonce=bytes.fromhex('5F933DA6A1BD03C32DA5CBC25344F497')
+    target=bytes.fromhex('285eb6b4196d21eaf47e251449e61e0bce28749881ccc5a065ca733b0c3fd747')
+    def normal(s:str)->str:
+        return ' '.join(re.sub(r'[^a-z0-9\\s]',' ',s.lower()).split())
+    def slot(s:str):
+        mac=hmac.new(nonce,normal(s).encode(),hashlib.sha256).digest()[:16]
+        return mac,hashlib.sha256(mac).digest()
+    n02_mac,_=slot(strip_label(notes['N02']['body']))
+    assert n02_mac.hex().upper()=='BF889359B0303F2B2B2FD96AE841210B'
+    fragment_mac,fragment_sha=slot(exact_fragment)
+    assert fragment_sha!=target and fragment_mac.hex().upper()=='13134314DC04AEE439F4A8790D89D01C'
+    n09_words=[w.lower() for w in words(strip_label(notes['N09']['body']))]
+    complete_edit=' '.join(['nobody','at','the','table']+n09_words[1:])
+    edit_mac,edit_sha=slot(complete_edit)
+    assert edit_sha!=target and edit_mac.hex().upper()=='A1872D6540E41CAA8CEBEA8E58B4A854'
     char14=''.join(strip_label(notes[f'N{n:02d}']['body'])[13] for n in ids)
     assert char14==' len'
     print('STOW14 bits=',bits)
@@ -121,6 +145,8 @@ def main(path:str)->None:
     print('N09 heading ASCII low-bit full octets=',n09_head_octets.decode(),'-> hex stage',int(n09_head_octets.decode(),16),'(cross-slot locator clue only)')
     print('long-heading three-octet printable-hex controls=',long_hex)
     print('COUNT LINE / LOW IF EVEN lineage=',lineage,'=> N23 final-margin record')
+    print('exact source fragment=',exact_fragment,'K08_MATCH=',fragment_sha==target)
+    print('single deterministic N09 insertion=',complete_edit,'K08_MATCH=',edit_sha==target)
     print('secondary char14=',repr(char14),'(exploratory; not used in directive)')
 if __name__=='__main__':
     if len(sys.argv)!=2: raise SystemExit('usage: script noticeboard-and-desk-notes.txt')
