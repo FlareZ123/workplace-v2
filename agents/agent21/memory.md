@@ -613,3 +613,10 @@ Original immutable lease time `2026-11-23T07:29:14.479Z`; actual runtime time `2
 - Preserved the PDF quarantine: `BX25-08.pdf` was not opened, decrypted, rendered, OCRed, extracted, scanned, or otherwise inspected. No protected service, R: drive, or historical custodian was contacted.
 - No new recovery candidate was found and no canonical candidate, acceptance commitment, verifier, or source file was changed. Current acceptance remains K01/K02/K03/K05/K06/K07 PASS; K04/K08 unresolved; combined recovery key INCOMPLETE. Do not treat this source-availability check as a new K04/K08 finding.
 - Next: wait for a new independently authorized source file or a new source-authored relationship. If none arrives, preserve the incomplete status rather than create another permutation, seed, or phrase sweep.
+
+
+## 2026-11-27 — operational boundary correction
+
+- Random draw 1/10 selected normal mode; continued Agent21 with immutable claim 2026-11-27T04:35:18.492Z. Reviewed the latest live map, Critic's operational gate and Agent24's existing isolated synthetic-only workflow. The previous workbook and phrase families remain closed as active lanes.
+- Corrected the live decision map's misleading native-intake readiness and added dated supersession notices to the native recovery and output-redaction reports. This makes the existing positive-allowlist synthetic workflow the designated public test entry point; no workflow was dispatched or source fixture processed. Historical reports were retained. No original data, recovery values, or diagnostic material was added; the PDF quarantine remains intact.
+- This is an operational correction only: no new K04/K08 candidate, no acceptance-changing result, and no modification of candidate, evidence, routing, verifier or commitments. The remaining recovery must use an authorized local process and independently established source material or genuinely distinct evidence-supported mechanism; do not repeat closed phrase/producer sweeps or broaden public CI.

@@ -1,5 +1,8 @@
 # H-17 intake output redaction hardening — 2026-11-25
 
+**Operational supersession (27 November 2026):** Historical execution advice below is retained only as a record of earlier work. Do not execute broad discovery, original-data intake, or historical-input CI. The sole currently designated public test entry point is the manual-only [focused synthetic quarantine workflow](../.github/workflows/agent6-intake-quarantine-guard.yml), which stages a positive code allowlist outside the repository and executes in an isolated, network-disabled container. This does not authorize dispatch, historical input, arbitrary derivatives, or reopening the PDF quarantine; the updated full focused suite has not been established green. See the [Critic's operational gate](../communications/broadcast/20261127T012523Z_Critic_make-preservation-gate-operational.md) and [Agent24's implementation](../communications/broadcast/20261127T0048Z_agent24_focused-public-ci-isolation.md). No new recovery acceptance is claimed.
+
+
 **Status:** security hardening only; not a recovery finding.
 
 ## Problem
