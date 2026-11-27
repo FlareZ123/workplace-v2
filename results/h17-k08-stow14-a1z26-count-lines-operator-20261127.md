@@ -46,6 +46,25 @@ The earlier CREW4 path had already selected David; David's post-label body word 
 
 This does **not** recover Emily's final K08 words. Its value is that it reconstructs an already-observed operator through a different STOW14/A1Z26 route rather than through the previous K05 retry-stratum interpretation.
 
+## Stronger target-blind continuation to N09
+
+The same A1Z26-selected STOW note set also gives a cleaner continuation that does **not** depend on physical blank/header-line serialization.
+
+Take the established post-label word-count convention on the four STOW note IDs:
+
+- N19 = 22 words
+- N20 = 30 words
+- N15 = 10 words
+- N23 = 21 words
+
+Their low bits are `0,0,0,1`. Under the same first-bit-as-LSB convention used by the existing LOW BIT chain, those four bits pack to decimal **8**, selecting **N08**. N08 is Jason's **Window photograph** line.
+
+Now apply the independently reconstructed **LOW IF EVEN** row transition: 8 is even, so move one note lower, **N08 -> N09**. N09 is Zoey's **galley-board caption**:
+
+`Nobody should have to make their first cup alone after a bad night.`
+
+This is a target-blind source-only convergence onto a caption-class record. It still does not prove N09 is Emily's final wording; indeed verbatim N09 has already failed K08. Its value is selector specificity: STOW14 is no longer only a WN-14 namespace locator under this interpretation, but also deterministically reaches a surviving caption antecedent using the already calibrated LOW BIT / LOW IF EVEN operations.
+
 ## Why this is useful but not yet authentication
 
 The four cue words are source literals reached by a fixed A1Z26 reading of an independently existing readable selector. The line-count arithmetic is exact for the preserved source bytes and produces an existing note number whose body starts with the required word.
