@@ -38,6 +38,10 @@ def main(path:str)->None:
     counts=[len(words(strip_label(notes[n]['body']))) for n in david]
     low=''.join(chr(ord('A')+v) for v in counts)
     assert david==['N04','N11','N19'] and counts==[11,14,22] and low=='LOW'
+    cue_initials=''.join(cue[0].upper() for cue in cues)
+    cue_initial_bits=[((ord(ch)-ord('A')+1)&1) for ch in cue_initials]
+    cue_initial_selector=sum(bit<<i for i,bit in enumerate(cue_initial_bits))
+    assert cue_initials=='CLBM' and cue_initial_bits==[1,0,0,1] and cue_initial_selector==9
     cue_positions=[]
     for n,cue in zip(ids,cues):
         ww=[w.lower() for w in words(strip_label(notes[f'N{n:02d}']['body']))]
@@ -76,6 +80,7 @@ def main(path:str)->None:
     print('line-count11 -> N11 first body word=',first11.upper())
     print('David body counts=',counts,'->',low)
     print('derived directive=',low,first14.upper(),first11.upper())
+    print('cue initials=',cue_initials,'A1Z26 low bits=',cue_initial_bits,'-> N%02d'%cue_initial_selector)
     print('cue word positions=',cue_positions,'parity selectors=',cue_selector_first,cue_selector_second,'-> N09 after LOW IF EVEN')
     print('STOW note word counts=',selected_counts,'low bits=',count_bits,'-> N%02d'%count_low)
     print('LOW IF EVEN -> N%02d'%lowered,'=',strip_label(notes['N09']['body']))
