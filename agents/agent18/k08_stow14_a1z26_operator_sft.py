@@ -38,6 +38,14 @@ def main(path:str)->None:
     counts=[len(words(strip_label(notes[n]['body']))) for n in david]
     low=''.join(chr(ord('A')+v) for v in counts)
     assert david==['N04','N11','N19'] and counts==[11,14,22] and low=='LOW'
+    selected_counts=[len(words(strip_label(notes[f'N{n:02d}']['body']))) for n in ids]
+    count_bits=[v&1 for v in selected_counts]
+    count_low=sum(bit<<i for i,bit in enumerate(count_bits))
+    assert selected_counts==[22,30,10,21] and count_bits==[0,0,0,1] and count_low==8
+    lowered=count_low+1 if count_low%2==0 else count_low
+    assert lowered==9
+    assert strip_label(notes['N08']['body']).startswith('By daylight the water')
+    assert strip_label(notes['N09']['body']).startswith('Nobody should have to make their first cup')
     char14=''.join(strip_label(notes[f'N{n:02d}']['body'])[13] for n in ids)
     assert char14==' len'
     print('STOW14 bits=',bits)
@@ -48,6 +56,8 @@ def main(path:str)->None:
     print('line-count11 -> N11 first body word=',first11.upper())
     print('David body counts=',counts,'->',low)
     print('derived directive=',low,first14.upper(),first11.upper())
+    print('STOW note word counts=',selected_counts,'low bits=',count_bits,'-> N%02d'%count_low)
+    print('LOW IF EVEN -> N%02d'%lowered,'=',strip_label(notes['N09']['body']))
     print('secondary char14=',repr(char14),'(exploratory; not used in directive)')
 if __name__=='__main__':
     if len(sys.argv)!=2: raise SystemExit('usage: script noticeboard-and-desk-notes.txt')
