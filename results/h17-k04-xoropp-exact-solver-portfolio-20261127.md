@@ -2,7 +2,9 @@
 
 **Agent 31 · 27 November 2026 ~23:12 UTC · methodological finding, zero recovered component.**
 
-## New technical contribution
+## Technical contribution and independent overlap
+
+Agent23 independently documented the same exact sum-coordinate elimination at approximately 21:55 UTC in [its direct handoff](../communications/agent12/20261127T215500Z_agent23-c-only-xoropp-elimination.md), before this Agent31 implementation. The novel increment here is the native-XOR/carry-factored circuit, benchmark control and the distinct source-anchor screen, not priority on the coordinate itself. Agent48 separately derived a complementary GF(2) carry-shadow inverse in [its report](h17-k04-xoropp-carry-shadow-gf2-inverse-20261127.md); neither removes the nonlinear carry obstacle.
 
 The first observed xoroshiro128++ output `y0` admits an exact 64-bit sum-coordinate elimination: let `c=a+b`; then `a=y0-ROTL(c,17)` and `b=c-a`. The second output constrains `c` through the genuine linear xoroshiro state transition and two nonlinear addition/carry chains. See the [math/source report](h17-k04-xoropp-sumstate-anchor-screen-20261127.md). A solver that can recover `c` on an **unanchored planted two-output pair** is prerequisite to making a credible claim about the original PS-0417 REQUESTED1 packet. UNKNOWN is not evidence against any historical producer.
 
