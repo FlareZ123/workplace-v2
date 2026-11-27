@@ -61,6 +61,28 @@ def main(path:str)->None:
     lowered=count_low+1 if count_low%2==0 else count_low
     assert lowered==9
     assert strip_label(notes['N08']['body']).startswith('By daylight the water')
+    n09_label=notes['N09']['body'].split(':',1)[0]
+    n09_label_words=words(n09_label)
+    assert n09_label=='Caption for the galley board' and n09_label_words==['Caption','for','the','galley','board']
+    n09_head_initial_bits=[((ord(w[0].upper())-ord('A')+1)&1) for w in n09_label_words]
+    n09_head_initial_selector=sum(bit<<i for i,bit in enumerate(n09_head_initial_bits))
+    n09_head_length_bits=[len(w)&1 for w in n09_label_words]
+    n09_head_length_selector=sum(bit<<i for i,bit in enumerate(n09_head_length_bits))
+    assert n09_head_initial_bits==[1,0,0,1,0] and n09_head_initial_selector==9
+    assert n09_head_length_bits==[1,1,1,0,1] and n09_head_length_selector==23
+    rawbits=[ord(ch)&1 for ch in n09_label]
+    n09_head_octets=bytes(sum(rawbits[i+j]<<j for j in range(8)) for i in range(0,24,8))
+    assert n09_head_octets==b'3B3' and int(n09_head_octets.decode(),16)==947
+    # Specificity control over every colon-prefix heading: N09 alone self-indexes
+    # under first-five A1Z26 initial low bits. (Short headings use all words.)
+    self_head=[]
+    for i in range(1,25):
+        body=notes[f'N{i:02d}']['body']
+        if ':' not in body: continue
+        hw=words(body.split(':',1)[0])[:5]
+        v=sum((((ord(w[0].upper())-ord('A')+1)&1)<<j) for j,w in enumerate(hw))
+        if v==i: self_head.append(i)
+    assert self_head==[9]
     assert strip_label(notes['N09']['body']).startswith('Nobody should have to make their first cup')
     lineage=[]
     cur=9
@@ -84,6 +106,9 @@ def main(path:str)->None:
     print('cue word positions=',cue_positions,'parity selectors=',cue_selector_first,cue_selector_second,'-> N09 after LOW IF EVEN')
     print('STOW note word counts=',selected_counts,'low bits=',count_bits,'-> N%02d'%count_low)
     print('LOW IF EVEN -> N%02d'%lowered,'=',strip_label(notes['N09']['body']))
+    print('N09 heading initial low bits=',n09_head_initial_bits,'-> N%02d'%n09_head_initial_selector,'unique heading self-index=',self_head)
+    print('N09 heading word-length low bits=',n09_head_length_bits,'-> N%02d'%n09_head_length_selector)
+    print('N09 heading ASCII low-bit full octets=',n09_head_octets.decode(),'-> hex stage',int(n09_head_octets.decode(),16),'(cross-slot locator clue only)')
     print('COUNT LINE / LOW IF EVEN lineage=',lineage,'=> N23 final-margin record')
     print('secondary char14=',repr(char14),'(exploratory; not used in directive)')
 if __name__=='__main__':
