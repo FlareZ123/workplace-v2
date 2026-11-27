@@ -79,3 +79,16 @@ The source-free [C++ exact inverter](../agents/agent11/k04_xoropp_knownxor_bound
 The random-fixture \`D\` distribution was concentrated around **9**, not 17; the full histogram is emitted by the reproducer. This is a method upgrade, not a new observation that xoroshiro actually produced the original printer record. The same historical packet, output-placement and authenticity caveats apply; **zero original K04 coupon outputs are claimed from the synthetic experiment**.
 
 **Next decisive use:** Take only source-defensible candidate XOR-state words, invert the intact PS-0417 REQUESTED1 output pair using the faster algorithm, and replay all intact REQUESTED3 outputs *before* evaluating any selected physical coupon candidate against the unchanged K04 commitment. A match must still establish the historical producer relation; arbitrary donor lists do not.
+
+
+## Original, bounded opaque-source XOR-state screen (read-only local test)
+
+The new fast inverter enables a complete small-scale **source-linked \`t\` hypothesis** test that was impractical with the old fixed \`2^18\` method.
+
+The original non-PDF \`resources/evidence\` tree contains **41 permitted evidence files**. An original spool SHA-256 gate was checked before use. The disputed selected \`PS-261003-0417\` 18:02 ACK2 row was **removed from all donor input** and never used as an output constraint. The exact 18:01 REQUESTED1 and 18:03 REQUESTED3 source packets were reserved for independent complete 64-bit output replay, with four predeclared 8-byte pair serializers (BE/LE and word-order swap).
+
+From **opaque byte carriers only**, generate a proposed initial state XOR \`t\` as either (a) any 8-byte window in a source hex-decoded binary field or genuine raw recorder stream, interpreted both byte orders, or (b) XOR of the two 8-byte halves of any 16-byte such window, also in both byte orders. ASCII prose substrings and PDF bytes were not eligible donors. This produced 6,638 direct words and 4,494 two-half XOR words, **11,132 distinct proposed 64-bit t values**.
+
+All **44,528** proposed \`t × serializer\` models were fully enumerated for first-output preimages using the new inverse. Exactly 44,670 first-output roots arose across serializers. **Zero** roots reproduced even the intact second 64-bit REQUESTED1 output, so none reached the held-out REQUESTED3 four-output gate or produced a physical K04 coupon candidate. No original commitment check was reached or claimed.
+
+This excludes **only** the exact source-byte-donor/XOR-state construction and four packet serializers; it does not falsify the xoroshiro128++ producer class or prove the source rows independently intact. The complete-candidate first-pair replay is a sharp negative before the damaged/copied middle packet. Source-sensitive scanning was local, not run in public Actions. The original verifier, evidence, canonical candidate, and accepted six components were unchanged. K04/K08 remain MISSING; combined INCOMPLETE.
