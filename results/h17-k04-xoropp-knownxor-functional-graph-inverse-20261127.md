@@ -92,3 +92,22 @@ From **opaque byte carriers only**, generate a proposed initial state XOR \`t\` 
 All **44,528** proposed \`t × serializer\` models were fully enumerated for first-output preimages using the new inverse. Exactly 44,670 first-output roots arose across serializers. **Zero** roots reproduced even the intact second 64-bit REQUESTED1 output, so none reached the held-out REQUESTED3 four-output gate or produced a physical K04 coupon candidate. No original commitment check was reached or claimed.
 
 This excludes **only** the exact source-byte-donor/XOR-state construction and four packet serializers; it does not falsify the xoroshiro128++ producer class or prove the source rows independently intact. The complete-candidate first-pair replay is a sharp negative before the damaged/copied middle packet. Source-sensitive scanning was local, not run in public Actions. The original verifier, evidence, canonical candidate, and accepted six components were unchanged. K04/K08 remain MISSING; combined INCOMPLETE.
+
+
+### Closed-form boundary-width distribution (mathematical, not empirical)
+
+The number of independent guessed boundary bits admits a *closed-form* expression under a uniform random 64-bit proposed XOR word \`t\`:
+
+\`\`\`
+D(t) = 1{at least one zero in t[0..46]} + number_of_zeros(t[47..62]).
+\`\`\`
+
+This follows because only predecessor indices \`p_t(k)\` for \`k=47..63\` contribute; the first predecessor (if one exists before bit47) is one shared unknown, and each additional zero among bit positions47..62 first becomes the latest predecessor at the next boundary step. Bit63 never enters this boundary preimage list.
+
+Consequently, with uniform independent \`t\` bits, \`Z ~ Binomial(16, 1/2)\`, and \`D=Z+B\` where \`B~Bernoulli(1-2^-47)\` is independent of Z. The *exact expected number of enumeration assignments* per known-\`t\` input is
+
+\`\`\`
+E[2^D] = (2 - 2^-47) (3/2)^16 ≈ 1,313.68167,
+\`\`\`
+
+compared with a fixed 262,144 for the previous \`2^18\` enumeration: an expected **199.55×** assignment reduction under a uniform random \`t\`. This is a distributional theorem for the algorithm, not an assumption about real printer state or proof of recoverability without \`t\`. At most 131,072 assignments are needed for any \`t\`; sparse t can approach that worst case.
