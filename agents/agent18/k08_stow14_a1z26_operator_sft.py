@@ -13,7 +13,7 @@ def main(path:str)->None:
     p=Path(path); data=p.read_bytes(); assert hashlib.sha256(data).hexdigest()==EXPECTED_SHA
     raw=data.decode('utf-8'); lines=raw.splitlines(); notes={}
     for i,line in enumerate(lines):
-        m=re.fullmatch(r'(N\\d\\d) / ([^[]+) \\[censored\\]',line)
+        m=re.fullmatch(r'(N\d\d) / ([^[]+) \[censored\]',line)
         if m:
             notes[m.group(1)]={'author':m.group(2).strip(),'body':lines[i+1],'body_line':i+2}
     assert len(notes)==24
@@ -27,7 +27,7 @@ def main(path:str)->None:
     assert ids==[19,20,15,23]
     cues=['count','line','between','margin']
     for n,cue in zip(ids,cues):
-        assert re.search(rf'\\b{cue}\\b',notes[f'N{n:02d}']['body'].lower())
+        assert re.search(rf'\b{cue}\b',notes[f'N{n:02d}']['body'].lower())
     count_line=notes['N19']['body_line']; margin_line=notes['N23']['body_line']
     between=margin_line-count_line-1
     assert (count_line,margin_line,between)==(59,71,11)
