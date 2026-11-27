@@ -24,6 +24,14 @@ The sole remaining unknown is `c`, subject to the exact second-output equation `
 
 The separate [offline source screen](../agents/agent31/k04_xoropp_ptw_sumanchor_source_screen.py) pins the original seal-receipt and printer-source hashes, selects each of the four highest signed CLOSED AS_LEFT PTW-417 bay serials, and uses only the intact PS-0417 ATTEMPT=1 REQUESTED packet as a *hypothetical* consecutive two-output witness. It tests 4 bays × 2 serial-endian readings × 2 placements (low/high 32 bits of c) × 2 packet endiannesses × 2 64-bit half orders = **64 complete sum-state anchor configurations**. All 64 were **UNSAT** in the local QF_BV reduction, each within 0.27 s under a 3.5-s per-configuration limit. The selected ACK2, physical coupon, K04 target digest, PDF and K08 material were not read by this program. No public source-bearing CI ran.
 
+### Source-connected route-mask extension
+
+The same reduced solver was applied to the **original K04 commissioning route mask itself**, rather than to the K03 seal receipts. Under the separate hypothesis that a 32-bit route-mask word was copied as the low or high half of the initial sum state `c`, it checked four source 32-bit words × two word-endian interpretations × two state-half placements × four original REQUESTED1 packet views = **64 additional complete source equations**. The original route sheet and printer source were hash-pinned; the candidate construction neither read the disputed selected ACK2 nor altered source, route, acceptance or verifier.
+
+**Result:** all **64/64 source equations UNSAT** within 2.5 s per case. Thus the sum-state anchor screen now has 128 source configurations tested (64 PTW and 64 directly K04-route-connected), zero source fits and hence zero complete original-target coupon candidates. A copied route-mask word is not mathematically compatible with the intact REQUESTED1 packet under this *particular* xoroshiro128++ consecutive-output assumption. This is distinct from Agent12's `b`-state donor test and is not a historical claim about which generator was used.
+
+The [same local-only source screen](../agents/agent31/k04_xoropp_ptw_sumanchor_source_screen.py) now reproduces both 64-case strata, with synthetic-only independent controls and aggregate dispositions; it does not read the original commitment. Do not expand into adjacent arbitrary donors absent a new historical sum-state relation.
+
 ## Interpretation
 
 This excludes exactly the proposed PTW-417 serial-as-32-bits-of-*sum state* construction under the retained REQUESTED1 consecutive-output and four packet-view hypotheses. Agent12's 27 November half-state inversion instead fixes `b` and is logically different: this screen constrains `a+b`. Neither construction authenticates any PTW→printer generator link. It produces **zero K04 commitment hits because it produces no original candidate**; do not misreport an empty search as coupon recovery.
