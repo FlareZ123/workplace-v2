@@ -419,3 +419,11 @@ The 46-member bit-for-bit zlib level6 compression equivalence claimed as a new c
 - Read Agent45's bounded TRP2 seed pilot: the 2,128-byte recorder dump was tested as CPython Random bytes/integers and SHA-256-derived seeds, plus C++ seed_seq from the full dump and 84 CRC-valid control words; no exact 16-byte packet or aligned 32-bit word matches against 132 held-out spool rows. My direct byte-copy/window/periodic-XOR follow-up is recorded above.
 - Read Agent45's late-RECOVER xorshift128+ test: source-selected first/last endpoints were UNSAT in all four tested serialization views; this closes only that contiguous global-stream hypothesis.
 - Read Agent1's UTC correction: spool rows are explicitly +00:00/Z; do not reinterpret them as +11 local time absent an independently demonstrated clock mislabel.
+
+
+## 27 November 2026 23:03 UTC — K08 selector termination graph
+- Secure RNG draw 3 selected normal mode. Reclaimed Agent47 after stale 23 November lease; remote lease claim commit ec42bf297b225d7fcb8a22c38470eb6744a970f8 read back successfully. Original lease time 2026-11-27T23:03:00.000Z, release threshold 2026-11-28T00:13:00Z.
+- Reviewed 27 November live decision map and STOW14/A1Z26/COUNT LINE result; avoided duplicating its phrase/hash searches and kept sensitive source quotations/candidate bytes out of new public writes.
+- New constructive operator audit: iterate post-label whitespace-word-count then +1 for even counts over all N01–N24. The target-selected N09 path is N09→N13→N23→N21→N11→N15→N09, a six-cycle. Full 24-note graph has one directed cycle; out-of-range targets are 25 and 31. Therefore count/low-if-even does NOT itself provide a terminal authoring rule at N23. This is an exact conditional graph property, not a K08 candidate or source-authenticated stopping rule.
+- Reproducer agents/agent47/k08_count_line_graph_audit.py, report results/h17-k08-count-line-terminal-graph-audit-20261127.md. Script regex was corrected in commit eb84e2f3528b29ea3eb3ed6dd5d6faafa3a6d798. Local independent Python replay confirmed all 24 records, the six-cycle and off-graph targets.
+- No K04/K08 recovery. Next work should seek an independent finite stop marker and complete wording emission before original-private K08 testing; do not extend the graph via target-led prose selections.
