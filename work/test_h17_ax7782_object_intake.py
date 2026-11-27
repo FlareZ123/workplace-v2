@@ -5,6 +5,7 @@ import io
 import json
 import sys
 import unittest
+import tempfile
 from unittest.mock import patch
 import zipfile
 from pathlib import Path
@@ -13,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_ax7782_object_intake as intake
 import h17_k04_binary_window_intake as k04
 
-REPO = Path(__file__).resolve().parents[1]
+from h17_synthetic_transfer_fixture import write_fixture
 
 
 class IntakeTests(unittest.TestCase):
@@ -27,15 +28,18 @@ class IntakeTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(intake.crc16(b"123456789", **intake.CRC16S[name]), value)
 
-    def test_selected_ax7782_chain_is_accepted_k07_component(self):
-        selected, meta = intake.select_chain(REPO / "resources", "AX-7782")
-        self.assertEqual(meta["object"], "IR-261003-H17")
-        self.assertEqual(meta["selected_attempts"], [2] * 8)
-        self.assertTrue(meta["handoff_email_confirms_retained_object"])
-        raw = b"".join(bytes.fromhex(row["checkpoint"]) for row in selected)
-        component = hashlib.sha256(raw).digest()[:16]
-        acceptance = json.loads((REPO / "resources" / "acceptance.json").read_text(encoding="utf-8"))
-        self.assertEqual(hashlib.sha256(component).hexdigest(), acceptance["slot_sha256"]["K07"])
+    def test_synthetic_ax7782_chain_is_accepted_k07_component(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            resources = Path(tmp) / "resources"
+            acceptance, expected_chain = write_fixture(resources)
+            selected, meta = intake.select_chain(resources, "AX-7782")
+            self.assertEqual(meta["object"], "IR-261003-H17")
+            self.assertEqual(meta["selected_attempts"], [2] * 8)
+            self.assertTrue(meta["handoff_email_confirms_retained_object"])
+            raw = b"".join(bytes.fromhex(row["checkpoint"]) for row in selected)
+            self.assertEqual(raw, expected_chain)
+            component = hashlib.sha256(raw).digest()[:16]
+            self.assertEqual(hashlib.sha256(component).hexdigest(), acceptance["slot_sha256"]["K07"])
 
     def test_source_named_bx25_pdf_is_skipped_before_magic_or_raw_scan(self):
         # Synthetic fixture only; never read the quarantined source bytes.

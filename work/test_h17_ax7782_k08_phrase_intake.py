@@ -16,18 +16,20 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import h17_ax7782_k08_phrase_intake as phrase_intake
 import h17_k08_teal_bit_image_scan  # load NumPy before tests patch sys.modules
 
-SOURCE_ROOT = Path(__file__).resolve().parents[1] / "resources"
+from h17_synthetic_transfer_fixture import write_fixture, NONCE, PHRASE, HMAC16
 
 
 class K08PhraseIntakeTests(unittest.TestCase):
-    def test_original_normalization_and_hmac_known_answer(self):
-        resources = SOURCE_ROOT
-        nonce, target = phrase_intake.load_k08_rules(resources)
-        normalized = phrase_intake.normalize("A good watch leaves the room ready for the next pair of hands.")
-        self.assertEqual(normalized, "a good watch leaves the room ready for the next pair of hands")
-        self.assertEqual(phrase_intake.k08_component(nonce, normalized).hex().upper(),
-                         "BF889359B0303F2B2B2FD96AE841210B")
-        self.assertEqual(len(target), 32)
+    def test_synthetic_normalization_and_hmac_known_answer(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            resources = Path(tmp) / "resources"
+            acceptance, _ = write_fixture(resources)
+            nonce, target = phrase_intake.load_k08_rules(resources)
+            normalized = phrase_intake.normalize("Paper boats wait beside the blue cup.")
+            self.assertEqual(normalized, PHRASE)
+            self.assertEqual(nonce, NONCE)
+            self.assertEqual(phrase_intake.k08_component(nonce, normalized), HMAC16)
+            self.assertEqual(target.hex(), acceptance["slot_sha256"]["K08"])
 
     def test_exact_span_match_with_original_normalization(self):
         nonce = bytes(range(16))
@@ -243,47 +245,26 @@ class K08PhraseIntakeTests(unittest.TestCase):
         )
         self.assertEqual(long_hits, [])
 
-    def test_original_ax7782_transfer_chain_is_selected(self):
+    def test_synthetic_ax7782_transfer_chain_is_selected(self):
         import h17_ax7782_object_intake as object_intake
-        selected, meta = object_intake.select_chain(SOURCE_ROOT, "AX-7782")
-        self.assertEqual(meta["object"], "IR-261003-H17")
-        self.assertTrue(meta["handoff_email_confirms_retained_object"])
-        self.assertEqual([int(row["attempt"]) for row in selected], [2] * 8)
-        chain = b"".join(bytes.fromhex(row["checkpoint"]) for row in selected)
-        component = hashlib.sha256(chain).digest()[:16]
-        acceptance = json.loads((SOURCE_ROOT / "acceptance.json").read_text())
-        self.assertEqual(hashlib.sha256(component).hexdigest(), acceptance["slot_sha256"]["K07"])
+        with tempfile.TemporaryDirectory() as tmp:
+            resources = Path(tmp) / "resources"
+            acceptance, expected_chain = write_fixture(resources)
+            selected, meta = object_intake.select_chain(resources, "AX-7782")
+            self.assertEqual(meta["object"], "IR-261003-H17")
+            self.assertTrue(meta["handoff_email_confirms_retained_object"])
+            self.assertEqual([int(row["attempt"]) for row in selected], [2] * 8)
+            chain = b"".join(bytes.fromhex(row["checkpoint"]) for row in selected)
+            self.assertEqual(chain, expected_chain)
+            component = hashlib.sha256(chain).digest()[:16]
+            self.assertEqual(hashlib.sha256(component).hexdigest(), acceptance["slot_sha256"]["K07"])
 
     def test_end_to_end_synthetic_8mib_object(self):
         with tempfile.TemporaryDirectory(prefix="h17-k08-e2e-") as tmp:
             base = Path(tmp)
             resources = base / "resources"
-            (resources / "evidence" / "transfers").mkdir(parents=True)
-            (resources / "evidence" / "mail").mkdir(parents=True)
-            original_route = json.loads((SOURCE_ROOT / "evidence" / "recovery-routing.json").read_text())
-            nonce = bytes.fromhex(original_route["K08"]["desk_nonce"])
-            phrase = "the keeper leaves the lamp on for the incoming watch"
-            component = phrase_intake.k08_component(nonce, phrase)
-            checkpoints = [bytes((i, 255 - i)) for i in range(8)]
-            rows = []
-            for seq, checkpoint in enumerate(checkpoints):
-                rows.append({"kind": "CHUNK", "transfer": "AX-7782", "seq": seq,
-                             "attempt": 1, "checkpoint": "0000", "bytes": 1048576,
-                             "object": "IR-261003-H17"})
-                rows.append({"kind": "CHUNK", "transfer": "AX-7782", "seq": seq,
-                             "attempt": 2, "checkpoint": checkpoint.hex().upper(),
-                             "bytes": 1048576, "object": "IR-261003-H17"})
-            rows.append({"kind": "COMMIT", "transfer": "AX-7782", "dry_run": False,
-                         "chunks": 8, "object": "IR-261003-H17"})
-            (resources / "evidence" / "transfers" / "transfer-audit.jsonl").write_text(
-                "\n".join(json.dumps(row) for row in rows) + "\n")
-            (resources / "evidence" / "mail" / "13.eml").write_text(
-                "AX-7782 IR-261003-H17 actual retained copy")
-            (resources / "evidence" / "recovery-routing.json").write_text(json.dumps(original_route))
-            chain = b"".join(checkpoints)
-            k07 = hashlib.sha256(hashlib.sha256(chain).digest()[:16]).hexdigest()
-            acceptance = {"slot_sha256": {"K07": k07, "K08": hashlib.sha256(component).hexdigest()}}
-            (resources / "acceptance.json").write_text(json.dumps(acceptance))
+            phrase = PHRASE
+            write_fixture(resources, phrase)
 
             archive_path = base / "AX-7782.bin"
             with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_STORED) as archive:

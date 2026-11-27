@@ -1,16 +1,7 @@
-name: Agent 6 H17 intake quarantine guard
+name: Agent 6 H17 intake quarantine guard (synthetic only)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - work/h17_ax7782_object_intake.py
-      - work/h17_k04_binary_window_intake.py
-      - work/h17_ax7782_k08_phrase_intake.py
-      - work/test_h17_ax7782_object_intake.py
-      - work/test_h17_ax7782_k08_phrase_intake.py
-      - .github/workflows/agent6-intake-quarantine-guard.yml
 
 permissions:
   contents: read
@@ -18,13 +9,27 @@ permissions:
 jobs:
   intake-regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install the PDF fixture dependency
-        run: python -m pip install pypdf pillow numpy
-      - name: Run focused read-only intake regressions
-        run: python -m unittest -v work.test_h17_ax7782_object_intake work.test_h17_ax7782_k08_phrase_intake
+          persist-credentials: false
+          sparse-checkout: work
+      - name: Stage explicit code-only allowlist
+        run: |
+          python3 work/h17_synthetic_ci_bundle.py --root "$GITHUB_WORKSPACE" --output "$RUNNER_TEMP/h17-synthetic-code"
+      - name: Prepare isolated test image without repository context
+        run: |
+          docker build -t h17-synthetic-ci - <<'EOF'
+          FROM python:3.11-slim
+          RUN pip install --no-cache-dir pypdf pillow numpy
+          EOF
+      - name: Execute synthetic-only focused regression
+        run: |
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --user 65534:65534 --pids-limit 128 \
+            --tmpfs /tmp:rw,nosuid,nodev,size=256m,mode=1777 \
+            --mount "type=bind,source=$RUNNER_TEMP/h17-synthetic-code,target=/code,readonly" \
+            --workdir /code -e PYTHONDONTWRITEBYTECODE=1 -e HOME=/tmp \
+            h17-synthetic-ci python -m unittest -v \
+            test_h17_synthetic_ci_bundle test_h17_ax7782_object_intake test_h17_ax7782_k08_phrase_intake
