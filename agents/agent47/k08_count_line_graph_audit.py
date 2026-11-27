@@ -10,7 +10,7 @@ import re
 SOURCE = Path(__file__).resolve().parents[2] / "resources/evidence/crew/noticeboard-and-desk-notes.txt"
 
 def build_edges(source):
-    records = re.findall(r"^N(\\d{2}) / [^\\n]+\\n([^\\n]+)", source, re.M)
+    records = re.findall(r"^N(\d{2}) / [^\n]+\n([^\n]+)", source, re.M)
     assert len(records) == 24
     edges = {}
     for label, line in records:
