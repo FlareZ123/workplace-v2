@@ -4,7 +4,7 @@
 
 ## New complete-graph consequence
 
-Applying the same fixed transition without adding a post-selected stop rule returns **N09→N13→N23→N21→N11→N15→N09**. The sequence is a six-node directed cycle. The 24-note graph contains exactly one directed cycle, and its direct off-graph destinations are 25 and 31. N23 is therefore not an intrinsic terminal of this count/parity operator: extending precisely the same operation from N23 leads to N21. There is no unique final authoring line from the transition alone.
+Applying the same fixed transition without adding a post-selected stop rule returns **N09→N13→N23→N21→N11→N15→N09**. The sequence is a six-node directed cycle. The 24-note graph contains exactly one directed cycle: **22 of 24 starting notes eventually enter it**, while only N10 and N20 exit immediately (to 25 and 31, respectively). Its direct off-graph destinations are 25 and 31. N23 is therefore not an intrinsic terminal of this count/parity operator: extending precisely the same operation from N23 leads to N21. There is no unique final authoring line from the transition alone.
 
 This is not a rejection of the STOW14 note selector, only a distinction between *reachability* and *finite final wording*. To make this method constructive one must specify an independent stop rule (e.g. a source-format marker fixed before testing) and an exact text emitter over the bounded traversal. Simply stopping at N23 because it mentions the target artifact is an interpretive, not mathematical, endpoint.
 
