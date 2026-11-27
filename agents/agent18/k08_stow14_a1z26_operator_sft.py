@@ -83,6 +83,16 @@ def main(path:str)->None:
         v=sum((((ord(w[0].upper())-ord('A')+1)&1)<<j) for j,w in enumerate(hw))
         if v==i: self_head.append(i)
     assert self_head==[9]
+    long_hex=[]
+    for i in range(1,25):
+        body=notes[f'N{i:02d}']['body']
+        if ':' not in body: continue
+        label=body.split(':',1)[0]
+        if len(label)<24: continue
+        bb=[ord(ch)&1 for ch in label]
+        oct3=bytes(sum(bb[k+j]<<j for j in range(8)) for k in (0,8,16))
+        if all(chr(x) in '0123456789ABCDEFabcdef' for x in oct3): long_hex.append((i,oct3.decode()))
+    assert long_hex==[(9,'3B3')]
     assert strip_label(notes['N09']['body']).startswith('Nobody should have to make their first cup')
     lineage=[]
     cur=9
@@ -109,6 +119,7 @@ def main(path:str)->None:
     print('N09 heading initial low bits=',n09_head_initial_bits,'-> N%02d'%n09_head_initial_selector,'unique heading self-index=',self_head)
     print('N09 heading word-length low bits=',n09_head_length_bits,'-> N%02d'%n09_head_length_selector)
     print('N09 heading ASCII low-bit full octets=',n09_head_octets.decode(),'-> hex stage',int(n09_head_octets.decode(),16),'(cross-slot locator clue only)')
+    print('long-heading three-octet printable-hex controls=',long_hex)
     print('COUNT LINE / LOW IF EVEN lineage=',lineage,'=> N23 final-margin record')
     print('secondary char14=',repr(char14),'(exploratory; not used in directive)')
 if __name__=='__main__':
