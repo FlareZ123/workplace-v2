@@ -308,7 +308,7 @@ def iter_text_streams(name: str, data: bytes, depth: int, budget: list[int],
         errors.append({"source": name, "status": "skipped_opaque_pdf_by_name",
                        "size": len(data), "pinned_sha256": intake.OPAQUE_PDF_SHA256})
         return
-    if intake.is_pdf_candidate(name, data) and not allow_pdf_source:
+    if intake.is_pdf_candidate(name, data):
         budget[0] += len(data)
         errors.append({"source": name, "status": "skipped_pdf_pending_provenance",
                        "size": len(data)})
@@ -999,12 +999,13 @@ def inspect_object(path: Path, resources: Path, transfer_id: str = "AX-7782",
                        "original_commitment_hits": hits,
                        "ocr_enabled": ocr,
                        "pdf_password_supplied": pdf_password is not None,
-                       "pdf_source_authorized": allow_pdf_source},
+                       "pdf_source_authorized": False,
+                       "pdf_source_override_requested": allow_pdf_source},
         "workbook_style_metadata": workbook_style_metadata,
         "errors_or_unavailable_decoders": errors,
         "limits": [
             "Only exact contiguous normalized phrase spans are tested; no paraphrase or word-edit search is performed.",
-            "PDF members are skipped unless --allow-pdf-source explicitly attests independent provenance; the pinned BX25-08 source and path-preserving derivatives remain blocked regardless.",
+            "All PDF members are skipped pending an independently reviewed provenance gate; the legacy allow flag cannot override this restriction.",
             "OCR is optional and may not reliably transcribe handwritten marginalia; visually inspect original images when needed.",
             "7z/RAR and SQLite databases other than named Windows Sticky Notes plum.sqlite members are not decoded by this path; the joint runner adds a read-only plum.sqlite/WAL bridge. EMF/EMFSPOOL Unicode text and XPS/OXPS UnicodeString plus complete glyph-index-only runs use bounded dedicated readers; incomplete XPS glyph coverage and empty EMF/XPS text extraction are reported, and bitmap/outline-only text may remain. Legacy Excel .xls BIFF cells and legacy Word .doc content/comments are decoded with the isolated LibreOffice fallbacks; other OLE streams are decoded when olefile is installed.",
             "The K04 payload is handled by work/h17_k04_binary_window_intake.py, not by this phrase scanner.",
@@ -1017,9 +1018,9 @@ def main() -> None:
     parser.add_argument("--object", required=True, type=Path, help="authorized local AX-7782 8 MiB object")
     parser.add_argument("--resources", type=Path, default=Path("resources"))
     parser.add_argument("--transfer", default="AX-7782")
-    parser.add_argument("--ocr", action="store_true", help="optional OCR for images; PDFs require --allow-pdf-source")
-    parser.add_argument("--pdf-password", help="password for an independently authorized PDF; never guessed")
-    parser.add_argument("--allow-pdf-source", action="store_true", help="attest independent provenance for non-quarantined PDFs; never use for BX25-08 or derivatives")
+    parser.add_argument("--ocr", action="store_true", help="optional OCR for non-PDF images; PDF intake is disabled")
+    parser.add_argument("--pdf-password", help="deprecated compatibility option; PDF intake remains disabled")
+    parser.add_argument("--allow-pdf-source", action="store_true", help="deprecated compatibility option; cannot authorize PDF intake")
     parser.add_argument("--max-phrase-words", type=int, default=48)
     parser.add_argument("--json-out", type=Path)
     args = parser.parse_args()

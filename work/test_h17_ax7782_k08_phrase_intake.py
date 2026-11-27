@@ -161,33 +161,21 @@ class K08PhraseIntakeTests(unittest.TestCase):
         self.assertEqual(errors[0]["pinned_sha256"], phrase_intake.intake.OPAQUE_PDF_SHA256)
         self.assertNotIn("sha256", errors[0])
 
-    def test_encrypted_pdf_requires_and_accepts_supplied_password(self):
-        from pypdf import PdfWriter
-
-        writer = PdfWriter()
-        writer.add_blank_page(width=72, height=72)
-        writer.add_metadata({"/Title": "Authorized password fixture"})
-        writer.encrypt(user_password="synthetic-fixture-password")
-        output = io.BytesIO()
-        writer.write(output)
-        payload = output.getvalue()
-
-        errors = []
-        list(phrase_intake.iter_text_streams("folio.pdf", payload, 0, [0], errors, False, allow_pdf_source=True))
-        self.assertTrue(any("supply --pdf-password" in item["error"] for item in errors))
-
-        errors = []
-        streams = list(phrase_intake.iter_text_streams(
-            "folio.pdf", payload, 0, [0], errors, False, "synthetic-fixture-password", allow_pdf_source=True
-        ))
-        self.assertFalse(errors)
-        self.assertTrue(streams)
-
-        errors = []
-        list(phrase_intake.iter_text_streams(
-            "folio.pdf", payload, 0, [0], errors, False, "0000", allow_pdf_source=True
-        ))
-        self.assertTrue(any("did not decrypt" in item["error"] for item in errors))
+    def test_pdf_override_and_password_cannot_bypass_pending_provenance(self):
+        payload = b"neutral-prefix%PDF-1.7 synthetic unverified document"
+        for name in ("folio.pdf", "neutral.bin"):
+            for password in (None, "synthetic-fixture-password"):
+                with self.subTest(name=name, password_supplied=password is not None):
+                    errors = []
+                    budget = [0]
+                    with patch.object(phrase_intake.intake, "magic", side_effect=AssertionError("PDF reached classification")):
+                        streams = list(phrase_intake.iter_text_streams(
+                            name, payload, 0, budget, errors, ocr=True,
+                            pdf_password=password, allow_pdf_source=True,
+                        ))
+                    self.assertEqual(streams, [])
+                    self.assertEqual(budget[0], len(payload))
+                    self.assertEqual(errors[0]["status"], "skipped_pdf_pending_provenance")
 
     def test_nested_zip_exposes_final_envelope_text(self):
         nonce = bytes(range(16))

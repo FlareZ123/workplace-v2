@@ -6,8 +6,7 @@ three read-only tools against one authorized local object, stores intermediate
 JSON only in a short-lived temporary directory, and emits one combined report.
 The K08 SQLite bridge wraps the exact phrase scanner and additionally recovers
 only named Windows Sticky Notes plum.sqlite databases with adjacent WAL/SHM.
-It never edits the source object, candidate, acceptance or verifier. Any PDF
-password must be supplied explicitly; none is guessed.
+It never edits the source object, candidate, acceptance or verifier. PDF intake is disabled pending an independently reviewed provenance gate.
 """
 from __future__ import annotations
 
@@ -129,10 +128,7 @@ def inspect_joint(
         ]
         if ocr:
             k08_cmd.append("--ocr")
-        if pdf_password is not None:
-            k08_cmd.extend(["--pdf-password", pdf_password])
-        if allow_pdf_source:
-            k08_cmd.append("--allow-pdf-source")
+        # Legacy PDF options cannot authorize intake and are not passed to subprocesses.
         k08_result = run_tool("k08-exact-phrase", k08_cmd, k08_out, timeout)
 
     source_hash_after = sha256_file(source)
@@ -151,7 +147,8 @@ def inspect_joint(
             "transfer": transfer,
             "ocr_enabled": ocr,
             "pdf_password_supplied": pdf_password is not None,
-            "pdf_source_authorized": allow_pdf_source,
+            "pdf_source_authorized": False,
+            "pdf_source_override_requested": allow_pdf_source,
             "max_phrase_words": max_phrase_words,
             "k04_raw_window_stride": stride,
             "timeout_per_tool_seconds": timeout,
@@ -174,8 +171,8 @@ def main() -> int:
     parser.add_argument("--resources", type=Path, default=ROOT / "resources")
     parser.add_argument("--transfer", default="AX-7782")
     parser.add_argument("--ocr", action="store_true")
-    parser.add_argument("--pdf-password", help="password for an independently authorized PDF; never guessed")
-    parser.add_argument("--allow-pdf-source", action="store_true", help="attest independent provenance for K08 phrase PDF intake only; never use for BX25-08 or derivatives")
+    parser.add_argument("--pdf-password", help="deprecated compatibility option; PDF intake remains disabled")
+    parser.add_argument("--allow-pdf-source", action="store_true", help="deprecated compatibility option; cannot authorize PDF intake")
     parser.add_argument("--max-phrase-words", type=int, default=48)
     parser.add_argument("--stride", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=300)
