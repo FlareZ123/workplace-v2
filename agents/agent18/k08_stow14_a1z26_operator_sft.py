@@ -38,6 +38,18 @@ def main(path:str)->None:
     counts=[len(words(strip_label(notes[n]['body']))) for n in david]
     low=''.join(chr(ord('A')+v) for v in counts)
     assert david==['N04','N11','N19'] and counts==[11,14,22] and low=='LOW'
+    cue_positions=[]
+    for n,cue in zip(ids,cues):
+        ww=[w.lower() for w in words(strip_label(notes[f'N{n:02d}']['body']))]
+        cue_positions.append([i+1 for i,w in enumerate(ww) if w==cue])
+    assert cue_positions==[[5,10],[4],[8],[5]]
+    # First COUNT occurrence gives parity 1,0,0,1 -> 9 directly. The second
+    # occurrence gives 0,0,0,1 -> 8, and LOW IF EVEN resolves 8 downward to 9.
+    cue_selector_first=sum(((pos[0]&1)<<i) for i,pos in enumerate(cue_positions))
+    cue_selector_second=((cue_positions[0][1]&1)<<0) | sum(((cue_positions[i][0]&1)<<i) for i in range(1,4))
+    assert (cue_selector_first,cue_selector_second)==(9,8)
+    assert (cue_selector_first if cue_selector_first%2 else cue_selector_first+1)==9
+    assert (cue_selector_second if cue_selector_second%2 else cue_selector_second+1)==9
     selected_counts=[len(words(strip_label(notes[f'N{n:02d}']['body']))) for n in ids]
     count_bits=[v&1 for v in selected_counts]
     count_low=sum(bit<<i for i,bit in enumerate(count_bits))
@@ -46,6 +58,14 @@ def main(path:str)->None:
     assert lowered==9
     assert strip_label(notes['N08']['body']).startswith('By daylight the water')
     assert strip_label(notes['N09']['body']).startswith('Nobody should have to make their first cup')
+    lineage=[]
+    cur=9
+    for _ in range(2):
+        cnt=len(words(strip_label(notes[f'N{cur:02d}']['body'])))
+        nxt=cnt+1 if cnt%2==0 else cnt
+        lineage.append((cur,cnt,nxt))
+        cur=nxt
+    assert lineage==[(9,13,13),(13,22,23)]
     char14=''.join(strip_label(notes[f'N{n:02d}']['body'])[13] for n in ids)
     assert char14==' len'
     print('STOW14 bits=',bits)
@@ -56,8 +76,10 @@ def main(path:str)->None:
     print('line-count11 -> N11 first body word=',first11.upper())
     print('David body counts=',counts,'->',low)
     print('derived directive=',low,first14.upper(),first11.upper())
+    print('cue word positions=',cue_positions,'parity selectors=',cue_selector_first,cue_selector_second,'-> N09 after LOW IF EVEN')
     print('STOW note word counts=',selected_counts,'low bits=',count_bits,'-> N%02d'%count_low)
     print('LOW IF EVEN -> N%02d'%lowered,'=',strip_label(notes['N09']['body']))
+    print('COUNT LINE / LOW IF EVEN lineage=',lineage,'=> N23 final-margin record')
     print('secondary char14=',repr(char14),'(exploratory; not used in directive)')
 if __name__=='__main__':
     if len(sys.argv)!=2: raise SystemExit('usage: script noticeboard-and-desk-notes.txt')
