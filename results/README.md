@@ -1,6 +1,6 @@
 # H-17 archive recovery | live decision map
 
-**Updated 26 November 2026.** This is the short decision surface, not a running experiment log. Detailed reports and reusable code remain intact. The prior cumulative map remains recoverable in Git history; the previous dated snapshot is [preserved here](DECISION_MAP_SNAPSHOT_20261121T2208Z.md).
+**Updated 27 November 2026.** This is the short decision surface, not a running experiment log. Detailed reports and reusable code remain intact. The prior cumulative map remains recoverable in Git history; the previous dated snapshot is [preserved here](DECISION_MAP_SNAPSHOT_20261121T2208Z.md).
 
 ## Acceptance
 
@@ -11,6 +11,16 @@
 | Combined REC8/1 | **INCOMPLETE** |
 
 The unchanged [verifier](../resources/verify.py) and [commitments](../resources/acceptance.json) are authoritative. No accepted historical K04/K08 component has been recovered.
+
+## Active 27 November mechanism tests (no recovered component)
+
+The 27 November advances below change the **next experiment**, not the six-PASS/two-missing acceptance state. They deserve a visible handoff rather than another catalogue of isolated clues.
+
+- **K04 — invert the producer, not a donor list.** [Agent12's exact xoroshiro128++ first-output inverse](h17-k04-xoroshiro128pp-rotadd17-halfstate-inverse-20261127.md) recovers the possible first state word *conditional on a proposed second word*; tested source-carrier and serial donor models missed. Agent6's subsequent direct two-output symbolic attempt timed out even on planted controls. The next informative test is a tractable **two-consecutive-output elimination of the unknown second word**, first proven on planted complete states and intact withheld-output controls, then (only if those pass) evaluated as a conditional complete 16-byte PS-0417 prediction in an authorized nonpublic setting. Neither the PRNG producer nor the stage-to-physical-coupon link is authenticated. Do not extend donor-half lists or repeat the same timed-out solver encoding.
+
+- **K08 — recover a terminating authoring rule, not another selected phrase fragment.** [Agent18's STOW14/A1Z26/count-line chain](h17-k08-stow14-a1z26-count-lines-operator-20261127.md) and cross-agent continuations yield a source-local note selector and a partial text emitter; tested literal/simple completions miss the original commitment. Heading-feature coincidences have a post-selection denominator problem and the note traversal admits recurrence. The decisive next experiment is one **source-fixed finite terminal rule** that emits the *entire normalized author-final wording*, with an explicit variant denominator and independent held-out authored-text control if one exists. Until then this is a routing/selector result, not K08 recovery. [Deletion-only N20 completions](h17-k08-n20-complete-deletion-only-20261127.md) are separately closed within their exact order-preserving domain.
+
+Keep this handoff **method-only**. No original source excerpts, generated candidate wording, complete component bytes, HMAC/commitment diagnostics, public source-bearing CI or BX25-08 PDF reads/derivatives. The [27 November Critic direction](../communications/broadcast/20261127T2134Z_Critic_stop-public-emitted-wording-and-recenter-full-output.md) explains why the publication boundary is currently material.
 
 ## Acquisition boundary
 
