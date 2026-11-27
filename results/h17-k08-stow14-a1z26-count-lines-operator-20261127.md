@@ -89,6 +89,20 @@ The duplicate `count` therefore does not create two downstream records under the
 
 This convergence is stronger than simply noticing N09's semantics because no K08 target hash, nonce result or desired caption wording enters the selector.
 
+## N09 heading is a two-channel self-check and direct N23 pointer
+
+The selected N09 prefix before the colon is exactly:
+
+`Caption for the galley board`
+
+Its five word initials are C/F/T/G/B. Taking A1Z26 low bits gives `1,0,0,1,0`, which packs first-bit-as-LSB to **9**. Across every colon-prefix heading in N01–N24, N09 is the **only** heading whose first-five initial-parity value equals its own note number.
+
+The same five heading word lengths are `7,3,3,6,5`; their low bits are `1,1,1,0,1`, which pack to **23**. Thus the heading selected by the STOW/CLBM route independently self-checks **N09** and directly points to **N23**, the Emily record that explicitly says the envelope remembers the words she finally put on it.
+
+A third, cross-slot observation is more speculative but exact: take the ASCII least-significant bit of each raw character in the 28-character heading, pack complete octets first-bit-as-LSB, and the first 24 bits spell the literal ASCII bytes **`3B3`**. As hexadecimal, `0x3B3 = 947`, which equals the already-published conditional MT stage of the intact PS-261003-0417 REQUESTED attempt-1 packet immediately preceding the unresolved q951 selected ACK2 under the p951 chronology. Four residual heading bits remain and equal binary `0011` under the same packing.
+
+This `3B3 -> 947` coincidence is **not** a K04 coupon constructor: the p951 selected q951 quotient remains 128 bits free under the intact printer equations, and the N09 body has not supplied a calibrated continuation that determines those bits. Preserve it as a cross-slot locator clue, not as recovered physical coupon data.
+
 ## COUNT LINE / LOW IF EVEN version-lineage path
 
 Once N09 is selected, the literal directive also supports a simple line-count transition: count the normalized post-label words in the current note line, interpret that count as a note number, and when the count is even take the next lower note row.
