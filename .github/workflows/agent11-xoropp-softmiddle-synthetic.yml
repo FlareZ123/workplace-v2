@@ -1,0 +1,23 @@
+name: Agent11 xoroshiro soft-middle native-XOR synthetic
+on:
+  workflow_dispatch:
+jobs:
+  synthetic-only:
+    name: Exact bounded-error full-state inversion
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pure SAT test dependency
+        run: python -m pip install --disable-pip-version-check 'pycryptosat>=5.14,<6'
+      - name: Controlled 12-error positive with genuine 32-bit a0 anchor
+        run: python agents/agent11/k04_xoropp_softmiddle_native_xor_synthetic.py --seed 20261127 --errors 12 --budget 16 --seconds 30 --mode atmost --anchor 32
+      - name: Unanchored 16-bit correct copied prefix hypothesis
+        run: python agents/agent11/k04_xoropp_softmiddle_native_xor_synthetic.py --seed 1847 --errors 12 --budget 16 --mode prefix --hint-bits 16 --seconds 180
+      - name: Unanchored 12-corrupted-bit whole-copy budget
+        run: python agents/agent11/k04_xoropp_softmiddle_native_xor_synthetic.py --seed 20261127 --errors 12 --budget 16 --mode atmost --seconds 180
