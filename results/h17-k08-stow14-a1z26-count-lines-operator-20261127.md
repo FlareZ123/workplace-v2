@@ -65,6 +65,35 @@ Now apply the independently reconstructed **LOW IF EVEN** row transition: 8 is e
 
 This is a target-blind source-only convergence onto a caption-class record. It still does not prove N09 is Emily's final wording; indeed verbatim N09 has already failed K08. Its value is selector specificity: STOW14 is no longer only a WN-14 namespace locator under this interpretation, but also deterministically reaches a surviving caption antecedent using the already calibrated LOW BIT / LOW IF EVEN operations.
 
+## Cue-position ambiguity collapses to the same N09
+
+There is a second target-blind route to the same caption record. Within the four A1Z26-selected post-label bodies, the corresponding cue-word positions are:
+
+- N19 `count`: positions **5** and **10**
+- N20 `line`: position **4**
+- N15 `between`: position **8**
+- N23 `margin`: position **5**
+
+Taking the cue positions' parity bits in STOW order and packing first-bit-as-LSB gives:
+
+- first `count`: `1,0,0,1` -> **9**
+- second `count`: `0,0,0,1` -> **8**
+
+The duplicate `count` therefore does not create two downstream records under the independently reconstructed rule: 9 is odd and remains 9, while 8 is even and **LOW IF EVEN** moves it one row lower to 9. Both readings converge on **N09**.
+
+This convergence is stronger than simply noticing N09's semantics because no K08 target hash, nonce result or desired caption wording enters the selector.
+
+## COUNT LINE / LOW IF EVEN version-lineage path
+
+Once N09 is selected, the literal directive also supports a simple line-count transition: count the normalized post-label words in the current note line, interpret that count as a note number, and when the count is even take the next lower note row.
+
+- **N09** has **13** post-label words -> N13.
+- **N13** has **22** post-label words -> even, so lower to **N23**.
+
+That yields the deterministic source path **N09 -> N13 -> N23**: Zoey's galley-board caption -> Emily's late-night mugs/window/lamp recollection -> Emily's note explicitly identifying the final margin/envelope wording.
+
+This is a useful **version-lineage selector**, not a terminal editor. N09 and N13 verbatim already fail the K08 commitment and previous source-edit families cover many ways of splicing/rewording them. The new result therefore narrows which retained antecedents the source-local mechanism points to; it does not license another unconstrained phrase grammar.
+
 ## Why this is useful but not yet authentication
 
 The four cue words are source literals reached by a fixed A1Z26 reading of an independently existing readable selector. The line-count arithmetic is exact for the preserved source bytes and produces an existing note number whose body starts with the required word.
