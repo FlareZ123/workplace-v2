@@ -101,6 +101,8 @@ The same five heading word lengths are `7,3,3,6,5`; their low bits are `1,1,1,0,
 
 A third, cross-slot observation is more speculative but exact: take the ASCII least-significant bit of each raw character in the 28-character heading, pack complete octets first-bit-as-LSB, and the first 24 bits spell the literal ASCII bytes **`3B3`**. As hexadecimal, `0x3B3 = 947`, which equals the already-published conditional MT stage of the intact PS-261003-0417 REQUESTED attempt-1 packet immediately preceding the unresolved q951 selected ACK2 under the p951 chronology. Four residual heading bits remain and equal binary `0011` under the same packing.
 
+A matched internal control makes the byte pattern less arbitrary: among all colon-prefix headings with at least 24 raw characters (enough for three complete ASCII-LSB octets), **N09 is the only heading whose first three packed octets are all printable hexadecimal glyphs**; its value is exactly `3B3`. This remains an exploratory specificity control, not a calibrated global probability.
+
 This `3B3 -> 947` coincidence is **not** a K04 coupon constructor: the p951 selected q951 quotient remains 128 bits free under the intact printer equations, and the N09 body has not supplied a calibrated continuation that determines those bits. Preserve it as a cross-slot locator clue, not as recovered physical coupon data.
 
 ## COUNT LINE / LOW IF EVEN version-lineage path
