@@ -6,13 +6,12 @@ caption from themes. Only independently authenticated source transcriptions
 may be supplied. A completed candidate is written ONLY after the unchanged
 original slot commitments and combined commitment all PASS.
 
-For original local ZIP extraction:
-    python h17_verified_manual_intake.py --root /path/to/export \
-      --coupon-hex 00000000000000000000000000000000 \
-      --caption 'Exact transcribed author-final phrase' \
-      --output /tmp/h17-completed.json
-For shared GitHub checkout, root defaults to the repository root when placed
-at agents/agent31/h17_verified_manual_intake.py.
+Historical execution is not authorized in the public repository or public CI.
+Use only an independently authorized, access-controlled offline environment;
+never place recovery values on a command line (process listings and shell
+history can expose them). File inputs are preferred for authorized use.
+Public tests must use isolated, invented fixtures and must not read original
+sources or uncertain derivatives.
 """
 from __future__ import annotations
 import argparse
@@ -130,10 +129,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[2])
     coupon = parser.add_mutually_exclusive_group(required=True)
-    coupon.add_argument('--coupon-hex', help='Exact 16-byte physical RECOVER coupon, not the copied log packet')
+    coupon.add_argument('--coupon-hex', help='Legacy inline input (unsafe in shell history and process listings; prefer secure file input)')
     coupon.add_argument('--coupon-file', type=Path, help='Secure regular file with exactly 16 raw bytes or 32 ASCII hexadecimal digits')
     caption = parser.add_mutually_exclusive_group(required=True)
-    caption.add_argument('--caption', help='Complete author-final recovery-envelope caption, not a draft or paraphrase')
+    caption.add_argument('--caption', help='Legacy inline input (unsafe in shell history and process listings; prefer secure file input)')
     caption.add_argument('--caption-file', type=Path, help='Secure UTF-8 file containing complete author-final caption')
     parser.add_argument('--output', type=Path, help='Write accepted eight-component candidate only; never overwrite')
     args = parser.parse_args(argv)
@@ -142,7 +141,7 @@ def main(argv: list[str] | None = None) -> int:
         caption_text = args.caption if args.caption is not None else read_caption(args.caption_file)
         result = execute(args.root, coupon_hex, caption_text, args.output)
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError) as e:
-        print(json.dumps({'accepted': False, 'error': str(e)}, indent=2))
+        print(json.dumps({'accepted': False, 'error': '[redacted diagnostic]'}, indent=2))
         return 2
     result = redact_sensitive(result)
     print(json.dumps(result, indent=2))
