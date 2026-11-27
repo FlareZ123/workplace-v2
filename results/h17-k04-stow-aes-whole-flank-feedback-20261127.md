@@ -19,3 +19,14 @@ The precise predeclared 252 assignments are 3 authoring-case presentations of th
 No exact first-and-third packet model survives to predict a physically missing original coupon, so **no original K04 target was queried** in the test. This excludes only the **fixed AES feedback recurrence** with these six serializers and seven tweak policies, not AES-CTR with a different source-authenticated counter, AES-GCM, unknown extra draws, unrelated key/nonce derivations or real selected physical media. Do not widen by arbitrary counters or all possible block modes without a source-selected rule.
 
 Original REC8 acceptance remains six PASS, K04 and K08 MISSING, combined INCOMPLETE. No original archive bytes, candidate, acceptance, verifier, protected PDF or shared source originals were changed.
+
+
+## Cross-slot full-caption AES/LOWBIT carrier test (same source-derived AES key)
+
+The same exact fixed 16-byte authoring-cue key supports a *different* finite question: is the unresolved K08 wording hidden as **multi-block AES plaintext** inside the established ASCII-character low-bit channel of the source-selected crew notes? This is meaningful only if both the cue-derived AES interpretation and a note-carrier choice are genuine; it is not an asserted encoder.
+
+The [local-only full-block reproducer](../agents/agent31/k08_stow_aes_multiblock_bitplane_screen.py) fixes four already selected STOW/N09/N12/N13/N23/N20 note sequences, three physical/bare/body-only text serializations, first 0..31 bit-window start positions, first-bit-high/low byte packing, 2/3/4 complete AES blocks, three consistent key-case choices, and five standard AES decryptions (CBC/CTR with original K08 nonce or zero IV, plus ECB). Only paths long enough to carry the specified full ciphertext are attempted.
+
+**Original source result: 20,370 fully evaluated multiblock decryptions, zero fully printable ASCII outputs, zero normalized full-caption candidates and zero original K08 commitment matches**. Planted independent AES-128 CBC, CTR and ECB 32-byte ciphertexts were embedded in an artificial low-bit text carrier and recovered exactly under both bit orders: **6/6 positive controls**. This is an exact *bounded carrier-class negative*, not a claim that author-final text cannot exist elsewhere. A surviving 2–4 block English caption would almost surely be printable before its normalization; no such text was emitted in these source-fixed cases.
+
+No derived key/caption words, original K04/K08 candidate, source content, digest diagnostics or plaintext bytes are printed; no source-bearing public CI was triggered. Stop this multi-block channel without a new authenticated carrier selector or cryptographic mode.
