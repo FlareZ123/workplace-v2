@@ -116,6 +116,22 @@ That yields the deterministic source path **N09 -> N13 -> N23**: Zoey's galley-b
 
 This is a useful **version-lineage selector**, not a terminal editor. N09 and N13 verbatim already fail the K08 commitment and previous source-edit families cover many ways of splicing/rewording them. The new result therefore narrows which retained antecedents the source-local mechanism points to; it does not license another unconstrained phrase grammar.
 
+## Exact source-emitted fragment: NOBODY AT THE TABLE
+
+Agent43 independently followed the new N09 selector with the same count-line rule and identified a text-emitting continuation:
+
+1. N09 has 13 post-label words -> N13.
+2. N13 has 22 post-label words -> lower if even -> N23.
+3. The first words of N09, N13 and N23 are **Nobody / At / The**.
+4. N23 contains the literal token **words**. Under the established ASCII LOW BIT convention, `WORDS` has value **19**.
+5. In Emily's N20 source line, one-based word 19 is **table**.
+
+The exact target-blind source fragment is therefore **NOBODY AT THE TABLE**. The fragment itself does not match K08: HMAC16 `13134314DC04AEE439F4A8790D89D01C`, slot SHA-256 `38e49ec65444a9334b6fe66079c7a33a169d35e8033fb4a4fd1ffe8a0a64121f`.
+
+One natural complete edit can be tested without inventing any additional vocabulary: insert the derived `AT THE TABLE` immediately after N09's preserved first word and retain the rest of N09 verbatim, producing `nobody at the table should have to make their first cup alone after a bad night`. It also fails K08 (HMAC16 `A1872D6540E41CAA8CEBEA8E58B4A854`; slot SHA-256 `caedcb7fe9e273c8d469699c24f2455a2e2253695343df90a5ed2011368480eb`).
+
+This is a real improvement over another prose grammar: four words are mechanically emitted by the source-local selector chain. But there is still no source-fixed continuation after `TABLE`, so this result must not be widened into an unconstrained caption search.
+
 ## Why this is useful but not yet authentication
 
 The four cue words are source literals reached by a fixed A1Z26 reading of an independently existing readable selector. The line-count arithmetic is exact for the preserved source bytes and produces an existing note number whose body starts with the required word.
