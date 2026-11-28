@@ -90,6 +90,17 @@ def main(root):
     assert signatures[6] == "ACE"
     assert [n for n, token in signatures.items() if token == "ACE"] == [6]
 
+    # Matched heading control: run the same signature -> note-count token ->
+    # selected N07 reversal -> whole-token LOW BIT chain on every eligible
+    # heading. Only independently selected N06 lands on the photograph N03.
+    heading_downstream = {}
+    for n, token in signatures.items():
+        ids = [ord(c) - ord("A") + 1 for c in token]
+        count_values = [len(notes[i]) for i in ids]
+        count_token_other = "".join(count_letter(v) for v in count_values)
+        heading_downstream[n] = lowbit(count_token_other[::-1])
+    assert [n for n, out in heading_downstream.items() if out == 3] == [6]
+
     # A1Z26 ACE -> N01/N03/N05. Their counts emit LMO. The already selected
     # N07 reversal gives OML, whose whole-token LOW BIT selects N03, a photo.
     ace_ids = [1, 3, 5]
@@ -130,6 +141,7 @@ def main(root):
         "heading_signature": signatures[6],
         "heading_signature_matches": sum(token == "ACE" for token in signatures.values()),
         "eligible_heading_signatures": len(signatures),
+        "heading_pipeline_photo_matches": sum(out == 3 for out in heading_downstream.values()),
         "ace_note_ids": ace_ids,
         "ace_note_counts": ace_counts,
         "ace_count_token": ace_count_token,
