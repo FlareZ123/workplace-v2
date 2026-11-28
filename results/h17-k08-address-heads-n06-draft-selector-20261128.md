@@ -58,13 +58,13 @@ This signature feeds the same source-local machinery without consulting acceptan
 - the already selected N07 reversal gives **OML**;
 - whole-token LOW BIT(`OML`) = **3**, selecting N03, source-labelled **Kitchen photograph**.
 
-The simpler observation LOW BIT(`ACE`)=7 is **not** selective: many eligible headings low-bit to 7, so it is not used as evidence. The useful corroboration is the unique full three-channel ACE signature followed by the fixed count/reversal/whole-token reduction chain to the photograph role. This does not prove a historical edit edge or emit final wording; it supplies internal redundancy for the independently selected N06 branch and aligns with MAIL-11's source-class statement that desk notes and photograph captions informed the keeper wording.
+The simpler observation LOW BIT(`ACE`)=7 is **not** selective: many eligible headings low-bit to 7, so it is not used as evidence. The useful corroboration is the unique full three-channel ACE signature followed by the fixed count/reversal/whole-token reduction chain to the photograph role. Continue with the already-established count transition: N03 has **12** post-label words, so LOW IF EVEN sends **12 -> N13**; N13 has **22**, so the same rule sends **22 -> N23**, Emily's final-margin/final-envelope witness. Thus the source-only selector lineage now reaches N23 as `AT/MT/ET/PT -> AMEP -> N07 -> LWOL -> LOWL -> N06 -> ACE -> LMO -> OML -> N03 -> N13 -> N23`, without the demoted `LOW+L` split or a partner search. It still does not prove a historical edit edge or emit the missing final wording; it supplies internal redundancy for the independently selected N06 branch and aligns with MAIL-11's source-class statement that desk notes and photograph captions informed the keeper wording.
 
 ## Consequence
 
-The completed AT/MT/ET/PT semantic-payload decoder now has a direct target-blind continuation to an actual **Emily-authored draft node**, rather than only to a thematic source or an inferred final-carrier class.
+The completed AT/MT/ET/PT semantic-payload decoder now has a direct target-blind continuation through an actual **Emily-authored draft node** and a **photograph node** to **N23, the final-margin/final-envelope witness**.
 
-That materially sharpens the remaining K08 problem. The selected draft is N06, but N06 itself is not the accepted final wording: earlier complete/deletion-only checks already include its literal text and do not recover K08, and the version graph classifies it as a draft rather than the keeper-envelope final.
+That materially sharpens the remaining K08 problem. The chain reaches the source record that says the exact final words existed, but N23 does not quote those words. N06 itself is not the accepted final wording: earlier complete/deletion-only checks already include its literal text and do not recover K08, and the version graph classifies it as a draft rather than the keeper-envelope final.
 
 Do not expand N06 into another synonym or clause grammar. The next useful step is a source-fixed **N06 -> final-version** operation or a separately selected later carrier.
 
