@@ -35,7 +35,7 @@ def models(packets):
     yield "fixed-bit", ([
         (int.from_bytes(p,"little") >> bit)&1 for p in packets
     ] for bit in range(128))
-    yield "packet-parity", ([p.bit_count()&1 for p in packets],)
+    yield "packet-parity", ([sum(w.bit_count() for w in p)&1 for p in packets],)
     yield "indexed-byte", ([
         (p[(a*i+c)%16] >> bit)&1 for i,p in enumerate(packets)
     ] for a in (1,3,7) for c in range(16) for bit in (0,7))
