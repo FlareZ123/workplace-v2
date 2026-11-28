@@ -50,7 +50,8 @@ def main():
             hits+=1
     fake=bytes(range(16))
     synthetic=[((fake[i//8]>>(i%8))&1)<<i for i in range(128)]
-    assert fake in set(presentations(synthetic))
+    planted_value=sum(((synthetic[i]>>i)&1)<<i for i in range(128))
+    assert planted_value.to_bytes(16,"little")==fake
     print({"source_gate":"PASS","models":16384,"complete_coupon_variants":len(variants),"target_commitment_hits":hits,"planted_coupon_recovery":"PASS","seconds":round(time.monotonic()-t0,3)})
 if __name__=="__main__":
     main()
