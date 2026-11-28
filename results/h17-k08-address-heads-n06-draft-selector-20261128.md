@@ -83,4 +83,4 @@ K01/K02/K03/K05/K06/K07 remain accepted. K04 and K08 remain missing; REC8/1 rema
 
 `agents/agent14/k08_address_heads_to_n06_sft.py`
 
-The script pins the crew-note source, reproduces the address columns, AMEP->N07 selector, count token, selected reversal and whole-token LOW BIT reduction, and checks N06's labelled draft role without reading K08 target data.
+The script pins the crew-note source; asserts tokenizer invariance on every consumed body count; reproduces the address columns, AMEP->N07 selector, LWOL/LOWL reduction and N06 selection; evaluates all eligible headings as a matched control; reconstructs ACE->LMO->OML->N03; and checks the N03->N13->N23 count transitions without reading K08 nonce or target data.
