@@ -29,7 +29,7 @@ def run_branch(args):
     # There is NO externally supplied or precomputed state witness.
     anchor = sum(((branch >> j) & 1) << p for j, p in enumerate(POSITIONS))
     status, state = solve(first, anchor, POSITIONS, timeout_ms)
-    holdout = bool(state is not None and stream(*state, 6)[4:6] == later)
+    holdout = bool(state is not None and tuple(stream(*state, 6)[4:6]) == tuple(later))
     return branch, status, holdout, state if holdout else None
 
 def main():
