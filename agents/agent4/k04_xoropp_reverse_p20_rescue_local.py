@@ -5,7 +5,7 @@ Read private, resumable original REQUESTED3 P16 state ledger; select only its
 UNRESOLVED P16 children. Split each into all 16 exact P20 grandchildren,
 fixing four more a0 bits (8..11), with complete SAT-state blocking and
 terminal UNSAT/UNKNOWN. For any recovered state, independently reduce all
-144 backwards complete 16-byte byte-slip coupons through the unchanged K04
+177 backwards complete 16-byte byte-slip coupons through the unchanged K04
 commitment. Original REQUESTED1 is optional replay, never an acceptance veto.
 
 No tampered ACK2 input, public CI, PDF, source/candidate display or remote
@@ -27,14 +27,13 @@ from agents.agent15.k04_laterfirst_p16_p20_source_local import (
     exact_states, P20,
 )
 from agents.agent7.k04_xoropp_p16_subcube_source_local import read_original
-from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import (
-    full_coupon_scan, prehistory,
-)
+from agents.agent4.k04_xoropp_reverse_p16_source_local import full_coupon_scan_177
+from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import prehistory
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream
 
 ROOT = Path(__file__).resolve().parents[2]
-METHODS = {"laterfirst-P16-v1", "laterfirst-P16-144-byte-slip-v2"}
-OUTMETHOD = "laterfirst-P20-rescue-144-byte-slip-v1"
+METHODS = {"laterfirst-P16-v1", "laterfirst-P16-144-byte-slip-v2", "laterfirst-P16-177-byte-slip-v3"}
+OUTMETHOD = "laterfirst-P20-rescue-177-byte-slip-v2"
 
 
 def owner_only(path, must_exist=False):
@@ -98,14 +97,14 @@ def work_one(job):
         states.update(recovered)
         grandchildren.append((sub, terminal))
     for state in states:
-        c, matches = full_coupon_scan(state, mask, target, endian, order, first)
+        c, matches = full_coupon_scan_177(state, mask, target, endian, order, first)
         stats["models"] += 1
         stats["complete_coupon_checks"] += c["complete_coupons"]
         stats["commitment_hits"] += c["accepts"]
         stats["earlier_replays"] += c["earlier_replays"]
         stats["joint"] += c["joint"]
         accepted.extend(matches)
-    assert stats["complete_coupon_checks"] == 144 * len(states)
+    assert stats["complete_coupon_checks"] == 177 * len(states)
     assert stats["commitment_hits"] == len(accepted)
     return {
         "parent": parent, "child": child,
