@@ -20,9 +20,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from agents.agent7.k04_xoropp_p16_subcube_source_local import (
-    P12, P16, exact_states, read_original,
+    P12, P16, read_original,
 )
-from agents.agent27.k04_xoropp_sparse12_gap_synthetic import circuit, stream, ror
+from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream, ror
 from agents.agent7.k04_xoropp_byte_slip_reducer import assess_state, escrow_hits, serialized_bytes
 
 P20 = P16 + (8, 9, 10, 11)
@@ -35,11 +35,69 @@ def fixed_anchor(bits: int, positions: tuple[int, ...]) -> int:
     return sum(((bits >> j) & 1) << p for j, p in enumerate(positions))
 
 
-def solve_p20(first, cube, timeout_ms=700, max_models=32):
-    """Every P20 state seen, plus a terminal UNSAT or UNKNOWN disposition."""
-    anchor = fixed_anchor(cube, P20)
-    script = circuit({0: first[0], 1: first[1]},
-                     anchor, P20, timeout_ms)
+def _xor(*xs):
+    xs = [x for x in xs if x != "false"]
+    if not xs:
+        return "false"
+    return xs[0] if len(xs) == 1 else "(xor " + " ".join(xs) + ")"
+
+
+def two_observed_round_circuit(first, anchor, positions, timeout_ms):
+    """Exact source-free firstpacket relation; no superfluous later rounds.
+
+    The first observed y0 leaves only initial word a0 unknown because b0
+    is recoverable as rotr17(y0-a0)-a0. Use the resulting a0 xor b0
+    bit-vector as the transition t0. After one xoroshiro128++ transition,
+    enforce ALL 64 bits of the second output y1. This is logically
+    equivalent to Agent27's full six-output circuit when only {0,1} are
+    constrained; unused trailing states are intentionally omitted.
+    """
+    assert len(first) == 2 and len(set(positions)) == len(positions)
+    lines = ["(set-logic QF_UF)", "(set-option :sat.anf true)",
+             "(set-option :sat.anf.exlin true)",
+             f"(set-option :timeout {timeout_ms})"]
+
+    def put(name, expr):
+        lines.append(f"(define-fun {name} () Bool {expr})")
+        return name
+
+    def implied_t(a, y, label):
+        v = ["false"] * 64
+        for j in range(63):
+            v[j + 1] = put(f"v{label}_{j+1}",
+                           f"({'and' if (y >> j) & 1 else 'or'} {a[j]} {v[j]})")
+        u = ["false"] * 64
+        t = []
+        for k in range(64):
+            j = (k + 17) & 63
+            tk = put(f"t{label}_{k}", _xor(
+                a[j], v[j], u[k], "true" if (y >> j) & 1 else "false"))
+            t.append(tk)
+            if k < 63:
+                u[k + 1] = put(f"u{label}_{k+1}",
+                                f"(ite {tk} {u[k]} {a[k]})")
+        return t
+
+    a0 = [f"a0_{j}" for j in range(64)]
+    lines.extend(f"(declare-const {a} Bool)" for a in a0)
+    t0 = implied_t(a0, first[0], "0")
+    a1 = [put(f"a1_{j}", _xor(a0[(j - 49) & 63], t0[j],
+           t0[j - 21] if j >= 21 else "false")) for j in range(64)]
+    t1 = [put(f"tf1_{j}", _xor(a1[j], t0[(j - 28) & 63]))
+          for j in range(64)]
+    implied = implied_t(a1, first[1], "1")
+    lines.extend(f"(assert (= {t1[j]} {implied[j]}))" for j in range(64))
+    lines.extend(
+        f"(assert (= a0_{j} {'true' if (anchor >> j) & 1 else 'false'}))"
+        for j in positions)
+    lines.append("(check-sat)")
+    return "\\n".join(lines) + "\\n"
+
+
+def solve_states(first, cube, positions, timeout_ms=700, max_models=32):
+    """Complete model blocking inside one exact P16 or P20 source-free cube."""
+    anchor = fixed_anchor(cube, positions)
+    script = two_observed_round_circuit(first, anchor, positions, timeout_ms)
     lib = ctypes.CDLL("libz3.so.4")
     P = ctypes.c_void_p
     lib.Z3_mk_config.restype = P
@@ -70,7 +128,7 @@ def solve_p20(first, cube, timeout_ms=700, max_models=32):
             if stream(a, b, 2) != list(first):
                 raise RuntimeError("State fails full firstpacket replay")
             if any(((a >> p) & 1) != ((cube >> j) & 1)
-                   for j, p in enumerate(P20)):
+                   for j, p in enumerate(positions)):
                 raise RuntimeError("State contradicts cube")
             output.append((a, b))
             if len(output) >= max_models:
@@ -84,6 +142,13 @@ def solve_p20(first, cube, timeout_ms=700, max_models=32):
         return output, status
     finally:
         lib.Z3_del_context(ctx)
+
+def exact_states(first, cube, timeout_ms=700, max_models=32):
+    return solve_states(first, cube, P16, timeout_ms, max_models)
+
+
+def solve_p20(first, cube, timeout_ms=700, max_models=32):
+    return solve_states(first, cube, P20, timeout_ms, max_models)
 
 
 def adaptive_child(first, parent, child, ms, retry, cap):
