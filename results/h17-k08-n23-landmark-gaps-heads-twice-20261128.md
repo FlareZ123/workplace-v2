@@ -4,28 +4,50 @@
 
 ## Result
 
-The already-selected final-version witness N23 says, in one line, that the **wording** was in Emily's **margin**, that the **envelope** remembers the **words** finally put on **it**.
+The already-selected final-version witness N23 says, in one line, that the **wording** was in Emily's **margin**, that the **envelope** remembers the **words** she **finally** put on it.
 
-Take those five text/carrier landmarks in their source order. Each occurs exactly once in N23. Their one-based normalized word positions are:
+There are now two bounded landmark paths inside that same line.
 
-`wording=2, margin=5, envelope=12, words=16, it=21`
+### Primary explicit-finality path
 
-Apply the already-emitted `COUNT` / `BETWEEN` vocabulary literally by counting normalized words strictly between adjacent landmarks:
+Take the five explicit final-text/carrier terms:
 
-`2, 6, 3, 4`
+`wording / margin / envelope / words / finally`
 
-Those four note IDs are:
+Each occurs exactly once. Their one-based normalized positions are:
+
+`2 / 5 / 12 / 16 / 18`
+
+Count normalized words strictly **BETWEEN** adjacent landmarks:
+
+`2 / 6 / 3 / 1`
+
+Those note IDs are:
 
 - **N02 — First draft for the crew board**
 - **N06 — Second desk draft**
 - **N03 — Kitchen photograph**
-- **N04 — Under the old shift photograph**
+- **N01 — photograph of the empty bench**
 
-This is a compact source-local reconstruction of exactly the two editorial draft roles followed by two photograph-caption roles named by MAIL-11 as Emily's wording sources.
+So N23 itself directly recovers the two labelled draft stages followed by two photograph records, ending on N01, without a pronoun/coreference step.
 
-## N04 supplies the next operation in plain language
+### Secondary sentence-final coreference path
 
-The fourth selected record, N04, begins:
+Replace the explicit finality marker with the sentence-final coreference `it`:
+
+`wording / margin / envelope / words / it`
+
+Positions `2 / 5 / 12 / 16 / 21` give BETWEEN counts:
+
+`2 / 6 / 3 / 4`
+
+or N02/N06/N03/**N04**, where N04 is **Under the old shift photograph**.
+
+This second path is more interpretive because it uses the pronoun's envelope coreference, but it supplies an independent continuation that converges back to N01.
+
+## The secondary N04 path supplies the next operation in plain language
+
+The fourth record on the sentence-final-coreference path, N04, begins:
 
 `Count the heads twice ...`
 
@@ -49,20 +71,22 @@ No K08 nonce, acceptance target, candidate phrase or verifier is read.
 
 ## Controls and selection freedom
 
-The strongest limitation is the first step: choosing the semantic landmarks `wording / margin / envelope / words / it` is an interpretation of N23's grammar and coreference, not an explicit machine field. The downstream arithmetic is fixed once those landmarks are declared.
+The strongest limitation is still landmark semantics: these are natural-language fields, not explicit machine columns. The **primary** path reduces that freedom by ending on the literal finality word `finally` rather than a pronoun. Once the landmarks are declared, every BETWEEN count is fixed.
 
-A complete positional denominator helps calibrate that choice. Among all five-position subsets of N23's 21 normalized words, exactly **two** have the same adjacent-gap vector `2/6/3/4`:
+For the primary gap vector `2/6/3/1`, exactly **five** five-position subsets of N23 share the same spacing; the declared set is the one consisting of the final-text/carrier terms `wording / margin / envelope / words / finally`.
 
-1. positions `1/4/11/15/20` = `the / my / the / the / on`;
-2. positions `2/5/12/16/21` = `wording / margin / envelope / words / it`.
+For the secondary `2/6/3/4` vector, exactly **two** five-position subsets exist:
 
-The latter is the only one consisting of the final-text/carrier references; the former is entirely function words.
+1. `the / my / the / the / on`;
+2. `wording / margin / envelope / words / it`.
+
+The content-word/coreference set is therefore sharply separated from the only same-spacing alternative, which is entirely function words.
 
 As a separate source-side control, the photograph-labelled records are N01/N03/N04/N08/N14. **N01 alone** contains a tea/cup token, matching N10's explicit statement that Emily kept returning to “the photograph after the last cup.” This does not prove N01 is historically the exact image N10 meant, but it independently agrees with the two-HEAD selection.
 
 ## Consequence
 
-This materially sharpens the terminal-carrier branch: N23 itself contains a bounded BETWEEN-count structure that recovers the same First-draft / Second-draft / photograph classes reached by other source programs, and its fourth output literally supplies a “heads twice” instruction that selects N01 through N14.
+This materially sharpens the terminal-carrier branch: N23 itself contains a bounded BETWEEN-count structure whose **explicit-finality path directly selects N01**, while a separate sentence-final-coreference path reaches N04 and then selects the same N01 through the literal “heads twice” instruction and N14. The two within-N23 paths converge on the same photograph antecedent.
 
 It still does **not** emit every word of Emily's final inscription. N01's complete caption is known and does not itself pass K08; this result must therefore be treated as a source-selected antecedent/photo identity mechanism, not as recovered final wording.
 
