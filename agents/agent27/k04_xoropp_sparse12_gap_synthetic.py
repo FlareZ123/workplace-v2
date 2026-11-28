@@ -80,7 +80,7 @@ def solve(obs,anchor,positions,timeout_ms=5000):
 if __name__=='__main__':
  import argparse
  parser=argparse.ArgumentParser()
- parser.add_argument('--suite', choices=('positive','poison','baseline','onebit','twobit','firstpairtwobit'), default='positive')
+ parser.add_argument('--suite', choices=('positive','poison','baseline','onebit','twobit','firstpairtwobit','firstpairninebit'), default='positive')
  parser.add_argument('--timeout-ms', type=int, default=5000)
  parser.add_argument('--fresh20', action='store_true', help='independent fresh seeds80903..80922')
  parser.add_argument('--first', type=int, default=0, help='first synthetic seed index')
@@ -103,7 +103,44 @@ if __name__=='__main__':
   rng=random.Random(seed)
   actual_a,actual_b=rng.getrandbits(64),rng.getrandbits(64)
   ys=stream(actual_a,actual_b)
-  obs={i:ys[i] for i in ((0,1) if args.suite=='firstpairtwobit' else (0,1,4,5))}
+  obs={i:ys[i] for i in ((0,1) if args.suite in ('firstpairtwobit','firstpairninebit') else (0,1,4,5))}
+  if args.suite=='firstpairninebit':
+   # Nine externally supplied sparse state bits, unknown bits0,1,24
+   # explicitly enumerated (eight complete 12-bit SAT problems).
+   missing=(0,1,24)
+   known=tuple(p for p in sparse if p not in missing)
+   assert len(known)==9
+   known_mask=sum(1<<p for p in known)
+   outcomes=[]
+   recovered=None
+   for assignment in range(8):
+    proposed=(actual_a & known_mask) | sum(((assignment>>j)&1)<<p for j,p in enumerate(missing))
+    t0=time.monotonic()
+    status,state=solve(obs,proposed,sparse,args.timeout_ms)
+    outcomes.append((status,round(time.monotonic()-t0,3)))
+    if state is not None and stream(*state)[4:6]==ys[4:6]:
+     # Independently held-out later two-word packet, never a fit input.
+     assert state==(actual_a,actual_b), (seed,'later packet false match')
+     assert stream(*state)[2:4]==ys[2:4],(seed,'missing packet mismatch')
+     recovered=state
+     break
+   if recovered is None and not args.fresh20:
+    raise AssertionError((seed,'ninebit full-output candidate not recovered',outcomes))
+   if recovered is not None:
+    successes+=1
+   positions=known
+   print({'seed':seed,'train':not args.fresh20 and seed in (20261128,12345),
+          'suite':args.suite,'observed_output_indices':(0,1),
+          'independently_heldout_output_indices':(4,5),
+          'erased_output_indices':(2,3),
+          'externally_supplied_a0_bits':9,'enumerated_a0_bits':list(missing),
+          'branches_executed':len(outcomes),
+          'sat_branches':sum(v[0]=='sat' for v in outcomes),
+          'unsat_branches':sum(v[0]=='unsat' for v in outcomes),
+          'unknown_branches':sum(v[0]=='unknown' for v in outcomes),
+          'elapsed_seconds':round(sum(v[1] for v in outcomes),3),
+          'complete_state_middle_and_later_recovered':recovered is not None},flush=True)
+   continue
   if args.suite in ('twobit','firstpairtwobit'):
    # Exactly TEN initial-a bits supplied externally; neither bit0 nor
    # bit24 is known. The only extra work is four exhaustive fast 12-bit
