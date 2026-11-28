@@ -29,7 +29,7 @@ import time
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from agents.agent37.k04_private_state_ledger_sft import (
-    P12, namespace, read_cube, write_attempt, reduce_cached, _secure_dir,
+    P12, namespace, read_cube, write_attempt, reduce_cached, stream, _secure_dir,
 )
 from agents.agent37.k04_xoropp_samebucket_collision_sft import query_models
 from agents.agent4.k04_xoropp_zero_witness_source_local import requested_packet, unpack
@@ -55,6 +55,7 @@ def read_inputs(root: Path, endian: str, order: str):
     spool = root / "evidence/print/spool-reconstruction.log"
     rawfirst = requested_packet(spool, 1)
     first = unpack(rawfirst, endian, order)
+    later = unpack(requested_packet(spool, 3), endian, order)
     route = json.loads((root / "evidence/recovery-routing.json").read_text())
     checks = json.loads((root / "acceptance.json").read_text())
     mask = bytes.fromhex(route["K04"]["masked_component"])
@@ -77,7 +78,7 @@ def read_inputs(root: Path, endian: str, order: str):
         "P12": P12,
     }
     namespace(meta)  # fail closed if any source/serialization convention changes
-    return first, mask, original_target, meta
+    return first, later, mask, original_target, meta
 
 
 def solve_cube(job):
@@ -135,7 +136,7 @@ def main():
                      ROOT in a.escrow.resolve().parents or
                      not a.escrow.parent.is_dir()):
         p.error("Hit escrow must be local, outside the repository")
-    first, mask, target, meta = read_inputs(a.resources_root, a.endian, a.order)
+    first, later, mask, target, meta = read_inputs(a.resources_root, a.endian, a.order)
     cubes = range(a.start, a.start + a.count)
     started = time.monotonic()
 
@@ -174,7 +175,7 @@ def main():
 
     if a.escrow is None:
         p.error("Reducing original K04 candidates requires a private --escrow")
-    total_states = total_windows = hits = sealed = open_count = unvisited = 0
+    total_states = total_windows = hits = later_replays = sealed = open_count = unvisited = 0
     for cube in cubes:
         d = read_cube(root, meta, cube)
         sealed += int(d["status"] == "sealed")
@@ -182,6 +183,16 @@ def main():
         unvisited += int(d["status"] == "unvisited")
         total_states += len(d["states"])
         total_windows += len(d["states"]) * 18
+        # Independent causal diagnostic only: exact whole REQUESTED3 pair
+        # can appear after a selected coupon under an explicit bounded stage.
+        # It must NEVER veto the original commitment test below.
+        for state in d["states"]:
+            out = stream(*state, 40)
+            for start_word in range(2, 20):
+                later_replays += sum(
+                    tuple(out[phase:phase + 2]) == tuple(later)
+                    for phase in range(start_word + 2, start_word + 20)
+                )
         # Every complete two-word coupon, at all 18 half-word starts.
         verified = reduce_cached(d["states"], mask, target, meta["serializer"],
                                  list(range(2, 20))) if d["states"] else []
@@ -193,6 +204,7 @@ def main():
         "never_visited_cubes": unvisited, "cached_128bit_states": total_states,
         "original_K04_complete_16byte_candidates_checked": total_windows,
         "original_K04_commitment_hits": hits,
+        "separate_complete_later_packet_replays": later_replays,
         "selected_coupon_word_starts": [2, 19],
         "original_accepted_bytes_escrowed_private_only": hits,
         "source_values_in_public_output": False,
