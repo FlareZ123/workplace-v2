@@ -28,3 +28,10 @@ Both conventions are mathematically coherent, and **neither produces a finite fi
 [Small source-pinned reproducer](../agents/agent45/k08_countline_tokenizer_coherence_sft.py) reads only the original crew-note text with SHA256 `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`, checks the exact 24-note table, N15 difference, both target-blind STOW packed integers and both N09 trajectories. It does not read the PDF, original acceptance, nonce or a phrase candidate, and emits IDs/counts only. A separate local equivalent on the unchanged supplied export gave the same two trajectories.
 
 **Decision:** any further K08 COUNT LINE source-to-whole-caption construction must fix a tokenizer *before* selecting a final rule and either demonstrate a source-authored stop or remain explicitly a partial selector. No historical K08 words or HMAC commitment hit follow. Official state remains K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, REC8/1 INCOMPLETE.
+
+
+## Official-normalization tie-break (source-supported preference, not an authenticated count instruction)
+
+The original `resources/evidence/recovery-routing.json` explicitly defines **K08 phrase normalization**: lowercase; replace characters other than ASCII `a-z`, digits and whitespace by spaces; collapse whitespace. Applied to N15's literal `H-17`, this yields two normalized words, `h` and `17`. Thus the **alphanumeric count is the only one of the two tested conventions that is consistent with the officially specified K08 normalizer**. Under the additional, *unproven* hypothesis that a source-local COUNT LINE cipher uses that same official normalizer, STOW count low bits consistently select N09, and the subsequent iterative graph has its N11↔N15 two-cycle. There is still **no terminal author-final wording or K08 HMAC hit**.
+
+This is a real, source-derived preference against arbitrary tokenizer mixing, but the routing sheet specifies how to normalize a *candidate final caption*, not how Emily counted note words when authoring clues. The hypothesized carry-over is therefore not certified. The separate CLBM-initial selector still independently selects N09.
