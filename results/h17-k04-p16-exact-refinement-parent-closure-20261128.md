@@ -94,3 +94,23 @@ A depth-control on eight of the same hard synthetic seeds (80903..80910), all at
 | P28 | 4..19 | **7/8** |
 
 All anchors were planted calibration selectors, *not* source observations. To cover an original P16 UNKNOWN child with P20, a legitimate exact method must enumerate **all 16** P20 children and retain any residual UNKNOWN; it cannot use the planted correct child. A deeper synthetic branch becoming SAT therefore establishes conditional model reachability but does not imply cheap full-domain recovery. The useful next computational avenue is **adaptive exact splitting only for persistent UNKNOWN children**, rather than blindly adding four partition bits across the entire original space. No new historical K04 candidate is established by this fixture study.
+
+
+## 28 November original-source expansion: one complete first-request state found
+
+The source-private, checksum-gated big/BA REQUESTED1 P16 forward search expanded beyond the initial sixteen parent buckets. At the durable local checkpoint **P12 parents 16..591** (576 complete parent tasks; 9,216 exact P16 children) the aggregate was:
+
+| Exact source-first status | Aggregate |
+| --- | ---: |
+| Complete parent tasks | 576 |
+| Entirely closed parent partitions | **573** |
+| Parents containing at least one UNKNOWN child | **3** |
+| Terminal child UNSAT (including after retry) | **9,211** |
+| Terminal child UNKNOWN | **5** |
+| Complete initial-state models discovered | **1** |
+| Full original K04 candidate SHA256 comparisons | **144** |
+| Original K04 commitment matches | **0** |
+
+This newly found state exactly reproduces the intact original REQUESTED1 two-word payload under the conditional xoroshiro128++ big/BA view; the decoder tested all 144 complete 16-byte byte-slip windows from that state against the unchanged original commitment and found zero. The complete-state model is private and is **not** an original recovered coupon. The three still-open parents and all five UNKNOWN child branches remain unresolved, and additional original parent partitions have not been excluded. The local scan continues, with solely aggregate public output.
+
+This is the first state-positive original-source result for Agent7's expanded search and directly validates that **the state-search branch can reach a complete, source-compatible candidate**, although the candidate must still pass the unchanged original slot commitment and authentic printer-producer relation before acceptance.
