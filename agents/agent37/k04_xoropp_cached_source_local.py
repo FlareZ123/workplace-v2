@@ -66,7 +66,7 @@ def read_inputs(root: Path, endian: str, order: str):
     # Invalidate any cached state if EITHER the Boolean circuit or the exact
     # enumerating/model-blocking implementation changes.
     producer_code_digest = hashlib.sha256(
-        circuit.read_bytes() + b"\\x00" + blocker.read_bytes()
+        circuit.read_bytes() + bytes([0]) + blocker.read_bytes()
     ).hexdigest()
     meta = {
         "source_sha256": PINS["evidence/print/spool-reconstruction.log"],
