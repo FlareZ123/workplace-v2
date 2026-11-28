@@ -12,6 +12,9 @@ a reducer changes.
 from __future__ import annotations
 import argparse, json, multiprocessing as mp, os, stat, time
 from pathlib import Path
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from agents.agent7.k04_xoropp_p16_subcube_source_local import exact_states, read_original
 from agents.agent7.k04_xoropp_byte_slip_reducer import assess_state, escrow_hits
 
