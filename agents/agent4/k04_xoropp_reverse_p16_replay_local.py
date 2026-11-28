@@ -87,14 +87,14 @@ def synthetic():
                 for gap, slip in ((0, 0), (4, 7), (8, 15)):
                     at = len(raw) - 16 - 16 * (gap + 1) - slip
                     expected = bytes(x ^ y for x, y in zip(raw[at:at+16], mask))
-                    c, found = full_coupon_scan(
+                    c, found = full_coupon_scan_177(
                         state, mask, hashlib.sha256(expected).hexdigest(),
                         endian, order)
-                    assert c["complete_coupons"] == 144
+                    assert c["complete_coupons"] == 177
                     assert c["accepts"] == 1
                     assert found == [expected.hex().upper()]
                     positives += 1
-    print({"synthetic_only": True, "complete_144_window_controls": positives})
+    print({"synthetic_only": True, "complete_177_window_controls": positives})
 
 
 def main():
