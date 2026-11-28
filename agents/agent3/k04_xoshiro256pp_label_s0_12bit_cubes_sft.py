@@ -15,7 +15,7 @@ def sx(*xs):
  xs=[x for x in xs if x!='false']
  return 'false' if not xs else xs[0] if len(xs)==1 else '(xor '+' '.join(xs)+')'
 
-def stage2_circuit(a,b,d,y4,y5,anchor,timeout_ms,blocked=()):
+def stage2_circuit(a,b,d,y4,y5,anchor,timeout_ms,blocked=(),partial=None):
  """Fit ONLY later intact two-word packet, initial c0 is one unknown 64-bit word."""
  out=['(set-logic QF_UF)','(set-option :sat.anf true)',
       '(set-option :sat.anf.exlin true)',f'(set-option :timeout {timeout_ms})']
@@ -46,14 +46,31 @@ def stage2_circuit(a,b,d,y4,y5,anchor,timeout_ms,blocked=()):
   if i in (4,5):
    exp=implied(na,y4 if i==4 else y5,i)
    out.extend(f'(assert (= {sx(na[j],nd[j])} {exp[j]}))' for j in range(64))
- for k,j in enumerate(P12):
-  out.append(f'(assert (= C{j} {"true" if anchor>>k&1 else "false"}))')
+  if partial and i in partial:
+   needed=partial[i];sc=['false']*64;sum_bits=[]
+   for j in range(64):
+    sum_bits.append(p(f'sum{i}_{j}',sx(na[j],nd[j],sc[j])))
+    if j<63:
+     sc[j+1]=p(f'sc{i}_{j+1}',f'(or (and {na[j]} {nd[j]}) (and {na[j]} {sc[j]}) (and {nd[j]} {sc[j]}))')
+   oc=['false']*64
+   for j in range(64):
+    rotated=sum_bits[(j-23)&63]
+    if j in needed:
+     out.append(f'(assert (= {sx(rotated,na[j],oc[j])} {"true" if needed[j] else "false"}))')
+    if j<63:
+     oc[j+1]=p(f'oc{i}_{j+1}',f'(or (and {rotated} {na[j]}) (and {rotated} {oc[j]}) (and {na[j]} {oc[j]}))')
+ if anchor is not None:
+  for k,j in enumerate(P12):
+   out.append(f'(assert (= C{j} {"true" if anchor>>k&1 else "false"}))')
  for value in blocked:
   out.append('(assert (or '+' '.join(f'(not C{j})' if value>>j&1 else f'C{j}' for j in range(64))+'))')
  return '\n'.join(out)+'\n'
 
 def solve_bucket(task):
- a,b,d,y4,y5,bucket,timeout_ms,limit=task
+ if len(task)==8:
+  a,b,d,y4,y5,bucket,timeout_ms,limit=task;partial=None
+ else:
+  a,b,d,y4,y5,bucket,timeout_ms,limit,partial=task
  lib=ctypes.CDLL('libz3.so.4');Q=ctypes.c_void_p
  lib.Z3_mk_config.restype=Q;lib.Z3_mk_context.argtypes=[Q];lib.Z3_mk_context.restype=Q
  lib.Z3_del_config.argtypes=[Q];lib.Z3_del_context.argtypes=[Q]
@@ -62,7 +79,7 @@ def solve_bucket(task):
  def run(s):return (lib.Z3_eval_smtlib2_string(ctx,s.encode())or b'').decode().strip()
  states=[]
  try:
-  assert not run(stage2_circuit(a,b,d,y4,y5,bucket,timeout_ms))
+  assert not run(stage2_circuit(a,b,d,y4,y5,bucket,timeout_ms,partial=partial))
   for _ in range(limit):
    outcome=run('(check-sat)')
    if outcome!='sat':return {'bucket':bucket,'status':outcome,'states':states}
