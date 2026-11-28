@@ -1,5 +1,5 @@
 // LOCAL-ONLY original-state xoroshiro128++ K04 complete-coupon expansion.
-// Original intact REQUESTED1 state is supplied in a PRIVATE 0600 file.
+// An intact REQUESTED1 or REQUESTED3 source-compatible state is supplied in PRIVATE 0600.
 // Selected ACK2 never fitted. Full unmodified K04 SHA256 check comes first.
 // Original source processing forbidden in public CI; outputs aggregate only.
 // Build: c++ -O3 -std=c++17 this.cpp -lcrypto -o private_binary
@@ -118,7 +118,7 @@ struct Trial{
 };
 static Metrics scan(State initial,Trial& trial,std::uint64_t forward,std::uint64_t reverse,bool slips=false,bool gapped=false){
  State source=initial;u64 s0=next(source),s1=next(source);
- if(pack(s0,s1,trial.source_little,trial.source_swap)!=trial.source)throw std::runtime_error("PRIVATE STATE DOES NOT EXACTLY REPLAY intact REQUESTED1");
+ if(pack(s0,s1,trial.source_little,trial.source_swap)!=trial.source)throw std::runtime_error("PRIVATE STATE DOES NOT REPLAY selected intact REQUESTED observation");
  if(forward){
   if(gapped){
    // Complete 16-byte candidates from nonconsecutive native 64-bit words.
@@ -233,12 +233,13 @@ static void synthetic(){
 }
 int main(int argc,char** argv){
  try{
-  bool syn=false,slips=false,gapped=false;std::string root="resources",state_file,escrow,view="big/ba";std::uint64_t forward=10000000,reverse=0;
+  bool syn=false,slips=false,gapped=false;int source_attempt=1;std::string root="resources",state_file,escrow,view="big/ba";std::uint64_t forward=10000000,reverse=0;
   for(int i=1;i<argc;++i){std::string arg=argv[i];auto val=[&](){if(i+1>=argc)throw std::runtime_error("Missing argument value");return std::string(argv[++i]);};
-   if(arg=="--synthetic")syn=true;else if(arg=="--byte-slips")slips=true;else if(arg=="--gapped-native")gapped=true;else if(arg=="--resources-root")root=val();else if(arg=="--state-file")state_file=val();else if(arg=="--hit-escrow")escrow=val();else if(arg=="--source-view")view=val();else if(arg=="--forward-pairs")forward=std::stoull(val());else if(arg=="--reverse-pairs")reverse=std::stoull(val());else throw std::runtime_error("Unknown flag "+arg);
+   if(arg=="--synthetic")syn=true;else if(arg=="--byte-slips")slips=true;else if(arg=="--gapped-native")gapped=true;else if(arg=="--resources-root")root=val();else if(arg=="--state-file")state_file=val();else if(arg=="--hit-escrow")escrow=val();else if(arg=="--source-view")view=val();else if(arg=="--source-attempt")source_attempt=std::stoi(val());else if(arg=="--forward-pairs")forward=std::stoull(val());else if(arg=="--reverse-pairs")reverse=std::stoull(val());else throw std::runtime_error("Unknown flag "+arg);
   }
   if(syn){synthetic();return 0;}
-  if(gapped&&slips)throw std::runtime_error("Gapped native and byte slips are disjoint candidate geometries");
+  if(source_attempt!=1&&source_attempt!=3)throw std::runtime_error("Source attempt must be 1 or 3");
+   if(gapped&&slips)throw std::runtime_error("Gapped native and byte slips are disjoint candidate geometries");
   if(gapped&&reverse)throw std::runtime_error("Gapped native mode currently supports forward starts only");
   if(envci())throw std::runtime_error("Original-source run forbidden in CI");
   if(state_file.empty()||escrow.empty())throw std::runtime_error("Private state and out-of-repository hit escrow required");
@@ -248,16 +249,16 @@ int main(int argc,char** argv){
   auto spool=pinned(root+"/evidence/print/spool-reconstruction.log",SPOOL_SHA);
   auto routing=pinned(root+"/evidence/recovery-routing.json",ROUTE_SHA);
   auto acceptance=pinned(root+"/acceptance.json",ACCEPT_SHA);
-  auto source=bytes16(findone(spool,"JOB=PS-261003-0417 ATTEMPT=1 STATE=REQUESTED CLASS=RECOVER PAYLOAD=([0-9A-F]{32}) DEST=bench"));
+  auto source_first=bytes16(findone(spool,"JOB=PS-261003-0417 ATTEMPT=1 STATE=REQUESTED CLASS=RECOVER PAYLOAD=([0-9A-F]{32}) DEST=bench"));
   auto later=bytes16(findone(spool,"JOB=PS-261003-0417 ATTEMPT=3 STATE=REQUESTED CLASS=RECOVER PAYLOAD=([0-9A-F]{32}) DEST=bench"));
   auto mask=bytes16(findone(routing,"\\\"masked_component\\\"[[:space:]]*:[[:space:]]*\\\"([0-9A-F]{32})\\\""));
   auto target=bytes32(findone(acceptance,"\\\"K04\\\"[[:space:]]*:[[:space:]]*\\\"([0-9a-f]{64})\\\""));
   require_private_escrow(root,escrow);
-  Trial trial{};trial.mask=mask;trial.target=target;trial.source=source;trial.later=later;trial.has_later=true;trial.source_little=(view.rfind("little",0)==0);trial.source_swap=(view.substr(view.find('/')+1)=="ba");trial.escrow=escrow;
+  Trial trial{};trial.mask=mask;trial.target=target;trial.source=(source_attempt==3?later:source_first);trial.later=later;trial.has_later=(source_attempt==1);trial.source_little=(view.rfind("little",0)==0);trial.source_swap=(view.substr(view.find('/')+1)=="ba");trial.escrow=escrow;
   State state=private_state(state_file);
   auto started=std::chrono::steady_clock::now();auto m=scan(state,trial,forward,reverse,slips,gapped);
   double elapsed=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
-  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ view="<<view<<" nonconsecutive_native_gaps_2to32="<<gapped<<" byte_slips_forward="<<(slips?16:1)<<" byte_slips_reverse="<<(slips?16:1)<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
+  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ source_attempt="<<source_attempt<<" view="<<view<<" nonconsecutive_native_gaps_2to32="<<gapped<<" byte_slips_forward="<<(slips?16:1)<<" byte_slips_reverse="<<(slips?16:1)<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
   return 0;
  }catch(const std::exception& e){std::cerr<<"FAILED "<<e.what()<<"\n";return 2;}
 }
