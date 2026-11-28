@@ -11,6 +11,13 @@ This is a conditional model, NOT proof of the physical printer's producer.
 Source mode is local-only; all source, state and candidate bytes are private,
 any original commitment hits go to an out-of-repository chmod0600 escrow.
 An optional out-of-repo 0600 per-parent ledger supports exact resumption.
+
+PERFORMANCE CAUTION (original local control): persistent incremental Z3 context
+proved fewer P16 children terminal UNSAT at 350 ms than the independent
+fresh-context implementation on the same source parent, requiring more P20
+splits. This is mathematically sound but can run *slower*. Prefer the
+fresh-context resumable engine in k04_laterfirst_fresh_resumable_source_local.py
+for broad original-source partitions; retain this variant for experimentation.
 """
 from __future__ import annotations
 import argparse
