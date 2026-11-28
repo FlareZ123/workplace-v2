@@ -30,6 +30,20 @@ The local native C++17/OpenSSL run produced these exact aggregate-only receipts:
 
 An independent prior Python source-first reducer for the same state, one declared serializer and 65,536 whole-packet gaps × 16 byte slips, also returned 0/1,048,576 original hits and zero later whole-word/full-packet replays. The new C++ experiment is a strict offset/layout extension for this state, not a new source of original coupon bytes.
 
+## Independent copied-ACK consistency diagnostic (post-fit, not a source constraint)
+
+The surviving selected ACK2 spool payload is expressly **not media-authenticated**, and was never used to fit the initial generator state or select its P12/P16 branch. After the original 1.28 billion full K04 commitment comparisons, a separate, less stringent copied-fragment consistency screen compared each **pre-mask 16-byte generated coupon** to that copied ACK2 byte sequence. It used the identical 20 million bidirectional native starts, four serializer views and 16 byte slips. For each complete hypothetical coupon it computed (a) the number of bytes identical in the same positions and (b) the full 128-bit Hamming bit distance. These are comparison diagnostics, **not** additional authenticated K04 component checks.
+
+| Hypothesized source-compatible stream | Compared full 16-byte assignments | Maximum exactly matching byte positions with untrusted ACK2 copy | Smallest 128-bit Hamming distance | Assignments matching at least 8 of 16 copied bytes |
+| --- | ---: | ---: | ---: | ---: |
+| Forward 10 million native starts | 640,000,000 | **5** | **32 bits** | **0** |
+| Reverse 10 million native starts | 640,000,000 | **5** | **29 bits** | **0** |
+| Combined | **1,280,000,000** | **5** | **29 bits** | **0** |
+
+In particular no generated coupon in those windows shares even **six** exact positions with the retained selected ACK2 copy. Thus any hypothesized coupon from this *particular* recovered source-compatible state and enumerated output family would require at least **eleven byte positions** (and at least 29 bits) to differ from the copied ACK2 buffer. This bounds a conditional near-copy-damage story; it is **not** proof of any actual corruption count because the source neither authenticates the PRNG nor puts an upper bound on how badly that buffer was reconstructed.
+
+The separate, private C++ source diagnostic pins the original spool SHA256, independently replays the full 16-byte REQUESTED1 source against the private state, then scores the unique original ACK2 copied line without printing its bytes. A source-free planted comparison control used a coupon at forward/reverse stage 317 in an alternate packet serializer at byte slip seven and changed exactly **three byte positions / four bits**. Both modes recovered the stipulated best bit distance and at least 13 equal bytes. The historical result above requires **no acceptance-target feedback** during comparison. It makes a stronger discrimination between simple copied-byte proximity and random generator coincidence without claiming an original K04 hit.
+
 ## Reproducibility and controls
 
 The [shared C++17/OpenSSL source-ready state continuation tool](../agents/agent15/k04_xoropp_source_state_longstream_local.cpp) was initially supplied by Agent 15 and extended in [Agent 37's reverse-byte-slip commit](https://github.com/FlareZ123/workplace-v2/commit/ce62f96316044667911495db89c74463277b8c2b) so `--byte-slips` applies to **both forward and reverse** stages. Its packed-packet / SHA test is equivalent to the independent local C++ reducers used for the original measurements; the actual historical runs used the private local independently compiled equivalents and retained only aggregate logs.
