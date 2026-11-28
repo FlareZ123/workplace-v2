@@ -1,0 +1,23 @@
+name: H17 K04 source-state longstream synthetic smoke (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-safe-longstream-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build existing source-safe C++ candidate engine
+        run: |
+          c++ -O2 -std=c++17 -Wall -Wextra agents/agent15/k04_xoropp_source_state_longstream_local.cpp -lcrypto -o /tmp/h17-longstream-synthetic
+      - name: Run planted complete-coupon synthetic controls with extended REQUESTED3 CLI
+        env:
+          CI: "1"
+          GITHUB_ACTIONS: "1"
+        run: |
+          /tmp/h17-longstream-synthetic --synthetic --source-attempt 3
