@@ -34,11 +34,26 @@ SAFE_SHA = {
     'acceptance.json': '681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f',
 }
 
+def securely_escrow(path: Path,components: list[str]) -> None:
+    """Commitment-passing 16-byte values only; no raw source/state/diagnostics."""
+    if not components:return
+    flags=os.O_WRONLY|os.O_CREAT|os.O_APPEND|getattr(os,'O_NOFOLLOW',0)
+    fd=os.open(path,flags,0o600)
+    with os.fdopen(fd,'a',encoding='ascii') as f:
+        os.fchmod(f.fileno(),0o600)
+        for item in components:
+            if not re.fullmatch(r'[0-9A-F]{32}',item):
+                raise ValueError('Invalid escrow component')
+            f.write(json.dumps({'verified_K04_component':item},sort_keys=True)+'\\n')
+        f.flush()
+        os.fsync(f.fileno())
+
 def scan_states(states,later,skips,pre_gap,endian,order,mask,target):
     """Every complete shifted coupon is checked BEFORE independent retry replay."""
     counts = {'window_assignments':0,'all_accept':0,
               'even_coupon_accept':0,'odd_coupon_accept':0,
               'even_retry':0,'odd_retry':0,'joint':0}
+    verified_hits = []
     total = 7 + pre_gap + 2*skips  # 40 outputs for pre_gap17/skips8
     for state in states:
         ys = stream(*state,total)
@@ -48,13 +63,15 @@ def scan_states(states,later,skips,pre_gap,endian,order,mask,target):
             committed = hashlib.sha256(candidate).hexdigest()==target
             counts['window_assignments'] += 1
             counts['all_accept'] += int(committed)
+            if committed: verified_hits.append(candidate.hex().upper())
             counts['even_coupon_accept'] += int(committed and begin%2==0)
             counts['odd_coupon_accept'] += int(committed and begin%2==1)
             for phase in range(begin+2,begin+4+2*skips):
                 if tuple(ys[phase:phase+2])==tuple(later):
                     counts['odd_retry' if phase%2 else 'even_retry'] += 1
                     counts['joint'] += int(committed)
-    return counts
+    assert len(verified_hits) == counts['all_accept']
+    return counts, verified_hits
 
 def branch(job):
     bucket,first,later,timeout_ms,skips,pre_gap,endian,order,mask,target = job
@@ -62,8 +79,8 @@ def branch(job):
     states,terminal=query_models(first,anchor,timeout_ms)
     if terminal not in ('unsat','unknown'):
         raise AssertionError('Incomplete in-cube model blocking')
-    return bool(states),terminal,len(states),scan_states(
-        states,later,skips,pre_gap,endian,order,mask,target)
+    counts,verified_hits = scan_states(states,later,skips,pre_gap,endian,order,mask,target)
+    return bool(states),terminal,len(states),counts,verified_hits
 
 def synthetic_control():
     rng=random.Random(20261128)
@@ -76,21 +93,24 @@ def synthetic_control():
         later=unpack(pack(ys[23:25],endian,order),endian,order)
         raw=pack(ys[19:21],endian,order)  # farthest odd coupon offset
         target=hashlib.sha256(bytes(v^m for v,m in zip(raw,mask))).hexdigest()
-        _,terminal,n,c=branch((bucket,first,later,30000,8,17,endian,order,mask,target))
+        _,terminal,n,c,hits=branch((bucket,first,later,30000,8,17,endian,order,mask,target))
         assert terminal=='unsat' and n>=1
-        assert c['all_accept']==1 and c['odd_coupon_accept']==1
+        assert c['all_accept']==1 and hits==[bytes(v^m for v,m in zip(raw,mask)).hex().upper()]
+        assert c['odd_coupon_accept']==1
         assert c['even_coupon_accept']==0 and c['joint']==1
         assert c['odd_retry']>=1
         poison=(later[0]^1,later[1])
-        _,term2,n2,p=branch((bucket,first,poison,30000,8,17,endian,order,mask,target))
-        assert term2=='unsat' and n2>=1 and p['all_accept']==1
+        _,term2,n2,p,poison_hits=branch((bucket,first,poison,30000,8,17,endian,order,mask,target))
+        assert term2=='unsat' and n2>=1 and p['all_accept']==1 and poison_hits==hits
         assert p['joint']==0 and p['even_retry']==0 and p['odd_retry']==0
         for begin in range(2,20):
             raw=pack(ys[begin:begin+2],endian,order)
             t=hashlib.sha256(bytes(v^m for v,m in zip(raw,mask))).hexdigest()
-            c2=scan_states([state],later,8,17,endian,order,mask,t)
+            c2,one_hit=scan_states([state],later,8,17,endian,order,mask,t)
             assert c2['window_assignments']==18 and c2['all_accept']==1
+            assert one_hit == [bytes(v^m for v,m in zip(raw,mask)).hex().upper()]
     print({'synthetic_only':True,'four_layouts':4,
+           'verified_components_returned_for_private_escrow':True,
            'odd_coupon_start19_and_odd_retry_phase23_pass':True,
            'poisoned_retry_does_not_veto_committed_coupon':True,
            '72_shifted_full_coupon_checks_pass':True})
@@ -108,12 +128,21 @@ def main():
     p.add_argument('--max-later-skipped-packets',type=int,default=8)
     p.add_argument('--max-preselected-skipped-words',type=int,default=17)
     p.add_argument('--summary-json',type=Path)
+    p.add_argument('--local-hit-escrow',type=Path,
+                   help='Required in historical mode: chmod0600 outside repository')
     a = p.parse_args()
     if a.synthetic:
         synthetic_control()
         return
     if os.environ.get('CI') or os.environ.get('GITHUB_ACTIONS'):
         raise SystemExit('Historical source forbidden in public CI')
+    if a.local_hit_escrow is None:
+        p.error('Historical source requires secure out-of-repository --local-hit-escrow')
+    hit_path = a.local_hit_escrow.expanduser().resolve()
+    if hit_path == ROOT or ROOT in hit_path.parents or not hit_path.parent.is_dir():
+        p.error('Local hit escrow must be in an existing directory outside repository')
+    if a.summary_json and (a.summary_json.resolve()==hit_path):
+        p.error('Never send escrow contents to aggregate JSON')
     if not (0 <= a.start < 4096 and 1 <= a.count <= 4096-a.start):
         p.error('Anchor partition must be within 0..4095')
     if not (100 <= a.timeout_ms <= 30000 and 1 <= a.workers <= 4
@@ -144,7 +173,7 @@ def main():
              for idx in range(a.start,a.start+a.count))
     started = time.monotonic()
     with mp.Pool(a.workers) as pool:
-        for sat,terminal,n,c in pool.imap_unordered(branch,jobs,chunksize=1):
+        for sat,terminal,n,c,hits in pool.imap_unordered(branch,jobs,chunksize=1):
             counts['done'] += 1
             counts['sat_buckets'] += int(sat)
             counts['unsat_buckets'] += int(not sat and terminal=='unsat')
@@ -157,6 +186,8 @@ def main():
             counts['odd_coupon_accepts'] += c['odd_coupon_accept']
             counts['joint_later_accepts'] += c['joint']
             counts['unfiltered_commitment_hits'] += c['all_accept']
+            if hits:
+                securely_escrow(hit_path,hits)  # only fully committed bytes
             if counts['done'] % 100 == 0:
                 print('AGGREGATE_PROGRESS',{'completed':counts['done'],
                       'sat':counts['sat_buckets'],'unsat':counts['unsat_buckets'],
