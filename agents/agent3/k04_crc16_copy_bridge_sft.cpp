@@ -19,6 +19,14 @@ using namespace std;
 using Packet=array<uint8_t,16>;
 
 static string read_file(const string& s){ifstream f(s);if(!f)throw runtime_error("missing required input file: "+s);return string(istreambuf_iterator<char>(f),{});}
+static void pin_file(const string& path,const string& expected){
+ string raw=read_file(path);
+ unsigned char out[32];SHA256(reinterpret_cast<const unsigned char*>(raw.data()),raw.size(),out);
+ const char* digits="0123456789abcdef";
+ string digest;
+ for(unsigned char x:out){digest.push_back(digits[x>>4]);digest.push_back(digits[x&15]);}
+ if(digest!=expected)throw runtime_error("Local source integrity mismatch: "+path);
+}
 static string strfield(const string& line,const string& key){regex r("\\\""+key+"\\\"\\s*:\\s*\\\"([^\\\"]+)\\\"");smatch m;if(!regex_search(line,m,r))throw runtime_error("missing field "+key);return m[1];}
 static int intfield(const string& line,const string& key){regex r("\\\""+key+"\\\"\\s*:\\s*([0-9]+)");smatch m;if(!regex_search(line,m,r))throw runtime_error("missing integer field "+key);return stoi(m[1]);}
 static uint8_t unhex(char c){if(c>='0'&&c<='9')return c-'0';if(c>='a'&&c<='f')return c-'a'+10;if(c>='A'&&c<='F')return c-'A'+10;throw runtime_error("bad hex");}
@@ -26,6 +34,10 @@ static vector<uint8_t> hexparse(const string&s){if(s.size()%2)throw runtime_erro
 static Packet array16(const vector<uint8_t>& v){if(v.size()!=16)throw runtime_error("not 16 bytes");Packet o;copy(v.begin(),v.end(),o.begin());return o;}
 struct Source{array<array<array<uint8_t,2>,3>,8> check{};Packet copied{},mask{};array<uint8_t,32> target{};};
 static Source load(const string& root){
+ pin_file(root+"/evidence/print/spool-reconstruction.log","7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083");
+ pin_file(root+"/evidence/transfers/transfer-audit.jsonl","32970ad4431a9d610cc12dcca2813f39dd8fd2e396f9e748dc94b5932cb69adf");
+ pin_file(root+"/evidence/recovery-routing.json","f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5");
+ pin_file(root+"/acceptance.json","681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f");
  Source S{};bool seen[8][3]{};
  istringstream file(read_file(root+"/evidence/transfers/transfer-audit.jsonl"));string line;
  while(getline(file,line)){
