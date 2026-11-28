@@ -49,7 +49,7 @@ Therefore **LOWL -> LOW BIT -> N06 is the primary continuation**. The `LOW + L -
 
 ## Independent heading-channel corroboration
 
-After N06 is selected by the address-head route, reuse the **already-established N09 heading channels** as a control rather than as a second selector. N06's three heading words produce HEAD / adjusted TAILBIT / adjusted LEN values **1 / 3 / 5**, i.e. A1Z26 token **ACE**. Among the 13 colon headings whose adjusted three-channel values all lie inside N01..N24, N06 is the **only** one with the exact ACE signature.
+After N06 is selected by the address-head route, reuse the **already-established N09 heading channels** as a control rather than as a second selector. N06's three heading words produce HEAD / adjusted TAILBIT / adjusted LEN values **1 / 3 / 5**, i.e. A1Z26 token **ACE**. Among the 13 colon headings whose adjusted three-channel values all lie inside N01..N24, N06 is the **only** one with the exact ACE signature. As a matched structural control, run the same signature -> A1Z26 note-count token -> selected N07 reversal -> whole-token LOW BIT pipeline on all 13 eligible headings: **N06 is also the only heading whose downstream selector is N03**.
 
 This signature feeds the same source-local machinery without consulting acceptance:
 
