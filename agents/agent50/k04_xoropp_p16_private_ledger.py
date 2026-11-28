@@ -15,7 +15,8 @@ from pathlib import Path
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from agents.agent7.k04_xoropp_p16_subcube_source_local import exact_states, read_original
+from agents.agent7.k04_xoropp_p16_subcube_source_local import exact_states as extended_exact_states, read_original
+from agents.agent50.k04_xoropp_compact_firstpair_solver import exact_states as compact_exact_states
 from agents.agent7.k04_xoropp_byte_slip_reducer import assess_state, escrow_hits
 
 SRC_SHA = '7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083'
@@ -73,10 +74,11 @@ def append_private(path, obj):
 
 
 def source_job(job):
-    cube, first, later, mask, target, endian, order, ms, retry_ms, cap, pre, lag = job
-    states, terminal = exact_states(first, cube, ms, cap)
+    cube, first, later, mask, target, endian, order, ms, retry_ms, cap, pre, lag, engine = job
+    solver = compact_exact_states if engine == 'compact' else extended_exact_states
+    states, terminal = solver(first, cube, ms, cap)
     if terminal == 'unknown' and retry_ms > ms:
-        extra, terminal = exact_states(first, cube, retry_ms, cap)
+        extra, terminal = solver(first, cube, retry_ms, cap)
         states = list(set(states + extra))
     counters = dict(candidates=0, commit_hits=0, replay_views=0,
                     joint_hits=0, unaligned_commit_hits=0)
@@ -99,6 +101,8 @@ def main():
     ap.add_argument('--retry-timeout-ms', type=int, default=700)
     ap.add_argument('--workers', type=int, default=4)
     ap.add_argument('--max-models', type=int, default=32)
+    ap.add_argument('--solver', choices=('compact','extended'), default='compact',
+                    help='Equivalent exact first-two-output systems; compact skips four unused transitions')
     ap.add_argument('--max-pre-packets', type=int, default=8)
     ap.add_argument('--max-later-packets', type=int, default=8)
     ap.add_argument('--ledger', type=str, required=True)
@@ -129,7 +133,7 @@ def main():
     queue = [c for c in cohort if c not in prev or prev[c]['terminal'] == 'unknown']
     tasks = ((cube, first, later, mask, target, ns.endian, ns.order,
               ns.timeout_ms, ns.retry_timeout_ms, ns.max_models,
-              ns.max_pre_packets, ns.max_later_packets) for cube in queue)
+              ns.max_pre_packets, ns.max_later_packets, ns.solver) for cube in queue)
     tally = {
         'requested_subcubes': ns.parent_count*16,
         'already_proven': sum(prev.get(c,{}).get('terminal')=='unsat' for c in cohort),
@@ -147,6 +151,7 @@ def main():
                 'schema': SCHEMA, 'source_sha256': SRC_SHA, 'layout': layout,
                 'anchor_positions': ANCHOR, 'bucket': cube, 'terminal': terminal,
                 'timeout_ms': ns.retry_timeout_ms, 'max_models': ns.max_models,
+                'solver_circuit': ns.solver,
                 'states': [f'{a:016x}{b:016x}' for a,b in sorted(states)],
             }
             append_private(ledger, row)
@@ -158,7 +163,8 @@ def main():
             tally['later_retry_matches'] += counts['replay_views']
             if tally['processed'] % 256 == 0 or tally['processed'] == len(queue):
                 print('AGGREGATE_ONLY ' + json.dumps({
-                    'layout':layout, 'source_or_candidate_values_exposed':False,
+                    'layout':layout, 'solver_circuit':ns.solver,
+                    'source_or_candidate_values_exposed':False,
                     'elapsed_s':round(time.monotonic()-start,2),
                     'counts':tally},sort_keys=True),flush=True)
 
