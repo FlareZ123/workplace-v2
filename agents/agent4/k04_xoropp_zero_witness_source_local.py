@@ -2,7 +2,7 @@
 """LOCAL-ONLY original-source application of the zero-external-state-bit xoroshiro128++ erasure solver.
 
 The conditional model treats PS-261003-0417 REQUESTED attempts 1 and 3 as
-consecutive two-output packets bracketing a missing two-output packet.
+two-output packets separated by the selected erased pair and up to eight\nadditional unobserved pairs before REQUESTED3. The selected middle is always\noutputs 2 and 3; only the later independent holdout phase can vary.
 The physical coupon and the generator identity are NOT authenticated.
 
 This tool reads only three named non-PDF text files, never scans archives or
@@ -27,8 +27,8 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from agents.agent4.k04_xoropp_zero_witness_synthetic import run_branch
-from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream
+from agents.agent4.k04_xoropp_zero_witness_synthetic import POSITIONS
+from agents.agent27.k04_xoropp_sparse12_gap_synthetic import solve, stream
 
 
 def requested_packet(log: Path, attempt: int) -> bytes:
@@ -62,12 +62,17 @@ def pack(pair: tuple[int, int], endian: str, order: str) -> bytes:
 
 
 def branch_job(args):
-    idx, first, later, timeout_ms = args
-    _, status, valid, state = run_branch(
-        (idx, {0: first[0], 1: first[1]}, later, timeout_ms)
-    )
-    middle = tuple(stream(*state, 6)[2:4]) if valid else None
-    # Deliberately omit state and branch index from returned/output diagnostics.
+    idx, first, later, timeout_ms, max_skipped = args
+    anchor = sum(((idx >> j) & 1) << pos for j, pos in enumerate(POSITIONS))
+    status, state = solve({0: first[0], 1: first[1]}, anchor, POSITIONS, timeout_ms)
+    replay = stream(*state, 6 + 2 * max_skipped) if state is not None else []
+    phases = range(4, 6 + 2 * max_skipped, 2)
+    valid = bool(state is not None and any(
+        tuple(replay[j:j + 2]) == tuple(later) for j in phases
+    ))
+    middle = tuple(replay[2:4]) if valid else None
+    # The selected ACK2 remains the first erased pair; only later phase varies.
+    # Deliberately omit state and branch index from returned diagnostics.
     return status, valid, middle
 
 
@@ -80,6 +85,7 @@ def main() -> None:
     p.add_argument('--count', type=int, default=1024)
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--timeout-ms', type=int, default=5000)
+    p.add_argument('--max-later-skipped-packets', type=int, default=0)
     p.add_argument('--summary-json', type=Path)
     args = p.parse_args()
 
@@ -87,6 +93,8 @@ def main() -> None:
         raise SystemExit('Historical source processing is prohibited in CI')
     if not (0 <= args.start < 4096 and 1 <= args.count <= 4096 - args.start):
         p.error('The interval must lie inside 0..4095')
+    if not 0 <= args.max_later_skipped_packets <= 8:
+        p.error('max-later-skipped-packets must be 0..8')
     if not (1 <= args.workers <= 4 and 100 <= args.timeout_ms <= 30000):
         p.error('workers must be 1..4 and timeout-ms 100..30000')
 
@@ -106,7 +114,8 @@ def main() -> None:
     statuses = {'sat': 0, 'unsat': 0, 'unknown': 0}
     done = holdout_hits = acceptance_hits = 0
     with mp.Pool(args.workers) as pool:
-        jobs = ((i, first, later, args.timeout_ms)
+        jobs = ((i, first, later, args.timeout_ms,
+                 args.max_later_skipped_packets)
                 for i in range(args.start, args.start + args.count))
         for status, valid, middle in pool.imap_unordered(
                 branch_job, jobs, chunksize=1):
@@ -130,6 +139,7 @@ def main() -> None:
         'hypothesis': 'requested1 / erased ACK2 / requested3 sequential stream',
         'layout': args.endian + '/' + args.order,
         'external_state_bits': 0,
+        'max_later_skipped_packets': args.max_later_skipped_packets,
         'interval': [args.start, args.start + args.count],
         'branches_completed': done,
         'branch_statuses': statuses,
