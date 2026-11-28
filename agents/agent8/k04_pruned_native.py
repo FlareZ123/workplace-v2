@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Prune unused output-conditioned XOR gates; exact conditional xoroshiro128++ solver.
 Synthetic performance experiment. Original-source runner provided separately.
+Supports two-output firstpacket and consecutive three-output reverse-triad
+constraints; both retain exact final 64-bit state blocking and UNKNOWN semantics.
 """
 import ctypes,random,re,time,sys
 M=(1<<64)-1
@@ -20,7 +22,7 @@ def xor(*xs):
  return xs[0] if len(xs)==1 else '(xor '+' '.join(xs)+')'
 
 def circuit(obs,anchor,positions,timeout_ms,pruned=True,assumptions=False):
- assert set(obs) in ({0,1,4,5},{0,1})
+ assert set(obs) in ({0,1,4,5},{0,1},{0,1,2})
  lines=['(set-logic QF_UF)','(set-option :sat.anf true)','(set-option :sat.anf.exlin true)',f'(set-option :timeout {timeout_ms})']
  def put(name,expr):
   lines.append(f'(define-fun {name} () Bool {expr})');return name
