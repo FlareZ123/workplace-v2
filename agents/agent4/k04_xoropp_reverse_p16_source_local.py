@@ -4,7 +4,7 @@
 Fit only intact PS-0417 REQUESTED3 as two successive xoroshiro128++ words.
 Partition every possible initial-a word into 4096 P12 parents x 16 P16
 children, enumerate each child's complete models with exact model blocking,
-and walk states backwards over 9 x 16 = 144 complete byte-slip coupons.
+and walk states backwards over 177 complete byte-slip coupons.
 Commitment is checked BEFORE and independently of REQUESTED1 replay.
 An original printer producer, selected phase, or physical coupon is NOT proven.
 
@@ -24,15 +24,53 @@ import random
 import stat
 import time
 
-from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import full_coupon_scan
+from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import prehistory
+import re
 from agents.agent7.k04_xoropp_p16_subcube_source_local import exact_states, read_original
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream
 
 ROOT = Path(__file__).resolve().parents[2]
-METHOD = "laterfirst-P16-144-byte-slip-v2"
+METHOD = "laterfirst-P16-177-byte-slip-v3"
 PARENT_COUNT = 4096
 CHILDREN = 16
 
+
+
+def full_coupon_scan_177(state, route_mask, target, endian, order, earlier=None):
+    """All 177 legal contiguous complete 16-byte starts before REQUESTED3.
+
+    The 24 inversely replayed earlier 64-bit words form exactly 192
+    source-hypothetical prior bytes; the last full 16-byte candidate starts
+    at byte offset 176. No phase shift or extra byte value is guessed.
+    """
+    raw = prehistory(state, endian, order)
+    later_start = len(raw) - 16
+    assert later_start == 192
+    assert len(route_mask) == 16 and re.fullmatch(r"[a-f0-9]{64}", target)
+    earlier_bytes = None
+    if earlier is not None:
+        from agents.agent7.k04_xoropp_byte_slip_reducer import pack_packet
+        earlier_bytes = pack_packet(earlier, endian, order)
+    totals = {"complete_coupons": 0, "accepts": 0,
+              "unaligned_accepts": 0, "earlier_replays": 0, "joint": 0}
+    accepted = []
+    for begin in range(later_start - 16 + 1):
+        coupon = raw[begin:begin + 16]
+        component = bytes(x ^ m for x, m in zip(coupon, route_mask))
+        valid = hashlib.sha256(component).hexdigest() == target
+        totals["complete_coupons"] += 1
+        totals["accepts"] += int(valid)
+        totals["unaligned_accepts"] += int(valid and begin % 8 != 0)
+        if valid:
+            accepted.append(component.hex().upper())
+        if earlier_bytes is not None:
+            replay = any(raw[p:p + 16] == earlier_bytes
+                         for p in range(0, begin - 15, 16))
+            totals["earlier_replays"] += int(replay)
+            totals["joint"] += int(replay and valid)
+    assert totals["complete_coupons"] == 177
+    assert len(accepted) == totals["accepts"]
+    return totals, accepted
 
 def work_one(job):
     parent, sub, first, later, mask, target, endian, order, ms, retry_ms = job
@@ -47,13 +85,13 @@ def work_one(job):
     counts = {"windows": 0, "hits": 0, "earlier_replays": 0, "joint_hits": 0}
     hits = []
     for state in models:
-        c, found = full_coupon_scan(state, mask, target, endian, order, first)
+        c, found = full_coupon_scan_177(state, mask, target, endian, order, first)
         counts["windows"] += c["complete_coupons"]
         counts["hits"] += c["accepts"]
         counts["earlier_replays"] += c["earlier_replays"]
         counts["joint_hits"] += c["joint"]
         hits.extend(found)
-    assert counts["windows"] == 144 * len(models)
+    assert counts["windows"] == 177 * len(models)
     assert len(hits) == counts["hits"]
     return {
         "parent": parent, "child": sub, "terminal": terminal,
