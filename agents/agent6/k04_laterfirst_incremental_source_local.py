@@ -3,7 +3,7 @@
 
 Hypothesis: unverified physical selected ACK2 was emitted before intact REQUESTED3
 by xoroshiro128++ 1.0. Fit ONLY intact later REQUESTED3 as two big/AB words.
-Exhaust exact P12→P16→P20→P22 disjoint state partitions with complete SAT model
+Exhaust exact P12→P16→P20→P22→P24→P28 disjoint state partitions with complete SAT model
 blocking; every state gets every full 16-byte window in the previous 24 words
 checked by the untouched original K04 commitment (177 windows).
 This is a conditional model, NOT proof of the physical printer's producer.
@@ -35,8 +35,10 @@ from agents.agent6.k04_laterfirst_bigab_177_exact_source_local import (
 )
 
 P22 = P20 + (12, 13)
+P24 = P22 + (14, 15)
+P28 = P24 + (16, 17, 18, 19)
 SOURCE_PIN = "7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083"
-ENGINE = "K04-LATERFIRST-BIGAB-177-INCREMENTAL-V1"
+ENGINE = "K04-LATERFIRST-BIGAB-177-INCREMENTAL-V2"
 MASK64 = (1 << 64) - 1
 
 class IncrementalSolver:
@@ -106,11 +108,14 @@ def check_parent(job):
     totals = {"p16": 0, "p16_unsat": 0,
               "p20": 0, "p20_unsat": 0,
               "p22": 0, "p22_unsat": 0,
+              "p24": 0, "p24_unsat": 0,
+              "p28": 0, "p28_unsat": 0,
               "unknown_leaf": 0, "states": 0,
               "complete_coupon_checks": 0, "original_hits": 0}
     hits = []
     observed_states = set()
-    extra = {16: (8, 9, 10, 11), 20: (12, 13)}
+    extra = {16: (8, 9, 10, 11), 20: (12, 13),
+             22: (14, 15), 24: (16, 17, 18, 19)}
     def descend(level):
         models, terminal = z.all_models()
         totals[f"p{level}"] += 1
@@ -201,7 +206,7 @@ def main():
     ap.add_argument("--start", type=int, default=116)
     ap.add_argument("--count", type=int, default=16)
     ap.add_argument("--timeout-ms", type=int, default=350)
-    ap.add_argument("--depth", type=int, choices=(16, 20, 22), default=22)
+    ap.add_argument("--depth", type=int, choices=(16, 20, 22, 24, 28), default=24)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--escrow", type=Path)
     ap.add_argument("--ledger", type=Path)
@@ -245,6 +250,8 @@ def main():
                 "p16": 0, "p16_unsat": 0,
                 "p20": 0, "p20_unsat": 0,
                 "p22": 0, "p22_unsat": 0,
+                "p24": 0, "p24_unsat": 0,
+                "p28": 0, "p28_unsat": 0,
                 "unknown_leaf": 0, "states": 0,
                 "complete_coupon_checks": 0, "original_hits": 0}
     for parent in sorted(requested & set(done)):
