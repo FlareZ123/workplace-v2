@@ -89,6 +89,7 @@ struct Trial{
  void check_slipped(u64 a,u64 b,u64 c,u64 d){
   // Consecutive full packets under each view; try every 16-byte start.
   ++counts.pairs;
+  if(has_later&&pack(a,b,source_little,source_swap)==later)++counts.later_holdout_replays;
   for(int layout=0;layout<4;++layout){
    const bool little=(layout&2)!=0,swap=(layout&1)!=0;
    Data first=pack(a,b,little,swap),second=pack(c,d,little,swap);
@@ -157,8 +158,9 @@ static void synthetic(){
  Data first=pack(a,b,true,false),second=pack(c,d,true,false),component{};
  for(int j=0;j<16;++j){int k=byte_start+j;component[j]=(k<16?first[k]:second[k-16])^mask[j];}
  SHA256(component.data(),16,slip.target.data());
+ slip.has_later=true;slip.later=pack(a,b,false,true);
  auto got=scan(initial,slip,128,0,true);
- if(got.hits!=2||got.checks!=128*64)throw std::runtime_error("Synthetic slipped 16-byte coupon missed");
+ if(got.hits!=2||got.checks!=128*64||got.later_holdout_replays!=1)throw std::runtime_error("Synthetic slipped coupon or independent heldout replay missed");
  std::cout<<"SYNTHETIC_ONLY byte_slips=16 pair_count="<<got.pairs<<" full_SHA256_checks="<<got.checks<<" planted_hits="<<got.hits<<"\n";
 }
 int main(int argc,char** argv){
