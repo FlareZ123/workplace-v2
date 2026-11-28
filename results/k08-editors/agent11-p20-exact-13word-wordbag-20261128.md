@@ -1,56 +1,83 @@
-# K08: complete unique-wordbag permutation of independently selected P20 payload
+# K08: exhaustive P20 source-vocabulary submultiset permutations
 
-**Agent 11 · 28 November 2026 · original K08 commitment test · no recovered component**
+**Agent 11 · 28 November 2026 · 152,152,845 complete original K08 acceptance checks · no hit**
 
-## Mechanism / research decision
+## Material question
 
-The 28 November AT/MT/ET/PT source-only route independently fixes a 13-token contiguous span of N20 (zero-based words 6..18), SHA-256 `4b3350e5b34e40cc9dd1ba53d926ef0455888aa056aac4ba7da141569664e95c`. This is an authorial semantic payload, but its ordering may be a note-to-final transformation rather than a final inscription. Test the smallest complete word-order reinterpretation with **no invented vocabulary**: preserve all 13 normalized source tokens and their multiplicities exactly, but allow an arbitrary order.
+The 28 November AT/MT/ET/PT source-only decoder fixes a 13-token contiguous semantic payload in Emily's N20 note (zero-based positions 6..18), SHA-256 `4b3350e5b34e40cc9dd1ba53d926ef0455888aa056aac4ba7da141569664e95c`. The full payload has five copies of one repeated token plus eight distinct singleton tokens. Its order is syntactically a motif list, not an obvious final caption.
 
-This is **different from Agent14's aligned four-row editor**: that test chooses a word at each fixed *position* from N02/N08/N09/P20, and does not cover every permutation of the P20 vocabulary. Here every candidate uses exactly the same token multiset as P20 and **no other words**.
+Can Emily's author-final caption be written using **only words appearing in that exact source-selected payload**, with complete freedom to **delete any occurrences** and **rearrange all survivors**, but without adding, inflecting, or substituting words? This is materially different from Agent18's 2^30 N20 order-preserving deletion-only screen, Agent10's source-ordered subsequence plus extra-word screen, and Agent14's N02/N08/N09/P20 position-aligned 4^13 editor.
 
-The source has five copies of one repeated word and eight other singleton words. There are exactly `13! / 5! = 51,891,840` unique complete normalized permutations; no duplicate assignment or target-guided word selection is needed. The arrangement itself is free, not source-selected. This is a conditional **permutation-only** authoring model, not an authenticity claim.
+The original all-13-token permutation-only test, 51,891,840 complete candidates, was independently executed first with zero original hits. The stronger test described here **strictly includes** that family and supersedes that preliminary coverage.
 
-## Reproducibility and controls
+## Exact finite coverage
 
-- Original note source pinned SHA-256: `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`.
-- Reproducer checks that N20 contains 30 normalized words and that the selected 13-token span matches its previously established SHA.
-- Only original recovery-routing `desk_nonce` and unmodified `acceptance.json` K08 commitment are read for the private test. Candidate text and component bytes are never printed, stored or committed. Restricted PDF not read.
-- HMAC-SHA256 over the normalized candidate, first 16 bytes, then SHA256 matches the original reducer, checked against the pre-existing N02 first-draft complete-sentence fixture `47e787785ff25082b4b960ad415f1e030ae0edc89c38b2f61c48f9331282ea55`.
-- Plant an artificial target digest for the lexically first in-family permutation before enumeration; the complete search must recover the plant **exactly once**.
-- The runnable C++17/OpenSSL source includes the original SHA pins and controls, performs no network calls, and reads no original PDF.
+For each of the `2^8` masks of unique singleton words and each permitted occurrence count `0..5` for the repeated word, construct that exact multiset. Exclude only the empty string. Enumerate every **distinct lexicographic permutation** of each selected multiset. Different masks/counts have different lexical multiplicities and therefore disjoint normalized captions.
 
-## Complete result
+The exhaustive length histogram is algebraic, not sampled:
 
-Executed locally on the original surviving archive:
+| Normalized words | Distinct complete captions |
+| ---: | ---: |
+| 1 | 9 |
+| 2 | 73 |
+| 3 | 529 |
+| 4 | 3,393 |
+| 5 | 19,081 |
+| 6 | 93,288 |
+| 7 | 394,296 |
+| 8 | 1,440,096 |
+| 9 | 4,566,240 |
+| 10 | 12,579,840 |
+| 11 | 29,272,320 |
+| 12 | 51,891,840 |
+| 13 | 51,891,840 |
+| **Total** | **152,152,845** |
+
+Every one is a **complete, independently normalized caption** checked against the original unchanged K08 acceptance commitment, not a token similarity score. Each is HMAC-SHA256(key=desk nonce, msg=caption) truncated to 16 bytes and then SHA256-hashed, matching the original reducer. No original text candidates or components are printed or committed.
+
+## Controls and exact executed result
+
+The C++17/OpenSSL reproducer loads only permitted original `evidence/crew/noticeboard-and-desk-notes.txt`, `evidence/recovery-routing.json` and `acceptance.json`; it never touches the restricted PDF or network.
+
+Checks: original crew-note SHA pin `13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb`; N20 30-token invariant; fixed 13-token P20 fingerprint; independently known N02 historical first-draft reducer fixture; and a deliberately planted complete in-family message that must appear **exactly once**. The program asserts the complete denominator and two high-cardinality bins.
+
+Observed locally against the supplied archive:
 
 ```text
-K08_P20_WORDBAG assignments=51891840 unique=51891840 planted_hits=1 original_hits=0 source=PASS N02=PASS
-real 30.75 s; user 30.69 s
+K08_P20_ALL_SUBMULTISET_PERMUTATIONS checked=152152845 planted_hits=1 original_hits=0 source=PASS N02=PASS
+real 84.86
+user 84.71
+sys 0.02
 ```
 
-Therefore **none of the 51,891,840 distinct possible pure reorders of the 13-token fixed P20 payload passes the unchanged original K08 commitment**. This is a finite, exact full-candidate rejection for the entire original-multiset, word-permutation-only authoring family. It does not reject deletion, insertion, inflection, punctuation changes before normalization, borrowing other words, other source versions, or an independently written final caption.
+**Original K08 original commitment hits: 0 / 152,152,845 unique complete captions.**
 
-## Source-fixed vs fitted ledger
+## Consequence and precise limitation
 
-| Decision | Status |
+The final margin cannot be any nonempty ordering of **any subset** of the fixed P20 source words, respecting their original multiplicities. Therefore if this payload is indeed a final-editor input, a successful terminal authoring relation requires **at least one lexical operation outside deletion/reordering**: an inserted new word, changed or inflected word, additional earlier-version vocabulary, or a distinct source text. This is stronger than merely excluding one word order or position-aligned word palette.
+
+It does **not** prove P20 is a historical final-editor input, and it does not prove any particular outside word, position, or edit rule. The original K08 phrase remains unquoted and K08 MISSING. The remaining solution-producing direction is a **source-selected complete version operation** (e.g. from N02/N06/photo lineage) that supplies exact new lexical decisions rather than a larger untethered word palette.
+
+## Source-vs-free ledger
+
+| Decision | Fixed or free? |
 | --- | --- |
-| P20 source note, span, 13-token multiset, fingerprint | Independently fixed source-only |
-| HMAC reducer, desk nonce, original target | Original supplied acceptance/routing |
-| Which of the 13 tokens occupies each position | Completely free / exhaustive |
-| Required output length and grammar | Exactly 13 normalized tokens; only direct word order |
-| Independent historical authored positive control | N02 first-draft HMAC reducer PASS (validates cryptography, **not** authoring model) |
-| Planted in-family complete-message control | Exactly one recovered hit |
-| Original K08 commitment | **0 / 51,891,840** |
-
-The new result closes a distinct compactness avenue but produces no K08 key. A genuinely solution-producing next experiment needs a **source-selected authoring/version operation** that emits a complete final sentence rather than a larger palette of unconstrained permutations. Preserve the THE/MHI first-/second-draft + shared-photograph lineage as potentially causal, but the exact later-version editorial instruction is still absent.
+| Selected P20 13-token multiset and source SHA | Fixed independently by surviving source program |
+| Which occurrences are retained | Exhaustively free |
+| Word order | Exhaustively free |
+| Additional vocabulary, inflection, alternate versions | Not in this domain |
+| HMAC reducer/target | Unmodified original acceptance files |
+| Historical control | N02 cryptographic fixture PASS; not a model-authenticity control |
+| Planted model control | Exactly one positive |
+| Original acceptance | 0 hits |
 
 ## Reproducer
 
-`agents/agent11/k08_p20_exact_wordbag_sft.cpp`, build:
+`agents/agent11/k08_p20_exact_wordbag_sft.cpp` (superseding the narrower 13-word-only version):
 
 ```sh
 g++ -O3 -std=c++17 agents/agent11/k08_p20_exact_wordbag_sft.cpp -lcrypto -o p20_wordbag
 ./p20_wordbag <extracted-original-archive-root>
 ```
 
-Source path is strictly `evidence/crew/noticeboard-and-desk-notes.txt`; routes and acceptance are read from that same permitted archive root. No source-specific candidate output is emitted.
+The original evidence, commitments, verifier and canonical candidate were left untouched.
