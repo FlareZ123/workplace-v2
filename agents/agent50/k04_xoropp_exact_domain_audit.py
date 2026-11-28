@@ -49,7 +49,7 @@ def refined_rows(frozen_pairs,source):
         if any(b not in source or source[b]!=row for b,row in frozen.items()):
             raise ValueError('Frozen source cohort differs from original P16 cache')
         for line in private_bytes(output_file).splitlines():
-            r=json.loads(line);b=r.get('bucket')
+            r=json.loads(line);b=r.get('bucket',r.get('p16_bucket'))
             statuses=r.get('child_statuses',[])
             if (r.get('method',r.get('schema')) not in
                 ('p18-two-bit-8-9-firstpair-v1','p18-agent50-refine-firstpair-v1') or
