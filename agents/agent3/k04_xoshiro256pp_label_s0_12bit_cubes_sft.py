@@ -15,7 +15,7 @@ def sx(*xs):
  xs=[x for x in xs if x!='false']
  return 'false' if not xs else xs[0] if len(xs)==1 else '(xor '+' '.join(xs)+')'
 
-def stage2_circuit(a,b,d,y4,y5,anchor,timeout_ms,blocked=(),partial=None):
+def stage2_circuit(a,b,d,y4,y5,anchor,timeout_ms,blocked=(),partial=None,extra=None):
  """Fit ONLY later intact two-word packet, initial c0 is one unknown 64-bit word."""
  out=['(set-logic QF_UF)','(set-option :sat.anf true)',
       '(set-option :sat.anf.exlin true)',f'(set-option :timeout {timeout_ms})']
@@ -62,15 +62,22 @@ def stage2_circuit(a,b,d,y4,y5,anchor,timeout_ms,blocked=(),partial=None):
  if anchor is not None:
   for k,j in enumerate(P12):
    out.append(f'(assert (= C{j} {"true" if anchor>>k&1 else "false"}))')
+ # Optional full-domain P16 refinement: enumerate all 16 assignments to
+ # c0 bits 4,5,6,7 rather than treating a sampled partial state as evidence.
+ for j,val in (extra or ()):
+  assert 0<=j<64 and (val==0 or val==1)
+  out.append(f'(assert (= C{j} {"true" if val else "false"}))')
  for value in blocked:
   out.append('(assert (or '+' '.join(f'(not C{j})' if value>>j&1 else f'C{j}' for j in range(64))+'))')
  return '\n'.join(out)+'\n'
 
 def solve_bucket(task):
  if len(task)==8:
-  a,b,d,y4,y5,bucket,timeout_ms,limit=task;partial=None
+  a,b,d,y4,y5,bucket,timeout_ms,limit=task;partial=None;extra=None
+ elif len(task)==9:
+  a,b,d,y4,y5,bucket,timeout_ms,limit,partial=task;extra=None
  else:
-  a,b,d,y4,y5,bucket,timeout_ms,limit,partial=task
+  a,b,d,y4,y5,bucket,timeout_ms,limit,partial,extra=task
  lib=ctypes.CDLL('libz3.so.4');Q=ctypes.c_void_p
  lib.Z3_mk_config.restype=Q;lib.Z3_mk_context.argtypes=[Q];lib.Z3_mk_context.restype=Q
  lib.Z3_del_config.argtypes=[Q];lib.Z3_del_context.argtypes=[Q]
@@ -79,7 +86,7 @@ def solve_bucket(task):
  def run(s):return (lib.Z3_eval_smtlib2_string(ctx,s.encode())or b'').decode().strip()
  states=[]
  try:
-  assert not run(stage2_circuit(a,b,d,y4,y5,bucket,timeout_ms,partial=partial))
+  assert not run(stage2_circuit(a,b,d,y4,y5,bucket,timeout_ms,partial=partial,extra=extra))
   for _ in range(limit):
    outcome=run('(check-sat)')
    if outcome!='sat':return {'bucket':bucket,'status':outcome,'states':states}
