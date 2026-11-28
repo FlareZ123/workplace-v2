@@ -62,11 +62,17 @@ def read_inputs(root: Path, endian: str, order: str):
     if len(mask) != 16 or not re.fullmatch(r"[0-9a-f]{64}", original_target):
         raise ValueError("Malformed original K04 masked-component commitment")
     circuit = ROOT / "agents/agent27/k04_xoropp_sparse12_gap_synthetic.py"
+    blocker = ROOT / "agents/agent37/k04_xoropp_samebucket_collision_sft.py"
+    # Invalidate any cached state if EITHER the Boolean circuit or the exact
+    # enumerating/model-blocking implementation changes.
+    producer_code_digest = hashlib.sha256(
+        circuit.read_bytes() + b"\\x00" + blocker.read_bytes()
+    ).hexdigest()
     meta = {
         "source_sha256": PINS["evidence/print/spool-reconstruction.log"],
         "firstpair_sha256": hashlib.sha256(rawfirst).hexdigest(),
         "serializer": endian + "/" + order,
-        "circuit_sha256": hashlib.sha256(circuit.read_bytes()).hexdigest(),
+        "circuit_sha256": producer_code_digest,
         "generator": "xoroshiro128++ 1.0",
         "P12": P12,
     }
