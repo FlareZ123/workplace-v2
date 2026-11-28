@@ -80,7 +80,7 @@ def solve(obs,anchor,positions,timeout_ms=5000):
 if __name__=='__main__':
  import argparse
  parser=argparse.ArgumentParser()
- parser.add_argument('--suite', choices=('positive','poison','baseline'), default='positive')
+ parser.add_argument('--suite', choices=('positive','poison','baseline','onebit'), default='positive')
  parser.add_argument('--timeout-ms', type=int, default=5000)
  args=parser.parse_args()
  assert 0<args.timeout_ms<=15000
@@ -96,6 +96,28 @@ if __name__=='__main__':
   actual_a,actual_b=rng.getrandbits(64),rng.getrandbits(64)
   ys=stream(actual_a,actual_b)
   obs={i:ys[i] for i in (0,1,4,5)}
+  if args.suite=='onebit':
+   # Only eleven scattered initial-a bits are supplied; bit0 is genuinely
+   # omitted. Resolve it with exactly TWO complete 12-bit solver branches.
+   positions=sparse[1:]
+   outcomes=[]
+   for bit0 in (0,1):
+    proposed=(actual_a & ~1) | bit0
+    t0=time.monotonic()
+    status,state=solve(obs,proposed,sparse,args.timeout_ms)
+    outcomes.append((status,state,round(time.monotonic()-t0,3)))
+   sats=[state for status,state,_ in outcomes if status=='sat']
+   assert len(sats)==1 and sats[0]==(actual_a,actual_b), (seed,'onebit state')
+   assert sum(status=='unsat' for status,_,_ in outcomes)==1,(seed,'onebit alternative unproven')
+   assert stream(*sats[0])==ys,(seed,'onebit erased packet')
+   successes+=1
+   print({'seed':seed,'train':seed in seeds[:2],'suite':args.suite,
+          'observed_output_indices':(0,1,4,5),'erased_output_indices':(2,3),
+          'externally_supplied_a0_bits':len(positions),'enumerated_bit0_branches':2,
+          'sat_branches':1,'unsat_branches':1,
+          'elapsed_seconds':round(sum(x[2] for x in outcomes),3),
+          'exact_complete_state_and_gap':True},flush=True)
+   continue
   if args.suite=='poison':
    anchored_a=actual_a ^ (1 << sparse[0])
    positions=sparse
