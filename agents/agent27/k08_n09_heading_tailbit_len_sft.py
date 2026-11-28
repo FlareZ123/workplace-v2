@@ -125,6 +125,7 @@ def main() -> None:
     len_next = low_if_even(len_value)
     assert (tail_next, len_next) == (13, 23)
     assert author_by_note[tail_next] == author_by_note[len_next] == "Emily"
+    assert notes[tail_next][0] is None and notes[len_next][0] is None
 
     # Matched control over every colon-prefix heading under exactly the same parser.
     controls = []
