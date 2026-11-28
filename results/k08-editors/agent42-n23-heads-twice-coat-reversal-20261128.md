@@ -29,28 +29,28 @@ Thus the source-selected instruction closes as:
 
 ## Complete output test
 
-Apply N07 reversal to each complete source record explicitly selected by the N04 terminal triple: **N23 and N01**.
+Apply N07 reversal to the complete operands explicitly selected by the N04 terminal triple: **N23**, **N01**, and—because the selector order is NEEDS/A before the operator COAT—the single source-ordered combined object **N23 then N01**.
 
-The short-token source calibrations establish reversal but not phrase granularity, so test exactly the two natural complete interpretations for each operand:
+The short-token source calibrations establish reversal but not phrase granularity, so test exactly the two natural complete interpretations for each of those three fixed operands:
 
 1. reverse complete **word order**;
 2. reverse the entire normalized **character stream**.
 
-There are no deletion, insertion, synonym, connector, source-row or target-guided choices.
+There are no deletion, insertion, synonym, connector, source-row, operand-order or target-guided choices.
 
 Original K08 result:
 
-- complete outputs: **4**
+- complete outputs: **6**
 - original K08 hits: **0**
 - historical N02 reducer fixture: **PASS**
-- planted full-output positive: **1/4 exactly**
+- planted full-output positive: **1/6 exactly**
 - candidate wording printed/stored: **no**
 
-Therefore the most literal complete continuation of N04's own “heads twice ... needs a coat” instruction is falsified for **both source-selected complete operands**.
+Therefore the most literal complete continuation of N04's own “heads twice ... needs a coat” instruction is falsified for **both individual operands and their source-ordered combined object**.
 
 ## Scope
 
-This negative does not weaken the N23 landmark-gap selector, the two HEAD passes, N01 as a selected antecedent, N23 as the final-margin witness, N07 as a calibrated reversal operation, or the source's draft/photo provenance. It closes only **whole-record reversal of the two explicitly selected N23/N01 operands** under the NEEDS/A/COAT -> N23/N01/N07 continuation.
+This negative does not weaken the N23 landmark-gap selector, the two HEAD passes, N01 as a selected antecedent, N23 as the final-margin witness, N07 as a calibrated reversal operation, or the source's draft/photo provenance. It closes only **whole-record reversal of the two explicitly selected N23/N01 operands and their source-ordered N23+N01 concatenation** under the NEEDS/A/COAT -> N23/N01/N07 continuation.
 
 Do not extend this miss into arbitrary partial reversals, token-block permutations or hand-picked cut points. Those are different editor families and would require a new source-visible selection rule.
 
