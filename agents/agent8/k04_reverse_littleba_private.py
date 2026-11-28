@@ -274,6 +274,37 @@ def run_fast_first(lo,count,store,ms=3000,max_models=32,retry_unknown=False):
                               'original_payloads_printed':False,'aggregates':counts},sort_keys=True),flush=True)
     return counts
 
+def ledger_coverage(store,fast_first=False,extra_bits=(4,5,6,7)):
+    """Private local ledger summary, no original-source loading or model disclosure."""
+    folder=private_directory(store)
+    extra_bits=tuple(extra_bits)
+    if len(extra_bits)!=4 or len(set(extra_bits))!=4 or any(not (0<=b<64) or b in P12 for b in extra_bits):
+        raise ValueError('Four distinct extra state bits required')
+    label=hashlib.sha256((stamp('little','ba')+'-P12-FASTFIRST-v1').encode()).hexdigest() if fast_first else stamp('little','ba',P12+extra_bits)
+    expected=4096 if fast_first else 65536
+    prefix='' if extra_bits==(4,5,6,7) else 'extra_'+('_'.join(map(str,extra_bits)))+'_'
+    counts={'expected':expected,'visited':0,'terminal_unsat_empty':0,'terminal_unsat_with_states':0,
+            'open_unknown':0,'states_cached':0,'unvisited':0}
+    for idx in range(expected):
+        path=folder/(f'fastfirst_{idx:04d}.json' if fast_first else f'{prefix}cube_{idx:05d}.json')
+        if not path.exists():
+            counts['unvisited']+=1;continue
+        if path.is_symlink() or path.stat().st_mode&0o077:raise ValueError('Unsafe private ledger entry')
+        rec=json.loads(path.read_text())
+        if rec.get('stamp')!=label or rec.get('parent' if fast_first else 'cube')!=idx:
+            raise ValueError('Mismatched ledger source/circuit/layout/coordinate fingerprint')
+        counts['visited']+=1
+        n=len(rec['states']);counts['states_cached']+=n
+        if rec['terminal']=='unknown':counts['open_unknown']+=1
+        elif rec['terminal']=='unsat':counts['terminal_unsat_with_states' if n else 'terminal_unsat_empty']+=1
+        else:raise ValueError('Invalid terminal status')
+    assert counts['visited']+counts['unvisited']==expected
+    print(json.dumps({'ledger_scope':'P12 candidate-first' if fast_first else 'P16 disjoint child',
+                      'extra_bits':extra_bits if not fast_first else None,
+                      'method_only':True,'original_source_or_state_values_printed':False,
+                      'aggregate':counts},sort_keys=True),flush=True)
+    return counts
+
 def iterative_inverse(state,n):
     for _ in range(n):state=inverse(*state)
     return state
@@ -281,6 +312,7 @@ def iterative_inverse(state,n):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--synthetic',action='store_true')
+    p.add_argument('--coverage',action='store_true',help='aggregate private ledger status without loading historical sources')
     p.add_argument('--fast-first',action='store_true')
     p.add_argument('--retry-unknown',action='store_true',help='explicitly rerun previously UNKNOWN P12 cubes; default first pass skips them')
     p.add_argument('--p16-extra-bits',default='4,5,6,7',help='four extra initial-a0 bit positions for disjoint P16 partition')
@@ -293,5 +325,7 @@ if __name__=='__main__':
     if args.synthetic:synthetic()
     else:
         if not args.private_dir:p.error('--private-dir required and must be outside repo, mode 0700')
-        if args.fast_first:run_fast_first(args.start,args.count,args.private_dir,max(3000,args.timeout_ms),retry_unknown=args.retry_unknown)
-        else:run(args.start,args.count,args.private_dir,args.timeout_ms,args.retry_ms,extra_bits=tuple(int(x) for x in args.p16_extra_bits.split(',')))
+        extra=tuple(int(x) for x in args.p16_extra_bits.split(','))
+        if args.coverage:ledger_coverage(args.private_dir,args.fast_first,extra)
+        elif args.fast_first:run_fast_first(args.start,args.count,args.private_dir,max(3000,args.timeout_ms),retry_unknown=args.retry_unknown)
+        else:run(args.start,args.count,args.private_dir,args.timeout_ms,args.retry_ms,extra_bits=extra)
