@@ -130,6 +130,59 @@ def original_affine_threecubes(rows,view):
     return cubes
 
 
+
+def cubic_constructive_ambiguous_coupons(rows):
+    """Build two real-data-exact cubic issuers with different entire selected coupons.
+
+    This does not use any acceptance target, mask or copied 18:02 payload.
+    The arbitrary selected values are a mathematical counterexample, not
+    historical candidates. Do not disclose historical fitted coefficients.
+    """
+    for view in ("numeric","ascii"):
+        counts=[]
+        for selected_value in (0,1<<127):
+            basis={}
+            for i,row in enumerate(rows[:128]+[rows[129]]):
+                x,dimension=monomials(row,view,3)
+                y=int(row["PAYLOAD"],16) if i<128 else selected_value
+                while x:
+                    p=x.bit_length()-1
+                    if p in basis:
+                        vx,vy=basis[p]
+                        x^=vx;y^=vy
+                    else:
+                        basis[p]=(x,y)
+                        break
+                else:
+                    assert y==0
+            assert len(basis)==129
+            coefficients=[0]*dimension
+            for pivot in sorted(basis):
+                x,y=basis[pivot]
+                x&=(1<<pivot)-1
+                while x:
+                    j=(x&-x).bit_length()-1
+                    y^=coefficients[j]
+                    x&=x-1
+                coefficients[pivot]=y
+            def evaluate(row):
+                x,_=monomials(row,view,3)
+                y=0
+                while x:
+                    j=(x&-x).bit_length()-1
+                    y^=coefficients[j]
+                    x&=x-1
+                return y
+            assert all(evaluate(row)==int(row["PAYLOAD"],16) for row in rows[:128])
+            assert evaluate(rows[129])==selected_value
+            counts.append(sum(v!=0 for v in coefficients))
+        print("SOURCE_ONLY_CUBIC_WITNESS",view,
+              "distinct_entire_selected_coupon_models",2,
+              "both_replay_all_128_original_packets",1,
+              "selected_coupons_disagree",1,
+              "sparse_nonzero_coefficients_per_model",counts)
+
+
 def sparse_original_quadratic_certificates(rows):
     """Small original-source exact null relations for *every* quadratic issuer."""
     certificates=(
@@ -237,3 +290,4 @@ if __name__=="__main__":
     synthetic(rows,mask)
     sparse_original_quadratic_certificates(rows)
     experiment(rows,mask,digest)
+    cubic_constructive_ambiguous_coupons(rows)
