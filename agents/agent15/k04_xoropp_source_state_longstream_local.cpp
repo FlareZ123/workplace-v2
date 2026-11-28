@@ -131,7 +131,31 @@ static Metrics scan(State initial,Trial& trial,std::uint64_t forward,std::uint64
    for(std::uint64_t i=0;i<forward;++i){u64 newer=next(source);trial.check(older,newer);older=newer;}
   }
  }
- if(reverse){State earlier=prev(initial);u64 newer=draw(earlier);for(std::uint64_t i=0;i<reverse;++i){earlier=prev(earlier);u64 older=draw(earlier);trial.check(older,newer);newer=older;}}
+ if(reverse){
+  if(slips){
+   // Chronological outputs from s[-reverse] through s[2]. All 16 slip
+   // offsets of complete 16-byte windows are tested for every inverse
+   // native-output start. The recovered original initial state is s[0].
+   std::vector<u64> backwards(reverse+3);
+   State cursor=initial;
+   for(std::uint64_t i=1;i<=reverse;++i){
+    cursor=prev(cursor);
+    backwards[reverse-i]=draw(cursor);
+   }
+   State after=initial;
+   for(int i=0;i<3;++i)backwards[reverse+i]=next(after);
+   for(std::uint64_t i=0;i<reverse;++i){
+    trial.check_slipped(backwards[i],backwards[i+1],
+                        backwards[i+2],backwards[i+3]);
+   }
+  }else{
+   State earlier=prev(initial);u64 newer=draw(earlier);
+   for(std::uint64_t i=0;i<reverse;++i){
+    earlier=prev(earlier);u64 older=draw(earlier);
+    trial.check(older,newer);newer=older;
+   }
+  }
+ }
  return trial.counts;
 }
 static bool envci(){const char* a=getenv("CI"),*b=getenv("GITHUB_ACTIONS");return (a&&*a)||(b&&*b);}
@@ -162,6 +186,27 @@ static void synthetic(){
  auto got=scan(initial,slip,128,0,true);
  if(got.hits!=2||got.checks!=128*64||got.later_holdout_replays!=1)throw std::runtime_error("Synthetic slipped coupon or independent heldout replay missed");
  std::cout<<"SYNTHETIC_ONLY byte_slips=16 pair_count="<<got.pairs<<" full_SHA256_checks="<<got.checks<<" planted_hits="<<got.hits<<"\n";
+
+ // Backward-source counterpart: synthetic complete K04 coupon starts at
+ // output stage -73, in an alternate serializer, byte slip 9. Unlike the
+ // previous reverse aligned-pair test, this forces reverse byte-slip mode.
+ Trial backslip{};backslip.mask=mask;backslip.source=source;
+ backslip.source_swap=true;
+ State older_state=initial;
+ for(int i=0;i<73;++i)older_state=prev(older_state);
+ u64 e=next(older_state),f=next(older_state),g=next(older_state),h=next(older_state);
+ Data backfirst=pack(e,f,false,false),backsecond=pack(g,h,false,false),backcomponent{};
+ for(int j=0;j<16;++j){
+  int k=9+j;
+  backcomponent[j]=(k<16?backfirst[k]:backsecond[k-16])^mask[j];
+ }
+ SHA256(backcomponent.data(),16,backslip.target.data());
+ auto backwards=scan(initial,backslip,0,128,true);
+ if(backwards.hits<1||backwards.checks!=128*64)
+  throw std::runtime_error("Synthetic inverse-stream byte-slip coupon missed");
+ std::cout<<"SYNTHETIC_ONLY backward_byte_slips=16 pair_count="
+          <<backwards.pairs<<" full_SHA256_checks="<<backwards.checks
+          <<" planted_hits="<<backwards.hits<<"\n";
 }
 int main(int argc,char** argv){
  try{
@@ -174,6 +219,7 @@ int main(int argc,char** argv){
   if(state_file.empty()||escrow.empty())throw std::runtime_error("Private state and out-of-repository hit escrow required");
   if(view!="big/ab"&&view!="big/ba"&&view!="little/ab"&&view!="little/ba")throw std::runtime_error("Invalid source serializer");
   if(forward>1000000000ULL||reverse>1000000000ULL)throw std::runtime_error("Excessive scan bound");
+  if(slips&&reverse>10000000ULL)throw std::runtime_error("Reverse byte-slip mode limited to ten million native starts (bounded memory)");
   auto spool=pinned(root+"/evidence/print/spool-reconstruction.log",SPOOL_SHA);
   auto routing=pinned(root+"/evidence/recovery-routing.json",ROUTE_SHA);
   auto acceptance=pinned(root+"/acceptance.json",ACCEPT_SHA);
@@ -186,7 +232,7 @@ int main(int argc,char** argv){
   State state=private_state(state_file);
   auto started=std::chrono::steady_clock::now();auto m=scan(state,trial,forward,reverse,slips);
   double elapsed=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
-  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ view="<<view<<" byte_slips_forward="<<(slips?16:1)<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
+  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ view="<<view<<" byte_slips_forward="<<(slips?16:1)<<" byte_slips_reverse="<<(slips?16:1)<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
   return 0;
  }catch(const std::exception& e){std::cerr<<"FAILED "<<e.what()<<"\n";return 2;}
 }
