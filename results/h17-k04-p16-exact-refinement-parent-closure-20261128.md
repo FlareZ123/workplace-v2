@@ -52,3 +52,29 @@ A normal researcher can use **parent-major** layout to finish all 16 subcubes of
 The search is still computationally significant: the original parent-major pilot spent about 9.5× the elapsed time of the coarse benchmark, trading compute for a much stronger exact disposition. It may be worth allocating more resources to the remaining unresolved parents or experimenting with alternate disjoint extra-bit positions, while recognizing the historical PRNG and copy-stage assumptions are exploratory.
 
 This is **material progress in the conditional K04 candidate-generation algorithm**, not an accepted K04 component. K01/K02/K03/K05/K06/K07 remain PASS; K04 and K08 remain MISSING; combined REC8/1 remains INCOMPLETE. Do not expose original source data or claim historical recovery from source-free controls.
+
+
+## 28 November continuation: retry only unresolved child cubes (stronger original result)
+
+The first P16 sweep's *one-stage* result left five P12 parents open. Rather than repeat all 256 16-bit child queries with a longer budget, a new **two-stage exact solver policy** checks every child for 350 ms, immediately accepts definitive UNSAT, and retries *only* the remaining terminal-UNKNOWN child at 700 ms. It never treats a first-stage UNKNOWN as proof, never removes a SAT state, and keeps commitment checking independent of any later-packet fit. The implementation is now the default in the linked P16 runner under the CLI settings --timeout-ms 350 --retry-timeout-ms 700.
+
+A second local original-source pass on the same 16 parents and same big/BA serializer produced:
+
+| Two-stage original-source P16 metric | Result |
+| --- | ---: |
+| Total exact 16-bit child cubes | 256 |
+| First-stage UNSAT at 350 ms | 253 |
+| First-stage UNKNOWN requiring retry | 3 |
+| Retry UNSAT at 700 ms | 3 |
+| Terminal UNKNOWN / SAT states | **0 / 0** |
+| **Fully proven UNSAT P12 parents** | **16 of 16** |
+| Original full SHA-256 K04 commitment hits | **0** |
+| Local elapsed with four workers | **15.29 s** |
+
+The first-stage UNSAT count changed from 250 to 253 between independent runs because bounded solver time and scheduling can vary; terminal UNSAT certificates remain sound. This closes the initial **16/4,096 parent buckets** completely under this explicit conditional generator model, rather than only 11, without a source-state witness. It is not a full-domain negative and does not recover the selected ACK2.
+
+A third local policy check, 75→225→700 ms applied to all 256 children, also closed 16/16 parents but required **26.11 seconds**, because the 75 ms setup-limited stage yielded no terminal UNSAT. Exact adaptive retry **after** a productive 350 ms pass is more efficient on this instance; these are empirical timing choices, not mathematical constants.
+
+An extra-coordinate holdout also showed that child bit choice matters: at 350 ms across the same 256 checks, selecting extra bits [8,9,10,11] instead of [4,5,6,7] proved only 79 children UNSAT and closed zero parents; [26,27,28,29] closed nine, [49,50,51,52] eleven, and [13,14,15,16] zero. This is solver-behavior evidence for keeping the initial contiguous [4,5,6,7] refinement, not evidence of the true physical generator or a universally optimal coordinate choice.
+
+The valid practical decision is to scale the **350→700 ms, exact disjoint P16 parent-major** original-source search when it can run privately, preserve UNKNOWN branches for later retries, and check the unchanged full 16-byte original commitment on every recovered SAT model. No source data or candidate bytes are committed.
