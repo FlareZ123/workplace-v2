@@ -17,10 +17,10 @@ Use the 128 intact ordinary records of the original printer spool, SHA256 `7d71d
 
 ## Two source-native contradictions
 
-<escape>| Certificate | Native sequence | 0-based **transition indices** making the input XOR zero | Terms | XOR of actual output words |
+| Certificate | Native sequence | 0-based **transition indices** making the input XOR zero | Terms | XOR of actual output words |
 | --- | --- | --- | ---: | --- |
 | Serial RECOVER | Concatenate four native words per packet (140 words) | 6, 7, 9, 10, 11, 14, 15, 17, 19, 20, 21, 28, 29, 31, 32, 33 | 16 | **Nonzero; 19 set bits** |
-| Parallel RECOVER lane 1 | Second 32-bit word of each packet (35 words) | 3, 4, 8, 12, 15, 16, 21, 26, 27, 32 | 10 | **Nonzero; 15 set bits** |</escape>
+| Parallel RECOVER lane 1 | Second 32-bit word of each packet (35 words) | 3, 4, 8, 12, 15, 16, 21, 26, 27, 32 | 10 | **Nonzero; 15 set bits** |
 
 For each listed set, the reproducer explicitly XORs the original 33-bit augmented **source inputs** and asserts the result is exactly zero, then XORs the corresponding **actual next-word outputs** and asserts it is nonzero with the stated bit count. This is sufficient to refute any uniform fixed affine transform for the source-selected RECOVER class under **both** source native-stream topologies, independently of whether a trained full map could reconstruct the missing coupon.
 
