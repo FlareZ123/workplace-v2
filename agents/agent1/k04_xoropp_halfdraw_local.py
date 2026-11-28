@@ -17,7 +17,9 @@ import multiprocessing as mp
 import os
 import random
 import re
+import stat
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -38,8 +40,12 @@ def securely_escrow(path: Path,components: list[str]) -> None:
     """Commitment-passing 16-byte values only; no raw source/state/diagnostics."""
     if not components:return
     flags=os.O_WRONLY|os.O_CREAT|os.O_APPEND|getattr(os,'O_NOFOLLOW',0)
+    if path.exists() and not path.is_file():
+        raise ValueError('Escrow must be an ordinary file, never a device or pipe')
     fd=os.open(path,flags,0o600)
     with os.fdopen(fd,'a',encoding='ascii') as f:
+        if not stat.S_ISREG(os.fstat(f.fileno()).st_mode):
+            raise ValueError('Escrow open did not return an ordinary file')
         os.fchmod(f.fileno(),0o600)
         for item in components:
             if not re.fullmatch(r'[0-9A-F]{32}',item):
@@ -109,7 +115,16 @@ def synthetic_control():
             c2,one_hit=scan_states([state],later,8,17,endian,order,mask,t)
             assert c2['window_assignments']==18 and c2['all_accept']==1
             assert one_hit == [bytes(v^m for v,m in zip(raw,mask)).hex().upper()]
+    # Confidential-hit write is exercised on synthetic-only 16-byte material.
+    with tempfile.TemporaryDirectory(prefix='h17-synthetic-hit-') as directory:
+        escrow=Path(directory)/'verified-hit.log'
+        fake='0123456789ABCDEFFEDCBA9876543210'
+        securely_escrow(escrow,[fake])
+        content=escrow.read_text(encoding='ascii').splitlines()
+        assert len(content)==1 and json.loads(content[0])['verified_K04_component']==fake
+        assert stat.S_IMODE(escrow.stat().st_mode)==0o600
     print({'synthetic_only':True,'four_layouts':4,
+           'confidential_hit_escrow_0600_synthetic_positive':True,
            'verified_components_returned_for_private_escrow':True,
            'odd_coupon_start19_and_odd_retry_phase23_pass':True,
            'poisoned_retry_does_not_veto_committed_coupon':True,
