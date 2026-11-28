@@ -44,40 +44,58 @@ def main() -> None:
         bodies[n] = words(body)
     assert set(bodies) == set(range(1, 25))
 
-    # N23's final-version line names the textual/physical object in order.
-    # Each occurs exactly once; "it" is the sentence-final coreference to
-    # "the envelope" in "the words I finally put on it."
-    landmarks = ["wording", "margin", "envelope", "words", "it"]
+    # Primary path: N23's explicit final-text/carrier vocabulary in source
+    # order, ending on the literal finality marker "finally".
     n23 = bodies[23]
-    assert all(n23.count(x) == 1 for x in landmarks)
-    positions = [n23.index(x) + 1 for x in landmarks]
-    assert positions == [2, 5, 12, 16, 21]
-
-    # Apply the already source-emitted COUNT/BETWEEN vocabulary literally:
-    # count normalized words strictly between each adjacent landmark.
-    gaps = [positions[i + 1] - positions[i] - 1 for i in range(4)]
-    assert gaps == [2, 6, 3, 4]
+    final_landmarks = ["wording", "margin", "envelope", "words", "finally"]
+    assert all(n23.count(x) == 1 for x in final_landmarks)
+    final_positions = [n23.index(x) + 1 for x in final_landmarks]
+    assert final_positions == [2, 5, 12, 16, 18]
+    final_gaps = [
+        final_positions[i + 1] - final_positions[i] - 1
+        for i in range(4)
+    ]
+    assert final_gaps == [2, 6, 3, 1]
     assert labels[2] == "First draft for the crew board"
     assert labels[6] == "Second desk draft"
     assert labels[3] == "Kitchen photograph"
-    assert labels[4] == "Under the old shift photograph"
+    assert labels[1] == "For the photograph of the empty bench"
 
-    # Exact positional denominator: only two 5-position subsets of N23 have
-    # this four-gap vector. The other is entirely function words.
-    same_gap_sets = []
+    # Full positional denominator for the primary four-gap vector.
+    final_same_gap_sets = []
     for comb in combinations(range(1, len(n23) + 1), 5):
         got = [comb[i + 1] - comb[i] - 1 for i in range(4)]
-        if got == gaps:
-            same_gap_sets.append((comb, [n23[i - 1] for i in comb]))
-    assert same_gap_sets == [
+        if got == final_gaps:
+            final_same_gap_sets.append((comb, [n23[i - 1] for i in comb]))
+    assert len(final_same_gap_sets) == 5
+    assert (tuple(final_positions), final_landmarks) in final_same_gap_sets
+
+    # Secondary path: use the sentence-final coreference "it" instead of
+    # "finally". This reaches N04, whose text supplies a literal continuation.
+    coref_landmarks = ["wording", "margin", "envelope", "words", "it"]
+    assert all(n23.count(x) == 1 for x in coref_landmarks)
+    coref_positions = [n23.index(x) + 1 for x in coref_landmarks]
+    assert coref_positions == [2, 5, 12, 16, 21]
+    coref_gaps = [
+        coref_positions[i + 1] - coref_positions[i] - 1
+        for i in range(4)
+    ]
+    assert coref_gaps == [2, 6, 3, 4]
+    assert labels[4] == "Under the old shift photograph"
+
+    coref_same_gap_sets = []
+    for comb in combinations(range(1, len(n23) + 1), 5):
+        got = [comb[i + 1] - comb[i] - 1 for i in range(4)]
+        if got == coref_gaps:
+            coref_same_gap_sets.append((comb, [n23[i - 1] for i in comb]))
+    assert coref_same_gap_sets == [
         ((1, 4, 11, 15, 20), ["the", "my", "the", "the", "on"]),
-        ((2, 5, 12, 16, 21), landmarks),
+        ((2, 5, 12, 16, 21), coref_landmarks),
     ]
 
-    # N04, the fourth selected record, literally instructs:
-    # "Count the heads twice". Use the established A1Z26-head low-bit pack.
-    # First pass across the selected record-heading heads F/S/K/U -> 14.
-    heading_heads = [words(labels[n])[0] for n in gaps]
+    # N04 literally instructs "Count the heads twice". Use the established
+    # A1Z26-head low-bit pack. First pass across F/S/K/U -> 14.
+    heading_heads = [words(labels[n])[0] for n in coref_gaps]
     assert heading_heads == ["first", "second", "kitchen", "under"]
     first_head = head_low(heading_heads)
     assert first_head == 14
@@ -102,12 +120,16 @@ def main() -> None:
     print({
         "source_pin": "PASS",
         "target_or_nonce_read": False,
-        "n23_landmarks": landmarks,
-        "one_based_positions": positions,
-        "between_counts": gaps,
-        "selected_roles": [labels[n] for n in gaps],
-        "same_gap_position_sets": len(same_gap_sets),
-        "other_same_gap_tokens": same_gap_sets[0][1],
+        "primary_landmarks": final_landmarks,
+        "primary_positions": final_positions,
+        "primary_between_counts": final_gaps,
+        "primary_selected_roles": [labels[n] for n in final_gaps],
+        "primary_same_gap_position_sets": len(final_same_gap_sets),
+        "coref_landmarks": coref_landmarks,
+        "coref_positions": coref_positions,
+        "coref_between_counts": coref_gaps,
+        "coref_same_gap_position_sets": len(coref_same_gap_sets),
+        "coref_other_same_gap_tokens": coref_same_gap_sets[0][1],
         "heading_heads": heading_heads,
         "HEAD_pass1": first_head,
         "HEAD_pass1_role": labels[first_head],
