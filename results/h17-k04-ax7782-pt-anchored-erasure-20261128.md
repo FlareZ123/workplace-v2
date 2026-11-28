@@ -1,6 +1,6 @@
 # K04: AX-7782 parity-PT as an independent 16-bit witness for exact two-packet erasure
 
-**Agent 10 | 28 November 2026 | executed original-source full-flank solver; 12 UNSAT / 4 UNKNOWN, no recovered component**
+**Agent 10 | 28 November 2026 | executed original-source full-flank solver; 16 exact-model UNSAT after finite cube partition; no recovered component**
 
 ## New cross-carrier discriminating question
 
@@ -26,9 +26,29 @@ Initial independently executed 5,000-ms-per-case local run, **all 16 model parti
 | Reversed raw **D450** | **3 UNSAT; 1 UNKNOWN (little/BA)** |
 | Parity-stripped text **5054** | **1 UNSAT; 3 UNKNOWN (little/BA, big/AB, big/BA)** |
 | Reversed text **5450**, all four views | **4 UNSAT** |
-| **Total** | **12 UNSAT, 4 UNKNOWN, 0 SAT** |
+| **Total** | **12 UNSAT, 4 UNKNOWN, 0 SAT in the initial unpartitioned 5s stage** |
 
 The four UNKNOWN models were independently rerun at **90,000ms** and then **300,000ms** per model, each with source-unchanged parameters and no provisional target pruning. **All four remained UNKNOWN at both budgets.** The 12 quick UNSAT proofs are true complete-model exclusions for their stated source assumptions; an UNKNOWN is neither a state nor a proof of nonexistence.
+
+## Decisive adaptive exact-domain closure — 13:15 UTC
+
+Instead of enlarging the solver timeout again, apply an **exhaustive disjoint Boolean state partition** on the previously unconstrained original `a0` bit positions **16..19**, then (only for unresolved subcubes) **20..23**. Retain the unchanged four full visible original outputs, the same 16-bit transfer witness, and the exact Agent3 output-conditioned circuit. Each source-derived low16 anchor is unchanged; the new bits are **fully enumerated**, not treated as external witnesses or selectively guessed. Every UNSAT proof closes the entire remaining 40–48 free-bit subdomain of its cube.
+
+The synthetic complete middle-recovery controls passed for known-correct 0/4/8 extra bits (**3 SAT, exact full initial state and both erased words**), and four independent poisoned-output controls with correct eight-bit partition (**4 UNSAT**).
+
+**Complete original-source adaptive execution of all 16 cases:**
+
+| Disjoint proof-tree level | Terminal UNSAT cubes | UNKNOWN cubes that were fully subdivided | Unresolved leaf cubes |
+| --- | ---: | ---: | ---: |
+| Unpartitioned 5 s root, width0 | **12** | 4 | — |
+| Extra four free bits 16..19 (width4) | **61** | 3 | — |
+| Extra four bits 20..23 (width8), only from unresolved parents | **48** | **0** | **0** |
+| **All 16 source/serializer models** | **121 terminal UNSAT cubes** | **0 outstanding** | **0** |
+
+The proof tree contains exactly `12 + 4*16 - 3 + 3*16 = 121` disjoint terminal UNSAT leaves and **zero SAT states**. This is a complete finite **UNSAT** certificate at the original source conditions, not four unresolved heuristic timeout cases. The original source execution emitted `PT_COVER EXACT_GLOBAL_FOR_16_ANCHORS=UNSAT`, with all 16 case summaries, 0 outstanding and synthetic controls PASS. Original K04 coupon/component still **not recovered**.
+
+The [adaptive cube reproducer](../agents/agent10/k04_ax7782_pt_adaptive_cube_sft.py) reuses the original SHA-pinned local runner and Agent3 circuit. It is CI-denied, prints only aggregate proof-tree outcomes, and never reads the protected PDF. The cube partitions cover **all** possible remaining states under each fixed 16-bit anchor; they make no assumption that the additional bits have any particular value.
+
 
 No original-source model produced a complete state/coupon; **no seventh K04 commitment hit**. This is not a negative for arbitrary 16-bit witnesses, high-half anchors, other generator variants, reset models, packet-gap choices or authentic physical media. The source-derived cross-slot parity bits are independently real, but their interpretation as earlier print PRNG state was explicitly speculative.
 
@@ -40,4 +60,4 @@ No original-source model produced a complete state/coupon; **no seventh K04 comm
 env -u CI -u GITHUB_ACTIONS python agents/agent10/k04_ax7782_pt_xoropp_anchor_sft.py --root resources --timeout-ms 5000
 ```
 
-The state-witness hypothesis is **not yet source-authenticated**, and 4/16 partitions remain solver-UNKNOWN after 300 seconds. Another unselected 16-bit anchor pool or tactical timeout grid is not the next solution-producing experiment. A *source-native* relation that predicts an intact independent print output or authentic coupon is still the decisive missing K04 link. All accepted six slots and the unchanged K08 MISSING/REC8 INCOMPLETE status persist.
+The state-witness hypothesis is **not source-authenticated**, and **all 16 fixed PT-anchor/serializer cases are now mathematically UNSAT** by exhaustive disjoint 4/8-bit cube covers. This excludes only that hypothesis, not an unanchored or different producer. Another unselected 16-bit anchor pool is not the next solution-producing experiment. A *source-native* relation that predicts an intact independent print output or authentic coupon is still the decisive missing K04 link. All accepted six slots and the unchanged K08 MISSING/REC8 INCOMPLETE status persist.
