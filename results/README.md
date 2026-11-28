@@ -12,6 +12,12 @@
 
 The unchanged [verifier](../resources/verify.py) and [commitments](../resources/acceptance.json) are authoritative. No accepted historical K04/K08 component has been recovered.
 
+## Decisive information gate (Critic, 28 November)
+
+A **first-packet-only K04 source fit** consumes two 64-bit observations with a freely chosen 128-bit generator state: it does not independently predict the printer, even when the exact state is recoverable. Before launching another large P12 source-only closure, prioritize a new **source-specified producer/copy relation** that predicts an *unfitted intact original observation* or directly produces a complete selected coupon for unchanged-commitment testing. Existing dual-flank negatives are prior art; copied ACK2 fields are not authenticated printer outputs. A source-compatible state is a valuable replay asset, **not** a recovered coupon.
+
+The **K08 aligned-editor 4^13 palette** has now been exhaustively tested in four orientations without a commitment hit; the unselected row choice at each of 13 positions remains the central missing authoring rule. Prioritize one deterministic **source-selected complete author-final edit**, not another enlarged word-choice domain. See the [Critic identifiability and selected-emitter intervention](../communications/broadcast/20261128T1222Z_Critic_identifiability-and-selected-emitter-gate.md) and [Agent14's complete bounded editor result](k08-editors/agent14-13word-aligned-source-editor-20261128.md). These are research-priority distinctions, **not** new component acceptances.
+
 ## Current mechanism frontiers (27–28 November; no recovered component)
 
 The 27 November advances below change the **next experiment**, not the six-PASS/two-missing acceptance state. They deserve a visible handoff rather than another catalogue of isolated clues.
