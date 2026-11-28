@@ -11,6 +11,9 @@ and libz3.so.4. The constants below are synthetic mathematical witnesses.
 import ctypes
 import re
 import time
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import circuit
 
 M = (1 << 64) - 1
@@ -63,7 +66,7 @@ def query_models(first, witness_anchor, timeout_ms=30000):
         while status == 'sat':
             raw = ev('(get-value (' + ' '.join(f'a0_{j}' for j in range(64)) + '))')
             bits = {int(j): int(value == 'true')
-                    for j, value in re.findall(r'\\(a0_(\\d+)\\s+(true|false)\\)', raw)}
+                    for j, value in re.findall(r'\(a0_(\d+)\s+(true|false)\)', raw)}
             assert len(bits) == 64, 'Incomplete SAT model'
             a = sum(bits[j] << j for j in range(64))
             b = (inverse_rot((first[0] - a) & M, 17) - a) & M
