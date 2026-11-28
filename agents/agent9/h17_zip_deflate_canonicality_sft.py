@@ -12,6 +12,7 @@ def check(source):
     hist=collections.Counter();method=collections.Counter();extras=collections.Counter()
     comments=collections.Counter();times=collections.Counter();sequence=[];nonstandard=[];files=0
     with zipfile.ZipFile(source) as zin, source.open('rb') as fh:
+        archive_comment_len=len(zin.comment)
         for i in zin.infolist():
             if i.is_dir() or i.filename.lower().endswith('.pdf'):
                 continue
@@ -43,7 +44,7 @@ def check(source):
         classes[cls].add(stamp)
     return {'original_permitted_files':files,'deflate_files':method[8],
         'standard_level6_exact':sum(n for k,n in hist.items() if 6 in k),
-        'nonstandard':len(nonstandard), 'zip_comment_bytes':None,
+        'nonstandard':len(nonstandard), 'zip_comment_bytes':archive_comment_len,
         'unique_extra_fields':len(extras),'unique_perfile_comments':len(comments),
         'distinct_file_timestamps':len(times),
         'mail_timestamps':len(classes['mail-message']),
