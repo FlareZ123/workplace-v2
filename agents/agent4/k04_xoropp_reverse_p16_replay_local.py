@@ -24,7 +24,8 @@ import stat
 from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import (
     full_coupon_scan, prehistory,
 )
-from agents.agent7.k04_xoropp_p16_subcube_source_local import read_original
+from agents.agent7.k04_xoropp_p16_subcube_source_local import read_original, P16
+from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream
 
 ROOT = Path(__file__).resolve().parents[2]
 METHODS = {"laterfirst-P16-v1", "laterfirst-P16-144-byte-slip-v2"}
@@ -41,7 +42,7 @@ def private_path(path, must_exist=True):
     return path
 
 
-def load_states(path, endian, order):
+def load_states(path, endian, order, later):
     models = set()
     dispositions = {"unsat": 0, "unknown": 0}
     visited = set()
@@ -65,6 +66,12 @@ def load_states(path, endian, order):
             a, b = [int(w, 16) for w in pair]
             if not 0 <= a < 1 << 64 or not 0 <= b < 1 << 64:
                 raise ValueError("Bad cached full generator state")
+            assert tuple(stream(a, b, 2)) == tuple(later), (
+                "Cached state fails intact later packet replay")
+            cube = row["parent"] | (row["child"] << 12)
+            if any(((a >> pos) & 1) != ((cube >> j) & 1)
+                   for j, pos in enumerate(P16)):
+                raise ValueError("Cached state contradicts its exact P16 child")
             models.add((a, b))
     return models, dispositions, visited
 
@@ -110,7 +117,7 @@ def main():
     if ledger == escrow:
         p.error("Source state ledger and hit escrow must differ")
     first, later, mask, target = read_original(a.endian, a.order)
-    models, dispositions, visited = load_states(ledger, a.endian, a.order)
+    models, dispositions, visited = load_states(ledger, a.endian, a.order, later)
     totals = {"unique_children_visited": len(visited),
               "historical_states_replayed": 0,
               "full_coupon_sha_checks": 0,
