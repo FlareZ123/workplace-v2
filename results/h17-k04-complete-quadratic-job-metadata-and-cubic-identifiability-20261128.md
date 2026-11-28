@@ -28,6 +28,21 @@ The independent job-0448 late ACK lies **outside** either original quadratic sou
 
 Both model classes nonetheless produce **one uniquely identified complete candidate coupon** for original source metadata of the missing selected record: 35 original source basis packets for numeric, 37 for ASCII. Each resulting entire 16-byte coupon XORs the original mask and fails the unchanged complete original K04 SHA256. No original K04 physical bit has been authenticated by this computation.
 
+## Small original-source algebraic certificates: eight rows and twelve rows
+
+An exact source-only relation improves substantially on the 30-/32-row first basis contradiction reported above. For **any** degree≤2 Boolean polynomial of the declared original source fields, the XOR of an even original source subset's complete monomial feature vectors being zero forces the XOR of its emitted full 128-bit payloads to equal zero. This follows from linearity of the polynomial in its unrestricted monomial-coefficient matrix, regardless of the numeric values of those coefficients.
+
+A finite search across source-dependent linear relations found two compact original-data contradictions:
+
+| Original encoding | Exact zero-based original ordinary printer row indices | Number of source records | XOR of complete degree≤2 input feature vectors | XOR of the original true 128-bit full packet outputs |
+| --- | --- | ---: | --- | --- |
+| Numeric 10-bit job suffix | **52, 64, 68, 80, 86, 98, 102, 114** | **8** | **zero** | **nonzero, 63 set bits** |
+| Literal four ASCII job digits | **12, 14, 15, 17, 31, 35, 41, 45, 60, 61, 63, 66** | **12** | **zero** | **nonzero, 58 set bits** |
+
+These are exact source **impossibility certificates for all coefficients of the entire class**, using full original packet widths and without the untrusted selected 18:02 ACK, K04 target commitment or original route mask. They are not claimed minimum-weight certificates, nor do they rule out a higher-degree or attempt-dependent real issuer. The numeric eight rows include the preserved original job IDs **0352, 0364, 0368, 0380, 0386, 0398, 0402, 0414**; original categorical CLASS/DEST values and both genuine packet vectors are read solely by the pinned reproducer.
+
+For each exact original source index subset, independently plant **eight arbitrary unrestricted full-128-bit quadratic publisher matrices**, apply each to the actual source input feature vectors and verify that their full output XOR is exactly zero: **16/16 complete synthetic source-identity controls PASS**. The actual original source vector/output contradiction therefore cannot be attributed to the sparse-set algebra or output grouping. The source hashes and official evidence remain untouched.
+
 ## Stronger boundary: unrestricted cubic issuer cannot identify the selected coupon
 
 The same experiment calculates the exact *source-feature* rank of **all degree-at-most-three monomials** from the same source metadata, **without using the target hash or any printer output**:
