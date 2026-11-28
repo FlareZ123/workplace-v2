@@ -16,7 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from agents.agent50.k04_xoropp_p16_private_ledger import (
     SRC_SHA, ANCHOR, SCHEMA as P16_SCHEMA, private_path, append_private, read_ledger)
-from agents.agent50.k04_xoropp_p18_adaptive_synthetic import refine_parent
+from agents.agent50.k04_xoropp_p18_adaptive_synthetic import refine_parent, exact_models
 from agents.agent7.k04_xoropp_p16_subcube_source_local import read_original
 from agents.agent7.k04_xoropp_byte_slip_reducer import assess_state, escrow_hits
 
@@ -56,12 +56,14 @@ def main():
     ap.add_argument('--limit',type=int,default=256)
     ap.add_argument('--timeout-ms',type=int,default=350)
     ap.add_argument('--retry-ms',type=int,default=700)
+    ap.add_argument('--escalate-ms',type=int,default=3000,
+                    help='Only P18 UNKNOWN children receive an exact larger-budget retry')
     ap.add_argument('--max-pre-packets',type=int,default=8)
     ap.add_argument('--max-later-packets',type=int,default=8)
     ns=ap.parse_args()
     if os.getenv('CI') or os.getenv('GITHUB_ACTIONS'):
         ap.error('Historical-source operation forbidden in public CI')
-    if not (1<=ns.limit<=65536 and 100<=ns.timeout_ms<=ns.retry_ms<=30000 and
+    if not (1<=ns.limit<=65536 and 100<=ns.timeout_ms<=ns.retry_ms<=ns.escalate_ms<=30000 and
             0<=ns.max_pre_packets<=16 and 0<=ns.max_later_packets<=16):
         ap.error('Invalid search/reducer bounds')
     root=Path(__file__).resolve().parents[2]
@@ -88,12 +90,20 @@ def main():
         'p18_prior_completed':len(p18),
         'selected_for_refinement':min(len(tasks),ns.limit),
         'processed':0,'parent_exactly_closed':0,'child_unsat':0,
-        'child_unknown':0,'sat_states':0,'complete_coupon_checks':0,
+        'child_unknown':0,'sat_states':0,'p18_children_escalated':0,
+        'complete_coupon_checks':0,
         'commitment_hits':0,'later_replay_hits':0,
     }
     t0=time.monotonic()
     for cube in tasks[:ns.limit]:
         states,terms=refine_parent(first,cube,ns.timeout_ms,ns.retry_ms)
+        prior_terms=list(terms)
+        for child,status in enumerate(terms):
+            if status=='unknown' and ns.escalate_ms>ns.retry_ms:
+                additional,status=exact_models(first,cube|(child<<16),ns.escalate_ms)
+                states.update(additional)
+                terms[child]=status
+                totals['p18_children_escalated']+=1
         if cube in p18:
             # Previously recovered states survive an incomplete earlier pass.
             states.update((int(s[:16],16),int(s[16:],16))
@@ -117,7 +127,8 @@ def main():
             'schema':SCHEMA,'source_sha256':SRC_SHA,
             'p16_cache_sha256':input_sha,'layout':layout,
             'p16_bucket':cube,'child_positions':[8,9],
-            'child_statuses':terms,'timeout_ms':ns.timeout_ms,
+            'child_statuses':terms,'prior_child_statuses_700ms':prior_terms,
+            'escalate_ms':ns.escalate_ms,'timeout_ms':ns.timeout_ms,
             'retry_ms':ns.retry_ms,
             'states':[f'{a:016x}{b:016x}' for a,b in sorted(states)],
             'commit_hits':len(found),
