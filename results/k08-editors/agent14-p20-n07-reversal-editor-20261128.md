@@ -13,14 +13,36 @@ This test instead freezes **one carrier and one operation** before acceptance:
 
 No token choice, row choice, insertion, deletion, synonym, rotation, or ordering parameter remains after those two selections. The hypothesis is simply that the calibrated reversal operation is the final version transform on the fixed P20 payload.
 
+## 28 November source-selector upgrade: the address chain itself selects N07
+
+A later same-invocation composition removes most of the original operator-selection hypothesis.
+
+The fixed payload decoder's ordered addresses are:
+
+`AT -> MT -> ET -> PT`
+
+Their second coordinate is invariant (`TTTT`), while the information-bearing first coordinate is `AMEP`. Apply the already-established ASCII LOW BIT packing, first bit as LSB:
+
+- LOW BIT(`AMEP`) = **7**, selecting **N07**;
+- LOW BIT(`TTTT`) = **0**, which is outside the N01..N24 note namespace.
+
+The four address pairs are already fixed in payload order by independent source paths; no address permutation is introduced here. The changing address coordinate therefore supplies a direct source-local selector for the same N07 reversal instruction previously imported only by analogy from the AES/SEA calibration.
+
+A dedicated reproducer rechecks all four address-pair overlaps against N20, the P20 payload fingerprint, AMEP->7, TTTT->0, the historical N02 reducer fixture and the single reversed-P20 acceptance outcome.
+
+This **does not** prove that the selected N07 operation's operand is the completed P20 payload. That remains the one semantic composition edge. But the operator choice itself is no longer free.
+
+Reproducer: `agents/agent14/k08_p20_address_heads_reversal_sft.py`
+
 ## Source-vs-free decision ledger
 
 | Decision | Status |
 | --- | --- |
 | N20/P20 13-token carrier and stop | fixed by the independent AT/MT/ET/PT chain |
 | Reversal operation | fixed and target-blind calibrated by AES -> SEA through N07 |
+| N07 operator selection | **source-selected by AT/MT/ET/PT varying heads AMEP -> LOW BIT 7; invariant TTTT column -> 0** |
 | K08 normalization/HMAC16/SHA256 reduction | fixed by the preserved route and acceptance |
-| Apply N07 reversal to P20 as the final-authoring edge | **hypothesis; not attested by a surviving record** |
+| Apply the selected N07 reversal to the completed P20 payload | **remaining hypothesis; the operand edge is not explicitly attested** |
 | Per-word choices / lexical substitutions / target-selected completion | none |
 | Complete authored same-operation holdout | none survives; AES -> SEA is an operator micro-control, not an authored-caption holdout |
 
