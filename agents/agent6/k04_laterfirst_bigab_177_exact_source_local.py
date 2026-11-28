@@ -31,7 +31,9 @@ from agents.agent15.k04_laterfirst_p16_p20_source_local import (
 )
 
 P22 = P20 + (12, 13)
-LEVEL = {16: P16, 20: P20, 22: P22}
+P24 = P22 + (14, 15)
+P28 = P24 + (16, 17, 18, 19)
+LEVEL = {16: P16, 20: P20, 22: P22, 24: P24, 28: P28}
 
 
 def prior_bytes(state):
@@ -60,6 +62,8 @@ def investigate_parent(job):
         "p16": 0, "p16_unsat": 0,
         "p20": 0, "p20_unsat": 0,
         "p22": 0, "p22_unsat": 0,
+        "p24": 0, "p24_unsat": 0,
+        "p28": 0, "p28_unsat": 0,
         "open_leaves": 0,
         "complete_models": 0,
         "full_commit_checks": 0,
@@ -85,7 +89,7 @@ def investigate_parent(job):
                 hits.extend(new)
 
         if status == "unknown" and level < depth:
-            next_level = {16: 20, 20: 22}[level]
+            next_level = {16: 20, 20: 22, 22: 24, 24: 28}[level]
             for sub in range(1 << (next_level - level)):
                 subdivide(next_level, cube | (sub << level))
         elif status == "unknown":
@@ -106,7 +110,7 @@ def synthetic_controls():
     for i in range(6):
         state = (rng.getrandbits(64), rng.getrandbits(64))
         observed = firstpair(*state)
-        for positions in (P16, P20, P22):
+        for positions in (P16, P20, P22, P24, P28):
             anchor = sum(((state[0] >> p) & 1) << j
                          for j, p in enumerate(positions))
             models, terminal = exact_states(
@@ -120,7 +124,7 @@ def synthetic_controls():
         target = hashlib.sha256(planted).hexdigest()
         assert full_coupon_hits(state, mask, target) == [planted]
 
-    assert reached == 18, "Planted P16/P20/P22 state solver must reach all"
+    assert reached == 30, "Planted P16/P20/P22/P24/P28 state solver must reach all"
     print(json.dumps({
         "synthetic_only": True, "original_source_loaded": False,
         "inverse_roundtrips": 10000, "state_fixtures": 6,
@@ -137,7 +141,7 @@ def main():
     ap.add_argument("--count", type=int, default=16)
     ap.add_argument("--timeout-ms", type=int, default=350)
     ap.add_argument("--retry-timeout-ms", type=int, default=350)
-    ap.add_argument("--depth", type=int, choices=(16, 20, 22), default=22)
+    ap.add_argument("--depth", type=int, choices=(16, 20, 22, 24, 28), default=24)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--escrow", type=Path)
     args = ap.parse_args()
@@ -164,7 +168,10 @@ def main():
         "parents_completed": 0, "parents_fully_closed": 0,
         "p16": 0, "p16_unsat": 0,
         "p20": 0, "p20_unsat": 0,
-        "p22": 0, "p22_unsat": 0, "open_leaves": 0,
+        "p22": 0, "p22_unsat": 0,
+        "p24": 0, "p24_unsat": 0,
+        "p28": 0, "p28_unsat": 0,
+        "open_leaves": 0,
         "complete_models": 0, "full_commit_checks": 0,
         "original_hits": 0
     }
