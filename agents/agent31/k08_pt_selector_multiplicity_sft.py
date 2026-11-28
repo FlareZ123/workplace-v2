@@ -105,6 +105,39 @@ def main(path):
               "seq_permutations=40320", "valid_A_X=" + str(valid),
               "exact_PT=" + str(exact_pt), "distinct_lowbit_pair=" + str(len(all_bytes)))
 
+
+    # Exact *joint* retry-mask x chunk-order factorial, not a product of the
+    # two conditional marginal rates. Every chunk contributes two successive
+    # tail bits, and arbitrary chunk reordering never changes their pair type.
+    target_bytes = bytes.fromhex("50D4")
+    target_bits = tuple((target_bytes[i // 8] >> (i % 8)) & 1 for i in range(16))
+    target_pairs = collections.Counter(tuple(target_bits[2*i:2*i+2]) for i in range(8))
+    assert target_pairs == {(0, 0): 3, (1, 0): 4, (1, 1): 1}
+    # Each matching multiset has exactly 3! * 4! * 1! = 144 permutations
+    # of its eight *individually labeled* chunks with ordered bytes 50D4.
+    per_matching_mask = 144
+    whole_joint = 0
+    for transfer, d in sorted(chunks.items()):
+        compatible_masks = []
+        for mask in range(256):
+            chosen_pairs = collections.Counter(
+                tuple(x & 1 for x in d[(s, 1 + ((mask >> s) & 1))])
+                for s in range(8)
+            )
+            if chosen_pairs == target_pairs:
+                compatible_masks.append(mask)
+        assert len(compatible_masks) == (16 if transfer == "AX-7782" else 0)
+        hit_count = per_matching_mask * len(compatible_masks)
+        whole_joint += hit_count
+        print(transfer, "joint_retry_masks=256", "joint_seq_orders=40320",
+              "PT_eligible_masks=" + str(len(compatible_masks)),
+              "joint_exact_PT=" + str(hit_count),
+              "joint_denominator=10321920")
+    assert whole_joint == 2304
+    print("ALL_TRANSFERS joint_exact_PT=2304 joint_total=41287680"
+          " conditional_AX7782_fraction=1/4480"
+          " across_four_transfer_fraction=1/17920")
+
     print("PIN=PASS exact_transfer_controls=PASS target_or_nonce_read=False")
 
 
