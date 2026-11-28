@@ -96,6 +96,7 @@ def main(root):
             signatures[n] = "".join(chr(ord("A") + v - 1) for v in triple)
     assert signatures[6] == "ACE"
     assert [n for n, token in signatures.items() if token == "ACE"] == [6]
+    assert lowbit(signatures[6]) == 7
 
     # Matched heading control: run the same signature -> note-count token ->
     # selected N07 reversal -> whole-token LOW BIT chain on every eligible
@@ -147,6 +148,7 @@ def main(root):
         "selected_role": "second desk draft",
         "selected_note_word_count": len(notes[selector]),
         "heading_signature": signatures[6],
+        "heading_signature_lowbit": lowbit(signatures[6]),
         "heading_signature_matches": sum(token == "ACE" for token in signatures.values()),
         "eligible_heading_signatures": len(signatures),
         "heading_pipeline_photo_matches": sum(out == 3 for out in heading_downstream.values()),
