@@ -79,6 +79,15 @@ Perform exact GF(2) elimination on the 129 complete input→128-bit-output const
 
 There is therefore a **constructive, whole-object proof** that the original 128 intact printer outputs alone do not select the missing 16-byte coupon even when a cubic issuer *fits every source packet perfectly*. In fact, since the selected source vector is linearly independent, the assignment works for **any** of the 2^128 possible 16-byte outputs. The original K04 SHA256 acceptance still constrains the unknown true coupon; this does **not** recover it or find a preimage. All fitted output coefficients and original source packet values remain unpublished and the official K04 target never participates in fitting or witness choice.
 
+### Complete hierarchy consequence for these frozen metadata fields
+
+There is a sharp **no-free-lunch dichotomy** for the *unrestricted GF(2) Boolean-polynomial issuer class on either of these exact source encodings*:
+
+- Degree ≤1 cannot fit the ordinary printer history (the four-row full128bit original source contradiction); degree ≤2 cannot fit it (the **provably shortest eight-row numeric** or twelve-row ASCII whole-packet contradiction).
+- Degree ≥3 can include the explicit cubic interpolation witnesses. Such models may reproduce **every one of the 128 original packets** while assigning an **arbitrary** complete 128-bit value to the missing selected source input. Enlarging that unrestricted polynomial class further cannot restore identifiability.
+
+Consequently **no unrestricted polynomial degree on the fixed numeric or ASCII job+CLASS+DEST metadata is simultaneously source-exact and selected-coupon-identifying**. This excludes neither a *restricted, historically justified* sparse nonlinear form nor a new original issuer/copy-stage observation. It does establish that arbitrarily growing metadata polynomial model complexity without an independent original selected-stage witness cannot make the archive key recoverable.
+
 ## Controls and decision
 
 Two source-free planted complete quadratic 128-bit publishers—one for each fixed encoding—were generated using deterministic random GF(2) output coefficients. The same basis-reconstruction code reproduced every predicted intact packet and the withheld entire selected coupon. Its independently computed original K04 mask-plus-SHA256 control also reproduced the planted full 16-byte commitment: **2/2 synthetic source/coupon controls PASS**. This is an algorithm/control validation, not proof that the real issuer used polynomial metadata interactions.
