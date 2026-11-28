@@ -27,8 +27,12 @@ def source_rows(raw):
     for line in raw.splitlines():
         r=json.loads(line)
         b=r.get('bucket')
+        valid_circuit = (r.get('circuit')=='firstpair-minimal-p16-v1' or
+                         (r.get('schema')=='p16-agent7-firstpair-v1' and
+                          r.get('anchor_positions')==
+                          [0,1,2,3,22,23,24,25,45,46,47,48,4,5,6,7]))
         if (r.get('source_sha256')!=PIN or r.get('layout')!='big/ab' or
-            r.get('circuit')!='firstpair-minimal-p16-v1' or
+            not valid_circuit or
             r.get('terminal') not in ('unsat','unknown') or
             not isinstance(b,int) or not 0<=b<65536 or
             not isinstance(r.get('states'),list) or b in rows):
@@ -47,9 +51,10 @@ def refined_rows(frozen_pairs,source):
         for line in private_bytes(output_file).splitlines():
             r=json.loads(line);b=r.get('bucket')
             statuses=r.get('child_statuses',[])
-            if (r.get('method')!='p18-two-bit-8-9-firstpair-v1' or
+            if (r.get('method',r.get('schema')) not in
+                ('p18-two-bit-8-9-firstpair-v1','p18-agent50-refine-firstpair-v1') or
                 r.get('source_sha256')!=PIN or r.get('layout')!='big/ab' or
-                r.get('first_stage_sha256')!=digest or
+                r.get('first_stage_sha256',r.get('p16_cache_sha256'))!=digest or
                 r.get('child_positions')!=[8,9] or
                 b not in frozen or frozen[b]['terminal']!='unknown' or
                 b in out or len(statuses)!=4 or
