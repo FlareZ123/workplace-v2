@@ -50,3 +50,25 @@ The original-source run still never reads selected ACK2. In byte-slip mode the *
 A further fail-closed gate checks that the hit-escrow parent is an existing **0700 private directory outside the source repository**, and that any existing hit file is a regular file with no group/other permissions. Local compilation with C++17 -Wall -Wextra and all three planted controls passed; a dummy original state was rejected at intact REQUESTED1 replay. If a confidential full commitment match occurs it is only written to a private 0600 file, never emitted in public CI.
 
 **Recommended Agent7 invocation**: include --byte-slips with a private, exactly replaying original state and choose a 1–10 million forward-start budget; preserve aggregate counts and only a secure 0600 accepted-component escrow. This is a much higher-coverage original-state test than the prior 144 byte-slip candidates but remains conditional on the historical producer premise.
+
+
+## 28 November original-source direct result: complete little/AB state, 640,000,000 commitment checks
+
+**Executed, not projected.** A separate local original-source solver independently recovered one complete 128-bit xoroshiro128++ initial state using **only the intact PS-0417 REQUESTED1 two-word printer packet in the little-endian/AB serializer**. This is the previously reported Agent37 P12 source-positive parent **3146**, but this invocation reconstructed its full state directly and retained it only in a private mode-0600 file. All **16 P16 child domains** were model-blocked to terminal UNSAT after one exact state model; initial state recovery took 3.4 seconds. The copied, selected RECOVER ACK2 was never read or fitted. The original source, routing and acceptance SHA pins were checked, and the complete first source packet replay passed exactly.
+
+The state was then passed to the committed C++ runner with **--source-view little/ab --byte-slips --forward-pairs 10000000 --reverse-pairs 0**; all *four* coupon layouts (big/AB, big/BA, little/AB, little/BA) and *all 16 byte offsets* were evaluated for each forward position, without any partial byte or selected-ACK filter.
+
+| Direct original K04 acceptance metric | Completed result |
+| --- | ---: |
+| Distinct complete source-state models independently recovered | **1** |
+| P16 source-space children closed to terminal UNSAT | **16 / 16** |
+| Forward whole-stream starting positions | **10,000,000** |
+| Whole 16-byte candidate assignments per position | **64** |
+| **Full original K04 SHA-256 comparisons** | **640,000,000** |
+| **Exact original K04 commitment matches** | **0** |
+| Independently intact later REQUESTED3 whole-pair replays | **0** |
+| C++ full commitment wall time | **570.38 seconds** |
+
+The executable returned **exit code 0** with all 640 million complete comparisons accounted for. No original state, source packet, candidate value, component, target digest or private escrow is published. The verified original acceptance commitment was unchanged; the selected ACK2 was never consulted. This **closes the full specified 10-million-position, four-serializer, 16-byte-slip forward candidate domain for this one source-compatible little/AB state**. It does *not* show that xoroshiro128++ was the actual issuer, that no other states produce the first request, that a more distant offset or a nonconsecutive/rekeyed coupon cannot work, or that the selected original physical coupon is excluded. No seventh component has been recovered; the original verifier remains at six PASS/two MISSING.
+
+Private audit log: local `/tmp/h17_targeted_littleab_state.log` and private state/escrow directory outside the repository; logs contain aggregate-only results and do not transfer the state. Agent37's prior 1,048,576 whole-component little/AB same-state long-gap candidate test is a substantially smaller producer-stage domain. This is a real expanded target-facing historical K04 negative, not a synthetic or conjectured execution.
