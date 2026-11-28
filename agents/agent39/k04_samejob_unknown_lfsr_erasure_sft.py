@@ -8,13 +8,18 @@ from pathlib import Path
 
 PIN='7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083'
 
-def bits_from(buf,revbyte,lsb):
- if revbyte:buf=buf[::-1]
- return [(b>>(i if lsb else (7-i)))&1 for b in buf for i in range(8)]
+def orient(buf,wordrev,inwordrev):
+ words=[buf[i:i+4] for i in range(0,len(buf),4)]
+ if wordrev:words.reverse()
+ if inwordrev:words=[w[::-1] for w in words]
+ return b''.join(words)
 
-def bytes_from(bits,revbyte,lsb):
+def bits_from(buf,wordrev,inwordrev,lsb):
+ return [(b>>(i if lsb else (7-i)))&1 for b in orient(buf,wordrev,inwordrev) for i in range(8)]
+
+def bytes_from(bits,wordrev,inwordrev,lsb):
  by=bytes(sum(bits[j*8+i]<<(i if lsb else 7-i) for i in range(8)) for j in range(len(bits)//8))
- return by[::-1] if revbyte else by
+ return orient(by,wordrev,inwordrev)
 
 def bm(bits):
  n=len(bits);c=[1]+[0]*n;b=[1]+[0]*n;L=0;m=1
@@ -50,26 +55,27 @@ def predict(observed,L,c,extra=256):
 def synthetic():
  rng=random.Random(20261128)
  cases=0
- for revbyte in (False,True):
-  for lsb in (False,True):
-   for L,train_len in ((31,128),(47,128),(63,128),(65,256),(95,256),(127,256)):
-    # Ensure true linear complexity of seeded 384-bit test is exactly L.
-    while True:
-     c=[1]+[rng.randrange(2) for _ in range(L-1)]+[1]
-     s=[rng.randrange(2) for _ in range(L)]
-     stream=predict(s,L,c,train_len+256-L)
-     found,cf=bm(stream[:train_len])
-     if found==L:break
-    original=bytes_from(stream[:train_len],revbyte,lsb)
-    later=bytes_from(stream[train_len+128:train_len+256],revbyte,lsb)
-    firstbits=bits_from(original,revbyte,lsb)
-    count,coeff=bm(firstbits)
-    recovered=predict(firstbits,count,coeff)
-    assert count==L and feedback_rank(firstbits,L)==L
-    assert recovered[train_len:train_len+128]==stream[train_len:train_len+128]
-    assert bytes_from(recovered[train_len+128:train_len+256],revbyte,lsb)==later
-    cases+=1
- print('SYNTHETIC planted-middle+independent-REQUESTED3-packet 24/24 PASS')
+ for wordrev in (False,True):
+  for inwordrev in (False,True):
+   for lsb in (False,True):
+    for L,train_len in ((31,128),(47,128),(63,128),(65,256),(95,256),(127,256)):
+     # Ensure true linear complexity of seeded 384-bit test is exactly L.
+     while True:
+      c=[1]+[rng.randrange(2) for _ in range(L-1)]+[1]
+      s=[rng.randrange(2) for _ in range(L)]
+      stream=predict(s,L,c,train_len+256-L)
+      found,cf=bm(stream[:train_len])
+      if found==L:break
+     original=bytes_from(stream[:train_len],wordrev,inwordrev,lsb)
+     later=bytes_from(stream[train_len+128:train_len+256],wordrev,inwordrev,lsb)
+     firstbits=bits_from(original,wordrev,inwordrev,lsb)
+     count,coeff=bm(firstbits)
+     recovered=predict(firstbits,count,coeff)
+     assert count==L and feedback_rank(firstbits,L)==L
+     assert recovered[train_len:train_len+128]==stream[train_len:train_len+128]
+     assert bytes_from(recovered[train_len+128:train_len+256],wordrev,inwordrev,lsb)==later
+     cases+=1
+ print('SYNTHETIC planted-middle+independent-REQUESTED3-packet 48/48 PASS')
 
 def original(root):
  source=(root/'evidence/print/spool-reconstruction.log').read_bytes()
@@ -93,20 +99,27 @@ def original(root):
  assert len(firstlabel)==len(first)==len(late)==len(mask)==16
  results=[]
  for training in ('request1_128bits','label_then_request1_256bits'):
-  for rb in (False,True):
-   for lsb in (False,True):
-    prefix=(bits_from(firstlabel,rb,lsb) if training.startswith('label') else [])+bits_from(first,rb,lsb)
-    n=len(prefix)
-    L,coef=bm(prefix)
-    assert L<=n//2 and feedback_rank(prefix,L)==L, 'non-unique short feedback map'
-    recovered=predict(prefix,L,coef)
-    mid=bytes_from(recovered[n:n+128],rb,lsb)
-    follow=bytes_from(recovered[n+128:n+256],rb,lsb)
-    comp=bytes(x^y for x,y in zip(mid,mask))
-    results.append((training,int(rb),int(lsb),L,int(follow==late),sum((x^y).bit_count() for x,y in zip(follow,late)),int(hashlib.sha256(comp).hexdigest()==target)))
- print('ORIGINAL training,reversible_byte_order,bit_order_lsb,BM_degree,REQUESTED3_full_match,REQUESTED3_bit_differences,K04_original_hit')
+  for wr in (False,True):
+   for br in (False,True):
+    for lsb in (False,True):
+     prefix=(bits_from(firstlabel,wr,br,lsb) if training.startswith('label') else [])+bits_from(first,wr,br,lsb)
+     n=len(prefix)
+     L,coef=bm(prefix)
+     if L>n//2:
+      results.append((training,int(wr),int(br),int(lsb),L,'SOURCE_REJECTED_DEGREE',None,None))
+      continue
+     rank=feedback_rank(prefix,L)
+     if rank<L:
+      results.append((training,int(wr),int(br),int(lsb),L,'NONUNIQUE_FEEDBACK',None,None))
+      continue
+     recovered=predict(prefix,L,coef)
+     mid=bytes_from(recovered[n:n+128],wr,br,lsb)
+     follow=bytes_from(recovered[n+128:n+256],wr,br,lsb)
+     comp=bytes(x^y for x,y in zip(mid,mask))
+     results.append((training,int(wr),int(br),int(lsb),L,int(follow==late),sum((x^y).bit_count() for x,y in zip(follow,late)),int(hashlib.sha256(comp).hexdigest()==target)))
+ print('ORIGINAL training,word_reverse,inword_byte_reverse,bit_order_lsb,BM_degree,REQUESTED3_full_match,REQUESTED3_bit_differences,K04_original_hit')
  for r in results:print('ORIGINAL',*r,sep='\t')
- assert len(results)==8
+ assert len(results)==16
  return results
 
 if __name__=='__main__':
