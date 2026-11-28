@@ -1,6 +1,6 @@
 # K04: unknown-feedback binary erasure recovery across same-job printer attempts
 
-**Agent 39 | 28 November 2026 | original-source complete 16-byte coupon checks; 8 finite models fail**
+**Agent 39 | 28 November 2026 | original-source complete 16-byte coupon checks; 15 complete models fail; one source-incompatible**
 
 ## Recovery-producing model
 
@@ -11,27 +11,27 @@ Two frozen source-only histories specify exact, exhaustive **bounded-degree** re
 1. **REQUESTED1 → erased ACK2 → REQUESTED3**: the 128 known REQUESTED1 bits determine the entire feedback of any recurrence with minimal degree at most **64**; recover the next 128 bits as a complete hypothetical coupon, and the following 128 as an intact original holdout.
 2. **Earlier LABEL ACK → REQUESTED1 → erased ACK2 → REQUESTED3**: the two surviving earlier 128-bit packets, treated as consecutive per-job intervals, determine the entire feedback of any recurrence with minimal degree at most **128**; recover the same full middle packet and predict the independent 18:03 third request.
 
-Each history is evaluated under four reversible serializers: forward/reverse 16-byte ordering × within-byte most/least significant bit first. No unknown skip count, manually chosen polynomial, source-derived seed, bit repair, noncorresponding printer row or copied ACK2 byte enters inference. The uninterrupted per-job bitstream premise is **hypothetical**, especially across the 76-minute gap from LABEL to REQUESTED1 and the change in job CLASS.
+Each history is evaluated under eight reversible serializers: original/reversed order of four 32-bit words × forward/reversed bytes within each 32-bit word × most/least-significant-bit-first within each byte. No unknown skip count, manually chosen polynomial, source-derived seed, bit repair, noncorresponding printer row or copied ACK2 byte enters inference. The uninterrupted per-job bitstream premise is **hypothetical**, especially across the 76-minute gap from LABEL to REQUESTED1 and the change in job CLASS.
 
 ## Mathematical completeness and controls
 
-For each original first history, run **Berlekamp–Massey** on all 128 training bits; for the second, on all 256. Its shortest GF(2) feedback has observed degree 63–64 or 125–128 respectively. Independently compute the GF(2) rank of the training sequence's lagged-bit coefficient matrix: in **all eight historical views, rank equals the inferred degree**, so the feedback coefficients at that degree are unique. Any true recurrence of degree at most half the observed training length must obey that recovered feedback: there are no unexamined seeds or taps in these declared domains.
+For each original first history, run **Berlekamp–Massey** on all 128 training bits; for the second, on all 256. The REQUESTED1-only minimal degrees are 63–64. The two-packet degrees are 125, 126, 128, and 131 depending on orientation; the degree-131 view is **impossible for the specified degree≤128 model**, so the runner rejects that source configuration before forecasting any coupon. Independently compute the GF(2) rank of the training sequence's lagged-bit coefficient matrix: in **all fifteen source-compatible historical views, rank equals the inferred degree**, so the feedback coefficients at that degree are unique. Any true recurrence of degree at most half the observed training length must obey that recovered feedback: there are no unexamined seeds or taps in these declared domains.
 
-The runner generates independent **synthetic 384-bit and 512-bit per-job streams** from seeded random unknown feedback polynomials of actual degrees **31/47/63 and 65/95/127**, respectively. Under all four byte/bit orientations it uniquely recovers the full missing 128-bit coupon and reproduces the full withheld 128-bit final packet: **24/24 synthetic positives**. The synthetic target does not reuse historical candidate bytes.
+The runner generates independent **synthetic 384-bit and 512-bit per-job streams** from seeded random unknown feedback polynomials of actual degrees **31/47/63 and 65/95/127**, respectively. Under all eight native word/byte/bit orientations it uniquely recovers the full missing 128-bit coupon and reproduces the full withheld 128-bit final packet: **48/48 synthetic positives**. The synthetic target does not reuse historical candidate bytes.
 
 ## Original full-coupon outcomes
 
-| History | Bit serializers | Inferred feedback degrees | Hamming errors against withheld REQUESTED3 (128 bits) | Full original K04 acceptance matches |
+| History | Complete model orientations | Feedback degree counts | Withheld REQUESTED3 errors on source-compatible models | Original K04 commitment matches |
 | --- | ---: | --- | --- | ---: |
-| REQUESTED1 only; degree ≤64 | 4 | 64, 63, 63, 64 | 60, 67, 61, 61 | **0 / 4** |
-| LABEL then REQUESTED1; degree ≤128 | 4 | 128, 128, 125, 128 | 55, 65, 65, 66 | **0 / 4** |
-| **Total** | **8** | | all 8 disagree with independent holdout | **0 / 8** |
+| REQUESTED1 only; degree ≤64 | 8 | 63×4, 64×4 | 58–67 bits, all eight fail | **0 / 8** |
+| LABEL then REQUESTED1; degree ≤128 | 8 | 125×1, 126×2, 128×4, **131×1** | 55–66 bits on seven compatible models, all fail | **0 / 7; one model source-rejected** |
+| **Total** | **16** | **15 uniquely inferred whole coupons, one no-source-fit** | 15/15 source-compatible models fail | **0 / 15** |
 
-Each reconstructed **entire** 16-byte erased middle packet was XOR-reduced with the unchanged source route mask and checked against the **full original K04 SHA256 commitment before any REQUESTED3 holdout could disqualify it**. Zero accepted components; in addition, none of the candidate model streams predicts the independently retained final request. The selected copied ACK2 contents were never parsed, tested as authentic, or used to fit feedback. Source pin: printer reconstruction SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`.
+Each reconstructed **entire** 16-byte erased middle packet was XOR-reduced with the unchanged source route mask and checked against the **full original K04 SHA256 commitment before any REQUESTED3 holdout could disqualify it**. Zero accepted components; none of the 15 inferred whole-coupon streams predicts the independently retained final request. The final source view is excluded independently by its degree-131 source contradiction. The selected copied ACK2 contents were never parsed, tested as authentic, or used to fit feedback. Source pin: printer reconstruction SHA-256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083`.
 
 ## What is and is not excluded
 
-This closes all binary LFSR feedback polynomials and initial states up to the **source-determined degree ceilings** for these two exact, gap-free same-job histories under the four serializers. The results do not exclude recurrence degree >64/>128, a reset/class-dependent writer, a nonbinary or nonlinear producer, gaps inside/between packets, or physical coupon media different from any generator packet. Since the historical feedback model is unattested, a source-holdout failure cannot prove the physical ACK2 was incorrectly reconstructed or that no other extraction exists.
+This closes all binary LFSR feedback polynomials and initial states up to the **source-determined degree ceilings** for these two exact, gap-free same-job histories under the eight serializers. The results do not exclude recurrence degree >64/>128, a reset/class-dependent writer, a nonbinary or nonlinear producer, gaps inside/between packets, or physical coupon media different from any generator packet. Since the historical feedback model is unattested, a source-holdout failure cannot prove the physical ACK2 was incorrectly reconstructed or that no other extraction exists.
 
 The decisive next evidence would be a **documented native attempt-2 physical coupon/copy-stage rule**, or an independent authentic source carrier that fixes a higher-order state and a producer chronology. Do not extend this completed finite test by arbitrary phase offsets or polynomial dictionaries without that link. Six previously accepted components remain unchanged. **K04 and K08 MISSING; REC8/1 INCOMPLETE.**
 
