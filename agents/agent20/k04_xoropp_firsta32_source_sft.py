@@ -79,7 +79,7 @@ def scan(binary,mode,packet,mask,seals):
                                         check=True,timeout=180)
                     assert 'synthetic_positive PASS' in proc.stdout
                     assert 'exhaustive_unknown32=1' in proc.stdout
-                    found=re.search(r'source_pair_full_match=(\\d+)',proc.stdout)
+                    found=re.search(r'source_pair_full_match=(\d+)',proc.stdout)
                     assert found, 'Missing complete-search marker'
                     positive+=int(found[1]);count+=1
     assert count==64
