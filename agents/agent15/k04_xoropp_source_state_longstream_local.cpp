@@ -116,11 +116,21 @@ struct Trial{
   }
  }
 };
-static Metrics scan(State initial,Trial& trial,std::uint64_t forward,std::uint64_t reverse,bool slips=false){
+static Metrics scan(State initial,Trial& trial,std::uint64_t forward,std::uint64_t reverse,bool slips=false,bool gapped=false){
  State source=initial;u64 s0=next(source),s1=next(source);
  if(pack(s0,s1,trial.source_little,trial.source_swap)!=trial.source)throw std::runtime_error("PRIVATE STATE DOES NOT EXACTLY REPLAY intact REQUESTED1");
  if(forward){
-  if(slips){
+  if(gapped){
+   // Complete 16-byte candidates from nonconsecutive native 64-bit words.
+   // Exhaust all output gaps 2..32 under four BE/LE x AB/BA layouts.
+   std::array<u64,33> window{};
+   for(auto &v:window)v=next(source);
+   for(std::uint64_t start=0;start<forward;++start){
+    for(int d=2;d<=32;++d)trial.check(window[0],window[d]);
+    for(int j=0;j<32;++j)window[j]=window[j+1];
+    window[32]=next(source);
+   }
+  }else if(slips){
    u64 a=next(source),b=next(source),c=next(source),d=next(source);
    for(std::uint64_t i=0;i<forward;++i){
     trial.check_slipped(a,b,c,d);
@@ -207,14 +217,29 @@ static void synthetic(){
  std::cout<<"SYNTHETIC_ONLY backward_byte_slips=16 pair_count="
           <<backwards.pairs<<" full_SHA256_checks="<<backwards.checks
           <<" planted_hits="<<backwards.hits<<"\n";
+ // Independent fully masked synthetic coupon from output positions
+ // source+2+37 and source+2+37+11 (native output gap 11).
+ {
+ Trial gap{};gap.mask=mask;gap.source=source;gap.source_swap=true;
+ State cur=initial;next(cur);next(cur);
+ std::array<u64,200> values{};for(auto &v:values)v=next(cur);
+ Data raw=pack(values[37],values[37+11],true,true),whole{};
+ for(int j=0;j<16;++j)whole[j]=raw[j]^mask[j];
+ SHA256(whole.data(),16,gap.target.data());
+ auto gr=scan(initial,gap,128,0,false,true);
+ if(gr.hits!=1||gr.checks!=128*31*4)throw std::runtime_error("Synthetic nonconsecutive native coupon missed");
+ std::cout<<"SYNTHETIC_ONLY native_gaps_2to32=31 starts="<<128<<" full_SHA256_checks="<<gr.checks<<" planted_hits="<<gr.hits<<"\n";
+ }
 }
 int main(int argc,char** argv){
  try{
-  bool syn=false,slips=false;std::string root="resources",state_file,escrow,view="big/ba";std::uint64_t forward=10000000,reverse=0;
+  bool syn=false,slips=false,gapped=false;std::string root="resources",state_file,escrow,view="big/ba";std::uint64_t forward=10000000,reverse=0;
   for(int i=1;i<argc;++i){std::string arg=argv[i];auto val=[&](){if(i+1>=argc)throw std::runtime_error("Missing argument value");return std::string(argv[++i]);};
-   if(arg=="--synthetic")syn=true;else if(arg=="--byte-slips")slips=true;else if(arg=="--resources-root")root=val();else if(arg=="--state-file")state_file=val();else if(arg=="--hit-escrow")escrow=val();else if(arg=="--source-view")view=val();else if(arg=="--forward-pairs")forward=std::stoull(val());else if(arg=="--reverse-pairs")reverse=std::stoull(val());else throw std::runtime_error("Unknown flag "+arg);
+   if(arg=="--synthetic")syn=true;else if(arg=="--byte-slips")slips=true;else if(arg=="--gapped-native")gapped=true;else if(arg=="--resources-root")root=val();else if(arg=="--state-file")state_file=val();else if(arg=="--hit-escrow")escrow=val();else if(arg=="--source-view")view=val();else if(arg=="--forward-pairs")forward=std::stoull(val());else if(arg=="--reverse-pairs")reverse=std::stoull(val());else throw std::runtime_error("Unknown flag "+arg);
   }
   if(syn){synthetic();return 0;}
+  if(gapped&&slips)throw std::runtime_error("Gapped native and byte slips are disjoint candidate geometries");
+  if(gapped&&reverse)throw std::runtime_error("Gapped native mode currently supports forward starts only");
   if(envci())throw std::runtime_error("Original-source run forbidden in CI");
   if(state_file.empty()||escrow.empty())throw std::runtime_error("Private state and out-of-repository hit escrow required");
   if(view!="big/ab"&&view!="big/ba"&&view!="little/ab"&&view!="little/ba")throw std::runtime_error("Invalid source serializer");
@@ -230,9 +255,9 @@ int main(int argc,char** argv){
   require_private_escrow(root,escrow);
   Trial trial{};trial.mask=mask;trial.target=target;trial.source=source;trial.later=later;trial.has_later=true;trial.source_little=(view.rfind("little",0)==0);trial.source_swap=(view.substr(view.find('/')+1)=="ba");trial.escrow=escrow;
   State state=private_state(state_file);
-  auto started=std::chrono::steady_clock::now();auto m=scan(state,trial,forward,reverse,slips);
+  auto started=std::chrono::steady_clock::now();auto m=scan(state,trial,forward,reverse,slips,gapped);
   double elapsed=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
-  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ view="<<view<<" byte_slips_forward="<<(slips?16:1)<<" byte_slips_reverse="<<(slips?16:1)<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
+  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ view="<<view<<" nonconsecutive_native_gaps_2to32="<<gapped<<" byte_slips_forward="<<(slips?16:1)<<" byte_slips_reverse="<<(slips?16:1)<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
   return 0;
  }catch(const std::exception& e){std::cerr<<"FAILED "<<e.what()<<"\n";return 2;}
 }
