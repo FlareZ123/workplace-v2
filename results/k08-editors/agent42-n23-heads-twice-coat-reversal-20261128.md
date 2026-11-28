@@ -11,21 +11,27 @@ The new N23 structural branch fixes all operands before reading K08 acceptance:
 3. HEAD low-bit packing across the four selected role-heading heads `First / Second / Kitchen / Under` selects **N14 Sunrise photograph**.
 4. Apply HEAD a second time to N14's heading and it selects **N01**, the empty-bench photograph.
 
-N04's final noun supplies a direct continuation rather than another invented operator:
+N04's final three body words supply a tighter continuation rather than another invented operator:
 
-`LOW BIT(COAT) = 7 -> N07`
+`NEEDS / A / COAT`
 
-N07's first three post-label words are the already calibrated source-local reversal instruction used independently by the AES->SEA and LWOL->LOWL branches.
+Apply the already established LOW BIT / LOW IF EVEN rule:
 
-Thus the complete source-selected instruction is:
+- `NEEDS -> 22 -> 23 = N23`
+- `A -> 1 = N01`
+- `COAT -> 7 = N07`
 
-**N23 landmarks -> HEAD twice -> N01 -> COAT/LOW BIT -> N07 reversal**
+So N04's own terminal clause selects **both complete source operands, N23 and N01, plus the reversal record N07**. N07's first three post-label words are the already calibrated source-local reversal instruction used independently by the AES->SEA and LWOL->LOWL branches.
+
+Thus the source-selected instruction closes as:
+
+**N23 landmarks -> HEAD twice -> N01; NEEDS/A/COAT -> N23/N01/N07 reversal**
 
 ## Complete output test
 
-Apply N07 reversal to the **entire** selected N01 caption.
+Apply N07 reversal to each complete source record explicitly selected by the N04 terminal triple: **N23 and N01**.
 
-The short-token source calibrations establish reversal but not phrase granularity, so test exactly the two natural complete interpretations:
+The short-token source calibrations establish reversal but not phrase granularity, so test exactly the two natural complete interpretations for each operand:
 
 1. reverse complete **word order**;
 2. reverse the entire normalized **character stream**.
@@ -34,17 +40,17 @@ There are no deletion, insertion, synonym, connector, source-row or target-guide
 
 Original K08 result:
 
-- complete outputs: **2**
+- complete outputs: **4**
 - original K08 hits: **0**
 - historical N02 reducer fixture: **PASS**
-- planted full-output positive: **1/2 exactly**
+- planted full-output positive: **1/4 exactly**
 - candidate wording printed/stored: **no**
 
-Therefore the most literal complete continuation of N04's own “heads twice ... coat” instruction is falsified.
+Therefore the most literal complete continuation of N04's own “heads twice ... needs a coat” instruction is falsified for **both source-selected complete operands**.
 
 ## Scope
 
-This negative does not weaken the N23 landmark-gap selector, the two HEAD passes, N01 as a selected antecedent, N07 as a calibrated reversal operation, or the source's draft/photo provenance. It closes only **whole-caption reversal of N01** under the source-selected COAT->N07 continuation.
+This negative does not weaken the N23 landmark-gap selector, the two HEAD passes, N01 as a selected antecedent, N23 as the final-margin witness, N07 as a calibrated reversal operation, or the source's draft/photo provenance. It closes only **whole-record reversal of the two explicitly selected N23/N01 operands** under the NEEDS/A/COAT -> N23/N01/N07 continuation.
 
 Do not extend this miss into arbitrary partial reversals, token-block permutations or hand-picked cut points. Those are different editor families and would require a new source-visible selection rule.
 
