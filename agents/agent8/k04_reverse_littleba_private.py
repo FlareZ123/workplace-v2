@@ -219,7 +219,7 @@ def synthetic():
     print(json.dumps({'synthetic_fixtures':fixtures,'source_free_original_style_hits':checked,
                       'inverse_roundtrip':True,'historical_key_recovered':False},sort_keys=True),flush=True)
 
-def run_fast_first(lo,count,store,ms=3000,max_models=32):
+def run_fast_first(lo,count,store,ms=3000,max_models=32,retry_unknown=False):
     """Candidate-latency-first scan of all P12 parent cubes; UNKNOWN remains open."""
     if not(0<=lo<4096 and 1<=count<=4096-lo and 100<=ms<=30000):
         raise ValueError('Invalid P12 coverage')
@@ -239,9 +239,11 @@ def run_fast_first(lo,count,store,ms=3000,max_models=32):
             rec=json.loads(path.read_text())
             if rec.get('stamp')!=label or rec.get('parent')!=parent:raise ValueError('Stale incompatible P12 cache')
             counts['resumed']+=1
-        if rec is None:
+        if rec is None or (retry_unknown and rec['terminal']=='unknown'):
             fixed=sum(((parent>>j)&1)<<bit for j,bit in enumerate(P12))
             states,status=e.solve(obs,fixed,P12,ms,True)
+            old=[(int(a,16),int(b,16)) for a,b in rec['states']] if rec else []
+            states=sorted(set(states).union(old))
             rec={'parent':parent,'stamp':label,'terminal':status,
                  'states':[[f'{a:016X}',f'{b:016X}'] for a,b in states]}
             atomic(path,rec)
@@ -275,6 +277,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--synthetic',action='store_true')
     p.add_argument('--fast-first',action='store_true')
+    p.add_argument('--retry-unknown',action='store_true',help='explicitly rerun previously UNKNOWN P12 cubes; default first pass skips them')
     p.add_argument('--start',type=int,default=0)
     p.add_argument('--count',type=int,default=16)
     p.add_argument('--private-dir',type=Path)
@@ -284,5 +287,5 @@ if __name__=='__main__':
     if args.synthetic:synthetic()
     else:
         if not args.private_dir:p.error('--private-dir required and must be outside repo, mode 0700')
-        if args.fast_first:run_fast_first(args.start,args.count,args.private_dir,max(3000,args.timeout_ms))
+        if args.fast_first:run_fast_first(args.start,args.count,args.private_dir,max(3000,args.timeout_ms),retry_unknown=args.retry_unknown)
         else:run(args.start,args.count,args.private_dir,args.timeout_ms,args.retry_ms)
