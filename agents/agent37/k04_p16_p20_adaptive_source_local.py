@@ -91,7 +91,7 @@ def two_observed_round_circuit(first, anchor, positions, timeout_ms):
         f"(assert (= a0_{j} {'true' if (anchor >> j) & 1 else 'false'}))"
         for j in positions)
     lines.append("(check-sat)")
-    return "\\n".join(lines) + "\\n"
+    return "\n".join(lines) + "\n"
 
 
 def solve_states(first, cube, positions, timeout_ms=700, max_models=32):
