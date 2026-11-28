@@ -26,8 +26,8 @@ CIRCUIT = Path(__file__).with_name("k04_p16_p20_adaptive_source_local.py")
 MASK64 = (1 << 64) - 1
 
 
-def private_dir(path: Path) -> Path:
-    if os.environ.get("CI") or os.environ.get("GITHUB_ACTIONS"):
+def private_dir(path: Path, synthetic: bool = False) -> Path:
+    if not synthetic and (os.environ.get("CI") or os.environ.get("GITHUB_ACTIONS")):
         raise RuntimeError("Historical source forbidden in CI")
     path = path.expanduser()
     if any(p.is_symlink() for p in (path, *path.parents)):
@@ -115,8 +115,9 @@ def write_receipt(root, meta, parent, record, first):
             old = prev_children[row["child"]]
             row["states"] = sorted({tuple(p) for p in
                                     (row["states"] + old["states"])})
-            row["terminal"] = "unsat" if row["terminal"] == "unsat" or
-                                   old["terminal"] == "unsat" else "unknown"
+            row["terminal"] = ("unsat" if (
+                row["terminal"] == "unsat" or old["terminal"] == "unsat"
+            ) else "unknown")
         record["sealed"] = all(x["terminal"] == "unsat" for x in record["children"])
         validate_record(record, parent, first)
     temp = root / (".tmp-" + secrets.token_hex(16))
@@ -126,7 +127,7 @@ def write_receipt(root, meta, parent, record, first):
         os.fchmod(fd, 0o600)
         with os.fdopen(fd, "w", encoding="ascii") as f:
             json.dump(record, f, sort_keys=True)
-            f.write("\\n")
+            f.write("\n")
             f.flush()
             os.fsync(f.fileno())
         os.replace(temp, target)
@@ -164,7 +165,7 @@ def synthetic():
     assert record["sealed"]
     with tempfile.TemporaryDirectory() as d:
         os.chmod(d, 0o700)
-        root = private_dir(Path(d))
+        root = private_dir(Path(d), synthetic=True)
         meta = metadata(first, "little", "ab")
         write_receipt(root, meta, parent, record, first)
         copy = read_receipt(root, meta, parent, first)
