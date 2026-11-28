@@ -114,6 +114,21 @@ This improves certified conditional K04 source-state exclusion from 16 to **208/
 Four further disjoint P12 exact-closure lanes have begun [208,240), [240,272), [272,304), [304,336), with local private ledgers. Aggregate proofs for later progress should replace these coverage numbers only after running the same full-domain auditor, not by counting launched workers, solver calls, or terminal timeouts.
 
 
+
+## 28 November ~11:48 UTC — audited source-empty prefix extends to 336 parents
+
+The next four original-source disjoint [208,240), [240,272), [272,304), [304,336) lanes have all completed, with exact recursive refinement and unmodified original K04 acceptance-first checking. The local confidential [independent full-domain auditor](../agents/agent8/k04_reverse_proof_audit.py) now certifies **336/336 consecutive P12 parent labels 0..335 are source-empty** under the conditional PS-0417 REQUESTED3 little/BA xoroshiro128++ model:
+
+- **5,376 P16 children visited:** 5,058 terminal no-state UNSAT, 318 UNKNOWN all refined.
+- **5,088 P20 grandchildren visited:** 5,087 terminal no-state UNSAT, one UNKNOWN refined.
+- **Four P22 great-grandchildren:** 4/4 terminal no-state UNSAT.
+- **336/336 parents entirely exhausted; zero missing descendants, zero retained compatible source states, zero original full K04 commitment hits.**
+- Remaining **3,760/4,096 P12 parents have not been proved empty** by this exact tree and must not be generalized into a generator-wide exclusion.
+
+A dedicated actual source-private firstpacket **big/BA** state-positive replay in separate [results/h17-k04-bigba-forward177-statepositive-replay-20261128.md](h17-k04-bigba-forward177-statepositive-replay-20261128.md) independently recovered the known single complete state in parent1371 and ran 177 original-commitment checks including 33 newly covered late offsets, all negative; that positive state is a different firstpacket/output layout, *not part of this laterfirst little/BA no-state prefix*. Critic's recommendation to spend compute on state-positive complete coupons was followed; source-compatible state evidence must not be collapsed into a source-empty parent count.
+
+The final four short [336,352), [352,368), [368,384), [384,400) exact parent-domain lanes are active; their outcomes must be measured from private receipts rather than inferred from launch. K04/K08 remain MISSING, six slots PASS, combined INCOMPLETE.
+
 ## Boundaries and decision
 
 A positive hit would establish a full 16-byte component matching the unchanged K04 acceptance, not automatically authenticate the speculative generator's historical use. A timeout or source-free positive cannot count as an original recovered component. The exact historical issuer and retry-state relationship remain unverified.
