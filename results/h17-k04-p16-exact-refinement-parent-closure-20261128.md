@@ -78,3 +78,19 @@ A third local policy check, 75→225→700 ms applied to all 256 children, also 
 An extra-coordinate holdout also showed that child bit choice matters: at 350 ms across the same 256 checks, selecting extra bits [8,9,10,11] instead of [4,5,6,7] proved only 79 children UNSAT and closed zero parents; [26,27,28,29] closed nine, [49,50,51,52] eleven, and [13,14,15,16] zero. This is solver-behavior evidence for keeping the initial contiguous [4,5,6,7] refinement, not evidence of the true physical generator or a universally optimal coordinate choice.
 
 The valid practical decision is to scale the **350→700 ms, exact disjoint P16 parent-major** original-source search when it can run privately, preserve UNKNOWN branches for later retries, and check the unchanged full 16-byte original commitment on every recovered SAT model. No source data or candidate bytes are committed.
+
+
+## Hard-fixture extrapolation: solver reachability is not universal
+
+A new source-independent, **previously untrained** 20-state batch (deterministic synthetic seeds 80903..80922) conditions *only the synthetic benchmark* on the **true P12 or P16 partition** to isolate solver behavior on one satisfiable branch. The coarse P12 check at 700 ms recovered the planted full state in **0/20** cases; exact P16 with 350 ms then 700 ms on UNKNOWN recovered **1/20**, with all **20 P16 fixtures still terminal UNKNOWN** under that budget. This is materially weaker than the earlier eight-fitness positive suite: it shows the P16 four-bit refinement is a **successful exact-UNSAT closure method for many original branches**, but **not yet a robust SAT-state recovery method** at 350→700 ms. The true branch is an oracle supplied only to calibrate the algorithm; historical source never supplies that selector.
+
+A depth-control on eight of the same hard synthetic seeds (80903..80910), all at 350→700 ms on the single **correct planted child** at each depth, explored progressively fixed *unknown generator-state* coordinates:
+
+| Calibration partition | Extra unknown state positions fixed | Complete planted state recovered |
+| --- | --- | ---: |
+| P16 | 4..7 | **1/8** |
+| P20 | 4..11 | **5/8** |
+| P24 | 4..15 | **7/8** |
+| P28 | 4..19 | **7/8** |
+
+All anchors were planted calibration selectors, *not* source observations. To cover an original P16 UNKNOWN child with P20, a legitimate exact method must enumerate **all 16** P20 children and retain any residual UNKNOWN; it cannot use the planted correct child. A deeper synthetic branch becoming SAT therefore establishes conditional model reachability but does not imply cheap full-domain recovery. The useful next computational avenue is **adaptive exact splitting only for persistent UNKNOWN children**, rather than blindly adding four partition bits across the entire original space. No new historical K04 candidate is established by this fixture study.
