@@ -122,7 +122,21 @@ def synthetic_controls():
         states,terminal=exact_states(first,cube,5000)
         assert terminal=='unsat' and (a,b) in states,(seed,terminal,len(states))
         checked+=1
+    # Agent37's source-free same-firstpacket collision: two distinct full
+    # 128-bit initial states must survive in different P16 subcubes.
+    twins=((0xB02543CFB686BB4A,0xF9DA21F56A996103),
+           (0xCE695E4122B2739A,0xFF6DF861F134F29D))
+    twinfirst=stream(*twins[0],2)
+    assert stream(*twins[1],2)==twinfirst
+    recovered=set()
+    for true in twins:
+        cube=sum(((true[0]>>p)&1)<<j for j,p in enumerate(P16))
+        models,status=exact_states(twinfirst,cube,10000)
+        assert status=='unsat' and true in models
+        recovered.update(models)
+    assert set(twins).issubset(recovered) and len(recovered)==2
     print(json.dumps({'source_free':True,'planted_complete_state_recoveries':checked,
+        'same_firstpacket_two_distinct_states_recovered':True,
         'exact_terminal_UNSAT_after_model_blocking':checked,
         'future_transition_rounds_unconstrained':0,
         'original_sources_read':False},sort_keys=True))
