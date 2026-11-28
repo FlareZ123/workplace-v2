@@ -121,7 +121,7 @@ def synthetic_test():
             later_visible=unpack(pack(later,endian,order),endian,order)
             first=unpack(pack(ss[2:4],endian,order),endian,order)
             # Positive coupon is at y5/y6. Distance to later = 24-7=17
-            # => gap = 15; fits the declared 0..17 stage family.
+            # => gap = 17; fits the declared 0..17 stage family.
             positive=pack((ss[5],ss[6]),endian,order)
             component=bytes(x^y for x,y in zip(positive,mask))
             target=hashlib.sha256(component).hexdigest()
@@ -233,7 +233,7 @@ def main():
             'elapsed_seconds':round(time.monotonic()-started,1),**stats}
     print('AGGREGATE_ONLY',json.dumps(result,sort_keys=True),flush=True)
     if a.summary_json:
-        a.summary_json.write_text(json.dumps(result,indent=2,sort_keys=True)+'\\n')
+        a.summary_json.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
 
 if __name__=='__main__':
     main()
