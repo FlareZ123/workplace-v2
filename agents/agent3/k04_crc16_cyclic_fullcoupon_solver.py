@@ -18,6 +18,15 @@ if os.getenv('GITHUB_ACTIONS')=='true':
 if not 1<=args.poly_start<=args.poly_end<=65536:
  raise SystemExit('Invalid polynomial interval')
 R=args.source_root
+# Pin the untouched preservation extract before accepting a historical no-hit.
+PINS={
+ 'evidence/transfers/transfer-audit.jsonl':'32970ad4431a9d610cc12dcca2813f39dd8fd2e396f9e748dc94b5932cb69adf',
+ 'evidence/recovery-routing.json':'f8fcbca73d23bf1066edb88c088f89cd24cf22e7c78a4a412166254a4764d8a5',
+ 'acceptance.json':'681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f',
+}
+for rel,want in PINS.items():
+ if hashlib.sha256((R/rel).read_bytes()).hexdigest()!=want:
+  raise SystemExit('Local source integrity mismatch: '+rel)
 L=[json.loads(x) for x in (R/'evidence/transfers/transfer-audit.jsonl').read_text().splitlines()]
 rows={}
 for o in L:
