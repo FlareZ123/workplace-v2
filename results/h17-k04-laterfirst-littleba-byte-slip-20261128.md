@@ -88,6 +88,32 @@ No compatible state, reconstructed physical coupon or original K04 full-commitme
 **Next substantive action underway:** four disjoint 16-parent original-source lanes [16,32), [32,48), [48,64), [64,80) run this entire P16→P20→P22 cascade on the same unchanged intact REQUESTED3 little/BA and original K04 commitment. Their final parent-complete receipts, not timeout-heavy first-SAT sweeps, should determine whether this conditional source view is a viable printer producer. A full-domain exclusion requires all 4,096 exact P12 parents; 16/4,096 is an early rigorous milestone, **not** the final missing K04 recovery.
 
 
+
+## 28 November ~11:42 UTC — 208 consecutive exact source-empty P12 parents
+
+Four additional non-overlapping original-source lanes completed [16,32), [32,48), [48,64), [64,80), followed by another four [80,112), [112,144), [144,176), [176,208). All use the **same untouched later PS-0417 REQUESTED3 little/BA packet**, exact xoroshiro128++ inverse condition, full original K04 commitment for any compatible state, and source/circuit/view/geometry-fingerprinted private ledgers. The independent domain-tree auditor has now executed over the entire **contiguous [0,208) parent interval** and returned:
+
+| Exact proof field | Audited count |
+| --- | ---: |
+| Distinct P12 parents included | 208 |
+| **P12 parents fully exhausted and source-empty** | **208** |
+| P12 parents still unresolved or unvisited | **0** |
+| P16 children examined | 3,328 |
+| P16 terminal UNSAT without a model | 3,071 |
+| P16 UNKNOWN, all subsequently subdivided | 257 |
+| P20 grandchildren examined | 4,112 |
+| P20 terminal UNSAT without a model | 4,111 |
+| P20 UNKNOWN, subdivided through P22 | 1 |
+| P22 great-grandchildren examined / terminal UNSAT | **4 / 4** |
+| Missing required descendant receipts | 0 |
+| Source-compatible 128-bit states anywhere in this exact subtree | **0** |
+| Original complete K04 SHA acceptance hits | **0** |
+
+This improves certified conditional K04 source-state exclusion from 16 to **208/4,096 P12 parents (5.08% of the initial-a state domain)** in the previously untested later-first little/BA serializer. The other 3,888 parents remain unresolved by this *exact* proof; a separate 2,555-parent P12 first-SAT first pass does not change that bound, because nearly all of its calls returned UNKNOWN. The conditional xoroshiro128++ printer hypothesis is **not** yet globally falsified; no physical coupon or original key component has been recovered.
+
+Four further disjoint P12 exact-closure lanes have begun [208,240), [240,272), [272,304), [304,336), with local private ledgers. Aggregate proofs for later progress should replace these coverage numbers only after running the same full-domain auditor, not by counting launched workers, solver calls, or terminal timeouts.
+
+
 ## Boundaries and decision
 
 A positive hit would establish a full 16-byte component matching the unchanged K04 acceptance, not automatically authenticate the speculative generator's historical use. A timeout or source-free positive cannot count as an original recovered component. The exact historical issuer and retry-state relationship remain unverified.
