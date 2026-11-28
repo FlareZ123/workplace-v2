@@ -88,3 +88,32 @@ A disjoint follow-up is already active on exactly the **107 not already establis
 If any later-source-compatible state is found, the private exact-state vault at [Agent6's source-safe state tool](../agents/agent6/k04_laterfirst_source_state_vault.py) preserves a separate 0600 state file for the existing [four-layout / sixteen-byte-slip complete-coupon C++ consumer](../agents/agent15/k04_xoropp_source_state_longstream_local.cpp). The latter now accepts source anchor `--source-attempt 3 --source-view big/ab` and can test 10 million **prior** native starts × four serializers × sixteen complete byte slips, **640 million original whole K04 component SHA checks per complete state**, before any optional other packet diagnostic. The pre-existing C++ synthetic test had a real same-scope `f` identifier collision, repaired at [compile fix](https://github.com/FlareZ123/workplace-v2/commit/2ae34a843c57187d44215a25f80e750997dc0799), and the full C++ source-free planted suite now builds and **passes** [GitHub Actions run 46161574314](https://github.com/FlareZ123/workplace-v2/actions/runs/46161574314). This validates a reusable future original candidate reduction, **not** a source-selected emitter or recovered seventh component.
 
 **Acceptance unchanged:** K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE.
+
+## Exact 0..115 gap closure without duplicating nine known parents
+
+**Original-source local execution completed 28 November 2026 at 15:53:30 UTC.** To close the initial P12 hole efficiently, the local runner explicitly excluded nine **already published** terminally source-empty later-first big/AB parents from Agent15's independent original run:
+
+`0, 101, 102, 106, 107, 109, 111, 112, 113`.
+
+The original-source follow-up enumerated **exactly the remaining 107 parent IDs** from 0..115, each with the same source3-only request fit, all sixteen P16 children, adaptive exact P20 and P22 treatment of genuine UNKNOWN, model blocking to terminal UNSAT, 177 complete byte-window SHA candidate reduction on SAT, and private source/target/hit handling. Nothing was inferred by treating Agent15's nine old proofs as 107 rerun results.
+
+| Original newly processed 0..115 parents excluding the nine | Result |
+| --- | ---: |
+| Newly processed exact P12 parent regions | **107 / 107** |
+| Fully proven source-empty among newly processed | **107 / 107** |
+| P16 children queried / terminal UNSAT at P16 | **1,712 / 1,642** |
+| P20 children queried / terminal UNSAT at P20 | **1,120 / 1,120** |
+| P22 deeper children queried | **0** |
+| Terminal UNKNOWN leaves | **0** |
+| Complete source-compatible states | **0** |
+| Complete original K04 component checks / exact full commitment hits | **0 / 0** |
+| Original local wall time | **125.5 seconds** |
+| Restricted out-of-repo parent ledger rows | **107 / 107** |
+
+Some of the 107 refined negatives could also overlap earlier large-cube coarse 5-second negatives; they are not represented as wholly new discoveries. Their value is an exact no-UNKNOWN, reproducible **contiguous parent-union closure** without reopening the nine specifically proven Agent15 parents.
+
+**Exact union:** The 107 newly processed parents plus Agent15's nine named proofs exactly partition **0..115 (116/116)**. Adding the previously completed Agent6 **116..1023 (908/908)** yields **0..1023 (1024/1024)** source-empty. Adding Agent15's independently completed **1024..1134 (111/111)** yields **0..1134 (1135/1135)** completely source-empty for the declared *intact later REQUESTED3 big/AB xoroshiro128++* hypothesis. A separately completed disjoint Agent6 2048..3071 interval contributes another 1024 terminal source-empty parents, for **2,159/4,096** total precisely identified P12 regions with complete conditional negative disposition.
+
+Still unresolved at this checkpoint: P12 **1135..2047** (Agent1 is researching part of this), and **3072..4095**. Source mode P12 **3072..3583** has now been started on an exact per-parent private resumable ledger. This record makes **no source or K04 commitment claims about that still-running region**.
+
+The intact REQUESTED3 pair is a 128-bit observation fitted by a freely chosen 128-bit hypothetical xoroshiro128++ state; if a compatible state does emerge, state fit alone does not authenticate printer provenance. Nothing here identifies any physical selected ACK2 coupon, author-final K08 words or valid combined REC8/1 key. Six original components remain PASS, K04/K08 MISSING.
