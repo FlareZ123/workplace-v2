@@ -103,17 +103,36 @@ int main(int argc,char**argv) {
         auto target=dehex(extract_field(acceptance,"K08",64));
         auto known_control=reducer.commitment("a good watch leaves the room ready for the next pair of hands");
         if(hex(known_control.data(),32)!="47e787785ff25082b4b960ad415f1e030ae0edc89c38b2f61c48f9331282ea55")throw std::runtime_error("Historical N02 reducer fixture failed");
+        // Every nonempty submultiset: 0..5 copies of the recurring token,
+        // any subset of the eight distinct singleton tokens. Each multiset
+        // permuted in full; no substitutions, additions or repetitions beyond
+        // the exact source multiplicity.
         std::sort(selected.begin(),selected.end());
-        auto planted=reducer.commitment(join(selected));
+        const auto all_sorted=selected;
+        const std::string recurring="the";
+        std::vector<std::string> singles;
+        for(const auto &w:all_sorted)if(w!=recurring)singles.push_back(w);
+        if(singles.size()!=8 || std::count(all_sorted.begin(),all_sorted.end(),recurring)!=5)
+            throw std::runtime_error("Unexpected P20 multiset");
+        auto planted=reducer.commitment(join(all_sorted));
         uint64_t checked=0,original_hits=0,planted_hits=0;
-        do {
-            auto text=join(selected);
-            auto got=reducer.commitment(text);
-            if(std::memcmp(got.data(),target.data(),32)==0){original_hits++; std::cerr<<"Original acceptance hit; preserve candidate locally and authenticate before publication\n";}
-            if(got==planted)planted_hits++;
-            checked++;
-        } while(std::next_permutation(selected.begin(),selected.end()));
-        if(checked!=51891840||planted_hits!=1)throw std::runtime_error("Enumeration or planted control invalid");
-        std::cout<<"K08_P20_WORDBAG assignments="<<checked<<" unique="<<checked<<" planted_hits="<<planted_hits<<" original_hits="<<original_hits<<" source=PASS N02=PASS\n";
+        std::array<uint64_t,14> length_counts{};
+        for(int mask=0;mask<256;mask++) for(int countThe=0;countThe<=5;countThe++) {
+            std::vector<std::string> sub(countThe,recurring);
+            for(int bit=0;bit<8;bit++)if(mask&(1<<bit))sub.push_back(singles[bit]);
+            if(sub.empty())continue;
+            std::sort(sub.begin(),sub.end());
+            const int length=int(sub.size());
+            do {
+                auto text=join(sub);
+                auto got=reducer.commitment(text);
+                if(std::memcmp(got.data(),target.data(),32)==0){original_hits++; std::cerr<<"Original acceptance hit; preserve candidate locally and authenticate before publication\n";}
+                if(got==planted)planted_hits++;
+                checked++;length_counts[length]++;
+            } while(std::next_permutation(sub.begin(),sub.end()));
+        }
+        if(checked!=152152845 || planted_hits!=1 || length_counts[13]!=51891840 || length_counts[12]!=51891840)
+            throw std::runtime_error("Enumeration or planted control invalid");
+        std::cout<<"K08_P20_ALL_SUBMULTISET_PERMUTATIONS checked="<<checked<<" planted_hits="<<planted_hits<<" original_hits="<<original_hits<<" source=PASS N02=PASS\n";
     }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 2;}
 }
