@@ -37,3 +37,26 @@ Continue disjoint later-first big/AB original-source P12 parents **256..1023**, 
 The standalone local executable that produced this confidential aggregate result has the same state and 177-window construction as [Agent6's source-safe modular reproducer](../agents/agent6/k04_laterfirst_bigab_177_exact_source_local.py). It is restricted to private/local original-source execution; no public CI original run is authorized. This is a **conditional mathematical exclusion and reusable complete-coupon mechanism**, not an accepted seventh component.
 
 **Acceptance remains:** K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE.
+
+## Original-source continuation: complete 908-parent interval, 116..1023
+
+The separately announced original-source parent-major P16→P20→P22 adaptive refinement **completed** the entire remaining contiguous P12 region 256..1023 (768 parents, four workers, 350ms each solver call, original source pins and 177 complete-coupon reducer unchanged). The terminal local aggregate was:
+
+| Metric | Exact completed original 256..1023 |
+| --- | ---: |
+| P12 parents completed / entirely proved source-empty | **768 / 768** |
+| P16 exact subcubes / terminal UNSAT at P16 | **12,288 / 11,352** |
+| P20 extra subcubes / terminal UNSAT at P20 | **14,976 / 14,974** |
+| P22 extra subcubes / terminal UNSAT at P22 | **8 / 8** |
+| Remaining terminal UNKNOWN | **0** |
+| Compatible complete generator states | **0** |
+| Complete predicted K04 coupons checked / original commitment hits | **0 / 0** |
+| Aggregate local wall time | **1,065.8 seconds** |
+
+The two still-UNKNOWN P20 descendants were not silently marked empty: each was exhaustively split into four terminal-UNSAT P22 grandchildren. The completed local program exited normally; the resulting source-empty domains are genuine exact conditional model exclusions.
+
+Combined with the first 140-parent closure at 116..255, this yields **P12 parents 116..1023 inclusive: 908/908 proven source-empty under the specified intact later-REQUESTED3, xoroshiro128++ big-endian/AB model**. This covers **908 / 4096** disjoint P12 regions; it is **not** a full-domain exclusion. The older coarse P12 quarter had already closed some of these 908 via terminal UNSAT at its larger 5-second budget; this new result should not be counted as 908 wholly unprecedented independent discoveries. Its stronger value is a reproducibly full **no-UNKNOWN** original-source interval, with every inconclusive coarse region resolved through an exact disjoint refinement.
+
+A further, disjoint complete-candidate source scan has begun on **P12 2048..3071** with the [fast fresh-context resumable local engine](../agents/agent6/k04_laterfirst_fresh_resumable_source_local.py); it writes every fully processed source region to a private chmod-0600 ledger before considering it checkpointed. This report makes **no claims about that ongoing region** until a completed aggregate is appended.
+
+The original REC8/1 remains **six PASS / K04 and K08 MISSING / combined INCOMPLETE**. There is no recovered K04 coupon or recovered K08 final wording.
