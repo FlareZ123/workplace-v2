@@ -73,7 +73,7 @@ def source_inputs(path):
         if len(found) != 1:
             raise ValueError("Nonunique intact requested original")
         import re
-        m = re.search(r"\\bPAYLOAD=([0-9A-F]{32})\\b", found[0])
+        m = re.search(r"\bPAYLOAD=([0-9A-F]{32})\b", found[0])
         if m is None:
             raise ValueError("No intact packet")
         return bytes.fromhex(m.group(1))
@@ -103,14 +103,15 @@ def read_private_receipt(path, first, endian, order):
         raise ValueError("Cached state serializer mismatch")
     if not 0<=data["parent"]<4096 or len(data["children"])!=16:
         raise ValueError("Invalid complete parent receipt")
+    if sorted(c["child"] for c in data["children"])!=list(range(16)):
+        raise ValueError("Duplicate or missing P16 child")
     obs = [int.from_bytes(first[i:i+8], endian) for i in (0,8)]
     if order=="ba": obs.reverse()
     states=set()
     for c in data["children"]:
-        if c["terminal"] not in ("unknown","unsat"):
-            # Earlier local receipt schema names the field status.
-            if c.get("status") not in ("unknown","unsat"):
-                raise ValueError("Invalid model terminal")
+        terminal = c.get("terminal", c.get("status"))
+        if terminal not in ("unknown","unsat"):
+            raise ValueError("Invalid model terminal")
         sub = c["child"]
         if not 0<=sub<16: raise ValueError("Invalid P16 child")
         for pair in c["states"]:
@@ -124,6 +125,8 @@ def read_private_receipt(path, first, endian, order):
             if (p12,p16)!=(data["parent"],sub):
                 raise ValueError("Cached state belongs to another exact cube")
             states.add((a,b))
+    if bool(data["sealed"]) != all(c.get("terminal",c.get("status"))=="unsat" for c in data["children"]):
+        raise ValueError("Receipt sealed flag contradicts child disposition")
     return states,bool(data["sealed"])
 
 
