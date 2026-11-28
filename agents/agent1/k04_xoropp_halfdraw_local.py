@@ -40,12 +40,13 @@ def branch(job):
     states,terminal = query_models(first,anchor,timeout_ms)
     if terminal not in ('unsat','unknown'):
         raise AssertionError('Source branch not closed: '+str(terminal))
-    even = odd = even_hits = odd_hits = 0
+    even = odd = even_hits = odd_hits = all_commitment_hits = 0
     for state in states:
         ys = stream(*state, 7 + 2*skips)  # y22 for phase21/y22 holdout
         coupon = pack(tuple(ys[2:4]),endian,order)
         candidate = bytes(v ^ m for v,m in zip(coupon,mask))
         commitment_hit = hashlib.sha256(candidate).hexdigest() == target
+        all_commitment_hits += int(commitment_hit)  # independent of retry holdout
         for phase in range(4,6 + 2*skips):
             if tuple(ys[phase:phase+2]) == tuple(later):
                 if phase % 2:
@@ -54,7 +55,7 @@ def branch(job):
                 else:
                     even += 1
                     even_hits += int(commitment_hit)
-    return bool(states),terminal,len(states),even,odd,even_hits,odd_hits
+    return bool(states),terminal,len(states),even,odd,even_hits,odd_hits,all_commitment_hits
 
 def synthetic_control():
     rng = random.Random(20261128)
@@ -67,13 +68,20 @@ def synthetic_control():
         later = unpack(pack(ys[5:7],endian,order),endian,order)
         middle = pack(ys[2:4],endian,order)
         target = hashlib.sha256(bytes(v^m for v,m in zip(middle,mask))).hexdigest()
-        _,terminal,n,eh,oh,ea,oa = branch(
+        _,terminal,n,eh,oh,ea,oa,unfiltered = branch(
             (idx,first,later,30000,8,endian,order,mask,target))
         assert terminal == 'unsat' and n >= 1 and eh == 0 and oh == 1
-        assert ea == 0 and oa == 1
+        assert ea == 0 and oa == 1 and unfiltered == 1
+        # A different later retry must not veto a complete committed coupon.
+        poisoned_later = [later[0] ^ 1,later[1]]
+        _,t2,n2,pe,po,pce,pco,unfiltered2 = branch(
+            (idx,first,poisoned_later,30000,8,endian,order,mask,target))
+        assert t2 == 'unsat' and n2 >= 1 and (pe,po,pce,pco) == (0,0,0,0)
+        assert unfiltered2 == 1
     print({'synthetic_only':True,'odd_phase_five_tested':True,
            'four_layouts_full_middle_and_later_replay':True,
-           'four_layouts_full_sha256_commitment_positive':True})
+           'four_layouts_full_sha256_commitment_positive':True,
+           'four_poisoned_later_retry_controls_preserve_sha_hit':True})
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
@@ -114,12 +122,13 @@ def main():
     assert len(mask)==16 and re.fullmatch('[0-9a-f]{64}',target)
     counts = dict(done=0,sat_buckets=0,unsat_buckets=0,open_unknown=0,
                   models_examined=0,even_holdout=0,odd_holdout=0,
-                  even_commitment_hits=0,odd_commitment_hits=0)
+                  even_commitment_hits=0,odd_commitment_hits=0,
+                  unfiltered_commitment_hits=0)
     jobs = ((idx,first,later,a.timeout_ms,a.max_later_skipped_packets,
              a.endian,a.order,mask,target) for idx in range(a.start,a.start+a.count))
     started = time.monotonic()
     with mp.Pool(a.workers) as pool:
-        for sat,terminal,n,eh,oh,ea,oa in pool.imap_unordered(branch,jobs,chunksize=1):
+        for sat,terminal,n,eh,oh,ea,oa,unfiltered in pool.imap_unordered(branch,jobs,chunksize=1):
             counts['done'] += 1
             counts['sat_buckets'] += int(sat)
             counts['unsat_buckets'] += int(not sat and terminal=='unsat')
@@ -129,12 +138,14 @@ def main():
             counts['odd_holdout'] += oh
             counts['even_commitment_hits'] += ea
             counts['odd_commitment_hits'] += oa
+            counts['unfiltered_commitment_hits'] += unfiltered
             if counts['done'] % 100 == 0:
                 print('AGGREGATE_PROGRESS',{'completed':counts['done'],
                       'sat':counts['sat_buckets'],'unsat':counts['unsat_buckets'],
                       'unknown':counts['open_unknown'],
                       'full_even_replays':counts['even_holdout'],
-                      'full_odd_replays':counts['odd_holdout']},flush=True)
+                      'full_odd_replays':counts['odd_holdout'],
+                      'unfiltered_commitments':counts['unfiltered_commitment_hits']},flush=True)
     summary = {
         'conditional_model':'xoroshiro128pp_1.0',
         'layout':a.endian+'/'+a.order,
