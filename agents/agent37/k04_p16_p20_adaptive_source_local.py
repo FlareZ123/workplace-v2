@@ -23,7 +23,7 @@ from agents.agent7.k04_xoropp_p16_subcube_source_local import (
     P12, P16, exact_states, read_original,
 )
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import circuit, stream, ror
-from agents.agent7.k04_xoropp_byte_slip_reducer import assess_state, escrow_hits
+from agents.agent7.k04_xoropp_byte_slip_reducer import assess_state, escrow_hits, serialized_bytes
 
 P20 = P16 + (8, 9, 10, 11)
 MASK = (1 << 64) - 1
@@ -113,9 +113,11 @@ def adaptive_child(first, parent, child, ms, retry, cap):
 
 
 def synthetic():
-    # Source-independent complete 16-byte commitment tests, including
-    # a deliberately non-packet-aligned candidate coupon.
-    results = {"fixtures": 0, "recovered": 0, "original_loaded": False}
+    # Conditional on the planted P12/P16 anchor ONLY in this calibration.
+    # Every full source-independent SHA target is checked against 144
+    # nonaligned coupon windows; the historical search never gets this anchor.
+    results = {"fixtures": 0, "recovered": 0, "original_loaded": False,
+               "full_commitment_positives": 0}
     for seed in range(123210, 123214):
         rng = random.Random(seed)
         a, b = rng.getrandbits(64), rng.getrandbits(64)
@@ -123,12 +125,25 @@ def synthetic():
         parent = sum(((a >> p) & 1) << j for j, p in enumerate(P12))
         child = sum(((a >> p) & 1) << j for j, p in enumerate(P16[12:]))
         states, status, _ = adaptive_child(first, parent, child, 350, 700, 32)
-        if (a, b) in states:
-            results["recovered"] += 1
+        assert (a, b) in states, (seed, status)
+        results["recovered"] += 1
+
+        mask = rng.randbytes(16)
+        gap, slip = rng.randrange(9), rng.randrange(16)
+        payload = serialized_bytes((a, b), 24, "big", "ab")
+        start = 16 * (gap + 1) + slip
+        truth = bytes(p ^ m for p, m in zip(payload[start:start + 16], mask))
+        target = hashlib.sha256(truth).hexdigest()
+        hits = []
+        for state in states:
+            _, got = assess_state(state, mask, target, "big", "ab", 8, 8, None)
+            hits.extend(got)
+        assert hits == [truth.hex().upper()], (seed, status)
+        results["full_commitment_positives"] += 1
         results["fixtures"] += 1
     assert results["recovered"] == results["fixtures"]
+    assert results["full_commitment_positives"] == results["fixtures"]
     print(json.dumps(results, sort_keys=True))
-
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
