@@ -52,8 +52,8 @@ def encode(words,order,swap):
  xs=words[::-1] if swap else words
  return b''.join(x.to_bytes(8,order) for x in xs)
 def controls():
- rng=random.Random(20261128)
- for i in range(10):
+ for i,seed in enumerate((20261128,12345,2027,2048,124,48,19,123456,8773,2)):
+  rng=random.Random(seed)
   a,b=rng.getrandbits(64),rng.getrandbits(64)
   ys=stream(a,b,6);obs={j:ys[j] for j in (0,1,4,5)}
   verdict,got=solve(obs,a&0xffff,5000)
@@ -61,6 +61,7 @@ def controls():
   for order in ('big','little'):
    for swap in (False,True):
     assert decode(encode(ys[2:4],order,swap),order,swap)==ys[2:4]
+ rng=random.Random(20261128)
  a,b=rng.getrandbits(64),rng.getrandbits(64);ys=stream(a,b,6)
  for bit in (0,17,39,63):
   obs={j:ys[j] for j in (0,1,4,5)};obs[4]^=1<<bit
