@@ -29,9 +29,15 @@ The first full candidate-generation run used deterministic synthetic seed **2026
 
 **Important scope:** 153 UNKNOWN branches are *not* excluded. This is an actual zero-external-bit *candidate recovery*, **not** a proof of uniqueness or universal successful termination. Only one SAT model is requested per bucket; an alternative SAT model in the same bucket could exist. The remaining 3,460 buckets were not needed for this positive recovery and were not exhaustively adjudicated. These distinctions must survive any subsequent synthesis.
 
+### Independent complete-state generalization (not a supplied-bit witness)
+
+An independently seeded synthetic stream, **80904**, was then run with the same fixed twelve sparse anchor positions and *no true branch supplied* to the search. At **5,000 ms per branch** with two local workers, **292 actual branches** completed: **167 UNSAT, 124 UNKNOWN, 1 SAT**, elapsed **658.0 s**. The qualifying SAT model again reconstructed **the complete planted initial 128-bit state and both erased 64-bit outputs exactly**, followed by an exact withheld later two-word replay. This gives **2/2 independent seeded synthetic state recoveries**, not two full-domain uniqueness certificates. The increased UNKNOWN fraction illustrates solver budget sensitivity; count UNKNOWN as unresolved.
+
 ### End-to-end synthetic source-presentation controls
 
 A second, independent integration harness generated source-shaped REQUESTED1 and REQUESTED3 packets from a planted xoroshiro128++ stream, planted a synthetic 16-byte XOR mask and corresponding SHA-256 commitment, and then *withheld* the missing packet. All four declared presentation layouts — big/little byte order, each with first/second word order — yielded **4/4 exact complete later-packet matches and 4/4 original-style commitment matches** using one planted compatible 12-bit bucket per layout. The four layouts encode the same planted stream, so they are **serialization controls, not four independent random-state solver trials**.
+
+A second 4/4 end-to-end source-presentation control inserted **one unobserved 16-byte generator packet** between selected erased ACK2 and the later intact REQUESTED3 packet. The predictor still inferred exactly middle outputs **y2,y3** from the first packet only; it matched the later holdout at **y6,y7**, reconstructed the synthetic physical middle, and passed the synthetic original-style route XOR and SHA-256 commitment under each byte/word order. The local source runner now has an **optional, bounded 0..8 skipped-packet phase search** for the later independent holdout, with **no additional externally known state bits or SAT branches**. This is a *mechanism robustness control*, not evidence of an actual missing historical printer job.
 
 ## Reusable implementations
 
