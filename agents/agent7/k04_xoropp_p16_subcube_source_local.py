@@ -124,8 +124,12 @@ def synthetic_controls():
 
 
 def source_worker(job):
-    cube, first, later, mask, target, endian, order, ms, cap, pre, lag = job
+    cube, first, later, mask, target, endian, order, ms, retry_ms, cap, pre, lag = job
     states, terminal = exact_states(first, cube, ms, cap)
+    first_terminal = terminal
+    if terminal == 'unknown' and retry_ms > ms:
+        retry_states, terminal = exact_states(first, cube, retry_ms, cap)
+        states = list(set(states).union(retry_states))
     counts = {'candidates': 0, 'commit_hits': 0,
               'unaligned_commit_hits': 0, 'replay_views': 0, 'joint_hits': 0}
     verified = []
@@ -134,7 +138,7 @@ def source_worker(job):
         for k in counts:
             counts[k] += c[k]
         verified.extend(hits)
-    return cube, terminal, len(states), counts, verified
+    return cube, terminal, len(states), counts, verified, first_terminal
 
 
 def read_original(endian, order):
@@ -165,6 +169,8 @@ def main():
     ap.add_argument('--count', type=int, default=16,
                     help='Subcube count in flat layout, P12 parent count in parent-major')
     ap.add_argument('--timeout-ms', type=int, default=350)
+    ap.add_argument('--retry-timeout-ms', type=int, default=700,
+                    help='Retry ONLY unresolved subcubes; never recheck proved UNSAT')
     ap.add_argument('--max-models', type=int, default=32)
     ap.add_argument('--workers', type=int, default=4)
     ap.add_argument('--endian', choices=('big', 'little'), default='big')
@@ -183,7 +189,8 @@ def main():
         ap.error('Original-source mode requires out-of-repo private escrow')
     maximum = 4096 if args.layout == 'parent-major' else 65536
     if not (0 <= args.start < maximum and 1 <= args.count <= maximum - args.start
-            and 100 <= args.timeout_ms <= 30000 and 1 <= args.workers <= 4
+            and 100 <= args.timeout_ms <= args.retry_timeout_ms <= 30000
+            and 1 <= args.workers <= 4
             and 1 <= args.max_models <= 1024
             and 0 <= args.max_pre_packets <= 16):
         ap.error('Invalid bounded search settings')
@@ -206,18 +213,23 @@ def main():
     counts = {'done': 0, 'unsat': 0, 'unknown': 0, 'models': 0,
               'candidates': 0, 'commit_hits': 0, 'unaligned_commit_hits': 0,
               'replay_views': 0, 'joint_hits': 0,
-              'complete_parents': 0, 'open_parents': 0}
+              'complete_parents': 0, 'open_parents': 0,
+              'first_stage_unknown': 0, 'retry_resolved': 0,
+              'retry_still_unknown': 0}
     progress = {}
     start = time.monotonic()
     tasks = ((cube, first, later, mask, target, args.endian, args.order,
-              args.timeout_ms, args.max_models,
+              args.timeout_ms, args.retry_timeout_ms, args.max_models,
               args.max_pre_packets, args.max_later_packets)
              for cube in buckets)
     with mp.Pool(args.workers) as pool:
-        for cube, status, nmodels, c, hits in pool.imap_unordered(source_worker, tasks, chunksize=1):
+        for cube, status, nmodels, c, hits, first_terminal in pool.imap_unordered(source_worker, tasks, chunksize=1):
             counts['done'] += 1
             counts[status] += 1
             counts['models'] += nmodels
+            if first_terminal == 'unknown':
+                counts['first_stage_unknown'] += 1
+                counts['retry_resolved' if status == 'unsat' else 'retry_still_unknown'] += 1
             for k in c:
                 counts[k] += c[k]
             if hits:
@@ -234,6 +246,8 @@ def main():
                     'local_only': True, 'phase': 'P16 complete-firstpacket',
                     'layout': args.layout, 'start': args.start, 'count': args.count,
                     'endian': args.endian, 'order': args.order,
+                    'first_timeout_ms': args.timeout_ms,
+                    'retry_timeout_ms': args.retry_timeout_ms,
                     'original_source_or_candidate_values_exposed': False,
                     'all_subcubes_examined': counts['done'] == total,
                     'all_subcubes_decided': counts['unknown'] == 0,
