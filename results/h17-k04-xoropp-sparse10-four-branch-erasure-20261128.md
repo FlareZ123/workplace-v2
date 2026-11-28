@@ -42,3 +42,10 @@ This reduces the externally required initial-a state witness from **16 bits to t
 **Original REC8/1 result unchanged:** K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined INCOMPLETE. No original source/candidate/acceptance/verifier file changed. The quarantined BX25-08 PDF was not accessed or derived, and no original-source-bearing public CI was run.
 
 Next productive step is either an authentic observed generator-state/coupon-bearing source or an **unanchored** exact inversion that removes the remaining ten-bit witness entirely. Neither has been achieved here.
+
+
+## Additional 20 independently chosen planted states: measured solver generalization limit
+
+A subsequent independent synthetic-only cohort with deterministic seed IDs **80903–80922** (20 cases, neither part of choosing the bit geometry nor selecting the two omitted positions) tested **all 80 necessary complete-state branches**. With the same five-second-per-branch cap, the counts were **16 SAT**, **51 UNSAT**, and **13 UNKNOWN** (timeouts). Thus **9/20 whole-state cases** had a conclusive correct SAT and all three false branches definitively UNSAT; the other 11 had at least one UNKNOWN, never a wrong SAT or a falsely asserted UNSAT. The 13 UNKNOWN calls were retried with a longer 20-second cap: **3 additional UNSAT, ten still UNKNOWN**, improving fully conclusive cases to **12/20**. This confirms that the ten-bit four-branch mechanism is an **exact decision procedure per resolved branch**, but not a reliably terminating fast general inverse. The original 10/10 planted controls remain valid in their predeclared scope; treating that initial small success rate as typical across arbitrary states would overstate the finding.
+
+The straightforward next technical problem is *solver robustness and unanchored inversion*, not increasing the pool of source-free state donors. No authentic K04 material or final K08 words were observed or accepted in this extra synthetic test.
