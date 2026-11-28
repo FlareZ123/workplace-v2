@@ -43,7 +43,7 @@ SPOOL_SHA256='7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083'
 
 def rotr(x,n):return ((x>>n)|(x<<(64-n)))&M
 
-def all_firstpair_states(first,anchor,timeout_ms,max_states):
+def all_firstpair_states(first,anchor,timeout_ms,max_states,positions=POSITIONS):
     """Return observed models and an honest terminal UNSAT or UNKNOWN."""
     lib=ctypes.CDLL('libz3.so.4')
     lib.Z3_mk_config.restype=P
@@ -56,7 +56,7 @@ def all_firstpair_states(first,anchor,timeout_ms,max_states):
     cfg=lib.Z3_mk_config();ctx=lib.Z3_mk_context(cfg);lib.Z3_del_config(cfg)
     def ev(v):return (lib.Z3_eval_smtlib2_string(ctx,v.encode()) or b'').decode().strip()
     try:
-        status=ev(circuit({0:first[0],1:first[1]},anchor,POSITIONS,timeout_ms))
+        status=ev(circuit({0:first[0],1:first[1]},anchor,positions,timeout_ms))
         models=[]
         while status=='sat':
             raw=ev('(get-value ('+' '.join(f'a0_{j}' for j in range(64))+'))')
@@ -78,9 +78,28 @@ def all_firstpair_states(first,anchor,timeout_ms,max_states):
     finally:lib.Z3_del_context(ctx)
 
 def evaluate(task):
-    bucket,first,later,mask,target,endian,order,timeout_ms,later_skips,max_states=task
+    bucket,first,later,mask,target,endian,order,timeout_ms,later_skips,max_states,split_bit=task
     anchor=sum(((bucket>>j)&1)<<p for j,p in enumerate(POSITIONS))
     models,terminal=all_firstpair_states(first,anchor,timeout_ms,max_states)
+    rescued=split_attempted=False
+    if terminal=='unknown' and split_bit is not None:
+        # The two P13 children are a disjoint, exhaustive partition of
+        # the unresolved P12 a0 cube. This is source-free exact inference,
+        # NOT an approximation or a claim that one SAT state is unique.
+        split_attempted=True
+        complete_children=[]
+        all_seen=set(models)
+        for side in (0,1):
+            child_anchor=anchor|(side<<split_bit)
+            child_states,child_terminal=all_firstpair_states(
+                first,child_anchor,timeout_ms,max_states,POSITIONS+(split_bit,))
+            if any((state[0]>>split_bit)&1!=side for state in child_states):
+                raise AssertionError('P13 child escaped its source-state partition')
+            all_seen.update(child_states)
+            complete_children.append(child_terminal=='unsat')
+        models=list(all_seen)
+        rescued=all(complete_children)
+        terminal='unsat' if rescued else 'unknown'
     matches_any=matches_later=matches_joint=0
     accepted_components=[]
     for state in models:
@@ -96,7 +115,8 @@ def evaluate(task):
         matches_joint+=(committed and replay)
         if committed:accepted_components.append(component.hex().upper())
     assert matches_any==len(accepted_components)
-    return (bucket,terminal,len(models),matches_any,matches_later,matches_joint,accepted_components)
+    return (bucket,terminal,len(models),matches_any,matches_later,matches_joint,
+            accepted_components,split_attempted,rescued)
 
 def read_sources(root,endian,order):
     spool=root/'evidence/print/spool-reconstruction.log'
@@ -133,6 +153,8 @@ def main():
     p.add_argument('--workers',type=int,default=4)
     p.add_argument('--timeout-ms',type=int,default=5000)
     p.add_argument('--max-models-per-cube',type=int,default=64)
+    p.add_argument('--split-unknown-bit',type=int,
+                   help='Optionally split an unresolved P12 cube into both exhaustive P13 children, e.g. 4')
     p.add_argument('--max-later-skipped-packets',type=int,default=8)
     p.add_argument('--summary-json',type=Path)
     p.add_argument('--local-status-ledger',type=Path,
@@ -148,6 +170,9 @@ def main():
     if not(1<=a.workers<=4 and 100<=a.timeout_ms<=30000):p.error('Bad solver budget')
     if not(1<=a.max_models_per_cube<=65536 and 0<=a.max_later_skipped_packets<=8):
         p.error('Bad model or gap budget')
+    if a.split_unknown_bit is not None and (
+            not 0<=a.split_unknown_bit<64 or a.split_unknown_bit in POSITIONS):
+        p.error('The split bit must be one of the 52 free initial-a positions')
     path=validate_private_path(a.local_hit_escrow,ROOT)
     ledger_path=(validate_private_path(a.local_status_ledger,ROOT)
                  if a.local_status_ledger else None)
@@ -167,13 +192,17 @@ def main():
             'original_K04_hits_any_state':0},sort_keys=True),flush=True)
         return
     tasks=((i,first,later,mask,target,a.endian,a.order,a.timeout_ms,
-            a.max_later_skipped_packets,a.max_models_per_cube)
+            a.max_later_skipped_packets,a.max_models_per_cube,a.split_unknown_bit)
            for i in bucket_ids)
     t0=time.monotonic();done=states=sat_cubes=hits=replays=joints=stored=0
+    rescue_attempts=rescue_proofs=0
     terminal_count={'unsat':0,'unknown':0}
     with mp.Pool(a.workers) as pool:
-        for bucket,terminal,n,h,r,j,components in pool.imap_unordered(evaluate,tasks,chunksize=1):
+        for bucket,terminal,n,h,r,j,components,split_attempted,rescued in pool.imap_unordered(
+                evaluate,tasks,chunksize=1):
             done+=1;states+=n;sat_cubes+=(n>0);hits+=h;replays+=r;joints+=j
+            rescue_attempts+=int(split_attempted)
+            rescue_proofs+=int(rescued)
             terminal_count[terminal]+=1
             if ledger_path:
                 append_record(ledger_path,{
@@ -182,6 +211,9 @@ def main():
                     'terminal':terminal,'states_examined':n,
                     'timeout_ms':a.timeout_ms,
                     'max_models_per_cube':a.max_models_per_cube,
+                    'split_unknown_bit':a.split_unknown_bit,
+                    'rescue_attempted':bool(split_attempted),
+                    'rescue_exact_closure':bool(rescued),
                 })
             if components:
                 securely_escrow(path,components)
@@ -200,6 +232,9 @@ def main():
                         'verified_hits_securely_escrowed':stored==hits,
                         'original_ACK2_not_read':True,
                         'unknown_cubes_unresolved':terminal_count['unknown'],
+                        'split_unknown_bit':a.split_unknown_bit,
+                        'split_rescue_attempts':rescue_attempts,
+                        'split_rescue_exact_closures':rescue_proofs,
                         'endian_order_historical_hypothesis':True,
                         'elapsed_seconds':round(time.monotonic()-t0,2)}
                 print('AGGREGATE_ONLY',json.dumps(status,sort_keys=True),flush=True)
