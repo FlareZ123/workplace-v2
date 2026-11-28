@@ -33,6 +33,7 @@ from agents.agent37.k04_private_state_ledger_sft import (
 )
 from agents.agent37.k04_xoropp_samebucket_collision_sft import query_models
 from agents.agent4.k04_xoropp_zero_witness_source_local import requested_packet, unpack
+from agents.agent1.k04_xoropp_laterfirst_backwards_local import scan_state as reverse_scan_state
 
 PINS = {
     "evidence/print/spool-reconstruction.log":
@@ -45,7 +46,7 @@ PINS = {
 MASK = (1 << 64) - 1
 
 
-def read_inputs(root: Path, endian: str, order: str):
+def read_inputs(root: Path, endian: str, order: str, fit_attempt: int):
     for relative, expected in PINS.items():
         path = root / relative
         if path.suffix.lower() == ".pdf":
@@ -53,9 +54,9 @@ def read_inputs(root: Path, endian: str, order: str):
         if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
             raise ValueError("Original source hash mismatch")
     spool = root / "evidence/print/spool-reconstruction.log"
-    rawfirst = requested_packet(spool, 1)
+    rawfirst = requested_packet(spool, fit_attempt)
     first = unpack(rawfirst, endian, order)
-    later = unpack(requested_packet(spool, 3), endian, order)
+    later = unpack(requested_packet(spool, 3 if fit_attempt == 1 else 1), endian, order)
     route = json.loads((root / "evidence/recovery-routing.json").read_text())
     checks = json.loads((root / "acceptance.json").read_text())
     mask = bytes.fromhex(route["K04"]["masked_component"])
@@ -66,8 +67,9 @@ def read_inputs(root: Path, endian: str, order: str):
     blocker = ROOT / "agents/agent37/k04_xoropp_samebucket_collision_sft.py"
     # Invalidate any cached state if EITHER the Boolean circuit or the exact
     # enumerating/model-blocking implementation changes.
+    reverse_code = (ROOT / "agents/agent1/k04_xoropp_laterfirst_backwards_local.py").read_bytes() if fit_attempt == 3 else b""
     producer_code_digest = hashlib.sha256(
-        circuit.read_bytes() + bytes([0]) + blocker.read_bytes()
+        circuit.read_bytes() + bytes([0]) + blocker.read_bytes() + bytes([0]) + reverse_code
     ).hexdigest()
     meta = {
         "source_sha256": PINS["evidence/print/spool-reconstruction.log"],
@@ -118,6 +120,8 @@ def main():
     p.add_argument("--escrow", type=Path, help="Required for reduction, outside repo")
     p.add_argument("--endian", choices=("little", "big"), required=True)
     p.add_argument("--order", choices=("ab", "ba"), required=True)
+    p.add_argument("--fit-attempt", type=int, choices=(1, 3), default=1,
+                   help="1: forward selected coupon, 3: inverse earlier coupon")
     p.add_argument("--start", type=int, default=0)
     p.add_argument("--count", type=int, default=4096)
     p.add_argument("--workers", type=int, default=4)
@@ -136,7 +140,7 @@ def main():
                      ROOT in a.escrow.resolve().parents or
                      not a.escrow.parent.is_dir()):
         p.error("Hit escrow must be local, outside the repository")
-    first, later, mask, target, meta = read_inputs(a.resources_root, a.endian, a.order)
+    first, later, mask, target, meta = read_inputs(a.resources_root, a.endian, a.order, a.fit_attempt)
     cubes = range(a.start, a.start + a.count)
     started = time.monotonic()
 
@@ -183,23 +187,35 @@ def main():
         unvisited += int(d["status"] == "unvisited")
         total_states += len(d["states"])
         total_windows += len(d["states"]) * 18
-        # Independent causal diagnostic only: exact whole REQUESTED3 pair
-        # can appear after a selected coupon under an explicit bounded stage.
-        # It must NEVER veto the original commitment test below.
-        for state in d["states"]:
-            out = stream(*state, 40)
-            for start_word in range(2, 20):
-                later_replays += sum(
-                    tuple(out[phase:phase + 2]) == tuple(later)
-                    for phase in range(start_word + 2, start_word + 20)
+        verified = []
+        if a.fit_attempt == 1:
+            # Physical coupon follows REQUESTED1; later REQUESTED3 is only a diagnostic.
+            for state in d["states"]:
+                out = stream(*state, 40)
+                for start_word in range(2, 20):
+                    later_replays += sum(
+                        tuple(out[phase:phase + 2]) == tuple(later)
+                        for phase in range(start_word + 2, start_word + 20)
+                    )
+            verified = reduce_cached(
+                d["states"], mask, target, meta["serializer"], list(range(2, 20))
+            ) if d["states"] else []
+        else:
+            # Alternative historical hypothesis: REQUESTED3 shared an issuer
+            # with ACK2; REQUESTED1 need not have shared it. Agent1's source-
+            # free tested inverse transition predicts whole earlier coupons.
+            for state in d["states"]:
+                counters, accepted = reverse_scan_state(
+                    state, later, first, mask, target, a.endian, a.order, 17, 8
                 )
-        # Every complete two-word coupon, at all 18 half-word starts.
-        verified = reduce_cached(d["states"], mask, target, meta["serializer"],
-                                 list(range(2, 20))) if d["states"] else []
+                later_replays += counters["earlier_whole_pair_replays"]
+                verified.extend(bytes.fromhex(x) for x in accepted)
         escrow_hits(a.escrow, verified)
         hits += len(verified)
     print("AGGREGATE_ONLY", {
-        "phase": "reduce", "start": a.start, "end": a.start+a.count,
+        "phase": "reduce", "fit_request_attempt": a.fit_attempt,
+        "direction": "forward" if a.fit_attempt == 1 else "reverse",
+        "start": a.start, "end": a.start+a.count,
         "terminal_unsat_cubes": sealed, "open_unknown_cubes": open_count,
         "never_visited_cubes": unvisited, "cached_128bit_states": total_states,
         "original_K04_complete_16byte_candidates_checked": total_windows,
