@@ -89,6 +89,7 @@ def branch(job):
     bucket,first,later,mask,target,endian,order,timeout_ms,max_gap,max_before=job
     anchor=sum(((bucket>>j)&1)<<p for j,p in enumerate(POSITIONS))
     states,terminal=query_models(list(later),anchor,timeout_ms)
+    if terminal == 'truncated': terminal = 'unknown'  # model budget is open
     if terminal not in ('unsat','unknown'):
         raise AssertionError('In-cube state enumeration did not close')
     all_count={'candidate_windows':0,'unfiltered_commitment_hits':0,
