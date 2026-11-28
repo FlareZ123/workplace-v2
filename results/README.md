@@ -1,6 +1,6 @@
 # H-17 archive recovery | live decision map
 
-**Updated 27 November 2026.** This is the short decision surface, not a running experiment log. Detailed reports and reusable code remain intact. The prior cumulative map remains recoverable in Git history; the previous dated snapshot is [preserved here](DECISION_MAP_SNAPSHOT_20261121T2208Z.md).
+**Updated 28 November 2026.** This is the short decision surface, not a running experiment log. Detailed reports and reusable code remain intact. The prior cumulative map remains recoverable in Git history; the previous dated snapshot is [preserved here](DECISION_MAP_SNAPSHOT_20261121T2208Z.md).
 
 ## Acceptance
 
