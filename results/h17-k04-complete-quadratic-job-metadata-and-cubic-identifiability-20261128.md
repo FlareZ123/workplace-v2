@@ -58,6 +58,19 @@ The same experiment calculates the exact *source-feature* rank of **all degree-a
 
 This is an exact **non-identifiability certificate** for the broad cubic class. With 128 independent input vectors, an arbitrary GF(2)-cubic model can interpolate *any* 128 original 16-byte packets, but the missing source input is a 129th independent feature vector. Consequently **for every proposed 128-bit missing selected coupon there exists a full cubic coefficient matrix consistent with all 128 original ordinary packet outputs**. Thus searching unrestricted cubic issuer coefficients or reporting a model that merely replays all 128 training packets would supply **zero independent recovery information** about K04, even if the model fit looked perfect. No cubic K04 candidate is asserted or checked; it is not identifiable. Degree-two models retain enough source constraints to make genuine holdout predictions but are contradicted by the original packets.
 
+### Constructive proof: two exact cubic source fits with different entire selected coupons
+
+The rank calculation is now accompanied by **an explicit complete 128-bit counterexample construction**, not just a dimension count. After withholding copied ACK2 from its observed packet inputs, append the selected source metadata vector to the 128 intact ordinary source vectors. The resulting **129 input features have full rank129** in both the numeric and ASCII degree≤3 spaces. Assign the selected output arbitrarily to (i) sixteen zero bytes or (ii) the 128-bit value with only its most significant bit set. These are mathematical witnesses **not asserted to be actual coupons or checked as original K04 candidates**.
+
+Perform exact GF(2) elimination on the 129 complete input→128-bit-output constraints, solve the pivot-column coefficient map with other monomial coefficients fixed zero, and replay *all* 128 original complete printer packet outputs and the chosen selected hypothetical output. Both constructions succeed in both input encodings:
+
+| Original-source exact cubic model | Models constructed | Independently original 16-byte packets replayed exactly | Full selected output different across the two models? | Nonzero full128bit coefficient columns |
+| --- | ---: | ---: | --- | ---: |
+| Numeric-job cubic | 2 | **128/128, each model** | Yes (one bit) | 129 per model |
+| ASCII-digit cubic | 2 | **128/128, each model** | Yes (one bit) | 129 per model |
+
+There is therefore a **constructive, whole-object proof** that the original 128 intact printer outputs alone do not select the missing 16-byte coupon even when a cubic issuer *fits every source packet perfectly*. In fact, since the selected source vector is linearly independent, the assignment works for **any** of the 2^128 possible 16-byte outputs. The original K04 SHA256 acceptance still constrains the unknown true coupon; this does **not** recover it or find a preimage. All fitted output coefficients and original source packet values remain unpublished and the official K04 target never participates in fitting or witness choice.
+
 ## Controls and decision
 
 Two source-free planted complete quadratic 128-bit publishers—one for each fixed encoding—were generated using deterministic random GF(2) output coefficients. The same basis-reconstruction code reproduced every predicted intact packet and the withheld entire selected coupon. Its independently computed original K04 mask-plus-SHA256 control also reproduced the planted full 16-byte commitment: **2/2 synthetic source/coupon controls PASS**. This is an algorithm/control validation, not proof that the real issuer used polynomial metadata interactions.
