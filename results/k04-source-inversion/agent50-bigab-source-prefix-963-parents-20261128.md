@@ -39,3 +39,25 @@ Every one of the sixteen P16 children in each P12 parent 0..962 is included in t
 Committed source-free [compact two-output solver](../../agents/agent50/k04_xoropp_compact_firstpair_solver.py), [P18 exact split and planted-state controls](../../agents/agent50/k04_xoropp_p18_adaptive_synthetic.py), [original-safe 3-second P18 escalation](../../agents/agent50/k04_xoropp_p18_private_refiner.py), [resumable source-private state cache](../../agents/agent50/k04_xoropp_p16_private_ledger.py), [zero-SMT complete-coupon replayer](../../agents/agent50/k04_xoropp_private_state_replay.py) and [strict source-domain audit](../../agents/agent50/k04_xoropp_exact_domain_audit.py) preserve all found candidate states and proof statuses. Synthetic controls recover exact planted states, including both distinct states with identical first-packet outputs. The original spool SHA256 is pinned to 7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083.
 
 **Boundary:** This exact exclusion is conditional on one hypothetical PRNG, one serializer and one original source interpretation; it neither authenticates the historical printer nor reveals selected physical K04 coupon bits. Other serializers, producer families and the unresolved P16 cubes remain open. K01/K02/K03/K05/K06/K07 individually PASS, K04/K08 MISSING, combined REC8/1 INCOMPLETE. No original resource, acceptance, verifier, canonical candidate or restricted PDF was changed or inspected.
+
+
+## 11:24Z fourth-cohort completion and stricter 18,944-record audit
+
+A further **2,560 uniquely visited original P16 cubes** (worker-completion positions 15,360..17,919) have now been certified empty: **2,256** direct terminal P16 UNSAT, plus **304** former P16 UNKNOWN each proved empty by all **four** exact P18 descendants. The new P18 run produced **1,216/1,216 terminal UNSAT children**, **0 UNKNOWN**, **0 compatible states** and **0 K04 commitment hits**; six P18 children required independent 3-second exact retries after initial 350→700-ms UNKNOWN. Original mode ran only against the pinned first REQUESTED packet, selected copied ACK2 withheld and subsequent REQUESTED3 no veto. No public source bytes, candidates, original state or component were exposed.
+
+Across the first four immutably frozen original cohorts, **17,920/17,920 source P16 cubes** are individually proven empty: **16,885** direct P16 UNSAT with no full state, and **1,035** formerly UNKNOWN P16 cubes resolved through all **4,140** P18 grandchild terminal-UNSAT proofs. There is no actual K04 coupon from these source-state subdomains.
+
+A separately frozen **18,944-record** source ledger includes an additional 1,024 P16 source records beyond the four completed cohorts; 833 were terminal P16 UNSAT, while 191 remain genuinely UNKNOWN pending fifth-cohort P18. The strict set-based audit (joined against all four independently SHA-pinned input/P18 ledger pairs) reports:
+
+| Category | Exact original-source count |
+|---|---:|
+| Original P16 source cubes visited | **18,944 / 65,536** |
+| Source P16 direct terminal UNSAT | **17,718** |
+| Former UNKNOWN P16 certified by all four P18 UNSAT | **1,035** |
+| **Distinct P16 cubes definitely empty** | **18,753 / 65,536** |
+| Source-visited P16 still UNKNOWN | **191** |
+| Compatible full source generator states | **0** |
+| **P12 parents fully excluded** | **1,131 / 4,096** |
+| **Contiguous P12 initial parent prefix fully excluded** | **0..1,119 inclusive (1,120 parents)** |
+
+This is a strict increase from the earlier 963-parent snapshot, not an alternative definition of source-state coverage. The fifth cohort's remaining UNKNOWNs are **not counted** as exclusions. P12 parent labels refer to anchored initial state partitions, not chronology or authenticated printer firmware. REC8/1 remains six accepted individual slots and K04/K08 missing; no complete key has been verified.
