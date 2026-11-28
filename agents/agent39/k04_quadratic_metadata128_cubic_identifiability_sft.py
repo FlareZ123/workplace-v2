@@ -99,6 +99,45 @@ def synthetic(rows,mask):
         assert hashlib.sha256(component(actual,mask)).digest()==hashlib.sha256(component(f(selected),mask)).digest()
     print("SYNTHETIC 2/2 complete 128-bit quadratic source/coupon and K04 masked commitment controls PASS")
 
+
+def sparse_original_quadratic_certificates(rows):
+    """Small original-source exact null relations for *every* quadratic issuer."""
+    certificates=(
+        ("numeric",(52,64,68,80,86,98,102,114),63),
+        ("ascii",(12,14,15,17,31,35,41,45,60,61,63,66),58),
+    )
+    for view,indices,expected_bits in certificates:
+        inputs=output=0
+        for i in indices:
+            assert i<128
+            x,_=monomials(rows[i],view,2)
+            inputs^=x
+            output^=int(rows[i]["PAYLOAD"],16)
+        assert inputs==0
+        assert output.bit_count()==expected_bits
+        # Independent planted random matrices show every valid quadratic map
+        # obeys the same zero-output XOR for precisely these original inputs.
+        rng=random.Random(20261128+len(indices))
+        dim=monomials(rows[indices[0]],view,2)[1]
+        for trial in range(8):
+            coefficients=[rng.getrandbits(128) for _ in range(dim)]
+            actual=0
+            for i in indices:
+                x,_=monomials(rows[i],view,2)
+                y=0
+                while x:
+                    p=(x&-x).bit_length()-1
+                    y^=coefficients[p]
+                    x&=x-1
+                actual^=y
+            assert actual==0
+        print("SOURCE_CERT",view,"source_record_count",len(indices),
+              "source_indices",','.join(map(str,indices)),
+              "quadratic_input_XOR_zero",1,
+              "real_full128bit_output_XOR_setbits",expected_bits,
+              "synthetic_arbitrary_quadratic_controls","8/8 PASS")
+
+
 def experiment(rows,mask,digest):
     for view,rank_target,late_expected in (("numeric",75,("NA","MISS")),("ascii",84,("NA","MISS"))):
         b=GF2Basis128()
@@ -165,4 +204,5 @@ if __name__=="__main__":
     arg=p.parse_args()
     rows,mask,digest=read(arg.root)
     synthetic(rows,mask)
+    sparse_original_quadratic_certificates(rows)
     experiment(rows,mask,digest)
