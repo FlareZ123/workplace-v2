@@ -222,6 +222,22 @@ def sparse_original_quadratic_certificates(rows):
               "synthetic_arbitrary_quadratic_controls","8/8 PASS")
 
 
+
+def full_packet_output_rank(rows):
+    """Exact linear algebra on original whole 128-bit printer packet values."""
+    pivots={}
+    for row in rows[:128]:
+        vector=int(row["PAYLOAD"],16)
+        while vector:
+            bit=vector.bit_length()-1
+            if bit in pivots:vector^=pivots[bit]
+            else:pivots[bit]=vector;break
+    assert len(pivots)==128
+    print("ORIGINAL_OUTPUT entire_128bit_packet_row_rank",len(pivots),
+          "source_rows",128,"required_input_feature_rank_for_any_Gf2_linear_output_map",128)
+    return len(pivots)
+
+
 def experiment(rows,mask,digest):
     for view,rank_target,late_expected in (("numeric",75,("NA","MISS")),("ascii",84,("NA","MISS"))):
         b=GF2Basis128()
@@ -288,6 +304,7 @@ if __name__=="__main__":
     arg=p.parse_args()
     rows,mask,digest=read(arg.root)
     synthetic(rows,mask)
+    full_packet_output_rank(rows)
     sparse_original_quadratic_certificates(rows)
     experiment(rows,mask,digest)
     cubic_constructive_ambiguous_coupons(rows)
