@@ -3,7 +3,7 @@
 
 NO SMT calls. Accepts only owner-private, source-pinned P16 model ledgers
 previously generated from intact REQUESTED3. Re-evaluates every unique
-cached full state against 144 complete backwards byte-slip coupon windows
+cached full state against 177 complete backwards byte-slip coupon windows
 using the unchanged K04 commitment, independent of REQUESTED1 replay.
 UNKNOWN remains unresolved; this can discover hits but never certify a
 negative beyond the producer's explicit covered/decided buckets.
@@ -21,14 +21,13 @@ from pathlib import Path
 import random
 import stat
 
-from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import (
-    full_coupon_scan, prehistory,
-)
+from agents.agent4.k04_xoropp_reverse_p16_source_local import full_coupon_scan_177
+from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import prehistory
 from agents.agent7.k04_xoropp_p16_subcube_source_local import read_original, P16
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream
 
 ROOT = Path(__file__).resolve().parents[2]
-METHODS = {"laterfirst-P16-v1", "laterfirst-P16-144-byte-slip-v2"}
+METHODS = {"laterfirst-P16-v1", "laterfirst-P16-144-byte-slip-v2", "laterfirst-P16-177-byte-slip-v3"}
 
 
 def private_path(path, must_exist=True):
@@ -126,7 +125,7 @@ def main():
               "source_material_emitted": False,
               "terminal_status_rows": dispositions}
     for state in models:
-        c, hits = full_coupon_scan(state, mask, target,
+        c, hits = full_coupon_scan_177(state, mask, target,
                                    a.endian, a.order, first)
         totals["historical_states_replayed"] += 1
         totals["full_coupon_sha_checks"] += c["complete_coupons"]
