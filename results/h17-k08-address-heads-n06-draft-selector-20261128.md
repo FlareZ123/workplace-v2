@@ -24,6 +24,15 @@ The invariant address column provides a matched null: LOW BIT(`TTTT`) = 0, outsi
 
 No K08 nonce, acceptance commitment or candidate wording is read.
 
+## Tokenizer robustness
+
+The older COUNT-LINE continuation has a known tokenizer ambiguity. This address-head lineage does not inherit it on the counts it actually consumes. For **N01/N03/N05/N06/N13/N16**, every post-label word count used above is identical under both:
+
+- alphanumeric `[A-Za-z0-9]+` tokenization; and
+- plain whitespace splitting.
+
+Thus the consumed counts 11/12/14/11/22/11 and the derived `LWOL` / `LMO` tokens are unchanged under the two tokenizers that diverge elsewhere in the note graph. The source-pinned reproducer asserts this invariance before evaluating the lineage.
+
 ## Why this supersedes the weaker LOW+L split
 
 The same invocation initially noticed that `LOWL` can be visually segmented as the known operator `LOW` plus residual `L`, and that carrying L through LOW IF EVEN reaches N13 and then N23. That composition is recorded in [the N23 lineage note](h17-k08-address-heads-n23-version-lineage-20261128.md), but it requires an extra token-splitting grammar rule that the source never states.
