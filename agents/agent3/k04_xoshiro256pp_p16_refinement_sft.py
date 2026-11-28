@@ -86,6 +86,14 @@ def original(args):
     statuses.append('unsat');continue
    extra=tuple((4+j,(child>>j)&1) for j in range(4))
    result=solve_bucket((a,b,d,y4,y5,parent,args.timeout_ms,args.max_models,None,extra))
+   if result['status']=='unknown' and args.retry_timeout_ms>args.timeout_ms:
+    retry=solve_bucket((a,b,d,y4,y5,parent,args.retry_timeout_ms,args.max_models,None,extra))
+    if retry['status']=='unsat':
+     # A complete model-blocked retry supersedes the shorter partial scan.
+     result=retry
+    else:
+     result={'status':retry['status'] if retry['status']!='unsat' else 'unsat',
+             'states':list(dict.fromkeys(result['states']+retry['states']))}
    for candidate in result['states']:
     generated=stream((a,b,candidate,d))
     for start in range(2,20):
@@ -97,7 +105,8 @@ def original(args):
        w.write(component.hex().upper()+'\n');w.flush();os.fsync(w.fileno())
       hits+=1
    rec={'root':root_index,'bucket':parent,'child':child,
-        'status':result['status'],'states':[f'{c:016x}' for c in result['states']]}
+        'status':result['status'],'retry_timeout_ms':args.retry_timeout_ms,
+        'states':[f'{c:016x}' for c in result['states']]}
    fd=os.open(refinement,os.O_WRONLY|os.O_APPEND|os.O_NOFOLLOW)
    with os.fdopen(fd,'a') as f:
     f.write(json.dumps(rec)+'\n');f.flush();os.fsync(f.fileno())
@@ -124,9 +133,10 @@ if __name__=='__main__':
  p.add_argument('--escrow',default='/mnt/data/h17_s0_bigab_p16_hits.txt')
  p.add_argument('--start',type=int,default=0);p.add_argument('--count',type=int,default=4096)
  p.add_argument('--timeout-ms',type=int,default=800)
+ p.add_argument('--retry-timeout-ms',type=int,default=4500)
  p.add_argument('--coarse-timeout-ms',type=int,default=3000)
  p.add_argument('--max-models',type=int,default=8)
  args=p.parse_args()
- assert 0<=args.start<4096 and 1<=args.count<=4096 and 100<=args.timeout_ms<=30000 and 1<=args.max_models<=100
+ assert 0<=args.start<4096 and 1<=args.count<=4096 and 100<=args.timeout_ms<=args.retry_timeout_ms<=30000 and 1<=args.max_models<=100
  if args.original_root:original(args)
  else:synthetic()
