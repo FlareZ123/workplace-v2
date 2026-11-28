@@ -35,6 +35,7 @@ def main(root):
     assert sha256(raw).hexdigest() == CREW_SHA256
 
     notes = {}
+    whitespace_counts = {}
     raw_lines = {}
     for m in re.finditer(
         rb"^N(\d{2}) / (\w+) \[censored\]\n([^\n]+)$",
@@ -45,8 +46,14 @@ def main(root):
         line = m.group(3).decode()
         body = line.split(": ", 1)[1] if ": " in line else line
         notes[n] = words(body)
+        whitespace_counts[n] = len(body.split())
         raw_lines[n] = line
     assert set(notes) == set(range(1, 25))
+
+    # The specific note counts consumed by this chain are invariant under the
+    # two tokenizers that split the older COUNT-LINE continuation.
+    count_notes = (1, 3, 5, 6, 13, 16)
+    assert all(len(notes[n]) == whitespace_counts[n] for n in count_notes)
 
     heads = "".join(a[0] for a in ADDRESSES)
     tails = "".join(a[1] for a in ADDRESSES)
@@ -124,6 +131,7 @@ def main(root):
 
     print({
         "source_pin": "PASS",
+        "count_tokenizer_invariant_notes": count_notes,
         "addresses": ADDRESSES,
         "heads": heads,
         "tails": tails,
