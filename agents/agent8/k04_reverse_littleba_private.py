@@ -104,9 +104,9 @@ def atomic(path,data):
     finally:
         if temporary.exists():temporary.unlink()
 
-def stamp(endian,order):
+def stamp(endian,order,positions=P16):
     obj={'input_sha256':PINS,'engine_sha256':ENGINE_SHA,'source_packet':'PS-261003-0417 REQUESTED3',
-         'generator':'xoroshiro128++ 1.0','endianness':endian,'order':order,'P16':P16,'schema':1}
+         'generator':'xoroshiro128++ 1.0','endianness':endian,'order':order,'P16':tuple(positions),'schema':1}
     return hashlib.sha256(json.dumps(obj,sort_keys=True).encode()).hexdigest()
 
 def private_coupon(path,offset,reduced,slot):
@@ -118,12 +118,16 @@ def private_coupon(path,offset,reduced,slot):
     fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
     with os.fdopen(fd,'w') as f:json.dump(value,f)
 
-def run(lo,count,store,ms=350,retry_ms=700,max_models=32,endian='little',order='ba'):
+def run(lo,count,store,ms=350,retry_ms=700,max_models=32,endian='little',order='ba',extra_bits=(4,5,6,7)):
     if not (0<=lo<4096 and 1<=count<=4096-lo and 100<=ms<=retry_ms<=30000 and 1<=max_models<=1024):
         raise ValueError('Invalid range/timeout/model parameters')
     folder=private_directory(store)
+    extra_bits=tuple(extra_bits)
+    if len(extra_bits)!=4 or len(set(extra_bits))!=4 or any(not (0<=p<64) or p in P12 for p in extra_bits):
+        raise ValueError('Four distinct additional bits outside P12 required')
+    positions=P12+extra_bits
     first,earlier,mask,target=source()
-    label=stamp(endian,order)
+    label=stamp(endian,order,positions)
     obs={0:first[0],1:first[1]}
     counts={'parents':0,'children':0,'cached_complete':0,'terminal_unsat_no_state':0,
             'terminal_with_state':0,'unknown':0,'states_examined':0,'candidate_windows':0,
@@ -133,7 +137,8 @@ def run(lo,count,store,ms=350,retry_ms=700,max_models=32,endian='little',order='
         counts['parents']+=1
         for child in range(16):
             cube=parent|(child<<12)
-            path=folder/f'cube_{cube:05d}.json'
+            marker='' if extra_bits==(4,5,6,7) else 'extra_'+('_'.join(map(str,extra_bits)))+'_'
+            path=folder/f'{marker}cube_{cube:05d}.json'
             rec=None
             if path.exists():
                 if path.is_symlink() or path.stat().st_mode&0o077:raise ValueError('Unsafe private cube file')
@@ -141,11 +146,11 @@ def run(lo,count,store,ms=350,retry_ms=700,max_models=32,endian='little',order='
                 if rec.get('stamp')!=label or rec.get('cube')!=cube:raise ValueError('Incompatible cached circuit/source/layout')
                 if rec['terminal']=='unsat':counts['cached_complete']+=1
             if rec is None or rec['terminal']=='unknown':
-                fixed=sum(((cube>>j)&1)<<bit for j,bit in enumerate(P16))
-                states,status=e.solve(obs,fixed,P16,ms,True)
+                fixed=sum(((cube>>j)&1)<<bit for j,bit in enumerate(positions))
+                states,status=e.solve(obs,fixed,positions,ms,True)
                 if status=='unknown' and retry_ms>ms:
                     counts['retry_children']+=1
-                    more,new_status=e.solve(obs,fixed,P16,retry_ms,True)
+                    more,new_status=e.solve(obs,fixed,positions,retry_ms,True)
                     states=list(set(states).union(more));status=new_status
                 oldstates=[(int(a,16),int(b,16)) for a,b in rec.get('states',[])] if rec else []
                 states=sorted(set(states).union(oldstates))
@@ -173,7 +178,7 @@ def run(lo,count,store,ms=350,retry_ms=700,max_models=32,endian='little',order='
                 # A source-requested prior pair may be earlier than our 24-word view.
                 chronological=list(reversed(rev))
                 counts['earlier_replay_hits']+=int(any(chronological[k:k+2]==earlier for k in range(23)))
-    print(json.dumps({'run':'agent8-laterfirst-littleBA','range':[lo,lo+count],
+    print(json.dumps({'run':'agent8-laterfirst-littleBA','extra_bits':extra_bits,'range':[lo,lo+count],
                       'time_ms':[ms,retry_ms],'elapsed_s':round(time.monotonic()-t0,3),
                       'aggregates':counts,'no_historical_payload_printed':True},sort_keys=True),flush=True)
     return counts
@@ -278,6 +283,7 @@ if __name__=='__main__':
     p.add_argument('--synthetic',action='store_true')
     p.add_argument('--fast-first',action='store_true')
     p.add_argument('--retry-unknown',action='store_true',help='explicitly rerun previously UNKNOWN P12 cubes; default first pass skips them')
+    p.add_argument('--p16-extra-bits',default='4,5,6,7',help='four extra initial-a0 bit positions for disjoint P16 partition')
     p.add_argument('--start',type=int,default=0)
     p.add_argument('--count',type=int,default=16)
     p.add_argument('--private-dir',type=Path)
@@ -288,4 +294,4 @@ if __name__=='__main__':
     else:
         if not args.private_dir:p.error('--private-dir required and must be outside repo, mode 0700')
         if args.fast_first:run_fast_first(args.start,args.count,args.private_dir,max(3000,args.timeout_ms),retry_unknown=args.retry_unknown)
-        else:run(args.start,args.count,args.private_dir,args.timeout_ms,args.retry_ms)
+        else:run(args.start,args.count,args.private_dir,args.timeout_ms,args.retry_ms,extra_bits=tuple(int(x) for x in args.p16_extra_bits.split(',')))
