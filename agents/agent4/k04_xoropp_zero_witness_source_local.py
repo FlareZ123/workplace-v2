@@ -2,15 +2,18 @@
 """LOCAL-ONLY original-source application of the zero-external-state-bit xoroshiro128++ erasure solver.
 
 The conditional model treats PS-261003-0417 REQUESTED attempts 1 and 3 as
-two-output packets separated by the selected erased pair and up to eight\nadditional unobserved pairs before REQUESTED3. The selected middle is always\noutputs 2 and 3; only the later independent holdout phase can vary.
+two-output packets separated by the selected erased pair and up to eight
+additional unobserved pairs before REQUESTED3. The selected middle is always
+outputs 2 and 3; only the later independent holdout phase can vary.
 The physical coupon and the generator identity are NOT authenticated.
 
 This tool reads only three named non-PDF text files, never scans archives or
 PDFs, refuses CI, prints only aggregate dispositions and writes no candidate
 key, original source bytes, recovered state, or emitted middle packet.
 
-One SMT model is returned per state-bit bucket. A nonmatching SAT model does
-not exclude other models in that bucket, and UNKNOWN never means UNSAT.
+For every bucket, the shared Agent37 within-bucket model-blocking solver
+enumerates SAT states until UNSAT or UNKNOWN. No later-packet match from a
+single SAT state can close the bucket; UNKNOWN never means UNSAT.
 Use distinct --start/--count intervals to split a long 4096-bucket experiment.
 """
 from __future__ import annotations
@@ -28,7 +31,8 @@ import time
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from agents.agent4.k04_xoropp_zero_witness_synthetic import POSITIONS
-from agents.agent27.k04_xoropp_sparse12_gap_synthetic import solve, stream
+from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream
+from agents.agent37.k04_xoropp_samebucket_collision_sft import query_models
 
 
 def requested_packet(log: Path, attempt: int) -> bytes:
@@ -64,16 +68,18 @@ def pack(pair: tuple[int, int], endian: str, order: str) -> bytes:
 def branch_job(args):
     idx, first, later, timeout_ms, max_skipped = args
     anchor = sum(((idx >> j) & 1) << pos for j, pos in enumerate(POSITIONS))
-    status, state = solve({0: first[0], 1: first[1]}, anchor, POSITIONS, timeout_ms)
-    replay = stream(*state, 6 + 2 * max_skipped) if state is not None else []
+    # Agent37's exact model blocker is required: two different states can have
+    # the same complete y0,y1 AND the same 12 anchor bits, but different y4,y5.
+    models, terminal = query_models(list(first), anchor, timeout_ms)
     phases = range(4, 6 + 2 * max_skipped, 2)
-    valid = bool(state is not None and any(
-        tuple(replay[j:j + 2]) == tuple(later) for j in phases
-    ))
-    middle = tuple(replay[2:4]) if valid else None
-    # The selected ACK2 remains the first erased pair; only later phase varies.
-    # Deliberately omit state and branch index from returned diagnostics.
-    return status, valid, middle
+    complete_middles = []
+    for state in models:
+        replay = stream(*state, 6 + 2 * max_skipped)
+        if any(tuple(replay[j:j + 2]) == tuple(later) for j in phases):
+            complete_middles.append(tuple(replay[2:4]))
+    # Deliberately omit state, branch index and payload from diagnostics.
+    status = 'sat' if models else terminal
+    return status, complete_middles, len(models), terminal
 
 
 def main() -> None:
@@ -112,16 +118,20 @@ def main() -> None:
 
     t0 = time.monotonic()
     statuses = {'sat': 0, 'unsat': 0, 'unknown': 0}
-    done = holdout_hits = acceptance_hits = 0
+    done = holdout_hits = acceptance_hits = models_examined = 0
+    model_blocking_unknown = 0
     with mp.Pool(args.workers) as pool:
         jobs = ((i, first, later, args.timeout_ms,
                  args.max_later_skipped_packets)
                 for i in range(args.start, args.start + args.count))
-        for status, valid, middle in pool.imap_unordered(
+        for status, complete_middles, model_count, terminal in pool.imap_unordered(
                 branch_job, jobs, chunksize=1):
             done += 1
             statuses[status] = statuses.get(status, 0) + 1
-            if valid:
+            models_examined += model_count
+            if terminal == 'unknown':
+                model_blocking_unknown += 1
+            for middle in complete_middles:
                 holdout_hits += 1
                 coupon = pack(middle, args.endian, args.order)
                 candidate = bytes(v ^ m for v, m in zip(coupon, mask))
@@ -131,6 +141,8 @@ def main() -> None:
                 print({'branches_completed': done, 'statuses': statuses,
                        'complete_later_packet_replays': holdout_hits,
                        'commitment_hits': acceptance_hits,
+                       'complete_first_pair_models_checked': models_examined,
+                       'open_model_blocking_branches': model_blocking_unknown,
                        'elapsed_seconds': round(time.monotonic() - t0, 1)},
                       flush=True)
 
@@ -145,9 +157,11 @@ def main() -> None:
         'branch_statuses': statuses,
         'complete_later_packet_replays': holdout_hits,
         'original_K04_commitment_hits': acceptance_hits,
+        'complete_first_pair_models_checked': models_examined,
+        'open_model_blocking_branches': model_blocking_unknown,
         'all_branches_examined': args.start == 0 and args.count == 4096,
-        'all_examined_branches_decided': statuses.get('unknown', 0) == 0,
-        'sat_models_per_branch': 'first only',
+        'all_examined_branches_decided': model_blocking_unknown == 0,
+        'sat_models_per_branch': 'exact enumeration until UNSAT or UNKNOWN',
         'historical_coupon_authenticated': False,
         'elapsed_seconds': round(time.monotonic() - t0, 1),
         'source_bytes_in_output': False,
