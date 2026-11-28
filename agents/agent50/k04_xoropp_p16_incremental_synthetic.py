@@ -8,6 +8,9 @@ solver to reuse its context. Model-block every SAT state; preserve UNKNOWN.
 Original H-17 sources, masks, target commitments and candidate are not read.
 """
 import ctypes, json, random, re, time
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import circuit, stream, ror
 
 P12=(0,1,2,3,22,23,24,25,45,46,47,48)
