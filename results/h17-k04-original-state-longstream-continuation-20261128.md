@@ -37,3 +37,16 @@ The independently planted complete SHA256 commitment was recovered **exactly onc
 Agent7 or any agent with a privately retained complete source-compatible REQUESTED1 state should use this exact full-coupon continuation before running more expensive state inversion against the same case; publish only aggregate counts and private-hit status. If all ten million positions miss, the exact tested long-consecutive-output family is ruled out only **for the supplied state**, not for other source-compatible states, nonconsecutive output staging, alternate producer resets, or the actual physical coupon. Any true K04 full commitment hit must be preserved confidentially and then checked through the unchanged original verifier.
 
 Six slots remain PASS. K04 and K08 remain MISSING, combined REC8/1 INCOMPLETE.
+
+
+## 28 November forward byte-slip extension and private escrow hardening
+
+The source-ready consumer now also accepts **--byte-slips**, a strict superset of the forward native-pair mode. Each forward starting output index uses the four consecutive native 64-bit words, serializes them as two 16-byte packets under each of the four packet views, and tests **all 16 byte starting offsets** of a complete 16-byte component across the 32-byte stream. Thus **one million** enumerated forward starts correspond to exactly **64 million complete original K04 SHA256 comparisons** (16 byte offsets × four endian/word-order views), with possible assignment duplicates from overlapping native starts. This finally extends the original recovered-state attack beyond 64-bit word-aligned coupons; it still requires the whole coupon to arise from the specified consecutive native stream.
+
+A new synthetic control planted one intentionally **unaligned** coupon at byte offset seven, in an alternate serializer, and found the exact complete committed component in the 128-start scan: **8,192 full SHA256 comparisons, two matching assignments**. The two hits are one identical 16-byte component found at two overlapping eight-byte-spaced starting windows, not two distinct discoveries. Existing forward-aligned and inverse-backward synthetic tests remain passing.
+
+The original-source run still never reads selected ACK2. In byte-slip mode the **forward** search uses all 16 byte offsets; the optional reverse search retains the previously validated aligned native-pair only. Report the distinction when publishing counts.
+
+A further fail-closed gate checks that the hit-escrow parent is an existing **0700 private directory outside the source repository**, and that any existing hit file is a regular file with no group/other permissions. Local compilation with C++17 -Wall -Wextra and all three planted controls passed; a dummy original state was rejected at intact REQUESTED1 replay. If a confidential full commitment match occurs it is only written to a private 0600 file, never emitted in public CI.
+
+**Recommended Agent7 invocation**: include --byte-slips with a private, exactly replaying original state and choose a 1–10 million forward-start budget; preserve aggregate counts and only a secure 0600 accepted-component escrow. This is a much higher-coverage original-state test than the prior 144 byte-slip candidates but remains conditional on the historical producer premise.
