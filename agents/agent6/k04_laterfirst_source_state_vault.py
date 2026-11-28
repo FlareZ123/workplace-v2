@@ -21,6 +21,7 @@ import json
 import os
 from pathlib import Path
 import random
+import stat
 import sys
 
 REPO = Path(__file__).resolve().parents[2]
@@ -89,6 +90,27 @@ def private_path(path):
         raise ValueError("Private file must have no group/other permissions")
     return resolved
 
+def private_state_dir(path):
+    resolved = path.resolve()
+    if REPO == resolved or REPO in resolved.parents:
+        raise ValueError("Private state directory must be outside repository")
+    if not resolved.is_dir() or stat.S_IMODE(resolved.stat().st_mode) & 0o077:
+        raise ValueError("Private state directory must be an existing 0700 directory")
+    return resolved
+
+def write_state_file(directory, parent, index, state):
+    # Directly readable by Agent15's private-state full-coupon C++ consumer.
+    # Never append multiple states to one file: the consumer requires exactly
+    # two 64-bit hex words separated by whitespace.
+    path = directory / f"p12_{parent:04d}_state_{index:04d}.txt"
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL |
+                 getattr(os, "O_NOFOLLOW", 0), 0o600)
+    with os.fdopen(fd, "w", encoding="ascii") as handle:
+        os.fchmod(handle.fileno(), 0o600)
+        handle.write(f"{state[0]:016X} {state[1]:016X}\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+
 def append_secret(path, line):
     fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT |
                  getattr(os, "O_NOFOLLOW", 0), 0o600)
@@ -130,7 +152,7 @@ def main():
     ap.add_argument("--resources-root", type=Path)
     ap.add_argument("--parent", type=int)
     ap.add_argument("--timeout-ms", type=int, default=350)
-    ap.add_argument("--state-vault", type=Path)
+    ap.add_argument("--state-vault-dir", type=Path)
     ap.add_argument("--hit-escrow", type=Path)
     a = ap.parse_args()
     if a.synthetic:
@@ -138,25 +160,19 @@ def main():
     if os.environ.get("CI") or os.environ.get("GITHUB_ACTIONS"):
         ap.error("Historical source mode forbidden in CI")
     if (a.resources_root is None or a.parent is None or
-            a.state_vault is None or a.hit_escrow is None):
+            a.state_vault_dir is None or a.hit_escrow is None):
         ap.error("Original local source, exact parent and private outputs required")
     if not (0 <= a.parent < 4096 and 100 <= a.timeout_ms <= 10000):
         ap.error("Invalid parent/budget")
-    vault, escrow = private_path(a.state_vault), private_path(a.hit_escrow)
-    if vault == escrow:
-        ap.error("State vault and component escrow must differ")
+    vault = private_state_dir(a.state_vault_dir)
+    escrow = private_path(a.hit_escrow)
+    if vault == escrow.parent:
+        ap.error("State directory and accepted-component escrow parent must differ")
     observed, mask, commitment = source(a.resources_root, "big", "ab")
     totals, states, hits = scan_parent(
         a.parent, observed, mask, commitment, a.timeout_ms)
-    for state in sorted(states):
-        append_secret(vault, json.dumps({
-            "original_private": True,
-            "parent": a.parent,
-            "request_observation": "ATTEMPT3 REQUESTED",
-            "serialization": "big/AB",
-            "a0": f"{state[0]:016X}",
-            "b0": f"{state[1]:016X}",
-        }, sort_keys=True))
+    for index, state in enumerate(sorted(states)):
+        write_state_file(vault, a.parent, index, state)
     for component in hits:
         append_secret(escrow, component.hex().upper())
     print(json.dumps({
