@@ -9,6 +9,8 @@
 #include <cstdlib>
 #include <fcntl.h>
 #include <fstream>
+#include <filesystem>
+#include <cerrno>
 #include <iomanip>
 #include <chrono>
 #include <vector>
@@ -58,6 +60,22 @@ static u64 parse_u64(std::string s){if(s.size()!=16||s.find_first_not_of("012345
 static State private_state(const std::string &path){
  struct stat st{};if(lstat(path.c_str(),&st)<0||!S_ISREG(st.st_mode)||((st.st_mode&077)!=0))throw std::runtime_error("Private state must be a mode 0600 regular file, not symlink");
  int fd=open(path.c_str(),O_RDONLY|O_NOFOLLOW);if(fd<0)throw std::runtime_error("Cannot open private state");char buf[256];ssize_t n=read(fd,buf,sizeof(buf)-1);close(fd);if(n<=0||n>=200)throw std::runtime_error("Invalid private state length");buf[n]=0;std::istringstream in(buf);std::string a,b,trailing;if(!(in>>a>>b)||(in>>trailing))throw std::runtime_error("Private state must contain exactly two 64-bit hex words");return {parse_u64(a),parse_u64(b)};
+}
+static void require_private_escrow(const std::string &root,const std::string &file){
+ namespace fs=std::filesystem;
+ fs::path candidate(file);
+ if(!candidate.is_absolute())throw std::runtime_error("Escrow requires absolute path");
+ fs::path repopath=fs::canonical(fs::path(root)).parent_path();
+ fs::path parent=fs::canonical(candidate.parent_path());
+ const std::string repo=repopath.string(),outside=parent.string();
+ if(outside==repo||outside.rfind(repo+"/",0)==0)throw std::runtime_error("Escrow must live outside repository");
+ struct stat pst{};
+ if(lstat(outside.c_str(),&pst)<0||!S_ISDIR(pst.st_mode)||((pst.st_mode&077)!=0))
+  throw std::runtime_error("Escrow parent must be a private directory (0700)");
+ struct stat fst{};
+ if(lstat(file.c_str(),&fst)==0){
+  if(!S_ISREG(fst.st_mode)||((fst.st_mode&077)!=0))throw std::runtime_error("Existing hit escrow must be private regular 0600");
+ }else if(errno!=ENOENT)throw std::runtime_error("Escrow path unavailable");
 }
 static void secure_escrow(const std::string &file,const Data& value){
  int fd=open(file.c_str(),O_WRONLY|O_APPEND|O_CREAT|O_NOFOLLOW,0600);if(fd<0)throw std::runtime_error("Could not open private hit escrow");
@@ -161,6 +179,7 @@ int main(int argc,char** argv){
   auto later=bytes16(findone(spool,"JOB=PS-261003-0417 ATTEMPT=3 STATE=REQUESTED CLASS=RECOVER PAYLOAD=([0-9A-F]{32}) DEST=bench"));
   auto mask=bytes16(findone(routing,"\\\"masked_component\\\"[[:space:]]*:[[:space:]]*\\\"([0-9A-F]{32})\\\""));
   auto target=bytes32(findone(acceptance,"\\\"K04\\\"[[:space:]]*:[[:space:]]*\\\"([0-9a-f]{64})\\\""));
+  require_private_escrow(root,escrow);
   Trial trial{};trial.mask=mask;trial.target=target;trial.source=source;trial.later=later;trial.has_later=true;trial.source_little=(view.rfind("little",0)==0);trial.source_swap=(view.substr(view.find('/')+1)=="ba");trial.escrow=escrow;
   State state=private_state(state_file);
   auto started=std::chrono::steady_clock::now();auto m=scan(state,trial,forward,reverse,slips);
