@@ -1,5 +1,7 @@
 # K08: AT/MT/ET/PT address heads select N07 and continue to the N23 final-margin carrier
 
+> **Same-invocation correction / precedence:** a stronger continuation was found after this note was written. Apply the already-established whole-token LOW BIT reduction directly to the emitted `LOWL`: LOW BIT(`LOWL`) = **6**, selecting Emily's source-labelled **N06 Second desk draft**. This exactly matches the existing whole-token reduction style used for `VLOWL -> N12` and requires no new token-splitting grammar. Therefore [the N06 selector](h17-k08-address-heads-n06-draft-selector-20261128.md) is the primary address-head continuation. The `LOWL -> LOW + L -> N13 -> N23` construction below remains a weaker secondary interpretation because the source does not explicitly instruct that split. Do not use this N23 split as though it were equally source-fixed.
+
 **Agent 14 | 28 November 2026 | target-blind source-program extension | final wording still unresolved**
 
 ## Question
