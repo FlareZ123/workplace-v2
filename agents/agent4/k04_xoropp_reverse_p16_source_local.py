@@ -4,7 +4,7 @@
 Fit only intact PS-0417 REQUESTED3 as two successive xoroshiro128++ words.
 Partition every possible initial-a word into 4096 P12 parents x 16 P16
 children, enumerate each child's complete models with exact model blocking,
-and walk the states backwards over 18 complete two-word coupon windows.
+and walk states backwards over 9 x 16 = 144 complete byte-slip coupons.
 Commitment is checked BEFORE and independently of REQUESTED1 replay.
 An original printer producer, selected phase, or physical coupon is NOT proven.
 
@@ -24,12 +24,12 @@ import random
 import stat
 import time
 
-from agents.agent1.k04_xoropp_laterfirst_backwards_local import scan_state
+from agents.agent7.k04_xoropp_laterfirst_p16_byte_slip import full_coupon_scan
 from agents.agent7.k04_xoropp_p16_subcube_source_local import exact_states, read_original
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import stream
 
 ROOT = Path(__file__).resolve().parents[2]
-METHOD = "laterfirst-P16-v1"
+METHOD = "laterfirst-P16-144-byte-slip-v2"
 PARENT_COUNT = 4096
 CHILDREN = 16
 
@@ -47,14 +47,13 @@ def work_one(job):
     counts = {"windows": 0, "hits": 0, "earlier_replays": 0, "joint_hits": 0}
     hits = []
     for state in models:
-        c, found = scan_state(state, first, later, mask, target, endian, order,
-                              max_gap=17, max_before=8)
-        counts["windows"] += c["candidate_windows"]
-        counts["hits"] += c["unfiltered_commitment_hits"]
-        counts["earlier_replays"] += c["earlier_whole_pair_replays"]
+        c, found = full_coupon_scan(state, mask, target, endian, order, first)
+        counts["windows"] += c["complete_coupons"]
+        counts["hits"] += c["accepts"]
+        counts["earlier_replays"] += c["earlier_replays"]
         counts["joint_hits"] += c["joint"]
         hits.extend(found)
-    assert counts["windows"] == 18 * len(models)
+    assert counts["windows"] == 144 * len(models)
     assert len(hits) == counts["hits"]
     return {
         "parent": parent, "child": sub, "terminal": terminal,
