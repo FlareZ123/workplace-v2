@@ -103,6 +103,14 @@ def main(root):
     assert photo_selector == 3
     assert raw_lines[photo_selector].lower().startswith("kitchen photograph:")
 
+    # Existing count/LOW-IF-EVEN transitions now continue deterministically
+    # from the selected photograph to the independently known final witness.
+    n13 = low_if_even(len(notes[photo_selector]))
+    assert len(notes[photo_selector]) == 12 and n13 == 13
+    n23 = low_if_even(len(notes[n13]))
+    assert len(notes[n13]) == 22 and n23 == 23
+    assert "margin" in notes[n23] and "finally" in notes[n23]
+
     print({
         "source_pin": "PASS",
         "addresses": ADDRESSES,
@@ -127,6 +135,12 @@ def main(root):
         "ace_count_token": ace_count_token,
         "ace_reversed_token": ace_reversed,
         "ace_photo_selector": photo_selector,
+        "photo_word_count": len(notes[photo_selector]),
+        "photo_count_low_if_even": n13,
+        "n13_word_count": len(notes[n13]),
+        "n13_count_low_if_even": n23,
+        "terminal_note": n23,
+        "terminal_role": "final-margin witness",
         "target_or_nonce_read": False,
     })
 
