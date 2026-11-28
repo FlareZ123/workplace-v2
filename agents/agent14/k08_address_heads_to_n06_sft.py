@@ -19,6 +19,16 @@ def count_letter(n):
     assert 0 <= n < 26
     return chr(ord("A") + n)
 
+def low_if_even(v):
+    return v + 1 if v % 2 == 0 else v
+
+def heading_channels(heading):
+    ws = words(heading)
+    head = sum((((ord(w[0]) - ord("a") + 1) & 1) << i) for i, w in enumerate(ws))
+    tail = sum(((ord(w[-1]) & 1) << i) for i, w in enumerate(ws))
+    length = sum(((len(w) & 1) << i) for i, w in enumerate(ws))
+    return head, low_if_even(tail), low_if_even(length)
+
 def main(root):
     root = Path(root)
     raw = (root / "evidence/crew/noticeboard-and-desk-notes.txt").read_bytes()
@@ -67,6 +77,32 @@ def main(root):
     assert raw_lines[selector].lower().startswith("second desk draft:")
     assert len(notes[selector]) == 11
 
+    # Corroboration only, not a selector: reuse the already established
+    # heading HEAD/TAILBIT/LEN channels on the independently selected N06.
+    signatures = {}
+    for n, line in raw_lines.items():
+        if ": " not in line:
+            continue
+        heading = line.split(": ", 1)[0].lower()
+        triple = heading_channels(heading)
+        if all(1 <= v <= 24 for v in triple):
+            signatures[n] = "".join(chr(ord("A") + v - 1) for v in triple)
+    assert signatures[6] == "ACE"
+    assert [n for n, token in signatures.items() if token == "ACE"] == [6]
+
+    # A1Z26 ACE -> N01/N03/N05. Their counts emit LMO. The already selected
+    # N07 reversal gives OML, whose whole-token LOW BIT selects N03, a photo.
+    ace_ids = [1, 3, 5]
+    ace_counts = [len(notes[n]) for n in ace_ids]
+    assert ace_counts == [11, 12, 14]
+    ace_count_token = "".join(count_letter(n) for n in ace_counts)
+    assert ace_count_token == "LMO"
+    ace_reversed = ace_count_token[::-1]
+    assert ace_reversed == "OML"
+    photo_selector = lowbit(ace_reversed)
+    assert photo_selector == 3
+    assert raw_lines[photo_selector].lower().startswith("kitchen photograph:")
+
     print({
         "source_pin": "PASS",
         "addresses": ADDRESSES,
@@ -83,6 +119,14 @@ def main(root):
         "selected_note": selector,
         "selected_role": "second desk draft",
         "selected_note_word_count": len(notes[selector]),
+        "heading_signature": signatures[6],
+        "heading_signature_matches": sum(token == "ACE" for token in signatures.values()),
+        "eligible_heading_signatures": len(signatures),
+        "ace_note_ids": ace_ids,
+        "ace_note_counts": ace_counts,
+        "ace_count_token": ace_count_token,
+        "ace_reversed_token": ace_reversed,
+        "ace_photo_selector": photo_selector,
         "target_or_nonce_read": False,
     })
 
