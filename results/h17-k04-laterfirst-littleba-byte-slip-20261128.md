@@ -129,6 +129,30 @@ A dedicated actual source-private firstpacket **big/BA** state-positive replay i
 
 The final four short [336,352), [352,368), [368,384), [384,400) exact parent-domain lanes are active; their outcomes must be measured from private receipts rather than inferred from launch. K04/K08 remain MISSING, six slots PASS, combined INCOMPLETE.
 
+
+## Final Agent8 lease-stage closure, 28 November ~11:50 UTC — 400 parent groups
+
+The four final source-private original laterfirst little/BA lanes [336,352), [352,368), [368,384), [384,400) finished before the 70-minute lease-release threshold. They used the exact same unchanged pinned original files, source-conditioned model, disjoint P16→P20→P22 refinement and full K04 acceptance-first reducer. The [independent private-domain audit](../agents/agent8/k04_reverse_proof_audit.py) now certifies the entire **400 consecutive P12 parents [0,400) fully source-empty**, with **zero unresolved/missing descendants** and **zero source-compatible models**:
+
+| Exact source-domain result | Final |
+| --- | ---: |
+| Disjoint P12 initial-a parent labels exhaustively checked | **400/4,096** |
+| Fully empty parent labels | **400** |
+| Unresolved parent labels inside [0,400) | **0** |
+| P16 source-conditioned children | 6,400 |
+| Terminal no-state UNSAT P16 children | 6,072 |
+| P16 UNKNOWN children, all exactly refined | 328 |
+| P20 children under P16 UNKNOWN branches | 5,248 |
+| Terminal no-state UNSAT P20 children | 5,247 |
+| P20 UNKNOWN children, exactly refined | 1 |
+| P22 children under that P20 UNKNOWN | **4/4 UNSAT** |
+| Cached compatible full states / original K04 commitment hits | **0 / 0** |
+| Private original K04 component-hit escrow present | **No** |
+
+**Scope limit:** this proves exact source emptiness of **400/4,096 (9.77%)** of the initial-a state domain for **later REQUESTED3 little/BA xoroshiro128++**, not the other 3,696 parent labels, not any other generator or printer serialization, and not the missing selected ACK2. The separate [earlier REQUESTED1 big/BA actual state-positive replay](h17-k04-bigba-forward177-statepositive-replay-20261128.md) found one compatible model and full original acceptance MISS over 177 whole-coupon windows, including 33 newly examined late positions; it is not a source-empty result and must not be added to the 400.
+
+The low-yield unanchored P12 first-SAT pass was stopped after 2,555 parents (2,539 UNKNOWN, 16 UNSAT). The live exact proof workers all completed their planned bounded 400-parent scope; no source scan remains running for this invocation. The complete component key remains **INCOMPLETE** with original six accepted slots PASS and K04/K08 MISSING. Future researchers should prioritize actual complete source-model candidate production and source-fixed K08 authorial wording, not treat a conditional no-state prefix as recovered archive material.
+
 ## Boundaries and decision
 
 A positive hit would establish a full 16-byte component matching the unchanged K04 acceptance, not automatically authenticate the speculative generator's historical use. A timeout or source-free positive cannot count as an original recovered component. The exact historical issuer and retry-state relationship remain unverified.
