@@ -1,0 +1,50 @@
+# K04: complete quadratic job-metadata issuer inversion, and cubic non-identifiability proof
+
+**Agent 39 | 28 November 2026 | original full-packet source constraints, two complete missing-coupon checks; no original K04 recovery**
+
+## Why this is a distinct original issuer hypothesis
+
+The surviving original spool contains 128 ordinary complete 16-byte printer ACK packets, their exact chronological job suffixes and categorical `CLASS` and `DEST` fields. Previously the whole-output stateless-affine test permitted an *arbitrary fixed linear or affine* function from these source fields to all 128 output bits; a four-row contradiction showed that cannot be the actual printer rule.
+
+An issuer can have **nonlinear interactions between source fields** without keeping a random stream, for example a job-bit-dependent class/destination mask. This follow-up learns and tests the **unrestricted full degree-at-most-two GF(2) polynomial** of the same source fields, with an independently arbitrary 128-bit coefficient for **every** monomial. This is a different and strictly more expressive class than stateless affine, not a named cryptographic hash. The original records do not attest the model.
+
+Two frozen original job representations are permitted: the ten least significant bits of the decimal job suffix (the observed ordinary values 300–427), and the bit contents of its four original ASCII digit characters. Add separate one-hot `CLASS` and `DEST` indicators and a constant intercept. The quadratic basis includes **all pairwise products of all source bits and categorical flags**, including job×class, job×destination and class×destination cross-terms. There are no output-specific coefficient restrictions, fitted PRNG seeds, omitted interaction coefficients or guessed bit equivalences.
+
+For each source feature vector `v`, let `F(v)` be the concatenation of all constant, first-degree and second-degree Boolean monomials. A candidate issuer is `Y=M*F(v)` with unrestricted 128-output-row binary matrix `M`. Use exact GF(2) elimination to select the earliest independent original ordinary ACKs as a source basis. Source dependence makes the remaining packets *full 128-bit independent holdout predictions*; it also makes the **selected `PS-261003-0417` attempt-2 ACK's hypothetical complete 16-byte coupon** exactly reconstructible from the source metadata alone, without reading the untrusted selected copied `PAYLOAD`.
+
+The selected source role is `CLASS=RECOVER`, `DEST=bench`, `JOB=PS-261003-0417`, as set by the original route/MAIL-16. This issuer hypothesis **ignores `ATTEMPT`**, because all 128 ordinary records have attempt-1; treating attempt-2 as a new free feature would make the selected coupon unobservable rather than supply any original source bit. That is a caveat, not a historical statement about the printer.
+
+## Original whole-packet source and acceptance results
+
+Original source spool SHA256 `7d71d8bef7f01596e705ac14e24c5c4352042512b3088125afca40f3841b6083` was checked before use. Source rows 0–127 comprise the intact ordinary jobs 0300–0427. The selected copied 18:02 attempt-2 ACK at original row 129 is excluded from model fitting and never used as an observed output. Another complete attempt-2 printer ACK at row132 is an independent historical whole-packet holdout. All complete hypothetical physical coupons use the *unchanged original ESC-N mask* and full K04 SHA256 commitment.
+
+| Unrestricted full quadratic source encoding | Source input rank / 128 ordinary packets | Whole 16-byte original ordinary packet holdouts | Exact whole packet matches | Later original attempt-2 ACK prediction | Complete K04 component checks | Original K04 hits |
+| --- | ---: | ---: | ---: | --- | ---: | ---: |
+| Numeric 10-bit job suffix plus onehot CLASS/DEST | **75** | **53** | **0** | **MISS** | **1** | **0** |
+| ASCII digit bits plus onehot CLASS/DEST | **84** | **44** | **0** | **MISS** | **1** | **0** |
+| **Total model assignments** | | **97** | **0** | **0 / 2** | **2** | **0** |
+
+The independent job-0448 late ACK lies **outside** either original quadratic source training span and is explicitly reported as `NA`, not counted as a fictitious full prediction. Every source-dependent intact original packet contradicts the single proposed global quadratic publisher (53 and 44 independent whole-packet failures). The first contradictions occur at original row61 (numeric model, a 30-original-record input-dependency relation whose true 128-bit output XOR has 65 set bits) and row59 (ASCII model, 32-record relation and 64 discrepant output bits). These are exact finite source constraints, not statistical fitted-noise judgments.
+
+Both model classes nonetheless produce **one uniquely identified complete candidate coupon** for original source metadata of the missing selected record: 35 original source basis packets for numeric, 37 for ASCII. Each resulting entire 16-byte coupon XORs the original mask and fails the unchanged complete original K04 SHA256. No original K04 physical bit has been authenticated by this computation.
+
+## Stronger boundary: unrestricted cubic issuer cannot identify the selected coupon
+
+The same experiment calculates the exact *source-feature* rank of **all degree-at-most-three monomials** from the same source metadata, **without using the target hash or any printer output**:
+
+| Unrestricted cubic source features | Full Boolean monomial features | Rank of 128 original source metadata vectors | Selected missing coupon source vector in training span? | Independent late ACK source vectors in training span? |
+| --- | ---: | ---: | --- | --- |
+| Numeric job encoding | **697** | **128 / 128** | **No** | Neither |
+| ASCII job encoding | **6,580** | **128 / 128** | **No** | Neither |
+
+This is an exact **non-identifiability certificate** for the broad cubic class. With 128 independent input vectors, an arbitrary GF(2)-cubic model can interpolate *any* 128 original 16-byte packets, but the missing source input is a 129th independent feature vector. Consequently **for every proposed 128-bit missing selected coupon there exists a full cubic coefficient matrix consistent with all 128 original ordinary packet outputs**. Thus searching unrestricted cubic issuer coefficients or reporting a model that merely replays all 128 training packets would supply **zero independent recovery information** about K04, even if the model fit looked perfect. No cubic K04 candidate is asserted or checked; it is not identifiable. Degree-two models retain enough source constraints to make genuine holdout predictions but are contradicted by the original packets.
+
+## Controls and decision
+
+Two source-free planted complete quadratic 128-bit publishers—one for each fixed encoding—were generated using deterministic random GF(2) output coefficients. The same basis-reconstruction code reproduced every predicted intact packet and the withheld entire selected coupon. Its independently computed original K04 mask-plus-SHA256 control also reproduced the planted full 16-byte commitment: **2/2 synthetic source/coupon controls PASS**. This is an algorithm/control validation, not proof that the real issuer used polynomial metadata interactions.
+
+**What is excluded:** exactly the two fixed source encodings under all unrestricted degree≤2 GF(2) metadata-to-full-packet maps. **What is shown unidentifiable:** unrestricted degree≤3 metadata-to-full-packet maps trained on these 128 original records alone. **Not excluded:** a source-attested keyed digest, actual attempt-dependent state, native printer internals, nonlinear-integer arithmetic, independently preserved physical print, new original source observations or another model with truly predictive source geometry.
+
+All acceptance commitments, route, source files, six established accepted slots, canonical candidate and verifier are unmodified. K04 and the exact K08 final-authored phrase remain MISSING; combined REC8/1 INCOMPLETE.
+
+**Portable source-pinned reproducer:** [complete quadratic source-coupon test and cubic span proof](../agents/agent39/k04_quadratic_metadata128_cubic_identifiability_sft.py). From the repo root: `python agents/agent39/k04_quadratic_metadata128_cubic_identifiability_sft.py --root resources`. Reports only ranks, whole-packet match counts, exact contradiction dimensions, source-span status and full original commitment hit flags; no candidate physical 16-byte values or matrix coefficients are published.
