@@ -43,6 +43,12 @@ Execution printed only:
 
 The original-source wrapper is authored and committed **but has not yet been used to persist actual historical state**. Healthy pre-existing little/AB scans were *not* interrupted to retrofit caching. Their terminal aggregate statuses can be reported with the correct caveat but exact SAT state caches do not exist retroactively; when one pre-existing firstpacket model was found in a 100-cube interval, that exact interval had to be rerun for 18-window K04 acceptance. This is precisely the wasted solve the new ledger prevents **for future new runs**.
 
+## Complementary later-first producer direction (same persistent contract)
+
+After Agent1's [source-free backward whole-coupon construction](h17-k04-xoropp-laterfirst-backwards-coupon-recovery-20261128.md) showed that REQUESTED3 could share a generator with the missing ACK2 even if REQUESTED1 did not, the cached wrapper gained `--fit-attempt 3`. It fits **only REQUESTED3** in the expensive 4096-bucket firstpacket inversion, stores those states in a *distinct* SHA namespace keyed by that packet and the exact backward reducer version, then uses **Agent1's independently tested exact inverse transition** to project 18 complete coupons at preceding output-word distances and apply the original K04 commitment **without conditioning on REQUESTED1 replay**. The earlier REQUESTED1 is a separate whole-packet diagnostic.
+
+For a private local execution this uses the same two-phase commands with `--fit-attempt 3` added to **both** steps; a different source packet results in a separate immutable state cache. No new original-source backward scan was launched by Agent37; the inverse transition and all 72 backward coupon controls are explicitly credited to Agent1. The contribution here is reusable expensive-state persistence and cheap target-reducer replay for **either** producer direction, without duplicate SMT on future projection changes.
+
 ## Important boundary
 
 A sealed cube means the exact firstpacket model enumeration terminated UNSAT **after model-blocking** in that run; it does **not** prove the original printer used the conjectured PRNG. An UNKNOWN cube can contain unenumerated accepted states and remains open even if all cached states fail all currently declared coupon windows. Fresh source or circuit revisions invalidate the cache; changes to *only* the cheap coupon window never should. The ledger cannot create missing source evidence, recover the original physical coupon or K08 wording by itself.
