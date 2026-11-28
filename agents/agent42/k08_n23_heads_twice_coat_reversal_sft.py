@@ -100,13 +100,17 @@ def main() -> None:
     n01 = bodies[1]
     normalized_n01 = " ".join(n01)
     normalized_n23 = " ".join(n23)
+    combined = n23 + n01
+    normalized_combined = " ".join(combined)
     candidates = [
         " ".join(reversed(n01)),
         normalized_n01[::-1],
         " ".join(reversed(n23)),
         normalized_n23[::-1],
+        " ".join(reversed(combined)),
+        normalized_combined[::-1],
     ]
-    assert len(set(candidates)) == 4
+    assert len(set(candidates)) == 6
 
     route = json.loads((root / "resources/evidence/recovery-routing.json").read_text())
     acceptance = json.loads((root / "resources/acceptance.json").read_text())
@@ -117,7 +121,7 @@ def main() -> None:
     assert component.hex().upper() == N02_HMAC16
 
     hits = [reduce_phrase(c, key)[1] == target for c in candidates]
-    assert hits == [False, False, False, False]
+    assert hits == [False, False, False, False, False, False]
 
     planted = reduce_phrase(candidates[0], key)[1]
     planted_hits = sum(reduce_phrase(c, key)[1] == planted for c in candidates)
@@ -133,7 +137,8 @@ def main() -> None:
         "terminal_LOW_IF_EVEN_selectors": tail_selectors,
         "coat_LOWBIT": reversal_note,
         "reversal_instruction": "N07 first three post-label words",
-        "complete_reversal_assignments": 4,
+        "complete_reversal_assignments": 6,
+        "combined_operand_order": ["N23", "N01"],
         "original_hits": sum(hits),
         "historical_n02_control": "PASS",
         "planted_complete_output_hits": planted_hits,
