@@ -100,6 +100,36 @@ def synthetic(rows,mask):
     print("SYNTHETIC 2/2 complete 128-bit quadratic source/coupon and K04 masked commitment controls PASS")
 
 
+
+def original_affine_threecubes(rows,view):
+    """Exhaustive source-input affine 3-flats; no printer payload or target read."""
+    originals=[sum(z<<j for j,z in enumerate(fields(row,view))) for row in rows[:128]]
+    locator={value:i for i,value in enumerate(originals)}
+    assert len(locator)==128
+    planes=set()
+    for p in range(128):
+        for q in range(p+1,128):
+            delta=originals[p]^originals[q]
+            for t in range(q+1,128):
+                u=locator.get(originals[t]^delta,-1)
+                if u>t:planes.add((p,q,t,u))
+    cubes=set()
+    for plane in planes:
+        pp=[originals[i] for i in plane]
+        for idx in range(128):
+            if idx in plane:continue
+            delta=pp[0]^originals[idx]
+            partners=tuple(locator.get(value^delta,-1) for value in pp)
+            if -1 in partners or len(set(partners))!=4:continue
+            cubes.add(tuple(sorted(plane+partners)))
+    expected={(52,64,68,80,86,98,102,114)} if view=="numeric" else set()
+    assert cubes==expected
+    print("SOURCE_ONLY",view,"affine2_source_planes",len(planes),
+          "affine3_source_cubes",len(cubes),
+          "unique_weight8_numeric_certificate",int(view=="numeric"))
+    return cubes
+
+
 def sparse_original_quadratic_certificates(rows):
     """Small original-source exact null relations for *every* quadratic issuer."""
     certificates=(
@@ -107,6 +137,7 @@ def sparse_original_quadratic_certificates(rows):
         ("ascii",(12,14,15,17,31,35,41,45,60,61,63,66),58),
     )
     for view,indices,expected_bits in certificates:
+        original_affine_threecubes(rows,view)
         inputs=output=0
         for i in indices:
             assert i<128
