@@ -2,9 +2,9 @@
 """Local-only firstpacket xoroshiro128++ inversion allowing hidden 64-bit draws.
 
 Distinct from even-packet-only later holdout: fit only REQUESTED1 y0/y1,
-predict selected erased ACK2 y2/y3, and hold out whole REQUESTED3 pair
-at each phase 4..21 (both even and odd phases). The odd phases allow a
-single hidden 64-bit producer draw; they are exploratory, not attested.
+predict all 18 complete erased ACK2 candidates at word starts2..19, and hold out whole REQUESTED3 pair
+at each phase following the candidate by 2..19 words. Odd starts and phases allow a
+bounded hidden 64-bit producer draws; exploratory, not source-authenticated.
 
 Original-source mode is CI-denied and aggregate-only. Never emits source
 bytes, state, missing packet, coupon, component, or candidate wording.
@@ -34,54 +34,66 @@ SAFE_SHA = {
     'acceptance.json': '681739241b757b471acca4c0fef9d9d97e9493883887736d5db3b92bfb0c137f',
 }
 
-def branch(job):
-    idx, first, later, timeout_ms, skips, endian, order, mask, target = job
-    anchor = sum(((idx >> j) & 1) << pos for j,pos in enumerate(POSITIONS))
-    states,terminal = query_models(first,anchor,timeout_ms)
-    if terminal not in ('unsat','unknown'):
-        raise AssertionError('Source branch not closed: '+str(terminal))
-    even = odd = even_hits = odd_hits = all_commitment_hits = 0
+def scan_states(states,later,skips,pre_gap,endian,order,mask,target):
+    """Every complete shifted coupon is checked BEFORE independent retry replay."""
+    counts = {'window_assignments':0,'all_accept':0,
+              'even_coupon_accept':0,'odd_coupon_accept':0,
+              'even_retry':0,'odd_retry':0,'joint':0}
+    total = 7 + pre_gap + 2*skips  # 40 outputs for pre_gap17/skips8
     for state in states:
-        ys = stream(*state, 7 + 2*skips)  # y22 for phase21/y22 holdout
-        coupon = pack(tuple(ys[2:4]),endian,order)
-        candidate = bytes(v ^ m for v,m in zip(coupon,mask))
-        commitment_hit = hashlib.sha256(candidate).hexdigest() == target
-        all_commitment_hits += int(commitment_hit)  # independent of retry holdout
-        for phase in range(4,6 + 2*skips):
-            if tuple(ys[phase:phase+2]) == tuple(later):
-                if phase % 2:
-                    odd += 1
-                    odd_hits += int(commitment_hit)
-                else:
-                    even += 1
-                    even_hits += int(commitment_hit)
-    return bool(states),terminal,len(states),even,odd,even_hits,odd_hits,all_commitment_hits
+        ys = stream(*state,total)
+        for begin in range(2,3+pre_gap):
+            coupon = pack(tuple(ys[begin:begin+2]),endian,order)
+            candidate = bytes(v^m for v,m in zip(coupon,mask))
+            committed = hashlib.sha256(candidate).hexdigest()==target
+            counts['window_assignments'] += 1
+            counts['all_accept'] += int(committed)
+            counts['even_coupon_accept'] += int(committed and begin%2==0)
+            counts['odd_coupon_accept'] += int(committed and begin%2==1)
+            for phase in range(begin+2,begin+4+2*skips):
+                if tuple(ys[phase:phase+2])==tuple(later):
+                    counts['odd_retry' if phase%2 else 'even_retry'] += 1
+                    counts['joint'] += int(committed)
+    return counts
+
+def branch(job):
+    bucket,first,later,timeout_ms,skips,pre_gap,endian,order,mask,target = job
+    anchor=sum(((bucket>>j)&1)<<pos for j,pos in enumerate(POSITIONS))
+    states,terminal=query_models(first,anchor,timeout_ms)
+    if terminal not in ('unsat','unknown'):
+        raise AssertionError('Incomplete in-cube model blocking')
+    return bool(states),terminal,len(states),scan_states(
+        states,later,skips,pre_gap,endian,order,mask,target)
 
 def synthetic_control():
-    rng = random.Random(20261128)
-    state = (rng.getrandbits(64),rng.getrandbits(64))
-    ys = stream(*state,23)
-    idx = sum(((state[0] >> pos)&1) << j for j,pos in enumerate(POSITIONS))
-    mask = bytes(rng.getrandbits(8) for _ in range(16))
+    rng=random.Random(20261128)
+    state=(rng.getrandbits(64),rng.getrandbits(64))
+    ys=stream(*state,42)
+    bucket=sum(((state[0]>>pos)&1)<<j for j,pos in enumerate(POSITIONS))
+    mask=bytes(rng.getrandbits(8) for _ in range(16))
     for endian,order in (('big','ab'),('big','ba'),('little','ab'),('little','ba')):
-        first = unpack(pack(ys[:2],endian,order),endian,order)
-        later = unpack(pack(ys[5:7],endian,order),endian,order)
-        middle = pack(ys[2:4],endian,order)
-        target = hashlib.sha256(bytes(v^m for v,m in zip(middle,mask))).hexdigest()
-        _,terminal,n,eh,oh,ea,oa,unfiltered = branch(
-            (idx,first,later,30000,8,endian,order,mask,target))
-        assert terminal == 'unsat' and n >= 1 and eh == 0 and oh == 1
-        assert ea == 0 and oa == 1 and unfiltered == 1
-        # A different later retry must not veto a complete committed coupon.
-        poisoned_later = [later[0] ^ 1,later[1]]
-        _,t2,n2,pe,po,pce,pco,unfiltered2 = branch(
-            (idx,first,poisoned_later,30000,8,endian,order,mask,target))
-        assert t2 == 'unsat' and n2 >= 1 and (pe,po,pce,pco) == (0,0,0,0)
-        assert unfiltered2 == 1
-    print({'synthetic_only':True,'odd_phase_five_tested':True,
-           'four_layouts_full_middle_and_later_replay':True,
-           'four_layouts_full_sha256_commitment_positive':True,
-           'four_poisoned_later_retry_controls_preserve_sha_hit':True})
+        first=unpack(pack(ys[:2],endian,order),endian,order)
+        later=unpack(pack(ys[23:25],endian,order),endian,order)
+        raw=pack(ys[19:21],endian,order)  # farthest odd coupon offset
+        target=hashlib.sha256(bytes(v^m for v,m in zip(raw,mask))).hexdigest()
+        _,terminal,n,c=branch((bucket,first,later,30000,8,17,endian,order,mask,target))
+        assert terminal=='unsat' and n>=1
+        assert c['all_accept']==1 and c['odd_coupon_accept']==1
+        assert c['even_coupon_accept']==0 and c['joint']==1
+        assert c['odd_retry']>=1
+        poison=(later[0]^1,later[1])
+        _,term2,n2,p=branch((bucket,first,poison,30000,8,17,endian,order,mask,target))
+        assert term2=='unsat' and n2>=1 and p['all_accept']==1
+        assert p['joint']==0 and p['even_retry']==0 and p['odd_retry']==0
+        for begin in range(2,20):
+            raw=pack(ys[begin:begin+2],endian,order)
+            t=hashlib.sha256(bytes(v^m for v,m in zip(raw,mask))).hexdigest()
+            c2=scan_states([state],later,8,17,endian,order,mask,t)
+            assert c2['window_assignments']==18 and c2['all_accept']==1
+    print({'synthetic_only':True,'four_layouts':4,
+           'odd_coupon_start19_and_odd_retry_phase23_pass':True,
+           'poisoned_retry_does_not_veto_committed_coupon':True,
+           '72_shifted_full_coupon_checks_pass':True})
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
@@ -94,6 +106,7 @@ def main():
     p.add_argument('--timeout-ms',type=int,default=5000)
     p.add_argument('--workers',type=int,default=4)
     p.add_argument('--max-later-skipped-packets',type=int,default=8)
+    p.add_argument('--max-preselected-skipped-words',type=int,default=17)
     p.add_argument('--summary-json',type=Path)
     a = p.parse_args()
     if a.synthetic:
@@ -104,7 +117,8 @@ def main():
     if not (0 <= a.start < 4096 and 1 <= a.count <= 4096-a.start):
         p.error('Anchor partition must be within 0..4095')
     if not (100 <= a.timeout_ms <= 30000 and 1 <= a.workers <= 4
-            and 0 <= a.max_later_skipped_packets <= 8):
+            and 0 <= a.max_later_skipped_packets <= 8
+            and 0 <= a.max_preselected_skipped_words <= 17):
         p.error('Invalid solver/phase budget')
     for relative,digest in SAFE_SHA.items():
         file = a.resources_root/relative
@@ -121,24 +135,28 @@ def main():
     target = acceptance['slot_sha256']['K04']
     assert len(mask)==16 and re.fullmatch('[0-9a-f]{64}',target)
     counts = dict(done=0,sat_buckets=0,unsat_buckets=0,open_unknown=0,
-                  models_examined=0,even_holdout=0,odd_holdout=0,
-                  even_commitment_hits=0,odd_commitment_hits=0,
-                  unfiltered_commitment_hits=0)
+                  models_examined=0,coupon_window_assignments=0,
+                  even_holdout=0,odd_holdout=0,
+                  even_coupon_accepts=0,odd_coupon_accepts=0,
+                  joint_later_accepts=0,unfiltered_commitment_hits=0)
     jobs = ((idx,first,later,a.timeout_ms,a.max_later_skipped_packets,
-             a.endian,a.order,mask,target) for idx in range(a.start,a.start+a.count))
+             a.max_preselected_skipped_words,a.endian,a.order,mask,target)
+             for idx in range(a.start,a.start+a.count))
     started = time.monotonic()
     with mp.Pool(a.workers) as pool:
-        for sat,terminal,n,eh,oh,ea,oa,unfiltered in pool.imap_unordered(branch,jobs,chunksize=1):
+        for sat,terminal,n,c in pool.imap_unordered(branch,jobs,chunksize=1):
             counts['done'] += 1
             counts['sat_buckets'] += int(sat)
             counts['unsat_buckets'] += int(not sat and terminal=='unsat')
             counts['open_unknown'] += int(terminal=='unknown')
             counts['models_examined'] += n
-            counts['even_holdout'] += eh
-            counts['odd_holdout'] += oh
-            counts['even_commitment_hits'] += ea
-            counts['odd_commitment_hits'] += oa
-            counts['unfiltered_commitment_hits'] += unfiltered
+            counts['coupon_window_assignments'] += c['window_assignments']
+            counts['even_holdout'] += c['even_retry']
+            counts['odd_holdout'] += c['odd_retry']
+            counts['even_coupon_accepts'] += c['even_coupon_accept']
+            counts['odd_coupon_accepts'] += c['odd_coupon_accept']
+            counts['joint_later_accepts'] += c['joint']
+            counts['unfiltered_commitment_hits'] += c['all_accept']
             if counts['done'] % 100 == 0:
                 print('AGGREGATE_PROGRESS',{'completed':counts['done'],
                       'sat':counts['sat_buckets'],'unsat':counts['unsat_buckets'],
@@ -152,7 +170,8 @@ def main():
         'source_data_emitted':False,
         'selected_ACK2_withheld_from_fit':True,
         'fit_outputs':'first intact REQUESTED packet only',
-        'independent_later_pair_phases':list(range(4,6+2*a.max_later_skipped_packets)),
+        'coupon_output_word_starts':[2,2+a.max_preselected_skipped_words],
+        'independent_later_pair_phases':'coupon_start+2 through coupon_start+'+str(3+2*a.max_later_skipped_packets),
         'start_inclusive':a.start,'end_exclusive':a.start+a.count,
         'max_solver_ms_per_query':a.timeout_ms,
         'all_examined_branches_decided':counts['open_unknown']==0,
