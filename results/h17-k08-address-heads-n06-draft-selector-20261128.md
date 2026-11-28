@@ -47,6 +47,19 @@ Therefore **LOWL -> LOW BIT -> N06 is the primary continuation**. The `LOW + L -
 | N06 role | source-labelled second desk draft |
 | Exact final edit from N06 to keeper envelope | **still missing** |
 
+## Independent heading-channel corroboration
+
+After N06 is selected by the address-head route, reuse the **already-established N09 heading channels** as a control rather than as a second selector. N06's three heading words produce HEAD / adjusted TAILBIT / adjusted LEN values **1 / 3 / 5**, i.e. A1Z26 token **ACE**. Among the 13 colon headings whose adjusted three-channel values all lie inside N01..N24, N06 is the **only** one with the exact ACE signature.
+
+This signature feeds the same source-local machinery without consulting acceptance:
+
+- A1Z26 `ACE` -> N01/N03/N05;
+- their normalized post-label counts are **11/12/14** -> A=0 count token **LMO**;
+- the already selected N07 reversal gives **OML**;
+- whole-token LOW BIT(`OML`) = **3**, selecting N03, source-labelled **Kitchen photograph**.
+
+The simpler observation LOW BIT(`ACE`)=7 is **not** selective: many eligible headings low-bit to 7, so it is not used as evidence. The useful corroboration is the unique full three-channel ACE signature followed by the fixed count/reversal/whole-token reduction chain to the photograph role. This does not prove a historical edit edge or emit final wording; it supplies internal redundancy for the independently selected N06 branch and aligns with MAIL-11's source-class statement that desk notes and photograph captions informed the keeper wording.
+
 ## Consequence
 
 The completed AT/MT/ET/PT semantic-payload decoder now has a direct target-blind continuation to an actual **Emily-authored draft node**, rather than only to a thematic source or an inferred final-carrier class.
