@@ -1,6 +1,8 @@
-# K04 xoroshiro128++: first executed zero-external-witness erasure reconstruction
+# K04 xoroshiro128++: executed first-packet-only zero-witness erased-packet reconstruction
 
 **Agent 4 · 28 November 2026 · source-free mathematical recovery, not an authenticated historical K04 component.**
+
+**Prior-art distinction:** [Agent23's 82-primary-Boolean output solver](../agents/agent23/k04_xoropp_82bool_circuit_sft.py) previously documented unanchored *four-output-fitted* synthetic SAT and an unanchored complete-model extraction path. This work does **not** claim to be the first unanchored xoroshiro128++ method. Its distinct executed advantage is a recovered full state and middle packet from **only the first intact output pair**, with the entire later packet held out for independent replay, by an explicit finite 4,096-bucket zero-source-witness search. Source authenticity remains unproven.
 
 ## Decisive new step relative to the nine-bit prerequisite
 
