@@ -143,6 +143,27 @@ def synthetic():
         results["fixtures"] += 1
     assert results["recovered"] == results["fixtures"]
     assert results["full_commitment_positives"] == results["fixtures"]
+
+    # Exact two-state same-P12 collision: P16 must retain both disjoint
+    # children, not take one first-SAT model as the entire firstpacket fiber.
+    twins = ((0xB02543CFB686BB4A, 0xF9DA21F56A996103),
+             (0xCE695E4122B2739A, 0xFF6DF861F134F29D))
+    twinfirst = stream(*twins[0], 2)
+    assert stream(*twins[1], 2) == twinfirst
+    parent = sum(((twins[0][0] >> p) & 1) << j
+                 for j, p in enumerate(P12))
+    assert parent == sum(((twins[1][0] >> p) & 1) << j
+                         for j, p in enumerate(P12))
+    recovered = set()
+    for child in range(16):
+        states, status, _ = adaptive_child(
+            twinfirst, parent, child, 350, 700, 32)
+        recovered.update(states)
+    assert set(twins).issubset(recovered)
+    assert len(recovered) == 2
+    assert stream(*twins[0], 4)[2:4] != stream(*twins[1], 4)[2:4]
+    results["two_state_same_parent_both_recovered"] = True
+    results["collision_original_loaded"] = False
     print(json.dumps(results, sort_keys=True))
 
 def main():
