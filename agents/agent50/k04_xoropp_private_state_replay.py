@@ -106,8 +106,16 @@ def synthetic_controls():
                         c,h=test_state(state,first,later,mask,sha,endian,order,16,16)
                         assert c['candidates']==272 and c['commit_hits']==1
                         assert h==[candidate.hex().upper()]
+                        # Poison the independent later REQUESTED3 diagnostic;
+                        # original full-component acceptance must not disappear.
+                        poison=(later[0]^1,later[1])
+                        poisoned,poison_hits=test_state(state,first,poison,mask,sha,
+                            endian,order,16,16)
+                        assert poisoned['commit_hits']==1 and poison_hits==h
+                        assert poisoned['joint_hits']==0
                         total+=1
     print(json.dumps({'synthetic_only':True,'complete_K04_style_SHA_positive':total,
+                      'poisoned_later_acceptance_preserved':total,
                       'layouts':4,'states_per_layout':2,'pre_coupon_gaps':[0,4,8,16],
                       'byte_slips':[0,7,15],'original_material_loaded':False},sort_keys=True))
 
