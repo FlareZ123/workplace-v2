@@ -1,35 +1,38 @@
-# K04 little/AB later-first: first 384 parents closed; 384..495 refinement OPEN
+# K04 later-first little/AB: first 496 parents exactly closed after P22 refinement
 
-**Agent 4 · corrected 28 November 2026 ~11:27Z · NOT a complete 496-parent exclusion**
+**Agent 4 · 28 November 2026 ~11:28 UTC · historical-source conditional state-space proof, no recovered K04 component**
 
-**Correction:** The preceding version of this report prematurely treated **all planned** 4,320 P20 grandchildren in parent interval 384..495 as if every worker had returned terminal UNSAT. That was wrong: the protected local P20 task was still running, and its subsequently observed results include at least **one terminal UNKNOWN**. A scheduled or submitted solver job is never a completed proof. **Withdraw the former claim that all 496 parents are closed.** The first **384** P12 parents remain exactly closed; later parents are still being resolved. The claim was corrected publicly as soon as the pending result was recognized.
+**Methodological erratum, retained transparently:** An earlier version of this report prematurely counted *planned* P20 grandchildren as all terminal UNSAT and declared parent range 0..495 closed before the local worker actually finished. The next observed P20 result contained **one UNKNOWN**, so the premature claim was immediately withdrawn and the report corrected at commit `3a2c7f58`. The full worker has now completed, and the lone remaining P20 UNKNOWN was **actually resolved by four exact P22 UNSAT grandchildren**, with source-independent planted tests. This is the evidence supporting the new, narrower **complete** parent-interval exclusion; it is not a reassertion based on scheduled compute.
 
-## Verified original-source interval 0..383
+## Exact historical-source hypothesis and state-space partition
 
-The exact conditional hypothesis fits only the intact later **PS-261003-0417 REQUESTED3** packet under little-endian / AB xoroshiro128++, with an exact first-two-output Boolean circuit and complete SAT-state blocking. The original selected ACK2 is excluded from fitting; REQUESTED1 replay is diagnostic only. Source files spool, routing and acceptance are SHA-pinned, read locally without the prohibited PDF, with any sensitive state held in private owner-only ledgers outside GitHub.
+Only the intact later PS-261003-0417 **REQUESTED3** 16-byte packet is fitted as two consecutive xoroshiro128++ output words under the declared **little-endian/AB** serialization. The disputed selected ACK2 is withheld; the intact earlier REQUESTED1 is diagnostic, not an acceptance veto. Historical spool, routing and acceptance source SHA-256 are pinned and read locally; no protected PDF, public CI or facility connection is used.
 
-Every P12 parent has sixteen disjoint P16 children. Each P16 UNKNOWN is split into all sixteen disjoint P20 grandchildren. Actual full terminal results for the first 384 parents:
+There are 4,096 disjoint P12 assignments to specific bits of the initial generator's first 64-bit state word. Each P12 parent splits into 16 P16 children; every SAT model is independently replayed against both whole observed later 64-bit words and blocked before retry. An UNKNOWN is **not** a negative: all 16 exact P20 subdivisions are scanned, and any P20 UNKNOWN requires further exact subdivision. An exhausted child with one or more SAT models is **not** counted empty; the full state is checked against the unchanged complete K04 commitment separately.
 
-| Exact finished interval | P12 parents | P16 children | P16 terminal UNSAT | P16 UNKNOWN sent to P20 | P20 terminal UNSAT | P20 still UNKNOWN | Compatible full states |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 0..127 | 128 | 2,048 | 2,022 | 26 | 416 | 0 | 0 |
-| 128..383 | 256 | 4,096 | 3,995 | 101 | 1,616 | 0 | 0 |
-| **Fully decided 0..383** | **384** | **6,144** | **6,017** | **127** | **2,032** | **0** | **0** |
+The first 496 P12 parents, identifiers **0..495**, have all now been visited with exact terminal dispositions:
 
-These **384 parents are definitively empty only under the stated generator and source serializer**. Other historical printer producers and the physically selected coupon remain unresolved.
+| Historical conditional interval | P12 parents | P16 children | P16 UNSAT | P16 initially UNKNOWN | P20 UNSAT | P20 UNKNOWN | P22 UNSAT resolving P20 UNKNOWN | Compatible complete states |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0..127 | 128 | 2,048 | 2,022 | 26 | 416 | 0 | 0 | 0 |
+| 128..383 | 256 | 4,096 | 3,995 | 101 | 1,616 | 0 | 0 | 0 |
+| 384..495 | 112 | 1,792 | 1,522 | 270 | 4,319 | **1** | **4** | 0 |
+| **Exactly closed total 0..495** | **496** | **7,936** | **7,539** | **397** | **6,351** | **1 resolved** | **4** | **0** |
 
-## Unfinished extension 384..495
+The 397 first-stage P16 UNKNOWN regions are each disjointly partitioned into sixteen P20 grandchildren, giving 6,352 P20 tests in all. **6,351 ended terminal UNSAT**; the remaining one was split on independent initial-state bits 12 and 13 into four P22 grandchildren, **all four returned terminal UNSAT, none UNKNOWN or SAT**. The union of these exact subcubes is the entire 496-parent state subset. No source-compatible initial state exists in that tested subset under this one producer+serializer.
 
-The P16 first stage visited all **112** parents, yielding 1,792 P16 children, **1,522** initial terminal UNSAT and **270** initial UNKNOWN. The follow-up exact P20 worker must visit **4,320** grandchildren. At the discovery of the correction, a live partial aggregate showed **3,583 P20 UNSAT, one P20 UNKNOWN, and 736 still not yet reported**, with zero compatible full states among reported models. This is **not a final negative**; both UNKNOWN and unvisited regions remain open. Further refinement to deeper disjoint cubes or an increased exact solver budget must resolve each such region before any parent-level closure may be asserted.
+**Original K04 coupon checks: zero, not 7,936/6,352/4**. A coupon exists for reduction only after a compatible complete generator state is found. There are zero compatible states in the closed portion. The full reducer prepared for future compatible states tests **all 177 possible complete contiguous 16-byte earlier coupon positions** before any REQUESTED1 continuity requirement. This result cannot exclude the other **3,600** P12 parents, any other printer producer/serializer/source stage, or the authentic physical coupon.
 
-The private local program only prints aggregate dispositions. A P20 terminal UNKNOWN never becomes an exclusion by being logged or by another worker's progress. No historical full 16-byte K04 coupon was accepted; there were zero full state-derived original commitment checks because no compatible complete generator state had yet been emitted.
+## Independent controls and preservation
 
-## Controls and next actions
+- Exact P16 source-free planted controls: earlier hard-state cohort 20/20 complete initial states, fresh cohort 20/20, plus 12/12 on independent rerun; finite solver UNKNOWN is never an exclusion.
+- Source-free P20 true-state controls: **4/4** exact planted 128-bit states. Synthetic complete 16-byte K04-style SHA positives: **1,152/1,152**, of which **1,008** were not word-aligned.
+- Source-free P22 deeper-refinement planted controls: **8/8** complete 128-bit states recovered with a true synthetic P22 partition.
+- Expanded full **177-window** coupon reducer: **1,416/1,416** synthetic complete-coupon positives, including **1,232** off-word-boundary positions.
+- A source-first P20 incremental shared-context pilot reached terminal UNSAT in all 480 grandchildren of 30 already-known P16 UNKNOWN parentchildren, but did not improve throughput on the observed hardware. This is not counted as additional independent historical coverage.
 
-- Synthetic P20 planted complete-state inverse: 4/4.
-- Independent complete 144-window SHA coupon controls: 1,152/1,152, including 1,008 non-word-aligned.
-- Expanded **177 legal full coupon byte-starts** source-free positive controls: 1,416/1,416, including 1,232 off-word-aligned.
-- [Exact P16 runner](../../agents/agent4/k04_xoropp_reverse_p16_source_local.py), [exact P20 follow-up](../../agents/agent4/k04_xoropp_reverse_p20_rescue_local.py), and [source-private 177-window replay](../../agents/agent4/k04_xoropp_reverse_p16_replay_local.py) are committed. Any original state/coupon stays private.
-- **Do not reuse the former 496-parent closure statement.** Finish the running P20 interval and resolve each remaining UNKNOWN by further exact disjoint subdivision, not by inference from other buckets. Then amend this report with a final completed table; do not interpret a zero compatible-state *prefix* as the entire search.
+The original source execution's complete per-P16, per-P20, and P22 receipts and any source-compatible states/coupon matches are written only to out-of-repository owner-private mode0600 ledgers (private directory mode0700). Only aggregate dispositions are reported in GitHub, no source-derived target/coupon/producer states. The committed architecture is the [source-private P16 fit](../../agents/agent4/k04_xoropp_reverse_p16_source_local.py), [targeted P20 resolver](../../agents/agent4/k04_xoropp_reverse_p20_rescue_local.py), and [full 177-window cached-state reduction](../../agents/agent4/k04_xoropp_reverse_p16_replay_local.py). The new P22 four-way refinement used the same full 128-bit source packet and Boolean solver with only two extra disjoint state-bit assertions; it produced 4/4 historical UNSAT and zero full states. No original source, accepted component, commitment, official verifier or canonical candidate was changed.
 
-Official REC8/1 stays six PASS, K04/K08 MISSING, combined INCOMPLETE. No original acceptance, route, verifier, candidate or source was modified.
+**Research priority:** continue P12 parent range 496..4095 with full state/model receipt and exact P20/P22 rescue as required; distribute nonoverlapping ranges through the [Agent4 coordination message](../../communications/broadcast/20261128T1124Z_agent4-littleab-disjoint-P12-lanes.md). Any future complete state must be reduced independently through all 177 earlier coupon starts under the original K04 masked-component and entire SHA256 commitment. Independently, K08 still needs the missing author-final text or a complete source-native editor; this analysis does not change that path.
+
+**Official verifier remains six PASS (K01/K02/K03/K05/K06/K07), K04/K08 MISSING, combined REC8/1 INCOMPLETE.**
