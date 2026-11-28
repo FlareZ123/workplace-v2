@@ -64,6 +64,30 @@ The original P16 (4..7) first-16-parent screen had earlier recorded only 99/256 
 The [confidential later-first runner](../agents/agent8/k04_reverse_littleba_private.py) now accepts independently configured four additional P16 bits, source/circuit/geometry-fingerprinted mode0600 state ledgers, an explicit UNKNOWN-only P12 retry preserving the union of previously discovered states, and a source-free-of-bytes **private coverage report**. Coverage distinguishes 4,096 expected P12 parents or 65,536 P16 children, visited, terminal UNSAT with/without models, open UNKNOWN, unvisited, and securely cached states; no source-derived state is printed. One original P16 parent16 integrated source test at 26..29 recorded **7/16 terminal UNSAT, 9/16 UNKNOWN, zero states and zero original K04 hits** in its replayable private ledger. Neither the added 33 earlier byte-slip positions nor the new geometry is attested printer behavior.
 
 
+
+## 28 November ~11:34 UTC — first 16 parent groups exactly source-empty via P20/P22
+
+The original firstpacket-only P12 candidate-first screen of the intact later REQUESTED3 little/BA view yielded almost no decisive models: at termination **2,555 of 4,096 disjoint P12 parents visited, 16 no-state UNSAT, 2,539 UNKNOWN and 1,541 unvisited**, with **zero enumerated complete states and zero K04 target hits**. A timeout is not a source exclusion. The scan was deliberately stopped rather than spending the remaining lease on statistically large but mathematically uninformative UNKNOWN coverage; all 2,555 per-parent dispositions were privately retained.
+
+We instead refined the genuinely unresolved earlier **P16 parent interval [0,16)** (99 fully empty P16 subcubes, 157 UNKNOWN), using exact disjoint additional a0 initial-state bit positions 8..11. For each of 157 open P16 children, **all sixteen** P20 descendants were solved, each with 350ms first / 700ms UNKNOWN retry and complete actual-state enumeration, before the full 177-window original K04 commitment. Exactly **2,511/2,512 P20 grandchildren** terminated UNSAT with zero states. The one P20 UNKNOWN was itself subdivided into **four** exact P22 grandchildren at state positions12,13; all four terminated UNSAT with zero states. The P20/P22 method follows Agent4's independently developed adaptive reverse-first state-domain design; this is a **different tested original-source packet serializer**, not a claim that Agent8 discovered the P20/P22 technique.
+
+**Thus all 16 consecutive P12 parents [0,16) are mathematically source-empty under this later-first little/BA xoroshiro128++ view.** Exact full-domain closure, not a count of attempted solver calls:
+
+| Exact disjoint layer | Entire source-conditioned range | Fully empty terminal UNSAT | Unresolved after all descendants |
+| --- | ---: | ---: | ---: |
+| P16 subcubes | 256, of which 157 entered refinement | 99 | 0 |
+| P20 subcubes below the 157 P16 UNKNOWNs | 2,512 | 2,511 | 0 |
+| P22 subcubes below the single P20 UNKNOWN | 4 | 4 | 0 |
+| P12 parents with fully exhausted descendants and zero compatible states | **16** | **16** | **0** |
+
+No compatible state, reconstructed physical coupon or original K04 full-commitment match appeared in this covered interval. An original printer source outside the specified generator, byte/word layout, or claimed stage is not excluded. Remaining P12 parents **16..4095** are unresolved/unvisited by this *exact* deep proof; the broad P12-first-sat timeouts do not change that.
+
+**Controls:** 16/16 seeded source-free true-P20-cube exact complete state and planted 177-window full SHA positives; 8/8 fresh true-P22-cube complete-state controls. Independently run [private exact-domain auditor](../agents/agent8/k04_reverse_proof_audit.py) produced **16 source-empty, zero model-bearing, zero unresolved parents**, 99 P16 UNSAT, 157 P16 UNKNOWN refined, 2,511 P20 UNSAT, one P20 UNKNOWN refined, four P22 UNSAT; missing-subcubes count 0 and no original target hit escrow. It checks full original source/circuit/model/view/geometry fingerprints on all private per-child files, emits no source-derived state values, and treats missing or UNKNOWN descendants as open, never UNSAT. Original-source code:
+[exact P20 rescuer](../agents/agent8/k04_reverse_p20_private.py) and [P22/P24/P26 recursive rescuer](../agents/agent8/k04_reverse_deep_private.py), both strictly private-source local with synthetic positive controls, plus the existing P16 source and secure cache.
+
+**Next substantive action underway:** four disjoint 16-parent original-source lanes [16,32), [32,48), [48,64), [64,80) run this entire P16→P20→P22 cascade on the same unchanged intact REQUESTED3 little/BA and original K04 commitment. Their final parent-complete receipts, not timeout-heavy first-SAT sweeps, should determine whether this conditional source view is a viable printer producer. A full-domain exclusion requires all 4,096 exact P12 parents; 16/4,096 is an early rigorous milestone, **not** the final missing K04 recovery.
+
+
 ## Boundaries and decision
 
 A positive hit would establish a full 16-byte component matching the unchanged K04 acceptance, not automatically authenticate the speculative generator's historical use. A timeout or source-free positive cannot count as an original recovered component. The exact historical issuer and retry-state relationship remain unverified.
