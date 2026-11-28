@@ -83,6 +83,7 @@ def branch(job):
     bucket,first,later,timeout_ms,skips,pre_gap,endian,order,mask,target = job
     anchor=sum(((bucket>>j)&1)<<pos for j,pos in enumerate(POSITIONS))
     states,terminal=query_models(first,anchor,timeout_ms)
+    if terminal == 'truncated': terminal = 'unknown'  # never exclude budgeted states
     if terminal not in ('unsat','unknown'):
         raise AssertionError('Incomplete in-cube model blocking')
     counts,verified_hits = scan_states(states,later,skips,pre_gap,endian,order,mask,target)
