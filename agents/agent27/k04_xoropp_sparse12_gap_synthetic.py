@@ -80,22 +80,52 @@ def solve(obs,anchor,positions,timeout_ms=5000):
 if __name__=='__main__':
  import argparse
  parser=argparse.ArgumentParser()
- parser.add_argument('--suite', choices=('positive','poison','baseline','onebit'), default='positive')
+ parser.add_argument('--suite', choices=('positive','poison','baseline','onebit','twobit'), default='positive')
  parser.add_argument('--timeout-ms', type=int, default=5000)
+ parser.add_argument('--first', type=int, default=0, help='first synthetic seed index')
+ parser.add_argument('--count', type=int, default=10, help='maximum synthetic seed cases')
  args=parser.parse_args()
  assert 0<args.timeout_ms<=15000
  # Source-free deterministic fixtures, train first 2; following 8 were withheld.
  seeds=(20261128,12345,2027,2048,124,48,19,123456,8773,2)
  sparse=(0,1,2,3,22,23,24,25,45,46,47,48)
  assert len(sparse)==12 and len(set(sparse))==12
+ assert 0<=args.first<len(seeds) and 1<=args.count<=len(seeds)
+ chosen=seeds[args.first:args.first+args.count]
+ assert chosen
  baseline=tuple(range(12))
  successes=0
  started=time.monotonic()
- for seed in seeds:
+ for seed in chosen:
   rng=random.Random(seed)
   actual_a,actual_b=rng.getrandbits(64),rng.getrandbits(64)
   ys=stream(actual_a,actual_b)
   obs={i:ys[i] for i in (0,1,4,5)}
+  if args.suite=='twobit':
+   # Exactly TEN initial-a bits supplied externally; neither bit0 nor
+   # bit24 is known. The only extra work is four exhaustive fast 12-bit
+   # branches, not a source oracle or an unchecked heuristic completion.
+   positions=tuple(p for p in sparse if p not in (0,24))
+   assert len(positions)==10
+   omitted=(1<<0)|(1<<24)
+   outcomes=[]
+   for assignment in range(4):
+    proposed=(actual_a & ~omitted) | ((assignment&1)<<0) | (((assignment>>1)&1)<<24)
+    t0=time.monotonic()
+    status,state=solve(obs,proposed,sparse,args.timeout_ms)
+    outcomes.append((status,state,round(time.monotonic()-t0,3)))
+   sats=[state for status,state,_ in outcomes if status=='sat']
+   assert len(sats)==1 and sats[0]==(actual_a,actual_b),(seed,'twobit state')
+   assert sum(status=='unsat' for status,_,_ in outcomes)==3,(seed,'twobit alternative unproven')
+   assert stream(*sats[0])==ys,(seed,'twobit erased packet')
+   successes+=1
+   print({'seed':seed,'train':seed in seeds[:2],'suite':args.suite,
+          'observed_output_indices':(0,1,4,5),'erased_output_indices':(2,3),
+          'externally_supplied_a0_bits':10,'enumerated_bit0_bit24_branches':4,
+          'sat_branches':1,'unsat_branches':3,
+          'elapsed_seconds':round(sum(x[2] for x in outcomes),3),
+          'exact_complete_state_and_gap':True},flush=True)
+   continue
   if args.suite=='onebit':
    # Only eleven scattered initial-a bits are supplied; bit0 is genuinely
    # omitted. Resolve it with exactly TWO complete 12-bit solver branches.
@@ -143,7 +173,7 @@ if __name__=='__main__':
          'anchor_bits':len(positions),'status':status,'exact':state==(actual_a,actual_b),
          'elapsed_seconds':elapsed},flush=True)
  if args.suite!='baseline':
-  assert successes==len(seeds), (args.suite,successes)
- print({'suite':args.suite,'successes':successes,'cases':len(seeds),
+  assert successes==len(chosen), (args.suite,successes)
+ print({'suite':args.suite,'successes':successes,'cases':len(chosen),
         'witness_positions':list(positions),'elapsed_total_s':round(time.monotonic()-started,2),
         'synthetic_only':True,'historical_key_recovered':False},flush=True)
