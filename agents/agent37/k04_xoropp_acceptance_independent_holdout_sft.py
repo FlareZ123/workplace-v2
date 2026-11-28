@@ -99,6 +99,38 @@ def main() -> None:
                 controls += 1
 
     assert controls == 24 and distinct_mismatch_acceptances == 8
+    # Do not require that the physical selected coupon follows REQUESTED1
+    # without intervening writer outputs. Exact full-128-bit coupons are cheap
+    # to try once the (expensive) firstpacket state has already been found.
+    # The 0..8 bound matches the explicitly bounded later-gap family used
+    # elsewhere; it is a hypothesis, not an attested physical draw count.
+    expanded = [independent_forward(*state, n=22) for state in WITNESSES]
+    pre_gap_controls = 0
+    fixed_y2_misses = 0
+    for endian in ("big", "little"):
+        for order in ("ab", "ba"):
+            for actual in (0, 1):
+                for gap in range(9):
+                    chosen_position = 2 + 2 * gap
+                    raw = packet_bytes(
+                        tuple(expanded[actual][chosen_position:chosen_position + 2]),
+                        endian, order,
+                    )
+                    synthetic_target = hashlib.sha256(bytes(
+                        a ^ b for a, b in zip(raw, mask)
+                    )).digest()
+                    target_matches = []
+                    for state_index, vals in enumerate(expanded):
+                        for candidate_gap in range(9):
+                            pos = 2 + 2 * candidate_gap
+                            packet = packet_bytes(tuple(vals[pos:pos + 2]), endian, order)
+                            reduced = bytes(a ^ b for a, b in zip(packet, mask))
+                            if hashlib.sha256(reduced).digest() == synthetic_target:
+                                target_matches.append((state_index, candidate_gap))
+                    assert target_matches == [(actual, gap)]
+                    fixed_y2_misses += int(gap != 0)
+                    pre_gap_controls += 1
+    assert pre_gap_controls == 72 and fixed_y2_misses == 64
     print({
         "source_free": True,
         "same_firstpair_and_same_P12_cube": True,
@@ -107,6 +139,8 @@ def main() -> None:
         "serializers": 4,
         "whole_coupon_commitment_controls": controls,
         "correct_commitment_with_conflicting_later_packet": distinct_mismatch_acceptances,
+        "bounded_preselected_gap_commitment_controls": pre_gap_controls,
+        "additional_valid_coupons_missed_by_forced_y2_y3": fixed_y2_misses,
         "commitment_target_and_holdout_independently_evaluated": True,
         "original_K04_component_recovered": False,
     })
