@@ -25,7 +25,7 @@ def xor(*xs):
 
 def circuit(obs,anchor,positions,timeout_ms):
  """obs maps visible stream indices 0,1,4,5 to complete 64bit values."""
- assert set(obs)=={0,1,4,5}
+ assert set(obs) in ({0,1,4,5},{0,1})
  lines=['(set-logic QF_UF)','(set-option :sat.anf true)',
         '(set-option :sat.anf.exlin true)',f'(set-option :timeout {timeout_ms})']
  def put(name,expr):
@@ -80,14 +80,17 @@ def solve(obs,anchor,positions,timeout_ms=5000):
 if __name__=='__main__':
  import argparse
  parser=argparse.ArgumentParser()
- parser.add_argument('--suite', choices=('positive','poison','baseline','onebit','twobit'), default='positive')
+ parser.add_argument('--suite', choices=('positive','poison','baseline','onebit','twobit','firstpairtwobit'), default='positive')
  parser.add_argument('--timeout-ms', type=int, default=5000)
+ parser.add_argument('--fresh20', action='store_true', help='independent fresh seeds80903..80922')
  parser.add_argument('--first', type=int, default=0, help='first synthetic seed index')
  parser.add_argument('--count', type=int, default=10, help='maximum synthetic seed cases')
  args=parser.parse_args()
  assert 0<args.timeout_ms<=15000
  # Source-free deterministic fixtures, train first 2; following 8 were withheld.
  seeds=(20261128,12345,2027,2048,124,48,19,123456,8773,2)
+ if args.fresh20:
+  seeds=tuple(range(80903,80923))
  sparse=(0,1,2,3,22,23,24,25,45,46,47,48)
  assert len(sparse)==12 and len(set(sparse))==12
  assert 0<=args.first<len(seeds) and 1<=args.count<=len(seeds)
@@ -100,8 +103,8 @@ if __name__=='__main__':
   rng=random.Random(seed)
   actual_a,actual_b=rng.getrandbits(64),rng.getrandbits(64)
   ys=stream(actual_a,actual_b)
-  obs={i:ys[i] for i in (0,1,4,5)}
-  if args.suite=='twobit':
+  obs={i:ys[i] for i in ((0,1) if args.suite=='firstpairtwobit' else (0,1,4,5))}
+  if args.suite in ('twobit','firstpairtwobit'):
    # Exactly TEN initial-a bits supplied externally; neither bit0 nor
    # bit24 is known. The only extra work is four exhaustive fast 12-bit
    # branches, not a source oracle or an unchecked heuristic completion.
@@ -115,16 +118,23 @@ if __name__=='__main__':
     status,state=solve(obs,proposed,sparse,args.timeout_ms)
     outcomes.append((status,state,round(time.monotonic()-t0,3)))
    sats=[state for status,state,_ in outcomes if status=='sat']
-   assert len(sats)==1 and sats[0]==(actual_a,actual_b),(seed,'twobit state')
-   assert sum(status=='unsat' for status,_,_ in outcomes)==3,(seed,'twobit alternative unproven')
-   assert stream(*sats[0])==ys,(seed,'twobit erased packet')
-   successes+=1
-   print({'seed':seed,'train':seed in seeds[:2],'suite':args.suite,
-          'observed_output_indices':(0,1,4,5),'erased_output_indices':(2,3),
+   assert all(status in ('sat','unsat','unknown') for status,_,_ in outcomes)
+   assert all(state==(actual_a,actual_b) for state in sats), (seed,'wrong SAT state')
+   assert all(stream(*state)==ys for state in sats), (seed,'heldout replay')
+   complete=len(sats)==1 and sum(status=='unsat' for status,_,_ in outcomes)==3
+   if not complete and not args.fresh20:
+    raise AssertionError((seed,'twobit alternative inconclusive',[(o[0],o[2]) for o in outcomes]))
+   if complete:
+    successes+=1
+   print({'seed':seed,'train':not args.fresh20 and seed in (20261128,12345),
+          'suite':args.suite,'observed_output_indices':tuple(obs),
+          'independently_heldout_output_indices':(4,5) if args.suite=='firstpairtwobit' else (),
+          'erased_output_indices':(2,3),
           'externally_supplied_a0_bits':10,'enumerated_bit0_bit24_branches':4,
-          'sat_branches':1,'unsat_branches':3,
+          'sat_branches':len(sats),'unsat_branches':sum(o[0]=='unsat' for o in outcomes),
+          'unknown_branches':sum(o[0]=='unknown' for o in outcomes),
           'elapsed_seconds':round(sum(x[2] for x in outcomes),3),
-          'exact_complete_state_and_gap':True},flush=True)
+          'complete_branch_decision':complete,'every_found_state_exact':True},flush=True)
    continue
   if args.suite=='onebit':
    # Only eleven scattered initial-a bits are supplied; bit0 is genuinely
@@ -172,7 +182,7 @@ if __name__=='__main__':
          'observed_output_indices':(0,1,4,5),'erased_output_indices':(2,3),
          'anchor_bits':len(positions),'status':status,'exact':state==(actual_a,actual_b),
          'elapsed_seconds':elapsed},flush=True)
- if args.suite!='baseline':
+ if args.suite!='baseline' and not args.fresh20:
   assert successes==len(chosen), (args.suite,successes)
  print({'suite':args.suite,'successes':successes,'cases':len(chosen),
         'witness_positions':list(positions),'elapsed_total_s':round(time.monotonic()-started,2),
