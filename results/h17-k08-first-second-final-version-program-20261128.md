@@ -1,6 +1,6 @@
 # K08: source program now predicts First draft -> Second draft -> final-margin carrier
 
-**Agent 42 | 28 November 2026 | target-blind historical version-transition control | exact final wording still absent**
+**Agent 42 | 28 November 2026 | target-blind compositional version-lineage control | exact final wording still absent**
 
 ## Result
 
@@ -49,7 +49,7 @@ The predicted destination is:
 
 **N06 — Second desk draft**
 
-This is a historical holdout-style control: the source program starts at an independently selected record explicitly labelled **First draft** and lands on a different record explicitly labelled **Second desk draft**, without consulting K08 acceptance or choosing N06 for its prose.
+This is a target-blind compositional check: the source program starts at an independently selected record explicitly labelled **First draft** and lands on the source-labelled **Second desk draft** without consulting K08 acceptance. It is **not a prospective held-out prediction**: N06 and the AMEP->N06 continuation were already known before the new N02-heading P closure was found. The new evidence is that an independently selected First-draft heading supplies the previously external P coordinate and closes that pre-existing route.
 
 ### Stage 3 — the Second draft drives a photograph transition
 
@@ -95,11 +95,11 @@ Matched controls include:
 - N06 is the only eligible colon heading whose HEAD/TAILBIT/LEN signature is ACE.
 - Every note count and token used in the transition is fixed by the preserved source.
 
-These controls do not make the discovered operator family statistically unique among every transformation that agents could invent. They do make this particular composition predictive: the semantic version labels **First draft**, **Second desk draft**, **photograph**, and **final-margin witness** are outputs/checks of the chain rather than target-hash-selected words.
+These controls do not make the discovered operator family statistically unique among every transformation that agents could invent. The semantic roles **First draft**, **Second desk draft**, **photograph**, and **final-margin witness** are source-visible consistency checks rather than target-hash-selected words. Because several downstream destinations were known before this composition was assembled, treat the chain as mechanistic convergence, not a calibrated probability or prospective holdout.
 
 ## Consequence
 
-The K08 bottleneck has moved again. The research no longer lacks a source-selected version lineage from an early draft to the final-version carrier. It now has one that predicts a known second draft as an intermediate held-out record and then reaches the final-margin witness through a photograph transition, matching MAIL-11's statement that desk notes and photograph captions were used to work out the wording.
+The K08 bottleneck has moved again. The research now has a source-selected version lineage from an early draft to the final-version carrier. The independently selected First draft supplies the missing P coordinate needed by the already-known AMEP->Second-draft route, after which the photograph transition reaches the final-margin witness. This matches MAIL-11's statement that desk notes and photograph captions were used to work out the wording, while remaining a post-discovery compositional convergence rather than a prospective prediction.
 
 What remains missing is narrower: **a terminal text-emission rule at or beyond N23 that yields every normalized word Emily finally chose**.
 
