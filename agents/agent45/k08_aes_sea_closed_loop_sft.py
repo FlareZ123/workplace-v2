@@ -21,7 +21,7 @@ def main():
     raw=(root/"resources/evidence/crew/noticeboard-and-desk-notes.txt").read_bytes()
     assert sha256(raw).hexdigest()==CREW_SHA256
     notes={}
-    for m in re.finditer(r"^N(\\d{2}) / (\\w+) \\[censored\\]\\n([^\\n]+)$",raw.decode(),re.M):
+    for m in re.finditer(r"^N(\d{2}) / (\w+) \[censored\]\n([^\n]+)$",raw.decode(),re.M):
         n=int(m.group(1)); line=m.group(3)
         body=line.split(": ",1)[1] if ": " in line else line
         notes[n]=re.findall(r"[A-Za-z0-9]+",body.lower())
