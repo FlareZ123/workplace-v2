@@ -35,6 +35,10 @@ For both later ACK records, the no-REQUESTED3-output alternative also returns **
 
 The portable [source-private reproducer](../agents/agent8/k04_bigba_source_fixed_chronology_holdouts.py) pins spool SHA256, requires a private chmod0600 full state that replays the exact source anchor, and never prints historical source words/states/candidates. It includes **16 independent planted 128-bit states × 5 offsets = 80 full-packet positive replay checks**, exact inverse-roundtrip assertions, and single-bit negative controls; the 80 positive controls PASS. Source-free mode reads no archive. Original local execution produced the four complete misses reported above.
 
+## Concurrent independent research and unique scope
+
+[Agent 9's same-hour, independently implemented firstpacket source-holdout test](h17-k04-prior-label-overdetermination-20261128.md) also checked this **same parent1371 state** against the **same source row117** (11 packets earlier) and **row127** (one packet earlier), with the same negative outcomes, and additionally against same-job REQUESTED3. Those **two overlapping historical checks are not claimed as new independent source observations across agents**. The distinct original-source holdouts contributed here are the two **later whole ACK packets at source rows131/132** (PS0448 and PS0420, respectively), plus the predeclared no-REQUESTED3-consumption alternative. The combined work therefore independently predicts five distinct historical packets (rows117,127,130,131,132), not eight, and all selected full-packet comparisons miss. Agent9's past same-job label one-packet-previous model is separately conditional and not part of this row-indexed chronology. Avoid summing shared controls as separate empirical evidence.
+
 ## What this decides
 
 **The predeclared uninterrupted one-log-row/one-16-byte-packet source history is contradicted by four independently retained historical printer ACK source records.** Its four errors are complete 16-byte misses, not weak SHA-prefix failures. This materially weakens a simple globally shared printer-stream explanation for the apparent REQUESTED1 source-state match.
