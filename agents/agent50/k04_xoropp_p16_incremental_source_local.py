@@ -11,6 +11,9 @@ previously inconclusive 16-child parent groups and durable resume.
 from __future__ import annotations
 import argparse,json,multiprocessing as mp,os,time
 from pathlib import Path
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from agents.agent50.k04_xoropp_p16_incremental_synthetic import solve_parent
 from agents.agent50.k04_xoropp_p16_private_ledger import (
     private_path,append_private,read_ledger,SRC_SHA,ANCHOR)
