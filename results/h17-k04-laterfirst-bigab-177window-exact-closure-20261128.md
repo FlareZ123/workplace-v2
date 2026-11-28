@@ -60,3 +60,31 @@ Combined with the first 140-parent closure at 116..255, this yields **P12 parent
 A further, disjoint complete-candidate source scan has begun on **P12 2048..3071** with the [fast fresh-context resumable local engine](../agents/agent6/k04_laterfirst_fresh_resumable_source_local.py); it writes every fully processed source region to a private chmod-0600 ledger before considering it checkpointed. This report makes **no claims about that ongoing region** until a completed aggregate is appended.
 
 The original REC8/1 remains **six PASS / K04 and K08 MISSING / combined INCOMPLETE**. There is no recovered K04 coupon or recovered K08 final wording.
+
+## Original-source continuation: P12 2048..3071 is now 1024/1024 exactly closed
+
+**Completed 28 November 2026 at 15:51 UTC.** The local original non-PDF spool, routing and original full K04 acceptance gate were used in a second **disjoint** P12 interval. The same later REQUESTED3-only xoroshiro128++ 1.0 big/AB one-transition Boolean model, exact 16-way P16 subdivision, recursive P20/P22 UNKNOWN repair, complete SAT-model blocking and full 177-byte-window coupon reducer were unchanged.
+
+| Terminal local result | Original P12 2048..3071 |
+| --- | ---: |
+| P12 parents processed and fully source-empty | **1,024 / 1,024** |
+| P16 exact child regions / terminal UNSAT at P16 | **16,384 / 15,358** |
+| P20 descendant regions / terminal UNSAT at P20 | **16,416 / 16,410** |
+| P22 descendant regions / terminal UNSAT at P22 | **24 / 24** |
+| Final UNKNOWN leaves | **0** |
+| Complete compatible states | **0** |
+| Original complete 16-byte candidate SHA checks / K04 matches | **0 / 0** |
+| Four-worker wall time | **1,302.7 seconds** |
+| Out-of-repository restricted private exact parent ledger | **1,024 / 1,024 rows fsynced** |
+
+The six unresolved P20 descendants were each split into four exact P22 grandchildren and all 24 were terminal UNSAT. Because no source-compatible state exists *within these exact partitions* under this hypothesis, no predicted complete coupon was generated or subjected to a K04 commitment check. No original source payload, state, candidate, mask or target value was published.
+
+Combining **this newly completed 1,024-parent interval** and the earlier complete **116..1023 (908-parent) interval**, Agent6 has a documented exact conditional source-empty proof for **1,932 disjoint P12 parents**. Independently, Agent15 previously established the separate **1024..1134 (111-parent)** interval; recognizing that prior report, the current known disjoint source-empty total is **2,043/4,096** P12 parent regions under **one exact later-request big/AB xoroshiro128++ hypothesis**, with all other P12 regions still unresolved unless separately completed. No credit is taken for Agent15's prior nine exact parents 0,101,102,106,107,109,111,112,113 within the unexamined 0..115 hole.
+
+A disjoint follow-up is already active on exactly the **107 not already established** P12 parents in 0..115, explicitly *skipping* those nine Agent15 source-empty parent proofs. This is aimed at completing the full 0..1023 region without rerunning published exact work. If it finds source-compatible state, that state's complete candidate coupons must undergo the original full K04 test before any printer-origin conclusion. Next planned remote-open interval is **3072..3583**, also disjoint.
+
+### Validated state-to-original-acceptance route
+
+If any later-source-compatible state is found, the private exact-state vault at [Agent6's source-safe state tool](../agents/agent6/k04_laterfirst_source_state_vault.py) preserves a separate 0600 state file for the existing [four-layout / sixteen-byte-slip complete-coupon C++ consumer](../agents/agent15/k04_xoropp_source_state_longstream_local.cpp). The latter now accepts source anchor `--source-attempt 3 --source-view big/ab` and can test 10 million **prior** native starts × four serializers × sixteen complete byte slips, **640 million original whole K04 component SHA checks per complete state**, before any optional other packet diagnostic. The pre-existing C++ synthetic test had a real same-scope `f` identifier collision, repaired at [compile fix](https://github.com/FlareZ123/workplace-v2/commit/2ae34a843c57187d44215a25f80e750997dc0799), and the full C++ source-free planted suite now builds and **passes** [GitHub Actions run 46161574314](https://github.com/FlareZ123/workplace-v2/actions/runs/46161574314). This validates a reusable future original candidate reduction, **not** a source-selected emitter or recovered seventh component.
+
+**Acceptance unchanged:** K01/K02/K03/K05/K06/K07 PASS; K04/K08 MISSING; combined REC8/1 INCOMPLETE.
