@@ -41,6 +41,29 @@ This is a conditional state-space reduction, **not** a source-model exclusion an
 
 A separate P12 candidate-first original-source scan with a 3000ms per-call budget initially visited four disjoint 50-parent intervals (0..49, 1024..1073, 2048..2097, 3072..3121): **200 visited, 200 UNKNOWN, zero enumerated states and zero original K04 hits**. It uses a secure local per-parent ledger and will not assert that an UNKNOWN parent contains no matching state. This broad screen tests candidate latency, not the complete negative domain. Later completed coverage must be reported separately; no attempt-2 guessed or copied ACK bytes are fitted.
 
+
+## Exact P16 coordinate refinement: source reachability and held-out recovery
+
+Agent7's original geometry adds initial-state bit positions (4,5,6,7) to the 12 fixed anchor bits. Agent8 screened five alternative exact four-bit subpartitions on later-first little/BA source parents 0–3, then extended three candidate geometries to the next 12 parents. Each geometry is an exhaustive disjoint subdivision of its P12 parent. All original-source evaluations kept ACK2 withheld, checked any complete 16-byte coupon against the unchanged K04 SHA first, and printed no derived source values. Counts below are subcubes **proven empty UNSAT**, not hypotheses about absent historical states.
+
+| Additional anchor bits | First 64 original children UNSAT | Next 192 original children UNSAT | Total UNSAT | Open UNKNOWN |
+| --- | ---: | ---: | ---: | ---: |
+| 4,5,6,7 (prior Agent7 geometry) | 50 | 149 | **199/256** | 57 |
+| 26,27,28,29 | 55 | 103 | **158/256** | 98 |
+| 49,50,51,52 | 30 | 99 | **129/256** | 127 |
+| 8,9,10,11 | 1 | not run | 1/64 | 63 |
+| 13,14,15,16 | 0 | not run | 0/64 | 64 |
+| 60,61,62,63 | 4 | not run | 4/64 | 60 |
+
+**All examined original children returned zero complete SAT models and zero K04 commitment hits.** Unknown children remain open. The first 64 source children misleadingly favored 26..29; the next 192 reversed that ranking. No selector was chosen as a new source fact.
+
+**Source-free planted state controls:** First, an exploratory 32-seed comparison (Python Random seeds 20017–20048, the genuine 16 anchor bits supplied) recovered exact initial states in 17/32 for 4..7, 21/32 for 26..29, 20/32 for 49..52 and 16/32 for 60..63. Second, an independent 128-seed comparison (seeds 50000–50127) gave **119/128 exact complete-state recoveries for 4..7** and **109/128 for 26..29** under the same 350→700ms per-solve caps. All true-bit anchored controls avoided a false terminal UNSAT with no recovered state. Source-free reproducer: [128-seed comparison](../agents/agent8/k04_p16_coordinate_heldout.py). These are **conditional true-anchor tests**, not source-free recovery of the correct historical anchor.
+
+The original P16 (4..7) first-16-parent screen had earlier recorded only 99/256 UNSAT on a more heavily CPU-oversubscribed four-worker run. The separately timed, less contended comparison above proved 199/256 UNSAT at nominally the same caps. This is a timeout effect, not contradictory mathematical proofs: UNSAT is conclusive for its exact subcube; UNKNOWN is not. Coordinate rankings at short solver budgets are scheduling-dependent and must be validated on realistic workloads.
+
+The [confidential later-first runner](../agents/agent8/k04_reverse_littleba_private.py) now accepts independently configured four additional P16 bits, source/circuit/geometry-fingerprinted mode0600 state ledgers, an explicit UNKNOWN-only P12 retry preserving the union of previously discovered states, and a source-free-of-bytes **private coverage report**. Coverage distinguishes 4,096 expected P12 parents or 65,536 P16 children, visited, terminal UNSAT with/without models, open UNKNOWN, unvisited, and securely cached states; no source-derived state is printed. One original P16 parent16 integrated source test at 26..29 recorded **7/16 terminal UNSAT, 9/16 UNKNOWN, zero states and zero original K04 hits** in its replayable private ledger. Neither the added 33 earlier byte-slip positions nor the new geometry is attested printer behavior.
+
+
 ## Boundaries and decision
 
 A positive hit would establish a full 16-byte component matching the unchanged K04 acceptance, not automatically authenticate the speculative generator's historical use. A timeout or source-free positive cannot count as an original recovered component. The exact historical issuer and retry-state relationship remain unverified.
