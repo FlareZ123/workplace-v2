@@ -62,7 +62,7 @@ def solve_p20(first, cube, timeout_ms=700, max_models=32):
         while status == "sat":
             model = ask("(get-value (" + " ".join(f"a0_{j}" for j in range(64)) + "))")
             bitvals = {int(j): int(v == "true") for j, v in
-                       re.findall(r"\\(a0_(\\d+)\\s+(true|false)\\)", model)}
+                       re.findall(r"\(a0_(\d+)\s+(true|false)\)", model)}
             if len(bitvals) != 64:
                 raise RuntimeError("Missing Boolean model bit")
             a = sum(bitvals[j] << j for j in range(64))
