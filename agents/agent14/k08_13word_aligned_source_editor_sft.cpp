@@ -1,4 +1,5 @@
 #include <openssl/sha.h>
+#include <algorithm>
 #include <array>
 #include <atomic>
 #include <fstream>
@@ -35,7 +36,7 @@ static std::vector<std::string> words(const std::string& s){
   if(!cur.empty())out.push_back(cur); return out;
 }
 static std::string join(const std::vector<std::string>& w){
-  std::string s; for(size_t i=0;i<w.size();++i){if(i)s+=' ';s+=w[i];} return s;
+  std::string s; for(size_t i=0;i<w.size();++i){if(i)s+=' ';s+=w[i];}return s;
 }
 static std::string note_body(const std::string& all, int n){
   char id[8]; std::snprintf(id,sizeof(id),"N%02d /",n);
@@ -50,7 +51,6 @@ static std::string json_string(const std::string& s,const std::string& key){
   std::regex r("\\\""+key+"\\\"\\s*:\\s*\\\"([0-9A-Fa-f]+)\\\"");
   std::smatch m; if(!std::regex_search(s,m,r)) throw std::runtime_error("json key "+key); return m[1].str();
 }
-
 struct HmacFixed {
   SHA256_CTX inner0{}, outer0{};
   explicit HmacFixed(const std::vector<unsigned char>& key){
@@ -76,8 +76,8 @@ static Bytes32 slot_hash(const unsigned char hmac[32]){
 }
 
 int main(int argc,char**argv){
-  if(argc!=2){std::cerr<<"usage: k08_aligned4 ROOT\n";return 2;}
-  std::string root=argv[1];
+  if(argc!=3){std::cerr<<"usage: k08_13word_aligned_source_editor_sft ROOT MODE\n";return 2;}
+  std::string root=argv[1], mode=argv[2];
   std::string notes=read_all(root+"/evidence/crew/noticeboard-and-desk-notes.txt");
   auto nd=sha256(notes);
   if(hex(nd.data(),32)!="13f2318ccc54f35b590a2d76b3a80244fe24d70f0699c67c05858e8b8983c5cb") throw std::runtime_error("notes SHA");
@@ -93,6 +93,11 @@ int main(int argc,char**argv){
   if(hex(p20sha.data(),32)!="4b3350e5b34e40cc9dd1ba53d926ef0455888aa056aac4ba7da141569664e95c") throw std::runtime_error("P20 fingerprint");
 
   std::array<std::vector<std::string>,4> rows{n02,n08,n09,p20};
+  if(mode=="reverse") for(auto &r: rows) std::reverse(r.begin(),r.end());
+  else if(mode=="wrap2l") for(auto &r: rows) std::rotate(r.begin(),r.begin()+2,r.end());
+  else if(mode=="wrap2r") for(auto &r: rows) std::rotate(r.begin(),r.end()-2,r.end());
+  else if(mode!="identity") throw std::runtime_error("bad mode");
+
   std::string route=read_all(root+"/evidence/recovery-routing.json");
   std::string acc=read_all(root+"/acceptance.json");
   auto key=unhex(json_string(route,"desk_nonce"));
@@ -102,11 +107,20 @@ int main(int argc,char**argv){
   auto ctl=hm.digest16(join(n02));
   if(hex(ctl.data(),16)!="bf889359b0303f2b2b2fd96ae841210b") throw std::runtime_error("historical N02 HMAC control");
 
-  std::array<int,13> plant_sel{}; plant_sel.fill(0); plant_sel[8]=2;
+  std::array<int,13> plant_sel{};
+  for(int i=0;i<13;i++){
+    int chosen=-1;
+    for(int r=0;r<4 && chosen<0;r++){
+      int m=0; for(int q=0;q<4;q++) m += rows[q][i]==rows[r][i];
+      if(m==1) chosen=r;
+    }
+    if(chosen<0) throw std::runtime_error("no unique plant token");
+    plant_sel[i]=chosen;
+  }
   std::vector<std::string> plantw;
   for(int i=0;i<13;i++) plantw.push_back(rows[plant_sel[i]][i]);
   unsigned char ph[32];
-  { SHA256_CTX in=hm.inner0; auto ps=join(plantw); SHA256_Update(&in,ps.data(),ps.size()); hm.from_inner(in,ph); }
+  {SHA256_CTX in=hm.inner0; auto ps=join(plantw); SHA256_Update(&in,ps.data(),ps.size()); hm.from_inner(in,ph);}
   auto plant_target=slot_hash(ph);
   for(int i=0;i<13;i++){
     int multiplicity=0; for(int r=0;r<4;r++) multiplicity += rows[r][i]==plantw[i];
@@ -117,13 +131,11 @@ int main(int argc,char**argv){
   std::copy(targetv.begin(),targetv.end(),target.begin());
   std::atomic<unsigned long long> hits{0}, plant_hits{0}, leaves{0};
   const unsigned long long SHARDS=256;
-
   #pragma omp parallel for schedule(dynamic,1)
   for(unsigned long long shard=0; shard<SHARDS; ++shard){
     SHA256_CTX ctx=hm.inner0; unsigned long long x=shard;
     for(int pos=0;pos<4;pos++){
-      int r=x&3; x>>=2;
-      if(pos) SHA256_Update(&ctx," ",1);
+      int r=x&3; x>>=2; if(pos) SHA256_Update(&ctx," ",1);
       auto &w=rows[r][pos]; SHA256_Update(&ctx,w.data(),w.size());
     }
     struct Frame {int pos; SHA256_CTX ctx;};
@@ -132,10 +144,7 @@ int main(int argc,char**argv){
       Frame f=st.back(); st.pop_back();
       if(f.pos==13){
         unsigned char h[32]; hm.from_inner(f.ctx,h); auto d=slot_hash(h);
-        if(d==target) ++hits;
-        if(d==plant_target) ++plant_hits;
-        ++leaves;
-        continue;
+        if(d==target) ++hits; if(d==plant_target) ++plant_hits; ++leaves; continue;
       }
       for(int r=0;r<4;r++){
         SHA256_CTX c=f.ctx; SHA256_Update(&c," ",1);
@@ -146,7 +155,8 @@ int main(int argc,char**argv){
   }
   if(leaves!=67108864ULL) throw std::runtime_error("assignment count");
   if(plant_hits!=1) throw std::runtime_error("planted enumeration control");
-  std::cout<<"K08_ALIGNED4 assignments="<<leaves<<" original_hits="<<hits
-           <<" planted_hits="<<plant_hits<<" historical_n02_control=PASS source13=PASS\n";
+  std::cout<<"K08_ALIGNED4 mode="<<mode<<" assignments="<<leaves
+           <<" original_hits="<<hits<<" planted_hits="<<plant_hits
+           <<" historical_n02_control=PASS source13=PASS\n";
   return hits?3:0;
 }
