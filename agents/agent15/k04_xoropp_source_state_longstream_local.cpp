@@ -204,8 +204,8 @@ static void synthetic(){
  backslip.source_swap=true;
  State older_state=initial;
  for(int i=0;i<73;++i)older_state=prev(older_state);
- u64 e=next(older_state),f=next(older_state),g=next(older_state),h=next(older_state);
- Data backfirst=pack(e,f,false,false),backsecond=pack(g,h,false,false),backcomponent{};
+ u64 e=next(older_state),f_word=next(older_state),g=next(older_state),h=next(older_state);
+ Data backfirst=pack(e,f_word,false,false),backsecond=pack(g,h,false,false),backcomponent{};
  for(int j=0;j<16;++j){
   int k=9+j;
   backcomponent[j]=(k<16?backfirst[k]:backsecond[k-16])^mask[j];
