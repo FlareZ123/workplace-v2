@@ -68,6 +68,24 @@ struct Metrics{std::uint64_t pairs=0,checks=0,hits=0,later_holdout_replays=0;};
 struct Trial{
  Data mask,source,later;Hash target;bool has_later=false;
  bool source_little=false,source_swap=false;std::string escrow;Metrics counts;
+ void check_slipped(u64 a,u64 b,u64 c,u64 d){
+  // Consecutive full packets under each view; try every 16-byte start.
+  ++counts.pairs;
+  for(int layout=0;layout<4;++layout){
+   const bool little=(layout&2)!=0,swap=(layout&1)!=0;
+   Data first=pack(a,b,little,swap),second=pack(c,d,little,swap);
+   for(int slip=0;slip<16;++slip){
+    Data component{};
+    for(int j=0;j<16;++j){
+     int at=slip+j;
+     component[j]=(at<16?first[at]:second[at-16])^mask[j];
+    }
+    Hash digest{};SHA256(component.data(),component.size(),digest.data());
+    ++counts.checks;
+    if(digest==target){++counts.hits;if(!escrow.empty())secure_escrow(escrow,component);}
+   }
+  }
+ }
  void check(u64 a,u64 b){
   ++counts.pairs;
   if(has_later&&pack(a,b,source_little,source_swap)==later)++counts.later_holdout_replays;
@@ -79,10 +97,21 @@ struct Trial{
   }
  }
 };
-static Metrics scan(State initial,Trial& trial,std::uint64_t forward,std::uint64_t reverse){
+static Metrics scan(State initial,Trial& trial,std::uint64_t forward,std::uint64_t reverse,bool slips=false){
  State source=initial;u64 s0=next(source),s1=next(source);
  if(pack(s0,s1,trial.source_little,trial.source_swap)!=trial.source)throw std::runtime_error("PRIVATE STATE DOES NOT EXACTLY REPLAY intact REQUESTED1");
- if(forward){u64 older=next(source);for(std::uint64_t i=0;i<forward;++i){u64 newer=next(source);trial.check(older,newer);older=newer;}}
+ if(forward){
+  if(slips){
+   u64 a=next(source),b=next(source),c=next(source),d=next(source);
+   for(std::uint64_t i=0;i<forward;++i){
+    trial.check_slipped(a,b,c,d);
+    a=b;b=c;c=d;d=next(source);
+   }
+  }else{
+   u64 older=next(source);
+   for(std::uint64_t i=0;i<forward;++i){u64 newer=next(source);trial.check(older,newer);older=newer;}
+  }
+ }
  if(reverse){State earlier=prev(initial);u64 newer=draw(earlier);for(std::uint64_t i=0;i<reverse;++i){earlier=prev(earlier);u64 older=draw(earlier);trial.check(older,newer);newer=older;}}
  return trial.counts;
 }
@@ -100,12 +129,25 @@ static void synthetic(){
   if(m.hits!=1)throw std::runtime_error("Synthetic planted complete commitment missing");
   std::cout<<"SYNTHETIC_ONLY direction="<<(direction?"reverse":"forward")<<" pair_count="<<m.pairs<<" full_SHA256_checks="<<m.checks<<" planted_hits="<<m.hits<<"\n";
  }
+ // Independent byte-slip control: an unaligned 16-byte coupon is found
+ // twice due to overlap of consecutive eight-byte producer starts.
+ Trial slip{};slip.mask=mask;slip.source=source;slip.source_swap=true;
+ State state=initial;next(state);next(state);
+ const int chosen=37,byte_start=7;
+ u64 a=next(state),b=next(state),c=next(state),d=next(state);
+ for(int i=0;i<chosen;++i){a=b;b=c;c=d;d=next(state);}
+ Data first=pack(a,b,true,false),second=pack(c,d,true,false),component{};
+ for(int j=0;j<16;++j){int k=byte_start+j;component[j]=(k<16?first[k]:second[k-16])^mask[j];}
+ SHA256(component.data(),16,slip.target.data());
+ auto got=scan(initial,slip,128,0,true);
+ if(got.hits!=2||got.checks!=128*64)throw std::runtime_error("Synthetic slipped 16-byte coupon missed");
+ std::cout<<"SYNTHETIC_ONLY byte_slips=16 pair_count="<<got.pairs<<" full_SHA256_checks="<<got.checks<<" planted_hits="<<got.hits<<"\n";
 }
 int main(int argc,char** argv){
  try{
-  bool syn=false;std::string root="resources",state_file,escrow,view="big/ba";std::uint64_t forward=10000000,reverse=0;
+  bool syn=false,slips=false;std::string root="resources",state_file,escrow,view="big/ba";std::uint64_t forward=10000000,reverse=0;
   for(int i=1;i<argc;++i){std::string arg=argv[i];auto val=[&](){if(i+1>=argc)throw std::runtime_error("Missing argument value");return std::string(argv[++i]);};
-   if(arg=="--synthetic")syn=true;else if(arg=="--resources-root")root=val();else if(arg=="--state-file")state_file=val();else if(arg=="--hit-escrow")escrow=val();else if(arg=="--source-view")view=val();else if(arg=="--forward-pairs")forward=std::stoull(val());else if(arg=="--reverse-pairs")reverse=std::stoull(val());else throw std::runtime_error("Unknown flag "+arg);
+   if(arg=="--synthetic")syn=true;else if(arg=="--byte-slips")slips=true;else if(arg=="--resources-root")root=val();else if(arg=="--state-file")state_file=val();else if(arg=="--hit-escrow")escrow=val();else if(arg=="--source-view")view=val();else if(arg=="--forward-pairs")forward=std::stoull(val());else if(arg=="--reverse-pairs")reverse=std::stoull(val());else throw std::runtime_error("Unknown flag "+arg);
   }
   if(syn){synthetic();return 0;}
   if(envci())throw std::runtime_error("Original-source run forbidden in CI");
@@ -121,9 +163,9 @@ int main(int argc,char** argv){
   auto target=bytes32(findone(acceptance,"\\\"K04\\\"[[:space:]]*:[[:space:]]*\\\"([0-9a-f]{64})\\\""));
   Trial trial{};trial.mask=mask;trial.target=target;trial.source=source;trial.later=later;trial.has_later=true;trial.source_little=(view.rfind("little",0)==0);trial.source_swap=(view.substr(view.find('/')+1)=="ba");trial.escrow=escrow;
   State state=private_state(state_file);
-  auto started=std::chrono::steady_clock::now();auto m=scan(state,trial,forward,reverse);
+  auto started=std::chrono::steady_clock::now();auto m=scan(state,trial,forward,reverse,slips);
   double elapsed=std::chrono::duration<double>(std::chrono::steady_clock::now()-started).count();
-  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ view="<<view<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
+  std::cout<<"AGGREGATE_ONLY producer=xoroshiro128++ view="<<view<<" byte_slips_forward="<<(slips?16:1)<<" forward_pairs="<<forward<<" reverse_pairs="<<reverse<<" pairs="<<m.pairs<<" complete_SHA256_checks="<<m.checks<<" original_K04_hits="<<m.hits<<" later_request_replay_count="<<m.later_holdout_replays<<" elapsed_seconds="<<std::fixed<<std::setprecision(2)<<elapsed<<"\n";
   return 0;
  }catch(const std::exception& e){std::cerr<<"FAILED "<<e.what()<<"\n";return 2;}
 }
