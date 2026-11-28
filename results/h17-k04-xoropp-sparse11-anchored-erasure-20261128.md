@@ -35,3 +35,8 @@ This is a **25% reduction in external state anchor width**, from 16 externally k
 Original REC8/1 remains **K01/K02/K03/K05/K06/K07 PASS, K04/K08 MISSING, combined INCOMPLETE**. The official acceptance and verifier, canonical candidate, original evidence and quarantined BX25-08 PDF were untouched.
 
 **Next discriminator:** a genuine source-recorded subset of producer state bits or an exact, source-selected unanchored two-output inverse that reduces the other unknown 53+ a bits would be needed. Do not rerun donor grids of unlinked 11-bit integers and do not treat synthetic source-independent performance as historical authenticity.
+
+
+## 28 November update — stronger ten-bit four-branch result
+
+The eleven-bit two-branch method remains valid, but it is superseded as the smallest independently executed complete planted-gap witness by [the ten-bit four-branch solver](h17-k04-xoropp-sparse10-four-branch-erasure-20261128.md). Externally provide sparse state bits \`(1,2,3,22,23,25,45,46,47,48)\`; exhaust both unknown bits0 and24 in four 12-bit anchored solver branches. **All ten genuine synthetic planted cases:** precisely one full-state SAT with erased-packet replay PASS and three other branches UNSAT (40/40 exact branch decisions under the five-second cap). The same source-free reproducer now includes \`--suite twobit\`. This is a **conditional solver-width improvement only**. K04 physical coupon and K08 exact final wording still absent; original acceptance remains six PASS, two MISSING, combined INCOMPLETE.
