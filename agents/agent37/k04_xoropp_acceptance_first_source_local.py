@@ -52,26 +52,39 @@ def read_named_sources(root: Path, endian: str, order: str):
 
 
 def evaluate_cube(args):
-    bucket, first, later, mask, original_digest, endian, order, timeout_ms, lag = args
+    bucket, first, later, mask, original_digest, endian, order, timeout_ms, lag, pre_gap = args
     anchor = sum(((bucket >> j) & 1) << pos for j, pos in enumerate(POSITIONS))
     # Model-exhaustive within a cube if terminal UNSAT. UNKNOWN is unresolved.
     states, terminal = query_models(list(first), anchor, timeout_ms)
     assert terminal in ("unsat", "unknown")
     hits, replay_count, joint = 0, 0, 0
     for state in states:
-        values = stream(*state, 6 + 2 * lag)
+        values = stream(*state, 6 + 2 * (lag + pre_gap))
         assert tuple(values[:2]) == tuple(first)
-        missing_raw = pack(tuple(values[2:4]), endian, order)
-        component = bytes(a ^ b for a, b in zip(missing_raw, mask))
-        committed = hashlib.sha256(component).hexdigest() == original_digest
-        replay = any(
-            tuple(values[t:t + 2]) == tuple(later)
-            for t in range(4, 6 + 2 * lag, 2)
-        )
-        # Critically the original acceptance is NOT inside the replay branch.
-        hits += int(committed)
-        replay_count += int(replay)
-        joint += int(committed and replay)
+        # The selected physical ACK2 need not be the very next PRNG packet
+        # after REQUESTED1. Test *whole* 16-byte coupons at source-bounded
+        # alternative gap positions, not guessed partial/nibble repairs.
+        for skipped in range(pre_gap + 1):
+            selected_position = 2 + 2 * skipped
+            missing_raw = pack(
+                tuple(values[selected_position:selected_position + 2]),
+                endian, order,
+            )
+            component = bytes(a ^ b for a, b in zip(missing_raw, mask))
+            committed = hashlib.sha256(component).hexdigest() == original_digest
+            # A later retry, if same-stream, must be AFTER this selected packet.
+            replay = any(
+                tuple(values[t:t + 2]) == tuple(later)
+                for t in range(
+                    selected_position + 2,
+                    selected_position + 4 + 2 * lag,
+                    2,
+                )
+            )
+            # Critically original acceptance is NOT conditioned on replay.
+            hits += int(committed)
+            replay_count += int(replay)
+            joint += int(committed and replay)
     return terminal, len(states), hits, replay_count, joint
 
 
@@ -85,6 +98,7 @@ def main():
     p.add_argument("--timeout-ms", type=int, default=5000)
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--max-later-skipped-packets", type=int, default=0)
+    p.add_argument("--max-before-selected-skipped-packets", type=int, default=0)
     p.add_argument("--summary-json", type=Path)
     args = p.parse_args()
 
@@ -96,6 +110,8 @@ def main():
         p.error("workers 1..4 and timeout-ms 100..30000 required")
     if not 0 <= args.max_later_skipped_packets <= 8:
         p.error("later skipped packets 0..8 required")
+    if not 0 <= args.max_before_selected_skipped_packets <= 8:
+        p.error("before-selected skipped packets 0..8 required")
 
     first, later, route_mask, target = read_named_sources(
         args.resources_root, args.endian, args.order
@@ -107,7 +123,8 @@ def main():
     with mp.Pool(args.workers) as pool:
         work = (
             (b, first, later, route_mask, target, args.endian, args.order,
-             args.timeout_ms, args.max_later_skipped_packets)
+             args.timeout_ms, args.max_later_skipped_packets,
+             args.max_before_selected_skipped_packets)
             for b in range(args.start, args.start + args.count)
         )
         for terminal, nstates, h, r, j in pool.imap_unordered(
@@ -130,10 +147,14 @@ def main():
                     "sat_buckets": sat_buckets,
                     "firstpacket_states_checked": states_tested,
                     "terminal_model_blocker_status": terminal_counts.copy(),
-                    "K04_original_commitment_hits_ANY_firstpair_state": accepts_any,
+                    "K04_original_commitment_hits_ANY_state_and_selected_gap": accepts_any,
+                    "whole_16byte_candidate_packets_tested": states_tested * (
+                        args.max_before_selected_skipped_packets + 1
+                    ),
                     "later_full_packet_replays": replays,
                     "JOINT_original_commitment_and_later_replay": both,
                     "max_later_skipped_packets": args.max_later_skipped_packets,
+                    "max_before_selected_skipped_packets": args.max_before_selected_skipped_packets,
                     "all_branches_examined": done == args.count,
                     "all_examined_branches_decided": terminal_counts["unknown"] == 0,
                     "historical_generator_or_coupon_authenticated": False,
