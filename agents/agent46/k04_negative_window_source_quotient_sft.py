@@ -48,7 +48,7 @@ def original_source():
         if row == SELECTED_ROW:
             # Crucial: do not parse or use the disputed selected payload.
             continue
-        match = re.search(r"(?:^|\\s)PAYLOAD=([0-9A-F]{32})(?=\\s|$)", line)
+        match = re.search(r"(?:^|\s)PAYLOAD=([0-9A-F]{32})(?=\s|$)", line)
         assert match is not None, row
         payload = bytes.fromhex(match.group(1))
         for lane in range(4):
