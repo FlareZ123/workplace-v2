@@ -33,6 +33,9 @@ sys.path.insert(0, str(ROOT))
 from agents.agent4.k04_xoropp_zero_witness_source_local import requested_packet, unpack, pack
 from agents.agent4.k04_xoropp_zero_witness_synthetic import POSITIONS
 from agents.agent27.k04_xoropp_sparse12_gap_synthetic import circuit, stream
+from agents.agent19.k04_source_retry_ledger import (
+    MODEL_ID, validate_private_path, append_record, unknown_buckets,
+)
 
 M=(1<<64)-1
 P=ctypes.c_void_p
@@ -93,7 +96,7 @@ def evaluate(task):
         matches_joint+=(committed and replay)
         if committed:accepted_components.append(component.hex().upper())
     assert matches_any==len(accepted_components)
-    return (terminal,len(models),matches_any,matches_later,matches_joint,accepted_components)
+    return (bucket,terminal,len(models),matches_any,matches_later,matches_joint,accepted_components)
 
 def read_sources(root,endian,order):
     spool=root/'evidence/print/spool-reconstruction.log'
@@ -132,6 +135,10 @@ def main():
     p.add_argument('--max-models-per-cube',type=int,default=64)
     p.add_argument('--max-later-skipped-packets',type=int,default=8)
     p.add_argument('--summary-json',type=Path)
+    p.add_argument('--local-status-ledger',type=Path,
+                   help='Optional confidential chmod0600 per-bucket dispositions outside the Git repository')
+    p.add_argument('--retry-unknown-from',type=Path,
+                   help='Schedule only previously UNKNOWN cubes in a same-source/same-layout private ledger')
     p.add_argument('--local-hit-escrow',type=Path,required=True,
                    help='Full path to confidential chmod0600 results outside Git repository')
     a=p.parse_args()
@@ -141,27 +148,50 @@ def main():
     if not(1<=a.workers<=4 and 100<=a.timeout_ms<=30000):p.error('Bad solver budget')
     if not(1<=a.max_models_per_cube<=65536 and 0<=a.max_later_skipped_packets<=8):
         p.error('Bad model or gap budget')
-    path=a.local_hit_escrow.resolve()
-    if path==ROOT or ROOT in path.parents:
-        p.error('Confidential hit escrow MUST be outside the Git repository')
-    if not path.parent.is_dir():p.error('Confidential escrow parent must exist')
+    path=validate_private_path(a.local_hit_escrow,ROOT)
+    ledger_path=(validate_private_path(a.local_status_ledger,ROOT)
+                 if a.local_status_ledger else None)
     first,later,mask,target=read_sources(a.resources_root,a.endian,a.order)
+    if a.retry_unknown_from:
+        retry_path=validate_private_path(a.retry_unknown_from,ROOT,must_exist=True)
+        bucket_ids=unknown_buckets(retry_path,SPOOL_SHA256,a.endian+'/'+a.order,
+                                   a.start,a.start+a.count)
+    else:
+        bucket_ids=list(range(a.start,a.start+a.count))
+    num_jobs=len(bucket_ids)
+    if not num_jobs:
+        print('AGGREGATE_ONLY',json.dumps({
+            'reference_interval':[a.start,a.start+a.count],
+            'retry_unknown_only':bool(a.retry_unknown_from),
+            'jobs_selected':0,'source_bytes_in_output':False,
+            'original_K04_hits_any_state':0},sort_keys=True),flush=True)
+        return
     tasks=((i,first,later,mask,target,a.endian,a.order,a.timeout_ms,
             a.max_later_skipped_packets,a.max_models_per_cube)
-           for i in range(a.start,a.start+a.count))
+           for i in bucket_ids)
     t0=time.monotonic();done=states=sat_cubes=hits=replays=joints=stored=0
     terminal_count={'unsat':0,'unknown':0}
     with mp.Pool(a.workers) as pool:
-        for terminal,n,h,r,j,components in pool.imap_unordered(evaluate,tasks,chunksize=1):
+        for bucket,terminal,n,h,r,j,components in pool.imap_unordered(evaluate,tasks,chunksize=1):
             done+=1;states+=n;sat_cubes+=(n>0);hits+=h;replays+=r;joints+=j
             terminal_count[terminal]+=1
+            if ledger_path:
+                append_record(ledger_path,{
+                    'model_id':MODEL_ID,'source_sha256':SPOOL_SHA256,
+                    'layout':a.endian+'/'+a.order,'bucket':bucket,
+                    'terminal':terminal,'states_examined':n,
+                    'timeout_ms':a.timeout_ms,
+                    'max_models_per_cube':a.max_models_per_cube,
+                })
             if components:
                 securely_escrow(path,components)
                 stored+=len(components)
-            if done%50==0 or done==a.count:
-                status={'branch_interval':[a.start,a.start+a.count],
+            if done%50==0 or done==num_jobs:
+                status={'reference_interval':[a.start,a.start+a.count],
                         'layout':a.endian+'/'+a.order,
-                        'branches_completed':done,'total_branches':a.count,
+                        'retry_unknown_only':bool(a.retry_unknown_from),
+                        'branches_completed':done,'total_branches':num_jobs,
+                        'original_interval_size':a.count,
                         'firstpacket_states_enumerated':states,'sat_cubes':sat_cubes,
                         'terminal_counts':terminal_count.copy(),
                         'original_K04_hits_any_state':hits,
