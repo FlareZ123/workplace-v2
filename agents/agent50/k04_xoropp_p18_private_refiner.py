@@ -11,6 +11,9 @@ the original-source path is strictly forbidden on public CI.
 from __future__ import annotations
 import argparse,hashlib,json,os,time
 from pathlib import Path
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from agents.agent50.k04_xoropp_p16_private_ledger import (
     SRC_SHA, ANCHOR, SCHEMA as P16_SCHEMA, private_path, append_private, read_ledger)
 from agents.agent50.k04_xoropp_p18_adaptive_synthetic import refine_parent
