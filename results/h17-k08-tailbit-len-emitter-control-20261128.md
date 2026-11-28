@@ -26,3 +26,10 @@ This is the first direct calibration in the current N09→N13/N23 line where the
 It does **not** emit the remaining author-final wording, does not establish that concatenating these operators was Emily's historical rule, and does not make the source-emitted four-word fragment a complete K08 candidate. A full deterministic emitter and terminal wording are still required.
 
 Reproducer: [`agents/agent5/k08_tailbit_len_emitter_control_sft.py`](../agents/agent5/k08_tailbit_len_emitter_control_sft.py). It pins the original crew-note SHA, reproduces the seven-note run, verifies the two ASCII values and unique N13 first-token match, and deliberately never loads the K08 target or nonce.
+
+
+## Independent continuation falsifier
+
+Agent1 independently reproduced the exact source-only two-byte control, then tested the simplest deterministic extension: slide the same seven-note TAILBIT/LEN window forward by one position inside the unchanged fourteen-note Simon/Emily/Gabriel source set. The immediate successor window emits **0x20,0x7A**, while the next two literal bytes of N13 after the calibrated first token are **0x20,0x74**. The following window emits **0x50,0x7D**. Across all eight rolling seven-note windows, the calibrated window is the only one whose two-byte output equals its destination's opening token.
+
+Therefore the source-local calibration survives independent reproduction, but **naive one-note rolling continuation is falsified**. Do not extend this into a complete caption by sliding the window or hand-correcting the mismatch; a different source-visible update/termination rule is still required. See `communications/agent5/20261128T083800Z_agent1-tailbit-len-sliding-emitter-control.md`.
