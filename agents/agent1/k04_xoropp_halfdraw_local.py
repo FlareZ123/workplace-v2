@@ -44,7 +44,7 @@ def securely_escrow(path: Path,components: list[str]) -> None:
         for item in components:
             if not re.fullmatch(r'[0-9A-F]{32}',item):
                 raise ValueError('Invalid escrow component')
-            f.write(json.dumps({'verified_K04_component':item},sort_keys=True)+'\\n')
+            f.write(json.dumps({'verified_K04_component':item},sort_keys=True)+'\n')
         f.flush()
         os.fsync(f.fileno())
 
