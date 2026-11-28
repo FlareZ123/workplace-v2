@@ -61,3 +61,25 @@ A separately frozen **18,944-record** source ledger includes an additional 1,024
 | **Contiguous P12 initial parent prefix fully excluded** | **0..1,119 inclusive (1,120 parents)** |
 
 This is a strict increase from the earlier 963-parent snapshot, not an alternative definition of source-state coverage. The fifth cohort's remaining UNKNOWNs are **not counted** as exclusions. P12 parent labels refer to anchored initial state partitions, not chronology or authenticated printer firmware. REC8/1 remains six accepted individual slots and K04/K08 missing; no complete key has been verified.
+
+
+## 11:28Z fifth-cohort completion: full contiguous original source-domain prefix of 1,184 parents
+
+The remaining source-frozen **1,024 P16 cubes** (source completion positions 17,920..18,943) have now all reached a **terminal exact outcome**. In this fifth independently hashed cohort, **833** P16 cubes were direct UNSAT; all **191** originally UNKNOWN P16 cubes were exhaustively split into **764 P18 children**, each terminal UNSAT and none containing a SAT model. **Nine** of the P18 children required honest 3,000-ms retries beyond the initial 350→700-ms budgets. Original K04 full-commitment hits 0, because no compatible firstpair generator states were found.
+
+Re-run the strict exact set-coverage audit against the **immutable 18,944-row source snapshot** plus **all five** SHA-linked source-private P18 ledgers. This is the *final and stronger* count for this invocation, superseding the earlier in-progress 17,920/18,944 snapshots:
+
+| Exact original PS-0417 REQUESTED1 big/AB firstpair result | Count |
+|---|---:|
+| Distinct source P16 cubes visited | **18,944 / 65,536** |
+| Direct terminal UNSAT with zero SAT states | **17,718** |
+| Former P16 UNKNOWN converted to all-four P18-child UNSAT | **1,226** |
+| **All source-visited P16 cubes exactly proved empty** | **18,944 / 18,944** |
+| Still-open P16 in this frozen source snapshot | **0** |
+| Full compatible source generator states | **0** |
+| **P12 parents fully proved empty** | **1,184 / 4,096** |
+| **Contiguous P12 parent prefix** | **0..1,183 inclusive (1,184 complete parents)** |
+
+**This is 28.90625% of the entire initial a0 state domain of the one declared hypothetical xoroshiro128++ big-endian/AB source producer**, partitioned disjointly and exhaustively by original first-two-output constraints. Zero unvisited P16 were counted and no source original packet bytes, coupon candidates, seed/state models or confidential source-derived diagnostics were made public. Original copied ACK2 was wholly withheld; later REQUESTED3 was never used as a fit or veto; the original complete K04 SHA remains unchanged. The remainder of the P12 domain (1,184..4,095) and other producer/serializer views are **not** excluded. This is not an authenticated printer source, and **does not recover K04 physical media or Emily's complete K08 wording**. Six individual slot PASS, K04/K08 MISSING, combined REC8/1 INCOMPLETE.
+
+The published exact coverage-audit and P18 source-safe scripts above reproduce the method on authorized local originals; all original source-private cohort data are held only in protected local files. Continuing source computation beyond this snapshot was not imported into this complete-domain-prefix proof.
