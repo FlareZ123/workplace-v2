@@ -5,6 +5,7 @@ No K08 desk nonce, HMAC, acceptance, or final wording read.
 Run: python agents/agent31/k08_pt_selector_multiplicity_sft.py resources/evidence/transfers/transfer-audit.jsonl
 """
 import collections
+import itertools
 import hashlib
 import json
 import sys
@@ -80,6 +81,30 @@ def main(path):
               "PT_masks=" + str(masks_pt),
               "four_variant_valid=" + str(variants_valid),
               "four_variant_PT=" + str(variants_pt))
+
+    # Independently test the claimed source seq0..7 order under all 8! permutations.
+    # The selected mixed attempt mask is held fixed at 0xAA; no acceptance/HMAC involved.
+    expected_perm = {"AX-7778": (0, 0), "AX-7781": (0, 0),
+                     "AX-7782": (5184, 144), "AX-7783": (504, 0)}
+    for transfer, d in sorted(chunks.items()):
+        parts = [d[(s, 1 + ((0xAA >> s) & 1))] for s in range(8)]
+        valid, exact_pt = 0, 0
+        all_bytes = set()
+        for seq_permutation in itertools.permutations(range(8)):
+            blob = b"".join(parts[j] for j in seq_permutation)
+            packed = pack_tailbits(blob)
+            all_bytes.add(packed)
+            token = note_pair(packed)
+            if token is not None:
+                valid += 1
+            if token == "PT":
+                exact_pt += 1
+        assert (valid, exact_pt) == expected_perm[transfer]
+        assert len(all_bytes) == (1120 if transfer == "AX-7783" else 280)
+        print(transfer, "source_fixed_attempt_mask=0xAA",
+              "seq_permutations=40320", "valid_A_X=" + str(valid),
+              "exact_PT=" + str(exact_pt), "distinct_lowbit_pair=" + str(len(all_bytes)))
+
     print("PIN=PASS exact_transfer_controls=PASS target_or_nonce_read=False")
 
 
