@@ -23,7 +23,7 @@ def source(root):
  rows=[]
  for line in (root/'evidence/print/spool-reconstruction.log').read_text().splitlines():
   if 'JOB=PS-261003-0417 ' not in line: continue
-  rows.append(dict(re.findall(r'([A-Z]+)=([^\\s]+)',line)))
+  rows.append(dict(re.findall(r'([A-Z]+)=([^\s]+)',line)))
  assert len(rows)==4
  def one(attempt):
   matches=[x for x in rows if x['STATE']=='REQUESTED' and x['ATTEMPT']==attempt and x['CLASS']=='RECOVER']
