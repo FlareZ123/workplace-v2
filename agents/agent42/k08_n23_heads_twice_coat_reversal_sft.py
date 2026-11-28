@@ -29,6 +29,10 @@ def lowbit(s: str) -> int:
     return pack(ord(c.lower()) & 1 for c in s)
 
 
+def low_if_even(v: int) -> int:
+    return v + 1 if v % 2 == 0 else v
+
+
 def normalize(s: str) -> str:
     s = s.lower()
     s = re.sub(r"[^a-z0-9\s]", " ", s)
@@ -81,22 +85,28 @@ def main() -> None:
 
     # Continue N04 literally: its terminal noun COAT has LOW BIT 7, selecting
     # the already-calibrated N07 "Put it back" reversal operation.
-    assert bodies[4][-1] == "coat"
-    reversal_note = lowbit("coat")
-    assert reversal_note == 7
+    assert bodies[4][-3:] == ["needs", "a", "coat"]
+    tail_selectors = [low_if_even(lowbit(w)) for w in bodies[4][-3:]]
+    assert tail_selectors == [23, 1, 7]
+    reversal_note = tail_selectors[-1]
     assert bodies[7][:3] == ["put", "it", "back"]
 
-    # Apply the reversal to the complete selected N01 caption. The operator's
-    # short-token calibrations reverse character/token sequences; at phrase
-    # width the only two natural granularities are whole-word order and the
-    # entire normalized character stream. Test both, no other edit choices.
+    # N04 therefore names both complete source operands in its terminal
+    # three-word instruction: NEEDS -> N23 under LOW IF EVEN, A -> N01,
+    # COAT -> N07 reversal. Test the complete reversal on both selected
+    # source records. The short-token calibrations establish reversal but
+    # not phrase granularity, so enumerate only whole-word order and the
+    # entire normalized character stream for each operand.
     n01 = bodies[1]
     normalized_n01 = " ".join(n01)
+    normalized_n23 = " ".join(n23)
     candidates = [
         " ".join(reversed(n01)),
         normalized_n01[::-1],
+        " ".join(reversed(n23)),
+        normalized_n23[::-1],
     ]
-    assert candidates[0] != candidates[1]
+    assert len(set(candidates)) == 4
 
     route = json.loads((root / "resources/evidence/recovery-routing.json").read_text())
     acceptance = json.loads((root / "resources/acceptance.json").read_text())
@@ -107,7 +117,7 @@ def main() -> None:
     assert component.hex().upper() == N02_HMAC16
 
     hits = [reduce_phrase(c, key)[1] == target for c in candidates]
-    assert hits == [False, False]
+    assert hits == [False, False, False, False]
 
     planted = reduce_phrase(candidates[0], key)[1]
     planted_hits = sum(reduce_phrase(c, key)[1] == planted for c in candidates)
@@ -118,10 +128,12 @@ def main() -> None:
         "landmark_between_notes": selected,
         "HEAD_pass1": first,
         "HEAD_pass2": second,
-        "selected_complete_source": "N01",
+        "selected_complete_sources": ["N23", "N01"],
+        "n04_terminal_words": bodies[4][-3:],
+        "terminal_LOW_IF_EVEN_selectors": tail_selectors,
         "coat_LOWBIT": reversal_note,
         "reversal_instruction": "N07 first three post-label words",
-        "complete_reversal_granularities": 2,
+        "complete_reversal_assignments": 4,
         "original_hits": sum(hits),
         "historical_n02_control": "PASS",
         "planted_complete_output_hits": planted_hits,
